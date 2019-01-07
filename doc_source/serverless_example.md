@@ -4,14 +4,14 @@
 
 --------
 
-# Creating a Serverless Application Using the AWS CDK<a name="cdk_serverless_example"></a>
+# Creating a Serverless Application Using the AWS CDK<a name="serverless_example"></a>
 
 This example walks you through creating the resources for a simple widget dispensing service\. It includes:
 + An AWS Lambda function
 + An API Gateway API to call our Lambda function
 + An Amazon S3 bucket that contains our Lambda function code
 
-## Overview<a name="cdk_serverless_example_overview"></a>
+## Overview<a name="serverless_example_overview"></a>
 
 This example contains the following steps\.
 
@@ -30,7 +30,7 @@ This example contains the following steps\.
    + get an widget by name with: GET /\{name\}
    + delete an widget by name with: DELETE /\{name\}
 
-## Create an AWS CDK App<a name="cdk_serverless_example_create_app"></a>
+## Create an AWS CDK App<a name="serverless_example_create_app"></a>
 
 Create the TypeScript app **MyWidgetService** in in the current folder\.
 
@@ -59,7 +59,7 @@ Resources:
       Modules: "@aws-cdk/cdk=CDK-VERSION,@aws-cdk/cx-api=CDK-VERSION,my_widget_service=0.1.0"
 ```
 
-## Create a Lambda Function to List all Widgets<a name="cdk_serverless_example_create_iam_function"></a>
+## Create a Lambda Function to List all Widgets<a name="serverless_example_create_iam_function"></a>
 
 The next step is to create a Lambda function to list all of the widgets in our Amazon S3 bucket\.
 
@@ -119,7 +119,7 @@ npm run build
 cdk synth
 ```
 
-## Creating a Widget Service<a name="cdk_serverless_example_create_widget_service"></a>
+## Creating a Widget Service<a name="serverless_example_create_widget_service"></a>
 
 Add the API Gateway, Lambda, and Amazon S3 packages to our app\.
 
@@ -178,7 +178,7 @@ npm run build
 cdk synth
 ```
 
-## Add the Service to the App<a name="cdk_serverless_example_add_service"></a>
+## Add the Service to the App<a name="serverless_example_add_service"></a>
 
 To add the service to our app, we need to first modify `my_widget_service-stack.ts`\. Add the following line of code after the existing **import** statement\.
 
@@ -199,9 +199,9 @@ npm run build
 cdk synth
 ```
 
-## Deploy and Test the App<a name="cdk_serverless_example_deploy_and_test"></a>
+## Deploy and Test the App<a name="serverless_example_deploy_and_test"></a>
 
-Before you can deploy your first AWS CDK app, you must bootstrap your deployment, which creates some AWS infracture that the AWS CDK needs\. See the **bootstrap** section of [Command\-line Toolkit \(cdk\)](cdk_tools.md) for details \(you'll get a warning and nothing changes if you have already bootstrapped an AWS CDK app\)\.
+Before you can deploy your first AWS CDK app, you must bootstrap your deployment, which creates some AWS infracture that the AWS CDK needs\. See the **bootstrap** section of [Command\-line Toolkit \(cdk\)](tools.md) for details \(you'll get a warning and nothing changes if you have already bootstrapped an AWS CDK app\)\.
 
 ```
 cdk bootstrap
@@ -237,7 +237,7 @@ Since we haven't stored any widgets yet, the output should be similar to the fol
 { "widgets": [] }
 ```
 
-## Add the Individual Widget Functions<a name="cdk_serverless_example_add_widget_functions"></a>
+## Add the Individual Widget Functions<a name="serverless_example_add_widget_functions"></a>
 
 The next step is to create Lambda functions to create, show, and delete individual widgets\. Replace the existing `exports.main` function in `widgets.js` with the following code\.
 

@@ -4,7 +4,7 @@
 
 --------
 
-# Constructs<a name="cdk_constructs"></a>
+# Constructs<a name="constructs"></a>
 
 Constructs are the building blocks of AWS CDK applications\. Constructs can have child constructs, which in turn can have child constructs, forming a hierarchical tree structure\.
 
@@ -18,7 +18,7 @@ AWS Construct Library
 These constructs have been handwritten by AWS and come with convenient defaults and additional knowledge about the inner workings of the AWS resources they represent\. In general, you will be able to express your intent without worrying about the details too much, and the correct resources will automatically be defined for you\.  
 AWS Construct Library members are found in the `@aws-cdk/aws-NAMESPACE` packages, where NAMESPACE is the short name for the associated service, such as SQS for the AWS Construct Library for the Amazon SQS service\. See the [Reference](https://awslabs.github.io/aws-cdk/reference.html#reference) section for descriptions of the AWS CDK packages and constructs\.
 
-## Construct Structure<a name="cdk_constructs_structure"></a>
+## Construct Structure<a name="constructs_structure"></a>
 
 The construct tree structure is a powerful design pattern for composing high\-level abstractions\. For example, you can define a `StorageLayer` construct that represents your application's storage layer and include all the AWS resources, such as DynamoDB tables and Amazon S3 buckets, needed to implement your storage layer in this construct\. When your higher\-level code uses this construct, it only needs to instantiate the `StorageLayer` construct\.
 
@@ -54,7 +54,7 @@ Gets the child construct with the specified ID\.
  aws\-cdk\.Construct\.toTreeString\(\)   
 Gets a string representing the construct's tree\.
 
-## Construct Names<a name="cdk_constructs_EVER"></a>
+## Construct Names<a name="constructs_EVER"></a>
 
 Every construct in a CDK app must have a **name** unique among its siblings\. Names are used to track constructs in the construct hierarchy, and to allocate logical IDs so that AWS CloudFormation can keep track of the generated resources\.
 
@@ -79,9 +79,9 @@ new Bucket(this, 'MyBucket', {
 
 Avoid specifying physical names\. Instead, let AWS CloudFormation generate names for you\. Use attributes, such as `bucket.bucketName`, to discover the generated names\.
 
-When you synthesize an AWS CDK tree into an AWS CloudFormation template, the AWS CloudFormation logical ID for each resource in the template is allocated according to the path of that resource in the construct tree\. For more information, see [Logical IDs](cdk_logical_ids.md)\.
+When you synthesize an AWS CDK tree into an AWS CloudFormation template, the AWS CloudFormation logical ID for each resource in the template is allocated according to the path of that resource in the construct tree\. For more information, see [Logical IDs](logical_ids.md)\.
 
-## Construct Properties<a name="cdk_constructs_properties"></a>
+## Construct Properties<a name="constructs_properties"></a>
 
 Customize constructs by passing a property object as the third parameter \(*props*\)\. Every construct has its own set of parameters, defined as an interface\. You can pass a property object to your construct in two ways:
 
@@ -99,6 +99,6 @@ const props: QueueProps = {
 new Queue(this, 'MyQueue', props);
 ```
 
-## Construct Metadata<a name="cdk_constructs_metadata"></a>
+## Construct Metadata<a name="constructs_metadata"></a>
 
 You can attach metadata to a construct using the `aws-cdk.Construct.addMetadata` operation\. Metadata entries automatically include the stack trace from which the metadata entry was added\. Therefore, at any level of a construct you can find the code location, even if metadata was created by a lower\-level library that you don't own\.

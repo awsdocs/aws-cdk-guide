@@ -4,16 +4,16 @@
 
 --------
 
-# AWS AWS CloudFormation Library<a name="cdk_cloudformation"></a>
+# AWS AWS CloudFormation Library<a name="cloudformation"></a>
 
-The [AWS Construct Library](cdk_aws_construct_lib.md) includes constructs with APIs for defining AWS infrastructure\. For example, the [Bucket](https://awslabs.github.io/aws-cdk/refs/_aws-cdk_aws-s3.html#bucket) construct can be used to define Amazon S3 Buckets and the [Topic](https://awslabs.github.io/aws-cdk/refs/_aws-cdk_aws-sns.html#@aws-cdk/aws-sns.Topic) construct can be used to define Amazon SNS Topics\.
+The [AWS Construct Library](aws_construct_lib.md) includes constructs with APIs for defining AWS infrastructure\. For example, the [Bucket](https://awslabs.github.io/aws-cdk/refs/_aws-cdk_aws-s3.html#bucket) construct can be used to define Amazon S3 Buckets and the [Topic](https://awslabs.github.io/aws-cdk/refs/_aws-cdk_aws-sns.html#@aws-cdk/aws-sns.Topic) construct can be used to define Amazon SNS Topics\.
 
 Under the hood, these constructs are implemented using AWS CloudFormation resources, which are available in the `CfnXxx` classes in each library\. For example, the [Bucket](https://awslabs.github.io/aws-cdk/refs/_aws-cdk_aws-s3.html#bucket) construct uses the [@aws\-cdk/aws\-s3\.cloudformation\.BucketResource](https://awslabs.github.io/aws-cdk/refs/_aws-cdk_aws-s3.html#@aws-cdk/aws-s3.cloudformation.BucketResource) resource \(as well as other resources, depending on what bucket APIs are used\)\.
 
 **Important**  
 Generally, when building AWS CDK apps, you shouldn't need to interact with AWS CloudFormation directly\. However, there might be advanced use cases and migration scenarios where this might be required\. We are also aware that there might be gaps in capabilities in the AWS Construct Library over time\.
 
-## Resources<a name="cdk_cloudformation_resources"></a>
+## Resources<a name="cloudformation_resources"></a>
 
 AWS CloudFormation resource classes are automatically generated from the [AWS AWS CloudFormation Resource Specification](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-resource-specification.html) and available under the `CfnXxx` classes of each AWS library\. Their API matches 1:1 with how you would use these resources in AWS CloudFormation\.
 
@@ -39,7 +39,7 @@ new sqs.Queue(this, 'MyQueue', {
 });
 ```
 
-## Resource Options<a name="cdk_cloudformation_resource_options"></a>
+## Resource Options<a name="cloudformation_resource_options"></a>
 
 To reference the runtime attributes of AWS CloudFormation resources, use one of the properties available on the resource object\.
 
@@ -60,11 +60,11 @@ new lambda.CfnFunction(this, {
 
 The [cdk\.Resource\.ref](@cdk-class-url;#@aws-cdk/cdk.Resource.ref) attribute represents the AWS CloudFormation resource's intrinsic reference \(or *Return Value*\)\. For example, *dlq\.ref* also [refers](http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-sqs-queues.html#aws-properties-sqs-queues-ref) to the queue's ARN\. When possible, it is preferrable to use an explicitly named attribute instead of *ref*\.
 
-## Resource Options<a name="cdk_cloudformation_resource_options"></a>
+## Resource Options<a name="cloudformation_resource_options"></a>
 
 The [cdk\.Resource\.options](@cdk-class-url;#@aws-cdk/cdk.Resource.options) object includes AWS CloudFormation options, such as `condition`, `updatePolicy`, `createPolicy` and `metadata`, for a resource\.
 
-## Parameters<a name="cdk_cloudformation_parameters"></a>
+## Parameters<a name="cloudformation_parameters"></a>
 
 ```
 import sns = require('@aws-cdk/aws-sns');
@@ -74,7 +74,7 @@ const p = new cdk.Parameter(this, 'MyParam', { type: 'String' });
 new sns.CfnTopic(this, 'MyTopic', { displayName: p.ref });
 ```
 
-## Outputs<a name="cdk_cloudformation_outputs"></a>
+## Outputs<a name="cloudformation_outputs"></a>
 
 ```
 import sqs = require('@aws-cdk/aws-sqs');
@@ -87,7 +87,7 @@ const import = out.makeImportValue();
 assert(import === { "Fn::ImportValue": out.exportName }
 ```
 
-## Conditions<a name="cdk_cloudformation_conditions"></a>
+## Conditions<a name="cloudformation_conditions"></a>
 
 ```
 import sqs = require('@aws-cdk/aws-sqs');
@@ -100,14 +100,14 @@ const queue = new sqs.CfnQueue(this, 'MyQueue');
 queue.options.condition = cond;
 ```
 
-## Intrinsic Functions<a name="cdk_cloudformation_intrinsic_functions"></a>
+## Intrinsic Functions<a name="cloudformation_intrinsic_functions"></a>
 
 ```
 import { Fn } from'@aws-cdk/cdk';
 Fn.join(",", [...])
 ```
 
-## Pseudo Parameters<a name="cdk_cloudformation_pseudo_parameters"></a>
+## Pseudo Parameters<a name="cloudformation_pseudo_parameters"></a>
 
 ```
 import cdk = require('@aws-cdk/cdk');

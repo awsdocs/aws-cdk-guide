@@ -4,7 +4,7 @@
 
 --------
 
-# Applets<a name="cdk_applets"></a>
+# Applets<a name="applets"></a>
 
 **Note**  
 The AWS CDK only supports applets published as JavaScript modules\.
@@ -27,7 +27,7 @@ applets:
 
 Every applet will be synthesized to its own stack, named after the key used in the applet definition\.
 
-## Specifying the Applet to Load<a name="cdk_applets_specifying"></a>
+## Specifying the Applet to Load<a name="applets_specifying"></a>
 
 An applet `type` specification looks like the following:
 
@@ -43,11 +43,11 @@ applet: MODULE[:CLASS]
 
 **CLASS** should reference the name of a class exported by the indicated module\. If the class name is omitted, `Applet` is used as the default class name\.
 
-## Properties<a name="cdk_applets_properties"></a>
+## Properties<a name="applets_properties"></a>
 
 Pass properties to the applet by specifying them in the `properties` object\. The properties will be passed to the instantiation of the class in the `type` parameter\.
 
-## Running<a name="cdk_applets_running"></a>
+## Running<a name="applets_running"></a>
 
 To run an applet, pass its YAML file directly as the `--app` argument to a `cdk` invocation:
 

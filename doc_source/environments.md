@@ -4,9 +4,9 @@
 
 --------
 
-# Environments and Authentication<a name="cdk_environments"></a>
+# Environments and Authentication<a name="environments"></a>
 
-The AWS CDK refers to the combination of an account ID and a Region as an *environment*\. The simplest environment is the one you get by default, which is the one you get when you have set up your credentials and a default Region as described in [Configuring the AWS CDK Toolkit](cdk_install_config.md#cdk_credentials)\.
+The AWS CDK refers to the combination of an account ID and a Region as an *environment*\. The simplest environment is the one you get by default, which is the one you get when you have set up your credentials and a default Region as described in [Configuring the AWS CDK Toolkit](install_config.md#credentials)\.
 
 When you create a [Stack](https://awslabs.github.io/aws-cdk/refs/_aws-cdk_cdk.html#@aws-cdk/cdk.Stack) instance, you can supply the target deployment environment for the stack using the `env` property, as shown in the following example, where REGION is the Region in which you want to create the stack and ACCOUNT is your account ID\.
 
@@ -20,7 +20,7 @@ For each of the two arguments, **region** and **account**, the AWS CDK uses the 
 + If these are not defined, it will determine them as follows:
   + **account**: use account from default SDK credentials\. Environment variables are tried first \(`AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`\), followed by credentials in *$HOME/\.aws/credentials* on Linux or MacOS or *%USERPROFILE%\\\\\.aws\\\\credentials* on Windows\.
   + **region**: use the default region configured in *$HOME/\.aws/config* on Linux or MacOS or *%USERPROFILE%\\\\\.aws\\\\config* on Windows\.
-  + You can set these defaults manually, but we recommend you use `aws configure`, as described in [Installing and Configuring the AWS CDK](cdk_install_config.md)
+  + You can set these defaults manually, but we recommend you use `aws configure`, as described in [Installing and Configuring the AWS CDK](install_config.md)
 
 We recommend that you use the default environment for development stacks, and explicitly specify accounts and Regions for production stacks\.
 

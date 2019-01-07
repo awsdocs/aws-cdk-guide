@@ -4,15 +4,15 @@
 
 --------
 
-# What Is the AWS Cloud Development Kit?<a name="what-is-CDK"></a>
+# What Is the AWS Cloud Development Kit?<a name="what-is"></a>
 
-Welcome to the AWS Cloud Development Kit \(AWS CDK\) User Guide\.
+Welcome to the AWS Cloud Development Kit \(AWS CDK\) User's Guide\.
 
 The AWS CDK is an infrastructure modeling framework that allows you to define your cloud resources using an imperative programming interface\. *The AWS CDK is currently in developer preview\. We look forward to community feedback and collaboration*\.
 
 ## Why Should you use the AWS CDK?<a name="why_use_cdk"></a>
 
-Perhaps the best reason is shown graphically\. Here is the TypeScript code in an AWS CDK project to create a Fargate service \(this is the code we use in the [Creating an Amazon ECS Fargate Service Using the AWS CDK](cdk_ecs_example.md)\):
+Perhaps the best reason is shown graphically\. Here is the TypeScript code in an AWS CDK project to create a Fargate service \(this is the code we use in the [Creating an Amazon ECS Fargate Service Using the AWS CDK](ecs_example.md)\):
 
 ```
 export class MyEcsConstructStack extends cdk.Stack {
@@ -100,26 +100,26 @@ Which creates the following AWS resources\.
 
 ![\[Image NOT FOUND\]](http://docs.aws.amazon.com/CDK/latest/userguide/images/MyEcsConstruct.png)
 
-## The Developer Experience<a name="cdk_developer_experience"></a>
+## The Developer Experience<a name="developer_experience"></a>
 
-To get started see [Installing and Configuring the AWS CDK](cdk_install_config.md)\.
+To get started see [Installing and Configuring the AWS CDK](install_config.md)\.
 
 ![\[Image NOT FOUND\]](http://docs.aws.amazon.com/CDK/latest/userguide/images/screencast.gif)
 
-Developers can use one of the supported programming languages to define reusable cloud components called [Constructs](cdk_constructs.md), which are composed together into [Stacks](cdk_stacks.md) and [Apps](cdk_apps.md)\.
+Developers can use one of the supported programming languages to define reusable cloud components called [Constructs](constructs.md), which are composed together into [Stacks](stacks.md) and [Apps](apps.md)\.
 
 **Note**  
 Unless otherwise indicated, the code examples in this guide are in TypeScript\.  
 To aid you in porting a TypeScript example to a supported programming language, take a look at the example code for your language in the [Reference](https://awslabs.github.io/aws-cdk/reference.html)\.
 
-The [Command\-line Toolkit \(cdk\)](cdk_tools.md) is a command\-line tool for interacting with CDK apps\. It allows developers to synthesize artifacts such as AWS CloudFormation Templates, deploy stacks to development AWS accounts and diff against a deployed stack to understand the impact of a code change\.
+The [Command\-line Toolkit \(cdk\)](tools.md) is a command\-line tool for interacting with CDK apps\. It allows developers to synthesize artifacts such as AWS CloudFormation Templates, deploy stacks to development AWS accounts and diff against a deployed stack to understand the impact of a code change\.
 
-The [AWS Construct Library](cdk_aws_construct_lib.md) includes a module for each AWS service with constructs that offer rich APIs that encapsulate the details of how to use AWS\. The AWS Construct Library aims to reduce the complexity and glue\-logic required when integrating various AWS services to achieve your goals on AWS\.
+The [AWS Construct Library](aws_construct_lib.md) includes a module for each AWS service with constructs that offer rich APIs that encapsulate the details of how to use AWS\. The AWS Construct Library aims to reduce the complexity and glue\-logic required when integrating various AWS services to achieve your goals on AWS\.
 
 **Note**  
 There is no charge for using the AWS CDK, however you may incur AWS charges for creating or using AWS [chargeable resources](http://docs.aws.amazon.com/general/latest/gr/glos-chap.html#chargeable-resources), such as running Amazon EC2 instances or using Amazon S3 storage\. Use the [AWS Simple Monthly Calculator](http://calculator.s3.amazonaws.com/index.html) to estimate charges for the use of various AWS resources\.
 
-## Additional Documentation and Resources<a name="cdk_additional_docs"></a>
+## Additional Documentation and Resources<a name="additional_docs"></a>
 
 In addition to this guide, the following are other resources available to AWS CDK users:
 + [CDK Reference](https://awslabs.github.io/aws-cdk/)
@@ -134,7 +134,7 @@ In addition to this guide, the following are other resources available to AWS CD
 + [AWS CDK Sample for Cloud9](https://docs.aws.amazon.com/cloud9/latest/user-guide/sample-cdk.html)
 + [AWS CloudFormation Concepts](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-whatis-concepts.html)
 
-## About Amazon Web Services<a name="cdk_about_aws"></a>
+## About Amazon Web Services<a name="about_aws"></a>
 
 Amazon Web Services \(AWS\) is a collection of digital infrastructure services that developers can leverage when developing their applications\. The services include computing, storage, database, and application synchronization \(messaging and queuing\)\.
 

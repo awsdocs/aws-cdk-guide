@@ -4,7 +4,7 @@
 
 --------
 
-# Environmental Context<a name="cdk_context"></a>
+# Environmental Context<a name="context"></a>
 
 When you synthesize a stack to create a AWS CloudFormation template, the AWS CDK might need information based on the environment \(account and Region\), such as the availability zones or AMIs available in the Region\. To enable this feature, the AWS CDK Toolkit uses *context providers*, and saves the context information into `cdk.json` the first time you call `cdk synth`\.
 
@@ -30,7 +30,7 @@ const ami: string = new SSMParameterProvider(this, {
   parameterName: 'my-awesome-parameter'
 ).parameterValue();
 ```
-This is only for reading plain strings, and not recommended for secrets\. For reading secure strings from SSM Parmeter store, see [Getting a Value from an SSM Store Variable](cdk_passing_in_data.md#cdk_passing_ssm_value)\.\.
+This is only for reading plain strings, and not recommended for secrets\. For reading secure strings from SSM Parmeter store, see [Getting a Value from an SSM Store Variable](passing_in_data.md#passing_ssm_value)\.\.
 
 [HostedZoneProvider](https://awslabs.github.io/aws-cdk/refs/_aws-cdk_aws-route53.html#@aws-cdk/aws-route53.HostedZoneProvider)  
 Use this provider to discover existing hosted zones in your account\. For example, the following code imports an existing hosted zone into your CDK app so you can add records to it:  
@@ -54,7 +54,7 @@ const provider = new VpcNetworkProvider(this, {
 const vpc = VpcNetworkRef.import(this, 'VPC', provider.vpcProps);
 ```
 
-## Viewing and managing context<a name="cdk_context_viewing"></a>
+## Viewing and managing context<a name="context_viewing"></a>
 
 Context is used to retrieve information such as the Availability Zones in your account or AMI IDs used to start your instances\. To avoid unexpected changes to your deployments, such as when you add a `Queue` to your application, but a new Amazon Linux AMI was released, thus changing your AutoScalingGroup, the AWS CDK stores the context values in `cdk.json`\. This ensures that the AWS CDK retrieves the same value on the next synthesis\.
 

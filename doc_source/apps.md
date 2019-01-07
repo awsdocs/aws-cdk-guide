@@ -4,9 +4,9 @@
 
 --------
 
-# Apps<a name="cdk_apps"></a>
+# Apps<a name="apps"></a>
 
-The main artifact of an AWS CDK program is called a *CDK App*\. This is an executable program that can be used to synthesize deployment artifacts that can be deployed by supporting tools like the AWS CDK Toolkit, which are described in [Command\-line Toolkit \(cdk\)](cdk_tools.md)\.
+The main artifact of an AWS CDK program is called a *CDK App*\. This is an executable program that can be used to synthesize deployment artifacts that can be deployed by supporting tools like the AWS CDK Toolkit, which are described in [Command\-line Toolkit \(cdk\)](tools.md)\.
 
 Tools interact with apps through the program's **argv**/**stdout** interface, which can be easily implemented using the **App** class, as shown in the following example\.
 

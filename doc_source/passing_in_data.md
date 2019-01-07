@@ -4,7 +4,7 @@
 
 --------
 
-# Passing in External Values to Your AWS CDK App<a name="cdk_passing_in_data"></a>
+# Passing in External Values to Your AWS CDK App<a name="passing_in_data"></a>
 
 There may be cases where you want to parameterize one or more of your stack resources\. Therefore, you want to be able to pass values into your app from outside your app\. Currently, you can get values into your app from outside your app through any of the following\.
 + Using a context variable
@@ -17,7 +17,7 @@ There may be cases where you want to parameterize one or more of your stack reso
 
 Each of these techniques is described in the following sections\.
 
-## Getting a Value from a Context Variable<a name="cdk_passing_context_var"></a>
+## Getting a Value from a Context Variable<a name="passing_context_var"></a>
 
 You can specify a context variable either as part of a AWS CDK Toolkit command, or in a **context** section of `cdk.json`\.
 
@@ -43,7 +43,7 @@ To get the value of a context variable in your app, use code like the following,
 const bucket_name string = this.getContext("bucket_name");
 ```
 
-## Getting a Value from an Environment Variable<a name="cdk_passing_env_var"></a>
+## Getting a Value from an Environment Variable<a name="passing_env_var"></a>
 
 To get the value of an environment variable, use code like the following, which gets the value of the environment variable `MYBUCKET`\.
 
@@ -51,13 +51,13 @@ To get the value of an environment variable, use code like the following, which 
 const bucket_name = process.env.MYBUCKET;
 ```
 
-## Getting a Value from an SSM Store Variable<a name="cdk_passing_ssm_value"></a>
+## Getting a Value from an SSM Store Variable<a name="passing_ssm_value"></a>
 
-There are three ways to get the value of an SSM parameter store variable, depending on whether you want the latest version of a plain string, a particular version of a plain string, or a particular version of a secret string\. It is not possible to retrieve the latest version of a secure string\. To read the latest version of a secret, you have to read the secret from SecretsManager \(see [Getting a Value from AWS Secrets Manager](#cdk_passing_secrets_manager)\)\.
+There are three ways to get the value of an SSM parameter store variable, depending on whether you want the latest version of a plain string, a particular version of a plain string, or a particular version of a secret string\. It is not possible to retrieve the latest version of a secure string\. To read the latest version of a secret, you have to read the secret from SecretsManager \(see [Getting a Value from AWS Secrets Manager](#passing_secrets_manager)\)\.
 
 The first two are not recommended for values that are supposed to be secrets, such as passwords\.
 
-To retrieve the latest value once \(as a context value, see [Environmental Context](cdk_context.md)\), and keep on using the same value until the context value manually refreshed, use a [SSMParameterProvider](@cdk-class-url;#@aws-cdk/cdk.SSMParameterProvider):
+To retrieve the latest value once \(as a context value, see [Environmental Context](context.md)\), and keep on using the same value until the context value manually refreshed, use a [SSMParameterProvider](@cdk-class-url;#@aws-cdk/cdk.SSMParameterProvider):
 
 ```
 import cdk = require('@amp;aws-cdk/cdk');
@@ -91,7 +91,7 @@ const secureString = new ssm.ParameterStoreSecureString(this, 'MySecretParameter
 const myvalue = secureString.value;
 ```
 
-## Getting a Value from AWS Secrets Manager<a name="cdk_passing_secrets_manager"></a>
+## Getting a Value from AWS Secrets Manager<a name="passing_secrets_manager"></a>
 
 To use values from AWS Secrets Manager in your CDK app, create an instance of [SecretsManager](https://awslabs.github.io/aws-cdk/refs/_aws-cdk_aws-secretsmanager.html/_aws-cdk_aws-secretsmanager.html#aws-cdk-aws-secretsmanager)\. It represents a value that is retrieved from Secrets Manager and used at AWS CloudFormation deployment time\.
 
@@ -114,7 +114,7 @@ const password = loginSecret.jsonFieldValue('password');
 const fullValue = loginSecret.value;
 ```
 
-## Passing in a Value From Another Stack<a name="cdk_passing_stack_value"></a>
+## Passing in a Value From Another Stack<a name="passing_stack_value"></a>
 
 You can pass a value from one stack to another stack in the same app by using the `export` method in one stack and the `import` method in the other stack\.
 
@@ -176,13 +176,13 @@ new MyCdkStack(app, "MyCdkStack", {
 app.run();
 ```
 
-## Using an AWS CloudFormation Parameter<a name="cdk_passing_cfn_param"></a>
+## Using an AWS CloudFormation Parameter<a name="passing_cfn_param"></a>
 
 See [Parameters](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/parameters-section-structure.html) for information about using the optional *Parameters* section to customize your AWS CloudFormation templates\.
 
-You can also get a reference to a resource in an existing AWS CloudFormation template, as described in [AWS CDK Concepts](cdk_concepts.md)\.
+You can also get a reference to a resource in an existing AWS CloudFormation template, as described in [AWS CDK Concepts](concepts.md)\.
 
-## Using an Existing AWS CloudFormation Template<a name="cdk_passing_cfn_template"></a>
+## Using an Existing AWS CloudFormation Template<a name="passing_cfn_template"></a>
 
 The AWS CDK provides a mechanism that you can use to incorporate resources from an existing AWS CloudFormation template into your AWS CDK app\. For example, suppose you have a template, `my-template.json`, with the following resource, where **S3Bucket** is the logical ID of the bucket in your template:
 

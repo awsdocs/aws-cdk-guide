@@ -4,7 +4,7 @@
 
 --------
 
-# AWS CDK Concepts<a name="cdk_concepts"></a>
+# AWS CDK Concepts<a name="concepts"></a>
 
 This topic describes some of the concepts \(the why and how\) behind the AWS CDK\. It also discusses the advantages of a AWS Construct Library over a low\-level CloudFormation Resource\.
 

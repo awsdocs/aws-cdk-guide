@@ -4,7 +4,7 @@
 
 --------
 
-# Assets<a name="cdk_assets"></a>
+# Assets<a name="assets"></a>
 
 Assets are local files, directories, or Docker images which can be bundled into CDK constructs and apps\. A common example is a directory which contains the handler code for a Lambda function, but assets can represent any artifact that is needed for the app’s operation\.
 

@@ -4,7 +4,7 @@
 
 --------
 
-# Creating an Amazon ECS Fargate Service Using the AWS CDK<a name="cdk_ecs_example"></a>
+# Creating an Amazon ECS Fargate Service Using the AWS CDK<a name="ecs_example"></a>
 
 This example walks you through creating a Fargate service running on an ECS cluster fronted by an internet\-facing application load balancer\.
 
@@ -31,7 +31,7 @@ Since Amazon ECS can be used with a number of AWS services, you should understan
   Previously, you had to create a Lambda function to have this functionality\.
 + Asset support, so that you can deploy source from your machine to Amazon ECS in one step Previously, to use application source you had to perform a number of manual steps, such as upload to Amazon ECR and create a Docker image\.
 
-## Creating the Directory and Initializing the AWS CDK<a name="cdk_ecs_example_initialize"></a>
+## Creating the Directory and Initializing the AWS CDK<a name="ecs_example_initialize"></a>
 
 Let's start with creating a new directory to hold our AWS CDK code and create a new app in that directory\.
 
@@ -58,7 +58,7 @@ Resources:
       Modules: @aws-cdk/cdk=CDK-VERSION,@aws-cdk/cx-api=CDK-VERSION,my_ecs_construct=0.1.0
 ```
 
-## Add the Amazon EC2 and Amazon ECS Packages<a name="cdk_ecs_example_add_packages"></a>
+## Add the Amazon EC2 and Amazon ECS Packages<a name="ecs_example_add_packages"></a>
 
 Install support for Amazon EC2 and Amazon ECS\.
 
@@ -66,7 +66,7 @@ Install support for Amazon EC2 and Amazon ECS\.
 npm install @aws-cdk/aws-ec2 @aws-cdk/aws-ecs
 ```
 
-## Create a Fargate Service<a name="cdk_ecs_example_create_fargate_service"></a>
+## Create a Fargate Service<a name="ecs_example_create_fargate_service"></a>
 
 There are two different ways of running your container tasks with Amazon ECS\.
 + Using the `Fargate` launch type, where Amazon ECS manages the physical machines that your containers are running on for you\.

@@ -4,7 +4,7 @@
 
 --------
 
-# Logical IDs<a name="cdk_logical_ids"></a>
+# Logical IDs<a name="logical_ids"></a>
 
 When you synthesize a stack into an AWS CloudFormation template, the AWS CDK assigns a [ logical ID](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/resources-section-structure.html), which must be unique within the template, to each resource in the stack\.
 
@@ -37,7 +37,7 @@ The AWS CDK applies some heuristics to improve the human\-friendliness of the pr
 + If two subsequent names in the path are the same, only one is retained\.
 + If the prefix exceeds 240 characters, it is trimmed to 240 characters\. This ensures that the total length of the logical ID does not exceed the 255 character AWS CloudFormation limit for logical IDs\.
 
-## Renaming Logical IDs<a name="cdk_logical_ids_renaming"></a>
+## Renaming Logical IDs<a name="logical_ids_renaming"></a>
 
 The `aws-cdk.Stack.renameLogical` method can be used to explicitly assign logical IDs to certain resources\.
 

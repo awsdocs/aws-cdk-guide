@@ -4,11 +4,11 @@
 
 --------
 
-# AWS CDK Tutorial<a name="cdk_tutorial"></a>
+# AWS CDK Tutorial<a name="tutorial"></a>
 
 This topic walks you through creating and deploying an AWS CDK app, from initializing the project to deploying the resulting AWS CloudFormation template\.
 
-## Creating the Project<a name="cdk_tutorial_create_directory"></a>
+## Creating the Project<a name="tutorial_create_directory"></a>
 
 Create a directory for your project with an empty Git repository\.
 
@@ -17,7 +17,7 @@ mkdir hello-cdk
 cd hello-cdk
 ```
 
-## Initializing the Project<a name="cdk_tutorial_init_project"></a>
+## Initializing the Project<a name="tutorial_init_project"></a>
 
 Initialize an empty project, where *LANGUAGE* is one of the supported programming languages: **csharp** \(C\#\), **java** \(Java\), or **typescript** \(TypeScript\)\.
 
@@ -25,7 +25,7 @@ Initialize an empty project, where *LANGUAGE* is one of the supported programmin
 cdk init --language LANGUAGE
 ```
 
-## Compiling the Project<a name="cdk_tutorial_compile_project"></a>
+## Compiling the Project<a name="tutorial_compile_project"></a>
 
 Compile your program:
 
@@ -59,7 +59,7 @@ mvn compile
 
 ------
 
-## Listing the Stacks in the App<a name="cdk_tutorial_list_stacks"></a>
+## Listing the Stacks in the App<a name="tutorial_list_stacks"></a>
 
 List the stacks in the app\.
 
@@ -86,7 +86,7 @@ Node.js process with a non-zero exit code.
 
 You can safely ignore this warning\.
 
-## Adding an Amazon S3 Bucket<a name="cdk_tutorial_add_bucket"></a>
+## Adding an Amazon S3 Bucket<a name="tutorial_add_bucket"></a>
 
 What can you do with this app? Nothing\. Since the stack is empty, there's nothing to deploy\. Let's define an Amazon S3 bucket\.
 
@@ -227,7 +227,7 @@ public class MyStack extends Stack {
 
 A few things to notice:
 + [Bucket](https://awslabs.github.io/aws-cdk/refs/_aws-cdk_aws-s3.html#@aws-cdk/aws-s3.Bucket) is a construct\. This means it's initialization signature has **parent**, **id**, and **props**\. In this case, the bucket is an immediate child of **MyStack**\.
-+ `MyFirstBucket` is the **logical id** of the bucket construct, not the physical name of the Amazon S3 bucket\. The logical ID is used to uniquely identify resources in your stack across deployments\. See [Logical IDs](cdk_logical_ids.md) for information on logical IDs\. To specify a physical name for your bucket, set the [bucketName](https://awslabs.github.io/aws-cdk/refs/_aws-cdk_aws-s3.html#@aws-cdk/aws-s3.BucketProps.bucketName) property when you define your bucket\.
++ `MyFirstBucket` is the **logical id** of the bucket construct, not the physical name of the Amazon S3 bucket\. The logical ID is used to uniquely identify resources in your stack across deployments\. See [Logical IDs](logical_ids.md) for information on logical IDs\. To specify a physical name for your bucket, set the [bucketName](https://awslabs.github.io/aws-cdk/refs/_aws-cdk_aws-s3.html#@aws-cdk/aws-s3.BucketProps.bucketName) property when you define your bucket\.
 + Since the bucket's [versioned](https://awslabs.github.io/aws-cdk/refs/_aws-cdk_aws-s3.html#@aws-cdk/aws-s3.versioned) property is `true`, [versioning](https://docs.aws.amazon.com/AmazonS3/latest/dev/Versioning.html) is enabled on the bucket\.
 
 Compile your program:
@@ -262,7 +262,7 @@ mvn compile
 
 ------
 
-## Synthesizing an AWS CloudFormation Template<a name="cdk_tutorial_synth_template"></a>
+## Synthesizing an AWS CloudFormation Template<a name="tutorial_synth_template"></a>
 
 Synthesize a AWS CloudFormation template for the stack:
 
@@ -296,9 +296,9 @@ Resources:
 You can see that the stack contains an **AWS::S3::Bucket** resource with the desired versioning configuration\.
 
 **Note**  
-The **AWS::CDK::Metadata** resource was automatically added to your template by the toolkit\. This allows us to learn which libraries were used in your stack\. See [Version Reporting](cdk_tools.md#cdk_version_reporting) for details, including how to [opt out](cdk_tools.md#cdk_version_reporting_opt_out)\.
+The **AWS::CDK::Metadata** resource was automatically added to your template by the toolkit\. This allows us to learn which libraries were used in your stack\. See [Version Reporting](tools.md#version_reporting) for details, including how to [opt out](tools.md#version_reporting_opt_out)\.
 
-## Deploying the Stack<a name="cdk_tutorial_deploy_stack"></a>
+## Deploying the Stack<a name="tutorial_deploy_stack"></a>
 
 Deploy the stack:
 
@@ -308,7 +308,7 @@ cdk deploy
 
 The deploy command synthesizes an AWS CloudFormation template from the stack and then invokes the AWS CloudFormation create/update API to deploy it into your AWS account\. The command displays information as it progresses\.
 
-## Modifying the Code<a name="cdk_tutorial_modify_code"></a>
+## Modifying the Code<a name="tutorial_modify_code"></a>
 
 Configure the bucket to use KMS managed encryption:
 
@@ -395,7 +395,7 @@ mvn compile
 
 ------
 
-## Preparing for Deployment<a name="cdk_tutorial_prep_deployment"></a>
+## Preparing for Deployment<a name="tutorial_prep_deployment"></a>
 
 Before you deploy the updated stack, evaluate the difference between the AWS CDK app and the deployed stack:
 
@@ -432,9 +432,9 @@ The toolkit updates the bucket configuration to enable server\-side KMS encrypti
 ✅  Deployment of stack hello-cdk completed successfully
 ```
 
-## What Next?<a name="cdk_tutorial_what_next"></a>
-+ Learn more about [AWS CDK Concepts](cdk_concepts.md)
+## What Next?<a name="tutorial_what_next"></a>
++ Learn more about [AWS CDK Concepts](concepts.md)
 + Check out the [examples directory](https://github.com/awslabs/aws-cdk/tree/master/examples) in your GitHub repository
-+ Learn about the rich APIs offered by the [AWS Construct Library](cdk_aws_construct_lib.md)
-+ Work directly with CloudFormation using the [AWS AWS CloudFormation Library](cdk_cloudformation.md)
++ Learn about the rich APIs offered by the [AWS Construct Library](aws_construct_lib.md)
++ Work directly with CloudFormation using the [AWS AWS CloudFormation Library](cloudformation.md)
 + Come talk to us on [Gitter](https://gitter.im/awslabs/aws-cdk)
