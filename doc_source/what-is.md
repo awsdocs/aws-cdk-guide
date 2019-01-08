@@ -16,8 +16,8 @@ Perhaps the best reason is shown graphically\. Here is the TypeScript code in an
 
 ```
 export class MyEcsConstructStack extends cdk.Stack {
-  constructor(parent: cdk.App, name: string, props?: cdk.StackProps) {
-    super(parent, name, props);
+  constructor(scope: cdk.App, id: string, props?: cdk.StackProps) {
+    super(scope, id, props);
      
     const vpc = new ec2.VpcNetwork(this, 'MyVpc', {
       maxAZs: 3 // Default is all AZs in region

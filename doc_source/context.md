@@ -14,7 +14,7 @@ The AWS CDK currently supports the following context providers\.
 Use this provider to get the list of all supported availability zones in this environment\. For example, the following code iterates over all of the AZs in the current environment\.  
 
 ```
-// "this" refers to a parent Construct
+// "this" refers to a Construct scope
 const zones: string[] = new AvailabilityZoneProvider(this).availabilityZones;
 
 for (let zone of zones) {

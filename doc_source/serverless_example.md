@@ -136,8 +136,8 @@ import lambda = require('@aws-cdk/aws-lambda');
 import s3 = require('@aws-cdk/aws-s3');
 
 export class WidgetService extends cdk.Construct {
-  constructor(parent: cdk.Construct, name: string) {
-    super(parent, name);
+  constructor(scope: cdk.Construct, id: string) {
+    super(scope, id);
 
     // Use S3 bucket to store our widgets
     const bucket = new s3.Bucket(this, 'WidgetStore');

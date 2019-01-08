@@ -18,8 +18,8 @@ interface MyStackProps extends StackProps {
 }
 
 class MyStack extends Stack {
-    constructor(parent: Construct, name: string, props?: MyStackProps) {
-        super(parent, name, props);
+    constructor(scope: Construct, id: string, props?: MyStackProps) {
+        super(scope, id, props);
 
         new MyStorageLayer(this, 'Storage', { encryptedStorage: props.encryptedStorage });
         new MyControlPlane(this, 'CPlane');

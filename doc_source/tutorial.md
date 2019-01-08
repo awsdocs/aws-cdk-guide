@@ -143,7 +143,7 @@ namespace HelloCdk
 {
     public class MyStack : Stack
     {
-        public MyStack(App parent, string name) : base(parent, name, null)
+        public MyStack(App scope, string id) : base(scope, id, null)
         {
             new Bucket(this, "MyFirstBucket", new BucketProps
             {
@@ -164,8 +164,8 @@ const cdk = require('@aws-cdk/cdk');
 const s3 = require('@aws-cdk/aws-s3');
 
 class MyStack extends cdk.Stack {
-    constructor(parent, id, props) {
-        super(parent, id, props);
+    constructor(scope, id, props) {
+        super(scope, id, props);
 
         new s3.Bucket(this, 'MyFirstBucket', {
             versioned: true
@@ -184,8 +184,8 @@ import cdk = require('@aws-cdk/cdk');
 import s3 = require('@aws-cdk/aws-s3');
 
 export class HelloCdkStack extends cdk.Stack {
-    constructor(parent: cdk.App, id: string, props?: cdk.StackProps) {
-        super(parent, id, props);
+    constructor(scope: cdk.App, id: string, props?: cdk.StackProps) {
+        super(scope, id, props);
 
         new s3.Bucket(this, 'MyFirstBucket', {
             versioned: true
@@ -209,12 +209,12 @@ import software.amazon.awscdk.services.s3.Bucket;
 import software.amazon.awscdk.services.s3.BucketProps;
 
 public class MyStack extends Stack {
-    public MyStack(final App parent, final String name) {
-        this(parent, name, null);
+    public MyStack(final App scope, final String id) {
+        this(scope, id, null);
     }
 
-    public MyStack(final App parent, final String name, final StackProps props) {
-        super(parent, name, props);
+    public MyStack(final App scope, final String id, final StackProps props) {
+        super(scope, id, props);
 
         new Bucket(this, "MyFirstBucket", BucketProps.builder()
             .withVersioned(true)
@@ -226,7 +226,7 @@ public class MyStack extends Stack {
 ------
 
 A few things to notice:
-+ [Bucket](https://awslabs.github.io/aws-cdk/refs/_aws-cdk_aws-s3.html#@aws-cdk/aws-s3.Bucket) is a construct\. This means it's initialization signature has **parent**, **id**, and **props**\. In this case, the bucket is an immediate child of **MyStack**\.
++ [Bucket](https://awslabs.github.io/aws-cdk/refs/_aws-cdk_aws-s3.html#@aws-cdk/aws-s3.Bucket) is a construct\. This means it's initialization signature has **scope**, **id**, and **props**\. In this case, the bucket is an immediate child of **MyStack**\.
 + `MyFirstBucket` is the **logical id** of the bucket construct, not the physical name of the Amazon S3 bucket\. The logical ID is used to uniquely identify resources in your stack across deployments\. See [Logical IDs](logical_ids.md) for information on logical IDs\. To specify a physical name for your bucket, set the [bucketName](https://awslabs.github.io/aws-cdk/refs/_aws-cdk_aws-s3.html#@aws-cdk/aws-s3.BucketProps.bucketName) property when you define your bucket\.
 + Since the bucket's [versioned](https://awslabs.github.io/aws-cdk/refs/_aws-cdk_aws-s3.html#@aws-cdk/aws-s3.versioned) property is `true`, [versioning](https://docs.aws.amazon.com/AmazonS3/latest/dev/Versioning.html) is enabled on the bucket\.
 

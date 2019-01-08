@@ -6,12 +6,12 @@
 
 # Logical IDs<a name="logical_ids"></a>
 
-When you synthesize a stack into an AWS CloudFormation template, the AWS CDK assigns a [ logical ID](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/resources-section-structure.html), which must be unique within the template, to each resource in the stack\.
+When you synthesize a stack into an AWS CloudFormation template, the AWS CDK assigns a [logical ID](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/resources-section-structure.html), which must be unique within the template, to each resource in the stack\.
 
 **Important**  
 When you update the template, AWS CloudFormation uses these logical IDs to plan the update and apply changes\. Therefore, logical IDs must remain "stable" across updates\. If you make a modification in your code that results in a change to a logical ID of a resource, AWS CloudFormation deletes the resource and creates a new resource when it updates the stack\.
 
-Each resource in the construct tree has a unique path that represents its location within the tree\. Since logical IDs can only use alphanumeric characters and cannot exceed 255 characters, the CDK is unable to simply use a delimited path as the logical ID\. Instead, logical IDs are allocated by concatenating a human\-friendly rendition from the path \(concatenation, de\-duplicate, trim\) with an eight\-character MD5 hash of the delimited path\. This final component is necessary since AWS CloudFormation logical IDs cannot include the delimiting slash character \(/\), so simply concatenating the component values does not work\. For example, concatenating the components of the path */a/b/c* produces **abc**, which is the same as concatenating the components of the path */ab/c*\.
+Each resource in your CDK app has a unique path that represents its location within the scope hierarchy\. Since logical IDs can only use alphanumeric characters and cannot exceed 255 characters, the CDK is unable to simply use a delimited path as the logical ID\. Instead, logical IDs are allocated by concatenating a human\-friendly rendition from the path \(concatenation, de\-duplicate, trim\) with an eight\-character MD5 hash of the delimited path\. This final component is necessary since AWS CloudFormation logical IDs cannot include the delimiting slash character \(/\), so simply concatenating the component values does not work\. For example, concatenating the components of the path */a/b/c* produces **abc**, which is the same as concatenating the components of the path */ab/c*\.
 
 ```
 VPCPrivateSubnet2RouteTable0A19E10E
@@ -29,7 +29,7 @@ Logical IDs are unique within the stack
 This is ensured by the MD5 component, which is based on the absolute path to the resource, which is unique within a stack\.
 
 Logical IDs remain unchanged across updates  
-This is true as long as their location within the construct tree doesn't change\.
+This is true as long as their location within the scope hierarchy doesn't change\.
 
 The AWS CDK applies some heuristics to improve the human\-friendliness of the prefix:
 + If a path component is **Default**, it is hidden completely from the logical ID computation\. You will generally want to use this if you create a new construct that wraps an existing one\. By naming the inner construct **Default**, you ensure that the logical identifiers of resources in already\-deployed copy of that construct do not change\.
@@ -43,8 +43,8 @@ The `aws-cdk.Stack.renameLogical` method can be used to explicitly assign logica
 
 ```
 class MyStack extends Stack {
-  constructor(parent: App, name: string, props: StackProps) {
-    super(parent, name);
+  constructor(scope: App, id: string, props: StackProps) {
+    super(scope, id);
 
     // note that renameLogical must be called /before/ defining the construct.
     // a good practice would be to always put these at the top of your stack initializer.

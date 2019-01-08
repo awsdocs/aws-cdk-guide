@@ -127,8 +127,8 @@ class HelloCdkStack extends cdk.Stack {
   // Property that defines the stack you are exporting from
   public readonly myBucketRefProps: s3.BucketRefProps;
 
-  constructor(parent: cdk.App, name: string, props?: cdk.StackProps) {
-      super(parent, name, props);
+  constructor(scope: cdk.App, id: string, props?: cdk.StackProps) {
+      super(scope, id, props);
 
       const mybucket = new s3.Bucket(this, "MyFirstBucket");
 
@@ -152,8 +152,8 @@ Create the second stack that gets a reference to the other bucket from the prope
 ```
 // The class for the other stack
 class MyCdkStack extends cdk.Stack {
-  constructor(parent: cdk.App, name: string, props: MyCdkStackProps) {
-    super(parent, name);
+  constructor(scope: cdk.App, id: string, props: MyCdkStackProps) {
+    super(scope, name);
 
     const myOtherBucket = s3.Bucket.import(this, "MyOtherBucket", props.theBucketRefProps);
 
