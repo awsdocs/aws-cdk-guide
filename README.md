@@ -1,6 +1,6 @@
 ## AWS Cdk User Guide
 
-User guide for the AWS Cloud Development Kit (CDK).
+The markdown (MD) source for the [AWS Cloud Development Kit (CDK) User Guide](https://docs.aws.amazon.com/CDK/latest/userguide).
 
 ## License Summary
 
