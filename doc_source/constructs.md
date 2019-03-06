@@ -1,93 +1,100 @@
 --------
 
- This documentation is for the developer preview release of the AWS CDK\. Do not use this version of the AWS CDK in production\. Subsequent releases of the AWS CDK will likely include breaking changes\. 
+This documentation is for the developer preview release \(public beta\) of the AWS Cloud Development Kit \(CDK\)\. Releases might lack important features and might have future breaking changes\.
 
 --------
 
 # Constructs<a name="constructs"></a>
 
-Constructs are the building blocks of AWS CDK applications\. Constructs can have child constructs, which in turn can have child constructs, forming a hierarchical tree structure\.
+You can think of constructs as *cloud components*\. They can represent architectures of any complexity\. They can represent a single resource, such as an Amazon Simple Storage Service \(Amazon S3\) bucket or an Amazon Simple Notification Service \(Amazon SNS\) topic\. They can represent reusable components, such as a static website, a part of a specific application, or complex, multistack applications that span multiple accounts and AWS Regions\. Constructs can also include other constructs\. Everything in the AWS CDK is a construct\.
 
-The AWS CDK includes two different levels of constructs:
+This composition of constructs means that you can create sharable constructs\. For example, if construct A and construct B use construct C and you make changes to construct C, then and both construct A and construct B get those changes\.
 
-CloudFormation Resource  
-These constructs are low\-level constructs that provide a direct, one\-to\-one, mapping to an AWS CloudFormation resource, as listed in the AWS CloudFormation topic [ AWS Resource Types Reference](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-template-resource-type-ref.html)\.   
-All CloudFormation Resource members are found in the `@aws-cdk/resources` package\.
+## The AWS CloudFormation Resource Library<a name="constructs_l1"></a>
 
-AWS Construct Library  
-These constructs have been handwritten by AWS and come with convenient defaults and additional knowledge about the inner workings of the AWS resources they represent\. In general, you will be able to express your intent without worrying about the details too much, and the correct resources will automatically be defined for you\.  
-AWS Construct Library members are found in the `@aws-cdk/aws-NAMESPACE` packages, where NAMESPACE is the short name for the associated service, such as SQS for the AWS Construct Library for the Amazon SQS service\. See the [Reference](https://awslabs.github.io/aws-cdk/reference.html#reference) section for descriptions of the AWS CDK packages and constructs\.
+The AWS CDK provides a class library of constructs called the **AWS CloudFormation Resource Library**\. This library consists of constructs that represent all the resources available on AWS\.
+
+Each module in the AWS Construct Library includes two types of constructs for each resource: low\-level constructs known as an AWS CloudFormation Resource constructs and high\-level constructs known as an AWS Construct Library constructs\.
+
+The CDK creates the low\-level resources from the [AWS CloudFormation Resource Specification](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-resource-specification.html) on a regular basis\. Low\-level constructs are named **Cfn***Xyz*, where *Xyz* represents the name of the resource\. These constructs provide direct, one\-to\-one access to how a resource is synthesized in the AWS CloudFormation template produced by your CDK app\. Using low\-level resources requires you to explicitly configure all resource properties, IAM policies, and have a deep understanding of the details\.
+
+High\-level resource constructs are authored by AWS and offer an intent\-based API for using AWS services\. They provide the same functionality as the low\-level resources, but encode much of the details, boilerplate, and glue logic required to use AWS\. High\-level resources offer convenient defaults and additional knowledge about the inner workings of the AWS resources they represent\. 
+
+Similarly to the AWS SDKs and AWS CloudFormation, the AWS Construct Library is organized into modules, one for each AWS service\. For example, the `@aws-cdk/aws-ec2` module includes resources for Amazon EC2 instances and networking\. The `aws-sns` module includes resources such as `Topic` and `Subscription`\. See the [Reference](https://awslabs.github.io/aws-cdk/reference.html) for descriptions of the CDK packages and constructs\.
+
+AWS Construct Library members are found in the `@aws-cdk/aws-NAMESPACE` packages, where `NAMESPACE` is the short name for the associated service, such as `SQS` for the AWS Construct Library for the Amazon Simple Queue Service \(Amazon SQS\) service\.
 
 ## Construct Structure<a name="constructs_structure"></a>
 
-The construct tree structure is a powerful design pattern for composing high\-level abstractions\. For example, you can define a `StorageLayer` construct that represents your application's storage layer and include all the AWS resources, such as DynamoDB tables and Amazon S3 buckets, needed to implement your storage layer in this construct\. When your higher\-level code uses this construct, it only needs to instantiate the `StorageLayer` construct\.
+Constructs are represented as normal classes in your code and are defined by instantiating an object of that class\.
 
-When you initialize a construct, add the construct to the construct tree by specifying the parent construct as the first initializer parameter, an identifier for the construct as the second parameter, and a set of properties for the final parameter, as shown in the following example\.
+When constructs are initialized, they are always defined within the *scope* of another construct, and always have an *id* that must be unique within the same scope\.
 
-```
-new SomeConstruct(parent, name[, props]);
-```
-
-In almost all cases, you should pass the keyword `this` for the `parent` argument, because you will generally initialize new constructs in the context of the parent construct\. Any descriptive string will do for the `name` argument, and an in\-line object for the set of properties\.
+For example, here's how you would define an Amazon SNS `topic` in your stack with default configuration\.
 
 ```
-new BeautifulConstruct(this, 'Foo', {
-    applicationName: 'myApp',
-    timeout: 300
+new sns.Topic(this, 'MyTopic');
+```
+
+The first argument to every construct is always the scope in which it's created, and is almost always `this`, because most constructs are defined within the current scope\.
+
+Scopes enable constructs to be composed together to form higher\-level abstractions\. This is done by enabling the framework to group them together into logical units, allocate globally unique identifiers, and allow them to consult context information, such as the AWS Region in which it's going to be deployed and which availability Zones are available for your account\.
+
+In most cases, the construct initializer has a third `props` argument that can be used to define the construct's initial configuration\. For example:
+
+```
+new MyConstruct(this, 'Foo', {
+  favoriteColor: 'green',
+  timeout: 300
 });
 ```
 
-**Note**  
-Associating the construct to its parent as part of initialization is necessary because the construct occasionally needs contextual information from its parent, such as to which the region the stack is deployed\.
+Use the `construct.node` property to get the following information about the construct\.
 
-Use the following operations to inspect the construct tree\.
+ construct\.node\.scope   
+Gets the scope in which the construct was defined\.
 
- aws\-cdk\.Construct\.parent   
-Gets the path of this construct from the root of the tree\.
+ construct\.node\.id   
+Gets the `id` of the construct\.
 
- aws\-cdk\.Construct\.getChildren   
-Gets an array of all of the contruct's children\.
+ construct\.node\.uniqueId   
+Gets the app\-wide unique, safe ID of the construct\. This ID encodes the construct's path into a human\-readable portion and a hash of the full path to ensure global uniqueness\.
 
- aws\-cdk\.Construct\.getChild   
-Gets the child construct with the specified ID\.
+ construct\.node\.path   
+Gets the full path of this construct from the root of the scope \(the `App`\)\.
 
- aws\-cdk\.Construct\.toTreeString\(\)   
-Gets a string representing the construct's tree\.
+## Construct IDs<a name="constructs_ids"></a>
 
-## Construct Names<a name="constructs_EVER"></a>
+Every construct in a CDK app must have an `id` that's unique within the scope in which the construct is defined\. The CDK uses IDs to find constructs in the construct hierarchy\. It also uses IDs to allocate logical IDs so that AWS CloudFormation can keep track of the generated resources\.
 
-Every construct in a CDK app must have a **name** unique among its siblings\. Names are used to track constructs in the construct hierarchy, and to allocate logical IDs so that AWS CloudFormation can keep track of the generated resources\.
-
-When a construct is created, its name is specified as the second initializer argument:
+When a construct is created, its ID is specified as the second initializer argument\.
 
 ```
-const c1 = new MyBeautifulConstruct(this, 'OneBeautiful');
-const c2 = new MyBeautifulConstruct(this, 'TwoBeautiful');
-assert(c1.name === 'OneBeautiful');
-assert(c2.name === 'TwoBeautiful');
+const c1 = new MyConstruct(this, 'OneConstruct');
+const c2 = new MyConstruct(this, 'TwoConstruct');
+assert(c1.node.id === 'OneConstruct');
+assert(c2.node.id === 'TwoConstruct');
 ```
 
-Use the `aws-cdk.Construct.path` property to get the path of this construct from the root of the tree\.
-
-Note that the name of a construct does not directly map onto the physical name of the resource when it is created\. If you want to give a physical name to a bucket or table, specify the physical name using use the appropriate property, such as `bucketName` or `tableName`, as shown in the following example:
+Notice that the ID of a construct doesn't directly map to the physical name of the resource when it's created\. To give a physical name to a bucket or table, specify the physical name using the appropriate property, such as `bucketName` or `tableName`, as shown in the following example\.
 
 ```
-new Bucket(this, 'MyBucket', {
-    bucketName: 'physical-bucket-name'
+new s3.Bucket(this, 'MyBucket', {
+  bucketName: 'physical-bucket-name'
 });
 ```
 
-Avoid specifying physical names\. Instead, let AWS CloudFormation generate names for you\. Use attributes, such as `bucket.bucketName`, to discover the generated names\.
+We recommend that you avoid specifying physical names\. Instead, let AWS CloudFormation generate names for you\. Use attributes, such as `bucket.bucketName`, to discover the generated names\.
 
-When you synthesize an AWS CDK tree into an AWS CloudFormation template, the AWS CloudFormation logical ID for each resource in the template is allocated according to the path of that resource in the construct tree\. For more information, see [Logical IDs](logical_ids.md)\.
+When you synthesize a CDK app into an AWS CloudFormation template, the AWS CloudFormation logical ID for each resource in the template is allocated according to the path of that resource in the scope hierarchy\. For more information, see [Logical IDs](logical_ids.md)\.
 
 ## Construct Properties<a name="constructs_properties"></a>
 
-Customize constructs by passing a property object as the third parameter \(*props*\)\. Every construct has its own set of parameters, defined as an interface\. You can pass a property object to your construct in two ways:
+Customize constructs by passing a property object as the third parameter \(*props*\)\. Every construct has its own set of properties, defined as an interface\. You can pass a property object to your construct in two ways: inline, or instantiated as a separate property object\.
 
 ```
 // Inline (recommended)
-new Queue(this, 'MyQueue', {
+new sqs.Queue(this, 'MyQueue', {
   visibilityTimeout: 300
 });
 
@@ -101,4 +108,56 @@ new Queue(this, 'MyQueue', props);
 
 ## Construct Metadata<a name="constructs_metadata"></a>
 
-You can attach metadata to a construct using the `aws-cdk.Construct.addMetadata` operation\. Metadata entries automatically include the stack trace from which the metadata entry was added\. Therefore, at any level of a construct you can find the code location, even if metadata was created by a lower\-level library that you don't own\.
+Attach metadata to a construct using the `addMetadata` method\. Metadata is an AWS CDK\-level annotation, and as such, does not appear in the deployed resources\. Metadata entries automatically include the stack trace from which the metadata entry was added to allow tracing back to your code, even if the entry was defined by a lower\-level library that you don't own\.
+
+Use the `addWarning()` method to emit a message when you you synthesis a stack; use the `addError()` method to not only emit a message when you you synthesis a stack, but to also block the deployment of a stack\.
+
+The following example blocks the deployment of `myStack` if it is not in `us-west-2`:
+
+```
+if (myStack.region !== 'us-west-2') {
+    myStack.node.addError('myStack is not in us-west-2');
+}
+```
+
+## Tagging Constructs<a name="constructs_tagging"></a>
+
+You can add a tag to any construct to identify the resources you create\. Tags can be applied to any construct\. Tags are inherited, and are based on scope\. If you tag construct `A`, and construct `A` contains construct `B`, construct `B` inherits the tag\.
+
+There are two tag operations\.
+
+Tag  
+Adds \(or applies\) a tag to a set of resources, or to all but a set of resources\.
+
+RemoveTag  
+Removes a tag from a set of resources, or from all but a set of resources\.
+
+The following example adds the tag key\-value pair *StackType*\-*TheBest* to any resource created within the **theBestStack** stack labeled *MarketingSystem*\.
+
+```
+import cdk = require('@aws-cdk/cdk');
+
+const app = new cdk.App();
+const theBestStack = new cdk.Stack(app, 'MarketingSystem');
+theBestStack.node.apply(new cdk.Tag('StackType', 'TheBest'));
+    
+// To remove the tag:
+theBestStack.node.apply(new cdk.RemoveTag('TheBest'));
+    
+// To remove the tag from all EXCEPT the subnets:
+theBestStack.node.apply(new cdk.RemoveTag('TheBest'), {exludeResourceTypes: ['AWS::EC2::Subnet']}));
+```
+
+The tag operations include some properties to fine\-tune how tags are applied to or removed from the resources that the construct creates\.
+
+applyToLaunchedInstances  
+Use this Boolean property to set `PropagateAtLaunch` for any Auto Scaling group resource the construct creates\. The default is `true`\.
+
+includeResourceTypes  
+Use this array of strings to apply a tag only to those AWS CloudFormation resource types\. The default is an empty array, which means the tag applies to all AWS CloudFormation resource types\.
+
+excludeResourceTypes  
+Use this array of strings to exclude a tag from those AWS CloudFormation resource types\. The default is an empty array, which means the tag applies to all AWS CloudFormation resource types\. This property takes precedence over the `includeResourceTypes` property\.
+
+priority  
+Set this integer value to control the precedence of tags\. The default is 0 \(zero\) for `Tag` and 1 for `RemoveTag`\. Higher values take precedence over lower values\.

@@ -1,11 +1,11 @@
 --------
 
- This documentation is for the developer preview release of the AWS CDK\. Do not use this version of the AWS CDK in production\. Subsequent releases of the AWS CDK will likely include breaking changes\. 
+This documentation is for the developer preview release \(public beta\) of the AWS Cloud Development Kit \(CDK\)\. Releases might lack important features and might have future breaking changes\.
 
 --------
 
 # Assets<a name="assets"></a>
 
-Assets are local files, directories, or Docker images which can be bundled into CDK constructs and apps\. A common example is a directory which contains the handler code for a Lambda function, but assets can represent any artifact that is needed for the app’s operation\.
+Assets are local files, directories, or Docker images that can be bundled into CDK constructs and apps\. A common example is a directory that contains the handler code for an AWS Lambda function, however, assets can represent any artifact that the app needs to operate\.
 
-When deploying an AWS CDK app that includes constructs with assets, the toolkit first prepares and publishes them to Amazon S3 or Amazon ECR, and only then deploy the stacks\. The locations of the published assets are passed in as AWS CloudFormation parameters to the relevant stacks\.
+When deploying a CDK app that includes constructs with assets, the CDK Toolkit first prepares and publishes them to Amazon Simple Storage Service \(Amazon S3\) or Amazon Elastic Container Registry \(Amazon ECR\), and only then deploys the stacks\. The locations of the published assets are passed in as AWS CloudFormation parameters to the relevant stacks\.

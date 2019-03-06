@@ -1,38 +1,36 @@
 --------
 
- This documentation is for the developer preview release of the AWS CDK\. Do not use this version of the AWS CDK in production\. Subsequent releases of the AWS CDK will likely include breaking changes\. 
+This documentation is for the developer preview release \(public beta\) of the AWS Cloud Development Kit \(CDK\)\. Releases might lack important features and might have future breaking changes\.
 
 --------
 
-# Creating a Serverless Application Using the AWS CDK<a name="serverless_example"></a>
+# Creating a Serverless Application Using the AWS CDK<a name="serverless_tutorial"></a>
 
-This example walks you through creating the resources for a simple widget dispensing service\. It includes:
-+ An AWS Lambda function
-+ An API Gateway API to call our Lambda function
-+ An Amazon S3 bucket that contains our Lambda function code
+This tutorial walks you through how to create the resources for a simple widget dispensing service\. It includes:
++ An AWS Lambda function\.
++ An Amazon API Gateway API to call the Lambda function\.
++ An Amazon S3 bucket that contains the Lambda function code\.
 
-## Overview<a name="serverless_example_overview"></a>
+This tutorial contains the following steps\.
 
-This example contains the following steps\.
+1. Creates a CDK app
 
-1. Create a AWS CDK app
+1. Creates a Lambda function that gets a list of widgets with: GET /
 
-1. Create a Lambda function that gets a list of widgets with: GET /
+1. Creates the service that calls the Lambda function
 
-1. Create the service that calls the Lambda function
+1. Adds the service to the CDK app
 
-1. Add the service to the AWS CDK app
+1. Tests the app
 
-1. Test the app
+1. Add Lambda functions to do the following:
+   + Create a widget with POST /\{name\}
+   + Get a widget by name with GET /\{name\}
+   + Delete a widget by name with DELETE /\{name\}
 
-1. Add Lambda functions to:
-   + create an widget based with: POST /\{name\}
-   + get an widget by name with: GET /\{name\}
-   + delete an widget by name with: DELETE /\{name\}
+## Create a CDK App<a name="serverless_tutorial_create_app"></a>
 
-## Create an AWS CDK App<a name="serverless_example_create_app"></a>
-
-Create the TypeScript app **MyWidgetService** in in the current folder\.
+Create the TypeScript app **MyWidgetService** in the current folder\.
 
 ```
 mkdir MyWidgetService
@@ -40,9 +38,9 @@ cd MyWidgetService
 cdk init --language typescript
 ```
 
-This creates `my_widget_service.ts` in the `bin` directory and `my_widget_service-stack.ts` in the `lib` directory\.
+This creates `my_widget_service.ts` in the `bin` directory, and `my_widget_service-stack.ts` in the `lib` directory\.
 
-Build it and note that it creates an empty stack\.
+Build the app and notice that it creates an empty stack\.
 
 ```
 npm run build
@@ -59,17 +57,17 @@ Resources:
       Modules: "@aws-cdk/cdk=CDK-VERSION,@aws-cdk/cx-api=CDK-VERSION,my_widget_service=0.1.0"
 ```
 
-## Create a Lambda Function to List all Widgets<a name="serverless_example_create_iam_function"></a>
+## Create a Lambda Function to List All Widgets<a name="serverless_tutorial_create_iam_function"></a>
 
 The next step is to create a Lambda function to list all of the widgets in our Amazon S3 bucket\.
 
-Create the directory `resources` at the same level as the bin directory\.
+Create the `resources` directory at the same level as the `bin` directory\.
 
 ```
 mkdir resources
 ```
 
-Create the following Javascript file, `widgets.js`, in the `resources` directory\.
+Create the following JavaScript file, `widgets.js`, in the `resources` directory\.
 
 ```
 const AWS = require('aws-sdk');
@@ -112,22 +110,22 @@ exports.main = async function(event, context) {
 }
 ```
 
-Save it and make sure it builds and creates an empty stack\. Note that since we haven't wired the function to our app, the Lambda file does not appear in the output\.
+Save it and be sure it builds and creates an empty stack\. Because we haven't wired the function to the app, the Lambda file doesn't appear in the output\.
 
 ```
 npm run build
 cdk synth
 ```
 
-## Creating a Widget Service<a name="serverless_example_create_widget_service"></a>
+## Creating a Widget Service<a name="serverless_tutorial_create_widget_service"></a>
 
-Add the API Gateway, Lambda, and Amazon S3 packages to our app\.
+Add the API Gateway, Lambda, and Amazon S3 packages to the app\.
 
 ```
 npm install @aws-cdk/aws-apigateway @aws-cdk/aws-lambda @aws-cdk/aws-s3
 ```
 
-Create the Typescript file `widget_service.ts` in the `lib` directory\.
+Create the TypeScript file `widget_service.ts` in the `lib` directory\.
 
 ```
 import cdk = require('@aws-cdk/cdk');
@@ -136,51 +134,61 @@ import lambda = require('@aws-cdk/aws-lambda');
 import s3 = require('@aws-cdk/aws-s3');
 
 export class WidgetService extends cdk.Construct {
-  constructor(parent: cdk.Construct, name: string) {
-    super(parent, name);
+  constructor(scope: cdk.Construct, id: string) {
+    super(scope, id);
 
-    // Use S3 bucket to store our widgets
     const bucket = new s3.Bucket(this, 'WidgetStore');
 
-    // Create a handler that calls the function main
-    // in the source file widgets(.js) in the resources directory
-    // to handle requests through API Gateway
     const handler = new lambda.Function(this, 'WidgetHandler', {
-      runtime: lambda.Runtime.NodeJS810,
+      runtime: lambda.Runtime.NodeJS810,  // So we can use async in widget.js
       code: lambda.Code.directory('resources'),
       handler: 'widgets.main',
       environment: {
-        BUCKET: bucket.bucketName // So runtime has the bucket name
+        BUCKET: bucket.bucketName
       }
     });
 
     bucket.grantReadWrite(handler.role);
 
-    // Create an API Gateway REST API
     const api = new apigateway.RestApi(this, 'widgets-api', {
       restApiName: 'Widget Service',
       description: 'This service serves widgets.'
     });
 
-    // Pass the request to the handler
-    const getWidgetsIntegration = new apigateway.LambdaIntegration(handler);
+    const getWidgetsIntegration = new apigateway.LambdaIntegration(handler, {
+      requestTemplates:  { "application/json": '{ "statusCode": "200" }' }
+    });
 
-    // Use the getWidgetsIntegration when there is a GET request
     api.root.addMethod('GET', getWidgetsIntegration);   // GET /
+
+    const widget = api.root.addResource('{id}');
+
+    // Add new widget to bucket with: POST /{id}
+    const postWidgetIntegration = new apigateway.LambdaIntegration(handler);
+
+    // Get a specific widget from bucket with: GET /{id}
+    const getWidgetIntegration = new apigateway.LambdaIntegration(handler);
+
+    // Remove a specific widget from the bucket with: DELETE /{id}
+    const deleteWidgetIntegration = new apigateway.LambdaIntegration(handler);
+
+    widget.addMethod('POST', postWidgetIntegration);    // POST /{id}
+    widget.addMethod('GET', getWidgetIntegration);       // GET /{id}
+    widget.addMethod('DELETE', deleteWidgetIntegration); // DELETE /{id}
   }
 }
 ```
 
-Save it and make sure it builds and creates a \(still empty\) stack\.
+Save the app and be sure it builds and creates a \(still empty\) stack\.
 
 ```
 npm run build
 cdk synth
 ```
 
-## Add the Service to the App<a name="serverless_example_add_service"></a>
+## Add the Service to the App<a name="serverless_tutorial_add_service"></a>
 
-To add the service to our app, we need to first modify `my_widget_service-stack.ts`\. Add the following line of code after the existing **import** statement\.
+To add the service to the app, first modify `my_widget_service-stack.ts`\. Add the following line of code after the existing `import` statement\.
 
 ```
 import widget_service = require('../lib/widget_service');
@@ -189,57 +197,63 @@ import widget_service = require('../lib/widget_service');
 Replace the comment in the constructor with the following line of code\.
 
 ```
-new widget_service.WidgetService(this, 'Widgets');
+    new widget_service.WidgetService(this, 'Widgets');
 ```
 
-Make sure it builds and creates a stack \(we don't show the stack as it's over 250 lines\)\.
+Be sure the app builds and creates a stack \(we don't show the stack because it's over 250 lines\)\.
 
 ```
 npm run build
 cdk synth
 ```
 
-## Deploy and Test the App<a name="serverless_example_deploy_and_test"></a>
+## Deploy and Test the App<a name="serverless_tutorial_deploy_and_test"></a>
 
-Before you can deploy your first AWS CDK app, you must bootstrap your deployment, which creates some AWS infracture that the AWS CDK needs\. See the **bootstrap** section of [Command\-line Toolkit \(cdk\)](tools.md) for details \(you'll get a warning and nothing changes if you have already bootstrapped an AWS CDK app\)\.
+Before you can deploy your first CDK app, you must bootstrap your deployment\. This creates some AWS infrastructure that the CDK needs\. For details, see the **bootstrap** section of the [AWS CDK Command Line Toolkit \(cdk\)](tools.md)\(if you've already bootstrapped a CDK app, you'll get a warning and nothing will change\)\.
 
 ```
 cdk bootstrap
 ```
 
-Deploy your app:
+Deploy your app, as follows\.
 
 ```
 cdk deploy
 ```
 
-If the deployment is successfull, save the URL for your server, which appears in one of the last lines in the window, where *GUID* is an alpha\-numeric GUID and *REGION* is your region\.
+If the deployment succeeds, save the URL for your server\. This URL appears in one of the last lines in the window, where *GUID* is an alphanumeric GUID and *REGION* is your AWS Region\.
 
 ```
 https://GUID.execute-REGION.amazonaws.com/prod/
 ```
 
-You can test your app by getting the list of widgets \(currently empty\) by navigating to this URL in a browser or use the following command\.
+Test your app by getting the list of widgets \(currently empty\) by navigating to this URL in a browser, or use the following command\.
 
 ```
 curl -X GET 'https://GUID.execute-REGION.amazonaws.com/prod'
 ```
 
 You can also test the app by:
-+ Opening the AWS Management Console
-+ Navigating to the API Gateway service
-+ Finding **Widget Service** in the list
-+ Selecting **GET** and **Test** to test the function\.
 
-Since we haven't stored any widgets yet, the output should be similar to the following\.
+1. Opening the AWS Management Console\.
+
+1. Navigating to the API Gateway service\.
+
+1. Finding **Widget Service** in the list\.
+
+1. Selecting **GET** and **Test** to test the function\.
+
+Because we haven't stored any widgets yet, the output should be similar to the following\.
 
 ```
 { "widgets": [] }
 ```
 
-## Add the Individual Widget Functions<a name="serverless_example_add_widget_functions"></a>
+## Add the Individual Widget Functions<a name="serverless_tutorial_add_widget_functions"></a>
 
-The next step is to create Lambda functions to create, show, and delete individual widgets\. Replace the existing `exports.main` function in `widgets.js` with the following code\.
+The next step is to create Lambda functions to create, show, and delete individual widgets\. 
+
+Replace the existing `exports.main` function in `widgets.js` with the following code\.
 
 ```
 exports.main = async function(event, context) {
@@ -345,7 +359,7 @@ exports.main = async function(event, context) {
 }
 ```
 
-Wire these functions up to our API Gateway code in `widget_service.ts` by adding the following code at the end of the constructor\.
+Wire up these functions to your API Gateway code in `widget_service.ts` by adding the following code at the end of the constructor\.
 
 ```
 const widget = api.root.addResource('{name}');
@@ -371,15 +385,15 @@ npm run build
 cdk deploy
 ```
 
-We can now store, show, or delete an individual widget\. Use the following commands to list the widgets, create the widget **dummy**, list all of the widgets, show the contents of **dummy** \(it should show today's date\), and delete **dummy**, and again show the list of widgets\.
+We can now store, show, or delete an individual widget\. Use the following commands to list the widgets, create the widget **example**, list all of the widgets, show the contents of **example** \(it should show today's date\), delete **example**, and then show the list of widgets again\.
 
 ```
 curl -X GET 'https://GUID.execute-REGION.amazonaws.com/prod'
-curl -X POST 'https://GUID.execute-REGION.amazonaws.com/prod/dummy'
+curl -X POST 'https://GUID.execute-REGION.amazonaws.com/prod/example'
 curl -X GET 'https://GUID.execute-REGION.amazonaws.com/prod'
-curl -X GET 'https://GUID.execute-REGION.amazonaws.com/prod/dummy'
-curl -X DELETE 'https://GUID.execute-REGION.amazonaws.com/prod/dummy'
+curl -X GET 'https://GUID.execute-REGION.amazonaws.com/prod/example'
+curl -X DELETE 'https://GUID.execute-REGION.amazonaws.com/prod/example'
 curl -X GET 'https://GUID.execute-REGION.amazonaws.com/prod'
 ```
 
-You can also use the API Gateway console to test these functions\. You'll have to set the **name** entry to the name of an widget, such as **dummy**\.
+You can also use the API Gateway console to test these functions\. You have to set the **name** value to the name of a widget, such as **example**\.

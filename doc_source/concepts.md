@@ -1,15 +1,11 @@
 --------
 
- This documentation is for the developer preview release of the AWS CDK\. Do not use this version of the AWS CDK in production\. Subsequent releases of the AWS CDK will likely include breaking changes\. 
+This documentation is for the developer preview release \(public beta\) of the AWS Cloud Development Kit \(CDK\)\. Releases might lack important features and might have future breaking changes\.
 
 --------
 
 # AWS CDK Concepts<a name="concepts"></a>
 
-This topic describes some of the concepts \(the why and how\) behind the AWS CDK\. It also discusses the advantages of a AWS Construct Library over a low\-level CloudFormation Resource\.
+This topic describes some of the concepts \(the why and how\) behind the CDK\. It also discusses the advantages of the AWS Construct Library over a low\-level AWS CloudFormation Resource\.
 
-AWS CDK apps are represented as a hierarchal structure we call the *construct tree*\. Every node in the tree is a [Construct](https://awslabs.github.io/aws-cdk/refs/_aws-cdk_cdk.html#construct) object\. The root of an AWS CDK app is typically an [App](https://awslabs.github.io/aws-cdk/refs/_aws-cdk_cdk.html#app) construct\. Apps contain one or more [Stack](https://awslabs.github.io/aws-cdk/refs/_aws-cdk_cdk.html#@aws-cdk/cdk.Stack) constructs, which are deployable units of your app\.
-
-This composition of constructs gives you the flexibility to architect your app, such as having a stack deployed in multiple regions\. Stacks represent a collection of AWS resources, either directly or indirectly through a child construct that itself represents an AWS resource, such as an Amazon SQS queue, an Amazon SNS topic, a Lambda function, or a DynamoDB table\.
-
-This composition of constructs also means you can easily create sharable constructs, and make changes to any construct and have those changes available to consumers as shared class libraries\.
+CDK apps are composed of building blocks known as [Constructs](constructs.md), which are used to create [stacks](https://awslabs.github.io/aws-cdk/refs/_aws-cdk_cdk.html#@aws-cdk/cdk.Stack) and [apps](https://awslabs.github.io/aws-cdk/refs/_aws-cdk_cdk.html#app)\.
