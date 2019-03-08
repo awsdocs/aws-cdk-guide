@@ -13,7 +13,7 @@ To retrieve the latest value one time \(as a context value, see [Run\-Time Conte
 ```
 import cdk = require('@aws-cdk/cdk');
 
-const myvalue = new cdk.SSMParameterProvider(this).getString("my-parameter-name");
+const myvalue = new cdk.SSMParameterProvider(this, {parameterName: "my-parameter-name"}).parameterValue();
 ```
 
 To read a particular version of a Systems Manager Parameter Store plain string value at AWS CloudFormation deployment time, use [ssm\.ParameterStoreString](https://awslabs.github.io/aws-cdk/refs/_aws-cdk_aws-ssm.html/#parameterstorestring)\.
@@ -26,7 +26,7 @@ const parameterString = new ssm.ParameterStoreString(this, 'MyParameter', {
     version: 1,
 });
 
-const myvalue = parameterString.value;
+const myvalue = parameterString.stringValue;
 ```
 
 To read a particular version of a Systems Manager Parameter Store `SecureString` value at AWS CloudFormation deployment time, use [ssm\.ParameterStoreSecureString](https://awslabs.github.io/aws-cdk/refs/_aws-cdk_aws-ssm.html/#parameterstoresecurestring)
@@ -39,5 +39,5 @@ const secureString = new ssm.ParameterStoreSecureString(this, 'MySecretParameter
     version: 1,
 });
 
-const myvalue = secureString.value;
+const myvalue = secureString.stringValue;
 ```
