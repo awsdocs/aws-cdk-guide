@@ -193,7 +193,7 @@ import software.amazon.awscdk.services.s3.Bucket;
 import software.amazon.awscdk.services.s3.BucketProps;
 
 public class MyStack extends Stack {
-    public MyStack(final App scopy, final String id) {
+    public MyStack(final App scope, final String id) {
         this(scope, id, null);
     }
 
