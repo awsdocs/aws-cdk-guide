@@ -24,6 +24,14 @@ To specify the same context variable and value in the `cdk.json` file, use the f
 }
 ```
 
+To specify the same context variable and value in the `cdk.context.json` file, use the following code\.
+```
+{
+  "bucket_name": "myotherbucket"
+}
+```
+
+
 To get the value of a context variable in your app, use code like the following, which gets the value of the context variable **bucket\_name**\.
 
 ```
