@@ -6,23 +6,19 @@ This documentation is for the developer preview release \(public beta\) of the A
 
 # Get a Value from AWS Secrets Manager<a name="passing_secrets_manager"></a>
 
-To use values from AWS Secrets Manager in your CDK app, create an instance of [SecretsManager](https://awslabs.github.io/aws-cdk/refs/_aws-cdk_aws-secretsmanager.html/_aws-cdk_aws-secretsmanager.html#aws-cdk-aws-secretsmanager)\. It represents a value that is retrieved from Secrets Manager and used at AWS CloudFormation deployment time\.
+To use values from AWS Secrets Manager in your CDK app, use the [Secret](https://awslabs.github.io/aws-cdk/refs/_aws-cdk_aws-secretsmanager.html#secret) class's `import` method\. It represents a value that is retrieved from Secrets Manager and used at AWS CloudFormation deployment time\.
 
 ```
-import secretsmanager = require('@amp;aws-cdk/aws-secretsmanager');
+import sm = require("@aws-cdk/aws-secretsmanager");
 
-const loginSecret = new secretsmanager.SecretString(stack, 'Secret', {
-  secretId: 'MyLogin'
+export class SecretsManagerStack extends cdk.Stack {
+  constructor(scope: cdk.App, id: string, props?: cdk.StackProps) {
+    super(scope, id, props);
 
-  // By default, the latest version is retrieved. It's possible to
-  // use a specific version instead.
-  // versionStage: 'AWSCURRENT'
-});
-
-// Retrieve a value from the secret's JSON
-const username = loginSecret.jsonFieldValue('username');
-const password = loginSecret.jsonFieldValue('password');
-
-// Retrieve the whole secret's string value
-const fullValue = loginSecret.value;
+    const secret = sm.Secret.import(this, "ImportedSecret", {
+      secretArn:
+        "arn:aws:secretsmanager:<region>:<account-id-number>:secret:<secret-name>-<random-6-characters>"
+      // If the secret is encrypted using a KMS-hosted CMK, either import or reference that key:
+      // encryptionKey,
+    });
 ```

@@ -4,6 +4,6 @@ This documentation is for the developer preview release \(public beta\) of the A
 
 --------
 
-# Get External Values in a CDK Application<a name="how_to_get_ext_values"></a>
+# Tokens<a name="tokens"></a>
 
-The following sections contains short code examples that show you how to get external values in a CDK application\.
+Tokens represent instrinsic AWS CloudFormation values or values that not are known until deployment\.

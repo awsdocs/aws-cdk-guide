@@ -4,21 +4,202 @@ This documentation is for the developer preview release \(public beta\) of the A
 
 --------
 
-# Hello World Tutorial<a name="hello_world_tutorial"></a>
+# Getting Started With the AWS CDK<a name="getting_started"></a>
+
+This topic describes how to install and configure the AWS CDK and create your first CDK app\.
+
+## Prerequisites<a name="getting_started_prerequisites"></a>
+
+**CDK command line tools**  
++ [Node\.js \(>= 8\.11\.x\)](https://nodejs.org/en/download)
++ You must specify both your credentials and an AWS Region to use the CDK Toolkit;, as described in [Specifying Your Credentials](#getting_started_credentials)\.
+
+------
+#### [ TypeScript ]
+
+TypeScript >= 2\.7
+
+------
+#### [ JavaScript ]
+
+none
+
+------
+#### [ Java ]
++ Maven 3\.5\.4 and Java 8
++ Set the `JAVA_HOME` environment variable to the path to where you have installed the JDK on your machine
+
+------
+#### [ C\# ]
+
+\.NET standard 2\.0 compatible implementation:
++ \.NET Core >= 2\.0
++ \.NET Framework >= 4\.6\.1
++ Mono >= 5\.4
+
+------
+
+## Installing the CDK<a name="getting_started_install"></a>
+
+Install the CDK using the following command\.
+
+```
+npm install -g aws-cdk
+```
+
+Run the following command to see the version number of the CDK\.
+
+```
+cdk --version
+```
+
+## Installing the Core CDK Library for Your Language<a name="getting_started_install_core"></a>
+
+You must install the CDK core library to get the basic classes needed to create CDK stacks and apps\.
+
+------
+#### [ TypeScript ]
+
+```
+npm install @aws-cdk/cdk
+```
+
+------
+#### [ JavaScript ]
+
+```
+npm install @aws-cdk/cdk
+```
+
+------
+#### [ Java ]
+
+Add the following to your project’s pom\.xml file:
+
+```
+<dependencies>
+    <dependency>
+        <groupId>software.amazon.awscdk</groupId>
+        <artifactId>cdk</artifactId>
+        <version><!-- cdk-version --></version>
+    </dependency>
+</dependencies>
+```
+
+------
+#### [ C\# ]
+
+```
+dotnet add package Amazon.CDK
+```
+
+------
+
+## Updating Your Language Dependencies<a name="getting_started_update"></a>
+
+If you get an error message that your language framework is out of date, use one of the following commands to update the components that the CDK needs to support the lanuage\.
+
+------
+#### [ TypeScript ]
+
+```
+npx npm-check-updates -u
+```
+
+------
+#### [ JavaScript ]
+
+```
+npx npm-check-updates -u
+```
+
+------
+#### [ Java ]
+
+```
+mvn versions:use-latest-versions
+```
+
+------
+#### [ C\# ]
+
+```
+nuget update
+```
+
+------
+
+## Specifying Your Credentials<a name="getting_started_credentials"></a>
+
+You must specify your default credentials and AWS Region to use the CDK Toolkit\. You can do that in the following ways:
++ Using the AWS Command Line Interface \(AWS CLI\)\. This is the method we recommend\.
++ Using environment variables\.
++ Using the \-\-profile option to cdk commands\.
+
+### Using the AWS CLI to Specify Credentials<a name="getting_started_credentials_config"></a>
+
+Use the [AWS Command Line Interface](https://docs.aws.amazon.com/cli/latest/userguide) aws configure command to specify your default credentials and Region\.
+
+### Using Environment Variables to Specify Credentials<a name="getting_started_credentials_env_vars"></a>
+
+You can also set environment variables for your default credentials and Region\. Environment variables take precedence over settings in the credentials or config file\.
++ `AWS_ACCESS_KEY_ID` – Specifies your access key\.
++ `AWS_SECRET_ACCESS_KEY` – Specifies your secret access key\.
++ `AWS_DEFAULT_REGION` – Specifies your default Region\.
+
+For example, to set the default Region to `us-east-2` on Linux or macOS:
+
+```
+export AWS_DEFAULT_REGION=us-east-2
+```
+
+To do the same on Windows:
+
+```
+set AWS_DEFAULT_REGION=us-east-2
+```
+
+See [Environment Variables](https://docs.aws.amazon.com/cli/latest/userguide/cli-environment.html) in the *AWS Command Line Interface User Guide* for details\.
+
+### Using the \-\-profile Option to Specify Credentials<a name="getting_started_credentials_profile"></a>
+
+Use the \-\-profile *PROFILE* option to a cdk command to the alternative profile *PROFILE* when executing the command\.
+
+For example, if the `~/.aws/credentials` \(Linux or Mac\) or `%USERPROFILE%\.aws\credentials` \(Windows\) file contains the following profiles:
+
+```
+[default]
+aws_access_key_id=AKIAIOSFODNN7EXAMPLE
+aws_secret_access_key=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+        
+[test]
+aws_access_key_id=AKIAI44QH8DHBEXAMPLE
+aws_secret_access_key=je7MtGbClwBF/2Zp9Utk/h3yCo8nvbEXAMPLEKEY
+```
+
+You can deploy your app using the **test** profile with the following command\.
+
+```
+cdk deploy --profile test
+```
+
+See [Named Profiles](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html) in the AWS CLI documentation for details\.
+
+## Hello World Tutorial<a name="hello_world_tutorial"></a>
 
 The typical workflow for creating a new app is:
 
-1. Create a directory and navigate to it\.
+1. Create the app directory\.
 
-1. To create the skeleton of the app in the programming language *LANGUAGE*, call cdk init \-\-language *LANGUAGE*\.
+1. Initialize the app\.
 
-1. Add constructs \(and stacks, if appropriate\) to the skeleton code\.
+1. Add code to the app\.
 
-1. Compile your code, if necessary\.
+1. Compile the app, if necessary\.
 
-1. To deploy the resources you've defined, call cdk deploy\.
+1. To deploy the resources defined in the app\.
 
-1. Test your deployment\.
+1. Test the app\.
 
 1. If there are any issues, loop through modify, compile \(if necessary\), deploy, and test again\.
 
@@ -26,27 +207,50 @@ And of course, keep your code under version control\.
 
 This tutorial walks you through how to create and deploy a simple AWS CDK app, from initializing the project to deploying the resulting AWS CloudFormation template\. The app contains one resource, an Amazon S3 bucket\.
 
-## Step 1: Create the Project Directory<a name="hello_world_tutorial_create_directory"></a>
+### Creating the App Directory<a name="hello_world_tutorial_create_directory"></a>
 
-Create a directory for your project with an empty Git repository\.
+Create a directory for your app with an empty Git repository\.
 
 ```
 mkdir hello-cdk
 cd hello-cdk
 ```
 
-## Initializing the Project<a name="tutorial_init_project"></a>
+### Initializing the App<a name="tutorial_init_project"></a>
 
-Initialize an empty project, where *LANGUAGE* is one of the supported programming languages: **csharp** \(C\#\), **java** \(Java\), or **typescript** \(TypeScript\)\.
+Initialize an empty app, where *LANGUAGE* is one of the supported programming languages: **csharp** \(C\#\), **java** \(Java\), or **typescript** \(TypeScript\)\.
+
+------
+#### [ TypeScript ]
 
 ```
-cdk init --language LANGUAGE
+cdk init --language typescript
 ```
 
-**Note**  
-Remember that every CDK command has a help option\. For example, cdk init help lists the available languages for the \-\-language \(\-l\) option\.
+------
+#### [ JavaScript ]
 
-## Compiling the Project<a name="hello_world_tutorial_compile_project"></a>
+```
+cdk init --language javascript
+```
+
+------
+#### [ Java ]
+
+```
+cdk init --language java
+```
+
+------
+#### [ C\# ]
+
+```
+cdk init --language csharp
+```
+
+------
+
+### Compiling the App<a name="hello_world_tutorial_compile_project"></a>
 
 Compile your program, as follows\.
 
@@ -80,7 +284,7 @@ cdk
 
 ------
 
-## Listing the Stacks in the App<a name="hello_world_tutorial_list_stacks"></a>
+### Listing the Stacks in the App<a name="hello_world_tutorial_list_stacks"></a>
 
 List the stacks in the app\.
 
@@ -94,7 +298,7 @@ The result is just the name of the stack\.
 HelloCdkStack
 ```
 
-## Adding an Amazon S3 Bucket<a name="hello_world_tutorial_add_bucket"></a>
+### Adding an Amazon S3 Bucket<a name="hello_world_tutorial_add_bucket"></a>
 
 At this point, what can you do with this app? Nothing, because the stack is empty, so there's nothing to deploy\. Let's define an Amazon S3 bucket\.
 
@@ -235,7 +439,7 @@ namespace HelloCdk
 
 Notice a few things:
 + [Bucket](https://awslabs.github.io/aws-cdk/refs/_aws-cdk_aws-s3.html#@aws-cdk/aws-s3.Bucket) is a construct\. This means it's initialization signature has `scope`, `id`, and `props`\. In this case, the bucket is an immediate child of **MyStack**\.
-+ `MyFirstBucket` is the **id** of the bucket construct, not the physical name of the Amazon S3 bucket\. The logical ID is used to uniquely identify resources in your stack across deployments\. See [Logical IDs](logical_ids.md) for information about logical IDs\. To specify a physical name for your bucket, set the [bucketName](https://awslabs.github.io/aws-cdk/refs/_aws-cdk_aws-s3.html#@aws-cdk/aws-s3.BucketProps.bucketName) property when you define your bucket\.
++ `MyFirstBucket` is the **id** of the bucket construct, not the physical name of the Amazon S3 bucket\. The logical ID is used to uniquely identify resources in your stack across deployments\.  To specify a physical name for your bucket, set the [bucketName](https://awslabs.github.io/aws-cdk/refs/_aws-cdk_aws-s3.html#@aws-cdk/aws-s3.BucketProps.bucketName) property when you define your bucket\.
 + Because the bucket's [versioned](https://awslabs.github.io/aws-cdk/refs/_aws-cdk_aws-s3.html#@aws-cdk/aws-s3.versioned) property is `true`, [versioning](https://docs.aws.amazon.com/AmazonS3/latest/dev/Versioning.html) is enabled on the bucket\.
 
 Compile your program, as follows\.
@@ -270,9 +474,9 @@ cdk
 
 ------
 
-## Synthesizing an AWS CloudFormation Template<a name="hello_world_tutorial_synth_template"></a>
+### Synthesizing an AWS CloudFormation Template<a name="hello_world_tutorial_synth_template"></a>
 
-Synthesize an AWS CloudFormation template for the stack, as follows\.
+Synthesize an AWS CloudFormation template for the app, as follows\.
 
 ```
 cdk synth HelloCdkStack
@@ -304,19 +508,19 @@ Resources:
 You can see that the stack contains an `AWS::S3::Bucket` resource with the versioning configuration we want\.
 
 **Note**  
-The toolkit automatically added the **AWS::CDK::Metadata** resource to your template\. The CDK uses metadata to gain insight into how the CDK is used\. One possible benefit is that the CDK team could notify users if a construct is going to be deprecated\. For details, including how to [opt out](tools.md#version_reporting_opt_out) of version reporting, see [Version Reporting](tools.md#version_reporting) \.
+The toolkit automatically added the **AWS::CDK::Metadata** resource to your template\. The CDK uses metadata to gain insight into how the CDK is used\. One possible benefit is that the CDK team could notify users if a construct is going to be deprecated\. For details, including how to [opt out](cli.md#version_reporting_opt_out) of version reporting, see [Version Reporting](cli.md#version_reporting) \.
 
-## Deploying the Stack<a name="hello_world_tutorial_deploy_stack"></a>
+### Deploying the Stack<a name="hello_world_tutorial_deploy_stack"></a>
 
-Deploy the stack, as follows\.
+Deploy the app, as follows\.
 
 ```
 cdk deploy
 ```
 
-The deploy command synthesizes an AWS CloudFormation template from the stack, and then invokes the AWS CloudFormation create/update API to deploy it into your AWS account\. If your code includes changes to your existing infrastructure, the command displays information about those changes and requires you to confirm them before it deploys the changes\. The command displays information as it completes various steps in the process\. There is no mechanism to detect or react to any specific step in the process\.
+The deploy command synthesizes an AWS CloudFormation template from the app, and then invokes the AWS CloudFormation create/update API to deploy it into your AWS account\. If your code includes changes to your existing infrastructure, the command displays information about those changes and requires you to confirm them before it deploys the changes\. The command displays information as it completes various steps in the process\. There is no mechanism to detect or react to any specific step in the process\.
 
-## Modifying the Code<a name="hello_world_tutorial_modify_code"></a>
+### Modifying the App<a name="hello_world_tutorial_modify_code"></a>
 
 Configure the bucket to use AWS Key Management Service \(AWS KMS\) managed encryption\.
 
@@ -403,9 +607,9 @@ cdk
 
 ------
 
-## Preparing for Deployment<a name="hello_world_tutorial_prep_deployment"></a>
+### Preparing for Deployment<a name="hello_world_tutorial_prep_deployment"></a>
 
-Before you deploy the updated stack, evaluate the difference between the CDK app and the deployed stack\.
+Before you deploy the updated app, evaluate the difference between the CDK app and the deployed app\.
 
 ```
 cdk diff
@@ -444,9 +648,9 @@ Stack ARN:
 arn:aws:cloudformation:us-west-2:188580781645:stack/HelloCdkStack/96956990-feff-11e8-9284-50a68a0e3256
 ```
 
-## Destroying the Stack<a name="hello_world_tutorial_delete_stack"></a>
+### Destroying the App's Resources<a name="hello_world_tutorial_delete_stack"></a>
 
-Destroy the stack to avoid incurring any costs from the resources created in this tutorial, as follows\.
+Destroy the app's resources to avoid incurring any costs from the resources created in this tutorial, as follows\.
 
 ```
 cdk destroy

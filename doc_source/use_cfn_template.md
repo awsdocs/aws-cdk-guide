@@ -33,5 +33,5 @@ new cdk.Include(this, "ExistingInfrastructure", {
 Then to access an attribute of the resource, such as the bucket's ARN:
 
 ```
-const bucketArn = new cdk.Fn.getAtt("S3Bucket", "Arn");
+const bucketArn = cdk.Fn.getAtt("S3Bucket", "Arn");
 ```

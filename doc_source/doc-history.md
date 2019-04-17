@@ -4,12 +4,10 @@ This documentation is for the developer preview release \(public beta\) of the A
 
 --------
 
-# Document History for the AWS CDK User Guide<a name="doc-history"></a>
+# Document History for the AWS CDK Developer Guide<a name="doc-history"></a>
 
-The following table describes the documentation for this release of the AWS Cloud Development Kit \(CDK\) \(CDK\)\.
+This document is based on the following release of the AWS Cloud Development Kit \(CDK\) \(CDK\)\.
++ **API version: 0\.27\.0**
++ **Latest documentation update:** April 3, 2019
 
 See [Releases](https://github.com/awslabs/aws-cdk/releases) for a list of the CDK releases\.
-+ **API version: 0\.21\.0**
-+ **Latest documentation update:** December 27, 2018
-| Change | Description | Date | 
-| --- |--- |--- |

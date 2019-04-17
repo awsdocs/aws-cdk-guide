@@ -4,9 +4,9 @@ This documentation is for the developer preview release \(public beta\) of the A
 
 --------
 
-# Creating an AWS Fargate Service Using the AWS CDK<a name="ecs_tutorial"></a>
+# Creating an AWS Fargate Service Using the AWS CDK<a name="ecs_example"></a>
 
-This tutorial walks you through how to create an AWS Fargate service running on an Amazon Elastic Container Service \(Amazon ECS\) cluster that's fronted by an internet\-facing Application Load Balancer from an image on DockerHub\.
+This example walks you through how to create an AWS Fargate service running on an Amazon Elastic Container Service \(Amazon ECS\) cluster that's fronted by an internet\-facing Application Load Balancer from an image on Amazon ECR\.
 
 Amazon ECS is a highly scalable, fast, container management service that makes it easy to run, stop, and manage Docker containers on a cluster\. You can host your cluster on a serverless infrastructure that's managed by Amazon ECS by launching your services or tasks using the Fargate launch type\. For more control, you can host your tasks on a cluster of Amazon Elastic Compute Cloud \(Amazon EC2\) instances that you manage by using the Amazon EC2 launch type\.
 
@@ -15,7 +15,7 @@ This tutorial shows you how to launch some services using the Fargate launch typ
 + [Setting Up with Amazon ECS](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/get-set-up-for-amazon-ecs.html)
 + [Getting Started with Amazon ECS Using Fargate](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_GetStarted.html)
 
-This tutorial creates a similar Fargate service in CDK code\.
+This example creates a similar Fargate service in CDK code\.
 
 The Amazon ECS construct used in this tutorial helps you use AWS services by providing the following benefits:
 + Automatically configures a load balancer\.
@@ -33,7 +33,7 @@ The Amazon ECS construct used in this tutorial helps you use AWS services by pro
 
 See the [Amazon ECS Construct Library](https://awslabs.github.io/aws-cdk/refs/_aws-cdk_aws-ecs.html#aws-elastic-container-service-ecs-construct-library) reference for details\.
 
-## Creating the Directory and Initializing the CDK<a name="ecs_tutorial_initialize"></a>
+## Creating the Directory and Initializing the CDK<a name="ecs_example_initialize"></a>
 
 Let's start by creating a directory to hold the CDK code, and then creating a CDK app in that directory\.
 
@@ -60,7 +60,7 @@ Resources:
       Modules: @aws-cdk/cdk=CDK-VERSION,@aws-cdk/cx-api=CDK-VERSION,my_ecs_construct=0.1.0
 ```
 
-## Add the Amazon EC2 and Amazon ECS Packages<a name="ecs_tutorial_add_packages"></a>
+## Add the Amazon EC2 and Amazon ECS Packages<a name="ecs_example_add_packages"></a>
 
 Install support for Amazon EC2 and Amazon ECS\.
 
@@ -68,7 +68,7 @@ Install support for Amazon EC2 and Amazon ECS\.
 npm install @aws-cdk/aws-ec2 @aws-cdk/aws-ecs
 ```
 
-## Create a Fargate Service<a name="ecs_tutorial_create_fargate_service"></a>
+## Create a Fargate Service<a name="ecs_example_create_fargate_service"></a>
 
 There are two different ways to run your container tasks with Amazon ECS:
 + Use the `Fargate` launch type, where Amazon ECS manages the physical machines that your containers are running on for you\.
@@ -99,7 +99,7 @@ Replace the comment at the end of the constructor with the following code\.
       cluster: cluster,  // Required
       cpu: '512', // Default is 256
       desiredCount: 6,  // Default is 1
-      image: ecs.ContainerImage.fromDockerHub('amazon/amazon-ecs-sample'), // Required
+      image: ecs.ContainerImage.fromRegistry("amazon/amazon-ecs-sample"), // Required
       memoryMiB: '2048',  // Default is 512
       publicLoadBalancer: true  // Default is false
     });
@@ -123,10 +123,3 @@ cdk deploy
 AWS CloudFormation displays information about the dozens of steps that it takes as it deploys your app\.
 
 That's how easy it is to create a Fargate service to run a Docker image\.
-
-## What Next?<a name="advanced_tutorial_what_next"></a>
-+ Learn more about [AWS CDK Concepts](concepts.md)
-+ Check out the [examples directory](https://github.com/awslabs/aws-cdk/tree/master/examples) in your GitHub repository
-+ Learn about the rich APIs offered by the [AWS Construct Library](aws_construct_lib.md)
-+ Work directly with CloudFormation using the [AWS CloudFormation Library](cloudformation.md)
-+ Come talk to us on [Gitter](https://gitter.im/awslabs/aws-cdk)

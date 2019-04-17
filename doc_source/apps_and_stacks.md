@@ -6,9 +6,9 @@ This documentation is for the developer preview release \(public beta\) of the A
 
 # Apps and Stacks<a name="apps_and_stacks"></a>
 
-The main artifact of a CDK program known as a *CDK app*\. This is an executable program that you can use to synthesize deployment artifacts that supporting tools, such as the CDK Toolkit, can deploy, as described in [AWS CDK Command Line Toolkit \(cdk\)](tools.md)\.
+The main artifact of a CDK program known as a *CDK app*\. This is an executable program that you can use to synthesize deployment artifacts that supporting tools, such as the CDK Toolkit, can deploy, as described in [AWS CDK Command Line Interface \(cdk\)](cli.md)\.
 
-Stacks are CDK constructs that you can deploy into an AWS environment\. The combination of AWS Region and account becomes the stack's *environment*, as described in [Environments and Authentication](environments_and_context.md#environments)\. Most production apps consist of multiple stacks of resources that are deployed as a single transaction using a resource provisioning service such as AWS CloudFormation\. Any resources added directly or indirectly as children of a stack are included in the stack's template when it is synthesized by your CDK program\.
+Stacks are CDK constructs that you can deploy into an AWS environment\. The combination of AWS Region and account becomes the stack's *environment*\. Most production apps consist of multiple stacks of resources that are deployed as a single transaction using a resource provisioning service such as AWS CloudFormation\. Any resources added directly or indirectly as children of a stack are included in the stack's template when it is synthesized by your CDK program\.
 
 ## Apps<a name="apps"></a>
 
@@ -87,5 +87,3 @@ const app = new App();
 new MyStack(app, 'NorthAmerica', { env: { region: 'us-east-1' } });
 new MyStack(app, 'Europe', { env: { region: 'us-west-2' } });
 ```
-
-See [Stack How\-Tos](stack_how_to.md) for additional information about using stacks\.

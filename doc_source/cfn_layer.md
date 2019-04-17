@@ -4,7 +4,7 @@ This documentation is for the developer preview release \(public beta\) of the A
 
 --------
 
-# Accessing the AWS CloudFormation Layer<a name="cfn_layer"></a>
+# Work Around Missing AWS CDK Features<a name="cfn_layer"></a>
 
 This topic describes how to modify the underlying AWS CloudFormation resources in the AWS Construct Library\. We also call this technique an "escape hatch" because it allows users to "escape" from the abstraction boundary defined by the AWS construct, and patch the underlying resources\.
 
@@ -29,7 +29,7 @@ You can also find more information about how to work directly with the AWS Cloud
 
 ## Accessing Low\-Level Resources<a name="cfn_layer_low_level"></a>
 
-Use [construct\.findChild\(\)](@cdk-class-url;#@aws-cdk/cdk.Construct.findChild) to access any child of a construct by its construct ID\. By convention, the main resource of any AWS construct is named **Resource**\.
+Use [construct\.findChild\(\)](https://awslabs.github.io/aws-cdk/refs/_aws-cdk_cdk.html#@aws-cdk/cdk.Construct.findChild) to access any child of a construct by its construct ID\. By convention, the main resource of any AWS construct is named **Resource**\.
 
 The following example shows how to access the underlying Amazon Simple Storage Service \(Amazon S3\) bucket resource, given a [Bucket](https://awslabs.github.io/aws-cdk/refs/_aws-cdk_aws-s3.html#bucket) construct\.
 
@@ -46,7 +46,7 @@ The `bucketResource` represents the low\-level AWS CloudFormation resource of ty
 
 If the child can't be located, [construct\.findChildren\(id\)](https://awslabs.github.io/aws-cdk/refs/_aws-cdk_aws-s3.html#@aws-cdk/cdk.Construct.findChild) fails\. This means that if the underlying AWS Construct Library changes the IDs or structure for some reason, synthesis fails\.
 
-You can also use[construct\.children](https://awslabs.github.io/aws-cdk/refs/_aws-cdk_aws-s3.html#@aws-cdk/cdk.Construct.children) for more advanced queries\. For example, you can look for a child that has a certain AWS CloudFormation resource type\.
+You can also use [construct\.children](https://awslabs.github.io/aws-cdk/refs/_aws-cdk_aws-s3.html#@aws-cdk/cdk.Construct.children) for more advanced queries\. For example, you can look for a child that has a certain AWS CloudFormation resource type\.
 
 ```
 const bucketResource =
@@ -54,11 +54,11 @@ const bucketResource =
       as s3.CfnBucket;
 ```
 
-Once you have a AWS CloudFormation resource, you are interacting with AWS CloudFormation resource classes, which extend [cdk\.Resource](@cdk-class-url;#@aws-cdk/cdk.Resource)\.
+Once you have a AWS CloudFormation resource, you are interacting with AWS CloudFormation resource classes, which extend [cdk\.CfnResource](https://awslabs.github.io/aws-cdk/refs/_aws-cdk_cdk.html#@aws-cdk/cdk.CfnResource)\.
 
 ## Resource Options<a name="cfn_layer_resources"></a>
 
-Set resource options using [cdk\.Resource](@cdk-class-url;#@aws-cdk/cdk.Resource) properties such as *Metadata* and *DependsOn*\.
+Set resource options using [cdk\.CfnResource](https://awslabs.github.io/aws-cdk/refs/_aws-cdk_cdk.html#@aws-cdk/cdk.CfnResource) properties such as *Metadata* and *DependsOn*\.
 
 For example, the following code:
 
@@ -101,25 +101,23 @@ Use this mechanism when a certain feature is available at the AWS CloudFormation
 The following example sets a bucket's analytics configuration\.
 
 ```
-bucketResource.propertyOverrides.analyticsConfigurations = [
-    {
-        id: 'config1',
-        storageClassAnalysis: {
-            dataExport: {
-                outputSchemaVersion: '1',
-                destination: {
-                    format: 'html',
-                    bucketArn: otherBucket.bucketArn // use tokens freely
-                }
-            }
+    bucketResource.addPropertyOverride("AnalyticsConfigurations", {
+      Id: "config1",
+      StorageClassAnalysis: {
+        dataExport: {
+          OutputSchemaVersion: "1",
+          Destination: {
+            Format: "html",
+            BucketArn: "arn:aws:s3:::" + bucketName // use tokens freely
+          }
         }
-    }
-];
+      }
+    });
 ```
 
 ## Raw Overrides<a name="cfn_layer_raw_overrides"></a>
 
-If the strongly typed overrides aren't sufficient or, for example, if the schema defined in AWS CloudFormation is not up to date, use the [cdk\.Resource\.addOverride\(path, value\)](@cdk-class-url;#@aws-cdk/cdk.Resource.addOverride) method to define an override that is applied to the resource definition during synthesis\. This is shown in the following example\.
+If the strongly typed overrides aren't sufficient or, for example, if the schema defined in AWS CloudFormation is not up to date, use the [cdk\.CfnResource\.addOverride\(path, value\)](https://awslabs.github.io/aws-cdk/refs/_aws-cdk_cdk.html#@aws-cdk/cdk.CfnResource.addOverride) method to define an override that is applied to the resource definition during synthesis\. This is shown in the following example\.
 
 ```
 // Define an override at the resource definition root, you can even modify the "Type"
@@ -159,7 +157,7 @@ This synthesizes to the following\.
 }
 ```
 
-Use `undefined`, [cdk\.Resource\.addDeletionOverride](@cdk-class-url;#@aws-cdk/cdk.Resource.addDeletionOverride), or [cdk\.Resource\.addPropertyDeletionOverride](@cdk-class-url;#@aws-cdk/cdk.Resource.addPropertyDeletionOverride) to delete values\.
+Use `undefined`, [cdk\.CfnResource\.addDeletionOverride](https://awslabs.github.io/aws-cdk/refs/_aws-cdk_cdk.html#@aws-cdk/cdk.CfnResource.addDeletionOverride), or [cdk\.CfnResource\.addPropertyDeletionOverride](https://awslabs.github.io/aws-cdk/refs/_aws-cdk_cdk.html#@aws-cdk/cdk.CfnResource.addPropertyDeletionOverride) to delete values\.
 
 ```
 const bucket = new s3.Bucket(this, 'MyBucket', {
@@ -206,7 +204,7 @@ new s3.CfnBucket(this, 'MyBucket', {
 });
 ```
 
-In the rare case where you want to define a resource that doesn't have a corresponding `CfnXxx` class \(such as a new resource that wasn't published yet in the AWS CloudFormation resource specification\), you can instantiate the [cdk\.Resource](@cdk-class-url;#@aws-cdk/cdk.Resource)\.
+In the rare case where you want to define a resource that doesn't have a corresponding `CfnXxx` class \(such as a new resource that wasn't published yet in the AWS CloudFormation resource specification\), you can instantiate the [cdk\.CfnResource](https://awslabs.github.io/aws-cdk/refs/_aws-cdk_cdk.html#@aws-cdk/cdk.CfnResource)\.
 
 ```
 new cdk.Resource(this, 'MyBucket', {

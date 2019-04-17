@@ -4,9 +4,9 @@ This documentation is for the developer preview release \(public beta\) of the A
 
 --------
 
-# Creating a Serverless Application Using the AWS CDK<a name="serverless_tutorial"></a>
+# Creating a Serverless Application Using the AWS CDK<a name="serverless_example"></a>
 
-This tutorial walks you through how to create the resources for a simple widget dispensing service\. It includes:
+This example walks you through how to create the resources for a simple widget dispensing service\. It includes:
 + An AWS Lambda function\.
 + An Amazon API Gateway API to call the Lambda function\.
 + An Amazon S3 bucket that contains the Lambda function code\.
@@ -28,7 +28,7 @@ This tutorial contains the following steps\.
    + Get a widget by name with GET /\{name\}
    + Delete a widget by name with DELETE /\{name\}
 
-## Create a CDK App<a name="serverless_tutorial_create_app"></a>
+## Create a CDK App<a name="serverless_example_create_app"></a>
 
 Create the TypeScript app **MyWidgetService** in the current folder\.
 
@@ -57,7 +57,7 @@ Resources:
       Modules: "@aws-cdk/cdk=CDK-VERSION,@aws-cdk/cx-api=CDK-VERSION,my_widget_service=0.1.0"
 ```
 
-## Create a Lambda Function to List All Widgets<a name="serverless_tutorial_create_iam_function"></a>
+## Create a Lambda Function to List All Widgets<a name="serverless_example_create_iam_function"></a>
 
 The next step is to create a Lambda function to list all of the widgets in our Amazon S3 bucket\.
 
@@ -117,7 +117,7 @@ npm run build
 cdk synth
 ```
 
-## Creating a Widget Service<a name="serverless_tutorial_create_widget_service"></a>
+## Creating a Widget Service<a name="serverless_example_create_widget_service"></a>
 
 Add the API Gateway, Lambda, and Amazon S3 packages to the app\.
 
@@ -128,40 +128,40 @@ npm install @aws-cdk/aws-apigateway @aws-cdk/aws-lambda @aws-cdk/aws-s3
 Create the TypeScript file `widget_service.ts` in the `lib` directory\.
 
 ```
-import cdk = require('@aws-cdk/cdk');
-import apigateway = require('@aws-cdk/aws-apigateway');
-import lambda = require('@aws-cdk/aws-lambda');
-import s3 = require('@aws-cdk/aws-s3');
+import cdk = require("@aws-cdk/cdk");
+import apigateway = require("@aws-cdk/aws-apigateway");
+import lambda = require("@aws-cdk/aws-lambda");
+import s3 = require("@aws-cdk/aws-s3");
 
 export class WidgetService extends cdk.Construct {
   constructor(scope: cdk.Construct, id: string) {
     super(scope, id);
 
-    const bucket = new s3.Bucket(this, 'WidgetStore');
+    const bucket = new s3.Bucket(this, "WidgetStore");
 
-    const handler = new lambda.Function(this, 'WidgetHandler', {
-      runtime: lambda.Runtime.NodeJS810,  // So we can use async in widget.js
-      code: lambda.Code.directory('resources'),
-      handler: 'widgets.main',
+    const handler = new lambda.Function(this, "WidgetHandler", {
+      runtime: lambda.Runtime.NodeJS810, // So we can use async in widget.js
+      code: lambda.Code.directory("resources"),
+      handler: "widgets.main",
       environment: {
         BUCKET: bucket.bucketName
       }
     });
 
-    bucket.grantReadWrite(handler.role);
+    bucket.grantReadWrite(handler); // was: handler.role);
 
-    const api = new apigateway.RestApi(this, 'widgets-api', {
-      restApiName: 'Widget Service',
-      description: 'This service serves widgets.'
+    const api = new apigateway.RestApi(this, "widgets-api", {
+      restApiName: "Widget Service",
+      description: "This service serves widgets."
     });
 
     const getWidgetsIntegration = new apigateway.LambdaIntegration(handler, {
-      requestTemplates:  { "application/json": '{ "statusCode": "200" }' }
+      requestTemplates: { "application/json": '{ "statusCode": "200" }' }
     });
 
-    api.root.addMethod('GET', getWidgetsIntegration);   // GET /
+    api.root.addMethod("GET", getWidgetsIntegration); // GET /
 
-    const widget = api.root.addResource('{id}');
+    const widget = api.root.addResource("{id}");
 
     // Add new widget to bucket with: POST /{id}
     const postWidgetIntegration = new apigateway.LambdaIntegration(handler);
@@ -172,9 +172,9 @@ export class WidgetService extends cdk.Construct {
     // Remove a specific widget from the bucket with: DELETE /{id}
     const deleteWidgetIntegration = new apigateway.LambdaIntegration(handler);
 
-    widget.addMethod('POST', postWidgetIntegration);    // POST /{id}
-    widget.addMethod('GET', getWidgetIntegration);       // GET /{id}
-    widget.addMethod('DELETE', deleteWidgetIntegration); // DELETE /{id}
+    widget.addMethod("POST", postWidgetIntegration); // POST /{id}
+    widget.addMethod("GET", getWidgetIntegration); // GET /{id}
+    widget.addMethod("DELETE", deleteWidgetIntegration); // DELETE /{id}
   }
 }
 ```
@@ -186,7 +186,7 @@ npm run build
 cdk synth
 ```
 
-## Add the Service to the App<a name="serverless_tutorial_add_service"></a>
+## Add the Service to the App<a name="serverless_example_add_service"></a>
 
 To add the service to the app, first modify `my_widget_service-stack.ts`\. Add the following line of code after the existing `import` statement\.
 
@@ -207,9 +207,9 @@ npm run build
 cdk synth
 ```
 
-## Deploy and Test the App<a name="serverless_tutorial_deploy_and_test"></a>
+## Deploy and Test the App<a name="serverless_example_deploy_and_test"></a>
 
-Before you can deploy your first CDK app, you must bootstrap your deployment\. This creates some AWS infrastructure that the CDK needs\. For details, see the **bootstrap** section of the [AWS CDK Command Line Toolkit \(cdk\)](tools.md)\(if you've already bootstrapped a CDK app, you'll get a warning and nothing will change\)\.
+Before you can deploy your first CDK app, you must bootstrap your deployment\. This creates some AWS infrastructure that the CDK needs\. For details, see the **bootstrap** section of the [CDK Toolchain](tools.md)\(if you've already bootstrapped a CDK app, you'll get a warning and nothing will change\)\.
 
 ```
 cdk bootstrap
@@ -249,7 +249,7 @@ Because we haven't stored any widgets yet, the output should be similar to the f
 { "widgets": [] }
 ```
 
-## Add the Individual Widget Functions<a name="serverless_tutorial_add_widget_functions"></a>
+## Add the Individual Widget Functions<a name="serverless_example_add_widget_functions"></a>
 
 The next step is to create Lambda functions to create, show, and delete individual widgets\. 
 

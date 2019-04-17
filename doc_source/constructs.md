@@ -86,7 +86,7 @@ new s3.Bucket(this, 'MyBucket', {
 
 We recommend that you avoid specifying physical names\. Instead, let AWS CloudFormation generate names for you\. Use attributes, such as `bucket.bucketName`, to discover the generated names\.
 
-When you synthesize a CDK app into an AWS CloudFormation template, the AWS CloudFormation logical ID for each resource in the template is allocated according to the path of that resource in the scope hierarchy\. For more information, see [Logical IDs](logical_ids.md)\.
+When you synthesize a CDK app into an AWS CloudFormation template, the AWS CloudFormation logical ID for each resource in the template is allocated according to the path of that resource in the scope hierarchy\. 
 
 ## Construct Properties<a name="constructs_properties"></a>
 
