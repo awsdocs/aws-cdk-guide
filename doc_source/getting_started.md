@@ -97,7 +97,7 @@ dotnet add package Amazon.CDK
 
 ## Updating Your Language Dependencies<a name="getting_started_update"></a>
 
-If you get an error message that your language framework is out of date, use one of the following commands to update the components that the CDK needs to support the lanuage\.
+If you get an error message that your language framework is out of date, use one of the following commands to update the components that the CDK needs to support the language\.
 
 ------
 #### [ TypeScript ]
