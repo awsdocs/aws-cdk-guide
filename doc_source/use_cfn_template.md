@@ -22,7 +22,7 @@ The CDK provides a mechanism that you can use to incorporate resources from an e
 You can include this bucket in your CDK app, as shown in the following example \(note that you cannot use this method in an AWS Construct Library construct\):
 
 ```
-import cdk = require("@amp;aws-cdk/cdk");
+import cdk = require("@aws-cdk/cdk");
 import fs = require("fs");
 
 new cdk.Include(this, "ExistingInfrastructure", {
