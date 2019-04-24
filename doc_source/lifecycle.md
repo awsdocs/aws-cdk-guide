@@ -8,7 +8,7 @@ This documentation is for the developer preview release \(public beta\) of the A
 
 The following illustration shows the phases that the CDK goes through when you call cdk deploy to create the resources defined by your application\.
 
-![\[Image NOT FOUND\]](http://docs.aws.amazon.com/CDK/latest/userguide/images/Lifecycle.png)
+![\[Image NOT FOUND\]](http://docs.aws.amazon.com/CDK/latest/guide/images/Lifecycle.png)
 
 There are three actors at play to create the resources that your CDK application defines\.
 + Your CDK app\.

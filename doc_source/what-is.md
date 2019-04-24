@@ -18,7 +18,7 @@ Use the CDK to define your cloud resources using one of the supported programmin
 
 Developers can use one of the supported programming languages to define reusable cloud components known as [Constructs](constructs.md)\. You compose these together into [Stacks](apps_and_stacks.md#stacks) and [Apps](apps_and_stacks.md#apps)\.
 
-![\[Image NOT FOUND\]](http://docs.aws.amazon.com/CDK/latest/userguide/images/AppStacks.png)
+![\[Image NOT FOUND\]](http://docs.aws.amazon.com/CDK/latest/guide/images/AppStacks.png)
 
 ## Why Use the CDK?<a name="why_use_cdk"></a>
 
@@ -86,7 +86,7 @@ Resources:
 
 Another advantage of IAC \(infrastructure as code\) is that you get code completion within your IDE:
 
-![\[Image NOT FOUND\]](http://docs.aws.amazon.com/CDK/latest/userguide/images/CodeCompletion.png)
+![\[Image NOT FOUND\]](http://docs.aws.amazon.com/CDK/latest/guide/images/CodeCompletion.png)
 
 ## Developing With the CDK<a name="developing"></a>
 

@@ -22,3 +22,11 @@ export class SecretsManagerStack extends cdk.Stack {
       // encryptionKey,
     });
 ```
+
+Use the [create\-secret](https://docs.aws.amazon.com/cli/latest/reference/secretsmanager/create-secret.html) CLI command to create a secret from the command\-line, such as when testing:
+
+```
+aws secretsmanager create-secret --name ImportedSecret --secret-string mygroovybucket
+```
+
+The command returns an ARN you can use for the example\.

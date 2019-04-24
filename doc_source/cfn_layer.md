@@ -92,32 +92,9 @@ Synthesizes into the following template\.
 }
 ```
 
-## Overriding Resource Properties<a name="cfn_layer_resource_props"></a>
-
-Each low\-level resource in the CDK has a strongly typed property named `propertyOverrides`\. It enables users to apply overrides that adhere to the AWS CloudFormation schema of the resource, and use code completion and type checking\.
-
-Use this mechanism when a certain feature is available at the AWS CloudFormation layer but isn't exposed by the AWS construct\.
-
-The following example sets a bucket's analytics configuration\.
-
-```
-    bucketResource.addPropertyOverride("AnalyticsConfigurations", {
-      Id: "config1",
-      StorageClassAnalysis: {
-        dataExport: {
-          OutputSchemaVersion: "1",
-          Destination: {
-            Format: "html",
-            BucketArn: "arn:aws:s3:::" + bucketName // use tokens freely
-          }
-        }
-      }
-    });
-```
-
 ## Raw Overrides<a name="cfn_layer_raw_overrides"></a>
 
-If the strongly typed overrides aren't sufficient or, for example, if the schema defined in AWS CloudFormation is not up to date, use the [cdk\.CfnResource\.addOverride\(path, value\)](https://awslabs.github.io/aws-cdk/refs/_aws-cdk_cdk.html#@aws-cdk/cdk.CfnResource.addOverride) method to define an override that is applied to the resource definition during synthesis\. This is shown in the following example\.
+ Use the [cdk\.CfnResource\.addOverride\(path, value\)](https://awslabs.github.io/aws-cdk/refs/_aws-cdk_cdk.html#@aws-cdk/cdk.CfnResource.addOverride) method to define an override that is applied to the resource definition during synthesis, as shown in the following example\.
 
 ```
 // Define an override at the resource definition root, you can even modify the "Type"

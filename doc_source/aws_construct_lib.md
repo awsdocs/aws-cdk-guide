@@ -20,11 +20,23 @@ Minor releases, such as 2\.4, guarantee that any code written in a previous mino
 
 The AWS Construct Library includes many common patterns and capabilities that are designed to enable developers to focus on their application\-specific architectures and reduce the boilerplate and glue logic needed when working with AWS services\.
 
+### Roles<a name="aws_construct_lib_roles"></a>
+
+Roles \.\.\.
+
 ### Grants<a name="aws_construct_lib_grants"></a>
 
 AWS Identity and Access Management \(IAM\) policies are automatically defined based on intent\. For example, when subscribing an Amazon Simple Notification Service \(Amazon SNS\) [Topic](https://awslabs.github.io/aws-cdk/refs/_aws-cdk_aws-sns.html#@aws-cdk/aws-sns.Topic) to an AWS Lambda [Function](https://awslabs.github.io/aws-cdk/refs/_aws-cdk_aws-lambda.html#@aws-cdk/aws-lambda.Function), the function's IAM permission policy is automatically modified to allow the specific topic to invoke the function\.
 
 Also, most AWS constructs expose `grant*` methods that allow intent\-based permission definitions\. For example, the Amazon S3 [Bucket](https://awslabs.github.io/aws-cdk/refs/_aws-cdk_aws-s3.html#bucket) construct has a [grantRead\(principal\)](https://awslabs.github.io/aws-cdk/refs/_aws-cdk_aws-s3.html#@aws-cdk/aws-s3.BucketRef.grantRead) method\. This method accepts an IAM [Principal](https://awslabs.github.io/aws-cdk/refs/_aws-cdk_aws-iam.html#iprincipal-interface) such as a [User](https://awslabs.github.io/aws-cdk/refs/_aws-cdk_aws-iam.html#user) or a [Role](https://awslabs.github.io/aws-cdk/refs/_aws-cdk_aws-iam.html#role), which modifies the policy to allow the principal to read objects from the bucket\.
+
+### Resource Policies<a name="aws_construct_lib_resource_policies"></a>
+
+Resource policies \.\.\.
+
+### Principals<a name="aws_construct_lib_principals"></a>
+
+Principals \.\.\.
 
 ## Metrics<a name="aws_construct_lib_metrics"></a>
 
@@ -173,6 +185,10 @@ new MyCdkStack(app, "MyCdkStack", {
 
 app.run();
 ```
+
+## Get a Value from Another App<a name="get_app_value"></a>
+
+You can get a value from a stack in another app by ???
 
 ## Security Groups<a name="aws_construct_lib_security_groups"></a>
 
