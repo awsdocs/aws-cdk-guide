@@ -14,11 +14,11 @@ AWS CloudFormation enables you to:
 + Build highly reliable, highly scalable, cost\-effective applications in the cloud without worrying about creating and configuring the underlying AWS infrastructure\.
 + Use a template file to create and delete a collection of resources together as a single unit \(a stack\)\.
 
-Use the CDK to define your cloud resources using one of the supported programming languages: C\#/\.NET, Java, JavaScript, or TypeScript\. This document does not supply reference information for the CDK\. You can find that information in the [CDK Reference](https://awslabs.github.io/aws-cdk/)\.
+Use the CDK to define your cloud resources using one of the supported programming languages: C\#/\.NET, Java, JavaScript, Python, or TypeScript\. This document does not supply reference information for the CDK\. You can find that information in the [CDK Reference](https://awslabs.github.io/aws-cdk/)\.
 
 Developers can use one of the supported programming languages to define reusable cloud components known as [Constructs](constructs.md)\. You compose these together into [Stacks](apps_and_stacks.md#stacks) and [Apps](apps_and_stacks.md#apps)\.
 
-![\[Image NOT FOUND\]](http://docs.aws.amazon.com/CDK/latest/guide/images/AppStacks.png)
+![\[Image NOT FOUND\]](http://docs.aws.amazon.com/cdk/latest/guide/images/AppStacks.png)
 
 ## Why Use the CDK?<a name="why_use_cdk"></a>
 
@@ -86,7 +86,7 @@ Resources:
 
 Another advantage of IAC \(infrastructure as code\) is that you get code completion within your IDE:
 
-![\[Image NOT FOUND\]](http://docs.aws.amazon.com/CDK/latest/guide/images/CodeCompletion.png)
+![\[Image NOT FOUND\]](http://docs.aws.amazon.com/cdk/latest/guide/images/CodeCompletion.png)
 
 ## Developing With the CDK<a name="developing"></a>
 

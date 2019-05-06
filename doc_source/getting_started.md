@@ -38,6 +38,10 @@ none
 + Mono >= 5\.4
 
 ------
+#### [ Python ]
++ Python >= 3\.7\.1
+
+------
 
 ## Installing the CDK<a name="getting_started_install"></a>
 
@@ -94,6 +98,16 @@ dotnet add package Amazon.CDK
 ```
 
 ------
+#### [ Python ]
+
+```
+pip install aws-cdk.cdk
+```
+
+**Note**  
+If you have both Python 2\.7 and 3\.7 installed, you might have to pip3 instead of pip\.
+
+------
 
 ## Updating Your Language Dependencies<a name="getting_started_update"></a>
 
@@ -126,6 +140,15 @@ mvn versions:use-latest-versions
 ```
 nuget update
 ```
+
+------
+#### [ Python ]
+
+```
+pip install --upgrade aws-cdk.cdk
+```
+
+You might have to call this multiple times to update all dependencies\.
 
 ------
 
@@ -249,6 +272,40 @@ cdk init --language csharp
 ```
 
 ------
+#### [ Python ]
+
+```
+cdk init --language python
+```
+
+Once the init command finishes, your prompt should show **\(\.env\)**, indicating you are running under virtualenv\. If not, you must perform one or two more tasks, depending upon your operating system\.
+
+On Linux/MacOS:
+
+```
+python3 -m venv .env
+source .env/bin/activate
+```
+
+On Windows:
+
+```
+.env\Scripts\activate.bat
+```
+
+Once you've got your virtualenv running, run the following command to install the required dependencies\.
+
+```
+pip install -r requirements.txt
+```
+
+Change the instantiation of **HelloCdkStack** in `app.py` to the following\.
+
+```
+HelloCdkStack(app, "HelloCdkStack")
+```
+
+------
 
 ### Compiling the App<a name="hello_world_tutorial_compile_project"></a>
 
@@ -281,6 +338,11 @@ Because we configured `cdk.json` to run dotnet run, which restores dependencies,
 ```
 cdk
 ```
+
+------
+#### [ Python ]
+
+Nothing to compile\.
 
 ------
 
@@ -337,6 +399,15 @@ Add the following to `pom.xml`, where *CDK\-VERSION* is the version of the CDK\.
 ```
 dotnet add package Amazon.CDK.AWS.S3
 ```
+
+------
+#### [ Python ]
+
+```
+pip install aws-cdk.aws-s3
+```
+
+You might have to execute this command multiple times to resolve dependencies\.
 
 ------
 
@@ -436,6 +507,26 @@ namespace HelloCdk
 ```
 
 ------
+#### [ Python ]
+
+Replace the import statement in `hello_cdk_stack.py` in the `hello_cdk` directory with the following code\.
+
+```
+from aws_cdk import (
+    aws_s3 as s3,
+    cdk
+)
+```
+
+Replace the comment with the following code\.
+
+```
+bucket = s3.Bucket(self, 
+    "MyFirstBucket", 
+    versioned=True,)
+```
+
+------
 
 Notice a few things:
 + [Bucket](https://awslabs.github.io/aws-cdk/refs/_aws-cdk_aws-s3.html#@aws-cdk/aws-s3.Bucket) is a construct\. This means it's initialization signature has `scope`, `id`, and `props`\. In this case, the bucket is an immediate child of **MyStack**\.
@@ -473,17 +564,19 @@ cdk
 ```
 
 ------
+#### [ Python ]
+
+Nothing to compile\.
+
+------
 
 ### Synthesizing an AWS CloudFormation Template<a name="hello_world_tutorial_synth_template"></a>
 
-Synthesize an AWS CloudFormation template for the app, as follows\.
+Synthesize an AWS CloudFormation template for the app, as follows\. If you get an error like "\-\-app is required\.\.\.", it's because you are running the command from within the `hello_cdk` sub\-directory\. Navigate to the parent directory and try again\.
 
 ```
-cdk synth HelloCdkStack
+cdk synth
 ```
-
-**Note**  
-Because the CDK app contains only a single stack, you can omit `HelloCdkStack`\.
 
 This command executes the CDK app and synthesizes an AWS CloudFormation template for the `HelloCdkStack` stack\. You should see something similar to the following, where *VERSION* is the version of the CDK\.
 
@@ -508,7 +601,7 @@ Resources:
 You can see that the stack contains an `AWS::S3::Bucket` resource with the versioning configuration we want\.
 
 **Note**  
-The toolkit automatically added the **AWS::CDK::Metadata** resource to your template\. The CDK uses metadata to gain insight into how the CDK is used\. One possible benefit is that the CDK team could notify users if a construct is going to be deprecated\. For details, including how to [opt out](cli.md#version_reporting_opt_out) of version reporting, see [Version Reporting](cli.md#version_reporting) \.
+The toolkit automatically added the **AWS::CDK::Metadata** resource to your template\. The CDK uses metadata to gain insight into how the CDK is used\. One possible benefit is that the CDK team could notify users if a construct is going to be deprecated\. For details, including how to [opt out](tools.md#version_reporting_opt_out) of version reporting, see [Version Reporting](tools.md#version_reporting) \.
 
 ### Deploying the Stack<a name="hello_world_tutorial_deploy_stack"></a>
 
@@ -574,6 +667,16 @@ new Bucket(this, "MyFirstBucket", new BucketProps
 ```
 
 ------
+#### [ Python ]
+
+```
+bucket = s3.Bucket(self, 
+    "MyFirstBucket", 
+    versioned=True,
+    encryption=s3.BucketEncryption.KmsManaged,)
+```
+
+------
 
 Compile your program, as follows\.
 
@@ -606,6 +709,11 @@ cdk
 ```
 
 ------
+#### [ Python ]
+
+Nothing to compile\.
+
+------
 
 ### Preparing for Deployment<a name="hello_world_tutorial_prep_deployment"></a>
 
@@ -615,18 +723,18 @@ Before you deploy the updated app, evaluate the difference between the CDK app a
 cdk diff
 ```
 
-The toolkit queries your AWS account for the current AWS CloudFormation template for the `hello-cdk` stack, and compares the result with the template synthesized from the app\. The output should look like the following\.
+The toolkit queries your AWS account for the current AWS CloudFormation template for the `hello-cdk` stack, and compares the result with the template synthesized from the app\. The Resources section of the output should look like the following\.
 
 ```
 Resources
-[~] AWS::S3::Bucket MyFirstBucket MyFirstBucketB8884501 
+[~] AWS::S3::Bucket MyFirstBucket MyFirstBucketID
  |- [+] BucketEncryption
      |- {"ServerSideEncryptionConfiguration":[{"ServerSideEncryptionByDefault":{"SSEAlgorithm":"aws:kms"}}]}
 ```
 
 As you can see, the diff indicates that the `ServerSideEncryptionConfiguration` property of the bucket is now set to enable server\-side encryption\.
 
-You can also see that the bucket isn't going to be replaced, but will be updated instead \(**Updating MyFirstBucketB8884501**\)\.
+You can also see that the bucket isn't going to be replaced, but will be updated instead \(**Updating MyFirstBucket\.\.\.**\)\.
 
 Deploy the changes\.
 
@@ -634,18 +742,18 @@ Deploy the changes\.
 cdk deploy
 ```
 
-The CDK Toolkit updates the bucket configuration to enable server\-side AWS KMS encryption for the bucket\.
+Enter y to approve the changes and deploy the updated stack\. The CDK Toolkit updates the bucket configuration to enable server\-side AWS KMS encryption for the bucket\. The final output is the ARN of the stack, where *REGION* is your default region, *ACCOUNT\-ID* is your account ID, and *ID* is a unique identifier for the bucket or stack\.
 
 ```
 HelloCdkStack: deploying...
 HelloCdkStack: creating CloudFormation changeset...
- 0/2 | 10:55:30 AM | UPDATE_IN_PROGRESS   | AWS::S3::Bucket    | MyFirstBucket (MyFirstBucketB8884501) 
- 1/2 | 10:55:50 AM | UPDATE_COMPLETE      | AWS::S3::Bucket    | MyFirstBucket (MyFirstBucketB8884501) 
+ 0/2 | 10:55:30 AM | UPDATE_IN_PROGRESS   | AWS::S3::Bucket    | MyFirstBucket (MyFirstBucketID) 
+ 1/2 | 10:55:50 AM | UPDATE_COMPLETE      | AWS::S3::Bucket    | MyFirstBucket (MyFirstBucketID) 
 
 HelloCdkStack
 
 Stack ARN:
-arn:aws:cloudformation:us-west-2:188580781645:stack/HelloCdkStack/96956990-feff-11e8-9284-50a68a0e3256
+arn:aws:cloudformation:REGION:ACCOUNT-ID:stack/HelloCdkStack/ID
 ```
 
 ### Destroying the App's Resources<a name="hello_world_tutorial_delete_stack"></a>
@@ -656,4 +764,4 @@ Destroy the app's resources to avoid incurring any costs from the resources crea
 cdk destroy
 ```
 
-In some cases this command fails, such as when a resource isn't empty and must be empty before it can be destroyed\. See [Delete Stack Fails](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/troubleshooting.html#troubleshooting-errors-delete-stack-fails) in the *AWS CloudFormation User Guide* for details\.
+Enter y to approve the changes and delete any stack resources\. In some cases this command fails, such as when a resource isn't empty and must be empty before it can be destroyed\. See [Delete Stack Fails](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/troubleshooting.html#troubleshooting-errors-delete-stack-fails) in the *AWS CloudFormation User Guide* for details\.

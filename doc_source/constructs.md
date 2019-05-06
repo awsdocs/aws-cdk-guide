@@ -106,10 +106,6 @@ const props: QueueProps = {
 new Queue(this, 'MyQueue', props);
 ```
 
-## Resource Attributes<a name="constructs_resource_attributes"></a>
-
-tba
-
 ## Construct Metadata<a name="constructs_metadata"></a>
 
 Attach metadata to a construct using the `addMetadata` method\. Metadata is an AWS CDK\-level annotation, and as such, does not appear in the deployed resources\. Metadata entries automatically include the stack trace from which the metadata entry was added to allow tracing back to your code, even if the entry was defined by a lower\-level library that you don't own\.
