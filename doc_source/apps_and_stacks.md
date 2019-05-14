@@ -14,7 +14,7 @@ Let's look at apps and stacks from the bottom up\.
 
 ## Stacks<a name="stacks"></a>
 
-Define an application stack by extending the [Stack](https://awslabs.github.io/aws-cdk/refs/_aws-cdk_cdk.html#@aws-cdk/cdk.Stack) class, as shown in the following example\.
+Define an application stack by extending the [Stack]() class, as shown in the following example\.
 
 ```
 import cdk = require("@aws-cdk/cdk");
@@ -43,7 +43,7 @@ Next we'll show you how to use one or more stacks to create a CDK app\.
 
 ## Apps<a name="apps"></a>
 
-An [app](https://awslabs.github.io/aws-cdk/refs/_aws-cdk_cdk.html#app) is a collection of [stack](https://awslabs.github.io/aws-cdk/refs/_aws-cdk_cdk.html#@aws-cdk/cdk.Stack) objects, as shown in the following example\.
+An [app]() is a collection of [stack]() objects, as shown in the following example\.
 
 ```
 import cdk = require("@aws-cdk/cdk");
@@ -81,7 +81,7 @@ cdk deploy MyWestCdkStack
 
 ## Environments and Authentication<a name="environments"></a>
 
-When you create a [stack](https://awslabs.github.io/aws-cdk/refs/_aws-cdk_cdk.html#@aws-cdk/cdk.Stack) instance, you can supply the target deployment environment for the stack using the `env` property\. This is shown in the following example, where *REGION* is the AWS Region in which you want to create the stack and *ACCOUNT* is your account ID\.
+When you create a [stack]() instance, you can supply the target deployment environment for the stack using the `env` property\. This is shown in the following example, where *REGION* is the AWS Region in which you want to create the stack and *ACCOUNT* is your account ID\.
 
 ```
 new MyStack(app, { env: { region: 'REGION', account: 'ACCOUNT' } });

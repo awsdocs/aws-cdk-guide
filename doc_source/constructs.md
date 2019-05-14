@@ -20,7 +20,7 @@ The CDK creates the low\-level resources from the [AWS CloudFormation Resource S
 
 High\-level resource constructs are authored by AWS and offer an intent\-based API for using AWS services\. They provide the same functionality as the low\-level resources, but encode much of the details, boilerplate, and glue logic required to use AWS\. High\-level resources offer convenient defaults and additional knowledge about the inner workings of the AWS resources they represent\. 
 
-Similarly to the AWS SDKs and AWS CloudFormation, the AWS Construct Library is organized into modules, one for each AWS service\. For example, the `@aws-cdk/aws-ec2` module includes resources for Amazon EC2 instances and networking\. The `aws-sns` module includes resources such as `Topic` and `Subscription`\. See the [Reference](https://awslabs.github.io/aws-cdk/reference.html) for descriptions of the CDK packages and constructs\.
+Similarly to the AWS SDKs and AWS CloudFormation, the AWS Construct Library is organized into modules, one for each AWS service\. For example, the `@aws-cdk/aws-ec2` module includes resources for Amazon EC2 instances and networking\. The `aws-sns` module includes resources such as `Topic` and `Subscription`\. See the [Reference](https://docs.aws.amazon.com/cdk/api/latest) for descriptions of the CDK packages and constructs\.
 
 AWS Construct Library members are found in the `@aws-cdk/aws-NAMESPACE` packages, where `NAMESPACE` is the short name for the associated service, such as `SQS` for the AWS Construct Library for the Amazon Simple Queue Service \(Amazon SQS\) service\.
 

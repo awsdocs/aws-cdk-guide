@@ -241,7 +241,15 @@ cd hello-cdk
 
 ### Initializing the App<a name="tutorial_init_project"></a>
 
-Initialize an empty app, where *LANGUAGE* is one of the supported programming languages: **csharp** \(C\#\), **java** \(Java\), or **typescript** \(TypeScript\)\.
+Initialize an app, where *LANGUAGE* is one of the supported programming languages: **csharp** \(C\#\), **java** \(Java\), **python** \(Python\), or **typescript** \(TypeScript\) and *TEMPLATE* is an optional template that creates an app with different resources than the default app that cdk init creates for the language\.
+
+```
+cdk init --language LANGUAGE [TEMPLATE]
+```
+
+The following table describes the templates provided by the supported languages\.
+
+[\[See the AWS documentation website for more details\]](http://docs.aws.amazon.com/cdk/latest/guide/getting_started.html)
 
 ------
 #### [ TypeScript ]
@@ -411,7 +419,7 @@ You might have to execute this command multiple times to resolve dependencies\.
 
 ------
 
-Next, define an Amazon S3 bucket in the stack\. Amazon S3 buckets are represented by the [Bucket](https://awslabs.github.io/aws-cdk/refs/_aws-cdk_aws-s3.html#@aws-cdk/aws-s3.Bucket) class\.
+Next, define an Amazon S3 bucket in the stack\. Amazon S3 buckets are represented by the [Bucket](s3-base-url;/.bucket.html) class\.
 
 ------
 #### [ TypeScript ]
@@ -468,7 +476,7 @@ import software.amazon.awscdk.services.s3.Bucket;
 import software.amazon.awscdk.services.s3.BucketProps;
 
 public class MyStack extends Stack {
-    public MyStack(final App scopy, final String id) {
+    public MyStack(final App scope, final String id) {
         this(scope, id, null);
     }
 
@@ -529,9 +537,9 @@ bucket = s3.Bucket(self,
 ------
 
 Notice a few things:
-+ [Bucket](https://awslabs.github.io/aws-cdk/refs/_aws-cdk_aws-s3.html#@aws-cdk/aws-s3.Bucket) is a construct\. This means it's initialization signature has `scope`, `id`, and `props`\. In this case, the bucket is an immediate child of **MyStack**\.
-+ `MyFirstBucket` is the **id** of the bucket construct, not the physical name of the Amazon S3 bucket\. The logical ID is used to uniquely identify resources in your stack across deployments\.  To specify a physical name for your bucket, set the [bucketName](https://awslabs.github.io/aws-cdk/refs/_aws-cdk_aws-s3.html#@aws-cdk/aws-s3.BucketProps.bucketName) property when you define your bucket\.
-+ Because the bucket's [versioned](https://awslabs.github.io/aws-cdk/refs/_aws-cdk_aws-s3.html#@aws-cdk/aws-s3.versioned) property is `true`, [versioning](https://docs.aws.amazon.com/AmazonS3/latest/dev/Versioning.html) is enabled on the bucket\.
++ [Bucket](s3-base-url;/.bucket.html) is a construct\. This means it's initialization signature has `scope`, `id`, and `props`\. In this case, the bucket is an immediate child of **MyStack**\.
++ `MyFirstBucket` is the **id** of the bucket construct, not the physical name of the Amazon S3 bucket\. The logical ID is used to uniquely identify resources in your stack across deployments\.  To specify a physical name for your bucket, set the [bucketName](s3-base-url;/.bucket.html#bucketname) property when you define your bucket\.
++ Because the bucket's [versioned](s3-base-url;/.bucket.html#versioned) property is `true`, [versioning](https://docs.aws.amazon.com/AmazonS3/latest/dev/Versioning.html) is enabled on the bucket\.
 
 Compile your program, as follows\.
 

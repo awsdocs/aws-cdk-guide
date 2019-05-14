@@ -59,7 +59,7 @@ cdk context --clear
 
 The AWS CDK currently supports the following context providers\.
 
-[AvailabilityZoneProvider](https://awslabs.github.io/aws-cdk/refs/_aws-cdk_cdk.html#@aws-cdk/cdk.AvailabilityZoneProvider)  
+[AvailabilityZoneProvider](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/cdk/availabilityzoneprovider.html)  
 Use this provider to get the list of all supported Availability Zones in this context, as shown in the following example\.  
 
 ```
@@ -71,7 +71,7 @@ for (let zone of zones) {
 }
 ```
 
-[HostedZoneProvider](https://awslabs.github.io/aws-cdk/refs/_aws-cdk_aws-route53.html#@aws-cdk/aws-route53.HostedZoneProvider)  
+[HostedZoneProvider](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/aws-route53/hostedzoneprovider.html)  
 Use this provider to discover existing hosted zones in your account\. For example, the following code imports an existing hosted zone into your CDK app so you can add records to it\.  
 
 ```
@@ -80,7 +80,7 @@ const zone: HostedZoneRef = new HostedZoneProvider(this, {
 }).findAndImport(this, 'HostedZone');
 ```
 
-[SSMParameterProvider](https://awslabs.github.io/aws-cdk/refs/_aws-cdk_cdk.html#@aws-cdk/cdk.SSMParameterProvider)  
+[SSMParameterProvider](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/cdk/ssmparameterprovider.html)  
 Use this provider to read values from the current Region's AWS Systems Manager parameter store\. For example, the following code returns the value of the *my\-awesome\-parameter* key\.  
 
 ```
@@ -90,7 +90,7 @@ const ami: string = new SSMParameterProvider(this, {
 ```
 This is only for reading plain strings, and not recommended for secrets\. For reading secure strings from the Systems Manager Parameter Store, see [Get a Value from a Systems Manager Parameter Store Variable](get_ssm_value.md)\.
 
-[VpcNetworkProvider](https://awslabs.github.io/aws-cdk/refs/_aws-cdk_aws-ec2.html#@aws-cdk/aws-ec2.VpcNetworkProvider)  
+[VpcNetworkProvider](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/aws-ec2/vpcnetworkprovider.html)  
 Use this provider to look up and reference existing VPCs in your accounts\. For example, the following code imports a VPC by tag name\.  
 
 ```

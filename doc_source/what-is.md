@@ -14,7 +14,7 @@ AWS CloudFormation enables you to:
 + Build highly reliable, highly scalable, cost\-effective applications in the cloud without worrying about creating and configuring the underlying AWS infrastructure\.
 + Use a template file to create and delete a collection of resources together as a single unit \(a stack\)\.
 
-Use the CDK to define your cloud resources using one of the supported programming languages: C\#/\.NET, Java, JavaScript, Python, or TypeScript\. This document does not supply reference information for the CDK\. You can find that information in the [CDK Reference](https://awslabs.github.io/aws-cdk/)\.
+Use the CDK to define your cloud resources using one of the supported programming languages: C\#/\.NET, Java, JavaScript, Python, or TypeScript\. This document does not supply reference information for the CDK\. You can find that information in the [CDK Reference](https://docs.aws.amazon.com/cdk/api/latest)\.
 
 Developers can use one of the supported programming languages to define reusable cloud components known as [Constructs](constructs.md)\. You compose these together into [Stacks](apps_and_stacks.md#stacks) and [Apps](apps_and_stacks.md#apps)\.
 
@@ -90,7 +90,7 @@ Another advantage of IAC \(infrastructure as code\) is that you get code complet
 
 ## Developing With the CDK<a name="developing"></a>
 
-Unless otherwise indicated, the code examples in this guide are in TypeScript\. To aid you in porting a TypeScript example to a supported programming language, take a look at the example code for your language in the [CDK Reference](https://awslabs.github.io/aws-cdk/reference.html)\. The CDK also includes some [TypeScript examples](https://github.com/aws-samples/aws-cdk-examples/tree/master/typescript)\.
+Unless otherwise indicated, the code examples in this guide are in TypeScript\. To aid you in porting a TypeScript example to a supported programming language, see [Multi\-Language Support in the CDK](multiple_languages.md)\. The CDK also includes examples in the supported programming languages\. See [AWS CDK Examples](about_examples.md) for a list of the examples\.
 
 The [CDK Toolchain](tools.md) is a command line tool for interacting with CDK apps\. It enables developers to synthesize artifacts such as AWS CloudFormation templates, deploy stacks to development AWS accounts, and diff against a deployed stack to understand the impact of a code change\.
 
@@ -106,7 +106,7 @@ Because the AWS CDK is open source, the team encourages you contribute to make i
 ## Additional Documentation and Resources<a name="additional_docs"></a>
 
 In addition to this guide, the following are other resources available to CDK users:
-+ [CDK Reference](https://awslabs.github.io/aws-cdk/)
++ [Reference](https://docs.aws.amazon.com/cdk/api/latest)
 + [CDK Demo at re:Invent 2018](https://www.youtube.com/watch?v=Lh-kVC2r2AU)
 + [CDK Workshop](https://cdkworkshop.com/)
 + [CDK Examples](https://github.com/aws-samples/aws-cdk-examples)

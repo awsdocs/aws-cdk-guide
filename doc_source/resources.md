@@ -20,7 +20,7 @@ new sqs.CfnQueue(this, 'MyQueueResource', {
 });
 ```
 
-For reference, if you use the [Queue](https://awslabs.github.io/aws-cdk/refs/_aws-cdk_aws-sqs.html#@aws-cdk/aws-sqs.Queue) construct, you can define managed queue encryption as follows\.
+For reference, if you use the [Queue]("https://docs.aws.amazon.com/cdk/api/latest/typescript/api/aws-sqs"/queue.html) construct, you can define managed queue encryption as follows\.
 
 ```
 import sqs = require('@aws-cdk/aws-sqs');
@@ -49,8 +49,8 @@ new lambda.CfnFunction(this, {
 });
 ```
 
-The [cdk\.CfnResource\.ref](https://awslabs.github.io/aws-cdk/refs/_aws-cdk_cdk.html#@aws-cdk/cdk.CfnResource.ref) attribute represents the AWS CloudFormation resource's intrinsic reference \(or *return value*\)\. For example, *dlq\.ref* also [refers](http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-sqs-queues.html#aws-properties-sqs-queues-ref) to the queue's ARN\. When possible, use an explicitly named attribute instead of *ref*\.
+The [cdk\.CfnResource\.ref](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/cdk.html#@aws-cdk/cdk.CfnResource.ref) attribute represents the AWS CloudFormation resource's intrinsic reference \(or *return value*\)\. For example, *dlq\.ref* also [refers](http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-sqs-queues.html#aws-properties-sqs-queues-ref) to the queue's ARN\. When possible, use an explicitly named attribute instead of *ref*\.
 
 ## Resource Options<a name="cloudformation_resource_options"></a>
 
-For resources, the [cdk\.CfnResource\.options](https://awslabs.github.io/aws-cdk/refs/_aws-cdk_cdk.html#@aws-cdk/cdk.CfnResource.options) object includes AWS CloudFormation options, such as `condition`, `updatePolicy`, `createPolicy`, and `metadata`\.
+For resources, the [CfnResource\.options](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/cdk/cfnresource.html#cdk_CfnResource_options) object includes AWS CloudFormation options, such as `condition`, `updatePolicy`, `createPolicy`, and `metadata`\.
