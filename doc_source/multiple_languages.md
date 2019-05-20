@@ -15,7 +15,7 @@ The CDK supports C\#, Java, JavaScript, and TypeScript\. Since the CDK is develo
 In TypeScript, you import a package as follows \(we'll use Amazon S3 for our examples\):
 
 ```
-import lambda = require("@aws-cdk/aws-s3");
+import s3 = require("@aws-cdk/aws-s3");
 ```
 
 ------
@@ -37,6 +37,13 @@ import software.amazon.awscdk.services.s3.*;
 
 ```
 const s3 = require('@aws-cdk/aws-s3');
+```
+
+------
+#### [ Python ]
+
+```
+from aws_cdk import aws_s3 as s3
 ```
 
 ------
@@ -77,6 +84,15 @@ new Bucket(this, "MyFirstBucket", BucketProps.builder()
 new s3.Bucket(this, 'MyFirstBucket', {
   // options
 });
+```
+
+------
+#### [ Python ]
+
+```
+s3.Bucket(self, 
+  "MyFirstBucket", 
+  # options,)
 ```
 
 ------

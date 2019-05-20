@@ -8,6 +8,6 @@ This documentation is for the developer preview release \(public beta\) of the A
 
 This document is based on the following release of the AWS Cloud Development Kit \(CDK\)\.
 + **API version: 0\.31\.0**
-+ **Latest documentation update:** May 14, 2019
++ **Latest documentation update:** May 16, 2019
 
 See [Releases](https://github.com/awslabs/aws-cdk/releases) for a list of the CDK releases\.

@@ -31,7 +31,7 @@ The Amazon ECS construct used in this tutorial helps you use AWS services by pro
   Previously, you had to create a Lambda function to have this functionality\.
 + Provides asset support, so that you can deploy a source from your machine to Amazon ECS in one step\. Previously, to use an application source you had to perform several manual steps, such as uploading to Amazon ECR and creating a Docker image\.
 
-See the [Amazon ECS Construct Library](https://awslabs.github.io/aws-cdk/refs/_aws-cdk_aws-ecs.html#aws-elastic-container-service-ecs-construct-library) reference for details\.
+See [ECS](https://docs.aws.amazon.com/cdk/api/latest/docs/aws-ecs-readme.html) for details\.
 
 ## Creating the Directory and Initializing the CDK<a name="ecs_example_initialize"></a>
 

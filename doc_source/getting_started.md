@@ -12,7 +12,7 @@ This topic describes how to install and configure the AWS CDK and create your fi
 
 **CDK command line tools**  
 + [Node\.js \(>= 8\.11\.x\)](https://nodejs.org/en/download)
-+ You must specify both your credentials and an AWS Region to use the CDK Toolkit;, as described in [Specifying Your Credentials](#getting_started_credentials)\.
++ You must specify both your credentials and an AWS Region to use the CDK Toolkit;, as described in [Specifying Your Credentials and Region](#getting_started_credentials)\.
 
 ------
 #### [ TypeScript ]
@@ -57,58 +57,6 @@ Run the following command to see the version number of the CDK\.
 cdk --version
 ```
 
-## Installing the Core CDK Library for Your Language<a name="getting_started_install_core"></a>
-
-You must install the CDK core library to get the basic classes needed to create CDK stacks and apps\.
-
-------
-#### [ TypeScript ]
-
-```
-npm install @aws-cdk/cdk
-```
-
-------
-#### [ JavaScript ]
-
-```
-npm install @aws-cdk/cdk
-```
-
-------
-#### [ Java ]
-
-Add the following to your project’s pom\.xml file:
-
-```
-<dependencies>
-    <dependency>
-        <groupId>software.amazon.awscdk</groupId>
-        <artifactId>cdk</artifactId>
-        <version><!-- cdk-version --></version>
-    </dependency>
-</dependencies>
-```
-
-------
-#### [ C\# ]
-
-```
-dotnet add package Amazon.CDK
-```
-
-------
-#### [ Python ]
-
-```
-pip install aws-cdk.cdk
-```
-
-**Note**  
-If you have both Python 2\.7 and 3\.7 installed, you might have to pip3 instead of pip\.
-
-------
-
 ## Updating Your Language Dependencies<a name="getting_started_update"></a>
 
 If you get an error message that your language framework is out of date, use one of the following commands to update the components that the CDK needs to support the lanuage\.
@@ -152,25 +100,76 @@ You might have to call this multiple times to update all dependencies\.
 
 ------
 
-## Specifying Your Credentials<a name="getting_started_credentials"></a>
+## Using the env Property to Specify Account and Region<a name="getting_started_credentials_prop"></a>
 
-You must specify your default credentials and AWS Region to use the CDK Toolkit\. You can do that in the following ways:
-+ Using the AWS Command Line Interface \(AWS CLI\)\. This is the method we recommend\.
-+ Using environment variables\.
+You can use the `env` property on a stack to specify the account and region used when deploying a stack, as shown in the following example, where *REGION* is the region and *ACCOUNT* is the account ID\.
+
+```
+new MyStack(app, { env: { region: 'REGION', account: 'ACCOUNT' } });
+```
+
+**Note**  
+The CDK team recommends that you explicitly set your account and region using the `env` property on a stack when you deploy stacks to production\.
+
+Since you can create any number of stacks in any of your accounts in any region that supports all of the stack's resources, the CDK team recommends that you create your production stacks in one CDK app, and deploy them as necessary\. For example, if you own three accounts, with account IDs *ONE*, *TWO*, and *THREE* and want to be able to deploy each one in **us\-west\-2** and **us\-east\-1**, you might declare them as: 
+
+```
+new MyStack(app, 'Stack-One-W', { env: { account: 'ONE', region: 'us-west-2' }});
+new MyStack(app, 'Stack-One-E', { env: { account: 'ONE', region: 'us-east-1' }});
+new MyStack(app, 'Stack-Two-W', { env: { account: 'TWO', region: 'us-west-2' }});
+new MyStack(app, 'Stack-Two-E', { env: { account: 'TWO', region: 'us-east-1' }});
+new MyStack(app, 'Stack-Three-W', { env: { account: 'THREE', region: 'us-west-2' }});
+new MyStack(app, 'Stack-Three-E', { env: { account: 'THREE', region: 'us-east-1' }});
+```
+
+And deploy the stack for account *TWO* in **us\-east\-1** with:
+
+```
+cdk deploy Stack-Two-E
+```
+
+**Note**  
+If the existing credentials do not have permission to create resources within the account you specify, the CDK returns an AWS CloudFormation error when you attempt to deploy the stack\.
+
+## Specifying Your Credentials and Region<a name="getting_started_credentials"></a>
+
+You must specify your credentials and an AWS Region to use the CDK Toolkit\. The CDK looks for credentials and region in the following order:
 + Using the \-\-profile option to cdk commands\.
++ Using environment variables\.
++ Using the default profile as set by the AWS Command Line Interface \(AWS CLI\)\.
 
-### Using the AWS CLI to Specify Credentials<a name="getting_started_credentials_config"></a>
+### Using the \-\-profile Option to Specify Credentials and Region<a name="getting_started_credentials_profile"></a>
 
-Use the [AWS Command Line Interface](https://docs.aws.amazon.com/cli/latest/userguide) aws configure command to specify your default credentials and Region\.
+Use the \-\-profile *PROFILE* option to a cdk command to use a specific profile when executing the command\.
 
-### Using Environment Variables to Specify Credentials<a name="getting_started_credentials_env_vars"></a>
+For example, if the `~/.aws/config` \(Linux or Mac\) or `%USERPROFILE%\.aws\config` \(Windows\) file contains the following profile:
 
-You can also set environment variables for your default credentials and Region\. Environment variables take precedence over settings in the credentials or config file\.
+```
+[profile test]
+aws_access_key_id=AKIAI44QH8DHBEXAMPLE
+aws_secret_access_key=je7MtGbClwBF/2Zp9Utk/h3yCo8nvbEXAMPLEKEY
+region=us-west-2
+```
+
+You can deploy your app using the **test** profile with the following command\.
+
+```
+cdk deploy --profile test
+```
+
+**Note**  
+The profile must contain the access key, secret access key, and region\.
+
+See [Named Profiles](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html) in the AWS CLI documentation for details\.
+
+### Using Environment Variables to Specify Credentials and a Region<a name="getting_started_credentials_env_vars"></a>
+
+Use environment variables to specify your credentials and region\.
 + `AWS_ACCESS_KEY_ID` – Specifies your access key\.
 + `AWS_SECRET_ACCESS_KEY` – Specifies your secret access key\.
 + `AWS_DEFAULT_REGION` – Specifies your default Region\.
 
-For example, to set the default Region to `us-east-2` on Linux or macOS:
+For example, to set the region to `us-east-2` on Linux or macOS:
 
 ```
 export AWS_DEFAULT_REGION=us-east-2
@@ -184,29 +183,9 @@ set AWS_DEFAULT_REGION=us-east-2
 
 See [Environment Variables](https://docs.aws.amazon.com/cli/latest/userguide/cli-environment.html) in the *AWS Command Line Interface User Guide* for details\.
 
-### Using the \-\-profile Option to Specify Credentials<a name="getting_started_credentials_profile"></a>
+### Using the AWS CLI to Specify Credentials and a Region<a name="getting_started_credentials_config"></a>
 
-Use the \-\-profile *PROFILE* option to a cdk command to the alternative profile *PROFILE* when executing the command\.
-
-For example, if the `~/.aws/credentials` \(Linux or Mac\) or `%USERPROFILE%\.aws\credentials` \(Windows\) file contains the following profiles:
-
-```
-[default]
-aws_access_key_id=AKIAIOSFODNN7EXAMPLE
-aws_secret_access_key=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
-        
-[test]
-aws_access_key_id=AKIAI44QH8DHBEXAMPLE
-aws_secret_access_key=je7MtGbClwBF/2Zp9Utk/h3yCo8nvbEXAMPLEKEY
-```
-
-You can deploy your app using the **test** profile with the following command\.
-
-```
-cdk deploy --profile test
-```
-
-See [Named Profiles](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html) in the AWS CLI documentation for details\.
+Use the [AWS Command Line Interface](https://docs.aws.amazon.com/cli/latest/userguide) aws configure command to specify your default credentials and a region\.
 
 ## Hello World Tutorial<a name="hello_world_tutorial"></a>
 
@@ -272,12 +251,35 @@ cdk init --language javascript
 cdk init --language java
 ```
 
+Once the init command finishes, we need to modify the template's output\.
++ Open `src/main/java/com/myorg/HelloApp.java`\.
++ Change the two stacks to one:
+
+  ```
+  new HelloStack(app, "HelloCdkStack");
+  ```
+
 ------
 #### [ C\# ]
 
 ```
 cdk init --language csharp
 ```
+
+Once the init command finishes, we need to modify the template's output\.
++ Open `src/HelloCdk/Program.cs`\.
++ Change the two stacks to one:
+
+  ```
+  new HelloStack(app, "HelloCdkStack", new StackProps());
+  ```
++ Open `src/HelloCdk/HelloStack.cs`\.
++ Delete all of the using statements except the first\.
+
+  ```
+  using Amazon.CDK;
+  ```
++ Delete everything from the constructor\.
 
 ------
 #### [ Python ]
@@ -341,10 +343,8 @@ mvn compile
 ------
 #### [ C\# ]
 
-Because we configured `cdk.json` to run dotnet run, which restores dependencies, builds, and runs your application, run the following command\.
-
 ```
-cdk
+dotnet build src
 ```
 
 ------
@@ -353,6 +353,13 @@ cdk
 Nothing to compile\.
 
 ------
+
+**Note**  
+If you are using Java and get annoyed by the **\[INFO\]** log messages, you can suppress them by including the **\-q** option to your **mvn** commands\. This includes changing `cdk.json to:`  
+
+```
+"app": "mvn -q exec:java"
+```
 
 ### Listing the Stacks in the App<a name="hello_world_tutorial_list_stacks"></a>
 
@@ -391,7 +398,7 @@ npm install @aws-cdk/aws-s3
 ------
 #### [ Java ]
 
-Add the following to `pom.xml`, where *CDK\-VERSION* is the version of the CDK\.
+If necessary, add the following to `pom.xml`, where *CDK\-VERSION* is the version of the CDK\.
 
 ```
 <dependency>
@@ -403,6 +410,8 @@ Add the following to `pom.xml`, where *CDK\-VERSION* is the version of the CDK\.
 
 ------
 #### [ C\# ]
+
+Run the following command in the src/HelloCdk directory\.
 
 ```
 dotnet add package Amazon.CDK.AWS.S3
@@ -419,7 +428,7 @@ You might have to execute this command multiple times to resolve dependencies\.
 
 ------
 
-Next, define an Amazon S3 bucket in the stack\. Amazon S3 buckets are represented by the [Bucket](s3-base-url;/.bucket.html) class\.
+Next, define an Amazon S3 bucket in the stack\. Amazon S3 buckets are represented by the [Bucket](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/aws-s3/bucket.html) class\.
 
 ------
 #### [ TypeScript ]
@@ -464,24 +473,24 @@ class MyStack extends cdk.Stack {
 ------
 #### [ Java ]
 
-In `src/main/java/com/acme/MyStack.java`:
+In `src/main/java/com/myorg/HelloStack.java`:
 
 ```
-package com.acme;
+package com.myorg;
 
-import software.amazon.awscdk.App;
+import software.amazon.awscdk.Construct;
 import software.amazon.awscdk.Stack;
 import software.amazon.awscdk.StackProps;
 import software.amazon.awscdk.services.s3.Bucket;
 import software.amazon.awscdk.services.s3.BucketProps;
 
-public class MyStack extends Stack {
-    public MyStack(final App scope, final String id) {
-        this(scope, id, null);
+public class HelloStack extends Stack {
+    public HelloStack(final Construct parent, final String id) {
+        this(parent, id, null);
     }
 
-    public MyStack(final App scope, final String id, final StackProps props) {
-        super(scope, id, props);
+    public HelloStack(final Construct parent, final String id, final StackProps props) {
+        super(parent, id, props);
 
         new Bucket(this, "MyFirstBucket", BucketProps.builder()
             .withVersioned(true)
@@ -493,7 +502,7 @@ public class MyStack extends Stack {
 ------
 #### [ C\# ]
 
-Create `MyStack.cs`\.
+Update `HelloStack.cs` to include a Amazon S3 bucket with versioning enabled\.
 
 ```
 using Amazon.CDK;
@@ -501,9 +510,9 @@ using Amazon.CDK.AWS.S3;
 
 namespace HelloCdk
 {
-    public class MyStack : Stack
+    public class HelloStack : Stack
     {
-        public MyStack(App scope, string id) : base(scope, id, null)
+        public HelloStack(Construct parent, string id, IStackProps props) : base(parent, id, props)
         {
             new Bucket(this, "MyFirstBucket", new BucketProps
             {
@@ -537,9 +546,9 @@ bucket = s3.Bucket(self,
 ------
 
 Notice a few things:
-+ [Bucket](s3-base-url;/.bucket.html) is a construct\. This means it's initialization signature has `scope`, `id`, and `props`\. In this case, the bucket is an immediate child of **MyStack**\.
-+ `MyFirstBucket` is the **id** of the bucket construct, not the physical name of the Amazon S3 bucket\. The logical ID is used to uniquely identify resources in your stack across deployments\.  To specify a physical name for your bucket, set the [bucketName](s3-base-url;/.bucket.html#bucketname) property when you define your bucket\.
-+ Because the bucket's [versioned](s3-base-url;/.bucket.html#versioned) property is `true`, [versioning](https://docs.aws.amazon.com/AmazonS3/latest/dev/Versioning.html) is enabled on the bucket\.
++ [Bucket](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/aws-s3/bucket.html) is a construct\. This means it's initialization signature has `scope`, `id`, and `props` and it is a child of the stack\.
++ `MyFirstBucket` is the **id** of the bucket construct, not the physical name of the Amazon S3 bucket\. The logical ID is used to uniquely identify resources in your stack across deployments\.  To specify a physical name for your bucket, set the [bucketName](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/aws-s3/bucket.html#bucketname) property when you define your bucket\.
++ Because the bucket's [versioned](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/aws-s3/bucket.html#versioned) property is `true`, [versioning](https://docs.aws.amazon.com/AmazonS3/latest/dev/Versioning.html) is enabled on the bucket\.
 
 Compile your program, as follows\.
 
@@ -565,10 +574,8 @@ mvn compile
 ------
 #### [ C\# ]
 
-Because we configured `cdk.json` to run dotnet run, which restores dependencies, builds, and runs your application, run the following command\.
-
 ```
-cdk
+dotnet build src
 ```
 
 ------
@@ -652,7 +659,11 @@ new s3.Bucket(this, 'MyFirstBucket', {
 ------
 #### [ Java ]
 
-Update `src/main/java/com/acme/MyStack.java`\.
+Update `src/main/java/com/myorg/HelloStack.java`\.
+
+```
+import software.amazon.awscdk.services.s3.BucketEncryption;
+```
 
 ```
 new Bucket(this, "MyFirstBucket", BucketProps.builder()
@@ -664,7 +675,7 @@ new Bucket(this, "MyFirstBucket", BucketProps.builder()
 ------
 #### [ C\# ]
 
-Update `MyStack.cs`\.
+Update `HelloStack.cs`\.
 
 ```
 new Bucket(this, "MyFirstBucket", new BucketProps
@@ -710,10 +721,8 @@ mvn compile
 ------
 #### [ C\# ]
 
-Because we configured `cdk.json` to run dotnet run, which restores dependencies, builds, and runs your application, run the following command\.
-
 ```
-cdk
+dotnet build src
 ```
 
 ------

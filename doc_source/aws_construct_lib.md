@@ -6,7 +6,7 @@ This documentation is for the developer preview release \(public beta\) of the A
 
 # AWS Construct Library<a name="aws_construct_lib"></a>
 
-The AWS Construct Library is a set of modules that expose APIs for defining AWS resources in AWS CDK apps\. Each module is based on the AWS service to which the resource belongs\. For example, [EC2](https://docs.aws.amazon.com/cdk/api/latest/docs/aws-ec2-readme.html) includes the [VpcNetwork](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/aws-ec2vpcnetwork.html) construct, which makes it easy to define an [Amazon VPC](https://aws.amazon.com/vpc) in your CDK app\.
+The AWS Construct Library is a set of modules that expose APIs for defining AWS resources in AWS CDK apps\. Each module is based on the AWS service to which the resource belongs\. For example, [EC2](https://docs.aws.amazon.com/cdk/api/latest/docs/aws-ec2-readme.html) includes the [VpcNetwork](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/aws-ec2/vpcnetwork.html) construct, which makes it easy to define an [Amazon VPC](https://aws.amazon.com/vpc) in your CDK app\.
 
 The AWS Construct Library modules are described in the [CDK Reference](https://awslabs.github.io/aws-cdk/)\.
 
@@ -22,9 +22,9 @@ The AWS Construct Library includes many common patterns and capabilities that ar
 
 ### Grants<a name="aws_construct_lib_grants"></a>
 
-AWS Identity and Access Management \(IAM\) policies are automatically defined based on intent\. For example, when subscribing an Amazon Simple Notification Service \(Amazon SNS\) [Topic]("https://docs.aws.amazon.com/cdk/api/latest/typescript/api/aws-sns"/topic.html) to an AWS Lambda [Function](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/aws-lambda/function.html), the function's IAM permission policy is automatically modified to allow the specific topic to invoke the function\.
+AWS Identity and Access Management \(IAM\) policies are automatically defined based on intent\. For example, when subscribing an Amazon Simple Notification Service \(Amazon SNS\) [Topic](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/aws-sns/topic.html) to an AWS Lambda [Function](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/aws-lambda/function.html), the function's IAM permission policy is automatically modified to allow the specific topic to invoke the function\.
 
-Also, most AWS constructs expose `grant*` methods that allow intent\-based permission definitions\. For example, the Amazon S3 [Bucket](s3-base-url;/.bucket.html) construct has a [grantRead](s3-base-url;/.bucket.html#grantreadidentity-objectskeypattern) method\. This method accepts an IAM [IPrincipal](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/aws-iam/iprincipal.html) such as a [User](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/aws-iam/user.html) or a [Role](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/aws-iam/role.html), which modifies the policy to allow the principal to read objects from the bucket\.
+Also, most AWS constructs expose `grant*` methods that allow intent\-based permission definitions\. For example, the Amazon S3 [Bucket](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/aws-s3/bucket.html) construct has a [grantRead](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.Bucket.html#grantreadidentity-objectskeypattern) method\. This method accepts an IAM [IPrincipal](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/aws-iam/iprincipal.html) such as a [User](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/aws-iam/user.html) or a [Role](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/aws-iam/role.html), which modifies the policy to allow the principal to read objects from the bucket\.
 
 ## Metrics<a name="aws_construct_lib_metrics"></a>
 

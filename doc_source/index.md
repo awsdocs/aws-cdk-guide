@@ -20,6 +20,7 @@ Amazon's trademarks and trade dress may not be used in
    + [Constructs](constructs.md)
    + [Apps, Stacks, and Environments and Authentication](apps_and_stacks.md)
    + [Resources](resources.md)
+   + [Identifiers](identifiers.md)
    + [Run-Time Context](context.md)
    + [Assets](assets.md)
    + [AWS CloudFormation](cloudformation.md)

@@ -12,7 +12,7 @@ This topic describes how to modify the underlying AWS CloudFormation resources i
 We don't recommend this method because it breaks the abstraction layer and might produce unexpected results\.  
 If you modify an AWS construct in this way, we can't ensure that your code will be compatible with subsequent releases\.
 
-AWS constructs, such as [Topic]("https://docs.aws.amazon.com/cdk/api/latest/typescript/api/aws-sns"/topic.html), encapsulate one or more AWS CloudFormation resources behind their APIs\. These resources are also represented as `CfnXxx` constructs in each library\. For example, the [Bucket](s3-base-url;/.bucket.html) construct encapsulates the [CfnBucket](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/aws-s3/cfnbucket.html)\. When a stack that includes an AWS construct is synthesized, the AWS CloudFormation definitions of the underlying resources are included in the resulting template\.
+AWS constructs, such as [Topic](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/aws-sns/topic.html), encapsulate one or more AWS CloudFormation resources behind their APIs\. These resources are also represented as `CfnXxx` constructs in each library\. For example, the [Bucket](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/aws-s3/bucket.html) construct encapsulates the [CfnBucket](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/aws-s3/cfnbucket.html)\. When a stack that includes an AWS construct is synthesized, the AWS CloudFormation definitions of the underlying resources are included in the resulting template\.
 
 Eventually, we expect the APIs provided by AWS constructs to support all of the services and capabilities offered by AWS\. But we're aware that the library still has many gaps, both at the service level \(some services don't have any constructs yet\) and at the resource level \(an AWS construct exists, but some features are missing\)\.
 
@@ -31,7 +31,7 @@ You can also find more information about how to work directly with the AWS Cloud
 
 Use [construct\.findChild\(\)](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/cdk.html#@aws-cdk/cdk.Construct.findChild) to access any child of a construct by its construct ID\. By convention, the main resource of any AWS construct is named **Resource**\.
 
-The following example shows how to access the underlying Amazon Simple Storage Service \(Amazon S3\) bucket resource, given a [Bucket](s3-base-url;/.bucket.html) construct\.
+The following example shows how to access the underlying Amazon Simple Storage Service \(Amazon S3\) bucket resource, given a [Bucket](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/aws-s3/bucket.html) construct\.
 
 ```
 // Create an AWS bucket construct

@@ -81,24 +81,9 @@ cdk deploy MyWestCdkStack
 
 ## Environments and Authentication<a name="environments"></a>
 
-When you create a [stack]() instance, you can supply the target deployment environment for the stack using the `env` property\. This is shown in the following example, where *REGION* is the AWS Region in which you want to create the stack and *ACCOUNT* is your account ID\.
+When you create a [Stack](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/cdk/stack.html) instance, you can supply the target deployment environment for the stack using the `env` property, as described in [Specifying Your Credentials and Region](getting_started.md#getting_started_credentials)\.
 
-```
-new MyStack(app, { env: { region: 'REGION', account: 'ACCOUNT' } });
-```
-
-For each of the two arguments, `region` and `account`, the CDK uses the following lookup procedure:
-+ If `region` or `account`is provided directly as a property to the stack, use that\.
-+ If either property is not specified when you create a stack, the CDK determines them as follows:
-  + `account` – Use the account from the default SDK credentials\. Environment variables are tried first \(`AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`\), followed by credentials in `$HOME/.aws/credentials` on Linux or macOS, or `%USERPROFILE%\.aws\credentials` on Windows\.
-  + `region` – Use the default Region configured in `$HOME/.aws/config` on Linux or macOS, or `%USERPROFILE%\.aws\config` on Windows\.
-
-  You can set these defaults manually, but we recommend you use `aws configure`, as described in [Specifying Your Credentials](getting_started.md#getting_started_credentials)\.
-
-We recommend that you use the default environment for development stacks, and explicitly specify accounts and Regions for production stacks\.
-
-**Note**  
-Although the Region and account might explicitly be set on your stack, if you run `cdk deploy`, the CDK still uses the currently configured SDK credentials that are provided through environment variables or `aws configure`\. This means that if you want to deploy stacks to multiple accounts, you have to set the correct credentials for each invocation to `cdk deploy STACK`\.
+We recommend that you use the default environment for development stacks, and explicitly specify accounts and regions using the `env` property for production stacks\.
 
 You can always find the Region within which your stack is deployed by using the `region` property of the stack, as follows\.
 
