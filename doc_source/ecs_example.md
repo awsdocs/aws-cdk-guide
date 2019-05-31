@@ -65,7 +65,7 @@ Resources:
 Install support for Amazon EC2 and Amazon ECS\.
 
 ```
-npm install @aws-cdk/aws-ec2 @aws-cdk/aws-ecs
+npm install @aws-cdk/aws-ec2 @aws-cdk/aws-ecs @aws-cdk/aws-ecs-patterns
 ```
 
 ## Create a Fargate Service<a name="ecs_example_create_fargate_service"></a>
@@ -81,12 +81,13 @@ Add the following `import` statements to `lib/my_ecs_construct-stack.ts`\.
 ```
 import ec2 = require('@aws-cdk/aws-ec2');
 import ecs = require('@aws-cdk/aws-ecs');
+import ecsPatterns = require('@aws-cdk/aws-ecs-patterns');
 ```
 
 Replace the comment at the end of the constructor with the following code\.
 
 ```
-    const vpc = new ec2.VpcNetwork(this, 'MyVpc', {
+    const vpc = new ec2.Vpc(this, 'MyVpc', {
       maxAZs: 3 // Default is all AZs in region
     });
 
@@ -95,7 +96,7 @@ Replace the comment at the end of the constructor with the following code\.
     });
 
     // Create a load-balanced Fargate service and make it public
-    new ecs.LoadBalancedFargateService(this, 'MyFargateService', {
+    new ecsPatterns.LoadBalancedFargateService(this, 'MyFargateService', {
       cluster: cluster,  // Required
       cpu: '512', // Default is 256
       desiredCount: 6,  // Default is 1
