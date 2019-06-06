@@ -56,8 +56,8 @@ Commands:
   cdk doctor                      Check your set-up for potential problems
 
 Options:
-  --app, -a             REQUIRED: Command-line for executing your CDK app (e.g.
-                        "node bin/my-app.js")                           [string]
+  --app, -a             REQUIRED: command-line for executing your app or a cloud
+                        assembly directory (e.g. "node bin/my-app.js")  [string]
   --context, -c         Add contextual string parameter (KEY=VALUE)      [array]
   --plugin, -p          Name or path of a node package that extend the CDK
                         features. Can be specified multiple times        [array]
@@ -85,9 +85,10 @@ Options:
                                                        [boolean] [default: true]
   --role-arn, -r        ARN of Role to use when invoking CloudFormation [string]
   --toolkit-stack-name  The name of the CDK toolkit stack               [string]
-  --staging             directory name for staging assets (use
-                        --no-asset-staging to disable)
-                                              [string] [default: ".cdk.staging"]
+  --staging             copy assets to the output directory (use --no-staging to
+                        disable)                       [boolean] [default: true]
+  --output, -o          emits the synthesized cloud assembly into a directory
+                        (default: cdk.out)                              [string]
   --ci                  Force CI detection. Use --no-ci to disable CI
                         autodetection.                [boolean] [default: false]
   --version             Show version number                            [boolean]

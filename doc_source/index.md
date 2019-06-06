@@ -14,7 +14,7 @@ Amazon's trademarks and trade dress may not be used in
 
 -----
 ## Contents
-+ [What Is the AWS CDK?](what-is.md)
++ [What is the AWS Cloud Development Kit?](home.md)
 + [Getting Started With the AWS CDK](getting_started.md)
 + [Concepts](core_concepts.md)
    + [Constructs](constructs.md)
@@ -45,5 +45,6 @@ Amazon's trademarks and trade dress may not be used in
    + [Set a CloudWatch Alarm](how_to_set_cw_alarm.md)
    + [Get a Value from a Context Variable](get_context_var.md)
 + [CDK Toolchain](tools.md)
++ [Troubleshooting the CDK](troubleshooting.md)
 + [OpenPGP Keys for the AWS CDK and JSII](pgp-keys.md)
 + [Document History for the AWS CDK Developer Guide](doc-history.md)

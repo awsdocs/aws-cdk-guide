@@ -39,7 +39,7 @@ none
 
 ------
 #### [ Python ]
-+ Python >= 3\.7\.1
++ Python >= 3\.6
 
 ------
 
@@ -59,7 +59,7 @@ cdk --version
 
 ## Updating Your Language Dependencies<a name="getting_started_update"></a>
 
-If you get an error message that your language framework is out of date, use one of the following commands to update the components that the CDK needs to support the lanuage\.
+If you get an error message that your language framework is out of date, use one of the following commands to update the components that the CDK needs to support the language\.
 
 ------
 #### [ TypeScript ]
@@ -743,8 +743,9 @@ cdk diff
 The toolkit queries your AWS account for the current AWS CloudFormation template for the `hello-cdk` stack, and compares the result with the template synthesized from the app\. The Resources section of the output should look like the following\.
 
 ```
+Stack HelloCdkStack
 Resources
-[~] AWS::S3::Bucket MyFirstBucket MyFirstBucketID
+[~] AWS::S3::Bucket MyFirstBucket MyFirstBucketB8884501
  |- [+] BucketEncryption
      |- {"ServerSideEncryptionConfiguration":[{"ServerSideEncryptionByDefault":{"SSEAlgorithm":"aws:kms"}}]}
 ```

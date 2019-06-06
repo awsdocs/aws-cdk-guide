@@ -6,7 +6,7 @@ This documentation is for the developer preview release \(public beta\) of the A
 
 # AWS Construct Library<a name="aws_construct_lib"></a>
 
-The AWS Construct Library is a set of modules that expose APIs for defining AWS resources in AWS CDK apps\. Each module is based on the AWS service to which the resource belongs\. For example, [EC2](https://docs.aws.amazon.com/cdk/api/latest/docs/aws-ec2-readme.html) includes the [VpcNetwork](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/aws-ec2/vpcnetwork.html) construct, which makes it easy to define an [Amazon VPC](https://aws.amazon.com/vpc) in your CDK app\.
+The AWS Construct Library is a set of modules that expose APIs for defining AWS resources in AWS CDK apps\. Each module is based on the AWS service to which the resource belongs\. For example, [EC2](https://docs.aws.amazon.com/cdk/api/latest/docs/aws-ec2-readme.html) includes the [Vpc](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/aws-ec2/vpc.html) construct, which makes it easy to define an [Amazon VPC](https://aws.amazon.com/vpc) in your CDK app\.
 
 The AWS Construct Library modules are described in the [CDK Reference](https://awslabs.github.io/aws-cdk/)\.
 

@@ -4,7 +4,7 @@ This documentation is for the developer preview release \(public beta\) of the A
 
 --------
 
-# What Is the AWS CDK?<a name="what-is"></a>
+# What is the AWS Cloud Development Kit?<a name="home"></a>
 
 Welcome to the *AWS CDK \(CDK\) Developer Guide*\. This document provides information about the CDK, which is a software development framework for defining cloud infrastructure in code and provisioning it through AWS CloudFormation\.
 

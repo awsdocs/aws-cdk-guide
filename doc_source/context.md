@@ -100,5 +100,5 @@ const provider = new VpcNetworkProvider(this, {
   }
 });
 
-const vpc = VpcNetwork.import(this, 'VPC', provider.vpcProps);
+const vpc = Vpc.import(this, 'VPC', provider.vpcProps);
 ```
