@@ -1,14 +1,14 @@
 --------
 
-This documentation is for the developer preview release \(public beta\) of the AWS Cloud Development Kit \(CDK\)\. Releases might lack important features and might have future breaking changes\.
+This documentation is for the developer preview release \(public beta\) of the AWS Cloud Development Kit \(AWS CDK\)\. Releases might lack important features and might have future breaking changes\.
 
 --------
 
 # Apps, Stacks, and Environments and Authentication<a name="apps_and_stacks"></a>
 
-The main artifact of a CDK program known as a *CDK app*\. This is an executable program that you can use to synthesize deployment artifacts that supporting tools, such as the CDK Toolkit, can deploy, as described in [AWS CDK Command Line Interface \(cdk\)](tools.md#cli)\.
+The main artifact of a AWS CDK program known as a *CDK app*\. This is an executable program that you can use to synthesize deployment artifacts that supporting tools, such as the AWS CDK Toolkit, can deploy, as described in [AWS CDK Command Line Interface \(cdk\)](tools.md#cli)\.
 
-Stacks are CDK constructs that you can deploy into an AWS environment\. The combination of AWS Region and account becomes the stack's *environment*\. Most production apps consist of multiple stacks of resources that are deployed as a single transaction using a resource provisioning service such as AWS CloudFormation\. Any resources added directly or indirectly as children of a stack are included in the stack's template when it is synthesized by your CDK program\.
+Stacks are AWS CDK constructs that you can deploy into an AWS environment\. The combination of AWS Region and account becomes the stack's *environment*\. Most production apps consist of multiple stacks of resources that are deployed as a single transaction using a resource provisioning service such as AWS CloudFormation\. Any resources added directly or indirectly as children of a stack are included in the stack's template when it is synthesized by your AWS CDK program\.
 
 Let's look at apps and stacks from the bottom up\.
 
@@ -39,7 +39,7 @@ export class MyStack extends cdk.Stack {
 }
 ```
 
-Next we'll show you how to use one or more stacks to create a CDK app\.
+Next we'll show you how to use one or more stacks to create a AWS CDK app\.
 
 ## Apps<a name="apps"></a>
 

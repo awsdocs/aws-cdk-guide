@@ -1,14 +1,14 @@
 --------
 
-This documentation is for the developer preview release \(public beta\) of the AWS Cloud Development Kit \(CDK\)\. Releases might lack important features and might have future breaking changes\.
+This documentation is for the developer preview release \(public beta\) of the AWS Cloud Development Kit \(AWS CDK\)\. Releases might lack important features and might have future breaking changes\.
 
 --------
 
-# Multi\-Language Support in the CDK<a name="multiple_languages"></a>
+# Multi\-Language Support in the AWS CDK<a name="multiple_languages"></a>
 
-This section describes the multi\-language support in the CDK, including hints for porting TypeScript to one of the supported languages\. See [Hello World Tutorial](getting_started.md#hello_world_tutorial) for an example of creating a CDK app in a supported language\.
+This section describes the multi\-language support in the AWS CDK, including hints for porting TypeScript to one of the supported languages\. See [Hello World Tutorial](getting_started.md#hello_world_tutorial) for an example of creating a AWS CDK app in a supported language\.
 
-The CDK supports C\#, Java, JavaScript, and TypeScript\. Since the CDK is developed in TypeScript, many code examples are still only available in TypeScript\. This section will help you port those TypeScript examples to one of the other programming languages\.
+The AWS CDK supports C\#, Java, JavaScript, and TypeScript\. Since the AWS CDK is developed in TypeScript, many code examples are still only available in TypeScript\. This section will help you port those TypeScript examples to one of the other programming languages\.
 
 ## Importing a Package<a name="multiple_languages_import"></a>
 

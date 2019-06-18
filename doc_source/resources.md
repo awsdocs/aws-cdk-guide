@@ -1,12 +1,12 @@
 --------
 
-This documentation is for the developer preview release \(public beta\) of the AWS Cloud Development Kit \(CDK\)\. Releases might lack important features and might have future breaking changes\.
+This documentation is for the developer preview release \(public beta\) of the AWS Cloud Development Kit \(AWS CDK\)\. Releases might lack important features and might have future breaking changes\.
 
 --------
 
 # Resources<a name="resources"></a>
 
-The CDK creates the low\-level resources from the [AWS CloudFormation Resource Specification](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-resource-specification.html) on a regular basis\. The classes are available under the `CfnXxx` classes of each AWS library\. Their API matches 1:1 with how you would use these resources in AWS CloudFormation\.
+The AWS CDK creates the low\-level resources from the [AWS CloudFormation Resource Specification](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-resource-specification.html) on a regular basis\. The classes are available under the `CfnXxx` classes of each AWS library\. Their API matches 1:1 with how you would use these resources in AWS CloudFormation\.
 
 When defining AWS CloudFormation resources, the `props` argument of the class initializer matches 1:1 to the resource's properties in AWS CloudFormation\.
 

@@ -1,12 +1,12 @@
 --------
 
-This documentation is for the developer preview release \(public beta\) of the AWS Cloud Development Kit \(CDK\)\. Releases might lack important features and might have future breaking changes\.
+This documentation is for the developer preview release \(public beta\) of the AWS Cloud Development Kit \(AWS CDK\)\. Releases might lack important features and might have future breaking changes\.
 
 --------
 
 # Writing AWS CDK Constructs<a name="writing_constructs"></a>
 
-This topic provides some tips for writing idiomatic new constructs for the CDK\. These tips apply equally to constructs written for inclusion in the AWS Construct Library, purpose\-built constructs to achieve a well\-defined goal, or constructs that serve as building blocks for assembling your cloud applications\.
+This topic provides some tips for writing idiomatic new constructs for the AWS CDK\. These tips apply equally to constructs written for inclusion in the AWS Construct Library, purpose\-built constructs to achieve a well\-defined goal, or constructs that serve as building blocks for assembling your cloud applications\.
 
 ## General Design Principles<a name="writing_constructs_general"></a>
 + Favor composition over inheritance\. Most of the constructs should directly extend the `Construct` class instead of some other construct\. Use inheritance mainly to allow polymorphism\. Typically, you define a construct within your scope and expose any of its APIs and properties in the enclosing construct\.
@@ -72,7 +72,7 @@ your-package
 ## Testing<a name="writing_constructs_testing"></a>
 + Add unit tests for every construct \(`test.xxx.ts`\), relating the construct's properties to the AWS CloudFormation that is generated\. Use the `@aws-cdk/assert` library to make it easier to write assertions on the AWS CloudFormation output\.
 + Try to test one concern per unit test\. Even if you could test more than one feature of the construct per test, it's better to write multiple tests, one for each feature\. A test should have one reason to break\.
-+ Add integration tests \(`integ.xxx.ts`\) that are CDK apps that exercise the features of the construct, then load your shell with credentials and run npm run integ to exercise them\. You will also have to run this if the AWS CloudFormation output of the construct changes\.
++ Add integration tests \(`integ.xxx.ts`\) that are AWS CDK apps that exercise the features of the construct, then load your shell with credentials and run npm run integ to exercise them\. You will also have to run this if the AWS CloudFormation output of the construct changes\.
 + If there are packages that you depend on only for testing, add them to `devDependencies` \(instead of regular `dependencies`\)\. You're still not allowed to create dependency cycles this way \(from the root, run scripts/find\-cycles\.sh to determine whether you have created any cycles\)\.
 + If possible, try to make your integ test literate \(`integ.xxx.lit.ts`\) and link to it from the `README`\.
 

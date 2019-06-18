@@ -1,6 +1,6 @@
 --------
 
-This documentation is for the developer preview release \(public beta\) of the AWS Cloud Development Kit \(CDK\)\. Releases might lack important features and might have future breaking changes\.
+This documentation is for the developer preview release \(public beta\) of the AWS Cloud Development Kit \(AWS CDK\)\. Releases might lack important features and might have future breaking changes\.
 
 --------
 
@@ -11,4 +11,4 @@ The [AWS Construct Library](aws_construct_lib.md) includes constructs with APIs 
 Under the hood, these constructs are implemented using AWS CloudFormation resources, which are available in the `CfnXxx` classes in each library\. For example, the [Bucket](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/aws-s3/bucket.html) construct uses the [CfnBucket](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/aws-s3/cfnbucket.html) resource \(as well as other resources, depending on what bucket APIs are used\)\.
 
 **Important**  
-Avoid interacting directly with AWS CloudFormation unless absolutely necessary, such as when a CDK AWS Construct Library does not provide the needed functionality\.
+Avoid interacting directly with AWS CloudFormation unless absolutely necessary, such as when a AWS CDK AWS Construct Library does not provide the needed functionality\.

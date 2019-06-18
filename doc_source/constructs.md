@@ -1,6 +1,6 @@
 --------
 
-This documentation is for the developer preview release \(public beta\) of the AWS Cloud Development Kit \(CDK\)\. Releases might lack important features and might have future breaking changes\.
+This documentation is for the developer preview release \(public beta\) of the AWS Cloud Development Kit \(AWS CDK\)\. Releases might lack important features and might have future breaking changes\.
 
 --------
 
@@ -16,11 +16,11 @@ The AWS CDK provides a class library of constructs called the **AWS CloudFormati
 
 Each module in the AWS Construct Library includes two types of constructs for each resource: low\-level constructs known as an AWS CloudFormation Resource constructs and high\-level constructs known as an AWS Construct Library constructs\.
 
-The CDK creates the low\-level resources from the [AWS CloudFormation Resource Specification](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-resource-specification.html) on a regular basis\. Low\-level constructs are named **Cfn***Xyz*, where *Xyz* represents the name of the resource\. These constructs provide direct, one\-to\-one access to how a resource is synthesized in the AWS CloudFormation template produced by your CDK app\. Using low\-level resources requires you to explicitly configure all resource properties, IAM policies, and have a deep understanding of the details\.
+The AWS CDK creates the low\-level resources from the [AWS CloudFormation Resource Specification](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-resource-specification.html) on a regular basis\. Low\-level constructs are named **Cfn***Xyz*, where *Xyz* represents the name of the resource\. These constructs provide direct, one\-to\-one access to how a resource is synthesized in the AWS CloudFormation template produced by your AWS CDK app\. Using low\-level resources requires you to explicitly configure all resource properties, IAM policies, and have a deep understanding of the details\.
 
 High\-level resource constructs are authored by AWS and offer an intent\-based API for using AWS services\. They provide the same functionality as the low\-level resources, but encode much of the details, boilerplate, and glue logic required to use AWS\. High\-level resources offer convenient defaults and additional knowledge about the inner workings of the AWS resources they represent\. 
 
-Similarly to the AWS SDKs and AWS CloudFormation, the AWS Construct Library is organized into modules, one for each AWS service\. For example, the `@aws-cdk/aws-ec2` module includes resources for Amazon EC2 instances and networking\. The `aws-sns` module includes resources such as `Topic` and `Subscription`\. See the [Reference](https://docs.aws.amazon.com/cdk/api/latest) for descriptions of the CDK packages and constructs\.
+Similarly to the AWS SDKs and AWS CloudFormation, the AWS Construct Library is organized into modules, one for each AWS service\. For example, the `@aws-cdk/aws-ec2` module includes resources for Amazon EC2 instances and networking\. The `aws-sns` module includes resources such as `Topic` and `Subscription`\. See the [Reference](https://docs.aws.amazon.com/cdk/api/latest) for descriptions of the AWS CDK packages and constructs\.
 
 AWS Construct Library members are found in the `@aws-cdk/aws-NAMESPACE` packages, where `NAMESPACE` is the short name for the associated service, such as `SQS` for the AWS Construct Library for the Amazon Simple Queue Service \(Amazon SQS\) service\.
 
@@ -65,7 +65,7 @@ Gets the full path of this construct from the root of the scope \(the `App`\)\.
 
 ## Construct IDs<a name="constructs_ids"></a>
 
-Every construct in a CDK app must have an `id` that's unique within the scope in which the construct is defined\. The CDK uses IDs to find constructs in the construct hierarchy\. It also uses IDs to allocate logical IDs so that AWS CloudFormation can keep track of the generated resources\.
+Every construct in a AWS CDK app must have an `id` that's unique within the scope in which the construct is defined\. The AWS CDK uses IDs to find constructs in the construct hierarchy\. It also uses IDs to allocate logical IDs so that AWS CloudFormation can keep track of the generated resources\.
 
 When a construct is created, its ID is specified as the second initializer argument\.
 
@@ -86,7 +86,7 @@ new s3.Bucket(this, 'MyBucket', {
 
 We recommend that you avoid specifying physical names\. Instead, let AWS CloudFormation generate names for you\. Use attributes, such as `bucket.bucketName`, to discover the generated names\.
 
-When you synthesize a CDK app into an AWS CloudFormation template, the AWS CloudFormation logical ID for each resource in the template is allocated according to the path of that resource in the scope hierarchy\. 
+When you synthesize a AWS CDK app into an AWS CloudFormation template, the AWS CloudFormation logical ID for each resource in the template is allocated according to the path of that resource in the scope hierarchy\. 
 
 ## Construct Properties<a name="constructs_properties"></a>
 
@@ -112,11 +112,11 @@ Attach metadata to a construct using the `addMetadata` method\. Metadata is an A
 
 Use the `addWarning()` method to emit a message when you you synthesis a stack; use the `addError()` method to not only emit a message when you you synthesis a stack, but to also block the deployment of a stack\.
 
-The following example blocks the deployment of `myStack` if it is not in `us-west-2`:
+The following example issues a warning that `myStack` might not be deployed to `us-west-2` \(the `region` property might be a symbolic value until deployment\):
 
 ```
 if (myStack.region !== 'us-west-2') {
-    myStack.node.addError('myStack is not in us-west-2');
+    myStack.node.addWarning('myStack might not be in us-west-2');
 }
 ```
 
@@ -139,13 +139,13 @@ import cdk = require('@aws-cdk/cdk');
 
 const app = new cdk.App();
 const theBestStack = new cdk.Stack(app, 'MarketingSystem');
-theBestStack.node.apply(new cdk.Tag('StackType', 'TheBest'));
+theBestStack.node.applyAspect(new cdk.Tag('StackType', 'TheBest'));
     
 // To remove the tag:
-theBestStack.node.apply(new cdk.RemoveTag('TheBest'));
+theBestStack.node.applyAspect(new cdk.RemoveTag('TheBest'));
     
 // To remove the tag from all EXCEPT the subnets:
-theBestStack.node.apply(new cdk.RemoveTag('TheBest'), {exludeResourceTypes: ['AWS::EC2::Subnet']}));
+theBestStack.node.applyAspect(new cdk.RemoveTag('TheBest'), {exludeResourceTypes: ['AWS::EC2::Subnet']}));
 ```
 
 The tag operations include some properties to fine\-tune how tags are applied to or removed from the resources that the construct creates\.

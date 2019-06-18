@@ -1,6 +1,6 @@
 --------
 
-This documentation is for the developer preview release \(public beta\) of the AWS Cloud Development Kit \(CDK\)\. Releases might lack important features and might have future breaking changes\.
+This documentation is for the developer preview release \(public beta\) of the AWS Cloud Development Kit \(AWS CDK\)\. Releases might lack important features and might have future breaking changes\.
 
 --------
 
@@ -13,13 +13,13 @@ This example walks you through how to create the resources for a simple widget d
 
 This tutorial contains the following steps\.
 
-1. Creates a CDK app
+1. Creates a AWS CDK app
 
 1. Creates a Lambda function that gets a list of widgets with: GET /
 
 1. Creates the service that calls the Lambda function
 
-1. Adds the service to the CDK app
+1. Adds the service to the AWS CDK app
 
 1. Tests the app
 
@@ -28,7 +28,7 @@ This tutorial contains the following steps\.
    + Get a widget by name with GET /\{name\}
    + Delete a widget by name with DELETE /\{name\}
 
-## Create a CDK App<a name="serverless_example_create_app"></a>
+## Create a AWS CDK App<a name="serverless_example_create_app"></a>
 
 Create the TypeScript app **MyWidgetService** in the current folder\.
 
@@ -47,7 +47,7 @@ npm run build
 cdk synth
 ```
 
-You should see a stack like the following, where *CDK\-VERSION* is the version of the CDK\.
+You should see a stack like the following, where *CDK\-VERSION* is the version of the AWS CDK\.
 
 ```
 Resources:
@@ -209,7 +209,7 @@ cdk synth
 
 ## Deploy and Test the App<a name="serverless_example_deploy_and_test"></a>
 
-Before you can deploy your first CDK app, you must bootstrap your deployment\. This creates some AWS infrastructure that the CDK needs\. For details, see the **bootstrap** section of the [CDK Toolchain](tools.md)\(if you've already bootstrapped a CDK app, you'll get a warning and nothing will change\)\.
+Before you can deploy your first AWS CDK app, you must bootstrap your deployment\. This creates some AWS infrastructure that the AWS CDK needs\. For details, see the **bootstrap** section of the [AWS CDK Toolchain](tools.md)\(if you've already bootstrapped a AWS CDK app, you'll get a warning and nothing will change\)\.
 
 ```
 cdk bootstrap

@@ -1,18 +1,18 @@
 --------
 
-This documentation is for the developer preview release \(public beta\) of the AWS Cloud Development Kit \(CDK\)\. Releases might lack important features and might have future breaking changes\.
+This documentation is for the developer preview release \(public beta\) of the AWS Cloud Development Kit \(AWS CDK\)\. Releases might lack important features and might have future breaking changes\.
 
 --------
 
 # Getting Started With the AWS CDK<a name="getting_started"></a>
 
-This topic describes how to install and configure the AWS CDK and create your first CDK app\.
+This topic describes how to install and configure the AWS CDK and create your first AWS CDK app\.
 
 ## Prerequisites<a name="getting_started_prerequisites"></a>
 
-**CDK command line tools**  
+**AWS CDK command line tools**  
 + [Node\.js \(>= 8\.11\.x\)](https://nodejs.org/en/download)
-+ You must specify both your credentials and an AWS Region to use the CDK Toolkit;, as described in [Specifying Your Credentials and Region](#getting_started_credentials)\.
++ You must specify both your credentials and an AWS Region to use the AWS CDK Toolkit;, as described in [Specifying Your Credentials and Region](#getting_started_credentials)\.
 
 ------
 #### [ TypeScript ]
@@ -43,15 +43,15 @@ none
 
 ------
 
-## Installing the CDK<a name="getting_started_install"></a>
+## Installing the AWS CDK<a name="getting_started_install"></a>
 
-Install the CDK using the following command\.
+Install the AWS CDK using the following command\.
 
 ```
 npm install -g aws-cdk
 ```
 
-Run the following command to see the version number of the CDK\.
+Run the following command to see the version number of the AWS CDK\.
 
 ```
 cdk --version
@@ -59,7 +59,7 @@ cdk --version
 
 ## Updating Your Language Dependencies<a name="getting_started_update"></a>
 
-If you get an error message that your language framework is out of date, use one of the following commands to update the components that the CDK needs to support the language\.
+If you get an error message that your language framework is out of date, use one of the following commands to update the components that the AWS CDK needs to support the language\.
 
 ------
 #### [ TypeScript ]
@@ -105,13 +105,18 @@ You might have to call this multiple times to update all dependencies\.
 You can use the `env` property on a stack to specify the account and region used when deploying a stack, as shown in the following example, where *REGION* is the region and *ACCOUNT* is the account ID\.
 
 ```
-new MyStack(app, { env: { region: 'REGION', account: 'ACCOUNT' } });
+new MyStack(app, {
+    env: {
+        region: 'REGION',
+        account: 'ACCOUNT' 
+    } 
+});
 ```
 
 **Note**  
-The CDK team recommends that you explicitly set your account and region using the `env` property on a stack when you deploy stacks to production\.
+The AWS CDK team recommends that you explicitly set your account and region using the `env` property on a stack when you deploy stacks to production\.
 
-Since you can create any number of stacks in any of your accounts in any region that supports all of the stack's resources, the CDK team recommends that you create your production stacks in one CDK app, and deploy them as necessary\. For example, if you own three accounts, with account IDs *ONE*, *TWO*, and *THREE* and want to be able to deploy each one in **us\-west\-2** and **us\-east\-1**, you might declare them as: 
+Since you can create any number of stacks in any of your accounts in any region that supports all of the stack's resources, the AWS CDK team recommends that you create your production stacks in one AWS CDK app, and deploy them as necessary\. For example, if you own three accounts, with account IDs *ONE*, *TWO*, and *THREE* and want to be able to deploy each one in **us\-west\-2** and **us\-east\-1**, you might declare them as: 
 
 ```
 new MyStack(app, 'Stack-One-W', { env: { account: 'ONE', region: 'us-west-2' }});
@@ -129,11 +134,11 @@ cdk deploy Stack-Two-E
 ```
 
 **Note**  
-If the existing credentials do not have permission to create resources within the account you specify, the CDK returns an AWS CloudFormation error when you attempt to deploy the stack\.
+If the existing credentials do not have permission to create resources within the account you specify, the AWS CDK returns an AWS CloudFormation error when you attempt to deploy the stack\.
 
 ## Specifying Your Credentials and Region<a name="getting_started_credentials"></a>
 
-You must specify your credentials and an AWS Region to use the CDK Toolkit\. The CDK looks for credentials and region in the following order:
+You must specify your credentials and an AWS Region to use the AWS CDK Toolkit\. The CDK looks for credentials and region in the following order:
 + Using the \-\-profile option to cdk commands\.
 + Using environment variables\.
 + Using the default profile as set by the AWS Command Line Interface \(AWS CLI\)\.
@@ -398,7 +403,7 @@ npm install @aws-cdk/aws-s3
 ------
 #### [ Java ]
 
-If necessary, add the following to `pom.xml`, where *CDK\-VERSION* is the version of the CDK\.
+If necessary, add the following to `pom.xml`, where *CDK\-VERSION* is the version of the AWS CDK\.
 
 ```
 <dependency>
@@ -593,7 +598,7 @@ Synthesize an AWS CloudFormation template for the app, as follows\. If you get a
 cdk synth
 ```
 
-This command executes the CDK app and synthesizes an AWS CloudFormation template for the `HelloCdkStack` stack\. You should see something similar to the following, where *VERSION* is the version of the CDK\.
+This command executes the AWS CDK app and synthesizes an AWS CloudFormation template for the `HelloCdkStack` stack\. You should see something similar to the following, where *VERSION* is the version of the AWS CDK\.
 
 ```
 Resources:
@@ -616,7 +621,7 @@ Resources:
 You can see that the stack contains an `AWS::S3::Bucket` resource with the versioning configuration we want\.
 
 **Note**  
-The toolkit automatically added the **AWS::CDK::Metadata** resource to your template\. The CDK uses metadata to gain insight into how the CDK is used\. One possible benefit is that the CDK team could notify users if a construct is going to be deprecated\. For details, including how to [opt out](tools.md#version_reporting_opt_out) of version reporting, see [Version Reporting](tools.md#version_reporting) \.
+The toolkit automatically added the **AWS::CDK::Metadata** resource to your template\. The AWS CDK uses metadata to gain insight into how the AWS CDK is used\. One possible benefit is that the CDK team could notify users if a construct is going to be deprecated\. For details, including how to [opt out](tools.md#version_reporting_opt_out) of version reporting, see [Version Reporting](tools.md#version_reporting) \.
 
 ### Deploying the Stack<a name="hello_world_tutorial_deploy_stack"></a>
 
@@ -638,10 +643,10 @@ Configure the bucket to use AWS Key Management Service \(AWS KMS\) managed encry
 Update `lib/hello-cdk-stack.ts`
 
 ```
-new s3.Bucket(this, 'MyFirstBucket', {
-    versioned: true,
-    encryption: s3.BucketEncryption.KmsManaged
-});
+    new s3.Bucket(this, 'MyFirstBucket', {
+      versioned: true,
+      encryption: s3.BucketEncryption.KmsManaged
+    });
 ```
 
 ------
@@ -734,7 +739,7 @@ Nothing to compile\.
 
 ### Preparing for Deployment<a name="hello_world_tutorial_prep_deployment"></a>
 
-Before you deploy the updated app, evaluate the difference between the CDK app and the deployed app\.
+Before you deploy the updated app, evaluate the difference between the AWS CDK app and the deployed app\.
 
 ```
 cdk diff
@@ -760,7 +765,7 @@ Deploy the changes\.
 cdk deploy
 ```
 
-Enter y to approve the changes and deploy the updated stack\. The CDK Toolkit updates the bucket configuration to enable server\-side AWS KMS encryption for the bucket\. The final output is the ARN of the stack, where *REGION* is your default region, *ACCOUNT\-ID* is your account ID, and *ID* is a unique identifier for the bucket or stack\.
+Enter y to approve the changes and deploy the updated stack\. The AWS CDK Toolkit updates the bucket configuration to enable server\-side AWS KMS encryption for the bucket\. The final output is the ARN of the stack, where *REGION* is your default region, *ACCOUNT\-ID* is your account ID, and *ID* is a unique identifier for the bucket or stack\.
 
 ```
 HelloCdkStack: deploying...

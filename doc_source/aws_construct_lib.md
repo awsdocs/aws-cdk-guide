@@ -1,22 +1,22 @@
 --------
 
-This documentation is for the developer preview release \(public beta\) of the AWS Cloud Development Kit \(CDK\)\. Releases might lack important features and might have future breaking changes\.
+This documentation is for the developer preview release \(public beta\) of the AWS Cloud Development Kit \(AWS CDK\)\. Releases might lack important features and might have future breaking changes\.
 
 --------
 
 # AWS Construct Library<a name="aws_construct_lib"></a>
 
-The AWS Construct Library is a set of modules that expose APIs for defining AWS resources in AWS CDK apps\. Each module is based on the AWS service to which the resource belongs\. For example, [EC2](https://docs.aws.amazon.com/cdk/api/latest/docs/aws-ec2-readme.html) includes the [Vpc](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/aws-ec2/vpc.html) construct, which makes it easy to define an [Amazon VPC](https://aws.amazon.com/vpc) in your CDK app\.
+The AWS Construct Library is a set of modules that expose APIs for defining AWS resources in AWS CDK apps\. Each module is based on the AWS service to which the resource belongs\. For example, [EC2](https://docs.aws.amazon.com/cdk/api/latest/docs/aws-ec2-readme.html) includes the [Vpc](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/aws-ec2/vpc.html) construct, which makes it easy to define an [Amazon VPC](https://aws.amazon.com/vpc) in your AWS CDK app\.
 
-The AWS Construct Library modules are described in the [CDK Reference](https://awslabs.github.io/aws-cdk/)\.
+The AWS Construct Library modules are described in the [AWS CDK Reference](https://awslabs.github.io/aws-cdk/)\.
 
 ## Versioning<a name="aws_construct_lib_versioning"></a>
 
-The CDK follows the semantic versioning model\. This means that breaking changes are limited to major releases, such as 2\.0\.
+The AWS CDK follows the semantic versioning model\. This means that breaking changes are limited to major releases, such as 2\.0\.
 
 Minor releases, such as 2\.4, guarantee that any code written in a previous minor version, such as 2\.1, will build, run, and produce the exact same results when built, run, and producing results, as before\.
 
-## CDK Patterns<a name="aws_construct_lib_patterns"></a>
+## AWS CDK Patterns<a name="aws_construct_lib_patterns"></a>
 
 The AWS Construct Library includes many common patterns and capabilities that are designed to enable developers to focus on their application\-specific architectures and reduce the boilerplate and glue logic needed when working with AWS services\.
 
@@ -79,7 +79,7 @@ const stack2 = new StackThatExpectsABucket(app, 'Stack2', {
 });
 ```
 
-If the resource is in the same account and region, but in a different stack, the CDK creates the relevant information, such as the bucket name, that is necessary to transfer that information from one stack to the other\.
+If the resource is in the same account and region, but in a different stack, the AWS CDK creates the relevant information, such as the bucket name, that is necessary to transfer that information from one stack to the other\.
 
 ### Passing Resources from a Different Account or Region<a name="aws_construct_lib_referencing_other"></a>
 

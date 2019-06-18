@@ -1,4 +1,4 @@
-# AWS Cloud Development Kit (CDK) Developer Guide
+# AWS Cloud Development Kit (AWS CDK) Developer Guide
 
 -----
 *****Copyright &copy; 2019 Amazon Web Services, Inc. and/or its affiliates. All rights reserved.*****
@@ -14,7 +14,7 @@ Amazon's trademarks and trade dress may not be used in
 
 -----
 ## Contents
-+ [What is the AWS Cloud Development Kit?](home.md)
++ [What Is the AWS Cloud Development Kit?](home.md)
 + [Getting Started With the AWS CDK](getting_started.md)
 + [Concepts](core_concepts.md)
    + [Constructs](constructs.md)
@@ -27,7 +27,7 @@ Amazon's trademarks and trade dress may not be used in
    + [Tokens](tokens.md)
    + [AWS CDK Lifecycle](lifecycle.md)
 + [Writing AWS CDK Constructs](writing_constructs.md)
-   + [Multi-Language Support in the CDK](multiple_languages.md)
+   + [Multi-Language Support in the AWS CDK](multiple_languages.md)
 + [AWS Construct Library](aws_construct_lib.md)
 + [About the Reference](reference.md)
 + [Examples](examples.md)
@@ -44,7 +44,7 @@ Amazon's trademarks and trade dress may not be used in
    + [Create an App with Multiple Stacks](stack_how_to_create_multiple_stacks.md)
    + [Set a CloudWatch Alarm](how_to_set_cw_alarm.md)
    + [Get a Value from a Context Variable](get_context_var.md)
-+ [CDK Toolchain](tools.md)
-+ [Troubleshooting the CDK](troubleshooting.md)
++ [AWS CDK Toolchain](tools.md)
++ [Troubleshooting the AWS CDK](troubleshooting.md)
 + [OpenPGP Keys for the AWS CDK and JSII](pgp-keys.md)
 + [Document History for the AWS CDK Developer Guide](doc-history.md)

@@ -1,16 +1,16 @@
 --------
 
-This documentation is for the developer preview release \(public beta\) of the AWS Cloud Development Kit \(CDK\)\. Releases might lack important features and might have future breaking changes\.
+This documentation is for the developer preview release \(public beta\) of the AWS Cloud Development Kit \(AWS CDK\)\. Releases might lack important features and might have future breaking changes\.
 
 --------
 
 # Identifiers<a name="identifiers"></a>
 
-The CDK deals with many types of identifiers and names\. To use the AWS CDK effectively and avoid errors, you need to understand the types of identifiers\.
+The AWS CDK deals with many types of identifiers and names\. To use the AWS CDK effectively and avoid errors, you need to understand the types of identifiers\.
 
-Identifiers must be unique within the scope in which they are created; they do not need to be globally unique in your CDK application\.
+Identifiers must be unique within the scope in which they are created; they do not need to be globally unique in your AWS CDK application\.
 
-If you attempt to create an identifier with the same value within the same scope, the CDK throws an exception\.
+If you attempt to create an identifier with the same value within the same scope, the AWS CDK throws an exception\.
 
 ## Construct IDs<a name="identifiers_construct_ids"></a>
 
@@ -37,11 +37,11 @@ new MyStack(app, 'Stack2');
 
 ## Paths<a name="identifiers_paths"></a>
 
-As the constructs in an CDK application form a hierarchy, we refer to the collection of ids from a given construct, then of its parent construct, then grandparent construct, and so on up to the root of the construct tree, which is an instance of the `App` class as a *path*\.
+As the constructs in an AWS CDK application form a hierarchy, we refer to the collection of ids from a given construct, then of its parent construct, then grandparent construct, and so on up to the root of the construct tree, which is an instance of the `App` class as a *path*\.
 
-The CDK typically displays paths in your templates as a string, with the ids from the levels separated by slashes, starting at the node just below the root `App` instance, which is usually a stack\. For example, the paths of the two Amazon S3 bucket resources in the previous code example are `Stack1/MyBucket` and `Stack2/MyBucket`\.
+The AWS CDK typically displays paths in your templates as a string, with the ids from the levels separated by slashes, starting at the node just below the root `App` instance, which is usually a stack\. For example, the paths of the two Amazon S3 bucket resources in the previous code example are `Stack1/MyBucket` and `Stack2/MyBucket`\.
 
-You can access the path of any construct programatically, as shown in the following example, which gets the path of `myConstruct`\. Since ids must be unique within the scope they are created, their paths are always unique within a CDK application\.
+You can access the path of any construct programatically, as shown in the following example, which gets the path of `myConstruct`\. Since ids must be unique within the scope they are created, their paths are always unique within a AWS CDK application\.
 
 ```
 const path: string = myConstruct.node.path;
@@ -49,9 +49,9 @@ const path: string = myConstruct.node.path;
 
 ## Unique IDs<a name="identifiers_unique_ids"></a>
 
-Since AWS CloudFormation requires that all logical IDs in a template are unique, the CDK must be able to generate unique identifier for each construct in an application\. Since the CDK already has paths that are globally unique, the CDK generates these unique identifiers by concatenating the elements of the path, and adds an 8\-digit hash\. The hash is necessary, as otherwise two distinct paths, such as `A/B/C` and `A/BC` would result in the same identifier\. The CDK calls this concatenated path elements and hash the *unique ID* of the construct\.
+Since AWS CloudFormation requires that all logical IDs in a template are unique, the AWS CDK must be able to generate unique identifier for each construct in an application\. Since the AWS CDK already has paths that are globally unique, the AWS CDK generates these unique identifiers by concatenating the elements of the path, and adds an 8\-digit hash\. The hash is necessary, as otherwise two distinct paths, such as `A/B/C` and `A/BC` would result in the same identifier\. The AWS CDK calls this concatenated path elements and hash the *unique ID* of the construct\.
 
-You can access the unique ID of any construct programatically, as shown in the following example, which gets the unique ID of `myConstruct`\. Since ids must be unique within the scope they are created, their paths are always unique within a CDK application\.
+You can access the unique ID of any construct programatically, as shown in the following example, which gets the unique ID of `myConstruct`\. Since ids must be unique within the scope they are created, their paths are always unique within a AWS CDK application\.
 
 ```
 const uid: string = myConstruct.node.uniqueId;

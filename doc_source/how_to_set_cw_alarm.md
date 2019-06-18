@@ -1,6 +1,6 @@
 --------
 
-This documentation is for the developer preview release \(public beta\) of the AWS Cloud Development Kit \(CDK\)\. Releases might lack important features and might have future breaking changes\.
+This documentation is for the developer preview release \(public beta\) of the AWS Cloud Development Kit \(AWS CDK\)\. Releases might lack important features and might have future breaking changes\.
 
 --------
 
@@ -27,7 +27,7 @@ const metric = new cloudwatch.Metric({
 });
 ```
 
-Many CDK packages contain an AWS Construct Library construct with functionality to enable setting an alarm based on an existing metric\. For example, you can create an Amazon SQS alarm for the **ApproximateNumberOfMessagesVisible** metric that raises an alarm if the queue has more than 100 messages available for retrieval in two of the last three seconds\.
+Many AWS CDK packages contain an AWS Construct Library construct with functionality to enable setting an alarm based on an existing metric\. For example, you can create an Amazon SQS alarm for the **ApproximateNumberOfMessagesVisible** metric that raises an alarm if the queue has more than 100 messages available for retrieval in two of the last three seconds\.
 
 ```
 const qMetric = queue.metric('ApproximateNumberOfMessagesVisible');
