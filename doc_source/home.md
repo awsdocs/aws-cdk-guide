@@ -4,7 +4,7 @@ This documentation is for the developer preview release \(public beta\) of the A
 
 --------
 
-# What Is the AWS Cloud Development Kit?<a name="home"></a>
+# About the AWS Cloud Development Kit<a name="home"></a>
 
 Welcome to the *AWS Cloud Development Kit \(AWS CDK\) Developer Guide*\. This document provides information about the AWS CDK, which is a software development framework for defining cloud infrastructure in code and provisioning it through AWS CloudFormation\.
 
@@ -48,7 +48,7 @@ export class MyEcsConstructStack extends cdk.Stack {
     });
 ```
 
-This produces an AWS CloudFormation template of over 600 lines; deploying the AWS CDK app produces over 50 resources of the following types\.
+This produces an AWS CloudFormation [template of over 600 lines](https://github.com/awsdocs/aws-cdk-guide/blob/master/doc_source/my_ecs_construct-stack.yaml); deploying the AWS CDK app produces over 50 resources of the following types\.
 +  [AWS::EC2::EIP](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-ec2-eip.html) 
 +  [AWS::EC2::InternetGateway](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-ec2-internetgateway.html) 
 +  [AWS::EC2::NatGateway](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-ec2-natgateway.html) 
@@ -69,8 +69,15 @@ This produces an AWS CloudFormation template of over 600 lines; deploying the AW
 +  [AWS::IAM::Role](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-iam-role.html) 
 +  [AWS::Logs::LogGroup](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-logs-loggroup.html) 
 
-Another advantage of IAC \(infrastructure as code\) is that you get code completion within your IDE\.
-
+Other advantages of the AWS CDK include:
++ Use logic \(if statements, for\-loops, etc\) when defining your infrastructure
++ Use object\-oriented techniques to create a model of your system
++ Define high level abstractions, share them, and publish them to your team, company, or community
++ Organize your project into logical modules
++ Share and reuse your infrastructure as a library
++ Testing your infrastructure code using industry\-standard protocols
++ Use your existing code review workflow
++ Code completion within your IDE  
 ![\[Image NOT FOUND\]](http://docs.aws.amazon.com/cdk/latest/guide/images/CodeCompletion.png)
 
 ## Developing with the AWS CDK<a name="developing"></a>

@@ -112,11 +112,11 @@ Attach metadata to a construct using the `addMetadata` method\. Metadata is an A
 
 Use the `addWarning()` method to emit a message when you you synthesis a stack; use the `addError()` method to not only emit a message when you you synthesis a stack, but to also block the deployment of a stack\.
 
-The following example issues a warning that `myStack` might not be deployed to `us-west-2` \(the `region` property might be a symbolic value until deployment\):
+The following example issues a warning that `myStack` is not deployed to `us-west-2` \(`isUnresolved` determines whether `stack.region` is a symbolic value, which are not resolved until deployment\):
 
 ```
-if (myStack.region !== 'us-west-2') {
-    myStack.node.addWarning('myStack might not be in us-west-2');
+if (!Token.isUnresolved(stack.region) && myStack.region !== 'us-west-2') {
+    myStack.node.addWarning('myStack is not in us-west-2');
 }
 ```
 
