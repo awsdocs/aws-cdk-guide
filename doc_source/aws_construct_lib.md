@@ -1,22 +1,22 @@
 --------
 
-This documentation is for the developer preview release \(public beta\) of the AWS Cloud Development Kit \(CDK\)\. Releases might lack important features and might have future breaking changes\.
+This documentation is for the developer preview release \(public beta\) of the AWS Cloud Development Kit \(AWS CDK\)\. Releases might lack important features and might have future breaking changes\.
 
 --------
 
 # AWS Construct Library<a name="aws_construct_lib"></a>
 
-The AWS Construct Library is a set of modules that expose APIs for defining AWS resources in AWS CDK apps\. Each module is based on the AWS service to which the resource belongs\. For example, [EC2](https://docs.aws.amazon.com/cdk/api/latest/docs/aws-ec2-readme.html) includes the [Vpc](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/aws-ec2/vpc.html) construct, which makes it easy to define an [Amazon VPC](https://aws.amazon.com/vpc) in your CDK app\.
+The AWS Construct Library is a set of modules that expose APIs for defining AWS resources in AWS CDK apps\. Each module is based on the AWS service to which the resource belongs\. For example, [EC2](https://docs.aws.amazon.com/cdk/api/latest/docs/aws-ec2-readme.html) includes the [Vpc](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/aws-ec2/vpc.html) construct, which makes it easy to define an [Amazon VPC](https://aws.amazon.com/vpc) in your AWS CDK app\.
 
-The AWS Construct Library modules are described in the [CDK Reference](https://awslabs.github.io/aws-cdk/)\.
+The AWS Construct Library modules are described in the [AWS CDK Reference](https://awslabs.github.io/aws-cdk/)\.
 
 ## Versioning<a name="aws_construct_lib_versioning"></a>
 
-The CDK follows the semantic versioning model\. This means that breaking changes are limited to major releases, such as 2\.0\.
+The AWS CDK follows the semantic versioning model\. This means that breaking changes are limited to major releases, such as 2\.0\.
 
-Minor releases, such as 2\.4, guarantee that any code written in a previous minor version, such as 2\.1, will build, run, and produce the exact same results when built, run, and producing results, as before\.
+Minor releases, such as 2\.4, guarantee that any code written in a previous minor version, such as 2\.1, will build, run, and produce exactly the same results when built, run, and producing results, as before\.
 
-## CDK Patterns<a name="aws_construct_lib_patterns"></a>
+## AWS CDK Patterns<a name="aws_construct_lib_patterns"></a>
 
 The AWS Construct Library includes many common patterns and capabilities that are designed to enable developers to focus on their application\-specific architectures and reduce the boilerplate and glue logic needed when working with AWS services\.
 
@@ -28,7 +28,7 @@ Also, most AWS constructs expose `grant*` methods that allow intent\-based permi
 
 ## Metrics<a name="aws_construct_lib_metrics"></a>
 
-Many AWS resources emit [Amazon CloudWatch metrics](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/working_with_metrics.html) as part of their normal operation\. Metrics can be used to set up an [Alarm](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/aws-cloudwatch/alarm.html) or can be included in a [Dashboard](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/aws-cloudwatch/dashboard.html)\.
+Many AWS resources emit [Amazon CloudWatch metrics](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/working_with_metrics.html) as part of their normal operation\. You can use metrics to set up an [Alarm](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/aws-cloudwatch/alarm.html) or you can include them in a [Dashboard](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/aws-cloudwatch/dashboard.html)\.
 
 You can obtain [Metric](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/aws-cloudwatch/metric.html) objects for AWS constructs by using `metricXxx()` methods\. For example, the [metricAllDuration](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/aws-lambda/function.html#aws_lambda_Function_metricAllDuration) method reports the execution time of an AWS Lambda function\.
 
@@ -36,23 +36,25 @@ For more information, see [CloudWatch](https://docs.aws.amazon.com/cdk/api/lates
 
 ## Events<a name="aws_construct_lib_events"></a>
 
-Many AWS constructs include `on*` methods, which you can to react to events emitted by the construct\. For example, the CodeCommit [Repository](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/aws-codecommit/repository.html) construct implements the [onCommit](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/aws-codecommit/irepository.html#aws_codecommit_IRepository_onCommit) method\. You can use AWS constructs as targets for various event provider interfaces, such as [IEventRuleTarget](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/aws-events/ieventruletarget.html) \(for the CloudWatch event rule target\), [IAlarmAction](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/aws-cloudwatch/ialarmaction.html) \(for Amazon CloudWatch alarm actions\), and so on\.
+Many AWS constructs include `on*` methods, which you can use to react to events emitted by the construct\. For example, the AWS CodeCommit [Repository](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/aws-codecommit/repository.html) construct implements the [onCommit](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/aws-codecommit/irepository.html#aws_codecommit_IRepository_onCommit) method\. 
+
+You can use AWS constructs as targets for various event provider interfaces, such as [IEventRuleTarget](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/aws-events/ieventruletarget.html) \(for the CloudWatch event rule target\), [IAlarmAction](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/aws-cloudwatch/ialarmaction.html) \(for Amazon CloudWatch alarm actions\), and so on\.
 
 For more information, see [CloudWatch](https://docs.aws.amazon.com/cdk/api/latest/docs/aws-cloudwatch-readme.html) and [Events](https://docs.aws.amazon.com/cdk/api/latest/docs/aws-events-readme.html)\.
 
 ## Referencing Resources<a name="aws_construct_lib_referencing"></a>
 
-This section contains information about how to reference other resources, either from within the same app, or across apps\. The only caveat is that the resource must be in the same account and region\.
+This section contains information about how to reference other resources, either from within the same app, or across apps\. The resource you're referencing must be in the same account and AWS Region as the app\.
 
-Many CDK classes have required properties that are CDK resource objects \(resources\)\. To satisfy these requirements, you can refer to a resource in one of two ways:
+Many AWS CDK classes have required properties that are CDK resource objects \(resources\)\. To satisfy these requirements, you can refer to a resource in one of two ways:
 + By passing the resource directly\.
 + By passing the resource's unique identifier\. This is typically an ARN, but it could also be an ID or a name\.
 
-For example, an Amazon ECS service requires a reference to the cluster on which it runs; a CloudFront distribution requires a reference to the bucket containing source code\.
+For example, an Amazon ECS service requires a reference to the cluster on which it runs; an Amazon CloudFront distribution requires a reference to the bucket containing source code\.
 
-In the AWS CDK, all AWS Construct Library resources that expect another resource take a property that is of the interface type of that resource\. For example, the Amazon ECS service takes a property of type `cluster: ICluster;` the CloudFront distribution takes a property of type `sourceBucket: IBucket`\.
+In the AWS CDK, all AWS Construct Library resources that expect another resource take a property that is of the interface type of that resource\. For example, the Amazon ECS service takes a property of type `cluster: ICluster;`\. The CloudFront distribution takes a property of type `sourceBucket: IBucket`\.
 
-Since every resource implements its corresponding interface, you can directly pass any resources you're defining in the same AWS CDK application, as shown in the following example, which creates a new Amazon ECS cluster\.
+Because every resource implements its corresponding interface, you can directly pass any resources you're defining in the same AWS CDK application, as shown in the following example\. This example creates a new Amazon ECS cluster\.
 
 ```
 const cluster = new ecs.Cluster(this, 'Cluster', { /* ... */ });
@@ -65,7 +67,7 @@ const service = new ecs.Service(this, 'Service', {
 
 ### Passing Resources from a Different Stack<a name="aws_construct_lib_referencing_stack"></a>
 
-You can refer to resources in a different stack, but in the same account and region\. If you need to refer to a resource in a different account or region, see the next section\.  
+You can refer to resources in a different stack, but in the same account and AWS Region, as shown in the following example\. If you need to refer to a resource in a different account or Region, see [Passing Resources from a Different Account or Region](#aws_construct_lib_referencing_other)\. 
 
 ```
 const account = '123456789012';
@@ -79,16 +81,16 @@ const stack2 = new StackThatExpectsABucket(app, 'Stack2', {
 });
 ```
 
-If the resource is in the same account and region, but in a different stack, the CDK creates the relevant information, such as the bucket name, that is necessary to transfer that information from one stack to the other\.
+If the resource is in the same account and Region, but in a different stack, the AWS CDK creates the relevant information, such as the bucket name, that's necessary to transfer that information from one stack to the other\.
 
 ### Passing Resources from a Different Account or Region<a name="aws_construct_lib_referencing_other"></a>
 
-You can refer to a resource in a different account or region by using the resource's unique indentifier, such as:
+You can refer to a resource in a different account or AWS Region by using the resource's unique identifier, such as the following:
 + `bucketName` for `bucket`
 + `functionArn` for `lambda`
 + `securityGroupId` for `securityGroup`
 
-The following example shows how to pass a generated bucket name to a Lambda function\.
+The following example shows how to pass a generated bucket name to an AWS Lambda function\.
 
 ```
 const bucket = new s3.Bucket(this, 'Bucket');
@@ -103,7 +105,9 @@ new lambda.Function(this, 'MyLambda', {
 
 ### Turning Unique Identifiers into Objects<a name="aws_construct_lib_referencing_ids"></a>
 
-If you have the unique identifier for a resource, such as a bucket ARN, but you need to pass it to a AWS CDK construct that expects an object, you can turn the ARN into a AWS CDK object in the current stack by calling a static factory method on the resource's class\. The following example shows how to create a bucket from an existing bucket ARN\.
+If you have the unique identifier for a resource, such as a bucket ARN, but you need to pass it to an AWS CDK construct that expects an object, you can turn the ARN into an AWS CDK object in the current stack by calling a static factory method on the resource's class\. 
+
+The following example shows how to create a bucket from an existing bucket ARN\.
 
 ```
 // Construct a resource (bucket) by its full ARN (can be cross account)
