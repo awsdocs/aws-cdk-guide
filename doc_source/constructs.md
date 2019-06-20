@@ -145,7 +145,7 @@ theBestStack.node.apply(new cdk.Tag('StackType', 'TheBest'));
 theBestStack.node.apply(new cdk.RemoveTag('TheBest'));
     
 // To remove the tag from all EXCEPT the subnets:
-theBestStack.node.apply(new cdk.RemoveTag('TheBest'), {exludeResourceTypes: ['AWS::EC2::Subnet']}));
+theBestStack.node.apply(new cdk.RemoveTag('TheBest'), {excludeResourceTypes: ['AWS::EC2::Subnet']}));
 ```
 
 The tag operations include some properties to fine\-tune how tags are applied to or removed from the resources that the construct creates\.
