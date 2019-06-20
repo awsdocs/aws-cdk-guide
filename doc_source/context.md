@@ -1,12 +1,12 @@
 --------
 
-This documentation is for the developer preview release \(public beta\) of the AWS Cloud Development Kit \(CDK\)\. Releases might lack important features and might have future breaking changes\.
+This documentation is for the developer preview release \(public beta\) of the AWS Cloud Development Kit \(AWS CDK\)\. Releases might lack important features and might have future breaking changes\.
 
 --------
 
 # Run\-Time Context<a name="context"></a>
 
-The CDK uses context to retrieve information such as the Availability Zones in your account or Amazon Machine Image \(AMI\) IDs used to start your instances\. To avoid unexpected changes to your deployments, such as when a new Amazon Linux AMI is released, thus changing your Auto Scaling group, the CDK stores context values in `cdk.context.json`\. This ensures that the CDK retrieves the same value the next time it synthesises your app\. Don't forget to put this file under version control\.
+The AWS CDK uses context to retrieve information such as the Availability Zones in your account or Amazon Machine Image \(AMI\) IDs used to start your instances\. To avoid unexpected changes to your deployments, such as when a new Amazon Linux AMI is released, thus changing your Auto Scaling group, the AWS CDK stores context values in `cdk.context.json`\. This ensures that the AWS CDK retrieves the same value the next time it synthesises your app\. Don't forget to put this file under version control\.
 
 ## Viewing and Managing Context<a name="context_viewing"></a>
 
@@ -64,7 +64,7 @@ Use this provider to get the list of all supported Availability Zones in this co
 
 ```
 // "this" refers to a Construct scope
-const zones: string[] = new AvailabilityZoneProvider(this).availabilityZones;
+const zones: string[] = Context.getAvailabilityZones();
 
 for (let zone of zones) {
   // Do something for each zone!
@@ -72,7 +72,7 @@ for (let zone of zones) {
 ```
 
 [HostedZoneProvider](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/aws-route53/hostedzoneprovider.html)  
-Use this provider to discover existing hosted zones in your account\. For example, the following code imports an existing hosted zone into your CDK app so you can add records to it\.  
+Use this provider to discover existing hosted zones in your account\. For example, the following code imports an existing hosted zone into your AWS CDK app so you can add records to it\.  
 
 ```
 const zone: HostedZoneRef = new HostedZoneProvider(this, {
@@ -84,7 +84,7 @@ const zone: HostedZoneRef = new HostedZoneProvider(this, {
 Use this provider to read values from the current Region's AWS Systems Manager parameter store\. For example, the following code returns the value of the *my\-awesome\-parameter* key\.  
 
 ```
-const ami: string = new SSMParameterProvider(this, {
+const ami: string = Context.getSsmParameter(this, {
   parameterName: 'my-awesome-parameter'
 ).parameterValue();
 ```

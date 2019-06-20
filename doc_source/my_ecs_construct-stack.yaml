@@ -374,6 +374,11 @@ Resources:
     Type: AWS::ECS::Cluster
     Metadata:
       aws:cdk:path: MyEcsConstruct/MyCluster/Resource
+  MyFargateServiceLoggingLogGroup271A17C2:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Retain
+    Metadata:
+      aws:cdk:path: MyEcsConstruct/MyFargateService/Logging/LogGroup/Resource
   MyFargateServiceLBDE830E97:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
     Properties:
@@ -544,11 +549,6 @@ Resources:
         - Ref: MyFargateServiceTaskDefExecutionRoleD6305504
     Metadata:
       aws:cdk:path: MyEcsConstruct/MyFargateService/TaskDef/ExecutionRole/DefaultPolicy/Resource
-  MyFargateServiceLoggingLogGroup271A17C2:
-    Type: AWS::Logs::LogGroup
-    DeletionPolicy: Retain
-    Metadata:
-      aws:cdk:path: MyEcsConstruct/MyFargateService/Logging/LogGroup/Resource
   MyFargateServiceF490C034:
     Type: AWS::ECS::Service
     Properties:
@@ -617,7 +617,7 @@ Resources:
   CDKMetadata:
     Type: AWS::CDK::Metadata
     Properties:
-      Modules: aws-cdk=0.34.0,@aws-cdk/assets=0.34.0,@aws-cdk/assets-docker=0.34.0,@aws-cdk/aws-applicationautoscaling=0.34.0,@aws-cdk/aws-autoscaling=0.34.0,@aws-cdk/aws-autoscaling-common=0.34.0,@aws-cdk/aws-autoscaling-hooktargets=0.34.0,@aws-cdk/aws-cloudformation=0.34.0,@aws-cdk/aws-cloudwatch=0.34.0,@aws-cdk/aws-ec2=0.34.0,@aws-cdk/aws-ecr=0.34.0,@aws-cdk/aws-ecs=0.34.0,@aws-cdk/aws-ecs-patterns=0.34.0,@aws-cdk/aws-elasticloadbalancingv2=0.34.0,@aws-cdk/aws-events=0.34.0,@aws-cdk/aws-events-targets=0.34.0,@aws-cdk/aws-iam=0.34.0,@aws-cdk/aws-kms=0.34.0,@aws-cdk/aws-lambda=0.34.0,@aws-cdk/aws-logs=0.34.0,@aws-cdk/aws-route53=0.34.0,@aws-cdk/aws-route53-targets=0.34.0,@aws-cdk/aws-s3=0.34.0,@aws-cdk/aws-servicediscovery=0.34.0,@aws-cdk/aws-sns=0.34.0,@aws-cdk/aws-sqs=0.34.0,@aws-cdk/cdk=0.34.0,@aws-cdk/cx-api=0.34.0,@aws-cdk/region-info=0.34.0,jsii-runtime=node.js/v11.3.0
+      Modules: aws-cdk=0.35.0,@aws-cdk/assets=0.35.0,@aws-cdk/aws-applicationautoscaling=0.35.0,@aws-cdk/aws-autoscaling=0.35.0,@aws-cdk/aws-autoscaling-common=0.35.0,@aws-cdk/aws-autoscaling-hooktargets=0.35.0,@aws-cdk/aws-cloudformation=0.35.0,@aws-cdk/aws-cloudwatch=0.35.0,@aws-cdk/aws-ec2=0.35.0,@aws-cdk/aws-ecr=0.35.0,@aws-cdk/aws-ecr-assets=0.35.0,@aws-cdk/aws-ecs=0.35.0,@aws-cdk/aws-ecs-patterns=0.35.0,@aws-cdk/aws-elasticloadbalancingv2=0.35.0,@aws-cdk/aws-events=0.35.0,@aws-cdk/aws-events-targets=0.35.0,@aws-cdk/aws-iam=0.35.0,@aws-cdk/aws-kms=0.35.0,@aws-cdk/aws-lambda=0.35.0,@aws-cdk/aws-logs=0.35.0,@aws-cdk/aws-route53=0.35.0,@aws-cdk/aws-route53-targets=0.35.0,@aws-cdk/aws-s3=0.35.0,@aws-cdk/aws-s3-assets=0.35.0,@aws-cdk/aws-servicediscovery=0.35.0,@aws-cdk/aws-sns=0.35.0,@aws-cdk/aws-sns-subscriptions=0.35.0,@aws-cdk/aws-sqs=0.35.0,@aws-cdk/cdk=0.35.0,@aws-cdk/cx-api=0.35.0,@aws-cdk/region-info=0.35.0,jsii-runtime=node.js/v11.3.0
 Outputs:
   MyFargateServiceLoadBalancerDNS704F6391:
     Value:

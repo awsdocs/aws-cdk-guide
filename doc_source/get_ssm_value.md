@@ -1,6 +1,6 @@
 --------
 
-This documentation is for the developer preview release \(public beta\) of the AWS Cloud Development Kit \(CDK\)\. Releases might lack important features and might have future breaking changes\.
+This documentation is for the developer preview release \(public beta\) of the AWS Cloud Development Kit \(AWS CDK\)\. Releases might lack important features and might have future breaking changes\.
 
 --------
 
@@ -13,7 +13,7 @@ To read a particular version of a Systems Manager Parameter Store plain string v
 ```
 import ssm = require('@aws-cdk/aws-ssm');
 
-const parameterString = new ssm.ParameterStoreString(this, 'MyParameter', {
+const parameterString = new ssm.StringParameter.fromStringParameterAttributes(this, 'MyParameter', {
     parameterName: 'my-parameter-name',
     version: 1,
 });
@@ -26,7 +26,7 @@ To read a particular version of a Systems Manager Parameter Store `SecureString`
 ```
 import ssm = require('@aws-cdk/aws-ssm');
 
-const secureString = new ssm.ParameterStoreSecureString(this, 'MySecretParameter', {
+const secureString = new ssm.StringParameter.fromSecureStringParameterAttributes(this, 'MySecretParameter', {
     parameterName: 'my-secret-parameter-name',
     version: 1,
 });
