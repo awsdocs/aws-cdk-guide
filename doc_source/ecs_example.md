@@ -97,10 +97,10 @@ Replace the comment at the end of the constructor with the following code\.
     // Create a load-balanced Fargate service and make it public
     new ecs.LoadBalancedFargateService(this, 'MyFargateService', {
       cluster: cluster,  // Required
-      cpu: '512', // Default is 256
+      cpu: 512, // Default is 256
       desiredCount: 6,  // Default is 1
       image: ecs.ContainerImage.fromRegistry("amazon/amazon-ecs-sample"), // Required
-      memoryMiB: '2048',  // Default is 512
+      memoryLimitMiB: 2048,  // Default is 512
       publicLoadBalancer: true  // Default is false
     });
 ```
