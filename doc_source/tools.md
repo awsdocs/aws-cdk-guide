@@ -218,7 +218,7 @@ This topic describes how to use the SAM CLI with the AWS CDK to test a Lambda fu
 
    ```
    npm run build
-   cdk synth > template.yaml
+   cdk synth --no-staging > template.yaml
    ```
 
 1. Find the logical ID for your Lambda function in `template.yaml`\. It will look like `MyFunction`*12345678*, where *12345678* represents an 8\-character unique ID that the AWS CDK generates for all resources\. The line right after it should look like:
