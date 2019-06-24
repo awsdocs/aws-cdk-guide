@@ -1,20 +1,20 @@
 --------
 
-This documentation is for the developer preview release \(public beta\) of the AWS Cloud Development Kit \(CDK\)\. Releases might lack important features and might have future breaking changes\.
+This documentation is for the developer preview release \(public beta\) of the AWS Cloud Development Kit \(AWS CDK\)\. Releases might lack important features and might have future breaking changes\.
 
 --------
 
-# Work Around Missing AWS CDK Features<a name="cfn_layer"></a>
+# Work around Missing AWS CDK Features<a name="cfn_layer"></a>
 
 This topic describes how to modify the underlying AWS CloudFormation resources in the AWS Construct Library\. We also call this technique an "escape hatch" because it allows users to "escape" from the abstraction boundary defined by the AWS construct, and patch the underlying resources\.
 
 **Important**  
 We don't recommend this method because it breaks the abstraction layer and might produce unexpected results\.  
-If you modify an AWS construct in this way, we can't ensure that your code will be compatible with subsequent releases\.
+If you modify an AWS construct in this way, we can't ensure that your code will be compatible with later releases\.
 
 AWS constructs, such as [Topic](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/aws-sns/topic.html), encapsulate one or more AWS CloudFormation resources behind their APIs\. These resources are also represented as `CfnXxx` constructs in each library\. For example, the [Bucket](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/aws-s3/bucket.html) construct encapsulates the [CfnBucket](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/aws-s3/cfnbucket.html)\. When a stack that includes an AWS construct is synthesized, the AWS CloudFormation definitions of the underlying resources are included in the resulting template\.
 
-Eventually, we expect the APIs provided by AWS constructs to support all of the services and capabilities offered by AWS\. But we're aware that the library still has many gaps, both at the service level \(some services don't have any constructs yet\) and at the resource level \(an AWS construct exists, but some features are missing\)\.
+In later versions, we expect the APIs provided by AWS constructs to support all of the AWS services and their capabilities\. We know that there are still gaps in the AWS Construct Library, both at the service level \(some services currently don't have any constructs\), and at the resource level \(existing AWS constructs might be missing some features\)\.
 
 **Note**  
 If you encounter a missing capability in the AWS Construct Library, whether it's an entire library, a specific resource, or a feature, create an [issue](https://github.com/awslabs/aws-cdk/issues/new) on GitHub and let us know\.
@@ -25,7 +25,7 @@ This section describes the following use cases:
 + How to add overrides to AWS CloudFormation resources and property definitions
 + How to directly define low\-level AWS CloudFormation resources without an AWS construct
 
-You can also find more information about how to work directly with the AWS CloudFormation layer in [AWS Construct Library](aws_construct_lib.md)\.
+For more information about how to work directly with the AWS CloudFormation layer, see the [AWS Construct Library](aws_construct_lib.md)\.
 
 ## Accessing Low\-Level Resources<a name="cfn_layer_low_level"></a>
 
@@ -54,11 +54,11 @@ const bucketResource =
       as s3.CfnBucket;
 ```
 
-Once you have a AWS CloudFormation resource, you are interacting with AWS CloudFormation resource classes, which extend [cdk\.CfnResource](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/cdk.html#@aws-cdk/cdk.CfnResource)\.
+When you have an AWS CloudFormation resource, you are interacting with AWS CloudFormation resource classes, which extend [cdk\.CfnResource](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/cdk.html#@aws-cdk/cdk.CfnResource)\.
 
-## Resource Options<a name="cfn_layer_resources"></a>
+## Setting Resource Options<a name="cfn_layer_resources"></a>
 
-Set resource options using [cdk\.CfnResource](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/cdk.html#@aws-cdk/cdk.CfnResource) properties such as *Metadata* and *DependsOn*\.
+Set resource options using [cdk\.CfnResource](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/cdk.html#@aws-cdk/cdk.CfnResource) properties, such as *Metadata* and *DependsOn*\.
 
 For example, the following code:
 
@@ -106,7 +106,7 @@ bucketResource.addPropertyOverride('VersioningConfiguration.Status', 'NewStatus'
 bucketResource.addOverride('Properties.VersioningConfiguration.Status', 'NewStatus');
       
 // se dot-notation to define overrides in complex structures which will be merged
-// with the values set by the higher-level construct
+// with the values set by the higher-level construct.
 bucketResource.addPropertyOverride('LoggingConfiguration.DestinationBucketName', otherBucket.bucketName);
       
 // It's also possible to assign a null value
@@ -134,7 +134,7 @@ This synthesizes to the following\.
 }
 ```
 
-Use `undefined`, [cdk\.CfnResource\.addDeletionOverride](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/cdk.html#@aws-cdk/cdk.CfnResource.addDeletionOverride), or [cdk\.CfnResource\.addPropertyDeletionOverride](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/cdk.html#@aws-cdk/cdk.CfnResource.addPropertyDeletionOverride) to delete values\.
+To delete values, use `undefined`, [cdk\.CfnResource\.addDeletionOverride](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/cdk.html#@aws-cdk/cdk.CfnResource.addDeletionOverride), or [cdk\.CfnResource\.addPropertyDeletionOverride](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/cdk.html#@aws-cdk/cdk.CfnResource.addPropertyDeletionOverride)\.
 
 ```
 const bucket = new s3.Bucket(this, 'MyBucket', {
@@ -171,7 +171,9 @@ This synthesizes to the following\.
 
 ## Directly Defining AWS CloudFormation Resources<a name="cfn_layer_direct_define"></a>
 
-You can also explicitly define AWS CloudFormation resources in your stack\. To do this, instantiate one of the `CfnXxx` constructs of the dedicated library\.
+You can also explicitly define AWS CloudFormation resources in your stack\. 
+
+To do this, instantiate one of the `CfnXxx` constructs of the dedicated library\.
 
 ```
 new s3.CfnBucket(this, 'MyBucket', {

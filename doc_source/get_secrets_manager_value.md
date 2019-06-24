@@ -1,12 +1,12 @@
 --------
 
-This documentation is for the developer preview release \(public beta\) of the AWS Cloud Development Kit \(CDK\)\. Releases might lack important features and might have future breaking changes\.
+This documentation is for the developer preview release \(public beta\) of the AWS Cloud Development Kit \(AWS CDK\)\. Releases might lack important features and might have future breaking changes\.
 
 --------
 
 # Get a Value from AWS Secrets Manager<a name="get_secrets_manager_value"></a>
 
-To use values from AWS Secrets Manager in your CDK app, use the [fromSecretAttributes](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/aws-secretsmanager/secret.html#aws_secretsmanager_Secret_fromSecretAttributes) method\. It represents a value that is retrieved from Secrets Manager and used at AWS CloudFormation deployment time\.
+To use values from AWS Secrets Manager in your AWS CDK app, use the [fromSecretAttributes](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/aws-secretsmanager/secret.html#aws_secretsmanager_Secret_fromSecretAttributes) method\. It represents a value that is retrieved from Secrets Manager and used at AWS CloudFormation deployment time\.
 
 ```
 import sm = require("@aws-cdk/aws-secretsmanager");
@@ -23,10 +23,10 @@ export class SecretsManagerStack extends cdk.Stack {
     });
 ```
 
-Use the [create\-secret](https://docs.aws.amazon.com/cli/latest/reference/secretsmanager/create-secret.html) CLI command to create a secret from the command\-line, such as when testing:
+Use the [create\-secret](https://docs.aws.amazon.com/cli/latest/reference/secretsmanager/create-secret.html) CLI command to create a secret from the command line, such as when you're testing:\.
 
 ```
 aws secretsmanager create-secret --name ImportedSecret --secret-string mygroovybucket
 ```
 
-The command returns an ARN you can use for the example\.
+The command returns an Amazon Resource Name \(ARN\) you can use for the previous example\.
