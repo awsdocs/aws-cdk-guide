@@ -14,10 +14,13 @@ Resources:
   MyVpcPublicSubnet1SubnetF6608456:
     Type: AWS::EC2::Subnet
     Properties:
-      CidrBlock: 10.0.0.0/19
+      CidrBlock: 10.0.0.0/18
       VpcId:
         Ref: MyVpcF9F0CA6F
-      AvailabilityZone: us-west-2a
+      AvailabilityZone:
+        Fn::Select:
+          - 0
+          - Fn::GetAZs: ""
       MapPublicIpOnLaunch: true
       Tags:
         - Key: Name
@@ -82,10 +85,13 @@ Resources:
   MyVpcPublicSubnet2Subnet492B6BFB:
     Type: AWS::EC2::Subnet
     Properties:
-      CidrBlock: 10.0.32.0/19
+      CidrBlock: 10.0.64.0/18
       VpcId:
         Ref: MyVpcF9F0CA6F
-      AvailabilityZone: us-west-2b
+      AvailabilityZone:
+        Fn::Select:
+          - 1
+          - Fn::GetAZs: ""
       MapPublicIpOnLaunch: true
       Tags:
         - Key: Name
@@ -147,81 +153,16 @@ Resources:
           Value: MyEcsConstruct/MyVpc/PublicSubnet2
     Metadata:
       aws:cdk:path: MyEcsConstruct/MyVpc/PublicSubnet2/NATGateway
-  MyVpcPublicSubnet3Subnet57EEE236:
-    Type: AWS::EC2::Subnet
-    Properties:
-      CidrBlock: 10.0.64.0/19
-      VpcId:
-        Ref: MyVpcF9F0CA6F
-      AvailabilityZone: us-west-2c
-      MapPublicIpOnLaunch: true
-      Tags:
-        - Key: Name
-          Value: MyEcsConstruct/MyVpc/PublicSubnet3
-        - Key: aws-cdk:subnet-name
-          Value: Public
-        - Key: aws-cdk:subnet-type
-          Value: Public
-    Metadata:
-      aws:cdk:path: MyEcsConstruct/MyVpc/PublicSubnet3/Subnet
-  MyVpcPublicSubnet3RouteTable15028F08:
-    Type: AWS::EC2::RouteTable
-    Properties:
-      VpcId:
-        Ref: MyVpcF9F0CA6F
-      Tags:
-        - Key: Name
-          Value: MyEcsConstruct/MyVpc/PublicSubnet3
-    Metadata:
-      aws:cdk:path: MyEcsConstruct/MyVpc/PublicSubnet3/RouteTable
-  MyVpcPublicSubnet3RouteTableAssociation5C27DDA4:
-    Type: AWS::EC2::SubnetRouteTableAssociation
-    Properties:
-      RouteTableId:
-        Ref: MyVpcPublicSubnet3RouteTable15028F08
-      SubnetId:
-        Ref: MyVpcPublicSubnet3Subnet57EEE236
-    Metadata:
-      aws:cdk:path: MyEcsConstruct/MyVpc/PublicSubnet3/RouteTableAssociation
-  MyVpcPublicSubnet3DefaultRoute3A83AB36:
-    Type: AWS::EC2::Route
-    Properties:
-      RouteTableId:
-        Ref: MyVpcPublicSubnet3RouteTable15028F08
-      DestinationCidrBlock: 0.0.0.0/0
-      GatewayId:
-        Ref: MyVpcIGW5C4A4F63
-    DependsOn:
-      - MyVpcVPCGW488ACE0D
-    Metadata:
-      aws:cdk:path: MyEcsConstruct/MyVpc/PublicSubnet3/DefaultRoute
-  MyVpcPublicSubnet3EIPC5ACADAB:
-    Type: AWS::EC2::EIP
-    Properties:
-      Domain: vpc
-    Metadata:
-      aws:cdk:path: MyEcsConstruct/MyVpc/PublicSubnet3/EIP
-  MyVpcPublicSubnet3NATGatewayD4B50EBE:
-    Type: AWS::EC2::NatGateway
-    Properties:
-      AllocationId:
-        Fn::GetAtt:
-          - MyVpcPublicSubnet3EIPC5ACADAB
-          - AllocationId
-      SubnetId:
-        Ref: MyVpcPublicSubnet3Subnet57EEE236
-      Tags:
-        - Key: Name
-          Value: MyEcsConstruct/MyVpc/PublicSubnet3
-    Metadata:
-      aws:cdk:path: MyEcsConstruct/MyVpc/PublicSubnet3/NATGateway
   MyVpcPrivateSubnet1Subnet5057CF7E:
     Type: AWS::EC2::Subnet
     Properties:
-      CidrBlock: 10.0.96.0/19
+      CidrBlock: 10.0.128.0/18
       VpcId:
         Ref: MyVpcF9F0CA6F
-      AvailabilityZone: us-west-2a
+      AvailabilityZone:
+        Fn::Select:
+          - 0
+          - Fn::GetAZs: ""
       MapPublicIpOnLaunch: false
       Tags:
         - Key: Name
@@ -264,10 +205,13 @@ Resources:
   MyVpcPrivateSubnet2Subnet0040C983:
     Type: AWS::EC2::Subnet
     Properties:
-      CidrBlock: 10.0.128.0/19
+      CidrBlock: 10.0.192.0/18
       VpcId:
         Ref: MyVpcF9F0CA6F
-      AvailabilityZone: us-west-2b
+      AvailabilityZone:
+        Fn::Select:
+          - 1
+          - Fn::GetAZs: ""
       MapPublicIpOnLaunch: false
       Tags:
         - Key: Name
@@ -307,52 +251,6 @@ Resources:
         Ref: MyVpcPublicSubnet2NATGateway91BFBEC9
     Metadata:
       aws:cdk:path: MyEcsConstruct/MyVpc/PrivateSubnet2/DefaultRoute
-  MyVpcPrivateSubnet3Subnet772D6AD7:
-    Type: AWS::EC2::Subnet
-    Properties:
-      CidrBlock: 10.0.160.0/19
-      VpcId:
-        Ref: MyVpcF9F0CA6F
-      AvailabilityZone: us-west-2c
-      MapPublicIpOnLaunch: false
-      Tags:
-        - Key: Name
-          Value: MyEcsConstruct/MyVpc/PrivateSubnet3
-        - Key: aws-cdk:subnet-name
-          Value: Private
-        - Key: aws-cdk:subnet-type
-          Value: Private
-    Metadata:
-      aws:cdk:path: MyEcsConstruct/MyVpc/PrivateSubnet3/Subnet
-  MyVpcPrivateSubnet3RouteTableB790927C:
-    Type: AWS::EC2::RouteTable
-    Properties:
-      VpcId:
-        Ref: MyVpcF9F0CA6F
-      Tags:
-        - Key: Name
-          Value: MyEcsConstruct/MyVpc/PrivateSubnet3
-    Metadata:
-      aws:cdk:path: MyEcsConstruct/MyVpc/PrivateSubnet3/RouteTable
-  MyVpcPrivateSubnet3RouteTableAssociationD951741C:
-    Type: AWS::EC2::SubnetRouteTableAssociation
-    Properties:
-      RouteTableId:
-        Ref: MyVpcPrivateSubnet3RouteTableB790927C
-      SubnetId:
-        Ref: MyVpcPrivateSubnet3Subnet772D6AD7
-    Metadata:
-      aws:cdk:path: MyEcsConstruct/MyVpc/PrivateSubnet3/RouteTableAssociation
-  MyVpcPrivateSubnet3DefaultRouteEC11C0C5:
-    Type: AWS::EC2::Route
-    Properties:
-      RouteTableId:
-        Ref: MyVpcPrivateSubnet3RouteTableB790927C
-      DestinationCidrBlock: 0.0.0.0/0
-      NatGatewayId:
-        Ref: MyVpcPublicSubnet3NATGatewayD4B50EBE
-    Metadata:
-      aws:cdk:path: MyEcsConstruct/MyVpc/PrivateSubnet3/DefaultRoute
   MyVpcIGW5C4A4F63:
     Type: AWS::EC2::InternetGateway
     Properties:
@@ -386,19 +284,16 @@ Resources:
       Subnets:
         - Ref: MyVpcPublicSubnet1SubnetF6608456
         - Ref: MyVpcPublicSubnet2Subnet492B6BFB
-        - Ref: MyVpcPublicSubnet3Subnet57EEE236
       Type: application
     DependsOn:
       - MyVpcPublicSubnet1DefaultRoute95FDF9EB
       - MyVpcPublicSubnet2DefaultRoute052936F6
-      - MyVpcPublicSubnet3DefaultRoute3A83AB36
     Metadata:
       aws:cdk:path: MyEcsConstruct/MyFargateService/LB/Resource
   MyFargateServiceLBSecurityGroup6FBF16F1:
     Type: AWS::EC2::SecurityGroup
     Properties:
-      GroupDescription: Automatically created Security Group for ELB
-        MyEcsConstructMyFargateServiceLB5E4E9AE3
+      GroupDescription: Automatically created Security Group for ELB MyEcsConstructMyFargateServiceLB5E4E9AE3
       SecurityGroupEgress: []
       SecurityGroupIngress:
         - CidrIp: 0.0.0.0/0
@@ -426,8 +321,7 @@ Resources:
       FromPort: 80
       ToPort: 80
     Metadata:
-      aws:cdk:path: MyEcsConstruct/MyFargateService/LB/SecurityGroup/to
-        MyEcsConstructMyFargateServiceSecurityGroup67F71DB3:80
+      aws:cdk:path: MyEcsConstruct/MyFargateService/LB/SecurityGroup/to MyEcsConstructMyFargateServiceSecurityGroup67F71DB3:80
   MyFargateServiceLBPublicListener61A1042F:
     Type: AWS::ElasticLoadBalancingV2::Listener
     Properties:
@@ -481,7 +375,7 @@ Resources:
             LogDriver: awslogs
             Options:
               awslogs-group:
-                Ref: MyFargateServiceLoggingLogGroup271A17C2
+                Ref: MyFargateServiceTaskDefwebLogGroup4A6C44E8
               awslogs-stream-prefix: MyFargateService
               awslogs-region:
                 Ref: AWS::Region
@@ -509,6 +403,11 @@ Resources:
       Volumes: []
     Metadata:
       aws:cdk:path: MyEcsConstruct/MyFargateService/TaskDef/Resource
+  MyFargateServiceTaskDefwebLogGroup4A6C44E8:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Retain
+    Metadata:
+      aws:cdk:path: MyEcsConstruct/MyFargateService/TaskDef/web/LogGroup/Resource
   MyFargateServiceTaskDefExecutionRoleD6305504:
     Type: AWS::IAM::Role
     Properties:
@@ -536,7 +435,7 @@ Resources:
             Effect: Allow
             Resource:
               Fn::GetAtt:
-                - MyFargateServiceLoggingLogGroup271A17C2
+                - MyFargateServiceTaskDefwebLogGroup4A6C44E8
                 - Arn
         Version: "2012-10-17"
       PolicyName: MyFargateServiceTaskDefExecutionRoleDefaultPolicyEC22B20F
@@ -544,11 +443,6 @@ Resources:
         - Ref: MyFargateServiceTaskDefExecutionRoleD6305504
     Metadata:
       aws:cdk:path: MyEcsConstruct/MyFargateService/TaskDef/ExecutionRole/DefaultPolicy/Resource
-  MyFargateServiceLoggingLogGroup271A17C2:
-    Type: AWS::Logs::LogGroup
-    DeletionPolicy: Retain
-    Metadata:
-      aws:cdk:path: MyEcsConstruct/MyFargateService/Logging/LogGroup/Resource
   MyFargateServiceF490C034:
     Type: AWS::ECS::Service
     Properties:
@@ -560,6 +454,7 @@ Resources:
         MaximumPercent: 200
         MinimumHealthyPercent: 50
       DesiredCount: 6
+      HealthCheckGracePeriodSeconds: 60
       LaunchType: FARGATE
       LoadBalancers:
         - ContainerName: web
@@ -576,7 +471,6 @@ Resources:
           Subnets:
             - Ref: MyVpcPrivateSubnet1Subnet5057CF7E
             - Ref: MyVpcPrivateSubnet2Subnet0040C983
-            - Ref: MyVpcPrivateSubnet3Subnet772D6AD7
       ServiceRegistries: []
     DependsOn:
       - MyFargateServiceLBPublicListenerECSGroup4A3EDF05
@@ -612,12 +506,7 @@ Resources:
           - GroupId
       ToPort: 80
     Metadata:
-      aws:cdk:path: MyEcsConstruct/MyFargateService/Service/SecurityGroup/from
-        MyEcsConstructMyFargateServiceLBSecurityGroup8793A2F7:80
-  CDKMetadata:
-    Type: AWS::CDK::Metadata
-    Properties:
-      Modules: aws-cdk=0.34.0,@aws-cdk/assets=0.34.0,@aws-cdk/assets-docker=0.34.0,@aws-cdk/aws-applicationautoscaling=0.34.0,@aws-cdk/aws-autoscaling=0.34.0,@aws-cdk/aws-autoscaling-common=0.34.0,@aws-cdk/aws-autoscaling-hooktargets=0.34.0,@aws-cdk/aws-cloudformation=0.34.0,@aws-cdk/aws-cloudwatch=0.34.0,@aws-cdk/aws-ec2=0.34.0,@aws-cdk/aws-ecr=0.34.0,@aws-cdk/aws-ecs=0.34.0,@aws-cdk/aws-ecs-patterns=0.34.0,@aws-cdk/aws-elasticloadbalancingv2=0.34.0,@aws-cdk/aws-events=0.34.0,@aws-cdk/aws-events-targets=0.34.0,@aws-cdk/aws-iam=0.34.0,@aws-cdk/aws-kms=0.34.0,@aws-cdk/aws-lambda=0.34.0,@aws-cdk/aws-logs=0.34.0,@aws-cdk/aws-route53=0.34.0,@aws-cdk/aws-route53-targets=0.34.0,@aws-cdk/aws-s3=0.34.0,@aws-cdk/aws-servicediscovery=0.34.0,@aws-cdk/aws-sns=0.34.0,@aws-cdk/aws-sqs=0.34.0,@aws-cdk/cdk=0.34.0,@aws-cdk/cx-api=0.34.0,@aws-cdk/region-info=0.34.0,jsii-runtime=node.js/v11.3.0
+      aws:cdk:path: MyEcsConstruct/MyFargateService/Service/SecurityGroup/from MyEcsConstructMyFargateServiceLBSecurityGroup8793A2F7:80
 Outputs:
   MyFargateServiceLoadBalancerDNS704F6391:
     Value:
