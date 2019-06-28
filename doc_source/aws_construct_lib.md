@@ -12,7 +12,7 @@ The AWS Construct Library modules are described in the [CDK Reference](https://a
 
 ## Versioning<a name="aws_construct_lib_versioning"></a>
 
-The CDK follows the semantic versioning model\. This means that breaking changes are limited to major releases, such as 2\.0\.
+The CDK follows the [semantic versioning model](https://semver.org/)\. This means that breaking changes are limited to major releases, such as 2\.0\.
 
 Minor releases, such as 2\.4, guarantee that any code written in a previous minor version, such as 2\.1, will build, run, and produce the exact same results when built, run, and producing results, as before\.
 
