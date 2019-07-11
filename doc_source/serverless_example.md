@@ -1,9 +1,3 @@
---------
-
-This documentation is for the developer preview release \(public beta\) of the AWS Cloud Development Kit \(CDK\)\. Releases might lack important features and might have future breaking changes\.
-
---------
-
 # Creating a Serverless Application Using the AWS CDK<a name="serverless_example"></a>
 
 This example walks you through how to create the resources for a simple widget dispensing service\. It includes:
@@ -13,13 +7,13 @@ This example walks you through how to create the resources for a simple widget d
 
 This tutorial contains the following steps\.
 
-1. Creates a CDK app
+1. Creates a AWS CDK app
 
 1. Creates a Lambda function that gets a list of widgets with: GET /
 
 1. Creates the service that calls the Lambda function
 
-1. Adds the service to the CDK app
+1. Adds the service to the AWS CDK app
 
 1. Tests the app
 
@@ -28,7 +22,7 @@ This tutorial contains the following steps\.
    + Get a widget by name with GET /\{name\}
    + Delete a widget by name with DELETE /\{name\}
 
-## Create a CDK App<a name="serverless_example_create_app"></a>
+## Create a AWS CDK App<a name="serverless_example_create_app"></a>
 
 Create the TypeScript app **MyWidgetService** in the current folder\.
 
@@ -47,7 +41,7 @@ npm run build
 cdk synth
 ```
 
-You should see a stack like the following, where *CDK\-VERSION* is the version of the CDK\.
+You should see a stack like the following, where *CDK\-VERSION* is the version of the AWS CDK\.
 
 ```
 Resources:
@@ -128,20 +122,20 @@ npm install @aws-cdk/aws-apigateway @aws-cdk/aws-lambda @aws-cdk/aws-s3
 Create the TypeScript file `widget_service.ts` in the `lib` directory\.
 
 ```
-import cdk = require("@aws-cdk/cdk");
+import core = require("@aws-cdk/core");
 import apigateway = require("@aws-cdk/aws-apigateway");
 import lambda = require("@aws-cdk/aws-lambda");
 import s3 = require("@aws-cdk/aws-s3");
 
-export class WidgetService extends cdk.Construct {
-  constructor(scope: cdk.Construct, id: string) {
+export class WidgetService extends core.Construct {
+  constructor(scope: core.Construct, id: string) {
     super(scope, id);
 
     const bucket = new s3.Bucket(this, "WidgetStore");
 
     const handler = new lambda.Function(this, "WidgetHandler", {
-      runtime: lambda.Runtime.NodeJS810, // So we can use async in widget.js
-      code: lambda.Code.directory("resources"),
+      runtime: lambda.Runtime.NODEJS_8_10, // So we can use async in widget.js
+      code: lambda.Code.asset("resources"),
       handler: "widgets.main",
       environment: {
         BUCKET: bucket.bucketName
@@ -209,7 +203,7 @@ cdk synth
 
 ## Deploy and Test the App<a name="serverless_example_deploy_and_test"></a>
 
-Before you can deploy your first CDK app, you must bootstrap your deployment\. This creates some AWS infrastructure that the CDK needs\. For details, see the **bootstrap** section of the [CDK Toolchain](tools.md)\(if you've already bootstrapped a CDK app, you'll get a warning and nothing will change\)\.
+Before you can deploy your first AWS CDK app, you must bootstrap your deployment\. This creates some AWS infrastructure that the AWS CDK needs\. For details, see the **bootstrap** section of the [AWS CDK Tools](tools.md)\(if you've already bootstrapped a AWS CDK app, you'll get a warning and nothing will change\)\.
 
 ```
 cdk bootstrap

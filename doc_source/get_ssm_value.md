@@ -1,9 +1,3 @@
---------
-
-This documentation is for the developer preview release \(public beta\) of the AWS Cloud Development Kit \(CDK\)\. Releases might lack important features and might have future breaking changes\.
-
---------
-
 # Get a Value from a Systems Manager Parameter Store Variable<a name="get_ssm_value"></a>
 
 You can get the value of an AWS Systems Manager Parameter Store variable, depending on whether you want the latest version of a plain string, a particular version of a plain string, or a particular version of a secret string\. It isn't possible to retrieve the latest version of a secure string\. To read the latest version of a secret, you have to read the secret from AWS Secrets Manager \(see [Get a Value from AWS Secrets Manager](get_secrets_manager_value.md)\)\.
@@ -13,7 +7,7 @@ To read a particular version of a Systems Manager Parameter Store plain string v
 ```
 import ssm = require('@aws-cdk/aws-ssm');
 
-const parameterString = new ssm.ParameterStoreString(this, 'MyParameter', {
+const parameterString = new ssm.StringParameter.fromStringParameterAttributes(this, 'MyParameter', {
     parameterName: 'my-parameter-name',
     version: 1,
 });
@@ -26,7 +20,7 @@ To read a particular version of a Systems Manager Parameter Store `SecureString`
 ```
 import ssm = require('@aws-cdk/aws-ssm');
 
-const secureString = new ssm.ParameterStoreSecureString(this, 'MySecretParameter', {
+const secureString = new ssm.StringParameter.fromSecureStringParameterAttributes(this, 'MySecretParameter', {
     parameterName: 'my-secret-parameter-name',
     version: 1,
 });

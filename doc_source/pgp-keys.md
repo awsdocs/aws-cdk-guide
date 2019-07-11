@@ -1,12 +1,6 @@
---------
+# OpenPGP Keys for the AWS CDK and JSII<a name="pgp-keys"></a>
 
-This documentation is for the developer preview release \(public beta\) of the AWS Cloud Development Kit \(AWS CDK\)\. Releases might lack important features and might have future breaking changes\.
-
---------
-
-# OpenPGP Keys for the AWS CDK and jsii<a name="pgp-keys"></a>
-
-This topic contains the OpenPGP keys for the AWS CDK and `jsii`\.
+This topic contains the OpenPGP keys for the AWS CDK and JSII\.
 
 ## AWS CDK OpenPGP Key<a name="cdk_pgp_key"></a>
 
@@ -21,7 +15,7 @@ This topic contains the OpenPGP keys for the AWS CDK and `jsii`\.
 | User ID: | AWS CDK Team <aws\-cdk@amazon\.com> | 
 | Key fingerprint: | E88B E3B6 F0B1 E350 9E36 4F96 0566 A784 E17F 3870 | 
 
-Select the **Copy** icon to copy the following OpenPGP key\.
+Select the "Copy" icon to copy the following OpenPGP key:
 
 ```
 -----BEGIN PGP PUBLIC KEY BLOCK-----
@@ -54,7 +48,7 @@ EkSlc/RoDqZCpBGgcoy1FFWvV/ZLgNU6OTQlYH6oYOWiylSJnaTDyurrktsxJI6d
 -----END PGP PUBLIC KEY BLOCK-----
 ```
 
-## jsii OpenPGP Key<a name="jsii_pgp_key"></a>
+## JSII OpenPGP Key<a name="jsii_pgp_key"></a>
 
 
 |  |  | 
@@ -67,7 +61,7 @@ EkSlc/RoDqZCpBGgcoy1FFWvV/ZLgNU6OTQlYH6oYOWiylSJnaTDyurrktsxJI6d
 | User ID: | AWS JSII Team <aws\-jsii@amazon\.com> | 
 | Key fingerprint: | 85EF 6522 4CE2 1E8C 72DB 28EC 1C7A CE4C B2A1 B93A | 
 
-Select the **Copy** icon to copy the following OpenPGP key\.
+Select the "Copy" icon to copy the following OpenPGP key:
 
 ```
 -----BEGIN PGP PUBLIC KEY BLOCK-----

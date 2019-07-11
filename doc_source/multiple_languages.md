@@ -1,98 +1,122 @@
---------
+# AWS CDK in Other Languages<a name="multiple_languages"></a>
 
-This documentation is for the developer preview release \(public beta\) of the AWS Cloud Development Kit \(CDK\)\. Releases might lack important features and might have future breaking changes\.
+In some cases the example code in the AWS CDK documentation is available only in TypeScript\. This topic describes how to read TypeScript code and translate it into Python\. This is currently the only other [stable](reference.md#aws_construct_lib_versioning_binding) programming language that the AWS CDK supports \(the AWS CDK supports a developer preview version of Java and C\#/\.NET\)\. See [Hello World Tutorial](getting_started.md#hello_world_tutorial) for an example of creating an AWS CDK app in a supported language\.
 
---------
+## Importing a Module<a name="multiple_languages_import"></a>
 
-# Multi\-Language Support in the CDK<a name="multiple_languages"></a>
+Both TypeScript and Python support namespaced module imports and selective imports\. Module names in Python look like **aws\_cdk\.***xxx*, where *xxx* represents an AWS service name, such as **s3** for Amazon S3 \(we'll use Amazon S3 for our examples\)\. Replace the dashes in the TypeScript module name with underscores to get the Python module name\. 
 
-This section describes the multi\-language support in the CDK, including hints for porting TypeScript to one of the supported languages\. See [Hello World Tutorial](getting_started.md#hello_world_tutorial) for an example of creating a CDK app in a supported language\.
+The following is how you import the entire Amazon S3 module or just a `Stack` class in both languages\.
 
-The CDK supports C\#, Java, JavaScript, and TypeScript\. Since the CDK is developed in TypeScript, many code examples are still only available in TypeScript\. This section will help you port those TypeScript examples to one of the other programming languages\.
 
-## Importing a Package<a name="multiple_languages_import"></a>
+| TypeScript | Python | 
+| --- |--- |
+| // Import entire module | \# Import entire module | 
+| import s3 = require\('@aws\-cdk/aws\-s3'\) | import aws\_cdk\.aws\_s3 as s3 | 
+|  |  | 
+| // Selective import | \# Selective import | 
+| import \{ Stack \} from '@aws\-cdk/core'; | from aws\_cdk\.core import Stack | 
 
-In TypeScript, you import a package as follows \(we'll use Amazon S3 for our examples\):
+## Instantiating a Class<a name="multiple_languages_class"></a>
 
-```
-import s3 = require("@aws-cdk/aws-s3");
-```
+Classes have the same name in TypeScript and in Python\. TypeScript uses **new** to instantiate classes, whereas in Python you call the class object directly\. The keyword **this** in TypeScript translates to **self** in Python\. 
 
-------
-#### [ C\# ]
+The following table shows how you can translate TypeScript class instantiations to Python class instantiations\.
 
-```
-using Amazon.CDK.AWS.S3;
-```
 
-------
-#### [ Java ]
+| TypeScript | Python | 
+| --- |--- |
+| // Instantiate Bucket class | \# Instantiate Bucket class | 
+| new s3\.Bucket\(this, 'Bucket'\); | s3\.Bucket\(self, 'Bucket'\) | 
 
-```
-import software.amazon.awscdk.services.s3.*;
-```
+## Methods<a name="multiple_languages_methods"></a>
 
-------
-#### [ JavaScript ]
+Methods names and argument names in TypeScript are `camelCased`, whereas in Python they are `snake_cased`\. Props objects at the end of an argument list in TypeScript are translated into keyword\-only arguments in Python\. 
 
-```
-const s3 = require('@aws-cdk/aws-s3');
-```
+The following table shows how you can translate TypeScript methods to Python methods\.
 
-------
-#### [ Python ]
 
-```
-from aws_cdk import aws_s3 as s3
-```
+| TypeScript | Python | 
+| --- |--- |
+| // Instantiate Bucket with props | \# Instantiate Bucket with props | 
+| const bucket = new s3\.Bucket\(this, 'Bucket', \{ | bucket = s3\.Bucket\(self, 'Bucket',  | 
+|   bucketName: 'my\-bucket', |   bucketName='my\-bucket',  | 
+|   versioned: true, |   versioned=True\) | 
+| \}\); |  | 
+|  |  | 
+| // Call method | \# Call method | 
+| bucket\.addCorsRule\(\{ | bucket\.add\_cors\_rule\( | 
+|   allowedOrigins: \['\*'\], |   allowed\_origins=\['\*'\], | 
+|   allowedMethods: \[\], |   allowed\_methods=\[\] | 
+| \}\); | \) | 
 
-------
+## Enum Constants<a name="multiple_languages_enums"></a>
 
-## Creating a New Object<a name="multiple_languages_new"></a>
+Enum constants are scoped to a class, and have uppercase names in both languages\. 
 
-In TypeScript, you create a new object as follows\. The first argument, `scope`, is always `this`, the second is the `id` of the construct, and the last is a list of properties, often optional\.
+The following table shows how you can translate TypeScript enum constants to Python enum constants\.
 
-```
-new s3.Bucket(this, 'MyFirstBucket', {
-  // options
-});
-```
 
-------
-#### [ C\# ]
+| TypeScript | Python | 
+| --- |--- |
+| s3\.BucketEncryption\.KMS\_MANAGED | s3\.BucketEncryption\.KMS\_MANAGED | 
 
-```
-new Bucket(this, "MyFirstBucket", new BucketProps
-{
-  // options
-});
-```
+## Defining Constructs<a name="multiple_languages_constructs"></a>
 
-------
-#### [ Java ]
+In TypeScript a construct’s props are defined with an interface, whereas in Python you take keyword \(or keyword\-only, see [PEP3102](https://www.python.org/dev/peps/pep-3102/)\) arguments\. 
 
-```
-new Bucket(this, "MyFirstBucket", BucketProps.builder()
-  // options
-}
-```
+The following table shows how you can translate TypeScript construct definitions to Python construct definitions\.
 
-------
-#### [ JavaScript ]
 
-```
-new s3.Bucket(this, 'MyFirstBucket', {
-  // options
-});
-```
+| TypeScript | Python | 
+| --- |--- |
+| interface MyConstructProps \{ |  | 
+|   prop1: number; |  | 
+|   prop2?: number; |  | 
+| \} |  | 
+|  |  | 
+| class MyConstruct extends Construct \{ | class MyConstruct\(Construct\): | 
+|   constructor\(scope: Construct, id: string, props: MyConstructProps\) \{ |   def \_\_init\_\_\(scope, id, \*, prop1, prop2=10\): | 
+|     super\(scope, id\); |   super\(\)\.\_\_init\_\_\(scope, id\) | 
+|  |  | 
+|     const prop2 = props\.prop2 \!== undefined ? props\.prop2 : 10; |  | 
+|  |  | 
+|     // Construct contents here |   \# Construct contents here | 
 
-------
-#### [ Python ]
+## Structs \(Interfaces\)<a name="multiple_languages_structs"></a>
 
-```
-s3.Bucket(self, 
-  "MyFirstBucket", 
-  # options,)
-```
+Structs are TypeScript interfaces that represent a set of values\. You can recognize them because their name doesn't start with an `I`, and all of their fields are **read\-only**\.
 
-------
+In TypeScript, structs are passed as object literals\. In Python, if the struct is the last argument to a method, its fields are lifted into the method call itself\. If the argument list contains nested structs, wrap them in a class named after the struct\.
+
+The following table shows how to call a method with two levels of structs\.
+
+
+| TypeScript | Python | 
+| --- |--- |
+| bucket\.addLifecycleRule\(\{ | bucket\.add\_lifecycle\_rule\( | 
+|   transitions: \[ |   transitions=\[ | 
+|     \{ |     Transition\( | 
+|       storageClass: StorageClass\.GLACIER, |       storage\_class=StorageClass\.GLACIER, | 
+|       transitionAfter: Duration\.days\(10\) |       transition\_after=Duration\.days\(10\) | 
+|     \} |     \) | 
+|   \] |   \] | 
+| \}\); | \) | 
+
+## Object Interfaces<a name="multiple_languages_object"></a>
+
+The AWS CDK uses TypeScript object interfaces to indicate that a class implements an expected set of methods and properties\. You can recognize an object interface because its name starts with `I`\.
+
+Typically, Python users don’t explicitly indicate that a class implements an interface\. However, for the AWS CDK you can do this by decorating your class with `@jsii.implements(interface)`\. 
+
+
+| TypeScript | Python | 
+| --- |--- |
+| import \{IAspect, IConstruct \} from ‘@aws\-cdk/core’; | from aws\_cdk\.core import IAspect, IConstruct | 
+|  |  | 
+|  | @jsii\.implements\(IAspect\) | 
+| class MyAspect implements IAspect \{ | class MyAspect\(\): | 
+|   public visit\(node: IConstruct\) \{ |   def visit\(self, node: IConstruct\) \-> None: | 
+|     console\.log\(‘Visited’, node\.node\.path\); |     print\("Visited”, node\.node\.path\) | 
+|   \} |  | 
+| \} |  | 

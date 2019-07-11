@@ -1,4 +1,4 @@
-# AWS Cloud Development Kit (CDK) Developer Guide
+# AWS Cloud Development Kit (AWS CDK) Developer Guide
 
 -----
 *****Copyright &copy; 2019 Amazon Web Services, Inc. and/or its affiliates. All rights reserved.*****
@@ -14,22 +14,24 @@ Amazon's trademarks and trade dress may not be used in
 
 -----
 ## Contents
-+ [What is the AWS Cloud Development Kit?](home.md)
++ [What Is the AWS CDK?](home.md)
 + [Getting Started With the AWS CDK](getting_started.md)
 + [Concepts](core_concepts.md)
    + [Constructs](constructs.md)
-   + [Apps, Stacks, and Environments and Authentication](apps_and_stacks.md)
+   + [Apps](apps.md)
+   + [Stacks](stacks.md)
+   + [Environments](environments.md)
    + [Resources](resources.md)
    + [Identifiers](identifiers.md)
-   + [Run-Time Context](context.md)
-   + [Assets](assets.md)
-   + [AWS CloudFormation](cloudformation.md)
    + [Tokens](tokens.md)
-   + [AWS CDK Lifecycle](lifecycle.md)
-+ [Writing AWS CDK Constructs](writing_constructs.md)
-   + [Multi-Language Support in the CDK](multiple_languages.md)
-+ [AWS Construct Library](aws_construct_lib.md)
-+ [About the Reference](reference.md)
+   + [Tagging](tagging.md)
+   + [Assets](assets.md)
+   + [Permissions](permissions.md)
+   + [Runtime Context](context.md)
+   + [Aspects](aspects.md)
+   + [Escape Hatches](cfn_layer.md)
++ [API Reference](reference.md)
+   + [AWS CDK in Other Languages](multiple_languages.md)
 + [Examples](examples.md)
    + [Creating a Serverless Application Using the AWS CDK](serverless_example.md)
    + [Creating an AWS Fargate Service Using the AWS CDK](ecs_example.md)
@@ -40,11 +42,10 @@ Amazon's trademarks and trade dress may not be used in
    + [Use an Existing AWS CloudFormation Template](use_cfn_template.md)
    + [Get a Value from a Systems Manager Parameter Store Variable](get_ssm_value.md)
    + [Get a Value from AWS Secrets Manager](get_secrets_manager_value.md)
-   + [Work Around Missing AWS CDK Features](cfn_layer.md)
    + [Create an App with Multiple Stacks](stack_how_to_create_multiple_stacks.md)
    + [Set a CloudWatch Alarm](how_to_set_cw_alarm.md)
    + [Get a Value from a Context Variable](get_context_var.md)
-+ [CDK Toolchain](tools.md)
-+ [Troubleshooting the CDK](troubleshooting.md)
++ [AWS CDK Tools](tools.md)
++ [Troubleshooting the AWS CDK](troubleshooting.md)
 + [OpenPGP Keys for the AWS CDK and JSII](pgp-keys.md)
 + [Document History for the AWS CDK Developer Guide](doc-history.md)

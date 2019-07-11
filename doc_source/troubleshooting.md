@@ -1,12 +1,6 @@
---------
+# Troubleshooting the AWS CDK<a name="troubleshooting"></a>
 
-This documentation is for the developer preview release \(public beta\) of the AWS Cloud Development Kit \(CDK\)\. Releases might lack important features and might have future breaking changes\.
-
---------
-
-# Troubleshooting the CDK<a name="troubleshooting"></a>
-
-This section describes how to troubleshoot problems with your CDK app\.
+This section describes how to troubleshoot problems with your AWS CDK app\.
 
 ## Inconsistent Module Versions<a name="troubleshooting_modules"></a>
 
@@ -27,7 +21,7 @@ lib/my_ecs_construct-stack.ts:56:49 - error TS2345: Argument of type 'this' is n
     'root' is declared here.
 ```
 
-The solution is to delete the `node_modules` directory and re\-install your CDK modules:
+The solution is to delete the `node_modules` directory and re\-install your AWS CDK modules:
 
 ```
 rm -rf node_modules
