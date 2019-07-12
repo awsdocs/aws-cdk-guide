@@ -1,6 +1,6 @@
 # API Reference<a name="reference"></a>
 
-The [API Reference](https://docs.aws.amazon.com/cdk/api/latest/docs/aws-construct-library.html/) contains information about the AWS CDK libraries\.
+The [API Reference](https://docs.aws.amazon.com/cdk/api/latest/docs/aws-construct-library.html) contains information about the AWS CDK libraries\.
 
 Each library contains information about how to use the library\. For example, the [S3](https://docs.aws.amazon.com/cdk/api/latest/docs/aws-s3-readme.html) library demonstrates how to set default encryption on an Amazon S3 bucket\.
 
