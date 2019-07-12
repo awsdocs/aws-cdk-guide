@@ -1,12 +1,12 @@
 # API Reference<a name="reference"></a>
 
-The [API Reference](https://docs.aws.amazon.com/cdk/api/latest/docs/aws-construct-library.html/) contains information about the AWS CDK libraries\.
+The [API Reference](https://docs.aws.amazon.com/cdk/api/latest) contains information about the AWS CDK libraries\.
 
 Each library contains information about how to use the library\. For example, the [S3](https://docs.aws.amazon.com/cdk/api/latest/docs/aws-s3-readme.html) library demonstrates how to set default encryption on an Amazon S3 bucket\.
 
 ## Versioning and Stability Model<a name="versioning"></a>
 
-Version numbers consist of three numeric version parts: *major*\.*minor*\.*patch*, and adhere to the [semantic versioning](https://semver.org) model\. This means that breaking changes to stable APIs \(see “The AWS CDK Stability Index”\) are limited to major releases\. Minor and patch releases are backward compatible, meaning that the code written in a previous version with the same major version can be upgraded to a newer version and be expected to continue to build and run, producing the same output\.
+Version numbers consist of three numeric version parts: *major*\.*minor*\.*patch*, and adhere to the [semantic versioning](https://semver.org) model\. This means that breaking changes to stable APIs, which is described in the next section, are limited to major releases\. Minor and patch releases are backward compatible, meaning that the code written in a previous version with the same major version can be upgraded to a newer version and be expected to continue to build and run, producing the same output\.
 
 ### AWS CDK Stability Index<a name="aws_construct_lib_versioning_stability"></a>
 
@@ -30,7 +30,7 @@ Experimental and stable modules receive the same level of support from AWS\. The
 
 ### Identifying the Support Level of an API<a name="aws_construct_lib_versioning_support"></a>
 
-The AWS CDK Developer Guide and API Reference for each module starts with a section outlining the module's stability index\. The libraries that include only AWS CloudFormation resources, and no hand\-curated constructs, are labeled with the maturity indicator **CloudFormation\-only**\.
+Each module in the [API Reference](https://docs.aws.amazon.com/cdk/api/latest) starts with a section outlining the module's stability index\. The libraries that include only AWS CloudFormation resources, and no hand\-curated constructs, are labeled with the maturity indicator **CloudFormation\-only**\.
 
 The module level gives an indication of the stability of the majority of the APIs included in the module, however, individual APIs within the module can be annotated with different stability levels\.
 

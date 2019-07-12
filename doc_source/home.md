@@ -92,7 +92,7 @@ Because the AWS CDK is open source, the team encourages you contribute to make i
 ## Additional Documentation and Resources<a name="additional_docs"></a>
 
 In addition to this guide, the following are other resources available to AWS CDK users:
-+ [Reference](https://docs.aws.amazon.com/cdk/api/latest)
++ [API Reference](https://docs.aws.amazon.com/cdk/api/latest)
 + [AWS CDK Demo at re:Invent 2018](https://www.youtube.com/watch?v=Lh-kVC2r2AU)
 + [AWS CDK Workshop](https://cdkworkshop.com/)
 + [AWS CDK Examples](https://github.com/aws-samples/aws-cdk-examples)

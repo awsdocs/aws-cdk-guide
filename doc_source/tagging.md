@@ -58,7 +58,7 @@ Use this to set the priority of this operation with respect to other `Tag` and `
 
 The `RemoveTag` class includes properties to fine\-tune how tags are removed, all of which are optional\.
 
-The following example removes the tag **tagname** with priority **200** from resources of type **AWS::Xxx::Yzz** in `myConstruct`, but not to resources of type **AWS::Xxx::Zzz**\.
+The following example removes the tag **tagname** with priority **200** from resources of type **AWS::Xxx::Yzz** in `myConstruct`, but not from resources of type **AWS::Xxx::Zzz**\.
 
 ```
 myConstruct.node.applyAspect(new RemoveTag('tagname', {
