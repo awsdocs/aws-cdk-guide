@@ -71,6 +71,8 @@ By the time the AWS CloudFormation deployment phase \(step 5\) starts, your AWS 
 
 The call to `app.synth()` is what tells the AWS CDK to synthesize a cloud assembly from an app\. Typically you don't interact directly with cloud assemblies\. They are files that include everything needed to deploy your app to a cloud environment\. For example, it includes an AWS CloudFormation template for each stack in your app, and a copy of any file assets or Docker images that you reference in your app\.
 
+See the [cloud assembly specification](https://github.com/aws/aws-cdk/blob/master/design/cloud-assembly.md) for details on how cloud assemblies are formatted.
+
 To interact with the cloud assembly that your AWS CDK app creates, you typically use the AWS CDK CLI\. But any tool that can read the cloud assembly format can be used to deploy your app\.
 
 To work with the CDK CLI, you need to let it know how to execute an AWS CDK app\.
