@@ -14,7 +14,7 @@ class MyFirstStack extends Stack {
 }
 ```
 
-## App Constructs<a name="apps_construct"></a>
+## The App Construct<a name="apps_construct"></a>
 
 To define the previous stack within some scope, use the [App](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/cdk/app.html) construct\. The following example defines a `MyFirstStack` and produces the AWS CloudFormation template that the stack defined\.
 
@@ -67,7 +67,7 @@ By the time the AWS CloudFormation deployment phase \(step 5\) starts, your AWS 
 + The AWS CDK app can't respond to events that happen during deployment, such as a resource being created or the whole deployment finishing\. To run code during the deployment phase, you have to inject it into the AWS CloudFormation template as a [custom resource](cfn_layer.md#cfn_layer_custom)\. For more information about adding a custom resource to your app, see the [AWS CloudFormation module](https://docs.aws.amazon.com/cdk/api/latest/docs/aws-cloudformation-readme.html), or the [custom\-resource](https://github.com/aws-samples/aws-cdk-examples/tree/master/typescript/custom-resource/) example\.
 + The AWS CDK app might have to work with values that can't be known at the time it runs\. For example, if the AWS CDK app defines an Amazon S3 bucket with an automatically generated name, and you retrieve the `bucket.bucketName` attribute, that value is not the name of the deployed bucket\. Instead, you get a `Token` value\. To determine whether a particular value is available, call `cdk.isToken(value)`\. See [Tokens](tokens.md) for details\.
 
-### Cloud Assemblies<a name="apps_cloud_assembly"></a>
+## Cloud Assemblies<a name="apps_cloud_assembly"></a>
 
 The call to `app.synth()` is what tells the AWS CDK to synthesize a cloud assembly from an app\. Typically you don't interact directly with cloud assemblies\. They are files that include everything needed to deploy your app to a cloud environment\. For example, it includes an AWS CloudFormation template for each stack in your app, and a copy of any file assets or Docker images that you reference in your app\.
 
