@@ -639,7 +639,7 @@ Update `lib/hello-cdk-stack.ts`
 ```
 new s3.Bucket(this, 'MyFirstBucket', {
   versioned: true,
-  encryption: s3.BucketEncryption.KmsManaged
+  encryption: s3.BucketEncryption.KMS_MANAGED
 });
 ```
 
@@ -651,7 +651,7 @@ Update `index.js`\.
 ```
 new s3.Bucket(this, 'MyFirstBucket', {
     versioned: true,
-    encryption: s3.BucketEncryption.KmsManaged
+    encryption: s3.BucketEncryption.KMS_MANAGED
 });
 ```
 
@@ -667,7 +667,7 @@ import software.amazon.awscdk.services.s3.BucketEncryption;
 ```
 new Bucket(this, "MyFirstBucket", BucketProps.builder()
     .withVersioned(true)
-    .withEncryption(BucketEncryption.KmsManaged)
+    .withEncryption(BucketEncryption.KMS_MANAGED)
     .build());
 ```
 
@@ -680,7 +680,7 @@ Update `HelloStack.cs`\.
 new Bucket(this, "MyFirstBucket", new BucketProps
 {
     Versioned = true,
-    Encryption = BucketEncryption.KmsManaged
+    Encryption = BucketEncryption.KMS_MANAGED
 });
 ```
 
@@ -691,7 +691,7 @@ new Bucket(this, "MyFirstBucket", new BucketProps
 bucket = s3.Bucket(self, 
     "MyFirstBucket", 
     versioned=True,
-    encryption=s3.BucketEncryption.KmsManaged,)
+    encryption=s3.BucketEncryption.KMS_MANAGED,)
 ```
 
 ------
