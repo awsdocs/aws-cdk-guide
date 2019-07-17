@@ -87,7 +87,7 @@ nuget update
 #### [ Python ]
 
 ```
-pip install --upgrade aws-cdk.cdk
+pip install --upgrade aws-cdk.core
 ```
 
 You might have to call this multiple times to update all dependencies\.
