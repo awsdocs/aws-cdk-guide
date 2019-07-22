@@ -42,7 +42,7 @@ export class MyEcsConstructStack extends core.Stack {
     });
 ```
 
-This produces an AWS CloudFormation [template of over 600 lines](https://github.com/awsdocs/aws-cdk-guide/blob/master/doc_source/my_ecs_construct-stack.yaml); deploying the AWS CDK app produces over 50 resources of the following types\.
+This produces an AWS CloudFormation [template of over 500 lines](https://github.com/awsdocs/aws-cdk-guide/blob/master/doc_source/my_ecs_construct-stack.yaml); deploying the AWS CDK app produces over 50 resources of the following types\.
 +  [AWS::EC2::EIP](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-ec2-eip.html) 
 +  [AWS::EC2::InternetGateway](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-ec2-internetgateway.html) 
 +  [AWS::EC2::NatGateway](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-ec2-natgateway.html) 
