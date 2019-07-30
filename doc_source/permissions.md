@@ -1,6 +1,6 @@
 # Permissions<a name="permissions"></a>
 
-The AWS CDK contains an IAM package to help you deal with permissions\. There a few idioms for managing access and permissions that are implemented uniformly across the entire AWS CDK Construct Library\.
+The AWS CDK contains an IAM package to help you deal with permissions\. There are a few idioms for managing access and permissions that are implemented uniformly across the entire AWS CDK Construct Library\.
 
 ## Roles<a name="permissions_roles"></a>
 
