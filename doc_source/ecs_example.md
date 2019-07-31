@@ -59,7 +59,7 @@ Resources:
 Install support for Amazon EC2 and Amazon ECS\.
 
 ```
-npm install @aws-cdk/aws-ec2 @aws-cdk/aws-ecs
+npm install @aws-cdk/aws-ec2 @aws-cdk/aws-ecs @aws-cdk/aws-ecs-patterns
 ```
 
 ## Create a Fargate Service<a name="ecs_example_create_fargate_service"></a>

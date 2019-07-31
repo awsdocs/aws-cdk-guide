@@ -2,7 +2,7 @@
 
 As described in [Constructs](constructs.md), the AWS CDK provides a rich class library of constructs, called *AWS constructs*, that represent all AWS resources\. This section describes some common patterns and best practices for how to use these constructs\.
 
-Defining AWS resources in your CDK app is exactly like defining any other construct\. You create an instance of the construct class, pass in the scope as the first argument, the logical ID of the construct, and a set of configuration properties \(props\)\. For example, here’s how to create an Amazon SQS queue with KMS encryption using the [sqs\.Queue](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-sqs.Queue.html) construct from the AWS Construct Library\.
+Defining AWS resources in your CDK app is exactly like defining any other construct\. You create an instance of the construct class, pass in the scope as the first argument, the logical ID of the construct, and a set of configuration properties \(props\)\. For example, here's how to create an Amazon SQS queue with KMS encryption using the [sqs\.Queue](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-sqs.Queue.html) construct from the AWS Construct Library\.
 
 ```
 import sqs = require('@aws-cdk/aws-sqs');
@@ -118,7 +118,7 @@ new lambda.Function(this, 'MyLambda', {
 
 ## Importing Existing External Resources<a name="resources_importing"></a>
 
-Sometimes you already have a resource in your AWS account and want to use it in your AWS CDK app, for example, a resource that was defined through the console, the AWS SDK, directly with AWS CloudFormation, or in a different AWS CDK application\. You can turn the resource’s ARN \(or another identifying attribute, or group of attributes\) into an AWS CDK object in the current stack by calling a static factory method on the resource's class\. 
+Sometimes you already have a resource in your AWS account and want to use it in your AWS CDK app, for example, a resource that was defined through the console, the AWS SDK, directly with AWS CloudFormation, or in a different AWS CDK application\. You can turn the resource's ARN \(or another identifying attribute, or group of attributes\) into an AWS CDK object in the current stack by calling a static factory method on the resource's class\. 
 
 The following example shows how to define a bucket based on the existing bucket with the ARN **arn:aws:s3:::my\-bucket\-name**, and a VPC based on the existing VPC with the resource name `booh`\.
 
@@ -138,10 +138,10 @@ Resource.fromAttributes(this, 'MyResource', {
 
 Because the `ec2.Vpc` construct is composed of many AWS resources, such as the VPC itself, subnets, security groups, and routing tables\), the complexity makes it difficult to import those resources using attributes\. To address this, the VPC construct contains a `fromLookup` method that uses a [context method](context.md#context_methods) to resolve all the required attributes at synthesis time, and cache the values for future usage in `cdk.context.json`\. 
 
-The following example shows how to get the default VPC of a stack’s environment\.
+The following example shows how to get the default VPC of a stack's environment\.
 
 ```
-ec2.Vpc.fromLookup(this, 'DefaultVpc’, { 
+ec2.Vpc.fromLookup(this, 'DefaultVpc', { 
   isDefault: true 
 });
 ```
@@ -154,7 +154,7 @@ Although you can use an imported resource anywhere, you cannot modify the import
 
 AWS constructs make least\-privilege permissions easy to achieve by offering simple, intent\-based APIs to express permission requirements\. Many AWS constructs offer grant methods that enable you to easily grant an entity, such as an IAM role or a user, permission to work with the resource without having to manually craft one or more IAM permission statements\.
 
-The following example creates the permissions to allow a Lambda function’s execution role to read and write objects to a particular Amazon S3 bucket\. If the Amazon S3 bucket is encrypted using an AWS KMS key, this method also grants the Lambda function's execution role permissions to decrypt using this key\.
+The following example creates the permissions to allow a Lambda function's execution role to read and write objects to a particular Amazon S3 bucket\. If the Amazon S3 bucket is encrypted using an AWS KMS key, this method also grants the Lambda function's execution role permissions to decrypt using this key\.
 
 ```
 bucket.grantReadWrite(lambda);
@@ -172,7 +172,7 @@ table.grant(lambda, 'dynamodb:CreateBackup');
 
 Many resources, such as Lambda functions, require a role to be assumed when executing code\. A configuration property enables you to specify an `iam.IRole`\. If no role is specified, the function automatically creates a role specifically for this use\. You can then use grant methods on the resources to add statements to the role\.
 
-The grant methods are built using lower\-level APIs for handling with IAM policies\. Policies are modeled as [PolicyDocument](https://docs.aws.amazon.com/cdk/api/latest/docs/aws-iam-readme.html) objects\. Add statements directly to roles \(or a construct’s attached role\) using the `addToRolePolicy` method, or to a resource’s policy \(such as a `Bucket` policy\) using the `addToResourcePolicy` method\. 
+The grant methods are built using lower\-level APIs for handling with IAM policies\. Policies are modeled as [PolicyDocument](https://docs.aws.amazon.com/cdk/api/latest/docs/aws-iam-readme.html) objects\. Add statements directly to roles \(or a construct's attached role\) using the `addToRolePolicy` method, or to a resource's policy \(such as a `Bucket` policy\) using the `addToResourcePolicy` method\. 
 
 ## Metrics and Alarms<a name="resources_metrics"></a>
 
@@ -207,7 +207,7 @@ Metrics can also be added to CloudWatch dashboards\. See [CloudWatch](https://do
 
 In many cases, you must enable permissions on a network for an application to work, such as when the compute infrastructure needs to access the persistence layer\. Resources that establish or listen for connections expose methods that enable traffic flows, including setting security group rules or network ACLs\.
 
-[IConnectable](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-ec2.Iconnectable.html) resources have a `connections` property that is the gateway to network traffic rules configuration\.
+[IConnectable](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-ec2.IConnectable.html) resources have a `connections` property that is the gateway to network traffic rules configuration\.
 
 You enable data to flow on a given network path by using `allow` methods\. The following example enables HTTPS connections to the web and incoming connections from the Amazon EC2 Auto Scaling group `fleet2`\.
 

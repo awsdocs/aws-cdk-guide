@@ -16,7 +16,7 @@ The AWS CDK provides a mechanism that you can use to incorporate resources from 
 You can include this bucket in your AWS CDK app, as shown in the following example:
 
 ```
-import cdk = require("@amp;aws-cdk/cdk");
+import cdk = require("@aws-cdk/core");
 import fs = require("fs");
 
 new cdk.Include(this, "ExistingInfrastructure", {

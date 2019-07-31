@@ -2,7 +2,7 @@
 
 Assets are local files, directories, or Docker images that can be bundled into AWS CDK libraries and apps; for example, a directory that contains the handler code for an AWS Lambda function\. Assets can represent any artifact that the app needs to operate\.
 
-You typically reference assets through APIs that are exposed by specific AWS constructs\. For example, when you define a [lambda\.Function](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-lambda.Function.html) construct, the [code](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-lambda.Function.html#code) property enables you to pass an [asset](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-lambda.Code.html#static-assetpath) \(directory\)\. `Function` uses assets to bundle the contents of the directory and use it for the function’s code\. Similarly, [ecs\.ContainerImage\.fromAsset](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-ecs.ContainerImage.html#static-from-assetdirectory-props) uses a Docker image built from a local directory when defining an Amazon ECS task definition\.
+You typically reference assets through APIs that are exposed by specific AWS constructs\. For example, when you define a [lambda\.Function](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-lambda.Function.html) construct, the [code](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-lambda.Function.html#code) property enables you to pass an [asset](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-lambda.Code.html#static-assetpath) \(directory\)\. `Function` uses assets to bundle the contents of the directory and use it for the function's code\. Similarly, [ecs\.ContainerImage\.fromAsset](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-ecs.ContainerImage.html#static-from-assetdirectory-props) uses a Docker image built from a local directory when defining an Amazon ECS task definition\.
 
 ## Assets in Detail<a name="assets_details"></a>
 
@@ -40,17 +40,17 @@ The following example defines a local directory asset and a file asset\.
 import { Asset } from '@aws-cdk/aws-s3-assets';
 
 // Archived and uploaded to Amazon S3 as a .zip file
-const directoryAsset = new Asset(this, "SampleAsset", {
+const directoryAsset = new Asset(this, "SampleZippedDirAsset", {
   path: path.join(__dirname, "sample-asset-directory")
 });
 
 // Uploaded to Amazon S3 as-is
-const fileAsset = new Asset(this, 'SampleAsset', {
+const fileAsset = new Asset(this, 'SampleSingleFileAsset', {
   path: path.join(__dirname, 'file-asset.txt')
 });
 ```
 
-In most cases, you don’t need to directly use the APIs in the `aws-s3-assets` module\. Modules that support assets, such as `aws-lambda`, have convenience methods that enable you to use assets\. For Lambda functions, the [asset](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-lambda.Code.html#static-assetpath) property enables you to specify a directory or a \.zip file in the local file system\.
+In most cases, you don't need to directly use the APIs in the `aws-s3-assets` module\. Modules that support assets, such as `aws-lambda`, have convenience methods that enable you to use assets\. For Lambda functions, the [asset](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-lambda.Code.html#static-assetpath) property enables you to specify a directory or a \.zip file in the local file system\.
 
 #### Lambda Function Example<a name="assets_types_s3_lambda"></a>
 
@@ -86,7 +86,7 @@ export class HelloAssetStack extends cdk.Stack {
 }
 ```
 
-The `Function` method uses assets to bundle the contents of the directory and use it for the function’s code\.
+The `Function` method uses assets to bundle the contents of the directory and use it for the function's code\.
 
 #### Deploy\-Time Attributes Example<a name="assets_types_s3_deploy"></a>
 
@@ -96,7 +96,7 @@ The following example uses deploy\-time attributes to pass the location of an im
 
 ```
 const imageAsset = new Asset(this, "SampleAsset", {
-  path: path.join(__dirname, “images/my-image.png")
+  path: path.join(__dirname, "images/my-image.png")
 });
 
 new lambda.Function(this, "myLambdaFunction", {

@@ -2,11 +2,17 @@
 
 This topic describes how to install and configure the AWS CDK and create your first AWS CDK app\.
 
+**Note**  
+Looking for more than just the basics? Try the [CDK Workshop](https://cdkworkshop.com/)\.
+
 ## Prerequisites<a name="getting_started_prerequisites"></a>
 
 **AWS CDK command line tools**  
 + [Node\.js \(>= 8\.11\.x\)](https://nodejs.org/en/download)
 + You must specify both your credentials and an AWS Region to use the AWS CDK CLI;, as described in [Specifying Your Credentials and Region](#getting_started_credentials)\.
+
+**Note**  
+ Why do you need Node\.js if you're a not a JavaScript developer? The AWS CDK is developed in TypeScript and transpiled to JavaScript\. Bindings for the other supported languages make use of the AWS CDK back\-end running on Node\.js, as does the `cdk` command\-line tool\. 
 
 ------
 #### [ TypeScript ]
@@ -217,6 +223,9 @@ mkdir hello-cdk
 cd hello-cdk
 ```
 
+**Note**  
+ Be sure to use the name `hello-cdk` for your project directory\. The AWS CDK project template uses the directory name to name things in the generated code, so if you use a different name, you'll need to change some of the code in this article\. 
+
 ### Initializing the App<a name="tutorial_init_project"></a>
 
 Initialize an app, where *LANGUAGE* is one of the supported programming languages: **csharp** \(C\#\), **java** \(Java\), **python** \(Python\), or **typescript** \(TypeScript\) and *TEMPLATE* is an optional template that creates an app with different resources than the default app that cdk init creates for the language\.
@@ -410,7 +419,7 @@ If necessary, add the following to `pom.xml`, where *CDK\-VERSION* is the versio
 ------
 #### [ C\# ]
 
-Run the following command in the src/HelloCdk directory\.
+Run the following command in the `src/HelloCdk` directory\.
 
 ```
 dotnet add package Amazon.CDK.AWS.S3
@@ -452,13 +461,13 @@ export class HelloCdkStack extends core.Stack {
 ------
 #### [ JavaScript ]
 
-In `index.js`:
+In `lib/hello-cdk-stack.js`:
 
 ```
-const cdk = require('@aws-cdk/cdk');
+const cdk = require('@aws-cdk/core');
 const s3 = require('@aws-cdk/aws-s3');
 
-class MyStack extends cdk.Stack {
+class HelloCdkStack extends cdk.Stack {
     constructor(scope, id, props) {
         super(scope, id, props);
 
@@ -467,6 +476,8 @@ class MyStack extends cdk.Stack {
         });
     }
 }
+
+module.exports = { HelloCdkStack }
 ```
 
 ------
@@ -525,12 +536,12 @@ namespace HelloCdk
 ------
 #### [ Python ]
 
-Replace the import statement in `hello_cdk_stack.py` in the `hello_cdk` directory with the following code\.
+Replace the first import statement in `hello_cdk_stack.py` in the `hello_cdk` directory with the following code\.
 
 ```
 from aws_cdk import (
     aws_s3 as s3,
-    cdk
+    core
 )
 ```
 
@@ -545,8 +556,8 @@ bucket = s3.Bucket(self,
 ------
 
 Notice a few things:
-+ [Bucket](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/aws-s3/bucket.html) is a construct\. This means it's initialization signature has `scope`, `id`, and `props` and it is a child of the stack\.
-+ `MyFirstBucket` is the **id** of the bucket construct, not the physical name of the Amazon S3 bucket\. The logical ID is used to uniquely identify resources in your stack across deployments\.  To specify a physical name for your bucket, set the [bucketName](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/aws-s3/bucket.html#bucketname) property when you define your bucket\.
++ [Bucket](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/aws-s3/bucket.html) is a construct\. This means its initialization signature has `scope`, `id`, and `props` and it is a child of the stack\.
++ `MyFirstBucket` is the **id** of the bucket construct, not the physical name of the Amazon S3 bucket\. The logical ID is used to uniquely identify resources in your stack across deployments\.  To specify a physical name for your bucket, set the [bucketName](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/aws-s3/bucket.html#bucketname) property \(`bucket_name` in Python\) when you define your bucket\.
 + Because the bucket's [versioned](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/aws-s3/bucket.html#versioned) property is `true`, [versioning](https://docs.aws.amazon.com/AmazonS3/latest/dev/Versioning.html) is enabled on the bucket\.
 
 Compile your program, as follows\.
@@ -639,19 +650,19 @@ Update `lib/hello-cdk-stack.ts`
 ```
 new s3.Bucket(this, 'MyFirstBucket', {
   versioned: true,
-  encryption: s3.BucketEncryption.KmsManaged
+  encryption: s3.BucketEncryption.KMS_MANAGED
 });
 ```
 
 ------
 #### [ JavaScript ]
 
-Update `index.js`\.
+Update `lib/hello-cdk-stack.js`\.
 
 ```
 new s3.Bucket(this, 'MyFirstBucket', {
     versioned: true,
-    encryption: s3.BucketEncryption.KmsManaged
+    encryption: s3.BucketEncryption.KMS_MANAGED
 });
 ```
 
@@ -667,7 +678,7 @@ import software.amazon.awscdk.services.s3.BucketEncryption;
 ```
 new Bucket(this, "MyFirstBucket", BucketProps.builder()
     .withVersioned(true)
-    .withEncryption(BucketEncryption.KmsManaged)
+    .withEncryption(BucketEncryption.KMS_MANAGED)
     .build());
 ```
 
@@ -680,7 +691,7 @@ Update `HelloStack.cs`\.
 new Bucket(this, "MyFirstBucket", new BucketProps
 {
     Versioned = true,
-    Encryption = BucketEncryption.KmsManaged
+    Encryption = BucketEncryption.KMS_MANAGED
 });
 ```
 
@@ -691,7 +702,7 @@ new Bucket(this, "MyFirstBucket", new BucketProps
 bucket = s3.Bucket(self, 
     "MyFirstBucket", 
     versioned=True,
-    encryption=s3.BucketEncryption.KmsManaged,)
+    encryption=s3.BucketEncryption.KMS_MANAGED,)
 ```
 
 ------
