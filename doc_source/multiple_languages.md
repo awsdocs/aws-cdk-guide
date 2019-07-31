@@ -11,77 +11,50 @@ The following is how you import the entire Amazon S3 module or just a `Stack` cl
 
 | TypeScript | Python | 
 | --- |--- |
-| // Import entire module | \# Import entire module | 
-| import s3 = require\('@aws\-cdk/aws\-s3'\) | import aws\_cdk\.aws\_s3 as s3 | 
-|  |  | 
-| // Selective import | \# Selective import | 
-| import \{ Stack \} from '@aws\-cdk/core'; | from aws\_cdk\.core import Stack | 
+| <pre>// Import entire module<br />import s3 = require('@aws-cdk/aws-s3')<br /><br />// Selective import<br />import { Stack } from '@aws-cdk/core';</pre> | <pre># Import entire module<br />import aws_cdk.aws_s3 as s3<br /><br /># Selective import<br />from aws_cdk.core import Stack</pre>  | 
 
 ## Instantiating a Class<a name="multiple_languages_class"></a>
 
-Classes have the same name in TypeScript and in Python\. TypeScript uses **new** to instantiate classes, whereas in Python you call the class object directly\. The keyword **this** in TypeScript translates to **self** in Python\. 
+Classes have the same name in TypeScript and in Python\. TypeScript uses **new** to instantiate classes, whereas in Python you call the class object directly, like a function\. Props objects at the end of an argument list become keyword\-only arguments in Python, and their names become `snake_case`\. The keyword **this** in TypeScript translates to **self** in Python\. 
 
 The following table shows how you can translate TypeScript class instantiations to Python class instantiations\.
 
 
 | TypeScript | Python | 
 | --- |--- |
-| // Instantiate Bucket class | \# Instantiate Bucket class | 
-| new s3\.Bucket\(this, 'Bucket'\); | s3\.Bucket\(self, 'Bucket'\) | 
+| <pre>// Instantiate Bucket class<br />const bucket = new s3.Bucket(this, 'Bucket');</pre> | <pre># Instantiate Bucket class<br />bucket = s3.Bucket(self, 'Bucket')</pre> | 
+| <pre>// Instantiate Bucket with props<br />const bucket = new s3.Bucket(this, 'Bucket', {<br />  bucketName: 'my-bucket',<br />   versioned: true,<br />});</pre> | <pre># Instantiate Bucket with props<br />bucket = s3.Bucket(self, 'Bucket', <br />  bucket_name='my-bucket',<br />  versioned=True)</pre> | 
 
 ## Methods<a name="multiple_languages_methods"></a>
 
-Methods names and argument names in TypeScript are `camelCased`, whereas in Python they are `snake_cased`\. Props objects at the end of an argument list in TypeScript are translated into keyword\-only arguments in Python\. 
+Methods names and argument names in TypeScript are `camelCased`, whereas in Python they are `snake_cased`\. Props objects at the end of an argument list in TypeScript are translated into keyword\-only arguments in Python, and their names become `snake_case`\.
 
 The following table shows how you can translate TypeScript methods to Python methods\.
 
 
 | TypeScript | Python | 
 | --- |--- |
-| // Instantiate Bucket with props | \# Instantiate Bucket with props | 
-| const bucket = new s3\.Bucket\(this, 'Bucket', \{ | bucket = s3\.Bucket\(self, 'Bucket',  | 
-|   bucketName: 'my\-bucket', |   bucketName='my\-bucket',  | 
-|   versioned: true, |   versioned=True\) | 
-| \}\); |  | 
-|  |  | 
-| // Call method | \# Call method | 
-| bucket\.addCorsRule\(\{ | bucket\.add\_cors\_rule\( | 
-|   allowedOrigins: \['\*'\], |   allowed\_origins=\['\*'\], | 
-|   allowedMethods: \[\], |   allowed\_methods=\[\] | 
-| \}\); | \) | 
+| <pre>// Call method<br />bucket.addCorsRule({<br />  allowedOrigins: ['*'],<br />  allowedMethods: [],<br />});</pre> | <pre># Call method<br />bucket.add_cors_rule(<br />  allowed_origins=['*'],<br />  allowed_methods=[]<br />)</pre> | 
 
 ## Enum Constants<a name="multiple_languages_enums"></a>
 
-Enum constants are scoped to a class, and have uppercase names in both languages\. 
-
-The following table shows how you can translate TypeScript enum constants to Python enum constants\.
+Enum constants are scoped to a class, and have uppercase names with underscores in both languages \(sometimes referred to as `SCREAMING_SNAKE_CASE`\)\. TypeScript enum constants and Python enum constants are identical\.
 
 
 | TypeScript | Python | 
 | --- |--- |
-| s3\.BucketEncryption\.KMS\_MANAGED | s3\.BucketEncryption\.KMS\_MANAGED | 
+| <pre>s3.BucketEncryption.KMS_MANAGED</pre> | <pre>s3.BucketEncryption.KMS_MANAGED</pre> | 
 
 ## Defining Constructs<a name="multiple_languages_constructs"></a>
 
-In TypeScript a construct’s props are defined with an interface, whereas in Python you take keyword \(or keyword\-only, see [PEP3102](https://www.python.org/dev/peps/pep-3102/)\) arguments\. 
+In TypeScript, a construct's props are defined with a shape\-based interface, whereas Python takes keyword \(or keyword\-only, see [PEP3102](https://www.python.org/dev/peps/pep-3102/)\) arguments\. 
 
-The following table shows how you can translate TypeScript construct definitions to Python construct definitions\.
+The following table shows how TypeScript construct definitions translate to Python construct definitions\.
 
 
 | TypeScript | Python | 
 | --- |--- |
-| interface MyConstructProps \{ |  | 
-|   prop1: number; |  | 
-|   prop2?: number; |  | 
-| \} |  | 
-|  |  | 
-| class MyConstruct extends Construct \{ | class MyConstruct\(Construct\): | 
-|   constructor\(scope: Construct, id: string, props: MyConstructProps\) \{ |   def \_\_init\_\_\(scope, id, \*, prop1, prop2=10\): | 
-|     super\(scope, id\); |   super\(\)\.\_\_init\_\_\(scope, id\) | 
-|  |  | 
-|     const prop2 = props\.prop2 \!== undefined ? props\.prop2 : 10; |  | 
-|  |  | 
-|     // Construct contents here |   \# Construct contents here | 
+| <pre>interface MyConstructProps {<br />  prop1: number;<br />  prop2?: number;<br />}<br /><br />class MyConstruct extends Construct {<br />  constructor(scope: Construct, id: string, props: MyConstructProps) {<br />     super(scope, id);<br />     const prop2 = props.prop2 !== undefined ? props.prop2 : 10;<br /><br />    // Construct contents here<br /><br />  }<br />}</pre> | <pre>class MyConstruct(Construct):<br /><br />  def __init__(scope, id, *, prop1, prop2=10):<br />    super().__init__(scope, id)<br /><br />    # Construct contents here</pre>  | 
 
 ## Structs \(Interfaces\)<a name="multiple_languages_structs"></a>
 
@@ -94,29 +67,15 @@ The following table shows how to call a method with two levels of structs\.
 
 | TypeScript | Python | 
 | --- |--- |
-| bucket\.addLifecycleRule\(\{ | bucket\.add\_lifecycle\_rule\( | 
-|   transitions: \[ |   transitions=\[ | 
-|     \{ |     Transition\( | 
-|       storageClass: StorageClass\.GLACIER, |       storage\_class=StorageClass\.GLACIER, | 
-|       transitionAfter: Duration\.days\(10\) |       transition\_after=Duration\.days\(10\) | 
-|     \} |     \) | 
-|   \] |   \] | 
-| \}\); | \) | 
+| <pre>bucket.addLifecycleRule({<br />  transitions: [<br />    {<br />      storageClass: StorageClass.GLACIER,<br />      transitionAfter: Duration.days(10)<br />    }<br />  ]<br />});<br />          </pre> | <pre>bucket.add_lifecycle_rule(<br />  transitions=[<br />    Transition(<br />      storage_class=StorageClass.GLACIER,<br />      transition_after=Duration.days(10)<br />    )<br />  ]<br />)</pre> | 
 
 ## Object Interfaces<a name="multiple_languages_object"></a>
 
 The AWS CDK uses TypeScript object interfaces to indicate that a class implements an expected set of methods and properties\. You can recognize an object interface because its name starts with `I`\.
 
-Typically, Python users don’t explicitly indicate that a class implements an interface\. However, for the AWS CDK you can do this by decorating your class with `@jsii.implements(interface)`\. 
+Typically, Python users don't explicitly indicate that a class implements an interface\. However, for the AWS CDK you can do this by decorating your class with `@jsii.implements(interface)`\. 
 
 
 | TypeScript | Python | 
 | --- |--- |
-| import \{IAspect, IConstruct \} from ‘@aws\-cdk/core’; | from aws\_cdk\.core import IAspect, IConstruct | 
-|  |  | 
-|  | @jsii\.implements\(IAspect\) | 
-| class MyAspect implements IAspect \{ | class MyAspect\(\): | 
-|   public visit\(node: IConstruct\) \{ |   def visit\(self, node: IConstruct\) \-> None: | 
-|     console\.log\(‘Visited’, node\.node\.path\); |     print\("Visited”, node\.node\.path\) | 
-|   \} |  | 
-| \} |  | 
+| <pre>import {IAspect, IConstruct } from '@aws-cdk/core';<br /><br />class MyAspect implements IAspect {<br />  public visit(node: IConstruct) {<br />    console.log('Visited', node.node.path);<br />  }<br />}</pre> | <pre>from aws_cdk.core import IAspect, IConstruct<br /><br />@jsii.implements(IAspect)<br />class MyAspect():<br />  def visit(self, node: IConstruct) -> None:<br />    print("Visited", node.node.path)</pre> | 

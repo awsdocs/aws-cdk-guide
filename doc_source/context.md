@@ -11,7 +11,7 @@ You can provide context values in three different ways:
 
 Context entries are scoped to the construct that created them: they are visible to children constructs, but not to siblings\. Context entries that are set by the CLI, either automatically or from the \-\-context option, are implicitly set on the `App` construct, and are visible to the app\.
 
-You can get context information using the `construct.node.tryGetContext` method, which returns the value set on the current construct if it is present\. Otherwise, it resolves the context from the current construct’s parent, until it has reached the `App` construct\.
+You can get context information using the `construct.node.tryGetContext` method, which returns the value set on the current construct if it is present\. Otherwise, it resolves the context from the current construct's parent, until it has reached the `App` construct\.
 
 ## Context Methods<a name="context_methods"></a>
 
@@ -33,7 +33,7 @@ Gets the existing VPCs in your accounts\.
 
 If a given context information isn't available, the AWS CDK app notifies the AWS CDK CLI that the context information is missing\. The CLI then queries the current AWS account for the information, stores the resulting context information in the `cdk.context.json` file, and executes the AWS CDK app again with the context values\.
 
-Don't forget to add the `cdk.context.json` file to your source control repository to ensure that subsequent synth commands will return the same result, and that your AWS account won’t be needed when synthesizing from your build system\.
+Don't forget to add the `cdk.context.json` file to your source control repository to ensure that subsequent synth commands will return the same result, and that your AWS account won't be needed when synthesizing from your build system\.
 
 ## Viewing and Managing Context<a name="context_viewing"></a>
 

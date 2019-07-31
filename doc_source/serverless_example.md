@@ -154,21 +154,6 @@ export class WidgetService extends core.Construct {
     });
 
     api.root.addMethod("GET", getWidgetsIntegration); // GET /
-
-    const widget = api.root.addResource("{id}");
-
-    // Add new widget to bucket with: POST /{id}
-    const postWidgetIntegration = new apigateway.LambdaIntegration(handler);
-
-    // Get a specific widget from bucket with: GET /{id}
-    const getWidgetIntegration = new apigateway.LambdaIntegration(handler);
-
-    // Remove a specific widget from the bucket with: DELETE /{id}
-    const deleteWidgetIntegration = new apigateway.LambdaIntegration(handler);
-
-    widget.addMethod("POST", postWidgetIntegration); // POST /{id}
-    widget.addMethod("GET", getWidgetIntegration); // GET /{id}
-    widget.addMethod("DELETE", deleteWidgetIntegration); // DELETE /{id}
   }
 }
 ```
@@ -182,7 +167,7 @@ cdk synth
 
 ## Add the Service to the App<a name="serverless_example_add_service"></a>
 
-To add the service to the app, first modify `my_widget_service-stack.ts`\. Add the following line of code after the existing `import` statement\.
+To add the service to the app, first modify `my_widget_service-stack.ts` in the `lib` directory\. Add the following line of code after the existing `import` statement\.
 
 ```
 import widget_service = require('../lib/widget_service');
@@ -247,7 +232,7 @@ Because we haven't stored any widgets yet, the output should be similar to the f
 
 The next step is to create Lambda functions to create, show, and delete individual widgets\. 
 
-Replace the existing `exports.main` function in `widgets.js` with the following code\.
+Replace the existing `exports.main` function in `widgets.js` \(in `resources`\) with the following code\.
 
 ```
 exports.main = async function(event, context) {
@@ -356,20 +341,20 @@ exports.main = async function(event, context) {
 Wire up these functions to your API Gateway code in `widget_service.ts` by adding the following code at the end of the constructor\.
 
 ```
-const widget = api.root.addResource('{name}');
+    const widget = api.root.addResource("{id}");
 
-// Add new widget to bucket with: POST /{name}
-const postWidgetIntegration = new apigateway.LambdaIntegration(handler);
+    // Add new widget to bucket with: POST /{id}
+    const postWidgetIntegration = new apigateway.LambdaIntegration(handler);
 
-// Get a specific widget from bucket with: GET /{name}
-const getWidgetIntegration = new apigateway.LambdaIntegration(handler);
+    // Get a specific widget from bucket with: GET /{id}
+    const getWidgetIntegration = new apigateway.LambdaIntegration(handler);
 
-// Remove a specific widget from the bucket with: DELETE /{name}
-const deleteWidgetIntegration = new apigateway.LambdaIntegration(handler);
+    // Remove a specific widget from the bucket with: DELETE /{id}
+    const deleteWidgetIntegration = new apigateway.LambdaIntegration(handler);
 
-widget.addMethod('POST', postWidgetIntegration);    // POST /{name}
-widget.addMethod('GET', getWidgetIntegration);       // GET /{name}
-widget.addMethod('DELETE', deleteWidgetIntegration); // DELETE /{name}
+    widget.addMethod("POST", postWidgetIntegration); // POST /{id}
+    widget.addMethod("GET", getWidgetIntegration); // GET /{id}
+    widget.addMethod("DELETE", deleteWidgetIntegration); // DELETE /{id}
 ```
 
 Save, build, and deploy the app\.

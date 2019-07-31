@@ -99,5 +99,5 @@ theBestStack.node.applyAspect(new RemoveTag('StackType'), {
 You can achieve the same result by using the following\.  
 
 ```
-theBestStack.node.applyAspect(new Tag('StackType', 'TheBest', { includeResourceTypes: [‘AWS::EC2::Subnet’]})); 
+theBestStack.node.applyAspect(new Tag('StackType', 'TheBest', { includeResourceTypes: ['AWS::EC2::Subnet'']})); 
 ```

@@ -2,7 +2,7 @@
 
 It's possible that neither the high\-level constructs nor the low\-level CFN Resource constructs have a specific feature you are looking for\. There are three possible reasons for this lack of functionality:
 + The AWS service feature is available through AWS CloudFormation, but there are no Construct classes for the service\.
-+ The AWS service feature is available through AWS CloudFormation, and there are Construct classes for the service, but the Construct classes don’t yet expose the feature\.
++ The AWS service feature is available through AWS CloudFormation, and there are Construct classes for the service, but the Construct classes don't yet expose the feature\.
 + The feature is not yet available through AWS CloudFormation\.
 
 To determine whether a feature is available through AWS CloudFormation, see [AWS Resource and Property Types Reference](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-template-resource-type-ref.html)\.
@@ -49,7 +49,7 @@ If an Construct is missing a feature or you are trying to work around an issue, 
 
 All Constructs contain within them the corresponding CFN Resource\. For example, the high\-level `Bucket` construct wraps the low\-level `CfnBucket` construct\. Because the `CfnBucket` corresponds directly to the AWS CloudFormation resource, it exposes all features that are available through AWS CloudFormation\.
 
-The basic approach to get access to the CFN Resource class is to use `construct.node.defaultChild`, cast it to the right type for the resource, and modify its properties\. Again, let’s take the example of a `Bucket`\.
+The basic approach to get access to the CFN Resource class is to use `construct.node.defaultChild`, cast it to the right type for the resource, and modify its properties\. Again, let's take the example of a `Bucket`\.
 
 ```
 // Get the AWS CloudFormation resource
@@ -94,9 +94,9 @@ cfnBucket.addPropertyDeletionOverride('VersioningConfiguration.Status');
 
 ## Custom Resources<a name="cfn_layer_custom"></a>
 
-If the feature isn't available through AWS CloudFormation, but only through a direct API call, the only solution is to write an AWS CloudFormation Custom Resource to make the API call you need\. Don’t worry, the AWS CDK makes it easier to write these, and wrap them up into a regular construct interface, so from another user’s perspective the feature feels native\.
+If the feature isn't available through AWS CloudFormation, but only through a direct API call, the only solution is to write an AWS CloudFormation Custom Resource to make the API call you need\. Don't worry, the AWS CDK makes it easier to write these, and wrap them up into a regular construct interface, so from another user's perspective the feature feels native\.
 
-Building a custom resource involves writing a Lambda function that responds to a resource’s CREATE, UPDATE and DELETE lifecycle events\. If your custom resource needs to make only a single API call, consider using the [AwsCustomResource](https://github.com/awslabs/aws-cdk/tree/master/packages/%40aws-cdk/custom-resources)\. This makes it possible to perform arbitrary SDK calls during an AWS CloudFormation deployment\. Otherwise, you should write your own Lambda function to perform the work you need to get done\.
+Building a custom resource involves writing a Lambda function that responds to a resource's CREATE, UPDATE and DELETE lifecycle events\. If your custom resource needs to make only a single API call, consider using the [AwsCustomResource](https://github.com/awslabs/aws-cdk/tree/master/packages/%40aws-cdk/custom-resources)\. This makes it possible to perform arbitrary SDK calls during an AWS CloudFormation deployment\. Otherwise, you should write your own Lambda function to perform the work you need to get done\.
 
 The subject is too broad to completely cover here, but the following links should get you started:
 + [Custom Resources](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/template-custom-resources.html)

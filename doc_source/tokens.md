@@ -6,12 +6,12 @@ Tokens represent values that can only be resolved at a later time in the lifecyc
 ${TOKEN[Bucket.Name.1234]}
 ```
 
-This is how the AWS CDK encodes a token whose value is not yet known at construction time, but will become available later\. The AWS CDK calls these placeholders *tokens*\. In this case, it’s a token encoded as a string\.
+This is how the AWS CDK encodes a token whose value is not yet known at construction time, but will become available later\. The AWS CDK calls these placeholders *tokens*\. In this case, it's a token encoded as a string\.
 
 You can pass this string around as if it was the name of the bucket, such as in the following example, where the bucket name is specified as an environment variable to an AWS Lambda function\.
 
 ```
-const bucket = new s3.Bucket(this, 'Bucket');
+const bucket = new s3.Bucket(this, 'MyBucket');
 
 const fn = new lambda.Function(stack, 'MyLambda', {
   // ...
@@ -28,7 +28,7 @@ When the AWS CloudFormation template is finally synthesized, the token is render
 Tokens are objects that implement the [IResolvable](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.IResolvable.html) interface, which contains a single `resolve` method\. The AWS CDK calls this method during synthesis to produce the final value for the AWS CloudFormation template\. Tokens participate in the synthesis process to produce arbitrary values of any type\.
 
 **Note**  
-You’ll hardly ever work directly with the `IResolvable` interface\. You will most likely only see string\-encoded versions of tokens\.
+You'll hardly ever work directly with the `IResolvable` interface\. You will most likely only see string\-encoded versions of tokens\.
 
 Other functions typically only accept arguments of basic types, such as `string` or `number`\. To use tokens in these cases, you can encode them into one of three types using static methods on the [core\.Token](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Token.html) class\.
 + Strings using [Token\.asString](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Token.html#static-as-stringvalue-options)
@@ -53,7 +53,7 @@ if (!Token.isUnresolved(name) && name.length > 10) {
 If **name** is a token, validation is not be performed, and the error could occur in a later stage in the lifecycle, such as during deployment\.
 
 **Note**  
-You can use token encodings to escape the type system\. For example, you could string\-encode a token that produces a number value at synthesis time\. If you use these functions, it’s your responsibility to ensure that your template resolves to a usable state after synthesis\.
+You can use token encodings to escape the type system\. For example, you could string\-encode a token that produces a number value at synthesis time\. If you use these functions, it's your responsibility to ensure that your template resolves to a usable state after synthesis\.
 
 ## String\-Encoded Tokens<a name="tokens_string"></a>
 
@@ -106,7 +106,7 @@ You can construct tokens representing synth\-time lazy values using static metho
 ```
 let actualValue: number;
 
-new AutoScalingGroup(this, ‘Group’, {
+new AutoScalingGroup(this, 'Group', {
   desiredCapacity: Lazy.numberValue({
      produce() {
           return actualValue;

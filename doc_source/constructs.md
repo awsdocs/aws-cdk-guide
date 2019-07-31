@@ -10,7 +10,7 @@ The AWS CDK includes the [AWS Construct Library](https://docs.aws.amazon.com/cdk
 
 This library includes constructs that represent all the resources available on AWS\. For example, the `[s3\.Bucket](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.Bucket.html)` class represents an Amazon S3 bucket, and the `[dynamodb\.Table](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-dynamodb.Table.html)` class represents an Amazon DynamoDB table\.
 
-There are different levels of constructs in this library, beginning with low\-level constructs, which we call *CFN Resources*\. These constructs represent all of the AWS resources that are available in AWS CloudFormation\. CFN Resources are generated from the [AWS CloudFormation Resource Specification](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-resource-specification.html) on a regular basis\. They are named **Cfn***Xyz*, where *Xyz* represents the name of the resource\. For example, [s3\.CfnBucket](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.CfnBucket.html) represents the [AWS::S3::Bucket](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-s3-bucket.html) CFN Resource\. When you use CFN constructs, you must explicitly configure all resource properties, which requires a complete understanding of the details of the underlying resource model\.
+There are different levels of constructs in this library, beginning with low\-level constructs, which we call *CFN Resources*\. These constructs represent all of the AWS resources that are available in AWS CloudFormation\. CFN Resources are generated from the [AWS CloudFormation Resource Specification](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-resource-specification.html) on a regular basis\. They are named **Cfn***Xyz*, where *Xyz* represents the name of the resource\. For example, [s3\.CfnBucket](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.CfnBucket.html) represents the [AWS::S3::Bucket](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-s3-bucket.html) CFN Resource\. When you use CFN resources, you must explicitly configure all resource properties, which requires a complete understanding of the details of the underlying resource model\.
 
 The next level of constructs also represent AWS resources, but with a higher\-level, intent\-based API\. They provide the same functionality, but handle much of the details, boilerplate, and glue logic required by CFN constructs\. AWS constructs offer convenient defaults and reduce the need to know all the details about the AWS resources they represent, while providing convenience methods that make it simpler to work with the resource\. For example, the [s3\.Bucket](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/aws-s3/bucket.html#aws_s3_Bucket) class represents an Amazon S3 bucket with additional properties and methods, such as [bucket\.addLifeCycleRule\(\)](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/aws-s3/bucket.html#aws_s3_Bucket_addLifecycleRule), which adds a lifecycle rule to the bucket\.
 
@@ -55,7 +55,7 @@ const app = new App();
 new HelloCdkStack(app, "HelloCdkStack");
 ```
 
-As you can see, you need a scope within which to define your bucket\. Since resources eventually need to be deployed as part of a AWS CloudFormation stack into an *AWS *[https://docs.aws.amazon.com/cdk/latest/guide/apps_and_stacks.html#environments](https://docs.aws.amazon.com/cdk/latest/guide/apps_and_stacks.html#environments), which covers a specific AWS account and AWS region\. AWS constructs, such as `s3.Bucket`, must be defined within the scope of a [https://docs.aws.amazon.com/cdk/api/latest/typescript/api/cdk/stack.html#cdk_Stack](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/cdk/stack.html#cdk_Stack)\.
+As you can see, you need a scope within which to define your bucket\. Since resources eventually need to be deployed as part of a AWS CloudFormation stack into an *AWS *[https://docs.aws.amazon.com/cdk/latest/guide/apps_and_stacks.html#environments](https://docs.aws.amazon.com/cdk/latest/guide/apps_and_stacks.html#environments), which covers a specific AWS account and AWS region\. AWS constructs, such as `s3.Bucket`, must be defined within the scope of a [Stack](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/core/stack.html)\.
 
 Stacks in AWS CDK apps extend the **Stack** base class, as shown in the previous example\. This is a common pattern when creating a stack within your AWS CDK app: extend the **Stack** class, define a constructor that accepts **scope**, **id**, and **props**, and invoke the base class constructor via `super` with the received **scope**, **id**, and **props**, as shown in the following example\.
 
@@ -89,7 +89,7 @@ The [AWS Construct Library](https://docs.aws.amazon.com/cdk/api/latest/docs/aws-
 
 ## Configuration<a name="constructs_config"></a>
 
-Most constructs accept `props` as their third initialization argument\. This is a name/value collection that defines the construct’s configuration\. The following example defines a bucket with AWS Key Management Service \(AWS KMS\) encryption and static website hosting enabled\. Since it does not explicitly specify an encryption key, the `Bucket` construct defines a new `kms.Key` and associates it with the bucket\.
+Most constructs accept `props` as their third initialization argument\. This is a name/value collection that defines the construct's configuration\. The following example defines a bucket with AWS Key Management Service \(AWS KMS\) encryption and static website hosting enabled\. Since it does not explicitly specify an encryption key, the `Bucket` construct defines a new `kms.Key` and associates it with the bucket\.
 
 ```
 new s3.Bucket(this, 'MyEncryptedBucket', {
@@ -112,7 +112,7 @@ const dataScience = new iam.Group(this, 'data-science');
 rawData.grantRead(dataScience);
 ```
 
-Another common pattern is for AWS constructs to set one of the resource’s attributes, such as its Amazon Resource Name \(ARN\), name, or URL from data supplied elsewhere\. For example, the following code defines an AWS Lambda function and associates it with an Amazon Simple Queue Service \(Amazon SQS\) queue through the queue's URL in an environment variable\.
+Another common pattern is for AWS constructs to set one of the resource's attributes, such as its Amazon Resource Name \(ARN\), name, or URL from data supplied elsewhere\. For example, the following code defines an AWS Lambda function and associates it with an Amazon Simple Queue Service \(Amazon SQS\) queue through the queue's URL in an environment variable\.
 
 ```
 const jobsQueue = new sqs.Queue(this, 'jobs');

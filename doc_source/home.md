@@ -18,7 +18,7 @@ Developers can use one of the supported programming languages to define reusable
 
 Let's look at the power of the AWS CDK\. Here is some TypeScript code in an AWS CDK project to create an AWS Fargate service \(this is the code we use in the [Creating an AWS Fargate Service Using the AWS CDK](ecs_example.md)\)\.
 
-``` typescript
+```
 export class MyEcsConstructStack extends core.Stack {
   constructor(scope: core.App, id: string, props?: core.StackProps) {
     super(scope, id, props);
@@ -40,11 +40,9 @@ export class MyEcsConstructStack extends core.Stack {
       memoryLimitMiB: 2048, // Default is 512
       publicLoadBalancer: true // Default is false
     });
-  }
-}
 ```
 
-This produces an AWS CloudFormation [template of over 600 lines](https://github.com/awsdocs/aws-cdk-guide/blob/master/doc_source/my_ecs_construct-stack.yaml); deploying the AWS CDK app produces over 50 resources of the following types\.
+This produces an AWS CloudFormation [template of more than 500 lines](https://github.com/awsdocs/aws-cdk-guide/blob/master/doc_source/my_ecs_construct-stack.yaml); deploying the AWS CDK app produces more than 50 resources of the following types\.
 +  [AWS::EC2::EIP](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-ec2-eip.html) 
 +  [AWS::EC2::InternetGateway](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-ec2-internetgateway.html) 
 +  [AWS::EC2::NatGateway](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-ec2-natgateway.html) 
