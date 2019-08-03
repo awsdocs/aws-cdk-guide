@@ -244,5 +244,5 @@ The following example shows how to trigger a Lambda function when an object is a
 Import targets = require('@aws-cdk/aws-events-targets');
 const handler = new lambda.Function(this, 'Handler', { /*…*/ });
 const bucket = new s3.Bucket(this, 'Bucket');
-bucket.addObjectCreatedNotification(new targets.LambdaFunction(hanlder));
+bucket.addObjectCreatedNotification(new targets.LambdaFunction(handler));
 ```
