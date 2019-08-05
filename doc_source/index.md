@@ -41,7 +41,7 @@ Amazon's trademarks and trade dress may not be used in
    + [Get a Value from an Environment Variable](get_env_var.md)
    + [Use an AWS CloudFormation Parameter](get_cfn_param.md)
    + [Use an Existing AWS CloudFormation Template](use_cfn_template.md)
-   + [Get a Value from a Systems Manager Parameter Store Variable](get_ssm_value.md)
+   + [Get a Value from the Systems Manager Parameter Store](get_ssm_value.md)
    + [Get a Value from AWS Secrets Manager](get_secrets_manager_value.md)
    + [Create an App with Multiple Stacks](stack_how_to_create_multiple_stacks.md)
    + [Set a CloudWatch Alarm](how_to_set_cw_alarm.md)

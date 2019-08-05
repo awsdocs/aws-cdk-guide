@@ -17,18 +17,18 @@ const role = new iam.Role(this, 'Role', {
 You can add permissions to a role by calling methods on it, and passing the appropriate `Policy` statement\. The following example adds a `Deny` statement to the role for the actions `ec2:SomeAction` and `s3:AnotherAction` on the resources `bucket` and `otherRole`, under the condition that the authorized service is AWS CodeBuild\.
 
 ```
-role.addToPolicy(new iam.PolicyStatement(PolicyStatementEffect.Deny) // default is Allow
-  // there's also addResource() to add one, and addAllResources() to add '*'
-  .addResources(bucket.bucketArn, otherRole.roleArn)
-  // there's also addAction() to add one
-  .addActions('ec2:SomeAction', 's3:AnotherAction')
-  .addCondition('StringEquals', {
-    'ec2:AuthorizedService': 'codebuild.amazonaws.com',
-  })
-);
+const policyStatement = new iam.PolicyStatement(PolicyStatementEffect.Deny)  // default is Allow
+
+policyStatement.addResources(bucket.bucketArn, otherRole.roleArn);
+policyStatement.addActions('ec2:SomeAction', 's3:AnotherAction');
+policyStatement.addCondition('StringEquals', {
+      'ec2:AuthorizedService': 'codebuild.amazonaws.com',
+});
+      
+role.addToPolicy(policyStatement);
 ```
 
-If you're using a construct that requires a role to function correctly, you can either pass in an existing role when instantiating the construct object, or let the construct create a new role for you, trusting the appropriate service principal\. The following example of using such a construct, in this case a CodeBuild project\.
+If you're using a construct that requires a role to function correctly, you can either pass in an existing role when instantiating the construct object, or let the construct create a new role for you, trusting the appropriate service principal\. The following example uses such a construct: a CodeBuild project\.
 
 ```
 import codebuild = require('@aws-cdk/aws-codebuild');
@@ -50,12 +50,11 @@ In either case, once the object is created, the role is available as the propert
 // project is imported into the CDK application
 const project = codebuild.Project.fromProjectName(this, 'Project', 'ProjectName');
 
-// project.role is undefined
+const policyStatement = new iam.PolicyStatement();
+// set up your policyStatement here using addResources, addActions, addCondition, etc.
 
-// this method call will have no effect
-project.addToRolePolicy(new iam.PolicyStatement()
-  // ...
-);
+// project.role is undefined, so this method call will have no effect
+project.addToRolePolicy(policyStatement);
 ```
 
 ## Grants<a name="permissions_grants"></a>
@@ -71,10 +70,13 @@ A few resources in AWS, such as Amazon S3 buckets and IAM roles, also have a res
 In the following example, the Amazon S3 bucket `bucket` grants a role with the `s3:SomeAction` permission to itself\.
 
 ```
-bucket.addToResourcePolicy(new iam.PolicyStatement()
-  .addAction('s3:SomeAction')
-  .addResource(bucket.bucketArn)
-  .addPrincipal(role)
+const policyStatement = new iam.PolicyStatement();
+
+policyStatement.addAction('s3:SomeAction');
+policyStatement.addResource(bucket.bucketArn);
+policyStatement.addPrincipal(role);
+
+bucket.addToResourcePolicy(policyStatement);
 );
 ```
 
