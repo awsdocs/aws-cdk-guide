@@ -37,7 +37,7 @@ const myValue = secureString.stringValue;
 
 ## Reading Values at Deployment Time<a name="ssm_read_token"></a>
 
-To read values from the Systems Manager Parameter Store at deployment time, use the [fromStringParameterAttributes](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-ssm.StringParameter.html#static-value-for-string-parameterscope-parametername-version) and [fromSecureStringParameterAttributes](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-ssm.StringParameter.html#static-value-for-secure-string-parameterscope-parametername-version) methods, depending on whether the attribute you want is a plain string or a secure string value\. These methods return [tokens](tokens.md) that are later resolved by AWS CloudFormation during deployment\.
+To read values from the Systems Manager Parameter Store at deployment time, use the [valueForStringParameter](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-ssm.StringParameter.html#static-value-for-string-parameterscope-parametername-version) and [valueForSecureStringParameter](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-ssm.StringParameter.html#static-value-for-secure-string-parameterscope-parametername-version) methods, depending on whether the attribute you want is a plain string or a secure string value\. These methods return [tokens](tokens.md) that are later resolved by AWS CloudFormation during deployment\.
 
 ```
 import ssm = require('@aws-cdk/aws-ssm');
