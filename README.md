@@ -6,7 +6,7 @@ suggested changes.
 
 Issues reported through the Feedback link at the bottom of the individual pages of the AWS CDK Developer Guide go to an internal
 Amazon issue tracker and may not appear here. However, we try to track most substantive AWS CDK Developer Guide work on GitHub 
-so the community can see and comment.
+so the community can see, comment, and contribute.
 
 > **NOTE**
 >
