@@ -2,7 +2,7 @@
 
 Constructs are the basic building blocks of AWS CDK apps\. A construct represents a "cloud component" and encapsulates everything AWS CloudFormation needs to create the component\. 
 
-A construct can represent a single resource, such as an Amazon Simple Storage Service \(Amazon S3\) bucket, or it can represent a higher\-lever component consisting of multiple AWS CDK resources\. Examples of such components include a worker queue with its associated compute capacity, a cron job with monitoring resources and a dashboard, or even an entire app spanning multiple AWS accounts and regions\.
+A construct can represent a single resource, such as an Amazon Simple Storage Service \(Amazon S3\) bucket, or it can represent a higher\-level component consisting of multiple AWS CDK resources\. Examples of such components include a worker queue with its associated compute capacity, a cron job with monitoring resources and a dashboard, or even an entire app spanning multiple AWS accounts and regions\.
 
 ## AWS Construct Library<a name="constructs_lib"></a>
 
