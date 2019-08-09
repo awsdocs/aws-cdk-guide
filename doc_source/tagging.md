@@ -79,7 +79,7 @@ Use this property to specify the priority of this operation with respect to othe
 The following example adds the tag key **StackType** with value **TheBest** to any resource created within the Stack named `MarketingSystem`\. Then it removes it again from all resources except Amazon EC2 VPC subnets\. The result is that only the subnets have the tag applied\.
 
 ```
-import { App, Stack, Tag } from require('@aws-cdk/cdk');
+import { App, Stack, Tag } from '@aws-cdk/core';
 
 const app = new App();
 const theBestStack = new Stack(app, 'MarketingSystem');
@@ -88,8 +88,8 @@ const theBestStack = new Stack(app, 'MarketingSystem');
 Tag.add(theBestStack, 'StackType', 'TheBest');
 
 // Remove the tag from all resources except subnet resources
-Tag.remove(theBestStack, 'StackType'), {
-  exludeResourceTypes: ['AWS::EC2::Subnet']
+Tag.remove(theBestStack, 'StackType', {
+  excludeResourceTypes: ['AWS::EC2::Subnet']
 });
 ```
 
