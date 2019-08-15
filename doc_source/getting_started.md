@@ -3,7 +3,7 @@
 This topic describes how to install and configure the AWS CDK and create your first AWS CDK app\.
 
 **Note**  
-Looking for more than just the basics? Try the [CDK Workshop](https://cdkworkshop.com/)\.
+Want to dig deeper? Try the [CDK Workshop](https://cdkworkshop.com/) for a more in\-depth tour of a real\-world project\.
 
 ## Prerequisites<a name="getting_started_prerequisites"></a>
 
@@ -12,7 +12,7 @@ Looking for more than just the basics? Try the [CDK Workshop](https://cdkworksho
 + You must specify both your credentials and an AWS Region to use the AWS CDK CLI;, as described in [Specifying Your Credentials and Region](#getting_started_credentials)\.
 
 **Note**  
- Why do you need Node\.js if you're a not a JavaScript developer? The AWS CDK is developed in TypeScript and transpiled to JavaScript\. Bindings for the other supported languages make use of the AWS CDK back\-end running on Node\.js, as does the `cdk` command\-line tool\. 
+Why do you need Node\.js when you're a Python, C♯, or Java developer? The AWS CDK is developed in TypeScript and transpiled to JavaScript\. Bindings for the other supported languages make use of the AWS CDK engine running on Node\.js, as does the `cdk` command\-line tool\. 
 
 ------
 #### [ TypeScript ]
@@ -25,21 +25,21 @@ TypeScript >= 2\.7
 none
 
 ------
+#### [ Python ]
++ Python >= 3\.6
+
+------
 #### [ Java ]
 + Maven 3\.5\.4 and Java 8
 + Set the `JAVA_HOME` environment variable to the path to where you have installed the JDK on your machine
 
 ------
-#### [ C\# ]
+#### [ C♯ ]
 
 \.NET standard 2\.0 compatible implementation:
 + \.NET Core >= 2\.0
 + \.NET Framework >= 4\.6\.1
 + Mono >= 5\.4
-
-------
-#### [ Python ]
-+ Python >= 3\.6
 
 ------
 
@@ -76,6 +76,15 @@ npx npm-check-updates -u
 ```
 
 ------
+#### [ Python ]
+
+```
+pip install --upgrade aws-cdk.core
+```
+
+You might have to issue this command multiple times to update all dependencies\.
+
+------
 #### [ Java ]
 
 ```
@@ -83,20 +92,11 @@ mvn versions:use-latest-versions
 ```
 
 ------
-#### [ C\# ]
+#### [ C♯ ]
 
 ```
 nuget update
 ```
-
-------
-#### [ Python ]
-
-```
-pip install --upgrade aws-cdk.cdk
-```
-
-You might have to call this multiple times to update all dependencies\.
 
 ------
 
@@ -228,15 +228,21 @@ cd hello-cdk
 
 ### Initializing the App<a name="tutorial_init_project"></a>
 
-Initialize an app, where *LANGUAGE* is one of the supported programming languages: **csharp** \(C\#\), **java** \(Java\), **python** \(Python\), or **typescript** \(TypeScript\) and *TEMPLATE* is an optional template that creates an app with different resources than the default app that cdk init creates for the language\.
+To initialize your new AWS CDK app, you use the `cdk init` command\.
 
 ```
 cdk init --language LANGUAGE [TEMPLATE]
 ```
 
-The following table describes the templates provided by the supported languages\.
+Where:
++ *LANGUAGE* is one of the supported programming languages: **csharp** \(C♯\), **java** \(Java\), **javascript** \(JavaScript\), **python** \(Python\), or **typescript** \(TypeScript\)
++ *TEMPLATE* is an optional template\. If the desired template is *app*, the default, you may omit it\.
+
+The following table describes the templates available with the supported languages\.
 
 [\[See the AWS documentation website for more details\]](http://docs.aws.amazon.com/cdk/latest/guide/getting_started.html)
+
+For Hello World, you can just use the default template\.
 
 ------
 #### [ TypeScript ]
@@ -251,43 +257,6 @@ cdk init --language typescript
 ```
 cdk init --language javascript
 ```
-
-------
-#### [ Java ]
-
-```
-cdk init --language java
-```
-
-Once the init command finishes, we need to modify the template's output\.
-+ Open `src/main/java/com/myorg/HelloApp.java`\.
-+ Change the two stacks to one:
-
-  ```
-  new HelloStack(app, "HelloCdkStack");
-  ```
-
-------
-#### [ C\# ]
-
-```
-cdk init --language csharp
-```
-
-Once the init command finishes, we need to modify the template's output\.
-+ Open `src/HelloCdk/Program.cs`\.
-+ Change the two stacks to one:
-
-  ```
-  new HelloStack(app, "HelloCdkStack", new StackProps());
-  ```
-+ Open `src/HelloCdk/HelloStack.cs`\.
-+ Delete all of the using statements except the first\.
-
-  ```
-  using Amazon.CDK;
-  ```
-+ Delete everything from the constructor\.
 
 ------
 #### [ Python ]
@@ -324,6 +293,43 @@ HelloCdkStack(app, "HelloCdkStack")
 ```
 
 ------
+#### [ Java ]
+
+```
+cdk init --language java
+```
+
+Once the init command finishes, we need to modify the template's output\.
++ Open `src/main/java/com/myorg/HelloApp.java`\.
++ Change the two stacks to one:
+
+  ```
+  new HelloStack(app, "HelloCdkStack");
+  ```
+
+------
+#### [ C♯ ]
+
+```
+cdk init --language csharp
+```
+
+Once the init command finishes, we need to modify the template's output\.
++ Open `src/HelloCdk/Program.cs`\.
++ Change the two stacks to one:
+
+  ```
+  new HelloStack(app, "HelloCdkStack", new StackProps());
+  ```
++ Open `src/HelloCdk/HelloStack.cs`\.
++ Delete all of the using statements except the first\.
+
+  ```
+  using Amazon.CDK;
+  ```
++ Delete everything from the constructor\.
+
+------
 
 ### Compiling the App<a name="hello_world_tutorial_compile_project"></a>
 
@@ -342,6 +348,11 @@ npm run build
 Nothing to compile\.
 
 ------
+#### [ Python ]
+
+Nothing to compile\.
+
+------
 #### [ Java ]
 
 ```
@@ -349,16 +360,11 @@ mvn compile
 ```
 
 ------
-#### [ C\# ]
+#### [ C♯ ]
 
 ```
 dotnet build src
 ```
-
-------
-#### [ Python ]
-
-Nothing to compile\.
 
 ------
 
@@ -404,6 +410,15 @@ npm install @aws-cdk/aws-s3
 ```
 
 ------
+#### [ Python ]
+
+```
+pip install aws-cdk.aws-s3
+```
+
+You might have to execute this command multiple times to resolve dependencies\.
+
+------
 #### [ Java ]
 
 If necessary, add the following to `pom.xml`, where *CDK\-VERSION* is the version of the AWS CDK\.
@@ -417,22 +432,13 @@ If necessary, add the following to `pom.xml`, where *CDK\-VERSION* is the versio
 ```
 
 ------
-#### [ C\# ]
+#### [ C♯ ]
 
 Run the following command in the `src/HelloCdk` directory\.
 
 ```
 dotnet add package Amazon.CDK.AWS.S3
 ```
-
-------
-#### [ Python ]
-
-```
-pip install aws-cdk.aws-s3
-```
-
-You might have to execute this command multiple times to resolve dependencies\.
 
 ------
 
@@ -481,6 +487,26 @@ module.exports = { HelloCdkStack }
 ```
 
 ------
+#### [ Python ]
+
+Replace the first import statement in `hello_cdk_stack.py` in the `hello_cdk` directory with the following code\.
+
+```
+from aws_cdk import (
+    aws_s3 as s3,
+    core
+)
+```
+
+Replace the comment with the following code\.
+
+```
+bucket = s3.Bucket(self, 
+    "MyFirstBucket", 
+    versioned=True,)
+```
+
+------
 #### [ Java ]
 
 In `src/main/java/com/myorg/HelloStack.java`:
@@ -510,7 +536,7 @@ public class HelloStack extends Stack {
 ```
 
 ------
-#### [ C\# ]
+#### [ C♯ ]
 
 Update `HelloStack.cs` to include a Amazon S3 bucket with versioning enabled\.
 
@@ -531,26 +557,6 @@ namespace HelloCdk
         }
     }
 }
-```
-
-------
-#### [ Python ]
-
-Replace the first import statement in `hello_cdk_stack.py` in the `hello_cdk` directory with the following code\.
-
-```
-from aws_cdk import (
-    aws_s3 as s3,
-    core
-)
-```
-
-Replace the comment with the following code\.
-
-```
-bucket = s3.Bucket(self, 
-    "MyFirstBucket", 
-    versioned=True,)
 ```
 
 ------
@@ -575,6 +581,11 @@ npm run build
 Nothing to compile\.
 
 ------
+#### [ Python ]
+
+Nothing to compile\.
+
+------
 #### [ Java ]
 
 ```
@@ -582,16 +593,11 @@ mvn compile
 ```
 
 ------
-#### [ C\# ]
+#### [ C♯ ]
 
 ```
 dotnet build src
 ```
-
-------
-#### [ Python ]
-
-Nothing to compile\.
 
 ------
 
@@ -667,6 +673,16 @@ new s3.Bucket(this, 'MyFirstBucket', {
 ```
 
 ------
+#### [ Python ]
+
+```
+bucket = s3.Bucket(self, 
+    "MyFirstBucket", 
+    versioned=True,
+    encryption=s3.BucketEncryption.KMS_MANAGED,)
+```
+
+------
 #### [ Java ]
 
 Update `src/main/java/com/myorg/HelloStack.java`\.
@@ -683,7 +699,7 @@ new Bucket(this, "MyFirstBucket", BucketProps.builder()
 ```
 
 ------
-#### [ C\# ]
+#### [ C♯ ]
 
 Update `HelloStack.cs`\.
 
@@ -693,16 +709,6 @@ new Bucket(this, "MyFirstBucket", new BucketProps
     Versioned = true,
     Encryption = BucketEncryption.KMS_MANAGED
 });
-```
-
-------
-#### [ Python ]
-
-```
-bucket = s3.Bucket(self, 
-    "MyFirstBucket", 
-    versioned=True,
-    encryption=s3.BucketEncryption.KMS_MANAGED,)
 ```
 
 ------
@@ -722,6 +728,11 @@ npm run build
 Nothing to compile\.
 
 ------
+#### [ Python ]
+
+Nothing to compile\.
+
+------
 #### [ Java ]
 
 ```
@@ -729,16 +740,11 @@ mvn compile
 ```
 
 ------
-#### [ C\# ]
+#### [ C♯ ]
 
 ```
 dotnet build src
 ```
-
-------
-#### [ Python ]
-
-Nothing to compile\.
 
 ------
 

@@ -42,7 +42,7 @@ To read values from the Systems Manager Parameter Store at deployment time, use 
 ```
 import ssm = require('@aws-cdk/aws-ssm');
 
-// Get latest version of specified version of plain string attribute
+// Get latest version or specified version of plain string attribute
 const latestStringToken = ssm.StringParameter.valueForStringParameter(
     this, 'my-plain-parameter-name');      // latest version
 const versionOfStringToken = ssm.StringParameter.valueForStringParameter(
@@ -59,7 +59,7 @@ Use the [ssm put\-parameter](https://docs.aws.amazon.com/cli/latest/reference/ss
 
 ```
 aws ssm put-parameter --name "parameter-name" --type "String" --value "parameter-value"
-  aws ssm put-parameter --name "secure-parameter-name" --type "SecureString" --value "secure-parameter-value"
+aws ssm put-parameter --name "secure-parameter-name" --type "SecureString" --value "secure-parameter-value"
 ```
 
 This command returns an ARN that you can use to retrieve the value in your AWS CDK code\.

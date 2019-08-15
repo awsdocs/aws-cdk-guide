@@ -35,7 +35,7 @@ Each module in the [API Reference](https://docs.aws.amazon.com/cdk/api/latest) s
 The module level gives an indication of the stability of the majority of the APIs included in the module, however, individual APIs within the module can be annotated with different stability levels\.
 
 
-| Stability | TypeScript | JavaScript | Python | C\#/\.NET | Java | 
+| Stability | TypeScript | JavaScript | Python | C♯/\.NET | Java | 
 | --- |--- |--- |--- |--- |--- |
 | Experimental | @experimental | @stability Experimental | @experimental | Stability: Experimental | Stability: Experimental | 
 | Stable | @stable | @stability Stable | @stable | Stability: Stable | Stability: Stable | 
@@ -52,4 +52,4 @@ In addition to modules of the AWS CDK Construct Library, language support is als
 | JavaScript | Stable | 
 | Python | Stable | 
 | Java | Experimental | 
-| C\#/\.NET | Experimental | 
+| C♯/\.NET | Experimental | 
