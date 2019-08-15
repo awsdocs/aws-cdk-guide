@@ -14,6 +14,11 @@ so the community can see, comment, and contribute.
 Periodically, we update the Markdown files here from our builds. This means that changes may appear on docs.aws.amazon.com before they appear
 here. Also, sometimes we may close a PR instead of merging it, even if we have in fact integrated your submission into the Guide.
 
+## Other Documentation Issues
+
+* Issues with the [API Reference](https://docs.aws.amazon.com/cdk/api/latest/docs/aws-construct-library.html) should be [filed](https://github.com/aws/aws-cdk/issues/new/choose) against the [AWS CDK repo](https://github.com/aws/aws-cdk/).
+* Issues with the [CDK Workshop](https://cdkworkshop.com/) should be [filed](https://github.com/aws-samples/aws-cdk-intro-workshop/issues/new/choose) against the [CDK Workshop](https://github.com/aws-samples/aws-cdk-intro-workshop) repo.
+
 ## Project Board
 
 Have a look at the AWS CDK Developer Guide [Project Board](https://github.com/awsdocs/aws-cdk-guide/projects/1) 
