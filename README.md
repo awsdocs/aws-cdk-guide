@@ -22,7 +22,7 @@ here. Also, sometimes we may close a PR instead of merging it, even if we have i
 ## Project Board
 
 Have a look at the AWS CDK Developer Guide [Project Board](https://github.com/awsdocs/aws-cdk-guide/projects/1) 
-to see what we're working on at the moment. Note that items on the Wishlist may not be in any particular order.
+to see what we're working on at the moment. Note that items on the Wishlist may not be in any particular order. You can help us prioritize our work by +1'ing issues that are important to you.
 
 ## Contributor Grant of License
 
