@@ -182,6 +182,6 @@ Now, consumers can subscribe to the topic, for example:
 
 ```
 const queue = new sqs.Queue(this, 'NewImagesQueue');
-const images = new NotificationBucket(this, 'Images');
+const images = new NotifyingBucket(this, 'Images');
 images.topic.addSubscription(new sns_sub.QueueSubscription(queue));
 ```

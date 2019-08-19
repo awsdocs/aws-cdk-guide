@@ -105,7 +105,7 @@ nuget update
 You can use the `env` property on a stack to specify the account and region used when deploying a stack, as shown in the following example, where *REGION* is the region and *ACCOUNT* is the account ID\.
 
 ```
-new MyStack(app, {
+new MyStack(app, 'MyStack', {
     env: {
         region: 'REGION',
         account: 'ACCOUNT' 
