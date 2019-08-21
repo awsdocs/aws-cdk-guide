@@ -6,6 +6,16 @@ The AWS CDK enables you to easily create applications running in the AWS Cloud\.
 
 The following example shows how to deploy an AWS Lambda function in a pipeline\. In this example, your AWS CDK code and your Lambda code are in the same repository\. The Lambda code is in the `Lambda` directory, while your CDK code is in the `bin` and `lib` directories that the `cdk init` command sets up for your CDK code\.
 
+**Note**  
+If you are setting up a new project using `cdk init` for the sake of trying this example, be sure to name your project folder `pipeline`\. For example:  
+
+```
+mkdir pipeline
+cd pipeline
+cdk init --language=typescript
+```
+The `cdk init` command uses a template that creates classes and files based on your project name, and some of the instructions in this example rely on these names\.
+
 ## Lambda Stack<a name="codepipeline_example_lambda"></a>
 
 The first step is to create the file `lambda-stack.ts` in which we define the class `LambdaStack`\. This class defines the AWS CloudFormation stack for the Lambda function\. This is the stack that is deployed in our pipeline\.
@@ -198,7 +208,12 @@ export class PipelineStack extends Stack {
 
 ## Main Program<a name="codepipeline_example_main"></a>
 
-Finally, we have our main AWS CDK entry point file, `pipeline.ts`, in the `bin` directory\. It's simple: it first instantiates the `LambdaStack` class as `LambdaStack`, which is what the AWS CDK build in the pipeline expects\. Then it instantiates the `PipelineStack` class, passing the required Lambda code from the `LambdaStack` object\.
+Finally, we have our main AWS CDK entry point file, `pipeline.ts`, in the `bin` directory\.
+
+**Note**  
+This file may have a different name\. Check your `package.json` file if you're not sure which file is your main entry point\.
+
+This code is straightforward: it first instantiates the `LambdaStack` class as `LambdaStack`, which is what the AWS CDK build in the pipeline expects\. Then it instantiates the `PipelineStack` class, passing the required Lambda code from the `LambdaStack` object\.
 
 ```
 #!/usr/bin/env node
@@ -230,7 +245,7 @@ npm run build
 Use the following command to deploy the pipeline stack\.
 
 ```
-npm run cdk deploy PipelineDeployingLambdaStack
+cdk deploy PipelineDeployingLambdaStack
 ```
 
 The name, **PipelineDeployingLambdaStack**, is the name we used when we instantiated `PipelineStack` in `pipeline.ts`\.

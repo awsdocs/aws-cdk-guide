@@ -189,7 +189,7 @@ This topic describes how to use the SAM CLI with the AWS CDK to test a Lambda fu
 
    ```
    new lambda.Function(this, 'MyFunction', {
-     runtime: lambda.Runtime.Python37,
+     runtime: lambda.Runtime.PYTHON_3_7,
      handler: 'app.lambda_handler',
      code:    lambda.Code.asset('./my_function'),
    });
