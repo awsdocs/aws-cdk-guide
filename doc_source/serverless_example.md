@@ -188,7 +188,7 @@ cdk synth
 
 ## Deploy and Test the App<a name="serverless_example_deploy_and_test"></a>
 
-Before you can deploy your first AWS CDK app, you must bootstrap your deployment\. This creates some AWS infrastructure that the AWS CDK needs\. For details, see the **bootstrap** section of the [AWS CDK Tools](tools.md)\(if you've already bootstrapped a AWS CDK app, you'll get a warning and nothing will change\)\.
+Before you can deploy your first AWS CDK app, you must bootstrap your deployment\. This creates some AWS infrastructure that the AWS CDK needs\. For details, see the **bootstrap** section of the [AWS CDK Tools](tools.md) \(if you've already bootstrapped a AWS CDK app, you'll get a warning and nothing will change\)\.
 
 ```
 cdk bootstrap

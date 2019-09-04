@@ -9,7 +9,7 @@ Want to dig deeper? Try the [CDK Workshop](https://cdkworkshop.com/) for a more 
 
 **AWS CDK command line tools**  
 + [Node\.js \(>= 8\.11\.x\)](https://nodejs.org/en/download)
-+ You must specify both your credentials and an AWS Region to use the AWS CDK CLI;, as described in [Specifying Your Credentials and Region](#getting_started_credentials)\.
++ You must specify both your credentials and an AWS Region to use the AWS CDK CLI, as described in [Specifying Your Credentials and Region](#getting_started_credentials)\.
 
 **Note**  
 Why do you need Node\.js when you're a Python, C♯, or Java developer? The AWS CDK is developed in TypeScript and transpiled to JavaScript\. Bindings for the other supported languages make use of the AWS CDK engine running on Node\.js, as does the `cdk` command\-line tool\. 
