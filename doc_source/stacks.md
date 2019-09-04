@@ -14,7 +14,7 @@ const app = new App();
 new MyFirstStack(app, 'stack1');
 new MySecondStack(app, 'stack2');
 
-app.run();
+app.synth();
 ```
 
 To list all the stacks in an AWS CDK app, run the cdk ls command, which for the previous AWS CDK app would have the following output\.
@@ -40,25 +40,47 @@ The AWS CDK provides as much resolution as possible during synthesis time to ena
 Like any other construct, stacks can be composed together into groups\. The following pseudocode shows an example of a service that consists of three stacks: a control plane, a data plane, and monitoring stacks\. The service construct is defined twice: once for the beta environment and once for the production environment\.
 
 ```
-class ControlPlane extends Stack { ... }
-class DataPlane extends Stack { ... }
-class Monitoring extends Stack { ... }
+import cdk = require("@aws-cdk/core");
+import { Construct, Stack } from "@aws-cdk/core";
 
-class MyService extends Construct {
-  constructor(...) {
-    new ControlPlane(this, ...);
-    new DataPlane(this, ...);
-    new Monitoring(this, ...);
+interface EnvProps {
+  prod: boolean;
+}
+class ControlPlane extends Stack {}
+class Dataplane extends Stack {}
+class Monitoring extends Stack {}
+
+class MyService extends cdk.Construct {
+  constructor(scop: Construct, id: string, props?: EnvProps) {
+    super(scop, id);
+
+    new ControlPlane(this, "cp", {});
+    new Dataplane(this, "data", {});
+    new Monitoring(this, "mon", {});
   }
 }
 
-const app = new App();
-new MyService(app, 'beta');
-new MyService(app, 'prod', { prod: true });
-app.run();
+const app = new cdk.App();
+new MyService(app, "beta");
+new MyService(app, "prod", { prod: true });
+
+app.synth();
 ```
 
 This AWS CDK app eventually consists of six stacks, three for each environment\.
+
+```
+cdk ls
+```
+
+```
+betacpDA8372D3
+betadataE23DB2BA
+betamon632BD457
+prodcp187264CE
+proddataF7378CE5
+prodmon631A1083
+```
 
 The physical names of the AWS CloudFormation stacks are automatically determined by the AWS CDK based on the stack's construct path in the tree\. By default, a stack's name is derived from the construct ID of the `Stack` object, but you can specify an explicit name using the `stackName` prop, as follows\.
 
