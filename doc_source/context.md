@@ -43,17 +43,17 @@ Use the cdk context command to view and manage the information in your `cdk.cont
 Context found in cdk.json:
       
 ┌───────────────────────────────────────────────────────────────────────────|
-│ # | Key                                                         │ Value                                                 |
+│ # | Key                                                         │ Value                                                        |
 ├───────────────────────────────────────────────────────────────────────────|
-│ 1 | availability-zones:account=123456789012:region=eu-central-1 │ [ "eu-central-1a", "eu-central-1b", "eu-central-1c" ] |
+│ 1 | availability-zones:account=123456789012:region=eu-central-1 │ [ "eu-central-1a", "eu-central-1b", "eu-central-1c" ]        |
 ├───────────────────────────────────────────────────────────────────────────|
-│ 2 | availability-zones:account=123456789012:region=eu-west-1    │ [ "eu-west-1a", "eu-west-1b", "eu-west-1c" ]          |
+│ 2 | availability-zones:account=123456789012:region=eu-west-1    │ [ "eu-west-1a", "eu-west-1b", "eu-west-1c" ]                 |
 └───────────────────────────────────────────────────────────────────────────|
 
 Run cdk context --reset KEY_OR_NUMBER to remove a context key. It will be refreshed on the next CDK synthesis run.
 ```
 
-To remove a context value, run cdk context \-\-reset, specifying the value's corresponding key number\. The following example removes the value that corresponds to the key value of `2` in the preceding example, which is the Amazon Linux AMI ID\.
+To remove a context value, run cdk context \-\-reset, specifying the value's corresponding key number\. The following example removes the value that corresponds to the key value of `2` in the preceding example, which is the list of availability zones in the Ireland region\.
 
 ```
 $ cdk context --reset 2

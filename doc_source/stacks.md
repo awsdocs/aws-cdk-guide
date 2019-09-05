@@ -46,18 +46,20 @@ import { Construct, Stack } from "@aws-cdk/core";
 interface EnvProps {
   prod: boolean;
 }
+
 class ControlPlane extends Stack {}
 class Dataplane extends Stack {}
 class Monitoring extends Stack {}
 
 class MyService extends cdk.Construct {
-  constructor(scop: Construct, id: string, props?: EnvProps) {
-    super(scop, id);
 
+  constructor(scope: Construct, id: string, props?: EnvProps) {
+  
+    super(scope, id);
+  
     new ControlPlane(this, "cp", {});
     new Dataplane(this, "data", {});
-    new Monitoring(this, "mon", {});
-  }
+    new Monitoring(this, "mon", {});  }
 }
 
 const app = new cdk.App();
@@ -67,13 +69,11 @@ new MyService(app, "prod", { prod: true });
 app.synth();
 ```
 
-This AWS CDK app eventually consists of six stacks, three for each environment\.
+This AWS CDK app eventually consists of six stacks, three for each environment:
 
 ```
-cdk ls
-```
-
-```
+$ cdk ls
+    
 betacpDA8372D3
 betadataE23DB2BA
 betamon632BD457
@@ -101,4 +101,4 @@ The [Stack](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/core/stack
 + `stack.availabilityZones` – Returns the set of Availability Zones available in the environment in which this stack is deployed\. For environment\-agnostic stacks, this always returns an array with two Availability Zones, but for environment\-specific stacks, the AWS CDK queries the environment and returns the exact set of Availability Zones that are available\.
 + `stack.parseArn(arn)` and `stack.formatArn(comps)` – Can be used to work with Amazon Resource Names \(ARNs\)\.
 + `stack.toJsonString(obj)` – Can be used to format an arbitrary object as a JSON string that can be embedded in an AWS CloudFormation template\. The object can include tokens, attributes, and references, which are only resolved during deployment\.
-+ `stack.templateOptions` – Enables you to specify AWS CloudFormation template options, such as Transform, `Description`, and Metadata, for your stack\.
++ `stack.templateOptions` – Enables you to specify AWS CloudFormation template options, such as Transform, Description, and Metadata, for your stack\.
