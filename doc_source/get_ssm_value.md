@@ -14,7 +14,7 @@ To read a particular version of a Systems Manager Parameter Store plain string v
 ```
 import ssm = require('@aws-cdk/aws-ssm');
 
-const parameterString = new ssm.StringParameter.fromStringParameterAttributes(this, 'MyParameter', {
+const parameterString = ssm.StringParameter.fromStringParameterAttributes(this, 'MyParameter', {
     parameterName: 'my-plain-parameter-name',
     version: 1,   // omit to get latest version
 });
@@ -27,7 +27,7 @@ To read a particular version of a Systems Manager Parameter Store secure string 
 ```
 import ssm = require('@aws-cdk/aws-ssm');
 
-const secureString = new ssm.StringParameter.fromSecureStringParameterAttributes(this, 'MySecretParameter', {
+const secureString = ssm.StringParameter.fromSecureStringParameterAttributes(this, 'MySecretParameter', {
     parameterName: 'my-secure-parameter-name',
     version: 1,
 });
@@ -49,7 +49,7 @@ const versionOfStringToken = ssm.StringParameter.valueForStringParameter(
     this, 'my-plain-parameter-name', 1);   // version 1
 
 // Get specified version of secure string attribute
-const secureStringToken = new ssm.StringParameter.valueForSecureStringParameter(
+const secureStringToken = ssm.StringParameter.valueForSecureStringParameter(
     this, 'my-secure-parameter-name', 1);   // must specify version
 ```
 
