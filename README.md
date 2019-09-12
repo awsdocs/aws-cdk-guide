@@ -8,8 +8,7 @@ Issues reported through the Feedback link at the bottom of the individual pages 
 Amazon issue tracker and may not appear here. However, we try to track most substantive AWS CDK Developer Guide work on GitHub 
 so the community can see, comment, and contribute.
 
-> **NOTE**
->
+> :memo: **NOTE** -
 > The Markdown files in this repository are an *output* of the AWS CDK Developer Guide build process, not the actual source files. 
 Periodically, we update the Markdown files here from our builds. This means that changes may appear on docs.aws.amazon.com before they appear
 here. Also, sometimes we may close a PR instead of merging it, even if we have in fact integrated your submission into the Guide.
