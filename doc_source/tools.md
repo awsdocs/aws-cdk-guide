@@ -1,4 +1,4 @@
-# AWS CDK Tools<a name="tools"></a>
+        # AWS CDK Tools<a name="tools"></a>
 
 This section contains information about AWS CDK tools\.
 
@@ -98,11 +98,87 @@ If your app has a single stack, you don't have to specify the stack name\.
 
 If a `cdk.json` or `~/.cdk.json` file exists, options specified there are used as defaults\. Settings in `cdk.json` take precedence\.
 
+Commands and individual options as follows.
+
+**cdk list | ls [STACKS..]**  
+Lists all stacks in the app
+
+- --long, -l (boolean)  
+  display environment information for each stack  
+  default: false
+
+**cdk synthesize | synth [STACKS..]**  
+Synthesizes and prints the CloudFormation template for this stack
+
+- --exclusively, -e (boolean)  
+  only deploy requested stacks, don\'t include dependencies
+
+**cdk bootstrap [ENVIRONMENTS..]**  
+Deploys the CDK toolkit stack into an AWS environment
+
+- --bootstrap-bucket-name, -b (string)  
+  The name of the CDK toolkit bucket  
+  default: undefined
+- --bootstrap-kms-key-id (string)  
+  AWS KMS master key ID used for the SSE-KMS encryption  
+  default: undefined
+
+**cdk deploy [STACKS..]**  
+Deploys the stack(s) named STACKS into your AWS account
+
+- --build-exclude, -E (array)  
+  do not rebuild asset with the given ID. Can be specified multiple times.  
+  default: []
+- --exclusively, -e (boolean)  
+  only deploy requested stacks, don\'t include dependencies
+- --require-approval (string)  
+  what security-sensitive changes need manual approval  
+  [Never,AnyChange,Broadening]
+- --ci (boolean)  
+  Force CI detection. Use --no-ci to disable CI autodetection.  
+  default: process.env.CI !== undefined
+- --tags, -t (array)  
+  tags to add to the stack (KEY=VALUE)
+
+**cdk destroy [STACKS..]**  
+Destroy the stack(s) named STACKS
+
+- --exclusively, -e (boolean)  
+  only deploy requested stacks, don\'t include dependencies
+- --force, -f (boolean)  
+  Do not ask for confirmation before destroying the stacks
+
+**cdk diff [STACKS..]**  
+Compares the specified stack with the deployed stack or a local template file, and returns with status 1 if any difference is found
+
+- --exclusively, -e (boolean)  
+  only deploy requested stacks, don\'t include dependencies
+- --context-lines (number)
+  number of context lines to include in arbitrary JSON diff rendering  
+  default: 3
+- --template (string)  
+  the path to the CloudFormation template to compare with
+- --strict (boolean)  
+  do not filter out AWS::CDK::Metadata resources  
+  default: false
+
+**cdk metadata [STACK]**  
+Returns all metadata associated with this stack
+
+**cdk init [TEMPLATE]**  
+Create a new, empty CDK project from a template. Invoked without TEMPLATE, the app template will be used.
+
+- --language, -l (string)  
+  the language to be used for the new project (default can be configured in ~/.cdk.json)
+
+- --list (boolean)  
+  list the available templates
+
 ### Bootstrapping your AWS Environment<a name="tools_bootstrap"></a>
 
 Before you can use the AWS CDK you must bootstrap your AWS environment to create the infrastructure that the AWS CDK CLI needs to deploy your AWS CDK app\. Currently the bootstrap command creates only an Amazon S3 bucket\.
 
-You incur any charges for what the AWS CDK stores in the bucket\. Because the AWS CDK does not remove any objects from the bucket, the bucket can accumulate objects as you use the AWS CDK\. You can get rid of the bucket by deleting the **CDKToolkit** stack from your account\. 
+You incur any charges for what the AWS CDK stores in the bucket\. Because the AWS CDK does not remove any objects from the bucket, the bucket can accumulate objects as you use the AWS CDK\. You can get rid of the bucket by deleting the **CDKToolkit** stack from your account\.
 
 ### Security\-Related Changes<a name="tools_security"></a>
 
@@ -114,7 +190,7 @@ You change the level of changes that requires approval by specifying:
 cdk deploy --require-approval LEVEL
 ```
 
-Where *LEVEL* can be one of the following:
+Where _LEVEL_ can be one of the following:
 
 never  
 Approval is never required\.
@@ -152,12 +228,14 @@ CDKMetadata:
 ### Opting Out from Version Reporting<a name="version_reporting_opt_out"></a>
 
 To opt out of version reporting, use one of the following methods:
-+ Use the cdk command with the \-\-no\-version\-reporting argument\.
+
+- Use the cdk command with the \-\-no\-version\-reporting argument\.
 
   ```
   cdk --no-version-reporting synth
   ```
-+ Set versionReporting to **false** in `./cdk.json` or `~/cdk.json`\.
+
+- Set versionReporting to **false** in `./cdk.json` or `~/cdk.json`\.
 
   ```
   {
@@ -215,7 +293,7 @@ This topic describes how to use the SAM CLI with the AWS CDK to test a Lambda fu
    cdk synth --no-staging > template.yaml
    ```
 
-1. Find the logical ID for your Lambda function in `template.yaml`\. It will look like `MyFunction`*12345678*, where *12345678* represents an 8\-character unique ID that the AWS CDK generates for all resources\. The line right after it should look like:
+1. Find the logical ID for your Lambda function in `template.yaml`\. It will look like `MyFunction`_12345678_, where _12345678_ represents an 8\-character unique ID that the AWS CDK generates for all resources\. The line right after it should look like:
 
    ```
    Type: AWS::Lambda::Function
@@ -232,12 +310,12 @@ This topic describes how to use the SAM CLI with the AWS CDK to test a Lambda fu
    ```
    2019-04-01 12:22:41 Found credentials in shared credentials file: ~/.aws/credentials
    2019-04-01 12:22:41 Invoking app.lambda_handler (python3.7)
-   
+
    Fetching lambci/lambda:python3.7 Docker container image......
    2019-04-01 12:22:43 Mounting D:\cdk-sam-example\.cdk.staging\a57f59883918e662ab3c46b964d2faa5 as /var/task:ro,delegated inside runtime container
    START RequestId: 52fdfc07-2182-154f-163f-5f0f9a621d72 Version: $LATEST
    END RequestId: 52fdfc07-2182-154f-163f-5f0f9a621d72
    REPORT RequestId: 52fdfc07-2182-154f-163f-5f0f9a621d72     Duration: 3.70 ms       Billed Duration: 100 ms Memory Size: 128 MB     Max Memory Used: 22 MB
-   
+
    "This is a Lambda Function defined through CDK"
    ```
