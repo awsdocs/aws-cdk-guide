@@ -69,13 +69,13 @@ reset. It will be refreshed on the next SDK synthesis run.
 Therefore, if you want to update to the latest version of the Amazon Linux AMI, you can use the preceding example to do a controlled update of the context value and reset it, and then synthesize and deploy your app again\.
 
 ```
-cdk synth
+$ cdk synth
 ```
 
 To clear all of the stored context values for your app, run cdk context \-\-clear, as follows\.
 
 ```
-cdk context --clear
+$ cdk context --clear
 ```
 
 The following is an example of importing an existing vpc using cdk context.
