@@ -1,4 +1,4 @@
-        # AWS CDK Tools<a name="tools"></a>
+# AWS CDK Tools<a name="tools"></a>
 
 This section contains information about AWS CDK tools\.
 
@@ -190,7 +190,7 @@ You change the level of changes that requires approval by specifying:
 cdk deploy --require-approval LEVEL
 ```
 
-Where _LEVEL_ can be one of the following:
+Where *LEVEL* can be one of the following:
 
 never  
 Approval is never required\.
@@ -293,7 +293,7 @@ This topic describes how to use the SAM CLI with the AWS CDK to test a Lambda fu
    cdk synth --no-staging > template.yaml
    ```
 
-1. Find the logical ID for your Lambda function in `template.yaml`\. It will look like `MyFunction`_12345678_, where _12345678_ represents an 8\-character unique ID that the AWS CDK generates for all resources\. The line right after it should look like:
+1. Find the logical ID for your Lambda function in `template.yaml`\. It will look like `MyFunction`*12345678*, where *12345678* represents an 8\-character unique ID that the AWS CDK generates for all resources\. The line right after it should look like:
 
    ```
    Type: AWS::Lambda::Function
