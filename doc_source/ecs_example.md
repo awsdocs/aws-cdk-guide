@@ -44,14 +44,14 @@ npm run build
 cdk synth
 ```
 
-You should see a stack like the following, where *CDK\-VERSION* is the version of the CDK\.
+You should see a stack like the following, where *CDK\-VERSION* is the version of the CDK and *NODE\-VERSION* is the version of Node\.js\. \(Your output may differ slightly from what's shown here\.\)
 
 ```
 Resources:
   CDKMetadata:
-    Type: 'AWS::CDK::Metadata'
+    Type: AWS::CDK::Metadata
     Properties:
-      Modules: @aws-cdk/cdk=CDK-VERSION,@aws-cdk/cx-api=CDK-VERSION,my_ecs_construct=0.1.0
+      Modules: aws-cdk=CDK-VERSION,@aws-cdk/core=CDK-VERSION,@aws-cdk/cx-api=CDK-VERSION,jsii-runtime=node.js/NODE-VERSION
 ```
 
 ## Add the Amazon EC2 and Amazon ECS Packages<a name="ecs_example_add_packages"></a>

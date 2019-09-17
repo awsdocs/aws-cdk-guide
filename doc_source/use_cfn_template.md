@@ -19,7 +19,7 @@ You can include this bucket in your AWS CDK app, as shown in the following examp
 import cdk = require("@aws-cdk/core");
 import fs = require("fs");
 
-new cdk.Include(this, "ExistingInfrastructure", {
+new cdk.CfnInclude(this, "ExistingInfrastructure", {
   template: JSON.parse(fs.readFileSync("my-template.json").toString())
 });
 ```
