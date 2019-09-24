@@ -93,7 +93,7 @@ Most constructs accept `props` as their third initialization argument\. This is 
 
 ```
 new s3.Bucket(this, 'MyEncryptedBucket', {
-  encryption: s3.BucketEncryption.Kms,
+  encryption: s3.BucketEncryption.KMS,
   websiteIndexDocument: 'index.html'
 });
 ```
@@ -119,7 +119,7 @@ const jobsQueue = new sqs.Queue(this, 'jobs');
 const createJobLambda = new lambda.Function(this, 'create-job', {
   runtime: lambda.Runtime.NODEJS_8_10,
   handler: 'index.handler',
-  code: lambda.Code.asset('./create-job-lambda-code'),
+  code: lambda.Code.fromAsset('./create-job-lambda-code'),
   environment: {
     QUEUE_URL: jobsQueue.queueUrl
   }
@@ -146,7 +146,7 @@ export class NotifyingBucket extends Construct {
     super(scope, id);
     const bucket = new s3.Bucket(this, 'bucket');
     const topic = new sns.Topic(this, 'topic');
-    bucket.onObjectCreated(topic, { prefix: props.prefix }); 
+    bucket.addObjectCreatedNotification(topic, { prefix: props.prefix });
   }
 }
 ```
@@ -173,7 +173,7 @@ export class NotifyingBucket extends Construct {
     super(scope, id);
     const bucket = new s3.Bucket(this, 'bucket');
     this.topic = new sns.Topic(this, 'topic');
-    bucket.onObjectCreated(this.topic, { prefix: props.prefix });
+    bucket.addObjectCreatedNotification(this.topic, { prefix: props.prefix });
   }
 }
 ```
