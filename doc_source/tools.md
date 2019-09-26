@@ -77,14 +77,13 @@ Options:
                                                        [boolean] [default: true]
   --role-arn, -r        ARN of Role to use when invoking CloudFormation [string]
   --toolkit-stack-name  The name of the CDK toolkit stack               [string]
-  --staging             copy assets to the output directory (use --no-staging to
+  --staging             Copy assets to the output directory (use --no-staging to
                         disable, needed for local debugging the source files
                         with SAM CLI)                  [boolean] [default: true]
-  --output, -o          emits the synthesized cloud assembly into a directory
+  --output, -o          Emits the synthesized cloud assembly into a directory
                         (default: cdk.out)                              [string]
-  --ci                  Force CI detection. Use --no-ci to disable CI
-                        autodetection.                [boolean] [default: false]
-  --tags, -t            tags to add to the stack (KEY=VALUE)             [array]
+  --no-color            Removes colors and other style from console output
+                                                      [boolean] [default: false]
   --version             Show version number                            [boolean]
   -h, --help            Show help                                      [boolean]
 
@@ -100,21 +99,18 @@ If a `cdk.json` or `~/.cdk.json` file exists, options specified there are used a
 
 Commands and individual options as follows.
 
-**cdk list | ls [STACKS..]**  
-Lists all stacks in the app
+**cdk list | ls**
 
 - --long, -l (boolean)  
-  display environment information for each stack  
+  Display environment information for each stack  
   default: false
 
-**cdk synthesize | synth [STACKS..]**  
-Synthesizes and prints the CloudFormation template for this stack
+**cdk synthesize | synth**
 
 - --exclusively, -e (boolean)  
-  only deploy requested stacks, don\'t include dependencies
+  Only deploy requested stacks, don\'t include dependencies
 
-**cdk bootstrap [ENVIRONMENTS..]**  
-Deploys the CDK toolkit stack into an AWS environment
+**cdk bootstrap**
 
 - --bootstrap-bucket-name, -b (string)  
   The name of the CDK toolkit bucket  
@@ -123,56 +119,50 @@ Deploys the CDK toolkit stack into an AWS environment
   AWS KMS master key ID used for the SSE-KMS encryption  
   default: undefined
 
-**cdk deploy [STACKS..]**  
-Deploys the stack(s) named STACKS into your AWS account
+**cdk deploy**
 
 - --build-exclude, -E (array)  
-  do not rebuild asset with the given ID. Can be specified multiple times.  
+  Do not rebuild asset with the given ID. Can be specified multiple times.  
   default: []
 - --exclusively, -e (boolean)  
-  only deploy requested stacks, don\'t include dependencies
+  Only deploy requested stacks, don\'t include dependencies
 - --require-approval (string)  
-  what security-sensitive changes need manual approval  
+  What security-sensitive changes need manual approval  
   [Never,AnyChange,Broadening]
 - --ci (boolean)  
   Force CI detection. Use --no-ci to disable CI autodetection.  
   default: process.env.CI !== undefined
 - --tags, -t (array)  
-  tags to add to the stack (KEY=VALUE)
+  Tags to add to the stack (KEY=VALUE)
 
-**cdk destroy [STACKS..]**  
-Destroy the stack(s) named STACKS
+**cdk destroy**
 
 - --exclusively, -e (boolean)  
-  only deploy requested stacks, don\'t include dependencies
+  Only deploy requested stacks, don\'t include dependencies
 - --force, -f (boolean)  
   Do not ask for confirmation before destroying the stacks
 
-**cdk diff [STACKS..]**  
-Compares the specified stack with the deployed stack or a local template file, and returns with status 1 if any difference is found
+**cdk diff**
 
 - --exclusively, -e (boolean)  
-  only deploy requested stacks, don\'t include dependencies
+  Only deploy requested stacks, don\'t include dependencies
 - --context-lines (number)
-  number of context lines to include in arbitrary JSON diff rendering  
+  Number of context lines to include in arbitrary JSON diff rendering  
   default: 3
 - --template (string)  
-  the path to the CloudFormation template to compare with
+  The path to the CloudFormation template to compare with
 - --strict (boolean)  
-  do not filter out AWS::CDK::Metadata resources  
+  Do not filter out AWS::CDK::Metadata resources  
   default: false
 
-**cdk metadata [STACK]**  
-Returns all metadata associated with this stack
 
-**cdk init [TEMPLATE]**  
-Create a new, empty CDK project from a template. Invoked without TEMPLATE, the app template will be used.
+**cdk init**
 
 - --language, -l (string)  
-  the language to be used for the new project (default can be configured in ~/.cdk.json)
+  The language to be used for the new project (default can be configured in ~/.cdk.json)
 
 - --list (boolean)  
-  list the available templates
+  List the available templates
 
 ### Bootstrapping your AWS Environment<a name="tools_bootstrap"></a>
 
@@ -190,7 +180,7 @@ You change the level of changes that requires approval by specifying:
 cdk deploy --require-approval LEVEL
 ```
 
-Where *LEVEL* can be one of the following:
+Where _LEVEL_ can be one of the following:
 
 never  
 Approval is never required\.
@@ -293,7 +283,7 @@ This topic describes how to use the SAM CLI with the AWS CDK to test a Lambda fu
    cdk synth --no-staging > template.yaml
    ```
 
-1. Find the logical ID for your Lambda function in `template.yaml`\. It will look like `MyFunction`*12345678*, where *12345678* represents an 8\-character unique ID that the AWS CDK generates for all resources\. The line right after it should look like:
+1. Find the logical ID for your Lambda function in `template.yaml`\. It will look like `MyFunction`_12345678_, where _12345678_ represents an 8\-character unique ID that the AWS CDK generates for all resources\. The line right after it should look like:
 
    ```
    Type: AWS::Lambda::Function
