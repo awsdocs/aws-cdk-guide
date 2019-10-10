@@ -27,5 +27,11 @@ new MyDevStack(this, 'dev', {
 });
 ```
 
+NOTE: In order to refer to use `process.env` in TypeScript, you will need to install the `@types/node` module:
+
+```
+npm install -D @types/node
+```
+
 **Note**  
 There is a distinction between not specifying the `env` property at all and specifying `CDK_DEFAULT_ACCOUNT` and `CDK_DEFAULT_REGION`\. The former implies that the stack should synthesize an environment\-agnostic template\. This means that constructs that are defined in such a stack cannot make assumptions about their environment\. For example, you can't write code like `if (stack.region === 'us-east-1')` or use framework facilities like [Vpc\.fromLookup](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/aws-ec2/vpc.html#aws_ec2_Vpc_fromLookup), which need to query your AWS account\. When specifying `CDK_DEFAULT_ACCOUNT` and `CDK_DEFAULT_REGION`, you tell the stack that it will be deployed in the account and Region as configured in the CLI at the time of synthesis\. This means that the synthesized template could be different on different machines, users, or sessions\. This might be acceptable for use cases like development stacks, but would be an anti\-pattern for production stacks\.
