@@ -8,7 +8,7 @@ AWS CloudFormation enables you to:
 + Build highly reliable, highly scalable, cost\-effective applications in the cloud without worrying about creating and configuring the underlying AWS infrastructure\.
 + Use a template file to create and delete a collection of resources together as a single unit \(a stack\)\.
 
-Use the AWS CDK to define your cloud resources in a familiar programming language\. The AWS CDK supports TypeScript, JavaScript, and Python\. The AWS CDK also provides Developer Preview support for C♯/\.NET, and Java\.
+Use the AWS CDK to define your cloud resources in a familiar programming language\. The AWS CDK supports TypeScript, JavaScript, and Python\. The AWS CDK also provides Developer Preview support for C\#/\.NET, and Java\.
 
 Developers can use one of the supported programming languages to define reusable cloud components known as [Constructs](constructs.md)\. You compose these together into [Stacks](stacks.md) and [Apps](apps.md)\.
 
@@ -32,7 +32,7 @@ export class MyEcsConstructStack extends core.Stack {
     });
 
     // Create a load-balanced Fargate service and make it public
-    new ecs_patterns.LoadBalancedFargateService(this, "MyFargateService", {
+    new ecs_patterns.ApplicationLoadBalancedFargateService(this, "MyFargateService", {
       cluster: cluster, // Required
       cpu: 512, // Default is 256
       desiredCount: 6, // Default is 1
@@ -40,6 +40,8 @@ export class MyEcsConstructStack extends core.Stack {
       memoryLimitMiB: 2048, // Default is 512
       publicLoadBalancer: true // Default is false
     });
+  }
+}
 ```
 
 This produces an AWS CloudFormation [template of more than 500 lines](https://github.com/awsdocs/aws-cdk-guide/blob/master/doc_source/my_ecs_construct-stack.yaml); deploying the AWS CDK app produces more than 50 resources of the following types\.

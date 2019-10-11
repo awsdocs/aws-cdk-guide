@@ -1,43 +1,15 @@
 # Get a Value from the Systems Manager Parameter Store<a name="get_ssm_value"></a>
 
-The AWS CDK can retrieve the value of AWS Systems Manager Parameter Store attribute at synthesis time \(as the AWS CloudFormation template is being generated\) or at deployment time \(when the synthesized template is being deployed by AWS CloudFormation\)\. In the latter case, the AWS CDK provides a [token](tokens.md) that is later resolved by AWS CloudFormation\.
+The AWS CDK can retrieve the value of AWS Systems Manager Parameter Store attributes\. During synthesis, the AWS CDK produces a [token](tokens.md) that is resolved by AWS CloudFormation during deployment\.
 
 The AWS CDK supports retrieving both plain and secure values\. You may request a specific version of either kind of value\. For plain values only, you may omit the version from your request to receive the latest version\. You must always specify the version when requesting the value of a secure attribute\.
 
 **Note**  
  This topic shows how to read attributes from the AWS Systems Manager Parameter Store\. You can also read secrets from the AWS Secrets Manager \(see [Get a Value from AWS Secrets Manager](get_secrets_manager_value.md)\)\.
 
-## Reading Values at Synthesis Time<a name="ssm_read"></a>
+## Reading Systems Manager Values at Deployment Time<a name="ssm_read"></a>
 
-To read a particular version of a Systems Manager Parameter Store plain string value at synthesis time, use the [fromStringParameterAttributes](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-ssm.StringParameter.html#static-from-string-parameter-attributesscope-id-attrs) method\. If you don't supply a `version` value, you get the latest version\.
-
-```
-import ssm = require('@aws-cdk/aws-ssm');
-
-const parameterString = ssm.StringParameter.fromStringParameterAttributes(this, 'MyParameter', {
-    parameterName: 'my-plain-parameter-name',
-    version: 1,   // omit to get latest version
-});
-
-const myValue = parameterString.stringValue;
-```
-
-To read a particular version of a Systems Manager Parameter Store secure string value at synthesis time, use [fromSecureStringParameterAttributes](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-ssm.StringParameter.html#static-from-secure-string-parameter-attributesscope-id-attrs)\. You must supply a `version` value for secure strings\.
-
-```
-import ssm = require('@aws-cdk/aws-ssm');
-
-const secureString = ssm.StringParameter.fromSecureStringParameterAttributes(this, 'MySecretParameter', {
-    parameterName: 'my-secure-parameter-name',
-    version: 1,
-});
-
-const myValue = secureString.stringValue;
-```
-
-## Reading Values at Deployment Time<a name="ssm_read_token"></a>
-
-To read values from the Systems Manager Parameter Store at deployment time, use the [valueForStringParameter](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-ssm.StringParameter.html#static-value-for-string-parameterscope-parametername-version) and [valueForSecureStringParameter](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-ssm.StringParameter.html#static-value-for-secure-string-parameterscope-parametername-version) methods, depending on whether the attribute you want is a plain string or a secure string value\. These methods return [tokens](tokens.md) that are later resolved by AWS CloudFormation during deployment\.
+To read values from the Systems Manager Parameter Store, use the [valueForStringParameter](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-ssm.StringParameter.html#static-value-for-string-parameterscope-parametername-version) and [valueForSecureStringParameter](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-ssm.StringParameter.html#static-value-for-secure-string-parameterscope-parametername-version) methods, depending on whether the attribute you want is a plain string or a secure string value\. These methods return [tokens](tokens.md), not the actual value\. The value is resolved by AWS CloudFormation during deployment\.
 
 ```
 import ssm = require('@aws-cdk/aws-ssm');
@@ -53,13 +25,30 @@ const secureStringToken = ssm.StringParameter.valueForSecureStringParameter(
     this, 'my-secure-parameter-name', 1);   // must specify version
 ```
 
+## Reading Systems Manager Values at Synthesis Time<a name="ssm_read"></a>
+
+It is sometimes useful to "bake in" a parameter at synthesis time, so that the resulting AWS CloudFormation template always uses the same value, rather than resolving the value during deployment\.
+
+To read a value from the Systems Manager parameter store at synthesis time, use the [valueFromLookup](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-ssm.StringParameter.html#static-value-wbr-from-wbr-lookupscope-parametername) method\. This method returns the actual value of the parameter as a [Runtime Context](context.md) value\. If the value is not already cached in `cdk.json` or passed on the command line, it will be retrieved from the current AWS account\. For this reason, the stack *must* be synthesized with explicit account and region information\.
+
+```
+import ssm = require('@aws-cdk/aws-ssm');
+
+// ... later ...
+const stringValue = ssm.StringParameter.valueFromLookup(this, 'my-plain-parameter-name');
+```
+
+**Note**  
+Only plain Systems Manager strings may be retrieved, not secure strings\. It is not possible to request a specific version; the latest version is always returned\.
+
 ## Writing Values to Systems Manager<a name="ssm_write"></a>
 
-Use the [ssm put\-parameter](https://docs.aws.amazon.com/cli/latest/reference/ssm/put-parameter.html) CLI command to add a string parameter to the Systems Manager, such as when testing:
+You can use the AWS CLI, the AWS Management Console, or an AWS SDK to set Systems Manager parameter values\. The following examples use the [ssm put\-parameter](https://docs.aws.amazon.com/cli/latest/reference/ssm/put-parameter.html) CLI command\.
 
 ```
 aws ssm put-parameter --name "parameter-name" --type "String" --value "parameter-value"
 aws ssm put-parameter --name "secure-parameter-name" --type "SecureString" --value "secure-parameter-value"
 ```
 
-This command returns an ARN that you can use to retrieve the value in your AWS CDK code\.
+**Note**  
+When updating an SSM value that already exists, also include the `--overwrite` option\.
