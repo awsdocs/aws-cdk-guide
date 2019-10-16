@@ -118,6 +118,9 @@ Commands and individual options as follows.
 - --bootstrap-kms-key-id (string)  
   AWS KMS master key ID used for the SSE-KMS encryption  
   default: undefined
+- --tags, -t (array)  
+  Tags to add for the stack (KEY=VALUE)  
+  default: []
 
 **cdk deploy**
 
@@ -132,6 +135,8 @@ Commands and individual options as follows.
 - --ci (boolean)  
   Force CI detection. Use --no-ci to disable CI autodetection.  
   default: process.env.CI !== undefined
+- --notification-arns (array)  
+  ARNs of SNS topics that CloudFormation will notify with stack related events
 - --tags, -t (array)  
   Tags to add to the stack (KEY=VALUE)
 
@@ -146,7 +151,7 @@ Commands and individual options as follows.
 
 - --exclusively, -e (boolean)  
   Only deploy requested stacks, don\'t include dependencies
-- --context-lines (number)
+- --context-lines (number)  
   Number of context lines to include in arbitrary JSON diff rendering  
   default: 3
 - --template (string)  
@@ -155,12 +160,14 @@ Commands and individual options as follows.
   Do not filter out AWS::CDK::Metadata resources  
   default: false
 
+**cdk metadata**
+
+no option
 
 **cdk init**
 
 - --language, -l (string)  
   The language to be used for the new project (default can be configured in ~/.cdk.json)
-
 - --list (boolean)  
   List the available templates
 
