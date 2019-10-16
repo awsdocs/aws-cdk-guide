@@ -123,8 +123,7 @@ const asset = new Asset(this, 'MyFile', {
 });
 
 const group = new iam.Group(this, 'MyUserGroup');
-  asset.grantRead(group);
-}
+asset.grantRead(group);
 ```
 
 ### Docker Image Assets<a name="assets_types_docker"></a>
@@ -214,4 +213,4 @@ To enable such use cases, external tools consult a set of metadata entries on AW
 
 Using these two metadata entries, tools can identify that assets are used by a certain resource, and enable advanced local experiences\.
 
-To add these metadata entries to a resource, use the `asset.addResourceMetadata`  method\.  
+To add these metadata entries to a resource, use the `asset.addResourceMetadata`  method\.
