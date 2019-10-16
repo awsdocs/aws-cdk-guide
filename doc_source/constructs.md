@@ -14,7 +14,7 @@ There are different levels of constructs in this library, beginning with low\-le
 
 The next level of constructs also represent AWS resources, but with a higher\-level, intent\-based API\. They provide the same functionality, but handle much of the details, boilerplate, and glue logic required by CFN constructs\. AWS constructs offer convenient defaults and reduce the need to know all the details about the AWS resources they represent, while providing convenience methods that make it simpler to work with the resource\. For example, the [s3\.Bucket](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/aws-s3/bucket.html#aws_s3_Bucket) class represents an Amazon S3 bucket with additional properties and methods, such as [bucket\.addLifeCycleRule\(\)](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/aws-s3/bucket.html#aws_s3_Bucket_addLifecycleRule), which adds a lifecycle rule to the bucket\.
 
-Finally, the AWS Construct Library includes even higher\-level constructs, which we call *patterns*\. These constructs are designed to help you complete common tasks in AWS, often involving multiple kinds of resources\. For example, the [aws\-ecs\-patterns\.LoadBalancedFargateService](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-ecs-patterns.LoadBalancedFargateService.html) construct represents an architecture that includes an AWS Fargate container cluster employing Elastic Load Balancing \(ELB\)\. The [aws\-apigateway\.LambdaRestApi](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-apigateway.LambdaRestApi.html) construct represents an Amazon API Gateway API that's backed by an AWS Lambda function\.
+Finally, the AWS Construct Library includes even higher\-level constructs, which we call *patterns*\. These constructs are designed to help you complete common tasks in AWS, often involving multiple kinds of resources\. For example, the [aws\-ecs\-patterns\.ApplicationLoadBalancedFargateService](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-ecs-patterns.ApplicationLoadBalancedFargateService.html) construct represents an architecture that includes an AWS Fargate container cluster employing an Application Load Balancer \(ALB\)\. The [aws\-apigateway\.LambdaRestApi](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-apigateway.LambdaRestApi.html) construct represents an Amazon API Gateway API that's backed by an AWS Lambda function\.
 
 For more information about how to navigate the library and discover constructs that can help you build your apps, see the [API Reference](https://docs.aws.amazon.com/cdk/api/latest/docs/aws-construct-library.html)\.
 
@@ -93,7 +93,7 @@ Most constructs accept `props` as their third initialization argument\. This is 
 
 ```
 new s3.Bucket(this, 'MyEncryptedBucket', {
-  encryption: s3.BucketEncryption.Kms,
+  encryption: s3.BucketEncryption.KMS,
   websiteIndexDocument: 'index.html'
 });
 ```
@@ -119,7 +119,7 @@ const jobsQueue = new sqs.Queue(this, 'jobs');
 const createJobLambda = new lambda.Function(this, 'create-job', {
   runtime: lambda.Runtime.NODEJS_8_10,
   handler: 'index.handler',
-  code: lambda.Code.asset('./create-job-lambda-code'),
+  code: lambda.Code.fromAsset('./create-job-lambda-code'),
   environment: {
     QUEUE_URL: jobsQueue.queueUrl
   }
@@ -146,7 +146,7 @@ export class NotifyingBucket extends Construct {
     super(scope, id);
     const bucket = new s3.Bucket(this, 'bucket');
     const topic = new sns.Topic(this, 'topic');
-    bucket.onObjectCreated(topic, { prefix: props.prefix }); 
+    bucket.addObjectCreatedNotification(topic, { prefix: props.prefix }); 
   }
 }
 ```
@@ -173,7 +173,7 @@ export class NotifyingBucket extends Construct {
     super(scope, id);
     const bucket = new s3.Bucket(this, 'bucket');
     this.topic = new sns.Topic(this, 'topic');
-    bucket.onObjectCreated(this.topic, { prefix: props.prefix });
+    bucket.addObjectCreatedNotification(this.topic, { prefix: props.prefix });
   }
 }
 ```

@@ -12,7 +12,7 @@ Want to dig deeper? Try the [CDK Workshop](https://cdkworkshop.com/) for a more 
 + You must specify both your credentials and an AWS Region to use the AWS CDK CLI, as described in [Specifying Your Credentials and Region](#getting_started_credentials)\.
 
 **Note**  
-Why do you need Node\.js when you're a Python, C♯, or Java developer? The AWS CDK is developed in TypeScript and transpiled to JavaScript\. Bindings for the other supported languages make use of the AWS CDK engine running on Node\.js, as does the `cdk` command\-line tool\. 
+Why do you need Node\.js when you're a Python, C\#, or Java developer? The AWS CDK is developed in TypeScript and transpiled to JavaScript\. Bindings for the other supported languages make use of the AWS CDK engine running on Node\.js, as does the `cdk` command\-line tool\. 
 
 ------
 #### [ TypeScript ]
@@ -34,7 +34,7 @@ none
 + Set the `JAVA_HOME` environment variable to the path to where you have installed the JDK on your machine
 
 ------
-#### [ C♯ ]
+#### [ C\# ]
 
 \.NET standard 2\.0 compatible implementation:
 + \.NET Core >= 2\.0
@@ -92,7 +92,7 @@ mvn versions:use-latest-versions
 ```
 
 ------
-#### [ C♯ ]
+#### [ C\# ]
 
 ```
 nuget update
@@ -235,7 +235,7 @@ cdk init --language LANGUAGE [TEMPLATE]
 ```
 
 Where:
-+ *LANGUAGE* is one of the supported programming languages: **csharp** \(C♯\), **java** \(Java\), **javascript** \(JavaScript\), **python** \(Python\), or **typescript** \(TypeScript\)
++ *LANGUAGE* is one of the supported programming languages: **csharp** \(C\#\), **java** \(Java\), **javascript** \(JavaScript\), **python** \(Python\), or **typescript** \(TypeScript\)
 + *TEMPLATE* is an optional template\. If the desired template is *app*, the default, you may omit it\.
 
 The following table describes the templates available with the supported languages\.
@@ -308,7 +308,7 @@ Once the init command finishes, we need to modify the template's output\.
   ```
 
 ------
-#### [ C♯ ]
+#### [ C\# ]
 
 ```
 cdk init --language csharp
@@ -432,7 +432,7 @@ If necessary, add the following to `pom.xml`, where *CDK\-VERSION* is the versio
 ```
 
 ------
-#### [ C♯ ]
+#### [ C\# ]
 
 Run the following command in the `src/HelloCdk` directory\.
 
@@ -529,14 +529,14 @@ public class HelloStack extends Stack {
         super(parent, id, props);
 
         new Bucket(this, "MyFirstBucket", BucketProps.builder()
-            .withVersioned(true)
+            .versioned(true)
             .build());
     }
 }
 ```
 
 ------
-#### [ C♯ ]
+#### [ C\# ]
 
 Update `HelloStack.cs` to include a Amazon S3 bucket with versioning enabled\.
 
@@ -693,13 +693,13 @@ import software.amazon.awscdk.services.s3.BucketEncryption;
 
 ```
 new Bucket(this, "MyFirstBucket", BucketProps.builder()
-    .withVersioned(true)
-    .withEncryption(BucketEncryption.KMS_MANAGED)
+    .versioned(true)
+    .encrypted(BucketEncryption.KMS_MANAGED)
     .build());
 ```
 
 ------
-#### [ C♯ ]
+#### [ C\# ]
 
 Update `HelloStack.cs`\.
 
