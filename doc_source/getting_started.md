@@ -8,7 +8,7 @@ Want to dig deeper? Try the [CDK Workshop](https://cdkworkshop.com/) for a more 
 ## Prerequisites<a name="getting_started_prerequisites"></a>
 
 **AWS CDK command line tools**  
-+ [Node\.js \(>= 8\.11\.x\)](https://nodejs.org/en/download)
++ [Node\.js \(>= 10\.3\.0\)](https://nodejs.org/en/download)
 + You must specify both your credentials and an AWS Region to use the AWS CDK CLI, as described in [Specifying Your Credentials and Region](#getting_started_credentials)\.
 
 **Note**  
