@@ -6,7 +6,7 @@ The following example declares a stack class named `MyFirstStack` that includes 
 
 ```
 class MyFirstStack extends Stack {
-  constructor(scope: Construct, id: string, props: StackProps) {
+  constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
     new s3.Bucket(this, 'MyFirstBucket');
