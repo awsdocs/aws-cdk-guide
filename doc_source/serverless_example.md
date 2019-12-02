@@ -1,6 +1,6 @@
 # Creating a Serverless Application Using the AWS CDK<a name="serverless_example"></a>
 
-This example walks you through how to create the resources for a simple widget dispensing service\. It includes:
+This example walks you through how to create the resources for a simple widget dispensing service\. \(For the purpose of this example, a widget is just an name or identifier that can be added to, retrieved from, and deleted from a collection\.\) The example includes:
 + An AWS Lambda function\.
 + An Amazon API Gateway API to call the Lambda function\.
 + An Amazon S3 bucket that contains the Lambda function code\.
@@ -9,7 +9,7 @@ This tutorial contains the following steps\.
 
 1. Creates a AWS CDK app
 
-1. Creates a Lambda function that gets a list of widgets with: GET /
+1. Creates a Lambda function that gets a list of widgets with HTTP GET /
 
 1. Creates the service that calls the Lambda function
 
@@ -17,14 +17,17 @@ This tutorial contains the following steps\.
 
 1. Tests the app
 
-1. Add Lambda functions to do the following:
+1. Adds Lambda functions to do the following:
    + Create a widget with POST /\{name\}
    + Get a widget by name with GET /\{name\}
    + Delete a widget by name with DELETE /\{name\}
 
 ## Create a AWS CDK App<a name="serverless_example_create_app"></a>
 
-Create the TypeScript app **MyWidgetService** in the current folder\.
+Create the app **MyWidgetService** in the current folder\.
+
+------
+#### [ TypeScript ]
 
 ```
 mkdir MyWidgetService
@@ -32,16 +35,107 @@ cd MyWidgetService
 cdk init --language typescript
 ```
 
-This creates `my_widget_service.ts` in the `bin` directory, and `my_widget_service-stack.ts` in the `lib` directory\.
+------
+#### [ Python ]
 
-Build the app and notice that it creates an empty stack\.
+```
+mkdir MyWidgetService
+cd MyWidgetService
+cdk init --language python
+source .env/bin/activate || "on Windows, use: .env\Scripts\activate.bat"
+pip install -r requirements.txt
+```
+
+------
+#### [ Java ]
+
+```
+mkdir MyWidgetService
+cd MyWidgetService
+cdk init --language java
+```
+
+You may now import the Maven project into your IDE\.
+
+------
+#### [ C\# ]
+
+```
+mkdir MyWidgetService
+cd MyWidgetService
+cdk init --language csharp
+```
+
+You may now open `src/MyWidgetService.sln` in Visual Studio\.
+
+------
+
+The important files in the blank project are as follows\. \(We will also be adding a couple of new files\.\)
+
+------
+#### [ TypeScript ]
++ `bin/my_widget_service.ts` – Main entry point for the application
++ `lib/my_widget_service-stack.ts` – Defines the widget service stack
+
+------
+#### [ Python ]
++ `app.py` – Main entry point for the application
++ `my_widget_service/my_widget_service_stack.py` – Defines the widget service stack
+
+------
+#### [ Java ]
++ `src/main/java/com/myorg/MyWidgetServiceApp.java` – Main entry point for the application
++ `src/main/java/com/myorg/MyWidgetServiceStack.java` – Defines the widget service stack
+
+------
+#### [ C\# ]
++ `src/MyWidgetService/Program.cs` – Main entry point for the application
++ `src/MyWidgetService/MyWidgetServiceStack.cs` – Defines the widget service stack
+
+------
+
+Build the app and note that it synthesizes an empty stack\.
+
+------
+#### [ TypeScript ]
 
 ```
 npm run build
 cdk synth
 ```
 
-You should see a stack like the following, where *CDK\-VERSION* is the version of the AWS CDK\.
+------
+#### [ Python ]
+
+```
+cdk synth
+```
+
+------
+#### [ Java ]
+
+```
+mvn compile
+cdk synth
+```
+
+**Note**  
+Instead of issuing `mvn compile`, you can instead press Control\-B in Eclipse\.
+
+------
+#### [ C\# ]
+
+```
+dotnet build src
+cdk synth
+```
+
+**Note**  
+Instead of issuing `dotnet build`, you can instead press F6 in Visual Studio\.
+
+------
+
+You should see output like the following, where *CDK\-VERSION* is the version of the AWS CDK\.
 
 ```
 Resources:
@@ -53,9 +147,9 @@ Resources:
 
 ## Create a Lambda Function to List All Widgets<a name="serverless_example_create_iam_function"></a>
 
-The next step is to create a Lambda function to list all of the widgets in our Amazon S3 bucket\.
+The next step is to create a Lambda function to list all of the widgets in our Amazon S3 bucket\. We will provide the Lambda function's code in JavaScript\.
 
-Create the `resources` directory at the same level as the `bin` directory\.
+Create the `resources` directory in the project's main directory\.
 
 ```
 mkdir resources
@@ -104,22 +198,99 @@ exports.main = async function(event, context) {
 }
 ```
 
-Save it and be sure it builds and creates an empty stack\. Because we haven't wired the function to the app, the Lambda file doesn't appear in the output\.
+Save it and be sure the project still results in an empty stack\. We haven't yet wired the Lambda function to the AWS CDK app, so the Lambda asset doesn't appear in the output\.
+
+------
+#### [ TypeScript ]
 
 ```
 npm run build
 cdk synth
 ```
 
+------
+#### [ Python ]
+
+```
+cdk synth
+```
+
+------
+#### [ Java ]
+
+```
+mvn compile
+cdk synth
+```
+
+**Note**  
+Instead of issuing `mvn compile`, you can instead press Control\-B in Eclipse\.
+
+------
+#### [ C\# ]
+
+```
+dotnet build src
+cdk synth
+```
+
+**Note**  
+Instead of issuing `dotnet build`, you can instead press F6 in Visual Studio\.
+
+------
+
 ## Creating a Widget Service<a name="serverless_example_create_widget_service"></a>
 
 Add the API Gateway, Lambda, and Amazon S3 packages to the app\.
+
+------
+#### [ TypeScript ]
 
 ```
 npm install @aws-cdk/aws-apigateway @aws-cdk/aws-lambda @aws-cdk/aws-s3
 ```
 
-Create the TypeScript file `widget_service.ts` in the `lib` directory\.
+------
+#### [ Python ]
+
+```
+pip install aws_cdk.aws_apigateway aws_cdk.aws_lambda aws_cdk.aws_s3
+```
+
+------
+#### [ Java ]
+
+Using your IDE's Maven integration \(e\.g\., in Eclipse, right\-click your project and choose **Maven** > **Add Dependency**\), install the following artifacts from the group `software.amazon.awscdk`:
+
+```
+apigateway
+lambda
+s3
+```
+
+------
+#### [ C\# ]
+
+Choose **Tools** > **NuGet Package Manager** > **Manage NuGet Packages for Solution** in Visual Studio and add the following packages\.
+
+```
+Amazon.CDK.AWS.ApiGateway
+Amazon.CDK.AWS.Lambda
+Amazon.CDK.AWS.S3
+```
+
+**Tip**  
+If you don't see these packages in the **Browse** tab of the **Manage Packages for Solution** page, make sure the **Include prerelease** checkbox is ticked\.  
+For a better experience, also add the `Amazon.Jsii.Analyzers` package to provide compile\-time checks for missing required properties\.
+
+------
+
+Create a new source file to define the widget service with the source code shown below\.
+
+------
+#### [ TypeScript ]
+
+File: `lib/widget_service.ts`
 
 ```
 import core = require("@aws-cdk/core");
@@ -158,16 +329,202 @@ export class WidgetService extends core.Construct {
 }
 ```
 
-Save the app and be sure it builds and creates a \(still empty\) stack\.
+------
+#### [ Python ]
+
+File: `my_widget_service/widget_service.py`
+
+```
+from aws_cdk import (core,
+                     aws_apigateway as apigateway,
+                     aws_s3 as s3,
+                     aws_lambda as lambda_)
+
+class WidgetService(core.Construct):
+    def __init__(self, scope: core.Construct, id: str):
+        super().__init__(scope, id)
+
+        bucket = s3.Bucket(self, "WidgetStore")
+
+        handler = lambda_.Function(self, "WidgetHandler",
+                    runtime=lambda_.Runtime.NODEJS_10_X,
+                    code=lambda_.Code.asset("resources"),
+                    handler="widgets.main",
+                    environment=dict(
+                    BUCKET=bucket.bucket_name)
+                    )
+
+        bucket.grant_read_write(handler)
+
+        api = apigateway.RestApi(self, "widgets-api",
+                  rest_api_name="Widget Service",
+                  description="This service serves widgets.")
+
+        get_widgets_integration = apigateway.LambdaIntegration(handler,
+                request_templates={"application/json": '{ "statusCode": "200" }'})
+
+        api.root.add_method("GET", get_widgets_integration)   # GET /
+```
+
+------
+#### [ Java ]
+
+File: `src/src/main/java/com/myorg/WidgetService.java`
+
+```
+package com.myorg;
+
+import java.util.HashMap;
+
+import software.amazon.awscdk.core.Construct;
+import software.amazon.awscdk.services.apigateway.LambdaIntegration;
+import software.amazon.awscdk.services.apigateway.Resource;
+import software.amazon.awscdk.services.apigateway.RestApi;
+import software.amazon.awscdk.services.lambda.Code;
+import software.amazon.awscdk.services.lambda.Function;
+import software.amazon.awscdk.services.lambda.Runtime;
+import software.amazon.awscdk.services.s3.Bucket;
+
+public class WidgetService extends Construct {
+
+    @SuppressWarnings("serial")
+    public WidgetService(Construct scope, String id) {
+        super(scope, id);
+
+        Bucket bucket = new Bucket(this, "WidgetStore");
+
+        Function handler = Function.Builder.create(this, "WidgetHandler")
+            .runtime(Runtime.NODEJS_10_X)
+            .code(Code.fromAsset("resources"))
+            .handler("widgets.main")
+            .environment(new HashMap<String, String>() {{
+               put("BUCKET", bucket.getBucketName()); 
+            }}).build();
+
+        bucket.grantReadWrite(handler);
+        
+        RestApi api = RestApi.Builder.create(this, "Widgets-API")
+                .restApiName("Widget Service").description("This service services widgets.")
+                .build();
+
+        LambdaIntegration getWidgetsIntegration = LambdaIntegration.Builder.create(handler) 
+                .requestTemplates(new HashMap<String, String>() {{
+                    put("application/json", "{ \"statusCode\": \"200\" }");
+                }}).build();
+
+        api.getRoot().addMethod("GET", getWidgetsIntegration);    
+    }
+}
+```
+
+------
+#### [ C\# ]
+
+File: `src/MyWidgetService/WidgetService.cs`
+
+```
+using Amazon.CDK;
+using Amazon.CDK.AWS.APIGateway;
+using Amazon.CDK.AWS.Lambda;
+using Amazon.CDK.AWS.S3;
+using System.Collections.Generic;
+
+namespace MyWidgetService
+{
+
+    public class WidgetService : Construct
+    {
+        public WidgetService(Construct scope, string id) : base(scope, id)
+        {
+            var bucket = new Bucket(this, "WidgetStore");
+
+            var handler = new Function(this, "WidgetHandler", new FunctionProps
+            {
+                Runtime = Runtime.NODEJS_10_X,
+                Code = Code.FromAsset("resources"),
+                Handler = "widgets.main",
+                Environment = new Dictionary<string, string>
+                {
+                    ["BUCKET"] = bucket.BucketName
+                }
+            });
+
+            bucket.GrantReadWrite(handler);
+
+            var api = new RestApi(this, "Widgets-API", new RestApiProps
+            {
+                RestApiName = "Widget Service",
+                Description = "This service services widgets."
+            });
+
+            var getWidgetsIntegration = new LambdaIntegration(handler, new LambdaIntegrationOptions
+            {
+                RequestTemplates = new Dictionary<string, string>
+                {
+                    ["application/json"] = "{ \"statusCode\": \"200\" }"
+                }
+            });
+
+            api.Root.AddMethod("GET", getWidgetsIntegration);
+
+        }
+    }
+}
+```
+
+------
+
+Save the app and make sure it still synthesizes an empty stack\.
+
+------
+#### [ TypeScript ]
 
 ```
 npm run build
 cdk synth
 ```
 
+------
+#### [ Python ]
+
+```
+cdk synth
+```
+
+------
+#### [ Java ]
+
+```
+mvn compile
+cdk synth
+```
+
+**Note**  
+Instead of issuing `mvn compile`, you can instead press Control\-B in Eclipse\.
+
+------
+#### [ C\# ]
+
+```
+dotnet build src
+cdk synth
+```
+
+**Note**  
+Instead of issuing `dotnet build`, you can instead press F6 in Visual Studio\.
+
+------
+
 ## Add the Service to the App<a name="serverless_example_add_service"></a>
 
-To add the service to the app, first modify `my_widget_service-stack.ts` in the `lib` directory\. Add the following line of code after the existing `import` statement\.
+To add the widget service to our AWS CDK app, we'll need to modify the source file that defines the stack to instantiate the service construct\.
+
+------
+#### [ TypeScript ]
+
+File: `lib/my_widget_service-stack.ts`
+
+Add the following line of code after the existing `import` statement\.
 
 ```
 import widget_service = require('../lib/widget_service');
@@ -179,22 +536,97 @@ Replace the comment in the constructor with the following line of code\.
     new widget_service.WidgetService(this, 'Widgets');
 ```
 
-Be sure the app builds and creates a stack \(we don't show the stack because it's over 250 lines\)\.
+------
+#### [ Python ]
+
+File: `lib/my_widget_service-stack.ts`
+
+Add the following line of code after the existing `import` statement\.
+
+```
+from . import widget_service
+```
+
+Replace the comment in the constructor with the following line of code\.
+
+```
+        widget_service.WidgetService(self, "Widgets")
+```
+
+------
+#### [ Java ]
+
+File: `src/src/main/java/com/myorg/MyWidgetServiceStack.java`
+
+Replace the comment in the constructor with the following line of code\.
+
+```
+new WidgetService(this, "Widgets");
+```
+
+------
+#### [ C\# ]
+
+File: `src/MyWidgetService/MyWidgetServiceStack.cs`
+
+Replace the comment in the constructor with the following line of code\.
+
+```
+new WidgetService(this, "Widgets");
+```
+
+------
+
+Be sure the app builds and synthesizes a stack \(we won't show the stack here: it's over 250 lines\)\.
+
+------
+#### [ TypeScript ]
 
 ```
 npm run build
 cdk synth
 ```
 
+------
+#### [ Python ]
+
+```
+cdk synth
+```
+
+------
+#### [ Java ]
+
+```
+mvn compile
+cdk synth
+```
+
+**Note**  
+Instead of issuing `mvn compile`, you can instead press Control\-B in Eclipse\.
+
+------
+#### [ C\# ]
+
+```
+dotnet build src
+cdk synth
+```
+
+**Note**  
+Instead of issuing `dotnet build`, you can instead press F6 in Visual Studio\.
+
+------
+
 ## Deploy and Test the App<a name="serverless_example_deploy_and_test"></a>
 
-Before you can deploy your first AWS CDK app, you must bootstrap your deployment\. This creates some AWS infrastructure that the AWS CDK needs\. For details, see the **bootstrap** section of the [AWS CDK Tools](tools.md) \(if you've already bootstrapped a AWS CDK app, you'll get a warning and nothing will change\)\.
+Before you can deploy your first AWS CDK app containing a lambda function, you must bootstrap your AWS environment\. This creates a staging bucket that the AWS CDK uses to deploy stacks containing assets\. For details, see the **bootstrap** section of the [AWS CDK Tools](tools.md) \(if you've already bootstrapped, you'll get a warning and nothing will change\)\.
 
 ```
 cdk bootstrap
 ```
 
-Deploy your app, as follows\.
+Now we're ready to deploy the app as follows\.
 
 ```
 cdk deploy
@@ -338,7 +770,12 @@ exports.main = async function(event, context) {
 }
 ```
 
-Wire up these functions to your API Gateway code in `widget_service.ts` by adding the following code at the end of the constructor\.
+Wire up these functions to your API Gateway code at the end of the `WidgetService` constructor\.
+
+------
+#### [ TypeScript ]
+
+File: `lib/widget_service.ts`
 
 ```
     const widget = api.root.addResource("{id}");
@@ -357,12 +794,112 @@ Wire up these functions to your API Gateway code in `widget_service.ts` by addin
     widget.addMethod("DELETE", deleteWidgetIntegration); // DELETE /{id}
 ```
 
+------
+#### [ Python ]
+
+File: `my_widget_service/widget_service.py`
+
+```
+        widget = api.root.add_resource("{id}")
+
+        # Add new widget to bucket with: POST /{id}
+        post_widget_integration = apigateway.LambdaIntegration(handler)
+
+        # Get a specific widget from bucket with: GET /{id}
+        get_widget_integration = apigateway.LambdaIntegration(handler)
+
+        # Remove a specific widget from the bucket with: DELETE /{id}
+        delete_widget_integration = apigateway.LambdaIntegration(handler)
+
+        widget.add_method("POST", post_widget_integration);     # POST /{id}
+        widget.add_method("GET", get_widget_integration);       # GET /{id}
+        widget.add_method("DELETE", delete_widget_integration); # DELETE /{id}
+```
+
+------
+#### [ Java ]
+
+File: `src/src/main/java/com/myorg/WidgetService.java`
+
+```
+        // Add new widget to bucket with: POST /{id}
+        LambdaIntegration postWidgetIntegration = new LambdaIntegration(handler);
+
+        // Get a specific widget from bucket with: GET /{id}
+        LambdaIntegration getWidgetIntegration = new LambdaIntegration(handler);
+
+        // Remove a specific widget from the bucket with: DELETE /{id}
+        LambdaIntegration deleteWidgetIntegration = new LambdaIntegration(handler);
+
+        widget.addMethod("POST", postWidgetIntegration);     // POST /{id}
+        widget.addMethod("GET", getWidgetIntegration);       // GET /{id}
+        widget.addMethod("DELETE", deleteWidgetIntegration); // DELETE /{id}
+```
+
+------
+#### [ C\# ]
+
+File: `src/MyWidgetService/WidgetService.cs`
+
+```
+            var widget = api.Root.AddResource("{id}");
+
+            // Add new widget to bucket with: POST /{id}
+            var postWidgetIntegration = new LambdaIntegration(handler);
+
+            // Get a specific widget from bucket with: GET /{id}
+            var getWidgetIntegration = new LambdaIntegration(handler);
+
+            // Remove a specific widget from the bucket with: DELETE /{id}
+            var deleteWidgetIntegration = new LambdaIntegration(handler);
+
+            widget.AddMethod("POST", postWidgetIntegration);        // POST /{id}
+            widget.AddMethod("GET", getWidgetIntegration);          // GET /{id}
+            widget.AdMethod("DELETE", deleteWidgetIntegration);    // DELETE /{id}
+```
+
+------
+
 Save, build, and deploy the app\.
+
+------
+#### [ TypeScript ]
 
 ```
 npm run build
 cdk deploy
 ```
+
+------
+#### [ Python ]
+
+```
+cdk deploy
+```
+
+------
+#### [ Java ]
+
+```
+mvn compile
+cdk deploy
+```
+
+**Note**  
+Instead of issuing `mvn compile`, you can instead press Control\-B in Eclipse\.
+
+------
+#### [ C\# ]
+
+```
+dotnet build src
+cdk deploy
+```
+
+**Note**  
+Instead of issuing `dotnet build`, you can instead press F6 in Visual Studio\.
+
+------
 
 We can now store, show, or delete an individual widget\. Use the following commands to list the widgets, create the widget **example**, list all of the widgets, show the contents of **example** \(it should show today's date\), delete **example**, and then show the list of widgets again\.
 
@@ -375,4 +912,12 @@ curl -X DELETE 'https://GUID.execute-api-REGION.amazonaws.com/prod/example'
 curl -X GET 'https://GUID.execute-api-REGION.amazonaws.com/prod'
 ```
 
-You can also use the API Gateway console to test these functions\. You have to set the **name** value to the name of a widget, such as **example**\.
+You can also use the API Gateway console to test these functions\. Set the **name** value to the name of a widget, such as **example**\.
+
+## Clean Up<a name="serverless_example_destroy"></a>
+
+To avoid unexpected AWS charges, destroy your AWS CDK stack after you're done with this exercise\.
+
+```
+cdk destroy
+```

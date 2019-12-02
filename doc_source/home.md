@@ -8,7 +8,7 @@ AWS CloudFormation enables you to:
 + Build highly reliable, highly scalable, cost\-effective applications in the cloud without worrying about creating and configuring the underlying AWS infrastructure\.
 + Use a template file to create and delete a collection of resources together as a single unit \(a stack\)\.
 
-Use the AWS CDK to define your cloud resources in a familiar programming language\. The AWS CDK supports TypeScript, JavaScript, and Python\. The AWS CDK also provides Developer Preview support for C\#/\.NET, and Java\.
+Use the AWS CDK to define your cloud resources in a familiar programming language\. The AWS CDK supports TypeScript, JavaScript, Python, Java, and C\#/\.Net\.
 
 Developers can use one of the supported programming languages to define reusable cloud components known as [Constructs](constructs.md)\. You compose these together into [Stacks](stacks.md) and [Apps](apps.md)\.
 
@@ -16,7 +16,10 @@ Developers can use one of the supported programming languages to define reusable
 
 ## Why Use the AWS CDK?<a name="why_use_cdk"></a>
 
-Let's look at the power of the AWS CDK\. Here is some TypeScript code in an AWS CDK project to create an AWS Fargate service \(this is the code we use in the [Creating an AWS Fargate Service Using the AWS CDK](ecs_example.md)\)\.
+Let's look at the power of the AWS CDK\. Here is some code in an AWS CDK project to create an AWS Fargate service \(this is the code we use in the [Creating an AWS Fargate Service Using the AWS CDK](ecs_example.md)\)\.
+
+------
+#### [ TypeScript ]
 
 ```
 export class MyEcsConstructStack extends core.Stack {
@@ -36,7 +39,7 @@ export class MyEcsConstructStack extends core.Stack {
       cluster: cluster, // Required
       cpu: 512, // Default is 256
       desiredCount: 6, // Default is 1
-      image: ecs.ContainerImage.fromRegistry("amazon/amazon-ecs-sample"), // Required
+      taskImageOptions: { image: ecs.ContainerImage.fromRegistry("amazon/amazon-ecs-sample") },
       memoryLimitMiB: 2048, // Default is 512
       publicLoadBalancer: true // Default is false
     });
@@ -44,7 +47,100 @@ export class MyEcsConstructStack extends core.Stack {
 }
 ```
 
-This produces an AWS CloudFormation [template of more than 500 lines](https://github.com/awsdocs/aws-cdk-guide/blob/master/doc_source/my_ecs_construct-stack.yaml); deploying the AWS CDK app produces more than 50 resources of the following types\.
+------
+#### [ Python ]
+
+```
+class MyEcsConstructStack(core.Stack):
+
+    def __init__(self, scope: core.Construct, id: str, **kwargs) -> None:
+        super().__init__(scope, id, **kwargs)
+
+        vpc = ec2.Vpc(self, "MyVpc", max_azs=3)     # default is all AZs in region
+
+        cluster = ecs.Cluster(self, "MyCluster", vpc=vpc)
+
+        ecs_patterns.ApplicationLoadBalancedFargateService(self, "MyFargateService",
+            cluster=cluster,            # Required
+            cpu=512,                    # Default is 256
+            desired_count=6,            # Default is 1
+            task_image_options=ecs_patterns.ApplicationLoadBalancedTaskImageOptions(
+                image=ecs.ContainerImage.from_registry("amazon/amazon-ecs-sample")),
+            memory_limit_mib=2048,      # Default is 512
+            public_load_balancer=True)  # Default is False
+```
+
+------
+#### [ Java ]
+
+```
+public class MyEcsConstructStack extends Stack {
+
+    public MyEcsConstructStack(final Construct scope, final String id) {
+        this(scope, id, null);
+    }
+
+    public MyEcsConstructStack(final Construct scope, final String id,
+            StackProps props) {
+        super(scope, id, props);
+
+        Vpc vpc = Vpc.Builder.create(this, "MyVpc").maxAzs(3).build();
+
+        Cluster cluster = Cluster.Builder.create(this, "MyCluster")
+                .vpc(vpc).build();
+
+        ApplicationLoadBalancedFargateService.Builder.create(this, "MyFargateService")
+                .cluster(cluster)
+                .cpu(512)
+                .desiredCount(6)
+                .taskImageOptions(
+                       ApplicationLoadBalancedTaskImageOptions.builder()
+                               .image(ContainerImage
+                                       .fromRegistry("amazon/amazon-ecs-sample"))
+                               .build()).memoryLimitMiB(2048)
+                .publicLoadBalancer(true).build();
+    }
+}
+```
+
+------
+#### [ C\# ]
+
+```
+public class MyEcsConstructStack : Stack
+{
+    public MyEcsConstructStack(Construct scope, string id, IStackProps props) : base(scope, id, props)
+    {
+        var vpc = new Vpc(this, "MyVpc", new VpcProps
+        {
+            MaxAzs = 3
+        });
+
+        var cluster = new Cluster(this, "MyCluster", new ClusterProps
+        {
+            Vpc = vpc
+        });
+
+        new ApplicationLoadBalancedFargateService(this, "MyFargateService", 
+            new ApplicationLoadBalancedFargateServiceProps
+        {
+            Cluster = cluster,
+            Cpu = 512,
+            DesiredCount = 6,
+            TaskImageOptions = new ApplicationLoadBalancedTaskImageOptions
+            {
+                Image = ContainerImage.FromRegistry("amazon/amazon-ecs-sample")
+            },
+            MemoryLimitMiB = 2048,
+            PublicLoadBalancer = true,
+        });
+    }
+}
+```
+
+------
+
+This class produces an AWS CloudFormation [template of more than 500 lines](https://github.com/awsdocs/aws-cdk-guide/blob/master/doc_source/my_ecs_construct-stack.yaml); deploying the AWS CDK app produces more than 50 resources of the following types\.
 +  [AWS::EC2::EIP](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-ec2-eip.html) 
 +  [AWS::EC2::InternetGateway](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-ec2-internetgateway.html) 
 +  [AWS::EC2::NatGateway](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-ec2-natgateway.html) 

@@ -30,10 +30,13 @@ Gets the hosted zones in your account\.
 Gets the supported Availability Zones\.
 
 [StringParameter\.valueFromLookup](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-ssm.StringParameter.html#static-value-wbr-from-wbr-lookupscope-parametername)  
-Gets a value from the current Region's AWS Systems Manager Parameter Store\.
+Gets a value from the current Region's Amazon EC2 Systems Manager Parameter Store\.
 
 [Vpc\.fromLookup](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-ec2.Vpc.html#static-from-wbr-lookupscope-id-options)  
-Gets the existing VPCs in your accounts\.
+Gets the existing Amazon Virtual Private Clouds in your accounts\.
+
+[LookupMachineImage](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-ec2.LookupMachineImage.html)  
+Looks up a machine image for use with a NAT instance in an Amazon Virtual Private Cloud\.
 
 If a given context information isn't available, the AWS CDK app notifies the AWS CDK CLI that the context information is missing\. The CLI then queries the current AWS account for the information, stores the resulting context information in the `cdk.context.json` file, and executes the AWS CDK app again with the context values\.
 
@@ -89,10 +92,14 @@ $ cdk context --clear
 
 Below is an example of importing an existing Amazon VPC using AWS CDK context\.
 
+------
+#### [ TypeScript ]
+
 ```
 import cdk = require('@aws-cdk/core');
 import ec2 = require('@aws-cdk/aws-ec2');
-export class ExistsvpcStack extends cdk.Stack {
+
+export class ExistsVpcStack extends cdk.Stack {
 
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
   
@@ -111,6 +118,92 @@ export class ExistsvpcStack extends cdk.Stack {
   }
 }
 ```
+
+------
+#### [ Python ]
+
+```
+import aws_cdk.core as cdk
+import aws_cdk.aws_ec2 as ec2
+
+class ExistsVpcStack(cdk.Stack):
+
+    def __init__(scope: cdk.Construct, id: str, **kwargs):
+  
+        super().__init__(scope, id, **kwargs)
+    
+        vpcid = self.node.try_get_context("vpcid");
+        vpc = ec2.Vpc.from_lookup(this, "VPC", vpc_id=vpcid)
+    
+        pubsubnets = vpc.select_subnets(subnetType=ec2.SubnetType.PUBLIC);
+    
+        cdk.CfnOutput(this, "publicsubnets",
+            value=pubsubnets.subnet_ids.to_string())
+```
+
+------
+#### [ Java ]
+
+```
+import software.amazon.awscdk.core.CfnOutput;
+
+import software.amazon.awscdk.services.ec2.Vpc;
+import software.amazon.awscdk.services.ec2.VpcLookupOptions;
+import software.amazon.awscdk.services.ec2.SelectedSubnets;
+import software.amazon.awscdk.services.ec2.SubnetSelection;
+import software.amazon.awscdk.services.ec2.SubnetType;
+
+public class ExistsVpcStack extends Stack {
+    public ExistsVpcStack(App context, String id) {
+        this(context, id, null);
+    }
+    
+    public ExistsVpcStack(App context, String id, StackProps props) {
+        super(context, id, props);
+        
+        String vpcId = (String)this.getNode().tryGetContext("vpcid");
+        Vpc vpc = (Vpc)Vpc.fromLookup(this, "VPC", VpcLookupOptions.builder()
+                .vpcId(vpcId).build());
+
+        SelectedSubnets pubSubNets = vpc.selectSubnets(SubnetSelection.builder()
+                .subnetType(SubnetType.PUBLIC).build());
+        
+        CfnOutput.Builder.create(this, "publicsubnets")
+                .value(pubSubNets.getSubnetIds().toString()).build();                
+    }
+}
+```
+
+------
+#### [ C\# ]
+
+```
+using Amazon.CDK;
+using Amazon.CDK.AWS.EC2;
+
+class ExistsVpcStack : Stack
+{
+    public ExistsVpcStack(App scope, string id, StackProps props) : base(scope, id, props)
+    {
+        var vpcId = (string)this.Node.TryGetContext("vpcid");
+        var vpc = Vpc.FromLookup(this, "VPC", new VpcLookupOptions
+        {
+            VpcId = vpcId
+        });
+
+        SelectedSubnets pubSubNets = vpc.SelectSubnets([new SubnetSelection
+        {
+            SubnetType = SubnetType.PUBLIC
+        }]);
+
+        new CfnOutput(this, "publicsubnets", new CfnOutputProps {
+            Value = pubSubNets.SubnetIds.ToString()
+        });
+    }
+}
+```
+
+------
 
 You can use cdk diff to see the effects of passing in a context value on the command line:
 

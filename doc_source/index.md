@@ -47,6 +47,7 @@ Amazon's trademarks and trade dress may not be used in
    + [Set a CloudWatch Alarm](how_to_set_cw_alarm.md)
    + [Get a Value from a Context Variable](get_context_var.md)
 + [AWS CDK Tools](tools.md)
-+ [Troubleshooting the AWS CDK](troubleshooting.md)
++ [Troubleshooting Common AWS CDK Issues](troubleshooting.md)
++ [Testing Constructs](testing.md)
 + [OpenPGP Keys for the AWS CDK and JSII](pgp-keys.md)
 + [Document History for the AWS CDK Developer Guide](doc-history.md)

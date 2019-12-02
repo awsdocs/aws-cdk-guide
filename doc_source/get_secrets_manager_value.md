@@ -2,6 +2,9 @@
 
 To use values from AWS Secrets Manager in your CDK app, use the [fromSecretAttributes](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/aws-secretsmanager/secret.html#aws_secretsmanager_Secret_fromSecretAttributes) method\. It represents a value that is retrieved from Secrets Manager and used at AWS CloudFormation deployment time\.
 
+------
+#### [ TypeScript ]
+
 ```
 import sm = require("@aws-cdk/aws-secretsmanager");
 
@@ -13,9 +16,70 @@ export class SecretsManagerStack extends core.Stack {
       secretArn:
         "arn:aws:secretsmanager:<region>:<account-id-number>:secret:<secret-name>-<random-6-characters>"
       // If the secret is encrypted using a KMS-hosted CMK, either import or reference that key:
-      // Key,
+      // encryptionKey: ...
     });
 ```
+
+------
+#### [ Python ]
+
+```
+import aws_cdk.aws_secretsmanager as sm
+
+class SecretsManagerStack(core.Stack):
+    def __init__(self, scope: core.App, id: str, **kwargs):
+      super().__init__(scope, name, **kwargs)
+
+      secret = sm.Secret.from_secret_attributes(this, "ImportedSecret",
+          secret_arn="arn:aws:secretsmanager:<region>:<account-id-number>:secret:<secret-name>-<random-6-characters>",
+          # If the secret is encrypted using a KMS-hosted CMK, either import or reference that key:
+          # encryption_key=....
+      )
+```
+
+------
+#### [ Java ]
+
+```
+import software.amazon.awscdk.services.secretsmanager.Secret;
+import software.amazon.awscdk.services.secretsmanager.SecretAttributes;
+
+public class SecretsManagerStack extends Stack {
+    public SecretsManagerStack(App scope, String id) {
+        this(scope, id, null);
+    }
+    
+    public SecretsManagerStack(App scope, String id, StackProps props) {
+        super(scope, id, props);
+        
+        Secret secret = (Secret)Secret.fromSecretAttributes(this, "ImportedSecret", SecretAttributes.builder()
+        .secretArn("arn:aws:secretsmanager:<region>:<account-id-number>:secret:<secret-name>-<random-6-characters>")
+        // If the secret is encrypted using a KMS-hosted CMK, either import or reference that key:
+        // .encryptionKey(...)
+        .build());
+    }
+}
+```
+
+------
+#### [ C\# ]
+
+```
+using Amazon.CDK.AWS.SecretsManager;
+
+public class SecretsManagerStack : Stack
+{
+    public SecretsManagerStack(App scope, string id, StackProps props) : base(scope, id, props) {
+
+        var secret = Secret.FromSecretAttributes(this, "ImportedSecret", new SecretAttributes {
+            SecretArn = "arn:aws:secretsmanager:<region>:<account-id-number>:secret:<secret-name>-<random-6-characters>"
+            // If the secret is encrypted using a KMS-hosted CMK, either import or reference that key:
+            // encryptionKey = ...,
+        });
+    }
+```
+
+------
 
 Use the [create\-secret](https://docs.aws.amazon.com/cli/latest/reference/secretsmanager/create-secret.html) CLI command to create a secret from the command\-line, such as when testing:
 

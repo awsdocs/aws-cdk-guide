@@ -1,6 +1,6 @@
 # AWS CDK in Other Languages<a name="multiple_languages"></a>
 
-In some cases the example code in the AWS CDK documentation is available only in TypeScript\. This topic describes how to read TypeScript code and translate it into Python\. This is currently the only other [stable](reference.md#aws_construct_lib_versioning_binding) programming language that the AWS CDK supports \(the AWS CDK supports a developer preview version of Java and C\#/\.NET\)\. See [Hello World Tutorial](getting_started.md#hello_world_tutorial) for an example of creating an AWS CDK app in a supported language\.
+In some cases the example code in the AWS CDK documentation is available only in TypeScript\. This topic describes how to read TypeScript code and translate it into other languages\. See [Hello World Tutorial](getting_started.md#hello_world_tutorial) for an example of creating an AWS CDK app in a supported language\.
 
 ## Importing a Module<a name="multiple_languages_import"></a>
 
@@ -27,7 +27,7 @@ The following table shows how you can translate TypeScript class instantiations 
 
 ## Methods<a name="multiple_languages_methods"></a>
 
-Methods names and argument names in TypeScript are `camelCased`, whereas in Python they are `snake_cased`\. Props objects at the end of an argument list in TypeScript are translated into keyword\-only arguments in Python, and their names become `snake_case`\.
+Methods and argument names in TypeScript are `camelCased`, whereas in Python they are `snake_cased`\. Props objects at the end of an argument list in TypeScript are translated into keyword\-only arguments in Python, and their names become `snake_case`\.
 
 The following table shows how you can translate TypeScript methods to Python methods\.
 

@@ -31,18 +31,90 @@ See [ECS](https://docs.aws.amazon.com/cdk/api/latest/docs/aws-ecs-readme.html) f
 
 Let's start by creating a directory to hold the AWS CDK code, and then creating a AWS CDK app in that directory\.
 
+------
+#### [ TypeScript ]
+
 ```
 mkdir MyEcsConstruct
 cd MyEcsConstruct
 cdk init --language typescript
 ```
 
-Build the app and confirm that it creates an empty stack\.
+------
+#### [ Python ]
+
+```
+mkdir MyEcsConstruct
+cd MyEcsConstruct
+cdk init --language python
+source .env/bin/activate || "on Windows, use: .env\Scripts\activate.bat"
+pip install -r requirements.txt
+```
+
+------
+#### [ Java ]
+
+```
+mkdir MyEcsConstruct
+cd MyEcsConstruct
+cdk init --language java
+```
+
+You may now import the Maven project into your IDE\.
+
+------
+#### [ C\# ]
+
+```
+mkdir MyEcsConstruct
+cd MyEcsConstruct
+cdk init --language csharp
+```
+
+You may now open `src/MyEcsConstruct.sln` in Visual Studio\./
+
+------
+
+Build and run the app and confirm that it creates an empty stack\.
+
+------
+#### [ TypeScript ]
 
 ```
 npm run build
 cdk synth
 ```
+
+------
+#### [ Python ]
+
+```
+cdk synth
+```
+
+------
+#### [ Java ]
+
+```
+mvn compile
+cdk synth
+```
+
+**Note**  
+Instead of issuing `mvn compile`, you can instead press Control\-B in Eclipse\.
+
+------
+#### [ C\# ]
+
+```
+dotnet build src
+cdk synth
+```
+
+**Note**  
+Instead of issuing `dotnet build`, you can instead press F6 in Visual Studio\.
+
+------
 
 You should see a stack like the following, where *CDK\-VERSION* is the version of the CDK and *NODE\-VERSION* is the version of Node\.js\. \(Your output may differ slightly from what's shown here\.\)
 
@@ -56,11 +128,49 @@ Resources:
 
 ## Add the Amazon EC2 and Amazon ECS Packages<a name="ecs_example_add_packages"></a>
 
-Install support for Amazon EC2 and Amazon ECS\.
+Install the AWS construct library modules for Amazon EC2 and Amazon ECS\.
+
+------
+#### [ TypeScript ]
 
 ```
 npm install @aws-cdk/aws-ec2 @aws-cdk/aws-ecs @aws-cdk/aws-ecs-patterns
 ```
+
+------
+#### [ Python ]
+
+```
+pip install aws_cdk.aws_ec2 aws_cdk.aws_ecs aws_cdk.aws_ecs_patterns
+```
+
+------
+#### [ Java ]
+
+Using your IDE's Maven integration \(e\.g\., in Eclipse, right\-click your project and choose **Maven** > **Add Dependency**\), install the following artifacts from the group `software.amazon.awscdk`:
+
+```
+ec2
+ecs
+ecs-patterns
+```
+
+------
+#### [ C\# ]
+
+Choose **Tools** > **NuGet Package Manager** > **Manage NuGet Packages for Solution** in Visual Studio and add the following packages\.
+
+```
+Amazon.CDK.AWS.EC2
+Amazon.CDK.AWS.ECS
+AMazon.CDK.AWS.ECS.Patterns
+```
+
+**Tip**  
+If you don't see these packages in the **Browse** tab of the **Manage Packages for Solution** page, make sure the **Include prerelease** checkbox is ticked\.  
+For a better experience, also add the `Amazon.Jsii.Analyzers` package to provide compile\-time checks for missing required properties\.
+
+------
 
 ## Create a Fargate Service<a name="ecs_example_create_fargate_service"></a>
 
@@ -68,9 +178,14 @@ There are two different ways to run your container tasks with Amazon ECS:
 + Use the `Fargate` launch type, where Amazon ECS manages the physical machines that your containers are running on for you\.
 + Use the `EC2` launch type, where you do the managing, such as specifying automatic scaling\.
 
-The following tutorial creates a Fargate service running on an ECS cluster fronted by an internet\-facing Application load Balancer\.
+For this example, we'll create a Fargate service running on an ECS cluster fronted by an internet\-facing Application Load Balancer\.
 
-Add the following `import` statements to `lib/my_ecs_construct-stack.ts`\.
+Add the following AWS Construct Library module imports to the indicated file\.
+
+------
+#### [ TypeScript ]
+
+File: `lib/my_ecs_construct-stack.ts`
 
 ```
 import ec2 = require("@aws-cdk/aws-ec2");
@@ -78,7 +193,44 @@ import ecs = require("@aws-cdk/aws-ecs");
 import ecs_patterns = require("@aws-cdk/aws-ecs-patterns");
 ```
 
+------
+#### [ Python ]
+
+File: `my_ecs_construct/my_ecs_construct_stack.py`
+
+```
+from aws_cdk import (core, aws_ec2 as ec2, aws_ecs as ecs,
+                     aws_ecs_patterns as ecs_patterns)
+```
+
+------
+#### [ Java ]
+
+File: `src/main/java/com/myorg/MyEcsConstructStack.java`
+
+```
+import software.amazon.awscdk.services.ec2.*;
+import software.amazon.awscdk.services.ecs.*;
+import software.amazon.awscdk.services.ecs.patterns.*;
+```
+
+------
+#### [ C\# ]
+
+File: `src/MyEcsConstruct/MyEcsConstructStack.cs`
+
+```
+using Amazon.CDK.AWS.EC2;
+using Amazon.CDK.AWS.ECS;
+using Amazon.CDK.AWS.ECS.Patterns;
+```
+
+------
+
 Replace the comment at the end of the constructor with the following code\.
+
+------
+#### [ TypeScript ]
 
 ```
     const vpc = new ec2.Vpc(this, "MyVpc", {
@@ -94,18 +246,127 @@ Replace the comment at the end of the constructor with the following code\.
       cluster: cluster, // Required
       cpu: 512, // Default is 256
       desiredCount: 6, // Default is 1
-      image: ecs.ContainerImage.fromRegistry("amazon/amazon-ecs-sample"), // Required
+      taskImageOptions: { image: ecs.ContainerImage.fromRegistry("amazon/amazon-ecs-sample") },
       memoryLimitMiB: 2048, // Default is 512
       publicLoadBalancer: true // Default is false
     });
 ```
 
+------
+#### [ Python ]
+
+```
+        vpc = ec2.Vpc(self, "MyVpc", max_azs=3)     # default is all AZs in region
+
+        cluster = ecs.Cluster(self, "MyCluster", vpc=vpc)
+
+        ecs_patterns.ApplicationLoadBalancedFargateService(self, "MyFargateService",
+            cluster=cluster,            # Required
+            cpu=512,                    # Default is 256
+            desired_count=6,            # Default is 1
+            task_image_options=ecs_patterns.ApplicationLoadBalancedTaskImageOptions(
+                image=ecs.ContainerImage.from_registry("amazon/amazon-ecs-sample")),
+            memory_limit_mib=2048,      # Default is 512
+            public_load_balancer=True)  # Default is False
+```
+
+------
+#### [ Java ]
+
+```
+        Vpc vpc = Vpc.Builder.create(this, "MyVpc")
+                            .maxAzs(3)  // Default is all AZs in region
+                            .build();
+
+        Cluster cluster = Cluster.Builder.create(this, "MyCluster")
+                            .vpc(vpc).build();
+
+        // Create a load-balanced Fargate service and make it public
+        ApplicationLoadBalancedFargateService.Builder.create(this, "MyFargateService")
+                    .cluster(cluster)           // Required
+                    .cpu(512)                   // Default is 256
+                     .desiredCount(6)            // Default is 1
+                     .taskImageOptions(
+                             ApplicationLoadBalancedTaskImageOptions.builder()
+                                     .image(ContainerImage.fromRegistry("amazon/amazon-ecs-sample"))
+                                     .build())
+                     .memoryLimitMiB(2048)       // Default is 512
+                     .publicLoadBalancer(true)   // Default is false
+                     .build();
+```
+
+------
+#### [ C\# ]
+
+```
+            var vpc = new Vpc(this, "MyVpc", new VpcProps
+            {
+                MaxAzs = 3 // Default is all AZs in region
+            });
+
+            var cluster = new Cluster(this, "MyCluster", new ClusterProps
+            {
+                Vpc = vpc
+            });
+
+            // Create a load-balanced Fargate service and make it public
+            new ApplicationLoadBalancedFargateService(this, "MyFargateService",
+                new ApplicationLoadBalancedFargateServiceProps
+                {
+                    Cluster = cluster,          // Required
+                    DesiredCount = 6,           // Default is 1
+                    TaskImageOptions = new ApplicationLoadBalancedTaskImageOptions
+                    {
+                        Image = ContainerImage.FromRegistry("amazon/amazon-ecs-sample")
+                    },
+                    MemoryLimitMiB = 2048,      // Default is 256
+                    PublicLoadBalancer = true    // Default is false
+                }
+            );
+```
+
+------
+
 Save it and make sure it builds and creates a stack\.
+
+------
+#### [ TypeScript ]
 
 ```
 npm run build
-cdk synth
+cdk deploy
 ```
+
+------
+#### [ Python ]
+
+```
+cdk deploy
+```
+
+------
+#### [ Java ]
+
+```
+mvn compile
+cdk deploy
+```
+
+**Note**  
+Instead of issuing `mvn compile`, you can instead press Control\-B in Eclipse\.
+
+------
+#### [ C\# ]
+
+```
+dotnet build src
+cdk deploy
+```
+
+**Note**  
+Instead of issuing `dotnet build`, you can instead press F6 in Visual Studio\.
+
+------
 
 The stack is hundreds of lines, so we don't show it here\. The stack should contain one default instance, a private subnet and a public subnet for the three Availability Zones, and a security group\.
 
@@ -118,3 +379,11 @@ cdk deploy
 AWS CloudFormation displays information about the dozens of steps that it takes as it deploys your app\.
 
 That's how easy it is to create a Fargate service to run a Docker image\.
+
+## Clean Up<a name="ecs_example_destroy"></a>
+
+To avoid unexpected AWS charges, destroy your AWS CDK stack after you're done with this exercise\.
+
+```
+cdk destroy
+```

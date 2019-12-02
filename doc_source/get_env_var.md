@@ -2,6 +2,56 @@
 
 To get the value of an environment variable, use code like the following\. This code gets the value of the environment variable `MYBUCKET`\.
 
+------
+#### [ TypeScript ]
+
 ```
+// Sets bucket_name to undefined if environment variable not set
 const bucket_name = process.env.MYBUCKET;
+
+// Sets bucket_name to a default if env var doesn't exist
+const bucket_name = process.env.MYBUCKET || "DefaultName";
 ```
+
+------
+#### [ Python ]
+
+```
+import os
+
+# Throws error if environment variable doesn't exist
+bucket_name = os.env["MYBUCKET"]
+        
+# Sets bucket_name to None if environment variable doesn't exist
+bucket_name = os.env.get("MYBUCKET")
+
+# Sets bucket_name to a default if env var doesn't exist
+bucket_name = os.env.get("MYBUCKET", "DefaultName")
+```
+
+------
+#### [ Java ]
+
+```
+// Sets bucketName to null if environment variable doesn't exist
+String bucketName = System.getenv("MYBUCKET");
+
+// Sets bucketName to a defalut if env var doesn't exist
+String bucketName = System.getenv("MYBUCKET");
+if (bucketName == null) bucketName = "DefaultName";
+```
+
+------
+#### [ C\# ]
+
+```
+using System;
+
+// Sets bucket name to null if environment variable doesn't exist
+string bucketName = Environment.GetEnvironmentVariable("MYBUCKET");
+
+// Sets bucket_name to a default if env var doesn't exist
+string bucketName = Environment.GetEnvironmentVariable("MYBUCKET") ?? "DefaultName";
+```
+
+------

@@ -5,14 +5,16 @@ This topic describes how to install and configure the AWS CDK and create your fi
 **Note**  
 Want to dig deeper? Try the [CDK Workshop](https://cdkworkshop.com/) for a more in\-depth tour of a real\-world project\.
 
+**Tip**  
+The [AWS Toolkit for Visual Studio Code](https://aws.amazon.com/visualstudiocode/) is an open source plug\-in for Visual Studio Code that makes it easier to create, debug, and deploy applications on AWS\. The toolkit provides an integrated experience for developing AWS CDK applications, including the AWS CDK Explorer feature to list your AWS CDK projects and browse the various components of the CDK application\. [Install the AWS Toolkit](https://docs.aws.amazon.com/toolkit-for-vscode/latest/userguide/setup-toolkit.html) and learn more about [using the AWS CDK Explorer](https://docs.aws.amazon.com/toolkit-for-vscode/latest/userguide/cdk-explorer.html)\.
+
 ## Prerequisites<a name="getting_started_prerequisites"></a>
 
-**AWS CDK command line tools**  
-+ [Node\.js \(>= 10\.3\.0\)](https://nodejs.org/en/download)
-+ You must specify both your credentials and an AWS Region to use the AWS CDK CLI, as described in [Specifying Your Credentials and Region](#getting_started_credentials)\.
+All CDK developers need to install [Node\.js](https://nodejs.org/en/download) \(>= 10\.3\.0\), even those working in languages other than TypeScript or JavaScript\. The AWS CDK Toolkit \(`cdk` command\-line tool\) and the AWS Construct Library are developed in TypeScript and run on Node\.js\. The bindings for other supported languages use this backend and toolset\.
 
-**Note**  
-Why do you need Node\.js when you're a Python, C\#, or Java developer? The AWS CDK is developed in TypeScript and transpiled to JavaScript\. Bindings for the other supported languages make use of the AWS CDK engine running on Node\.js, as does the `cdk` command\-line tool\. 
+You must provide your credentials and an AWS Region to use the AWS CDK CLI, as described in [Specifying Your Credentials and Region](#getting_started_credentials)\.
+
+Other prerequisites depend on your development language, as follows\.
 
 ------
 #### [ TypeScript ]
@@ -20,26 +22,24 @@ Why do you need Node\.js when you're a Python, C\#, or Java developer? The AWS C
 TypeScript >= 2\.7
 
 ------
-#### [ JavaScript ]
-
-none
-
-------
 #### [ Python ]
 + Python >= 3\.6
 
 ------
 #### [ Java ]
-+ Maven 3\.5\.4 and Java 8
++ Maven 3\.5\.4 or later and Java 8
++ A Java IDE is preferred \(the examples in this guide may refer to Eclipse\)\. `cdk init` creates a Maven project; most IDEs can import this style of project\. Some IDEs may need to be configured to use Java 8 \(also known as 1\.8\)\.
 + Set the `JAVA_HOME` environment variable to the path to where you have installed the JDK on your machine
 
 ------
 #### [ C\# ]
 
-\.NET standard 2\.0 compatible implementation:
-+ \.NET Core >= 2\.0
-+ \.NET Framework >= 4\.6\.1
+\.NET standard 2\.1 compatible implementation:
++ \.NET Core >= 3\.0 \(3\.1 upon its release\)
++ \.NET Framework >= 4\.6\.1, or
 + Mono >= 5\.4
+
+Visual Studio 2019 \(any edition\) recommended\.
 
 ------
 
@@ -51,7 +51,7 @@ Install the AWS CDK using the following command\.
 npm install -g aws-cdk
 ```
 
-Run the following command to see the version number of the AWS CDK\.
+Run the following command to verify correct installation and print the version number of the AWS CDK\.
 
 ```
 cdk --version
@@ -63,13 +63,6 @@ If you get an error message that your language framework is out of date, use one
 
 ------
 #### [ TypeScript ]
-
-```
-npx npm-check-updates -u
-```
-
-------
-#### [ JavaScript ]
 
 ```
 npx npm-check-updates -u
@@ -98,11 +91,16 @@ mvn versions:use-latest-versions
 nuget update
 ```
 
+Or **Tools** > **NuGet Package Manager** > **Manage NuGet Packages for Solution** in Visual Studio
+
 ------
 
 ## Using the env Property to Specify Account and Region<a name="getting_started_credentials_prop"></a>
 
 You can use the `env` property on a stack to specify the account and region used when deploying a stack, as shown in the following example, where *REGION* is the region and *ACCOUNT* is the account ID\.
+
+------
+#### [ TypeScript ]
 
 ```
 new MyStack(app, 'MyStack', {
@@ -113,19 +111,130 @@ new MyStack(app, 'MyStack', {
 });
 ```
 
+------
+#### [ Python ]
+
+```
+MyStack(app, "MyStack", env=core.Environment(region="REGION",account="ACCOUNT")
+```
+
+------
+#### [ Java ]
+
+```
+new MyStack(app, "MyStack", StackProps.builder().env(
+        Environment.builder()
+            .account("ACCOUNT")
+            .region("REGION")
+            .build()).build());
+```
+
+------
+#### [ C\# ]
+
+```
+new MyStack(app, "MyStack", new StackProps
+{
+    Env = new Amazon.CDK.Environment
+    {
+        Account = "ACCOUNT",
+        Region = "REGION"
+    }
+});
+```
+
+------
+
 **Note**  
 The AWS CDK team recommends that you explicitly set your account and region using the `env` property on a stack when you deploy stacks to production\.
 
 Since you can create any number of stacks in any of your accounts in any region that supports all of the stack's resources, the AWS CDK team recommends that you create your production stacks in one AWS CDK app, and deploy them as necessary\. For example, if you own three accounts, with account IDs *ONE*, *TWO*, and *THREE* and want to be able to deploy each one in **us\-west\-2** and **us\-east\-1**, you might declare them as: 
 
+------
+#### [ TypeScript ]
+
 ```
 new MyStack(app, 'Stack-One-W', { env: { account: 'ONE', region: 'us-west-2' }});
-new MyStack(app, 'Stack-One-E', { env: { account: 'ONE', region: 'us-east-1' }});
-new MyStack(app, 'Stack-Two-W', { env: { account: 'TWO', region: 'us-west-2' }});
-new MyStack(app, 'Stack-Two-E', { env: { account: 'TWO', region: 'us-east-1' }});
+new MyStack(app, 'Stack-One-E',   { env: { account: 'ONE',   region: 'us-east-1' }});
+new MyStack(app, 'Stack-Two-W',   { env: { account: 'TWO',   region: 'us-west-2' }});
+new MyStack(app, 'Stack-Two-E',   { env: { account: 'TWO',   region: 'us-east-1' }});
 new MyStack(app, 'Stack-Three-W', { env: { account: 'THREE', region: 'us-west-2' }});
 new MyStack(app, 'Stack-Three-E', { env: { account: 'THREE', region: 'us-east-1' }});
 ```
+
+------
+#### [ Python ]
+
+```
+MyStack(app, "Stack-One-W", env=core.Environment{account="ONE", region="us-west-2"))
+MyStack(app, "Stack-One-E",   env=core.Environment(account="ONE",   region="us-east-1"))
+MyStack(app, "Stack-Two-W",   env=core.Environment(account="TWO",   region="us-west-2"))
+MyStack(app, "Stack-Two-E",   env=core.Environment(account="TWO",   region="us-east-1"))
+MyStack(app, "Stack-Three-W", env=core.Environment(account="THREE", region="us-west-2"))
+MyStack(app, "Stack-Three-E", env=core.Environment(account="THREE", region="us-east-1"))
+```
+
+------
+#### [ Java ]
+
+```
+public class MyApp {
+	
+    private static App app;
+
+    // Helper method to declare MyStacks in specific accounts/regions
+    private static MyStack makeMyStack(final String name, final String account,
+            final String region) {
+
+        return new MyStack(app, name, StackProps.builder()
+                .env(Environment.builder()
+                    .account(account)
+                    .region(region)
+                    .build())
+                .build());
+    }
+
+    public static void main(final String argv[]) {
+        app = new App();
+
+        makeMyStack("Stack-One-W", "ONE", "us-west-2");
+        makeMyStack("Stack-One-E", "ONE", "us-east-1");
+        makeMyStack("Stack-Two-W", "TWO", "us-west-2");
+        makeMyStack("Stack-Two-E", "TWO", "us-east-1");
+        makeMyStack("Stack-Three-W", "THREE", "us-west-2");
+        makeMyStack("Stack-Three-E", "THREE", "us-east-1");
+
+        app.synth();
+    }
+}
+```
+
+------
+#### [ C\# ]
+
+```
+// Helper func to declare MyStacks in specific accounts/regions
+Stack makeMyStack(string name, string account, string region)
+{
+    return new MyStack(app, name, new StackProps
+    {
+        Env = new Amazon.CDK.Environment
+        {
+            Account = account,
+            Region = region
+        }
+    });
+}
+
+makeMyStack("Stack-One-W",   account: "ONE",   region: "us-west-2");
+makeMyStack("Stack-One-E",   account: "ONE",   region: "us-east-1");
+makeMyStack("Stack-Two-W",   account: "TWO",   region: "us-west-2");
+makeMyStack("Stack-Two-E",   account: "TWO",   region: "us-east-1");
+makeMyStack("Stack-Three-W", account: "THREE", region: "us-west-2");
+makeMyStack("Stack-Three-E", account: "THREE", region: "us-east-1");
+```
+
+------
 
 And deploy the stack for account *TWO* in **us\-east\-1** with:
 
@@ -240,7 +349,10 @@ Where:
 
 The following table describes the templates available with the supported languages\.
 
-[\[See the AWS documentation website for more details\]](http://docs.aws.amazon.com/cdk/latest/guide/getting_started.html)
+|  |  | 
+| --- |--- |
+| app \(default\) |  Creates an empty AWS CDK app\.  | 
+| sample\-app |  Creates an AWS CDK app with a stack containing an Amazon SQS queue, an Amazon SNS topic, and an IAM policy document that allows the topic to send messages to the queue\.  | 
 
 For Hello World, you can just use the default template\.
 
@@ -249,13 +361,6 @@ For Hello World, you can just use the default template\.
 
 ```
 cdk init --language typescript
-```
-
-------
-#### [ JavaScript ]
-
-```
-cdk init --language javascript
 ```
 
 ------
@@ -270,7 +375,6 @@ Once the init command finishes, your prompt should show **\(\.env\)**, indicatin
 On Linux/MacOS:
 
 ```
-python3 -m venv .env
 source .env/bin/activate
 ```
 
@@ -299,35 +403,12 @@ HelloCdkStack(app, "HelloCdkStack")
 cdk init --language java
 ```
 
-Once the init command finishes, we need to modify the template's output\.
-+ Open `src/main/java/com/myorg/HelloApp.java`\.
-+ Change the two stacks to one:
-
-  ```
-  new HelloStack(app, "HelloCdkStack");
-  ```
-
 ------
 #### [ C\# ]
 
 ```
 cdk init --language csharp
 ```
-
-Once the init command finishes, we need to modify the template's output\.
-+ Open `src/HelloCdk/Program.cs`\.
-+ Change the two stacks to one:
-
-  ```
-  new HelloStack(app, "HelloCdkStack", new StackProps());
-  ```
-+ Open `src/HelloCdk/HelloStack.cs`\.
-+ Delete all of the using statements except the first\.
-
-  ```
-  using Amazon.CDK;
-  ```
-+ Delete everything from the constructor\.
 
 ------
 
@@ -343,11 +424,6 @@ npm run build
 ```
 
 ------
-#### [ JavaScript ]
-
-Nothing to compile\.
-
-------
 #### [ Python ]
 
 Nothing to compile\.
@@ -359,21 +435,21 @@ Nothing to compile\.
 mvn compile
 ```
 
+or press Control\-B in Eclipse
+
+**Tip**  
+You can suppress the **\[INFO\]** messages in the build log by adding the **\-q** option to your `mvn` commands\. \(Don"t forget the one in `cdk.json`\.\)
+
 ------
-#### [ C♯ ]
+#### [ C\# ]
 
 ```
 dotnet build src
 ```
 
+or press F6 in Visual Studio
+
 ------
-
-**Note**  
-If you are using Java and get annoyed by the **\[INFO\]** log messages, you can suppress them by including the **\-q** option to your **mvn** commands\. This includes changing `cdk.json to:`  
-
-```
-"app": "mvn -q exec:java"
-```
 
 ### Listing the Stacks in the App<a name="hello_world_tutorial_list_stacks"></a>
 
@@ -397,13 +473,6 @@ Install the `@aws-cdk/aws-s3` package\.
 
 ------
 #### [ TypeScript ]
-
-```
-npm install @aws-cdk/aws-s3
-```
-
-------
-#### [ JavaScript ]
 
 ```
 npm install @aws-cdk/aws-s3
@@ -440,6 +509,8 @@ Run the following command in the `src/HelloCdk` directory\.
 dotnet add package Amazon.CDK.AWS.S3
 ```
 
+Or **Tools** > **NuGet Package Manager** > **Manage NuGet Packages for Solution** in Visual Studio, then locate and install the `Amazon.CDK.AWS.S3` package
+
 ------
 
 Next, define an Amazon S3 bucket in the stack\. Amazon S3 buckets are represented by the [Bucket](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/aws-s3/bucket.html) class\.
@@ -462,28 +533,6 @@ export class HelloCdkStack extends core.Stack {
     });
   }
 }
-```
-
-------
-#### [ JavaScript ]
-
-In `lib/hello-cdk-stack.js`:
-
-```
-const cdk = require('@aws-cdk/core');
-const s3 = require('@aws-cdk/aws-s3');
-
-class HelloCdkStack extends cdk.Stack {
-    constructor(scope, id, props) {
-        super(scope, id, props);
-
-        new s3.Bucket(this, 'MyFirstBucket', {
-            versioned: true
-        });
-    }
-}
-
-module.exports = { HelloCdkStack }
 ```
 
 ------
@@ -514,23 +563,21 @@ In `src/main/java/com/myorg/HelloStack.java`:
 ```
 package com.myorg;
 
-import software.amazon.awscdk.Construct;
-import software.amazon.awscdk.Stack;
-import software.amazon.awscdk.StackProps;
+import software.amazon.awscdk.core.Construct;
+import software.amazon.awscdk.core.Stack;
+import software.amazon.awscdk.core.StackProps;
 import software.amazon.awscdk.services.s3.Bucket;
-import software.amazon.awscdk.services.s3.BucketProps;
 
 public class HelloStack extends Stack {
-    public HelloStack(final Construct parent, final String id) {
-        this(parent, id, null);
+    public HelloStack(final Construct scope, final String id) {
+        this(scope, id, null);
     }
 
-    public HelloStack(final Construct parent, final String id, final StackProps props) {
-        super(parent, id, props);
+    public HelloStack(final Construct scope, final String id, final StackProps props) {
+        super(scope, id, props);
 
-        new Bucket(this, "MyFirstBucket", BucketProps.builder()
-            .versioned(true)
-            .build());
+        Bucket.Builder.create(this, "MyFirstBucket")
+            .versioned(true).build();
     }
 }
 ```
@@ -548,7 +595,7 @@ namespace HelloCdk
 {
     public class HelloStack : Stack
     {
-        public HelloStack(Construct parent, string id, IStackProps props) : base(parent, id, props)
+        public HelloStack(Construct scope, string id, IStackProps props) : base(scope, id, props)
         {
             new Bucket(this, "MyFirstBucket", new BucketProps
             {
@@ -576,11 +623,6 @@ npm run build
 ```
 
 ------
-#### [ JavaScript ]
-
-Nothing to compile\.
-
-------
 #### [ Python ]
 
 Nothing to compile\.
@@ -592,18 +634,25 @@ Nothing to compile\.
 mvn compile
 ```
 
+or press Control\-B in Eclipse
+
+**Tip**  
+You can suppress the **\[INFO\]** messages in the build log by adding the **\-q** option to your `mvn` commands\. \(Don"t forget the one in `cdk.json`\.\)
+
 ------
-#### [ C♯ ]
+#### [ C\# ]
 
 ```
 dotnet build src
 ```
 
+or press F6 in Visual Studio
+
 ------
 
 ### Synthesizing an AWS CloudFormation Template<a name="hello_world_tutorial_synth_template"></a>
 
-Synthesize an AWS CloudFormation template for the app, as follows\. If you get an error like "\-\-app is required\.\.\.", it's because you are running the command from within the `hello_cdk` sub\-directory\. Navigate to the parent directory and try again\.
+Synthesize an AWS CloudFormation template for the app, as follows\. If you get an error like "\-\-app is required\.\.\.", it's because you are running the command from a subirectory of your project directory\. Navigate to the project directory and try again\.
 
 ```
 cdk synth
@@ -661,18 +710,6 @@ new s3.Bucket(this, 'MyFirstBucket', {
 ```
 
 ------
-#### [ JavaScript ]
-
-Update `lib/hello-cdk-stack.js`\.
-
-```
-new s3.Bucket(this, 'MyFirstBucket', {
-    versioned: true,
-    encryption: s3.BucketEncryption.KMS_MANAGED
-});
-```
-
-------
 #### [ Python ]
 
 ```
@@ -692,10 +729,10 @@ import software.amazon.awscdk.services.s3.BucketEncryption;
 ```
 
 ```
-new Bucket(this, "MyFirstBucket", BucketProps.builder()
-    .versioned(true)
-    .encrypted(BucketEncryption.KMS_MANAGED)
-    .build());
+Bucket.Builder.create(this, "MyFirstBucket")
+        .versioned(true)
+        .encryption(BucketEncryption.KMS_MANAGED)
+        .build();
 ```
 
 ------
@@ -723,11 +760,6 @@ npm run build
 ```
 
 ------
-#### [ JavaScript ]
-
-Nothing to compile\.
-
-------
 #### [ Python ]
 
 Nothing to compile\.
@@ -739,12 +771,19 @@ Nothing to compile\.
 mvn compile
 ```
 
+or press Control\-B in Eclipse
+
+**Tip**  
+You can suppress the **\[INFO\]** messages in the build log by adding the **\-q** option to your `mvn` commands\. \(Don"t forget the one in `cdk.json`\.\)
+
 ------
-#### [ C♯ ]
+#### [ C\# ]
 
 ```
 dotnet build src
 ```
+
+or press F6 in Visual Studio
 
 ------
 

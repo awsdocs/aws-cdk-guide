@@ -12,8 +12,11 @@ The most common identifier, `id`, is the identifier passed as the second argumen
 
 Lets look at an example where we have two constructs with the identifier `MyBucket` in our app\. However, since they are defined in different scopes, the first in the scope of the stack with the identifier `Stack1`, and the second in the scope of a stack with the identifier `Stack2`, that doesn't cause any sort of conflict, and they can co\-exist in the same app without any issues\.
 
+------
+#### [ TypeScript ]
+
 ```
-import { App, Construct, Stack, StackProps } from '@aws-cdk/cdk';
+import { App, Construct, Stack, StackProps } from '@aws-cdk/core';
 import s3 = require('@aws-cdk/aws-s3');
 
 class MyStack extends Stack {
@@ -29,27 +32,163 @@ new MyStack(app, 'Stack1');
 new MyStack(app, 'Stack2');
 ```
 
+------
+#### [ Python ]
+
+```
+from aws_cdk.core import App, Construct, Stack, StackProps
+from aws_cdk import aws_s3 as s3
+
+class MyStack(Stack):
+
+    def __init__(self, scope: Construct, id: str, **kwargs):
+
+        super().__init__(scope, id, **kwargs)
+        s3.Bucket(self, "MyBucket");
+
+app = App()
+MyStack(app, 'Stack1')
+MyStack(app, 'Stack2')
+```
+
+------
+#### [ Java ]
+
+```
+// MyStack.java
+package com.myorg;
+
+import software.amazon.awscdk.core.App;
+import software.amazon.awscdk.core.Stack;
+import software.amazon.awscdk.core.StackProps;
+import software.amazon.awscdk.services.s3.Bucket;
+
+public class MyStack extends Stack {
+    public MyStack(final App scope, final String id) {
+        this(scope, id, null);
+    }
+    
+    public MyStack(final App scope, final String id, final StackProps props) {
+        super(scope, id, props);
+        new Bucket(this, "MyBucket");
+    }
+}
+
+// Main.java
+package com.myorg;
+
+import software.amazon.awscdk.core.App;
+
+public class Main {
+    public static void main(String[] args) {
+        App app = new App();
+        new MyStack(app, "Stack1");
+        new MyStack(app, "Stack2");
+    }
+}
+```
+
+------
+#### [ C\# ]
+
+```
+using core = Amazon.CDK;
+using s3 = Amazon.CDK.AWS.S3;
+
+public class MyStack : core.Stack
+{
+    public MyStack(core.App scope, string id, core.IStackProps props) : base(scope, id, props)
+    {
+        new s3.Bucket(this, "MyBucket");
+    }
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        var app = new core.App();
+        new MyStack(app, "Stack1");
+        new MyStack(app, "Stack2");
+    }
+}
+```
+
+------
+
 ## Paths<a name="identifiers_paths"></a>
 
-As the constructs in an AWS CDK application form a hierarchy, we refer to the collection of ids from a given construct, then of its parent construct, then grandparent construct, and so on up to the root of the construct tree, which is an instance of the `App` class as a *path*\.
+As the constructs in an AWS CDK application form a hierarchy, we refer to the collection of IDs from a given construct, then of its parent construct, then grandparent construct, and so on up to the root of the construct tree, which is an instance of the `App` class, as a *path*\.
 
-The AWS CDK typically displays paths in your templates as a string, with the ids from the levels separated by slashes, starting at the node just below the root `App` instance, which is usually a stack\. For example, the paths of the two Amazon S3 bucket resources in the previous code example are `Stack1/MyBucket` and `Stack2/MyBucket`\.
+The AWS CDK typically displays paths in your templates as a string, with the IDs from the levels separated by slashes, starting at the node just below the root `App` instance, which is usually a stack\. For example, the paths of the two Amazon S3 bucket resources in the previous code example are `Stack1/MyBucket` and `Stack2/MyBucket`\.
 
-You can access the path of any construct programmatically, as shown in the following example, which gets the path of `myConstruct`\. Since ids must be unique within the scope they are created, their paths are always unique within a AWS CDK application\.
+You can access the path of any construct programmatically, as shown in the following example, which gets the path of `myConstruct` \(or `my_construct`, as Python developers would write it\)\. Since IDs must be unique within the scope they are created, their paths are always unique within a AWS CDK application\.
+
+------
+#### [ TypeScript ]
 
 ```
 const path: string = myConstruct.node.path;
 ```
 
+------
+#### [ Python ]
+
+```
+path = my_construct.node.path
+```
+
+------
+#### [ Java ]
+
+```
+String path = myConstruct.getNode().getPath();
+```
+
+------
+#### [ C\# ]
+
+```
+string path = myConstruct.Node.Path;
+```
+
+------
+
 ## Unique IDs<a name="identifiers_unique_ids"></a>
 
 Since AWS CloudFormation requires that all logical IDs in a template are unique, the AWS CDK must be able to generate unique identifier for each construct in an application\. Since the AWS CDK already has paths that are globally unique, the AWS CDK generates these unique identifiers by concatenating the elements of the path, and adds an 8\-digit hash\. The hash is necessary, as otherwise two distinct paths, such as `A/B/C` and `A/BC` would result in the same identifier\. The AWS CDK calls this concatenated path elements and hash the *unique ID* of the construct\.
 
-You can access the unique ID of any construct programmatically, as shown in the following example, which gets the unique ID of `myConstruct`\. Since ids must be unique within the scope they are created, their paths are always unique within a AWS CDK application\.
+You can access the unique ID of any construct programmatically, as shown in the following example, which gets the unique ID of `myConstruct` \(or `my_costruct` in Python conventions\)\. Since ids must be unique within the scope they are created, their paths are always unique within a AWS CDK application\.
+
+------
+#### [ TypeScript ]
 
 ```
 const uid: string = myConstruct.node.uniqueId;
 ```
+
+------
+#### [ Python ]
+
+```
+uid = my_construct.node.unique_id
+```
+
+------
+#### [ Java ]
+
+```
+String uid  = myConstruct.getNode().getUniqueId();
+```
+
+------
+#### [ C\# ]
+
+```
+string uid = myConstruct.Node.UniqueId;
+```
+
+------
 
 ## Logical IDs<a name="identifiers_logical_ids"></a>
 

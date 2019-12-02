@@ -13,6 +13,9 @@ If there are no Construct classes available for the service, you can fall back t
 
 For example, to instantiate a low\-level Amazon S3 bucket CFN Resource with analytics enabled, you would write something like the following\.
 
+------
+#### [ TypeScript ]
+
 ```
 new s3.CfnBucket(this, 'MyBucket', {
   analyticsConfigurations: [
@@ -24,13 +27,55 @@ new s3.CfnBucket(this, 'MyBucket', {
 });
 ```
 
-In the rare case where you want to define a resource that doesn't have a corresponding `CfnXxx` class, such as a new resource that wasn't published yet in the AWS CloudFormation resource specification, you can instantiate the `cdk.CfnResource` directly and specify the resource type and properties\. This is shown in the following example\.
+------
+#### [ Python ]
+
+```
+s3.CfnBucket(self, "MyBucket",
+    analytics_configurations: [
+        dict(id="Config",
+             # ...
+             )
+    ]
+)
+```
+
+------
+#### [ Java ]
+
+```
+CfnBucket.Builder.create(this, "MyBucket")
+    .analyticsConfigurations(Arrays.asList(new HashMap<String, String>() {{
+        put("id", "Config");
+        // ...
+    }})).build();
+```
+
+------
+#### [ C\# ]
+
+```
+new CfnBucket(this, 'MyBucket', new CfnBucketProps {
+    AnalyticsConfigurations = new Dictionary<string, string>
+    {
+        ["id"] = "Config",
+        // ...
+    }
+});
+```
+
+------
+
+In the rare case where you want to define a resource that doesn't have a corresponding `CfnXxx` class, such as a new resource type that hasn't yet been published in the AWS CloudFormation resource specification, you can instantiate the `cdk.CfnResource` directly and specify the resource type and properties\. This is shown in the following example\.
+
+------
+#### [ TypeScript ]
 
 ```
 new cdk.CfnResource(this, 'MyBucket', {
   type: 'AWS::S3::Bucket',
   properties: {
-    // Note the PascalCase here!
+    // Note the PascalCase here! These are CloudFormation identifiers.
     AnalyticsConfigurations: [
       {
         Id: 'Config',
@@ -41,6 +86,61 @@ new cdk.CfnResource(this, 'MyBucket', {
 });
 ```
 
+------
+#### [ Python ]
+
+```
+cdk.CfnResource(this, 'MyBucket',
+  type="AWS::S3::Bucket",
+  properties=dict(
+    # Note the PascalCase here! These are CloudFormation identifiers.
+    "AnalyticsConfigurations": [
+      {
+        "Id": "Config",
+        # ...
+      }
+    ] 
+  }
+)
+```
+
+------
+#### [ Java ]
+
+```
+CfnResource.Builder.create(this, "MyBucket")
+        .type("AWS::S3::Bucket")
+        .properties(new HashMap<String, Object>() {{
+            // Note the PascalCase here! These are CloudFormation identifiers
+            put("AnalyticsConfigurations", Arrays.asList(
+                    new HashMap<String, String>() {{
+                        put("Id", "Config");
+                        // ...
+                    }}));
+        }}).build();
+```
+
+------
+#### [ C\# ]
+
+```
+new CfnResource(this, "MyBucket", new CfnResourceProps
+{
+    Type = "AWS::S3::Bucket",
+    Properties = new Dictionary<string, object>
+    {   // Note the PascalCase here! These are CloudFormation identifiers
+        ["AnalyticsConfigurations"] = new List<Dictionary<string, string>>
+        {
+            new Dictionary<string, string> {
+                ["Id"] = "Config"
+            }
+        }
+    }
+});
+```
+
+------
+
 For more information, see [AWS Resource and Property Types Reference](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-template-resource-type-ref.html)\.
 
 ## Modifying the AWS CloudFormation Resource behind AWS Constructs<a name="cfn_layer_resource"></a>
@@ -49,7 +149,10 @@ If an Construct is missing a feature or you are trying to work around an issue, 
 
 All Constructs contain within them the corresponding CFN Resource\. For example, the high\-level `Bucket` construct wraps the low\-level `CfnBucket` construct\. Because the `CfnBucket` corresponds directly to the AWS CloudFormation resource, it exposes all features that are available through AWS CloudFormation\.
 
-The basic approach to get access to the CFN Resource class is to use `construct.node.defaultChild`, cast it to the right type for the resource, and modify its properties\. Again, let's take the example of a `Bucket`\.
+The basic approach to get access to the CFN Resource class is to use `construct.node.defaultChild` \(Python: `default_child`\), cast it to the right type \(if necessary\), and modify its properties\. Again, let's take the example of a `Bucket`\.
+
+------
+#### [ TypeScript ]
 
 ```
 // Get the AWS CloudFormation resource
@@ -64,7 +167,54 @@ cfnBucket.analyticsConfiguration = [
 ];
 ```
 
+------
+#### [ Python ]
+
+```
+# Get the AWS CloudFormation resources
+cfn_bucket = bucket.node.default_child
+
+# Change its properties
+cfn_bucket.analytics_configuration = [
+    {
+        "id": "Config",
+        # ...
+    }
+]
+```
+
+------
+#### [ Java ]
+
+```
+cfnBucket.setAnalyticsConfigurations(
+        Arrays.asList(new HashMap<String, String>() {{
+            put("Id", "Config");
+            // ...
+        }}));
+```
+
+------
+#### [ C\# ]
+
+```
+var cfnBucket = (CfnBucket)bucket.Node.DefaultChild;
+
+cfnBucket.AnalyticsConfigurations = new List<object> {
+    new Dictionary<string, string>
+    {
+        ["Id"] = "Config",
+        // ...
+    }
+};
+```
+
+------
+
 You can also use this object to change AWS CloudFormation options such as `Metadata` and `UpdatePolicy`\.
+
+------
+#### [ TypeScript ]
 
 ```
 cfnBucket.cfnOptions.metadata = {
@@ -72,11 +222,44 @@ cfnBucket.cfnOptions.metadata = {
 };
 ```
 
+------
+#### [ Python ]
+
+```
+cfn_bucket.cfn_options.metadata = {
+    "MetadataKey": "MetadataValue"
+}
+```
+
+------
+#### [ Java ]
+
+```
+cfnBucket.getCfnOptions().setMetadata(new HashMap<String, Object>() {{
+    put("MetadataKey", "Metadatavalue");
+}});
+```
+
+------
+#### [ C\# ]
+
+```
+cfnBucket.CfnOptions.Metadata = new Dictionary<string, object>
+{
+    ["MetadataKey"] = "Metadatavalue"
+};
+```
+
+------
+
 ## Raw Overrides<a name="cfn_layer_raw"></a>
 
 If there are properties that are missing from the CFN Resource, you can bypass all typing using raw overrides\. This also makes it possible to delete synthesized properties\. 
 
-Use one of the `addOverride` or `addDeletionOverride` methods, as shown in the following example\.
+Use one of the `addOverride` methods \(Python: `add_override`\) methods, as shown in the following example\.
+
+------
+#### [ TypeScript ]
 
 ```
 // Get the AWS CloudFormation resource
@@ -91,6 +274,42 @@ cfnBucket.addDeletionOverride('Properties.VersioningConfiguration.Status');
 cfnBucket.addPropertyOverride('VersioningConfiguration.Status', 'NewStatus');
 cfnBucket.addPropertyDeletionOverride('VersioningConfiguration.Status');
 ```
+
+------
+#### [ Python ]
+
+```
+# Get the AWS CloudFormation resource
+cfn_bucket = bucket.node.default_child
+
+# Use dot notation to address inside the resource template fragment
+cfn_bucket.add_override("Properties.VersioningConfiguration.Status", "NewStatus")
+cfn_bucket.add_deletion_override("Properties.VersioningConfiguration.Status")
+
+# add_property_override is a convenience function, which implies the
+# path starts with "Properties."
+cfn_bucket.add_property_override("VersioningConfiguration.Status", "NewStatus")
+cfn_bucket.add_property_deletion_override("VersioningConfiguration.Status")
+```
+
+------
+#### [ C\# ]
+
+```
+// Get the AWS CloudFormation resource
+var cfnBucket = (CfnBucket)bucket.node.defaultChild;
+
+// Use dot notation to address inside the resource template fragment
+cfnBucket.AddOverride("Properties.VersioningConfiguration.Status", "NewStatus");
+cfnBucket.AddDeletionOverride("Properties.VersioningConfiguration.Status");
+
+// addPropertyOverride is a convenience function, which implies the
+// path starts with "Properties."
+cfnBucket.AddPropertyOverride("VersioningConfiguration.Status", "NewStatus");
+cfnBucket.AddPropertyDeletionOverride("VersioningConfiguration.Status");
+```
+
+------
 
 ## Custom Resources<a name="cfn_layer_custom"></a>
 

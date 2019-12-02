@@ -43,7 +43,7 @@ The module level gives an indication of the stability of the majority of the API
 
 ### Language Binding Stability<a name="aws_construct_lib_versioning_binding"></a>
 
-In addition to modules of the AWS CDK Construct Library, language support is also subject to a stability indication\. Although the API described in all the languages is the same, the specific programming model and naming of language bindings is considered experimental and can change as it stabilizes\.
+In addition to modules of the AWS CDK Construct Library, language support is also subject to a stability indication\. Although the API described in all the languages is the same, the way that API is expressed varies by language and may change as the language support evolves\. For this reason, language bindings are deemed experimental for a time until they are considered ready for production use\.
 
 
 | Language | Stability | 
@@ -51,5 +51,5 @@ In addition to modules of the AWS CDK Construct Library, language support is als
 | TypeScript | Stable | 
 | JavaScript | Stable | 
 | Python | Stable | 
-| Java | Experimental | 
-| C\#/\.NET | Experimental | 
+| Java | Stable | 
+| C\#/\.NET | Stable | 
