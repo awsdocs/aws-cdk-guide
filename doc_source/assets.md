@@ -382,7 +382,7 @@ dirname = os.path.dirname(__file__)
         asset = Asset(self, "MyFile",
             path=os.path.join(dirname, "my-image.png"))
 
-        group = iam.Group(this, "MyUserGroup")
+        group = iam.Group(self, "MyUserGroup")
         asset.grantRead(group)
 ```
 

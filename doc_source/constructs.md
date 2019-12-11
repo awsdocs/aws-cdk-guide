@@ -505,7 +505,7 @@ new NotifyingBucket(this, 'MyNotifyingBucket');
 #### [ Python ]
 
 ```
-NotifyingBucket(this, "MyNotifyingBucket")
+NotifyingBucket(self, "MyNotifyingBucket")
 ```
 
 ------
@@ -660,8 +660,8 @@ images.topic.addSubscription(new sns_sub.SqsSubscription(queue));
 #### [ Python ]
 
 ```
-queue = qs.Queue(this, "NewImagesQueue")
-images = NotifyingBucket(this, prefix="Images")
+queue = qs.Queue(self, "NewImagesQueue")
+images = NotifyingBucket(self, prefix="Images")
 images.topic.add_subscription(sns_sub.SqsSubscription(queue))
 ```
 

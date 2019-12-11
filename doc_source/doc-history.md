@@ -1,6 +1,6 @@
 # Document History for the AWS CDK Developer Guide<a name="doc-history"></a>
 
-This document is based on the following release of the AWS Cloud Development Kit \(AWS CDK\)\.
+This document reflects the following release of the AWS Cloud Development Kit \(AWS CDK\)\.
 + **API version: 1\.18\.0**
 + **Latest documentation update:** November 25, 2019
 

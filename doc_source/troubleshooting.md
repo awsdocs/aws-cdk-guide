@@ -246,7 +246,7 @@ class CdkTestStack(cdk.stack):
     def __init__(self, scope: cdk.Construct, id: str, **kwargs):
         super().__init__(scope, id, **kwargs)
         
-        bucket = s3.Bucket(this, "Bucket",
+        bucket = s3.Bucket(self, "Bucket",
             removal_policy=cdk.RemovalPolicy.DESTROY)
 ```
 

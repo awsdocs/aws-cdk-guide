@@ -107,9 +107,14 @@ public class MyEcsConstructStack extends Stack {
 #### [ C\# ]
 
 ```
+using Amazon.CDK;
+using Amazon.CDK.AWS.EC2;
+using Amazon.CDK.AWS.ECS;
+using Amazon.CDK.AWS.ECS.Patterns;
+
 public class MyEcsConstructStack : Stack
 {
-    public MyEcsConstructStack(Construct scope, string id, IStackProps props) : base(scope, id, props)
+    public MyEcsConstructStack(Construct scope, string id, IStackProps props=null) : base(scope, id, props)
     {
         var vpc = new Vpc(this, "MyVpc", new VpcProps
         {

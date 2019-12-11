@@ -30,7 +30,7 @@ class SecretsManagerStack(core.Stack):
     def __init__(self, scope: core.App, id: str, **kwargs):
       super().__init__(scope, name, **kwargs)
 
-      secret = sm.Secret.from_secret_attributes(this, "ImportedSecret",
+      secret = sm.Secret.from_secret_attributes(self, "ImportedSecret",
           secret_arn="arn:aws:secretsmanager:<region>:<account-id-number>:secret:<secret-name>-<random-6-characters>",
           # If the secret is encrypted using a KMS-hosted CMK, either import or reference that key:
           # encryption_key=....

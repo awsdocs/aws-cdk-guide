@@ -90,7 +90,7 @@ new cdk.CfnResource(this, 'MyBucket', {
 #### [ Python ]
 
 ```
-cdk.CfnResource(this, 'MyBucket',
+cdk.CfnResource(self, 'MyBucket',
   type="AWS::S3::Bucket",
   properties=dict(
     # Note the PascalCase here! These are CloudFormation identifiers.

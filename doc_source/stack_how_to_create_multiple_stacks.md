@@ -270,11 +270,11 @@ class MultistackStack(core.Stack):
         # If true, creates an encrypted bucket. Otherwise, the bucket is unencrypted.
         # Encrypted bucket uses AWS KMS-managed keys (SSE-KMS).
         if encrypt_bucket:
-            s3.Bucket(this, "MyGroovyBucket",
+            s3.Bucket(self, "MyGroovyBucket",
                       encryption=s3BucketEncryption.KMS_MANAGED,
                       removal_policy=core.RemovalPolicy.DESTROY)
         else:
-            s3.Bucket(this, "MyGroovyBucket",
+            s3.Bucket(self, "MyGroovyBucket",
                      removal_policy=core.RemovalPolicy.DESTROY)
 ```
 

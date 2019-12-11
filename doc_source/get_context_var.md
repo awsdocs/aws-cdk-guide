@@ -31,7 +31,7 @@ const bucket_name = this.node.tryGetContext('bucket_name');
 #### [ Python ]
 
 ```
-bucket_name = this.node.try_get_context("bucket_name")
+bucket_name = self.node.try_get_context("bucket_name")
 ```
 
 ------

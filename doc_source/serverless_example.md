@@ -1,6 +1,6 @@
 # Creating a Serverless Application Using the AWS CDK<a name="serverless_example"></a>
 
-This example walks you through how to create the resources for a simple widget dispensing service\. \(For the purpose of this example, a widget is just an name or identifier that can be added to, retrieved from, and deleted from a collection\.\) The example includes:
+This example walks you through how to create the resources for a simple widget dispensing service\. \(For the purpose of this example, a widget is just a name or identifier that can be added to, retrieved from, and deleted from a collection\.\) The example includes:
 + An AWS Lambda function\.
 + An Amazon API Gateway API to call the Lambda function\.
 + An Amazon S3 bucket that contains the Lambda function code\.
@@ -539,7 +539,7 @@ Replace the comment in the constructor with the following line of code\.
 ------
 #### [ Python ]
 
-File: `lib/my_widget_service-stack.ts`
+File: `my_widget_service/my_widget_service_stack.py`
 
 Add the following line of code after the existing `import` statement\.
 

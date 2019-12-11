@@ -33,8 +33,8 @@ const role = new iam.Role(this, 'Role', {
 ```
 import aws_cdk.aws_iam as iam
     
-role = iam.Role(self, 'Role',
-          assumed_by=iam.ServicePrincipal('ec2.amazonaws.com')) # required
+role = iam.Role(self, "Role",
+          assumed_by=iam.ServicePrincipal("ec2.amazonaws.com")) # required
 ```
 
 ------
@@ -62,7 +62,7 @@ var role = new Role(this, "Role", new RoleProps
 
 ------
 
-You can add permissions to a role by calling the role's `[addToPolicy](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-iam.Role.htm#add-to-policystatement)` method \(Python: `add_to_policy`\), passing in a `[PolicyStatement](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-iam.PolicyStatement.html)` that defines the rule to be added\. The statement is added to the role's default policy; if it has none, one is created\. 
+You can add permissions to a role by calling the role's `[addToPolicy](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-iam.Role.html#add-to-policystatement)` method \(Python: `add_to_policy`\), passing in a `[PolicyStatement](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-iam.PolicyStatement.html)` that defines the rule to be added\. The statement is added to the role's default policy; if it has none, one is created\. 
 
  The following example adds a `Deny` policy statement to the role for the actions `ec2:SomeAction` and `s3:AnotherAction` on the resources `bucket` and `otherRole` \(Python: `other_role`\), under the condition that the authorized service is AWS CodeBuild\.
 
@@ -202,7 +202,7 @@ var project = new Project(this, "Project", new ProjectProps
 
 ------
 
-Once the object is created, the role \(whether the role passed in or the default one created by the construct\) is available as the property `role`\. This property is not available on imported resources, however, so the constructs have an `addToRolePolicy` \(Python: `add_to_role_policy`\) method that does nothing if the construct is an imported resource, and calls the `addToPolicy` \(Python: `add_to_policy`\) method of the `role` property otherwise, saving you the trouble of handling the undefined case explicitly\. The following example demonstrates:
+Once the object is created, the role \(whether the role passed in or the default one created by the construct\) is available as the property `role`\. This property is not available on imported resources, however, so such constructs have an `addToRolePolicy` \(Python: `add_to_role_policy`\) method that does nothing if the construct is an imported resource, and calls the `addToPolicy` \(Python: `add_to_policy`\) method of the `role` property otherwise, saving you the trouble of handling the undefined case explicitly\. The following example demonstrates:
 
 ------
 #### [ TypeScript ]
@@ -222,7 +222,7 @@ project.addToRolePolicy(new iam.PolicyStatement({
 
 ```
 # project is imported into the CDK application
-project = codebuild.Project.from_project_name(this, 'Project', 'ProjectName')
+project = codebuild.Project.from_project_name(self, 'Project', 'ProjectName')
 
 # project is imported, so project.role is undefined, and this call has no effect
 project.add_to_role_policy(new iam.PolicyStatement(
