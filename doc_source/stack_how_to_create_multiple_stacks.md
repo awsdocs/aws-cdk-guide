@@ -418,7 +418,7 @@ MultistackStack(app, "MyWestCdkStack",
 
 MultistackStack(app, "MyEastCdkStack",
                 env=core.Environment(region="us-east-1"),
-                encrypt_bucket=False)
+                encrypt_bucket=True)
 ```
 
 ------
