@@ -105,7 +105,7 @@ app.Synth();
 
 The `App` construct doesn't require any initialization arguments, because it's the only construct that can be used as a root for the construct tree\. You can now use the `App` instance as a scope for defining a single instance of your stack\.
 
-You can also define construccts within an App\-derived class as follows\.
+You can also define constructs within an App\-derived class as follows\.
 
 ------
 #### [ TypeScript ]
