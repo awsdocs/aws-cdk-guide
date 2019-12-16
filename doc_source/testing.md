@@ -53,14 +53,14 @@ Since we're using the Jest framework, our next setup step is to install Jest\. W
 npm install --save-dev jest @types/jest @aws-cdk/assert
 ```
 
-### Updating `project.json`<a name="testing_project"></a>
+### Updating `package.json`<a name="testing_project"></a>
 
-Finally, edit the project's `project.json` to tell NPM how to run Jest, and to tell Jest what kinds of files to collect\. The necessary changes are as follows\. 
+Finally, edit the project's `package.json` to tell NPM how to run Jest, and to tell Jest what kinds of files to collect\. The necessary changes are as follows\. 
 + Add a new `test` key to the `scripts` section
 + Add Jest and its types to the `devDependencies` section
 + Add a new `jest` top\-level key with a `moduleFileExtensions` declaration
 
-These changes are shown in outline below\. Place the new text where indicated in `project.json`\. The "\.\.\." placeholders indicate existing parts of the file that should not be changed\. 
+These changes are shown in outline below\. Place the new text where indicated in `package.json`\. The "\.\.\." placeholders indicate existing parts of the file that should not be changed\. 
 
 ```
 {
