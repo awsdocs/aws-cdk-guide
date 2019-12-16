@@ -7,7 +7,7 @@ If you don't specify an environment when you define a stack, the stack is said t
 **Note**  
 In an environment\-agnostic stack, any constructs that use availability zones will see two of them\. This allows the stack to be deployed to almost any region, since nearly all regions have at least two availability zones\. The only exception is Osaka \(`ap-northeast-3`\), which has one\.
 
-When using cdk deploy to deploy environment\-agnostic stacks, the AWS CDK CLI uses the specified AWS CLI profile \(or the default profile, if none is specified\) to determine where to deploy\. The AWS CDK CLI follows a protocol similar to the AWS CLI to determine which AWS credentials to use when performing operations against your AWS account\. See [AWS CDK Command Line Interface \(cdk\)](tools.md#cli) for details\.
+When using cdk deploy to deploy environment\-agnostic stacks, the AWS CDK CLI uses the specified AWS CLI profile \(or the default profile, if none is specified\) to determine where to deploy\. The AWS CDK CLI follows a protocol similar to the AWS CLI to determine which AWS credentials to use when performing operations against your AWS account\. See [AWS CDK Toolkit \(`cdk`\)](tools.md#cli) for details\.
 
 For production stacks, we recommend that you explicitly specify the environment for each stack in your app using the `env` property\. The following example specifies different environments for its two different stacks\.
 
