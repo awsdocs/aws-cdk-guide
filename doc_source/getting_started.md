@@ -166,7 +166,7 @@ new MyStack(app, 'Stack-Three-E', { env: { account: 'THREE', region: 'us-east-1'
 #### [ Python ]
 
 ```
-MyStack(app, "Stack-One-W", env=core.Environment(account="ONE", region="us-west-2"))
+MyStack(app, "Stack-One-W",   env=core.Environment(account="ONE",   region="us-west-2"))
 MyStack(app, "Stack-One-E",   env=core.Environment(account="ONE",   region="us-east-1"))
 MyStack(app, "Stack-Two-W",   env=core.Environment(account="TWO",   region="us-west-2"))
 MyStack(app, "Stack-Two-E",   env=core.Environment(account="TWO",   region="us-east-1"))
