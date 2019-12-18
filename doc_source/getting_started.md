@@ -154,7 +154,7 @@ Since you can create any number of stacks in any of your accounts in any region 
 #### [ TypeScript ]
 
 ```
-new MyStack(app, 'Stack-One-W', { env: { account: 'ONE', region: 'us-west-2' }});
+new MyStack(app, 'Stack-One-W',   { env: { account: 'ONE',   region: 'us-west-2' }});
 new MyStack(app, 'Stack-One-E',   { env: { account: 'ONE',   region: 'us-east-1' }});
 new MyStack(app, 'Stack-Two-W',   { env: { account: 'TWO',   region: 'us-west-2' }});
 new MyStack(app, 'Stack-Two-E',   { env: { account: 'TWO',   region: 'us-east-1' }});
@@ -197,10 +197,10 @@ public class MyApp {
     public static void main(final String argv[]) {
         app = new App();
 
-        makeMyStack("Stack-One-W", "ONE", "us-west-2");
-        makeMyStack("Stack-One-E", "ONE", "us-east-1");
-        makeMyStack("Stack-Two-W", "TWO", "us-west-2");
-        makeMyStack("Stack-Two-E", "TWO", "us-east-1");
+        makeMyStack("Stack-One-W",   "ONE",   "us-west-2");
+        makeMyStack("Stack-One-E",   "ONE",   "us-east-1");
+        makeMyStack("Stack-Two-W",   "TWO",   "us-west-2");
+        makeMyStack("Stack-Two-E",   "TWO",   "us-east-1");
         makeMyStack("Stack-Three-W", "THREE", "us-west-2");
         makeMyStack("Stack-Three-E", "THREE", "us-east-1");
 
