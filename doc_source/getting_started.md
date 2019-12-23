@@ -352,7 +352,7 @@ The following table describes the templates available with the supported languag
 |  |  | 
 | --- |--- |
 | app \(default\) |  Creates an empty AWS CDK app\.  | 
-| sample\-app |  Creates an AWS CDK app with a stack containing an Amazon SQS queue, an Amazon SNS topic, and an IAM policy document that allows the topic to send messages to the queue\.  | 
+| sample\-app |  Creates an AWS CDK app with a stack containing an Amazon SQS queue and an Amazon SNS topic\.  | 
 
 For Hello World, you can just use the default template\.
 
