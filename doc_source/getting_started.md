@@ -313,7 +313,7 @@ The typical workflow for creating a new app is:
 
 1. Compile the app, if necessary\.
 
-1. To deploy the resources defined in the app\.
+1. Deploy the resources defined in the app\.
 
 1. Test the app\.
 
