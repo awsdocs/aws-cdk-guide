@@ -280,7 +280,7 @@ To opt out of version reporting, use one of the following methods:
   ```
   cdk --no-version-reporting synth
   ```
-+ Set versionReporting to **false** in `./cdk.json` or `~/cdk.json`\.
++ Set versionReporting to **false** in `./cdk.json` or `~/.cdk.json`\.
 
   ```
   {
