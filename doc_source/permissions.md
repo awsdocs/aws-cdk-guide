@@ -323,6 +323,8 @@ The AWS CDK Construct Library supports many types of principals, including:
 
 1. Service principals \(`new iam.[ServicePrincipal](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-iam.ServicePrincipal.html)('service.amazonaws.com')`\)
 
+1. Federated principals \(`new iam.[FederatedPrincipal](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-iam.FederatedPrincipal.html)('cognito-identity.amazonaws.com')`\)
+
 1. Account principals \(`new iam.[AccountPrincipal](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-iam.AccountPrincipal.html)('0123456789012'))`
 
 1. Canonical user principals \(`new iam.[CanonicalUserPrincipal](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-iam.CanonicalUserPrincipal.html)('79a59d[...]7ef2be')`\)
