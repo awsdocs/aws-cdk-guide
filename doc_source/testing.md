@@ -269,7 +269,7 @@ Since we've replaced the snapshot test, the first time we run the new tests, Jes
 
 Suppose we want to make the dead letter queue's retention period configurable\. Of course, we also want to make sure that the value provided by the user of the construct is within an allowable range\. We can write a test to make sure that the validation logic works: pass in invalid values and see what happens\.
 
-First, create a `propes` interface for the construct\. 
+First, create a `props` interface for the construct\. 
 
 ```
 export interface DeadLetterQueueProps {
