@@ -685,13 +685,13 @@ The AWS CDK CLI automatically adds the **AWS::CDK::Metadata** resource to your t
 
 ### Deploying the Stack<a name="hello_world_tutorial_deploy_stack"></a>
 
-Deploy the app, as follows\.
+Deploy the stack, as follows\.
 
 ```
 cdk deploy
 ```
 
-The deploy command synthesizes an AWS CloudFormation template from the app, and then invokes the AWS CloudFormation create/update API to deploy it into your AWS account\. If your code includes changes to your existing infrastructure, the command displays information about those changes and requires you to confirm them before it deploys the changes\. The command displays information as it completes various steps in the process\. There is no mechanism to detect or react to any specific step in the process\.
+The deploy command synthesizes an AWS CloudFormation template from the app's stack, and then invokes AWS CloudFormation to deploy it in your AWS account\. If your code would change your infrastructure's security posture, the command displays information about those changes and requires you to confirm them before your stack is deployed\. The command displays information as it completes various steps in the process\.
 
 ### Modifying the App<a name="hello_world_tutorial_modify_code"></a>
 
