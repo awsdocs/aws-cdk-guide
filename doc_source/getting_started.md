@@ -521,14 +521,14 @@ Next, define an Amazon S3 bucket in the stack\. Amazon S3 buckets are represente
 In `lib/hello-cdk-stack.ts`:
 
 ```
-import core = require('@aws-cdk/core');
-import s3 = require('@aws-cdk/aws-s3');
+import { App, Stack, StackProps, Construct } from '@aws-cdk/core';
+import { Bucket } from '@aws-cdk/aws-s3';
 
-export class HelloCdkStack extends core.Stack {
-  constructor(scope: core.App, id: string, props?: core.StackProps) {
+export class HelloCdkStack extends Stack {
+  constructor(scope: App, id: string, props?: StackProps) {
     super(scope, id, props);
 
-    new s3.Bucket(this, 'MyFirstBucket', {
+    new Bucket(this, 'MyFirstBucket', {
       versioned: true
     });
   }
@@ -703,9 +703,11 @@ Configure the bucket to use AWS Key Management Service \(AWS KMS\) managed encry
 Update `lib/hello-cdk-stack.ts`
 
 ```
-new s3.Bucket(this, 'MyFirstBucket', {
+import { Bucket, BucketEncryption } from "@aws-cdk/aws-s3";
+
+new Bucket(this, 'MyFirstBucket', {
   versioned: true,
-  encryption: s3.BucketEncryption.KMS_MANAGED
+  encryption: BucketEncryption.KMS_MANAGED
 });
 ```
 

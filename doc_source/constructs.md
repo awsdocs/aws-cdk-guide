@@ -42,13 +42,13 @@ We call your CDK application an *app*, which is represented by the AWS CDK class
 
 ```
 import { App, Stack, StackProps } from '@aws-cdk/core';
-import s3 = require('@aws-cdk/aws-s3');
+import { Bucket } from '@aws-cdk/aws-s3';
 
 class HelloCdkStack extends Stack {
   constructor(scope: App, id: string, props?: StackProps) {
     super(scope, id, props);
 
-    new s3.Bucket(this, 'MyFirstBucket', {
+    new Bucket(this, 'MyFirstBucket', {
       versioned: true
     });
   }
@@ -183,10 +183,10 @@ Once you have defined a stack, you can populate it with resources\. The followin
 #### [ TypeScript ]
 
 ```
-import s3 = require('@aws-cdk/aws-s3');
+import { Bucket } from '@aws-cdk/aws-s3';
 
 // "this" is HelloCdkStack
-new s3.Bucket(this, 'MyFirstBucket', {
+new Bucket(this, 'MyFirstBucket', {
   versioned: true
 });
 ```
@@ -249,8 +249,10 @@ Most constructs accept `props` as their third argument \(or in Python, keyword a
 #### [ TypeScript ]
 
 ```
-new s3.Bucket(this, 'MyEncryptedBucket', {
-  encryption: s3.BucketEncryption.KMS,
+import { Bucket, BucketEncryption } from '@aws-cdk/aws-s3';
+
+new Bucket(this, 'MyEncryptedBucket', {
+  encryption: BucketEncryption.KMS,
   websiteIndexDocument: 'index.html'
 });
 ```
@@ -297,8 +299,11 @@ For example, almost all AWS constructs have a set of [grant](permissions.md#perm
 #### [ TypeScript ]
 
 ```
-const rawData = new s3.Bucket(this, 'raw-data');
-const dataScience = new iam.Group(this, 'data-science');
+import { Group } from '@aws-cdk/aws-iam';
+import { Bucket } from '@aws-cdk/aws-s3';
+
+const rawData = new Bucket(this, 'raw-data');
+const dataScience = new Group(this, 'data-science');
 rawData.grantRead(dataScience);
 ```
 
@@ -337,11 +342,14 @@ Another common pattern is for AWS constructs to set one of the resource's attrib
 #### [ TypeScript ]
 
 ```
-const jobsQueue = new sqs.Queue(this, 'jobs');
-const createJobLambda = new lambda.Function(this, 'create-job', {
-  runtime: lambda.Runtime.NODEJS_10_X,
+import { Function, Runtime, Code } from '@aws-cdk/aws-lambda';
+import { Queue } from '@aws-cdk/aws-sqs';
+
+const jobsQueue = new Queue(this, 'jobs');
+const createJobLambda = new Function(this, 'create-job', {
+  runtime: Runtime.NODEJS_10_X,
   handler: 'index.handler',
-  code: lambda.Code.fromAsset('./create-job-lambda-code'),
+  code: Code.fromAsset('./create-job-lambda-code'),
   environment: {
     QUEUE_URL: jobsQueue.queueUrl
   }
@@ -409,6 +417,11 @@ For example, you could declare a construct that represents an Amazon S3 bucket w
 #### [ TypeScript ]
 
 ```
+import { Construct } from '@aws-cdk/core';
+import { Bucket } from '@aws-cdk/aws-s3';
+import { SnsDestination } from '@aws-cdk/aws-s3-notifications';
+import { Topic } from '@aws-cdk/aws-sns';
+
 export interface NotifyingBucketProps {
   prefix?: string;
 }
@@ -416,9 +429,11 @@ export interface NotifyingBucketProps {
 export class NotifyingBucket extends Construct {
   constructor(scope: Construct, id: string, props: NotifyingBucketProps = {}) {
     super(scope, id);
-    const bucket = new s3.Bucket(this, 'bucket');
-    const topic = new sns.Topic(this, 'topic');
-    bucket.addObjectCreatedNotification(topic, { prefix: props.prefix }); 
+    const bucket = new Bucket(this, 'bucket');
+
+    const topic = new Topic(this, 'topic');
+    const snsDestination = new SnsDestination(topic);
+    bucket.addObjectCreatedNotification(snsDestination, { prefix: props.prefix }); 
   }
 }
 ```
@@ -566,13 +581,15 @@ Typically, you would also want to expose some properties or methods on your cons
 
 ```
 export class NotifyingBucket extends Construct {
-  public readonly topic: sns.Topic;
+  public readonly topic: Topic;
 
   constructor(scope: Construct, id: string, props: NotifyingBucketProps) {
     super(scope, id);
-    const bucket = new s3.Bucket(this, 'bucket');
-    this.topic = new sns.Topic(this, 'topic');
-    bucket.addObjectCreatedNotification(this.topic, { prefix: props.prefix });
+
+    const bucket = new Bucket(this, 'bucket');
+    this.topic = new Topic(this, 'topic');
+    const snsDestination = new SnsDestination(snsTopic);
+    bucket.addObjectCreatedNotification(snsDestination, { prefix: props.prefix });
   }
 }
 ```
@@ -651,9 +668,12 @@ Now, consumers can subscribe to the topic, for example:
 #### [ TypeScript ]
 
 ```
-const queue = new sqs.Queue(this, 'NewImagesQueue');
+import { Queue } from '@aws-cdk/aws-sqs';
+import { SqsSubscription } from '@aws-cdk/aws-sns-subscriptions';
+
+const queue = new Queue(this, 'NewImagesQueue');
 const images = new NotifyingBucket(this, 'Images');
-images.topic.addSubscription(new sns_sub.SqsSubscription(queue));
+images.topic.addSubscription(new SqsSubscription(queue));
 ```
 
 ------
