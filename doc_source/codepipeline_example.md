@@ -114,7 +114,7 @@ export class LambdaStack extends Stack {
   constructor(app: App, id: string, props?: StackProps) {
     super(app, id, props);
       
-    this.lambdaCode = lambda.Code.cfnParameters();
+    this.lambdaCode = lambda.Code.fromCfnParameters();
       
     const func = new lambda.Function(this, 'Lambda', {
       code: this.lambdaCode,
@@ -150,7 +150,7 @@ class LambdaStack(core.Stack):
   def __init__(self, app: core.App, id: str, **kwargs):
     super().__init__(app, id, **kwargs)
 
-    self.lambda_code = lambda_.Code.cfn_parameters()
+    self.lambda_code = lambda_.Code.from_cfn_parameters()
       
     func = lambda_.Function(self, "Lambda",
                             code=self.lambda_code,

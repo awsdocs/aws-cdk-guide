@@ -418,7 +418,8 @@ export class NotifyingBucket extends Construct {
     super(scope, id);
     const bucket = new s3.Bucket(this, 'bucket');
     const topic = new sns.Topic(this, 'topic');
-    bucket.addObjectCreatedNotification(topic, { prefix: props.prefix }); 
+    bucket.addObjectCreatedNotification(new s3notify.SnsDestination(topic),
+      { prefix: props.prefix });
   }
 }
 ```
@@ -430,10 +431,10 @@ export class NotifyingBucket extends Construct {
 class NotifyingBucket(core.Construct):
 
     def __init__(self, scope: core.Construct, id: str, *, prefix=None, **kwargs):
-        super().__init__(scope, id, **kwargs)
+        super().__init__(scope, id)
         bucket = s3.Bucket(self, "bucket")
         topic = sns.Topic(self, "topic")
-        bucket.add_object_created_notification(topic,
+        bucket.add_object_created_notification(s3notify.SnsDestination(topic),
             s3.NotificationKeyFilter(prefix=prefix))
 ```
 
@@ -456,7 +457,7 @@ public class NotifyingBucket extends Bucket {
     }
 
     public NotifyingBucket(final Construct scope, final String id, final BucketProps props, final String prefix) {
-        super(scope, id, props);
+        super(scope, id);
 
         Bucket bucket = new Bucket(this, "bucket");
         Topic topic = new Topic(this, "topic");
@@ -473,12 +474,12 @@ public class NotifyingBucket extends Bucket {
 ```
 public class NotifyingBucketProps : BucketProps
 {
-    public string Prefix = null;
+    public string Prefix { get; set; }
 }
 
 public class NotifyingBucket : Construct
 {
-    public NotifyingBucket(Construct scope, string id, NotifyingBucketProps props = null) : base(scope, id, props)
+    public NotifyingBucket(Construct scope, string id, NotifyingBucketProps props = null) : base(scope, id)
     {
         var bucket = new Bucket(this, "bucket");
         var topic = new Topic(this, "topic");

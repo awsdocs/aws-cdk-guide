@@ -134,8 +134,8 @@ role.addToPolicy(PolicyStatement.Builder.create()
 role.AddToPolicy(new PolicyStatement(new PolicyStatementProps
 {
     Effect = Effect.DENY,
-    Resources = [bucket.BucketArn, otherRole.RoleArn],
-    Actions = ["ec2:SomeAction", "s3:Anotheraction"],
+    Resources = new string[] { bucket.BucketArn, otherRole.RoleArn },
+    Actions = new string[] { "ec2:SomeAction", "s3:AnotherAction" },
     Conditions = new Dictionary<string, object>
     {
         ["StringEquals"] = new Dictionary<string, string>
@@ -327,9 +327,9 @@ bucket.addToResourcePolicy(PolicyStatement.Builder.create()
 bucket.AddToResourcePolicy(new PolicyStatement(new PolicyStatementProps
 {
     Effect = Effect.ALLOW,
-    Actions = ["s3:SomeAction"],
-    Resources = [bucket.BucketArn],
-    Principals = [role]
+    Actions = new string[] { "s3:SomeAction" },
+    Resources = new string[] { bucket.BucketArn },
+    Principals = new IPrincipal[] { role }
 }));
 ```
 

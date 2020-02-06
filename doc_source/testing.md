@@ -47,7 +47,7 @@ export class DeadLetterQueue extends sqs.Queue {
 
 ### Installing the Testing Framework<a name="testing_installing"></a>
 
-Since we're using the Jest framework, our next setup step is to install Jest\. We'll also need the AWS CDK assertion module\.
+Since we're using the Jest framework, our next setup step is to install Jest\. We'll also need the AWS CDK assert module, which includes helpers for writing tests for CDK libraries, including `assert` and `expect`\.
 
 ```
 npm install --save-dev jest @types/jest @aws-cdk/assert
@@ -216,7 +216,7 @@ When we run the test again, it breaks\. The name we've given the test hints that
 
 To avoid needing to review every snapshot whenever you make a change, use the custom assertions in the `@aws-cdk/assert/jest` module to write fine\-grained tests that verify only part of the construct's behavior\. For example, the test we called "dlq creates an alarm" in our example really should assert only that an alarm is created with the appropriate metric\.
 
-The [AWS::CloudWatch::Alarm](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-cw-alarm.html) resource specification reveals that we're interested in the properties Namespace, MetricName and Dimensions\. We'll use the `expect(stack).toHaveResource(...)` assertion, which is in the `@aws-cdk/assert/jest` module, to make sure these properties have the appropriate values\. 
+The [AWS::CloudWatch::Alarm](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-cw-alarm.html) resource specification reveals that we're interested in the properties Namespace, MetricName and Dimensions\. We'll use the `expect(stack).to(haveResource(...))` assertion, which is in the `@aws-cdk/assert/jest` module, to make sure these properties have the appropriate values\. 
 
 Replace the code in `test/dead-letter-queue.test.ts` with the following\.
 
@@ -231,7 +231,7 @@ test('dlq creates an alarm', () => {
 
   new dlq.DeadLetterQueue(stack, 'DLQ');
 
-  expect(stack).toHaveResource('AWS::CloudWatch::Alarm', {
+  expect(stack).to(haveResource('AWS::CloudWatch::Alarm', {
     MetricName: "ApproximateNumberOfMessagesVisible",
     Namespace: "AWS/SQS",
     Dimensions: [
@@ -240,7 +240,7 @@ test('dlq creates an alarm', () => {
         Value: { "Fn::GetAtt": [ "DLQ581697C4", "QueueName" ] }
       }
     ],
-  });
+  }));
 });
 
 test('dlq has maximum retention period', () => {
@@ -248,9 +248,9 @@ test('dlq has maximum retention period', () => {
 
   new dlq.DeadLetterQueue(stack, 'DLQ');
 
-  expect(stack).toHaveResource('AWS::SQS::Queue', {
+  expect(stack).to(haveResource('AWS::SQS::Queue', {
     MessageRetentionPeriod: 1209600
-  });
+  }));
 });
 ```
 
@@ -314,9 +314,9 @@ test('retention period can be configured', () => {
     retentionDays: 7
   });
 
-  expect(stack).toHaveResource('AWS::SQS::Queue', {
+  expect(stack).to(haveResource('AWS::SQS::Queue', {
     MessageRetentionPeriod: 604800
-  });
+  }));
 });
 
 test('configurable retention period cannot exceed 14 days', () => {
