@@ -28,7 +28,7 @@ Every construct that represents a resource that can be accessed, such as an Amaz
 
 The first argument of a **grant** method is always of type [IGrantable](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-iam.IGrantable.html)\. This interface represents entities that can be granted permissions—that is, resources with roles, such as the IAM objects `[Role](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-iam.Role.html)`, `[User](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-iam.User.html)`, and `[Group](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-iam.Group.html)`\.
 
-Other entities can also be granted permissions\. For example, later in this topic, we show how to grant a CodeBuild project access to an Amazon S3 bucket\. Generally, the associated role is obtained via a `role` property on the entity being granted access\. Other enttites that can be granted permissions are Amazon EC2 instances and CodeBuild projects\.
+Other entities can also be granted permissions\. For example, later in this topic, we show how to grant a CodeBuild project access to an Amazon S3 bucket\. Generally, the associated role is obtained via a `role` property on the entity being granted access\. Other entities that can be granted permissions are Amazon EC2 instances and CodeBuild projects\.
 
 Resources that use execution roles, such as `[lambda\.Function](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-lambda.Function.html)`, also implement `IGrantable`, so you can grant them access directly \(`bucket.grantRead(lambda)`, or `grant_read` in Python\) instead of granting access to their role\.
 

@@ -47,7 +47,7 @@ cdk init --language typescript
 mkdir MyEcsConstruct
 cd MyEcsConstruct
 cdk init --language python
-source .env/bin/activate || "on Windows, use: .env\Scripts\activate.bat"
+source .env/bin/activate
 pip install -r requirements.txt
 ```
 

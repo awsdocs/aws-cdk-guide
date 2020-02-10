@@ -27,7 +27,7 @@ npm install @aws-cdk/aws-codecommit @aws-cdk/aws-codepipeline-actions @aws-cdk/a
 mkdir pipeline
 cd pipeline
 cdk init --language python
-source .env/bin/activate || "on Windows, use: .env\Scripts\activate.bat"
+source .env/bin/activate
 pip install -r requirements.txt
 mkdir Lambda
 pip install aws_cdk.aws_codedeploy aws_cdk.aws_lambda aws_cdk.aws_codebuild
