@@ -137,7 +137,7 @@ class MyService(Construct):
     Monitoring(self, "mon")
     
 app = App();
-MyService(app, "beta");
+MyService(app, "beta")
 MyService(app, "prod", prod=True)
 
 app.synth()
