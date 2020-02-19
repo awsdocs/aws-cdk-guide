@@ -171,7 +171,7 @@ cfnBucket.analyticsConfiguration = [
 #### [ Python ]
 
 ```
-# Get the AWS CloudFormation resources
+# Get the AWS CloudFormation resource
 cfn_bucket = bucket.node.default_child
 
 # Change its properties
@@ -187,6 +187,9 @@ cfn_bucket.analytics_configuration = [
 #### [ Java ]
 
 ```
+// Get the AWS CloudFormation resource
+CfnBucket cfnBucket = (CfnBucket)bucket.getNode().getDefaultChild();
+
 cfnBucket.setAnalyticsConfigurations(
         Arrays.asList(new HashMap<String, String>() {{
             put("Id", "Config");
@@ -198,6 +201,7 @@ cfnBucket.setAnalyticsConfigurations(
 #### [ C\# ]
 
 ```
+// Get the AWS CloudFormation resource
 var cfnBucket = (CfnBucket)bucket.Node.DefaultChild;
 
 cfnBucket.AnalyticsConfigurations = new List<object> {
