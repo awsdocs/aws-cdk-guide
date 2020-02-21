@@ -297,6 +297,23 @@ cfn_bucket.add_property_deletion_override("VersioningConfiguration.Status")
 ```
 
 ------
+#### [ Java ]
+
+```
+// Get the AWS CloudFormation resource
+CfnBucket cfnBucket = (CfnBucket)bucket.getNode().getDefaultChild();
+
+// Use dot notation to address inside the resource template fragment
+cfnBucket.addOverride("Properties.VersioningConfiguration.Status", "NewStatus");
+cfnBucket.addDeletionOverride("Properties.VersioningConfiguration.Status");
+
+// addPropertyOverride is a convenience function, which implies the
+// path starts with "Properties."
+cfnBucket.addPropertyOverride("VersioningConfiguration.Status", "NewStatus");
+cfnBucket.addPropertyDeletionOverride("VersioningConfiguration.Status");
+```
+
+------
 #### [ C\# ]
 
 ```
@@ -307,7 +324,7 @@ var cfnBucket = (CfnBucket)bucket.node.defaultChild;
 cfnBucket.AddOverride("Properties.VersioningConfiguration.Status", "NewStatus");
 cfnBucket.AddDeletionOverride("Properties.VersioningConfiguration.Status");
 
-// addPropertyOverride is a convenience function, which implies the
+// AddPropertyOverride is a convenience function, which implies the
 // path starts with "Properties."
 cfnBucket.AddPropertyOverride("VersioningConfiguration.Status", "NewStatus");
 cfnBucket.AddPropertyDeletionOverride("VersioningConfiguration.Status");
