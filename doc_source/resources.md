@@ -753,13 +753,13 @@ You enable data to flow on a given network path by using `allow` methods\. The f
 import asg = require('@aws-cdk/aws-autoscaling');
 import ec2 = require('@aws-cdk/aws-ec2');
 
-const fleet: asg.AutoScalingGroup = /* ... */
+const fleet1: asg.AutoScalingGroup = /* ... */
 
 // Allow surfing the (secure) web
-fleet.connections.allowTo(new ec2.Peer.anyIpv4(), new ec2.Port({ fromPort: 443, toPort: 443 }));
+fleet1.connections.allowTo(new ec2.Peer.anyIpv4(), new ec2.Port({ fromPort: 443, toPort: 443 }));
 
 const fleet2: asg.AutoScalingGroup = /* ... */;
-fleet.connections.allowFrom(fleet, ec2.Port.AllTraffic());
+fleet2.connections.allowFrom(fleet1, ec2.Port.AllTraffic());
 ```
 
 ------
@@ -769,14 +769,14 @@ fleet.connections.allowFrom(fleet, ec2.Port.AllTraffic());
 import aws_cdk.aws_autoscaling as asg
 import aws_cdk.aws_ec2 as ec2
 
-fleet = asg.AutoScalingGroup( ... )
+fleet1 = asg.AutoScalingGroup( ... )
 
 # Allow surfing the (secure) web
-fleet.connections.allow_to(ec2.Peer.any_ipv4(), 
+fleet1.connections.allow_to(ec2.Peer.any_ipv4(), 
   ec2.Port(PortProps(from_port=443, to_port=443)))
 
 fleet2 = asg.AutoScalingGroup( ... )
-fleet.connections.allow_from(fleet, ec2.Port.all_traffic())
+fleet2.connections.allow_from(fleet1, ec2.Port.all_traffic())
 ```
 
 ------
@@ -787,16 +787,16 @@ import software.amazon.awscdk.services.autoscaling.AutoScalingGroup;
 import software.amazon.awscdk.services.ec2.Peer;
 import software.amazon.awscdk.services.ec2.Port;
 
-AutoScalingGroup fleet = AutoScalingGroup.Builder.create(this, "MyFleet")
+AutoScalingGroup fleet1 = AutoScalingGroup.Builder.create(this, "MyFleet")
         /* ... */.build();
 
 // Allow surfing the (secure) Web
-fleet.getConnections().allowTo(Peer.anyIpv4(),
+fleet1.getConnections().allowTo(Peer.anyIpv4(),
         Port.Builder.create().fromPort(443).toPort(443).build());
 
 AutoScalingGroup fleet2 = AutoScalingGroup.Builder.create(this, "MyFleet2")
         /* ... */.build();
-fleet2.getConnections().allowFrom(fleet, Port.allTraffic());
+fleet2.getConnections().allowFrom(fleet1, Port.allTraffic());
 ```
 
 ------
