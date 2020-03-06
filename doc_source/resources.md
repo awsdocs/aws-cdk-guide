@@ -759,7 +759,7 @@ const fleet1: asg.AutoScalingGroup = /* ... */
 fleet1.connections.allowTo(new ec2.Peer.anyIpv4(), new ec2.Port({ fromPort: 443, toPort: 443 }));
 
 const fleet2: asg.AutoScalingGroup = /* ... */;
-fleet2.connections.allowFrom(fleet1, ec2.Port.AllTraffic());
+fleet1.connections.allowFrom(fleet2, ec2.Port.AllTraffic());
 ```
 
 ------
@@ -776,7 +776,7 @@ fleet1.connections.allow_to(ec2.Peer.any_ipv4(),
   ec2.Port(PortProps(from_port=443, to_port=443)))
 
 fleet2 = asg.AutoScalingGroup( ... )
-fleet2.connections.allow_from(fleet1, ec2.Port.all_traffic())
+fleet1.connections.allow_from(fleet2, ec2.Port.all_traffic())
 ```
 
 ------
@@ -796,7 +796,7 @@ fleet1.getConnections().allowTo(Peer.anyIpv4(),
 
 AutoScalingGroup fleet2 = AutoScalingGroup.Builder.create(this, "MyFleet2")
         /* ... */.build();
-fleet2.getConnections().allowFrom(fleet1, Port.allTraffic());
+fleet1.getConnections().allowFrom(fleet2, Port.allTraffic());
 ```
 
 ------
@@ -813,7 +813,7 @@ fleet.Connections.AllowTo(ec2.Peer.AnyIpv4(), new ec2.Port(new ec2.PortProps
   { FromPort = 443, ToPort = 443 });
 
 var fleet2 = new asg.AutoScalingGroup(this, "MyFleet2", new asg.AutoScalingGroupProps { ... });
-fleet2.Connections.AllowFrom(fleet, ec2.Port.AllTraffic());
+fleet1.Connections.AllowFrom(fleet2, ec2.Port.AllTraffic());
 ```
 
 ------
