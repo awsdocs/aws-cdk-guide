@@ -678,7 +678,7 @@ metric = queue.metric_approximate_number_of_messages_not_visible(
     # ...
 )
 metric.create_alarm(self, "TooManyMessagesAlarm",
-    comparison_operator(cw.ComparisonOperator.GREATER_THAN_THRESHOLD
+    comparison_operator=cw.ComparisonOperator.GREATER_THAN_THRESHOLD,
     threshold=100,
     # ...
 )
