@@ -633,7 +633,7 @@ table.Grant(func, "dynamodb:CreateBackup");
 
 Many resources, such as Lambda functions, require a role to be assumed when executing code\. A configuration property enables you to specify an `iam.IRole`\. If no role is specified, the function automatically creates a role specifically for this use\. You can then use grant methods on the resources to add statements to the role\.
 
-The grant methods are built using lower\-level APIs for handling with IAM policies\. Policies are modeled as [PolicyDocument](https://docs.aws.amazon.com/cdk/api/latest/docs/aws-iam-readme.html) objects\. Add statements directly to roles \(or a construct's attached role\) using the `addToRolePolicy` method \(Python: `add_to_role_policy`\), or to a resource's policy \(such as a `Bucket` policy\) using the `addToResourcePolicy` \(Python: `add_to_role_policy`\) method\. 
+The grant methods are built using lower\-level APIs for handling with IAM policies\. Policies are modeled as [PolicyDocument](https://docs.aws.amazon.com/cdk/api/latest/docs/aws-iam-readme.html) objects\. Add statements directly to roles \(or a construct's attached role\) using the `addToRolePolicy` method \(Python: `add_to_role_policy`\), or to a resource's policy \(such as a `Bucket` policy\) using the `addToResourcePolicy` \(Python: `add_to_resource_policy`\) method\. 
 
 ## Metrics and Alarms<a name="resources_metrics"></a>
 
