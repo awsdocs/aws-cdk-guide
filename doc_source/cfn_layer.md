@@ -145,7 +145,7 @@ For more information, see [AWS Resource and Property Types Reference](https://do
 
 ## Modifying the AWS CloudFormation Resource behind AWS Constructs<a name="cfn_layer_resource"></a>
 
-If an Construct is missing a feature or you are trying to work around an issue, you can modify the CFN Resource that is encapsulated by the Construct\.
+If a Construct is missing a feature or you are trying to work around an issue, you can modify the CFN Resource that is encapsulated by the Construct\.
 
 All Constructs contain within them the corresponding CFN Resource\. For example, the high\-level `Bucket` construct wraps the low\-level `CfnBucket` construct\. Because the `CfnBucket` corresponds directly to the AWS CloudFormation resource, it exposes all features that are available through AWS CloudFormation\.
 
