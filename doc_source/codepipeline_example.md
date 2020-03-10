@@ -563,7 +563,7 @@ public class PipelineStack extends Stack {
     public PipelineStack(final App scope, final String id, final StackProps props, final CfnParametersCode lambdaCode) {
         super(scope, id, props);
 
-        Repository code = (Repository)Repository.fromRepositoryName(this, "ImportedRepo", 
+        IRepository code = Repository.fromRepositoryName(this, "ImportedRepo", 
                 "NameOfYourCodeCommitRepository");
 
         PipelineProject cdkBuild = PipelineProject.Builder.create(this, "CDKBuild") 
