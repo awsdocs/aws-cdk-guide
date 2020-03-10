@@ -311,7 +311,7 @@ cdk-deploy-to 135792469 us-east-1 %*
 
 ------
 
-When deploying to multiple environments, consider whether you want to continue deploying to other anvironments after a deployment fails\. The following example avoids deploying to the second production environment if the first doesn't succeed\.
+When deploying to multiple environments, consider whether you want to continue deploying to other environments after a deployment fails\. The following example avoids deploying to the second production environment if the first doesn't succeed\.
 
 ------
 #### [ Linux/Mac OS X ]
