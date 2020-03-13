@@ -44,7 +44,7 @@ class MyStack(Stack):
     def __init__(self, scope: Construct, id: str, **kwargs):
 
         super().__init__(scope, id, **kwargs)
-        s3.Bucket(self, "MyBucket");
+        s3.Bucket(self, "MyBucket")
 
 app = App()
 MyStack(app, 'Stack1')
