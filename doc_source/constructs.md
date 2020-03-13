@@ -353,14 +353,14 @@ const createJobLambda = new lambda.Function(this, 'create-job', {
 
 ```
 jobs_queue = sqs.Queue(self, "jobs")
-        create_job_lambda = lambda_.Function(self, "create-job",
-            runtime=lambda_.Runtime.NODEJS_10_X,
-            handler="index.handler",
-            code=lambda_.Code.from_asset("./create-job-lambda-code"),
-            environment=dict(
-                QUEUE_URL=jobs_queue.queue_url
-            )
-        )
+create_job_lambda = lambda_.Function(self, "create-job",
+    runtime=lambda_.Runtime.NODEJS_10_X,
+    handler="index.handler",
+    code=lambda_.Code.from_asset("./create-job-lambda-code"),
+    environment=dict(
+        QUEUE_URL=jobs_queue.queue_url
+    )
+)
 ```
 
 ------
@@ -661,7 +661,7 @@ images.topic.addSubscription(new sns_sub.SqsSubscription(queue));
 #### [ Python ]
 
 ```
-queue = qs.Queue(self, "NewImagesQueue")
+queue = sqs.Queue(self, "NewImagesQueue")
 images = NotifyingBucket(self, prefix="Images")
 images.topic.add_subscription(sns_sub.SqsSubscription(queue))
 ```

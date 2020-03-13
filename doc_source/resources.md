@@ -300,7 +300,7 @@ var bucket = new Bucket(this, "MyBucket", new BucketProps
 
 ## Passing Unique Identifiers<a name="resources_identifiers"></a>
 
-Whenever possible, you should pass resources by reference, as described in the previous section\. However, there are cases where you have no other choice but to refer to a resource by one of its attributes\. For example, when you are using the low\-level AWS CloudFormation resources, or need to expose resources to the runtime components of an AWS CDK application, such as when referring to Λ functions through environment variables\.
+Whenever possible, you should pass resources by reference, as described in the previous section\. However, there are cases where you have no other choice but to refer to a resource by one of its attributes\. For example, when you are using the low\-level AWS CloudFormation resources, or need to expose resources to the runtime components of an AWS CDK application, such as when referring to Lambda functions through environment variables\.
 
 These identifiers are available as attributes on the resources, such as the following\.
 
@@ -808,11 +808,11 @@ using asg = Amazon.CDK.AWS.AutoScaling;
 using ec2 = Amazon.CDK.AWS.EC2;
 
 // Allow surfing the (secure) Web
-var fleet = new asg.AutoScalingGroup(this, "MyFleet", new asg.AutoScalingGroupProps { ... });
-fleet.Connections.AllowTo(ec2.Peer.AnyIpv4(), new ec2.Port(new ec2.PortProps 
+var fleet1 = new asg.AutoScalingGroup(this, "MyFleet", new asg.AutoScalingGroupProps { /* ... */ });
+fleet1.Connections.AllowTo(ec2.Peer.AnyIpv4(), new ec2.Port(new ec2.PortProps 
   { FromPort = 443, ToPort = 443 });
 
-var fleet2 = new asg.AutoScalingGroup(this, "MyFleet2", new asg.AutoScalingGroupProps { ... });
+var fleet2 = new asg.AutoScalingGroup(this, "MyFleet2", new asg.AutoScalingGroupProps { /* ... */ });
 fleet1.Connections.AllowFrom(fleet2, ec2.Port.AllTraffic());
 ```
 
