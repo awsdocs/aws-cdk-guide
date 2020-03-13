@@ -265,7 +265,7 @@ With your stack's environment declared this way, you can now write a short scrip
 #### [ Linux/Mac OS X ]
 
 ```
-#/bin/!bash
+#!/bin/bash
 # cdk-deploy-to.sh
 export CDK_DEPLOY_ACCOUNT=$1
 shift
@@ -317,7 +317,7 @@ When deploying to multiple environments, consider whether you want to continue d
 #### [ Linux/Mac OS X ]
 
 ```
-#/bin/!bash
+#!/bin/bash
 # cdk-deploy-to-prod.sh
 bash cdk-deploy-to.sh 135792468 us-west-1 "$@" || exit
 bash cdk-deploy-to.sh 246813579 eu-west-1 "$@"
