@@ -271,7 +271,7 @@ class MultistackStack(core.Stack):
         # Encrypted bucket uses AWS KMS-managed keys (SSE-KMS).
         if encrypt_bucket:
             s3.Bucket(self, "MyGroovyBucket",
-                      encryption=s3BucketEncryption.KMS_MANAGED,
+                      encryption=s3.BucketEncryption.KMS_MANAGED,
                       removal_policy=core.RemovalPolicy.DESTROY)
         else:
             s3.Bucket(self, "MyGroovyBucket",
