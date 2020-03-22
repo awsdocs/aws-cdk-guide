@@ -30,5 +30,5 @@ The specific language you work in also has its own prerequisites, described in t
 + [Working with the AWS CDK in TypeScript](work-with-cdk-typescript.md)
 + [Working with the AWS CDK in JavaScript](work-with-cdk-javascript.md)
 + [Working with the AWS CDK in Python](work-with-cdk-python.md)
-+ [Working with the AWS CDK in C\#](work-with-cdk-csharp.md)
 + [Working with the AWS CDK in Java](work-with-cdk-java.md)
++ [Working with the AWS CDK in C\#](work-with-cdk-csharp.md)

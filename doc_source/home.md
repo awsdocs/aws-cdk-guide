@@ -179,14 +179,14 @@ Other advantages of the AWS CDK include:
 
 ## Developing with the AWS CDK<a name="developing"></a>
 
-Unless otherwise indicated, the code examples in this guide are in TypeScript\. To aid you in porting a TypeScript example to a supported programming language, see [AWS CDK in Other Languages ](multiple_languages.md)\. The AWS CDK also includes examples in the supported programming languages\. See [AWS CDK Examples](about_examples.md) for a list of the examples\.
+Unless otherwise indicated, the code examples in this guide are in TypeScript\. To aid you in porting a TypeScript example to a supported programming language, see [Translating TypeScript AWS CDK Code to Other Languages ](multiple_languages.md)\. The AWS CDK also includes examples in the supported programming languages\. See [AWS CDK Examples](about_examples.md) for a list of the examples\.
 
 The [AWS CDK Tools](tools.md) is a command line tool for interacting with CDK apps\. It enables developers to synthesize artifacts such as AWS CloudFormation templates, deploy stacks to development AWS accounts, and diff against a deployed stack to understand the impact of a code change\.
 
 The [AWS Construct Library](constructs.md) includes a module for each AWS service with constructs that offer rich APIs that encapsulate the details of how to create resources for an Amazon or AWS service\. The aim of the AWS Construct Library is to reduce the complexity and glue logic required when integrating various AWS services to achieve your goals on AWS\.
 
 **Note**  
-There is no charge for using the AWS CDK, however you might incur AWS charges for creating or using AWS [chargeable resources](http://docs.aws.amazon.com/general/latest/gr/glos-chap.html#chargeable-resources), such as running Amazon EC2 instances or using Amazon S3 storage\. Use the [AWS Simple Monthly Calculator](http://calculator.s3.amazonaws.com/index.html) to estimate charges for the use of various AWS resources\.
+There is no charge for using the AWS CDK, however you might incur AWS charges for creating or using AWS [chargeable resources](http://docs.aws.amazon.com/general/latest/gr/glos-chap.html#chargeable-resources), such as running Amazon EC2 instances or using Amazon S3 storage\. Use the [AWS Pricing Calculator](https://calculator.aws/#/) to estimate charges for the use of various AWS resources\.
 
 ## Contributing to the AWS CDK<a name="contributing"></a>
 
