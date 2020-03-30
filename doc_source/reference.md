@@ -4,9 +4,36 @@ The [API Reference](https://docs.aws.amazon.com/cdk/api/latest) contains informa
 
 Each library contains information about how to use the library\. For example, the [S3](https://docs.aws.amazon.com/cdk/api/latest/docs/aws-s3-readme.html) library demonstrates how to set default encryption on an Amazon S3 bucket\.
 
-## Versioning and Stability Model<a name="versioning"></a>
+## Versioning<a name="versioning"></a>
 
-Version numbers consist of three numeric version parts: *major*\.*minor*\.*patch*, and adhere to the [semantic versioning](https://semver.org) model\. This means that breaking changes to stable APIs, which is described in the next section, are limited to major releases\. Minor and patch releases are backward compatible, meaning that the code written in a previous version with the same major version can be upgraded to a newer version and be expected to continue to build and run, producing the same output\.
+Version numbers consist of three numeric version parts: *major*\.*minor*\.*patch*, and adhere to the [semantic versioning](https://semver.org) model\. This means that breaking changes to stable APIs, are limited to major releases\. Minor and patch releases are backward compatible, meaning that the code written in a previous version with the same major version can be upgraded to a newer version and be expected to continue to build and run, producing the same output\.
+
+## AWS CDK CLI Compatibility<a name="aws_cdk_compatibility"></a>
+
+Following is the expected behavior of the CLI in relation to different versions of the framework libraries.
+
+- CLI versions are **always** compatible with framework libraries of a semantically **lower** version number. This means that CLI upgardes are safe.
+Note that `major` version exceptions still apply. That is, CDK CLI version 2.1.0 is not necessarily compatible with a framework library of version 1.56.0.
+
+- CLI versions are **not always** compatible with framework libraries of a semantically **higher** version number. This is determined by whether or not the `cloud-assembly-schema` version has changed.
+
+    #### What is the cloud-assembly-schema?
+
+    The AWS CDK API framework produces a *cloud-assembly* directory during `synthesis`. This assembly is then consumed by the CDK CLI in order to deploy it assembly to the cloud.
+
+    In essence, this *cloud-assembly* acts as a protocol between the framework and the CLI, and as such, it is versioned.
+
+    For more details, see [Cloud Assembly Versioning](https://github.com/aws/aws-cdk/tree/epolon/cli-framework-compatibility/packages/%40aws-cdk/cloud-assembly-schema#versioning).
+
+
+    This means that you might see the following message when upgrading framework libraries:
+
+    ```console
+    Cloud assembly schema version mismatch: actual('3.0.0') > expected('2.0.0'). Consider upgrading your CLI version.
+    ```
+
+    This message means that the framework you are using is producing assembilies with version `3.0.0`, but the CLI you have installed is expecting version `2.0.0`.
+    To fix this, you can simply upgrade the CLI to the latest version.
 
 ### AWS CDK Stability Index<a name="aws_construct_lib_versioning_stability"></a>
 
