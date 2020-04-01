@@ -370,18 +370,10 @@ cdk init --language typescript
 cdk init --language python
 ```
 
-Once the init command finishes, your prompt should show **\(\.env\)**, indicating you are running under virtualenv\. If not, you must perform one or two more tasks, depending upon your operating system\.
-
-On Linux/MacOS:
+Once the init command finishes, your prompt should show **\(\.env\)**, indicating you are running under virtualenv\. If not, activate the virtual environment by issuing the command below\.
 
 ```
 source .env/bin/activate
-```
-
-On Windows:
-
-```
-.env\Scripts\activate.bat
 ```
 
 Once you've got your virtualenv running, run the following command to install the required dependencies\.

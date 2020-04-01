@@ -2,19 +2,39 @@
 
 The AWS Construct Library uses a few common, widely\-implemented idioms to manage access and permissions\. The IAM module provides you with the tools you need to use these idioms\.
 
+## Principals<a name="permissions_principals"></a>
+
+An IAM principal is an entity that can be authenticated in order to access AWS resources, such as a user, a service, or an application\. The AWS Construct Library supports many types of principals, including:
+
+1. IAM resources such as `[Role](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-iam.Role.html)`, `[User](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-iam.User.html)`, and `[Group](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-iam.Group.html)`
+
+1. Service principals \(`new iam.[ServicePrincipal](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-iam.ServicePrincipal.html)('service.amazonaws.com')`\)
+
+1. Federated principals \(`new iam.[FederatedPrincipal](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-iam.FederatedPrincipal.html)('cognito-identity.amazonaws.com')`\)
+
+1. Account principals \(`new iam.[AccountPrincipal](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-iam.AccountPrincipal.html)('0123456789012'))`
+
+1. Canonical user principals \(`new iam.[CanonicalUserPrincipal](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-iam.CanonicalUserPrincipal.html)('79a59d[...]7ef2be')`\)
+
+1. AWS organizations principals \(`new iam.[OrganizationPrincipal](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-iam.OrganizationPrincipal.html)('org-id')`\)
+
+1. Arbitrary ARN principals \(`new iam.[ArnPrincipal](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-iam.ArnPrincipal.html)(res.arn)`\)
+
+1. An `iam.[CompositePrincipal](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-iam.CompositePrincipal.html)(principal1, principal2, ...)` to trust multiple principals
+
 ## Grants<a name="permissions_grants"></a>
 
 Every construct that represents a resource that can be accessed, such as an Amazon S3 bucket or Amazon DynamoDB table, has methods that grant access to another entity\. All such methods have names starting with **grant**\. For example, Amazon S3 buckets have the methods `[grantRead](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.Bucket.html#grant-readidentity-objectskeypattern)` and `[grantReadWrite](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.Bucket.html#grant-read-writeidentity-objectskeypattern)` \(Python: `grant_read`, `grant_write`\) to enable read and read/write access, respectively, from an entity to the bucket without having to know exactly which Amazon S3 IAM permissions are required to perform these operations\.
 
 The first argument of a **grant** method is always of type [IGrantable](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-iam.IGrantable.html)\. This interface represents entities that can be granted permissions—that is, resources with roles, such as the IAM objects `[Role](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-iam.Role.html)`, `[User](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-iam.User.html)`, and `[Group](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-iam.Group.html)`\.
 
-Other entities can also be granted permissions\. For example, later in this topic, we show how to grant a CodeBuild project access to an Amazon S3 bucket\. Generally, the associated role is obtained via a `role` property on the entity being granted access\. Other enttites that can be granted permissions are Amazon EC2 instances and CodeBuild projects\.
+Other entities can also be granted permissions\. For example, later in this topic, we show how to grant a CodeBuild project access to an Amazon S3 bucket\. Generally, the associated role is obtained via a `role` property on the entity being granted access\. Other entities that can be granted permissions are Amazon EC2 instances and CodeBuild projects\.
 
 Resources that use execution roles, such as `[lambda\.Function](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-lambda.Function.html)`, also implement `IGrantable`, so you can grant them access directly \(`bucket.grantRead(lambda)`, or `grant_read` in Python\) instead of granting access to their role\.
 
 ## Roles<a name="permissions_roles"></a>
 
-The IAM package contains a `[Role](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-iam.Role.html)` construct that represents IAM roles\. The following code creates a new role, trusting the Amazon EC2 Service Principal\.
+The IAM package contains a `[Role](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-iam.Role.html)` construct that represents IAM roles\. The following code creates a new role, trusting the Amazon EC2 service\.
 
 ------
 #### [ TypeScript ]
@@ -114,8 +134,8 @@ role.addToPolicy(PolicyStatement.Builder.create()
 role.AddToPolicy(new PolicyStatement(new PolicyStatementProps
 {
     Effect = Effect.DENY,
-    Resources = [bucket.BucketArn, otherRole.RoleArn],
-    Actions = ["ec2:SomeAction", "s3:Anotheraction"],
+    Resources = new string[] { bucket.BucketArn, otherRole.RoleArn },
+    Actions = new string[] { "ec2:SomeAction", "s3:AnotherAction" },
     Conditions = new Dictionary<string, object>
     {
         ["StringEquals"] = new Dictionary<string, string>
@@ -307,28 +327,10 @@ bucket.addToResourcePolicy(PolicyStatement.Builder.create()
 bucket.AddToResourcePolicy(new PolicyStatement(new PolicyStatementProps
 {
     Effect = Effect.ALLOW,
-    Actions = ["s3:SomeAction"],
-    Resources = [bucket.BucketArn],
-    Principals = [role]
+    Actions = new string[] { "s3:SomeAction" },
+    Resources = new string[] { bucket.BucketArn },
+    Principals = new IPrincipal[] { role }
 }));
 ```
 
 ------
-
-## Principals<a name="permissions_principals"></a>
-
-The AWS CDK Construct Library supports many types of principals, including:
-
-1. IAM resources such as `[Role](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-iam.Role.html)`, `[User](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-iam.User.html)`, and `[Group](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-iam.Group.html)`
-
-1. Service principals \(`new iam.[ServicePrincipal](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-iam.ServicePrincipal.html)('service.amazonaws.com')`\)
-
-1. Account principals \(`new iam.[AccountPrincipal](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-iam.AccountPrincipal.html)('0123456789012'))`
-
-1. Canonical user principals \(`new iam.[CanonicalUserPrincipal](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-iam.CanonicalUserPrincipal.html)('79a59d[...]7ef2be')`\)
-
-1. AWS organizations principals \(`new iam.[OrganizationPrincipal](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-iam.OrganizationPrincipal.html)('org-id')`\)
-
-1. Arbitrary ARN principals \(`new iam.[ArnPrincipal](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-iam.ArnPrincipal.html)(res.arn)`\)
-
-1. An `iam.[CompositePrincipal](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-iam.CompositePrincipal.html)(principal1, principal2, ...)` to trust multiple principals

@@ -137,7 +137,7 @@ class MyService(Construct):
     Monitoring(self, "mon")
     
 app = App();
-MyService(app, "beta");
+MyService(app, "beta")
 MyService(app, "prod", prod=True)
 
 app.synth()
@@ -183,7 +183,7 @@ public class MyApp {
             super(scope, id);
             
             // we might use the prod argument to change how the service is configured
-            new ControlPlane(this, "data");
+            new ControlPlane(this, "cp");
             new DataPlane(this, "data");
             new Monitoring(this, "mon");         
         }
@@ -225,7 +225,7 @@ public class MyService : Construct
     public MyService(Construct scope, string id, Boolean prod=false) : base(scope, id)
     {
         // we might use the prod argument to change how the service is configured
-        new ControlPlane(this, "data");
+        new ControlPlane(this, "cp");
         new DataPlane(this, "data");
         new Monitoring(this, "mon");
     }

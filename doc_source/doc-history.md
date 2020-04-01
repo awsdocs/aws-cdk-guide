@@ -17,3 +17,4 @@ The table below represents significant milestones\. We fix errors and improve co
 | [Version 1\.8\.0](#doc-history) | Updates to reflect improvements to ECS Patterns module\. | September 17, 2019 | 
 | [Version 1\.3\.0](#doc-history) | Update tagging topic to use new API\. | August 13, 2019 | 
 | [Version 1\.0\.0](#doc-history) | The AWS CDK Developer Guide is released\. | July 11, 2019 | 
+| [Version 1\.21\.0](#doc-history) | Add "Working with the CDK" articles for the five supported languages\. Various other improvements and fixes\. | February 4, 2019 | 

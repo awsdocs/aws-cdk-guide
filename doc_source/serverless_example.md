@@ -42,7 +42,7 @@ cdk init --language typescript
 mkdir MyWidgetService
 cd MyWidgetService
 cdk init --language python
-source .env/bin/activate || "on Windows, use: .env\Scripts\activate.bat"
+source .env/bin/activate
 pip install -r requirements.txt
 ```
 

@@ -27,7 +27,7 @@ npm install @aws-cdk/aws-codecommit @aws-cdk/aws-codepipeline-actions @aws-cdk/a
 mkdir pipeline
 cd pipeline
 cdk init --language python
-source .env/bin/activate || "on Windows, use: .env\Scripts\activate.bat"
+source .env/bin/activate
 pip install -r requirements.txt
 mkdir Lambda
 pip install aws_cdk.aws_codedeploy aws_cdk.aws_lambda aws_cdk.aws_codebuild
@@ -114,7 +114,7 @@ export class LambdaStack extends Stack {
   constructor(app: App, id: string, props?: StackProps) {
     super(app, id, props);
       
-    this.lambdaCode = lambda.Code.cfnParameters();
+    this.lambdaCode = lambda.Code.fromCfnParameters();
       
     const func = new lambda.Function(this, 'Lambda', {
       code: this.lambdaCode,
@@ -150,7 +150,7 @@ class LambdaStack(core.Stack):
   def __init__(self, app: core.App, id: str, **kwargs):
     super().__init__(app, id, **kwargs)
 
-    self.lambda_code = lambda_.Code.cfn_parameters()
+    self.lambda_code = lambda_.Code.from_cfn_parameters()
       
     func = lambda_.Function(self, "Lambda",
                             code=self.lambda_code,
@@ -563,7 +563,7 @@ public class PipelineStack extends Stack {
     public PipelineStack(final App scope, final String id, final StackProps props, final CfnParametersCode lambdaCode) {
         super(scope, id, props);
 
-        Repository code = (Repository)Repository.fromRepositoryName(this, "ImportedRepo", 
+        IRepository code = Repository.fromRepositoryName(this, "ImportedRepo", 
                 "NameOfYourCodeCommitRepository");
 
         PipelineProject cdkBuild = PipelineProject.Builder.create(this, "CDKBuild") 

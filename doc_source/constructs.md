@@ -361,14 +361,14 @@ const createJobLambda = new Function(this, 'create-job', {
 
 ```
 jobs_queue = sqs.Queue(self, "jobs")
-        create_job_lambda = lambda_.Function(self, "create-job",
-            runtime=lambda_.Runtime.NODEJS_10_X,
-            handler="index.handler",
-            code=lambda_.Code.from_asset("./create-job-lambda-code"),
-            environment=dict(
-                QUEUE_URL=jobs_queue.queue_url
-            )
-        )
+create_job_lambda = lambda_.Function(self, "create-job",
+    runtime=lambda_.Runtime.NODEJS_10_X,
+    handler="index.handler",
+    code=lambda_.Code.from_asset("./create-job-lambda-code"),
+    environment=dict(
+        QUEUE_URL=jobs_queue.queue_url
+    )
+)
 ```
 
 ------
@@ -429,11 +429,10 @@ export interface NotifyingBucketProps {
 export class NotifyingBucket extends Construct {
   constructor(scope: Construct, id: string, props: NotifyingBucketProps = {}) {
     super(scope, id);
-    const bucket = new Bucket(this, 'bucket');
-
-    const topic = new Topic(this, 'topic');
-    const snsDestination = new SnsDestination(topic);
-    bucket.addObjectCreatedNotification(snsDestination, { prefix: props.prefix }); 
+    const bucket = new s3.Bucket(this, 'bucket');
+    const topic = new sns.Topic(this, 'topic');
+    bucket.addObjectCreatedNotification(new s3notify.SnsDestination(topic),
+      { prefix: props.prefix });
   }
 }
 ```
@@ -445,10 +444,10 @@ export class NotifyingBucket extends Construct {
 class NotifyingBucket(core.Construct):
 
     def __init__(self, scope: core.Construct, id: str, *, prefix=None, **kwargs):
-        super().__init__(scope, id, **kwargs)
+        super().__init__(scope, id)
         bucket = s3.Bucket(self, "bucket")
         topic = sns.Topic(self, "topic")
-        bucket.add_object_created_notification(topic,
+        bucket.add_object_created_notification(s3notify.SnsDestination(topic),
             s3.NotificationKeyFilter(prefix=prefix))
 ```
 
@@ -471,7 +470,7 @@ public class NotifyingBucket extends Bucket {
     }
 
     public NotifyingBucket(final Construct scope, final String id, final BucketProps props, final String prefix) {
-        super(scope, id, props);
+        super(scope, id);
 
         Bucket bucket = new Bucket(this, "bucket");
         Topic topic = new Topic(this, "topic");
@@ -488,12 +487,12 @@ public class NotifyingBucket extends Bucket {
 ```
 public class NotifyingBucketProps : BucketProps
 {
-    public string Prefix = null;
+    public string Prefix { get; set; }
 }
 
 public class NotifyingBucket : Construct
 {
-    public NotifyingBucket(Construct scope, string id, NotifyingBucketProps props = null) : base(scope, id, props)
+    public NotifyingBucket(Construct scope, string id, NotifyingBucketProps props = null) : base(scope, id)
     {
         var bucket = new Bucket(this, "bucket");
         var topic = new Topic(this, "topic");
@@ -680,7 +679,7 @@ images.topic.addSubscription(new SqsSubscription(queue));
 #### [ Python ]
 
 ```
-queue = qs.Queue(self, "NewImagesQueue")
+queue = sqs.Queue(self, "NewImagesQueue")
 images = NotifyingBucket(self, prefix="Images")
 images.topic.add_subscription(sns_sub.SqsSubscription(queue))
 ```

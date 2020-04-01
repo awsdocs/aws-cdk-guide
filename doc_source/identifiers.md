@@ -44,7 +44,7 @@ class MyStack(Stack):
     def __init__(self, scope: Construct, id: str, **kwargs):
 
         super().__init__(scope, id, **kwargs)
-        s3.Bucket(self, "MyBucket");
+        s3.Bucket(self, "MyBucket")
 
 app = App()
 MyStack(app, 'Stack1')
@@ -156,7 +156,7 @@ string path = myConstruct.Node.Path;
 
 ## Unique IDs<a name="identifiers_unique_ids"></a>
 
-Since AWS CloudFormation requires that all logical IDs in a template are unique, the AWS CDK must be able to generate unique identifier for each construct in an application\. Since the AWS CDK already has paths that are globally unique, the AWS CDK generates these unique identifiers by concatenating the elements of the path, and adds an 8\-digit hash\. The hash is necessary, as otherwise two distinct paths, such as `A/B/C` and `A/BC` would result in the same identifier\. The AWS CDK calls this concatenated path elements and hash the *unique ID* of the construct\.
+Since AWS CloudFormation requires that all logical IDs in a template are unique, the AWS CDK must be able to generate a unique identifier for each construct in an application\. Since the AWS CDK already has paths that are globally unique, the AWS CDK generates these unique identifiers by concatenating the elements of the path, and adds an 8\-digit hash\. The hash is necessary, as otherwise two distinct paths, such as `A/B/C` and `A/BC` would result in the same identifier\. The AWS CDK calls this concatenated path elements and hash the *unique ID* of the construct\.
 
 You can access the unique ID of any construct programmatically, as shown in the following example, which gets the unique ID of `myConstruct` \(or `my_costruct` in Python conventions\)\. Since ids must be unique within the scope they are created, their paths are always unique within a AWS CDK application\.
 

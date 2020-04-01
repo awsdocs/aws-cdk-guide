@@ -17,7 +17,7 @@ The modules that make up the AWS Construct Library are a matched set\. They are 
 
 We also update the libraries that are used by the AWS Construct Library from time to time, and different versions of the library modules may have incompatible dependencies\. Synchronizing the versions of the library modules will also address this issue\.
 
-Below, you'll find details on managing the versions of your installed AWS Construct Library modules TypeScript, JavaScript, and Python
+Below, you'll find details on managing the versions of your installed AWS Construct Library modules in TypeScript, JavaScript, Python, Java, and C\#\.
 
 ------
 #### [ TypeScript/JavaScript ]
@@ -80,6 +80,42 @@ If your project requires a specific older version of the AWS Construct Library, 
 ```
 pip install -r requirements.txt
 ```
+
+------
+#### [ Java ]
+
+Add your project's AWS Construct Library modules as dependencies in your project's `pom.xml`\. You may specify an exact version, or use Maven's [range syntax](https://docs.oracle.com/middleware/1212/core/MAVEN/maven_version.htm#MAVEN402) to specify a range of allowable versions\.
+
+For example, to specify an exact version of a dependency:
+
+```
+<dependency>
+    <groupId>software.amazon.awscdk</groupId>
+    <artifactId>s3</artifactId>
+    <version>1.23.0</version>
+</dependency>
+```
+
+To specify that any 1\.x\.x version is acceptable \(note use of right parenthesis to indicate that the end of the range excludes version 2\.0\.0\):
+
+```
+<dependency>
+    <groupId>software.amazon.awscdk</groupId>
+    <artifactId>s3</artifactId>
+    <version>[1.0.0,2.0.0)</version>
+</dependency>
+```
+
+Maven automatically downloads and installs the latest versions that allow all requirements to be fulfilled when you build your application\.
+
+If you prefer to pin dependencies to a specific version, you can issue `mvn versions:use-latest-versions` to rewrite the version specifications in `pom.xml` to the latest available versions when you decide to upgrade\.
+
+------
+#### [ C\# ]
+
+Use the Visual Studio NuGet GUI \(**Tools** > **NuGet Package Manager** > **Manage NuGet Packages for Solution**\) to install the desired version of your application's AWS Construct Library modules\. 
++ The **Installed** panel shows you what modules are currently installed; you can install any available version of any module from this page\.
++ The **Updates** panel shows you modules for which updates are available, and lets you update some or all of them\.
 
 ------
 
@@ -248,6 +284,42 @@ class CdkTestStack(cdk.stack):
         
         bucket = s3.Bucket(self, "Bucket",
             removal_policy=cdk.RemovalPolicy.DESTROY)
+```
+
+------
+#### [ Java ]
+
+```
+software.amazon.awscdk.core.*;
+import software.amazon.awscdk.services.s3.*;
+
+public class CdkTestStack extends Stack {
+    public CdkTestStack(final Construct scope, final String id) {
+        this(scope, id, null);
+    }
+
+    public CdkTestStack(final Construct scope, final String id, final StackProps props) {
+        super(scope, id, props);
+
+        Bucket.Builder.create(this, "Bucket")
+                .removalPolicy(RemovalPolicy.DESTROY).build();
+    }
+}
+```
+
+------
+#### [ C\# ]
+
+```
+using Amazon.CDK;
+using Amazon.CDK.AWS.S3;
+
+public CdkTestStack(Construct scope, string id, IStackProps props) : base(scope, id, props)
+{
+    new Bucket(this, "Bucket", new BucketProps {
+        RemovalPolicy = RemovalPolicy.DESTROY
+    });
+}
 ```
 
 ------
