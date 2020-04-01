@@ -338,7 +338,7 @@ export class PipelineStack extends Stack {
         },
       }),
       environment: {
-        buildImage: codebuild.LinuxBuildImage.UBUNTU_14_04_NODEJS_10_14_1,
+        buildImage: LinuxBuildImage.STANDARD_2_0,
       },
     });
     const lambdaBuild = new codebuild.PipelineProject(this, 'LambdaBuild', {
@@ -364,7 +364,7 @@ export class PipelineStack extends Stack {
         },
       }),
       environment: {
-        buildImage: codebuild.LinuxBuildImage.UBUNTU_14_04_NODEJS_10_14_1,
+        buildImage: LinuxBuildImage.STANDARD_2_0,
       },
     });
 
