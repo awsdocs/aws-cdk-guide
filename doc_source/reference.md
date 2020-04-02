@@ -30,7 +30,8 @@ Note that `major` version exceptions still apply. That is, CDK CLI version 2.1.0
     This means that you might see the following message when upgrading framework libraries:
 
     ```console
-    Cloud assembly schema version mismatch: actual('3.0.0') > expected('2.0.0'). Consider upgrading your CLI version.
+    Cloud assembly schema version mismatch: Maximum schema version supported is 3.0.0, but found 4.0.0.
+    Please upgrade your CLI in order to interact with this app.
     ```
 
 ### AWS CDK Stability Index<a name="aws_construct_lib_versioning_stability"></a>
