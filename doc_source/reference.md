@@ -8,7 +8,7 @@ Each library contains information about how to use the library\. For example, th
 
 Version numbers consist of three numeric version parts: *major*\.*minor*\.*patch*, and adhere to the [semantic versioning](https://semver.org) model\. This means that breaking changes to stable APIs, are limited to major releases\. Minor and patch releases are backward compatible, meaning that the code written in a previous version with the same major version can be upgraded to a newer version and be expected to continue to build and run, producing the same output\. 
 
-**Note that this compatibility promise does not apply for *Experimental* API's, see [AWS CDK Stability Index](#aws_construct_lib_versioning_stability) for more details.**
+**Note that this compatibility promise does not apply to *Experimental* API's, see [AWS CDK Stability Index](#aws_construct_lib_versioning_stability) for more details.**
 
 ## AWS CDK CLI Compatibility<a name="aws_cdk_compatibility"></a>
 
