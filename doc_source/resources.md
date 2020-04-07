@@ -8,7 +8,7 @@ Defining AWS resources in your CDK app is exactly like defining any other constr
 #### [ TypeScript ]
 
 ```
-import sqs = require('@aws-cdk/aws-sqs');
+import * as sqs from '@aws-cdk/aws-sqs';
             
 new sqs.Queue(this, 'MyQueue', {
     encryption: sqs.QueueEncryption.KMS_MANAGED
@@ -58,7 +58,7 @@ Most resources in the AWS Construct Library expose attributes, which are resolve
 #### [ TypeScript ]
 
 ```
-import sqs = require('@aws-cdk/aws-sqs');
+import * as sqs from '@aws-cdk/aws-sqs';
       
 const queue = new sqs.Queue(this, 'MyQueue');
 const url = queue.queueUrl; // => A string representing a deploy-time value
@@ -645,8 +645,8 @@ The following example shows how to define an alarm when the `ApproximateNumberOf
 #### [ TypeScript ]
 
 ```
-import cw = require('@aws-cdk/aws-cloudwatch');
-import sqs = require('@aws-cdk/aws-sqs');
+import * as cw from '@aws-cdk/aws-cloudwatch';
+import * as sqs from '@aws-cdk/aws-sqs';
 import { Duration } from '@aws-cdk/core';
 
 const queue = new sqs.Queue(this, 'MyQueue');
@@ -750,8 +750,8 @@ You enable data to flow on a given network path by using `allow` methods\. The f
 #### [ TypeScript ]
 
 ```
-import asg = require('@aws-cdk/aws-autoscaling');
-import ec2 = require('@aws-cdk/aws-ec2');
+import * as asg from '@aws-cdk/aws-autoscaling';
+import * as ec2 from '@aws-cdk/aws-ec2';
 
 const fleet1: asg.AutoScalingGroup = /* ... */
 
@@ -870,7 +870,7 @@ The following example shows how to trigger a Lambda function when an object is a
 #### [ TypeScript ]
 
 ```
-import s3nots = require('@aws-cdk/aws-s3-notifications');
+import * s3nots from '@aws-cdk/aws-s3-notifications';
 
 const handler = new lambda.Function(this, 'Handler', { /*…*/ });
 const bucket = new s3.Bucket(this, 'Bucket');

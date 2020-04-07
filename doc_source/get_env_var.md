@@ -19,14 +19,14 @@ const bucket_name = process.env.MYBUCKET || "DefaultName";
 ```
 import os
 
-# Throws error if environment variable doesn't exist
-bucket_name = os.env["MYBUCKET"]
+# Raises KeyError if environment variable doesn't exist
+bucket_name = os.environ["MYBUCKET"]
         
 # Sets bucket_name to None if environment variable doesn't exist
-bucket_name = os.env.get("MYBUCKET")
+bucket_name = os.getenv("MYBUCKET")
 
 # Sets bucket_name to a default if env var doesn't exist
-bucket_name = os.env.get("MYBUCKET", "DefaultName")
+bucket_name = os.getenv("MYBUCKET", "DefaultName")
 ```
 
 ------

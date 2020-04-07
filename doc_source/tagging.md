@@ -241,7 +241,7 @@ The following example adds the tag key **StackType** with value **TheBest** to a
 #### [ TypeScript ]
 
 ```
-import { App, Stack, Tag } from require('@aws-cdk/core');
+import { App, Stack, Tag } from '@aws-cdk/core';
 
 const app = new App();
 const theBestStack = new Stack(app, 'MarketingSystem');

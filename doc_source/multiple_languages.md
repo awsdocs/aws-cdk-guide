@@ -20,8 +20,11 @@ TypeScript supports importing either an entire module, or individual objects fro
 // Import entire module as s3 into current namespace
 import * as s3 from '@aws-cdk/aws-s3';
 
-// Import an entire module using Node.js require() (generally replaced by above syntax)
+// Import an entire module using Node.js require() (import * as s3 generally preferred)
 const s3 = require('@aws-cdk/aws-s3');
+
+// TypeScript version of require() (again, import * as s3 generally preferred)
+import s3 = require('@aws-cdk/aws-3');
 
 // Now use s3 to access the S3 types
 const bucket = s3.Bucket(...);
@@ -191,7 +194,7 @@ In C\#, props are specified using an object initializer to a class named `XxxxPr
 
 Props are named similarly to TypeScript, except using `PascalCase`\.
 
-It is convenient to use the `var` keyword when instantiating a construct, so you don't need to type the class name twice\. However, your local code style guide may vary\.\.
+It is convenient to use the `var` keyword when instantiating a construct, so you don't need to type the class name twice\. However, your local code style guide may vary\.
 
 ```
 // Instantiate default Bucket
@@ -202,7 +205,7 @@ var bucket =  Bucket(self, "MyBucket", new BucketProps {
                       BucketName = "my-bucket",
                       Versioned  = true});
 
-# Instantiate Bucket with RedirectTarget, which has its own sub-properties
+// Instantiate Bucket with RedirectTarget, which has its own sub-properties
 var bucket = Bucket(self, "MyBucket", new BucketProps {
                       RedirectTarget = new RedirectTarget {
                               HostName = "aws.amazon.com"
@@ -236,8 +239,6 @@ bucket.bucket_arn
 ```
 
 ------
-
-------
 #### [ Java ]
 
 A getter method is provided for each property; these names are `camelCase`\.
@@ -245,8 +246,6 @@ A getter method is provided for each property; these names are `camelCase`\.
 ```
 bucket.getBucketArn()
 ```
-
-------
 
 ------
 #### [ C\# ]

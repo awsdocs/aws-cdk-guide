@@ -188,9 +188,9 @@ Add the following AWS Construct Library module imports to the indicated file\.
 File: `lib/my_ecs_construct-stack.ts`
 
 ```
-import ec2 = require("@aws-cdk/aws-ec2");
-import ecs = require("@aws-cdk/aws-ecs");
-import ecs_patterns = require("@aws-cdk/aws-ecs-patterns");
+import * as ec2 from "@aws-cdk/aws-ec2";
+import * as ecs from "@aws-cdk/aws-ecs";
+import * as ecs_patterns from "@aws-cdk/aws-ecs-patterns";
 ```
 
 ------

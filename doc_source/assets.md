@@ -137,9 +137,9 @@ The code for the main AWS CDK app should look like the following\.
 #### [ TypeScript ]
 
 ```
-import cdk = require('@aws-cdk/core');
-import lambda = require('@aws-cdk/aws-lambda');
-import path = require('path');
+import * as cdk from '@aws-cdk/core';
+import * as lambda from '@aws-cdk/aws-lambda';
+import * as path from 'path';
 
 export class HelloAssetStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
@@ -241,7 +241,7 @@ The following example uses deploy\-time attributes to pass the location of an im
 
 ```
 import { Asset } from '@aws-cdk/aws-s3-assets';
-import path = require('path');
+import * as path from 'path';
 
 const imageAsset = new Asset(this, "SampleAsset", {
   path: path.join(__dirname, "images/my-image.png")
@@ -359,7 +359,7 @@ The following example grants an IAM group read permissions on a file asset\.
 
 ```
 import { Asset } from '@aws-cdk/aws-s3-assets';
-import path = require('path');
+import * as path from 'path';
 
 const asset = new Asset(this, 'MyFile', {
   path: path.join(__dirname, 'my-image.png')
@@ -497,8 +497,8 @@ A common use case is to create an Amazon ECS [TaskDefinition](https://docs.aws.a
 #### [ TypeScript ]
 
 ```
-import ecs = require('@aws-cdk/aws-ecs');
-import path = require('path');
+import * as ecs from '@aws-cdk/aws-ecs';
+import * as path from 'path';
 
 const taskDefinition = new ecs.FargateTaskDefinition(this, "TaskDef", {
   memoryLimitMiB: 1024,
@@ -578,8 +578,8 @@ The following example shows how to use the deploy\-time attributes `repository` 
 #### [ TypeScript ]
 
 ```
-import ecs = require('@aws-cdk/aws-ecs');
-import path = require('path');
+import * as ecs from '@aws-cdk/aws-ecs';
+import * as path from 'path';
 import { DockerImageAsset } from '@aws-cdk/aws-ecr-assets';
 
 const asset = new DockerImageAsset(this, 'my-image', {

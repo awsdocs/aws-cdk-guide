@@ -220,7 +220,7 @@ You can count the resources in your synthesized output using the following short
 // invoke with: node rescount.js <path-to-stack-json>
 // e.g. node rescount.js cdk.out/MyStack.template.json
   
-const fs = require('fs');
+import * as fs from 'fs';
 const path = process.argv[2];
   
 if (path) fs.readFile(path, 'utf8', function(err, contents) {
@@ -257,8 +257,8 @@ If you set a resource's removal policy to `DESTROY`, that resource will be delet
 #### [ TypeScript ]
 
 ```
-import cdk = require('@aws-cdk/core');
-import s3 = require('@aws-cdk/aws-s3')
+import * as cdk from '@aws-cdk/core';
+import * as s3 from '@aws-cdk/aws-s3';
   
 export class CdkTestStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {

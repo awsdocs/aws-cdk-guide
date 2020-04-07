@@ -18,8 +18,8 @@ For production stacks, we recommend that you explicitly specify the environment 
 const envEU  = { account: '2383838383', region: 'eu-west-1' };
 const envUSA = { account: '8373873873', region: 'us-west-2' };
 
-new MyFirstStack(app, 'first-stack-us', { env: envUSA, encryption: false });
-new MyFirstStack(app, 'first-stack-eu', { env: envEU, encryption: true  });
+new MyFirstStack(app, 'first-stack-us', { env: envUSA });
+new MyFirstStack(app, 'first-stack-eu', { env: envEU });
 ```
 
 ------
@@ -29,8 +29,8 @@ new MyFirstStack(app, 'first-stack-eu', { env: envEU, encryption: true  });
 env_EU = core.Environment(account="8373873873", region="eu-west-1")
 env_USA = core.Environment(account="2383838383", region="us-west-2")
 
-MyFirstStack(app, "first-stack-us", env=env_USA, encryption=False)
-MyFirstStack(app, "first-stack-eu", env=env_EU, encryption=True)
+MyFirstStack(app, "first-stack-us", env=env_USA)
+MyFirstStack(app, "first-stack-eu", env=env_EU)
 ```
 
 ------
@@ -176,7 +176,7 @@ new MyDevStack(app, "dev", new StackProps { Env = makeEnv() });
 
 ------
 
-The AWS CDK distinguishes between not specifying the `env` property at all and specifying it using `CDK_DEFAULT_ACCOUNT` and `CDK_DEFAULT_REGION`\. The former implies that the stack should synthesize an environment\-agnostic template\. Constructs that are defined in such a stack cannot use any information about their environment\. For example, you can't write code like `if (stack.region === 'us-east-1')` or use framework facilities like [Vpc\.fromLookup](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-ec2.Vpc.html#static-from-wbr-lookupscope-id-options) \(Python: `from_lookup`\), which need to query your AWS account\.
+The AWS CDK distinguishes between not specifying the `env` property at all and specifying it using `CDK_DEFAULT_ACCOUNT` and `CDK_DEFAULT_REGION`\. The former implies that the stack should synthesize an environment\-agnostic template\. Constructs that are defined in such a stack cannot use any information about their environment\. For example, you can't write code like `if (stack.region === 'us-east-1')` or use framework facilities like [Vpc\.fromLookup](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-ec2.Vpc.html#static-from-wbr-lookupscope-id-options) \(Python: `from_lookup`\), which need to query your AWS account\. These features do not work at all without an explicit environment specified; to use them, you must specify `env`\.
 
 When you pass in your environment using `CDK_DEFAULT_ACCOUNT` and `CDK_DEFAULT_REGION`, the stack will be deployed in the account and Region determined by the AWS CDK CLI at the time of synthesis\. This allows environment\-dependent code to work, but it also means that the synthesized template could be different based on the machine, user, or session under which it is synthesized\. This behavior is often acceptable or even desirable during development, but it would probably be an anti\-pattern for production use\.
 

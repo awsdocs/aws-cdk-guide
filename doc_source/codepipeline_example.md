@@ -104,8 +104,8 @@ If the Lambda function needs any other resources when executing, such as an Amaz
 File: `lib/lambda-stack.ts`
 
 ```
-import codedeploy = require('@aws-cdk/aws-codedeploy');
-import lambda = require('@aws-cdk/aws-lambda');
+import * as codedeploy from '@aws-cdk/aws-codedeploy';
+import * as lambda from '@aws-cdk/aws-lambda';
 import { App, Stack, StackProps } from '@aws-cdk/core';
       
 export class LambdaStack extends Stack {
@@ -297,12 +297,12 @@ We also change the name of the stack that will be deployed, from `LambdaStack` t
 File: `lib/pipeline-stack.ts`
 
 ```
-import codebuild = require('@aws-cdk/aws-codebuild');
-import codecommit = require('@aws-cdk/aws-codecommit');
-import codepipeline = require('@aws-cdk/aws-codepipeline');
-import codepipeline_actions = require('@aws-cdk/aws-codepipeline-actions');
-import lambda = require('@aws-cdk/aws-lambda');
-import s3 = require('@aws-cdk/aws-s3');
+import * as codebuild from '@aws-cdk/aws-codebuild';
+import * as codecommit from '@aws-cdk/aws-codecommit';
+import * as codepipeline from '@aws-cdk/aws-codepipeline';
+import * as codepipeline_actions from '@aws-cdk/aws-codepipeline-actions';
+import * as lambda from '@aws-cdk/aws-lambda';
+import * as s3 from '@aws-cdk/aws-s3';
 import { App, Stack, StackProps } from '@aws-cdk/core';
 
 export interface PipelineStackProps extends StackProps {
@@ -338,7 +338,7 @@ export class PipelineStack extends Stack {
         },
       }),
       environment: {
-        buildImage: LinuxBuildImage.STANDARD_2_0,
+        buildImage: codebuild.LinuxBuildImage.STANDARD_2_0,
       },
     });
     const lambdaBuild = new codebuild.PipelineProject(this, 'LambdaBuild', {
@@ -364,7 +364,7 @@ export class PipelineStack extends Stack {
         },
       }),
       environment: {
-        buildImage: LinuxBuildImage.STANDARD_2_0,
+        buildImage: codebuild.LinuxBuildImage.STANDARD_2_0,
       },
     });
 
@@ -456,7 +456,7 @@ class PipelineStack(core.Stack):
                                 "files": [
                                     "LambdaStack.template.json"]},
                             environment=dict(buildImage=
-                                codebuild.LinuxBuildImage.UBUNTU_14_04_NODEJS_10_14_1))))
+                                codebuild.LinuxBuildImage.STANDARD_2_0))))
 
         lambda_build = codebuild.PipelineProject(self, 'LambdaBuild',
                         build_spec=codebuild.BuildSpec.from_object(dict(
@@ -474,7 +474,7 @@ class PipelineStack(core.Stack):
                                     "index.js",
                                     "node_modules/**/*"]},
                             environment=dict(buildImage=
-                                codebuild.LinuxBuildImage.UBUNTU_14_04_NODEJS_10_14_1))))
+                                codebuild.LinuxBuildImage.STANDARD_2_0))))
 
         source_output = codepipeline.Artifact()
         cdk_build_output = codepipeline.Artifact("CdkBuildOutput")
@@ -584,7 +584,7 @@ public class PipelineStack extends Stack {
                         put("files", Arrays.asList("LambdaStack.template.json"));
                     }}))
                     .environment(BuildEnvironment.builder().buildImage(
-                            LinuxBuildImage.UBUNTU_14_04_NODEJS_10_14_1).build())
+                            LinuxBuildImage.STANDARD_2_0).build())
                     .build();
 
         PipelineProject lambdaBuild = PipelineProject.Builder.create(this, "LambdaBuild") 
@@ -604,7 +604,7 @@ public class PipelineStack extends Stack {
                         }});
                     }}))
                     .environment(BuildEnvironment.builder().buildImage(
-                            LinuxBuildImage.UBUNTU_14_04_NODEJS_10_14_1).build())
+                            LinuxBuildImage.STANDARD_2_0).build())
                     .build();
 
         Artifact sourceOutput = new Artifact();
@@ -711,7 +711,7 @@ namespace Pipeline
                 }),
                 Environment = new BuildEnvironment
                 {
-                    BuildImage = LinuxBuildImage.UBUNTU_14_04_NODEJS_10_14_1
+                    BuildImage = LinuxBuildImage.STANDARD_2_0
                 }
             });
 
@@ -747,7 +747,7 @@ namespace Pipeline
                 }),
                 Environment = new BuildEnvironment
                 {
-                    BuildImage = LinuxBuildImage.UBUNTU_14_04_NODEJS_10_14_1
+                    BuildImage = LinuxBuildImage.STANDARD_2_0
                 }
             });
 

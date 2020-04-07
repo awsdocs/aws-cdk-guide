@@ -108,8 +108,8 @@ So open the indicated source file in your IDE or editor and add the new interfac
 File: `lib/multistack-stack.ts`
 
 ```
-import cdk = require('@aws-cdk/core');
-import s3 = require('@aws-cdk/aws-s3');
+import * as cdk from '@aws-cdk/core';
+import * as s3 from '@aws-cdk/aws-s3';
 
 interface MultiStackProps extends cdk.StackProps {
   encryptBucket?: boolean;
@@ -222,8 +222,8 @@ The new property is optional\. If `encryptBucket` \(Python: `encrypt_bucket`\) i
 File: `lib/multistack-stack.ts`
 
 ```
-import cdk = require('@aws-cdk/core');
-import s3 = require('@aws-cdk/aws-s3');
+import * as cdk from '@aws-cdk/core';
+import * as s3 from '@aws-cdk/aws-s3';
 
 interface MultistackProps extends cdk.StackProps {
   encryptBucket?: boolean;
@@ -383,7 +383,7 @@ File: `bin/multistack.ts`
 ```
 #!/usr/bin/env node
 import 'source-map-support/register';
-import cdk = require('@aws-cdk/core');
+import * as cdk from '@aws-cdk/core';
 import { MultistackStack } from '../lib/multistack-stack';
 
 const app = new cdk.App();

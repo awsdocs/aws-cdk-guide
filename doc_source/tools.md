@@ -305,7 +305,7 @@ This topic describes how to use the SAM CLI with the AWS CDK to test a Lambda fu
 1. Add a Lambda reference to `lib/cdk-sam-example-stack.ts`:
 
    ```
-   import lambda = require('@aws-cdk/aws-lambda');
+   import * as lambda from '@aws-cdk/aws-lambda';
    ```
 
 1. Replace the comment in `lib/cdk-sam-example-stack.ts` with the following Lambda function:

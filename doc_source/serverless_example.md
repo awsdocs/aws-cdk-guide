@@ -293,10 +293,10 @@ Create a new source file to define the widget service with the source code shown
 File: `lib/widget_service.ts`
 
 ```
-import core = require("@aws-cdk/core");
-import apigateway = require("@aws-cdk/aws-apigateway");
-import lambda = require("@aws-cdk/aws-lambda");
-import s3 = require("@aws-cdk/aws-s3");
+import * as core from "@aws-cdk/core";
+import * as apigateway from "@aws-cdk/aws-apigateway";
+import * as lambda from "@aws-cdk/aws-lambda";
+import * as s3 from "@aws-cdk/aws-s3";
 
 export class WidgetService extends core.Construct {
   constructor(scope: core.Construct, id: string) {
@@ -527,7 +527,7 @@ File: `lib/my_widget_service-stack.ts`
 Add the following line of code after the existing `import` statement\.
 
 ```
-import widget_service = require('../lib/widget_service');
+import * as widget_service from '../lib/widget_service';
 ```
 
 Replace the comment in the constructor with the following line of code\.

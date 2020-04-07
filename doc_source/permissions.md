@@ -40,7 +40,7 @@ The IAM package contains a `[Role](https://docs.aws.amazon.com/cdk/api/latest/do
 #### [ TypeScript ]
 
 ```
-import iam = require('@aws-cdk/aws-iam');
+import * as iam from '@aws-cdk/aws-iam';
 
 const role = new iam.Role(this, 'Role', {
   assumedBy: new iam.ServicePrincipal('ec2.amazonaws.com'),   // required
@@ -156,7 +156,7 @@ If you're using a construct that requires a role to function correctly, you can 
 #### [ TypeScript ]
 
 ```
-import codebuild = require('@aws-cdk/aws-codebuild');
+import * as codebuild from '@aws-cdk/aws-codebuild';
 
 // imagine roleOrUndefined is a function that might return a Role object
 // under some conditions, and undefined under other conditions

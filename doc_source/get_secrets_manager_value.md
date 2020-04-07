@@ -6,7 +6,7 @@ To use values from AWS Secrets Manager in your CDK app, use the [fromSecretAttri
 #### [ TypeScript ]
 
 ```
-import sm = require("@aws-cdk/aws-secretsmanager");
+import * as sm from "@aws-cdk/aws-secretsmanager";
 
 export class SecretsManagerStack extends core.Stack {
   constructor(scope: core.App, id: string, props?: core.StackProps) {

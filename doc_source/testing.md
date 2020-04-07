@@ -24,8 +24,8 @@ npm install @aws-cdk/aws-sqs @aws-cdk/aws-cloudwatch
  Place the following code in `lib/dead-letter-queue.ts`: 
 
 ```
-import cloudwatch = require('@aws-cdk/aws-cloudwatch');
-import sqs = require('@aws-cdk/aws-sqs');
+import * as cloudwatch from '@aws-cdk/aws-cloudwatch';
+import * as sqs from '@aws-cdk/aws-sqs';
 import { Construct, Duration } from '@aws-cdk/core';
 
 export class DeadLetterQueue extends sqs.Queue {
@@ -88,7 +88,7 @@ Add a snapshot test by placing the following code in `test/dead-letter-queue.tes
 import { SynthUtils } from '@aws-cdk/assert';
 import { Stack } from '@aws-cdk/core';
 
-import dlq = require('../lib/dead-letter-queue');
+import * as dlq from '../lib/dead-letter-queue';
 
 test('dlq creates an alarm', () => {
   const stack = new Stack();
@@ -224,7 +224,7 @@ Replace the code in `test/dead-letter-queue.test.ts` with the following\.
 import { Stack } from '@aws-cdk/core';
 import '@aws-cdk/assert/jest';
 
-import dlq = require('../lib/dead-letter-queue');
+import * as dlq from '../lib/dead-letter-queue';
 
 test('dlq creates an alarm', () => {
   const stack = new Stack();

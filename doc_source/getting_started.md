@@ -513,14 +513,14 @@ Next, define an Amazon S3 bucket in the stack\. Amazon S3 buckets are represente
 In `lib/hello-cdk-stack.ts`:
 
 ```
-import { App, Stack, StackProps, Construct } from '@aws-cdk/core';
-import { Bucket } from '@aws-cdk/aws-s3';
+import * as core = from '@aws-cdk/core';
+import * as s3 from '@aws-cdk/aws-s3';
 
-export class HelloCdkStack extends Stack {
-  constructor(scope: App, id: string, props?: StackProps) {
+export class HelloCdkStack extends core.Stack {
+  constructor(scope: core.App, id: string, props?: core.StackProps) {
     super(scope, id, props);
 
-    new Bucket(this, 'MyFirstBucket', {
+    new s3.Bucket(this, 'MyFirstBucket', {
       versioned: true
     });
   }
@@ -644,7 +644,7 @@ or press F6 in Visual Studio
 
 ### Synthesizing an AWS CloudFormation Template<a name="hello_world_tutorial_synth_template"></a>
 
-Synthesize an AWS CloudFormation template for the app, as follows\. If you get an error like "\-\-app is required\.\.\.", it's because you are running the command from a subirectory of your project directory\. Navigate to the project directory and try again\.
+Synthesize an AWS CloudFormation template for the app, as follows\. If you get an error like "\-\-app is required\.\.\.", it's because you are running the command from a subdirectory of your project directory\. Navigate to the project directory and try again\.
 
 ```
 cdk synth
@@ -695,11 +695,9 @@ Configure the bucket to use AWS Key Management Service \(AWS KMS\) managed encry
 Update `lib/hello-cdk-stack.ts`
 
 ```
-import { Bucket, BucketEncryption } from "@aws-cdk/aws-s3";
-
-new Bucket(this, 'MyFirstBucket', {
+new s3.Bucket(this, 'MyFirstBucket', {
   versioned: true,
-  encryption: BucketEncryption.KMS_MANAGED
+  encryption: s3.BucketEncryption.KMS_MANAGED
 });
 ```
 

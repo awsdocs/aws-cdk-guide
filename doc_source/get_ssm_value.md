@@ -15,7 +15,7 @@ To read values from the Systems Manager Parameter Store, use the [valueForString
 #### [ TypeScript ]
 
 ```
-import ssm = require('@aws-cdk/aws-ssm');
+import * as ssm from '@aws-cdk/aws-ssm';
 
 // Get latest version or specified version of plain string attribute
 const latestStringToken = ssm.StringParameter.valueForStringParameter(
@@ -91,7 +91,7 @@ To read a value from the Systems Manager parameter store at synthesis time, use 
 #### [ TypeScript ]
 
 ```
-import ssm = require('@aws-cdk/aws-ssm');
+import * as ssm from '@aws-cdk/aws-ssm';
 
 const stringValue = ssm.StringParameter.valueFromLookup(this, 'my-plain-parameter-name');
 ```

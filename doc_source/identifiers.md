@@ -17,7 +17,7 @@ Lets look at an example where we have two constructs with the identifier `MyBuck
 
 ```
 import { App, Construct, Stack, StackProps } from '@aws-cdk/core';
-import s3 = require('@aws-cdk/aws-s3');
+import * as s3 from '@aws-cdk/aws-s3';
 
 class MyStack extends Stack {
   constructor(scope: Construct, id: string, props: StackProps = {}) {

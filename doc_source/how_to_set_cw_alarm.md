@@ -31,6 +31,7 @@ alarm = cloudwatch.Alarm(self, "Alarm",
 
 ```
 import software.amazon.awscdk.services.cloudwatch.Alarm;
+import software.amazon.awscdk.services.cloudwatch.Metric;
 
 Alarm alarm = Alarm.Builder.create(this, "Alarm")
         .metric(metric)      // see below
@@ -141,6 +142,8 @@ cloudwatch.Alarm(self, "Alarm",
 #### [ Java ]
 
 ```
+Metric qMetric = queue.metric("ApproximateNumberOfMessagesVisible");
+
 Alarm.Builder.create(this, "Alarm")
         .metric(qMetric)
         .threshold(100)

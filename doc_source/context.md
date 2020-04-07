@@ -96,8 +96,8 @@ Below is an example of importing an existing Amazon VPC using AWS CDK context\.
 #### [ TypeScript ]
 
 ```
-import cdk = require('@aws-cdk/core');
-import ec2 = require('@aws-cdk/aws-ec2');
+import * as cdk from '@aws-cdk/core';
+import * as ec2 from '@aws-cdk/aws-ec2';
 
 export class ExistsVpcStack extends cdk.Stack {
 
