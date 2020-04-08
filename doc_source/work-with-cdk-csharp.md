@@ -11,7 +11,7 @@ We suggest using [Visual Studio 2019](https://visualstudio.microsoft.com/downloa
 To work with the AWS CDK, you must have an AWS account and credentials and have installed Node\.js and the AWS CDK Toolkit\. See [AWS CDK Prerequisites](work-with.md#work-with-prerequisites)\.
 
 C\# AWS CDK applications require a \.NET Standard 2\.1 compatible implementation\. Suitable implementations include:
-+ \.NET Core v3\.0 or later \(v3\.1 or later preferred\)
++ \.NET Core v3\.1 or later
 + \.NET Framework v4\.6\.1 or later
 + Mono v5\.4 or later on Linux or Mac OS X; [download here](https://www.mono-project.com/download/stable/)
 

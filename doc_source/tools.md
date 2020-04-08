@@ -166,6 +166,8 @@ Options:
                         autodetection.                [boolean] [default: false]
   --notification-arns   ARNs of SNS topics that CloudFormation will notify with
                         stack related events                             [array]
+  --parameters          Additional parameters passed to CloudFormation at deploy
+                        time (STACK:KEY=VALUE)             [array] [default: {}]
   --tags, -t            Tags to add to the stack (KEY=VALUE)             [array]
   --execute             Whether to execute ChangeSet (--no-execute will NOT
                         execute the ChangeSet)         [boolean] [default: true]

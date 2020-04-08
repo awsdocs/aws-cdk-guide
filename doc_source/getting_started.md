@@ -35,7 +35,7 @@ TypeScript >= 2\.7
 #### [ C\# ]
 
 \.NET standard 2\.1 compatible implementation:
-+ \.NET Core >= 3\.0 \(3\.1 upon its release\)
++ \.NET Core >= 3\.1
 + \.NET Framework >= 4\.6\.1, or
 + Mono >= 5\.4
 

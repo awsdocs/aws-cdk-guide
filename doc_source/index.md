@@ -31,6 +31,7 @@ Amazon's trademarks and trade dress may not be used in
    + [Resources](resources.md)
    + [Identifiers](identifiers.md)
    + [Tokens](tokens.md)
+   + [Parameters](parameters.md)
    + [Tagging](tagging.md)
    + [Assets](assets.md)
    + [Permissions](permissions.md)
