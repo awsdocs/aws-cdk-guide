@@ -17,6 +17,13 @@ Tag.add(myConstruct, 'key', 'value');
 ```
 
 ------
+#### [ JavaScript ]
+
+```
+Tag.add(myConstruct, 'key', 'value');
+```
+
+------
 #### [ Python ]
 
 ```
@@ -43,6 +50,13 @@ The following example deletes the tag **key** from a construct\.
 
 ------
 #### [ TypeScript ]
+
+```
+Tag.remove(my_construct, 'key');
+```
+
+------
+#### [ JavaScript ]
 
 ```
 Tag.remove(my_construct, 'key');
@@ -77,6 +91,15 @@ The following applies a tag with a priority of 300 to a construct\.
 
 ------
 #### [ TypeScript ]
+
+```
+Tag.add(myConstruct, 'key', 'value', {
+  priority: 300
+});
+```
+
+------
+#### [ JavaScript ]
 
 ```
 Tag.add(myConstruct, 'key', 'value', {
@@ -123,6 +146,18 @@ Tag.add(myConstruct, 'tagname', 'value', {
   includeResourceTypes: ['AWS::Xxx::Yyy'],
   excludeResourceTypes: ['AWS::Xxx::Zzz'],
   priority: 100,
+});
+```
+
+------
+#### [ JavaScript ]
+
+```
+Tag.add(myConstruct, 'tagname', 'value', {
+  applyToLaunchedInstances: false,
+  includeResourceTypes: ['AWS::Xxx::Yyy'],
+  excludeResourceTypes: ['AWS::Xxx::Zzz'],
+  priority: 100
 });
 ```
 
@@ -192,6 +227,17 @@ Tag.remove(myConstruct, 'tagname', {
 ```
 
 ------
+#### [ JavaScript ]
+
+```
+Tag.remove(myConstruct, 'tagname', {
+  includeResourceTypes: ['AWS::Xxx::Yyy'],
+  excludeResourceTypes: ['AWS::Xxx::Zzz'],
+  priority: 200
+});
+```
+
+------
 #### [ Python ]
 
 ```
@@ -239,6 +285,24 @@ The following example adds the tag key **StackType** with value **TheBest** to a
 
 ------
 #### [ TypeScript ]
+
+```
+import { App, Stack, Tag } from '@aws-cdk/core';
+
+const app = new App();
+const theBestStack = new Stack(app, 'MarketingSystem');
+
+// Add a tag to all constructs in the stack
+Tag.add(theBestStack, 'StackType', 'TheBest');
+
+// Remove the tag from all resources except subnet resources
+Tag.remove(theBestStack, 'StackType', {
+  excludeResourceTypes: ['AWS::EC2::Subnet']
+});
+```
+
+------
+#### [ JavaScript ]
 
 ```
 import { App, Stack, Tag } from '@aws-cdk/core';
@@ -316,6 +380,14 @@ The following code achieves the same result\. Consider which approach \(inclusio
 
 ```
 Tag.add(theBestStack, 'StackType', 'TheBest', 
+  { includeResourceTypes: ['AWS::EC2::Subnet']});
+```
+
+------
+#### [ JavaScript ]
+
+```
+Tag.add(theBestStack, 'StackType', 'TheBest',
   { includeResourceTypes: ['AWS::EC2::Subnet']});
 ```
 

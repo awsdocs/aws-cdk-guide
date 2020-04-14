@@ -23,6 +23,17 @@ new MyFirstStack(app, 'first-stack-eu', { env: envEU });
 ```
 
 ------
+#### [ JavaScript ]
+
+```
+const envEU = { account: '2383838383', region: 'eu-west-1'};
+const envUSA = { account: '8373873873', region: 'us-west-2'};
+
+new MyFirstStack(app, 'first-stack-us', { env: envUSA});
+new MyFirstStack(app, 'first-stack-eu', { env: envEU});
+```
+
+------
 #### [ Python ]
 
 ```
@@ -110,6 +121,19 @@ new MyDevStack(app, 'dev', {
 ```
 
 ------
+#### [ JavaScript ]
+
+Access environment variables via the `process` object\. 
+
+```
+new MyDevStack(app, 'dev', {
+  env: {
+    account: process.env.CDK_DEFAULT_ACCOUNT,
+    region: process.env.CDK_DEFAULT_REGION
+  }});
+```
+
+------
 #### [ Python ]
 
 Use the `os` module's `environ` dictonary to access environment variables\.
@@ -194,6 +218,17 @@ new MyDevStack(app, 'dev', {
 ```
 
 ------
+#### [ JavaScript ]
+
+```
+new MyDevStack(app, 'dev', {
+  env: {
+    account: process.env.CDK_DEPLOY_ACCOUNT || process.env.CDK_DEFAULT_ACCOUNT,
+    region: process.env.CDK_DEPLOY_REGION || process.env.CDK_DEFAULT_REGION
+  }});
+```
+
+------
 #### [ Python ]
 
 ```
@@ -275,7 +310,7 @@ cdk deploy "$@"
 ```
 
 ------
-#### [  Windows  ]
+#### [ Windows ]
 
 ```
 @echo off

@@ -21,6 +21,24 @@ export class SecretsManagerStack extends core.Stack {
 ```
 
 ------
+#### [ JavaScript ]
+
+```
+import * as sm from "@aws-cdk/aws-secretsmanager";
+
+export class SecretsManagerStack extends core.Stack {
+  constructor(scope: core.App, id: string, props?: core.StackProps) {
+    super(scope, id, props);
+
+    const secret = sm.Secret.fromSecretAttributes(this, "ImportedSecret", {
+      secretArn:
+        "arn:aws:secretsmanager:<region>:<account-id-number>:secret:<secret-name>-<random-6-characters>"
+      // If the secret is encrypted using a KMS-hosted CMK, either import or reference that key:
+      // encryptionKey: ...
+    });
+```
+
+------
 #### [ Python ]
 
 ```

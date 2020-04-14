@@ -8,7 +8,14 @@ To apply an aspect to a construct and all constructs in the same scope, call [no
 #### [ TypeScript ]
 
 ```
-myConstruct.node.applyAspect(new SomeAspect(...));
+myConstruct.node.applyAspect(new SomeAspect(/*...*/));
+```
+
+------
+#### [ JavaScript ]
+
+```
+myConstruct.node.applyAspect(new SomeAspect(/*...*/));
 ```
 
 ------
@@ -49,9 +56,14 @@ interface IAspect {
 ```
 
 ------
+#### [ JavaScript ]
+
+JavaScript doesn't have interfaces as a language feature, so an aspect is simply an instance of a class having a `visit` method that accepts the node to be operated on\. 
+
+------
 #### [ Python ]
 
- Python doesn't have interfaces as a language feature, so an aspect is simply an instance of a class having a `visit` method that accepts the node to be operated on\. 
+Python doesn't have interfaces as a language feature, so an aspect is simply an instance of a class having a `visit` method that accepts the node to be operated on\.
 
 ------
 #### [ Java ]
@@ -98,7 +110,30 @@ class BucketVersioningChecker implements IAspect {
       if (!node.versioningConfiguration 
         || (!Tokenization.isResolvable(node.versioningConfiguration)
             && node.versioningConfiguration.status !== 'Enabled')) {
-        
+        node.node.addError('Bucket versioning is not enabled');
+      }
+    }
+  }
+}
+
+// Apply to the stack
+stack.node.applyAspect(new BucketVersioningChecker());
+```
+
+------
+#### [ JavaScript ]
+
+```
+class BucketVersioningChecker {
+  visit(node) {
+    // See that we're dealing with a CfnBucket
+    if (node instanceof s3.CfnBucket) {
+
+      // Check for versioning property, exclude the case where the property
+      // can be a token (IResolvable).
+      if (!node.versioningConfiguration
+        || !Tokenization.isResolvable(node.versioningConfiguration)
+          && node.versioningConfiguration.status !== 'Enabled') {
         node.node.addError('Bucket versioning is not enabled');
       }
     }

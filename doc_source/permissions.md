@@ -48,6 +48,17 @@ const role = new iam.Role(this, 'Role', {
 ```
 
 ------
+#### [ JavaScript ]
+
+```
+import * as iam from '@aws-cdk/aws-iam';
+
+const role = new iam.Role(this, 'Role', {
+  assumedBy: new iam.ServicePrincipal('ec2.amazonaws.com') // required
+});
+```
+
+------
 #### [ Python ]
 
 ```
@@ -96,6 +107,19 @@ role.addToPolicy(new iam.PolicyStatement({
   actions: ['ec2:SomeAction', 's3:AnotherAction'],
   conditions: {StringEquals: {
     'ec2:AuthorizedService': 'codebuild.amazonaws.com',
+}}}));
+```
+
+------
+#### [ JavaScript ]
+
+```
+role.addToPolicy(new iam.PolicyStatement({
+  effect: iam.Effect.DENY,
+  resources: [bucket.bucketArn, otherRole.roleArn],
+  actions: ['ec2:SomeAction', 's3:AnotherAction'],
+  conditions: { StringEquals: {
+      'ec2:AuthorizedService': 'codebuild.amazonaws.com'
 }}}));
 ```
 
@@ -170,6 +194,23 @@ const project = new codebuild.Project(this, 'Project', {
 ```
 
 ------
+#### [ JavaScript ]
+
+```
+import * as codebuild from '@aws-cdk/aws-codebuild';
+
+// imagine roleOrUndefined is a function that might return a Role object
+// under some conditions, and undefined under other conditions
+const someRole = roleOrUndefined();
+
+const project = new codebuild.Project(this, 'Project', {
+  // if someRole is undefined, the Project creates a new default role,
+  // trusting the codebuild.amazonaws.com service principal
+  role: someRole
+});
+```
+
+------
 #### [ Python ]
 
 ```
@@ -238,6 +279,19 @@ project.addToRolePolicy(new iam.PolicyStatement({
 ```
 
 ------
+#### [ JavaScript ]
+
+```
+// project is imported into the CDK application
+const project = codebuild.Project.fromProjectName(this, 'Project', 'ProjectName');
+
+// project is imported, so project.role is undefined, and this call has no effect
+project.addToRolePolicy(new iam.PolicyStatement({
+  effect: iam.Effect.ALLOW // ... and so on defining the policy
+}));
+```
+
+------
 #### [ Python ]
 
 ```
@@ -287,6 +341,18 @@ In the following example, the [Amazon S3 bucket](https://docs.aws.amazon.com/cdk
 
 ------
 #### [ TypeScript ]
+
+```
+bucket.addToResourcePolicy(new iam.PolicyStatement({
+  effect: iam.Effect.ALLOW,
+  actions: ['s3:SomeAction'],
+  resources: [bucket.bucketArn],
+  principals: [role]
+}));
+```
+
+------
+#### [ JavaScript ]
 
 ```
 bucket.addToResourcePolicy(new iam.PolicyStatement({

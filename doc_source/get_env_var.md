@@ -7,10 +7,21 @@ To get the value of an environment variable, use code like the following\. This 
 
 ```
 // Sets bucket_name to undefined if environment variable not set
-const bucket_name = process.env.MYBUCKET;
+var bucket_name = process.env.MYBUCKET;
 
 // Sets bucket_name to a default if env var doesn't exist
-const bucket_name = process.env.MYBUCKET || "DefaultName";
+var bucket_name = process.env.MYBUCKET || "DefaultName";
+```
+
+------
+#### [ JavaScript ]
+
+```
+// Sets bucket_name to undefined if environment variable not set
+var bucket_name = process.env.MYBUCKET;
+
+// Sets bucket_name to a default if env var doesn't exist
+var bucket_name = process.env.MYBUCKET || "DefaultName";
 ```
 
 ------

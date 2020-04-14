@@ -10,7 +10,7 @@ The [AWS Toolkit for Visual Studio Code](https://aws.amazon.com/visualstudiocode
 
 ## Prerequisites<a name="getting_started_prerequisites"></a>
 
-All CDK developers need to install [Node\.js](https://nodejs.org/en/download) \(>= 10\.3\.0\), even those working in languages other than TypeScript or JavaScript\. The AWS CDK Toolkit \(`cdk` command\-line tool\) and the AWS Construct Library are developed in TypeScript and run on Node\.js\. The bindings for other supported languages use this backend and toolset\.
+All CDK developers need to install [Node\.js](https://nodejs.org/en/download) >= 10\.3\.0, even those working in languages other than TypeScript or JavaScript\. The AWS CDK Toolkit \(`cdk` command\-line tool\) and the AWS Construct Library are developed in TypeScript and run on Node\.js\. The bindings for other supported languages use this backend and toolset\.
 
 You must provide your credentials and an AWS Region to use the AWS CDK CLI, as described in [Specifying Your Credentials and Region](#getting_started_credentials)\.
 
@@ -22,13 +22,18 @@ Other prerequisites depend on your development language, as follows\.
 TypeScript >= 2\.7
 
 ------
+#### [ JavaScript ]
+
+none
+
+------
 #### [ Python ]
 + Python >= 3\.6
 
 ------
 #### [ Java ]
-+ Maven 3\.5\.4 or later and Java 8
-+ A Java IDE is preferred \(the examples in this guide may refer to Eclipse\)\. `cdk init` creates a Maven project; most IDEs can import this style of project\. Some IDEs may need to be configured to use Java 8 \(also known as 1\.8\)\.
++ Maven = 3\.5 and Java >= 8
++ A Java IDE is preferred \(the examples in this guide may refer to Eclipse\)\. `cdk init` creates a Maven project, which most IDEs can import\. Some IDEs may need to be configured to use Java 8 \(also known as 1\.8\)\.
 + Set the `JAVA_HOME` environment variable to the path to where you have installed the JDK on your machine
 
 ------
@@ -63,6 +68,13 @@ If you get an error message that your language framework is out of date, use one
 
 ------
 #### [ TypeScript ]
+
+```
+npx npm-check-updates -u
+```
+
+------
+#### [ JavaScript ]
 
 ```
 npx npm-check-updates -u
@@ -108,6 +120,18 @@ new MyStack(app, 'MyStack', {
         region: 'REGION',
         account: 'ACCOUNT' 
     } 
+});
+```
+
+------
+#### [ JavaScript ]
+
+```
+new MyStack(app, 'MyStack', {
+  env: {
+    region: 'REGION',
+    account: 'ACCOUNT'
+  }
 });
 ```
 
@@ -158,6 +182,18 @@ new MyStack(app, 'Stack-One-W',   { env: { account: 'ONE',   region: 'us-west-2'
 new MyStack(app, 'Stack-One-E',   { env: { account: 'ONE',   region: 'us-east-1' }});
 new MyStack(app, 'Stack-Two-W',   { env: { account: 'TWO',   region: 'us-west-2' }});
 new MyStack(app, 'Stack-Two-E',   { env: { account: 'TWO',   region: 'us-east-1' }});
+new MyStack(app, 'Stack-Three-W', { env: { account: 'THREE', region: 'us-west-2' }});
+new MyStack(app, 'Stack-Three-E', { env: { account: 'THREE', region: 'us-east-1' }});
+```
+
+------
+#### [ JavaScript ]
+
+```
+new MyStack(app, 'Stack-One-W', { env: { account: 'ONE', region: 'us-west-2' }});
+new MyStack(app, 'Stack-One-E', { env: { account: 'ONE', region: 'us-east-1' }});
+new MyStack(app, 'Stack-Two-W', { env: { account: 'TWO', region: 'us-west-2' }});
+new MyStack(app, 'Stack-Two-E', { env: { account: 'TWO', region: 'us-east-1' }});
 new MyStack(app, 'Stack-Three-W', { env: { account: 'THREE', region: 'us-west-2' }});
 new MyStack(app, 'Stack-Three-E', { env: { account: 'THREE', region: 'us-east-1' }});
 ```
@@ -364,6 +400,13 @@ cdk init --language typescript
 ```
 
 ------
+#### [ JavaScript ]
+
+```
+cdk init --language javascript
+```
+
+------
 #### [ Python ]
 
 ```
@@ -414,6 +457,11 @@ Compile your program, as follows\.
 ```
 npm run build
 ```
+
+------
+#### [ JavaScript ]
+
+Nothing to compile\.
 
 ------
 #### [ Python ]
@@ -471,6 +519,13 @@ npm install @aws-cdk/aws-s3
 ```
 
 ------
+#### [ JavaScript ]
+
+```
+npm install @aws-cdk/aws-s3
+```
+
+------
 #### [ Python ]
 
 ```
@@ -518,6 +573,26 @@ import * as s3 from '@aws-cdk/aws-s3';
 
 export class HelloCdkStack extends core.Stack {
   constructor(scope: core.App, id: string, props?: core.StackProps) {
+    super(scope, id, props);
+
+    new s3.Bucket(this, 'MyFirstBucket', {
+      versioned: true
+    });
+  }
+}
+```
+
+------
+#### [ JavaScript ]
+
+In `lib/hello-cdk-stack.js`:
+
+```
+import * as core from '@aws-cdk/core';
+import * as s3 from '@aws-cdk/aws-s3';
+
+export class HelloCdkStack extends core.Stack {
+  constructor(scope, id, props) {
     super(scope, id, props);
 
     new s3.Bucket(this, 'MyFirstBucket', {
@@ -615,6 +690,11 @@ npm run build
 ```
 
 ------
+#### [ JavaScript ]
+
+Nothing to compile\.
+
+------
 #### [ Python ]
 
 Nothing to compile\.
@@ -702,6 +782,18 @@ new s3.Bucket(this, 'MyFirstBucket', {
 ```
 
 ------
+#### [ JavaScript ]
+
+Update `lib/hello-cdk-stack.js`\.
+
+```
+new s3.Bucket(this, 'MyFirstBucket', {
+    versioned: true,
+    encryption: s3.BucketEncryption.KMS_MANAGED
+});
+```
+
+------
 #### [ Python ]
 
 ```
@@ -750,6 +842,11 @@ Compile your program, as follows\.
 ```
 npm run build
 ```
+
+------
+#### [ JavaScript ]
+
+Nothing to compile\.
 
 ------
 #### [ Python ]

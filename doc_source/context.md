@@ -120,6 +120,33 @@ export class ExistsVpcStack extends cdk.Stack {
 ```
 
 ------
+#### [ JavaScript ]
+
+```
+import * as cdk from '@aws-cdk/core';
+import * as ec2 from '@aws-cdk/aws-ec2';
+
+export class ExistsVpcStack extends cdk.Stack {
+
+  constructor(scope, id, props) {
+
+    super(scope, id, props);
+
+    const vpcid = this.node.tryGetContext('vpcid');
+    const vpc = ec2.Vpc.fromLookup(this, 'VPC', {
+      vpcId: vpcid
+    });
+
+    const pubsubnets = vpc.selectSubnets({ subnetType: ec2.SubnetType.PUBLIC });
+
+    new cdk.CfnOutput(this, 'publicsubnets', {
+      value: pubsubnets.subnetIds.toString()
+    });
+  }
+}
+```
+
+------
 #### [ Python ]
 
 ```

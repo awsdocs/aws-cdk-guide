@@ -25,6 +25,20 @@ const fn = new lambda.Function(stack, 'MyLambda', {
 ```
 
 ------
+#### [ JavaScript ]
+
+```
+const bucket = new s3.Bucket(this, 'MyBucket');
+
+const fn = new lambda.Function(stack, 'MyLambda', {
+  // ...
+  environment: {
+    BUCKET_NAME: bucket.bucketName
+  }
+});
+```
+
+------
 #### [ Python ]
 
 ```
@@ -95,6 +109,15 @@ if (!Token.isUnresolved(name) && name.length > 10) {
 ```
 
 ------
+#### [ JavaScript ]
+
+```
+if (!Token.isUnresolved(name) && name.length > 10) {
+  throw new Error(`Maximum length for name is 10 characters`);
+}
+```
+
+------
 #### [ Python ]
 
 ```
@@ -143,6 +166,13 @@ const functionName = bucket.bucketName + 'Function';
 ```
 
 ------
+#### [ JavaScript ]
+
+```
+const functionName = bucket.bucketName + 'Function';
+```
+
+------
 #### [ Python ]
 
 ```
@@ -169,6 +199,13 @@ You can also use string interpolation, if your language supports it, as shown in
 
 ------
 #### [ TypeScript ]
+
+```
+const functionName = `${bucket.bucketName}Function`;
+```
+
+------
+#### [ JavaScript ]
 
 ```
 const functionName = `${bucket.bucketName}Function`;
@@ -238,6 +275,24 @@ new AutoScalingGroup(this, 'Group', {
      produce(context) {
           return actualValue;
       }
+  })
+});
+
+// At some later point
+actualValue = 10;
+```
+
+------
+#### [ JavaScript ]
+
+```
+let actualValue;
+
+new AutoScalingGroup(this, 'Group', {
+  desiredCapacity: Lazy.numberValue({
+    produce(context) {
+      return actualValue;
+    }
   })
 });
 
@@ -328,6 +383,16 @@ const stack = Stack.of(this);
       const str = stack.toJsonString({
       value: bucket.bucketName
       });
+```
+
+------
+#### [ JavaScript ]
+
+```
+const stack = Stack.of(this);
+const str = stack.toJsonString({
+  value: bucket.bucketName
+});
 ```
 
 ------

@@ -15,6 +15,18 @@ const alarm = new cloudwatch.Alarm(this, 'Alarm', {
 ```
 
 ------
+#### [ JavaScript ]
+
+```
+const alarm = new cloudwatch.Alarm(this, 'Alarm', {
+  metric: metric, // see below
+  threshold: 100,
+  evaluationPeriods: 3,
+  datapointsToAlarm: 2
+});
+```
+
+------
 #### [ Python ]
 
 ```
@@ -69,6 +81,17 @@ const metric = new cloudwatch.Metric({
 ```
 
 ------
+#### [ JavaScript ]
+
+```
+const metric = new cloudwatch.Metric({
+  namespace: 'MyNamespace',
+  metricName: 'MyMetric',
+  dimensions: { MyDimension: 'MyDimensionValue' }
+});
+```
+
+------
 #### [ Python ]
 
 ```
@@ -112,6 +135,20 @@ Many AWS CDK packages contain functionality to enable setting an alarm based on 
 
 ------
 #### [ TypeScript ]
+
+```
+    const qMetric = queue.metric("ApproximateNumberOfMessagesVisible");
+
+    new cloudwatch.Alarm(this, "Alarm", {
+      metric: qMetric,
+      threshold: 100,
+      evaluationPeriods: 3,
+      datapointsToAlarm: 2
+    });
+```
+
+------
+#### [ JavaScript ]
 
 ```
     const qMetric = queue.metric("ApproximateNumberOfMessagesVisible");

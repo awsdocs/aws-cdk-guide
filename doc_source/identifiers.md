@@ -33,6 +33,26 @@ new MyStack(app, 'Stack2');
 ```
 
 ------
+#### [ JavaScript ]
+
+```
+import { App, Stack } from '@aws-cdk/core';
+import * as s3 from '@aws-cdk/aws-s3';
+
+class MyStack extends Stack {
+  constructor(scope, id, props = {}) {
+    super(scope, id, props);
+
+    new s3.Bucket(this, 'MyBucket');
+  }
+}
+
+const app = new App();
+new MyStack(app, 'Stack1');
+new MyStack(app, 'Stack2');
+```
+
+------
 #### [ Python ]
 
 ```
@@ -132,6 +152,13 @@ const path: string = myConstruct.node.path;
 ```
 
 ------
+#### [ JavaScript ]
+
+```
+const path = myConstruct.node.path;
+```
+
+------
 #### [ Python ]
 
 ```
@@ -165,6 +192,13 @@ You can access the unique ID of any construct programmatically, as shown in the 
 
 ```
 const uid: string = myConstruct.node.uniqueId;
+```
+
+------
+#### [ JavaScript ]
+
+```
+const uid = myConstruct.node.uniqueId;
 ```
 
 ------

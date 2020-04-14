@@ -54,6 +54,23 @@ const fileAsset = new Asset(this, 'SampleSingleFileAsset', {
 ```
 
 ------
+#### [ JavaScript ]
+
+```
+import { Asset } from '@aws-cdk/aws-s3-assets';
+
+// Archived and uploaded to Amazon S3 as a .zip file
+const directoryAsset = new Asset(this, "SampleZippedDirAsset", {
+  path: path.join(__dirname, "sample-asset-directory")
+});
+
+// Uploaded to Amazon S3 as-is
+const fileAsset = new Asset(this, 'SampleSingleFileAsset', {
+  path: path.join(__dirname, 'file-asset.txt')
+});
+```
+
+------
 #### [ Python ]
 
 ```
@@ -155,6 +172,27 @@ export class HelloAssetStack extends cdk.Stack {
 ```
 
 ------
+#### [ JavaScript ]
+
+```
+import * as cdk from '@aws-cdk/core';
+import * as lambda from '@aws-cdk/aws-lambda';
+import * as path from 'path';
+
+export class HelloAssetStack extends cdk.Stack {
+  constructor(scope, id, props) {
+    super(scope, id, props);
+
+    new lambda.Function(this, 'myLambdaFunction', {
+      code: lambda.Code.fromAsset(path.join(__dirname, 'handler')),
+      runtime: lambda.Runtime.PYTHON_3_6,
+      handler: 'index.lambda_handler'
+    });
+  }
+}
+```
+
+------
 #### [ Python ]
 
 ```
@@ -238,6 +276,29 @@ The following example uses deploy\-time attributes to pass the location of an im
 
 ------
 #### [ TypeScript ]
+
+```
+import { Asset } from '@aws-cdk/aws-s3-assets';
+import * as path from 'path';
+
+const imageAsset = new Asset(this, "SampleAsset", {
+  path: path.join(__dirname, "images/my-image.png")
+});
+
+new lambda.Function(this, "myLambdaFunction", {
+  code: lambda.Code.asset(path.join(__dirname, "handler")),
+  runtime: lambda.Runtime.PYTHON_3_6,
+  handler: "index.lambda_handler",
+  environment: {
+    'S3_BUCKET_NAME': imageAsset.s3BucketName,
+    'S3_OBJECT_KEY': imageAsset.s3ObjectKey,
+    'S3_URL': imageAsset.s3Url
+  }
+});
+```
+
+------
+#### [ JavaScript ]
 
 ```
 import { Asset } from '@aws-cdk/aws-s3-assets';
@@ -370,6 +431,21 @@ asset.grantRead(group);
 ```
 
 ------
+#### [ JavaScript ]
+
+```
+import { Asset } from '@aws-cdk/aws-s3-assets';
+import * as path from 'path';
+
+const asset = new Asset(this, 'MyFile', {
+  path: path.join(__dirname, 'my-image.png')
+});
+
+const group = new iam.Group(this, 'MyUserGroup');
+asset.grantRead(group);
+```
+
+------
 #### [ Python ]
 
 ```
@@ -448,6 +524,17 @@ const asset = new DockerImageAsset(this, 'MyBuildImage', {
 ```
 
 ------
+#### [ JavaScript ]
+
+```
+import { DockerImageAsset } from '@aws-cdk/aws-ecr-assets';
+
+const asset = new DockerImageAsset(this, 'MyBuildImage', {
+  directory: path.join(__dirname, 'my-image')
+});
+```
+
+------
 #### [ Python ]
 
 ```
@@ -495,6 +582,23 @@ A common use case is to create an Amazon ECS [TaskDefinition](https://docs.aws.a
 
 ------
 #### [ TypeScript ]
+
+```
+import * as ecs from '@aws-cdk/aws-ecs';
+import * as path from 'path';
+
+const taskDefinition = new ecs.FargateTaskDefinition(this, "TaskDef", {
+  memoryLimitMiB: 1024,
+  cpu: 512
+});
+
+taskDefinition.addContainer("my-other-container", {
+  image: ecs.ContainerImage.fromAsset(path.join(__dirname, "..", "demo-image"))
+});
+```
+
+------
+#### [ JavaScript ]
 
 ```
 import * as ecs from '@aws-cdk/aws-ecs';
@@ -597,6 +701,28 @@ taskDefinition.addContainer("my-other-container", {
 ```
 
 ------
+#### [ JavaScript ]
+
+```
+import * as ecs from '@aws-cdk/aws-ecs';
+import * as path from 'path';
+import { DockerImageAsset } from '@aws-cdk/aws-ecr-assets';
+
+const asset = new DockerImageAsset(this, 'my-image', {
+  directory: path.join(__dirname, "..", "demo-image")
+});
+
+const taskDefinition = new ecs.FargateTaskDefinition(this, "TaskDef", {
+  memoryLimitMiB: 1024,
+  cpu: 512
+});
+
+taskDefinition.addContainer("my-other-container", {
+  image: ecs.ContainerImage.fromEcrRepository(asset.repository, asset.imageUri)
+});
+```
+
+------
 #### [ Python ]
 
 ```
@@ -674,6 +800,18 @@ You can provide customized build arguments for the Docker build step through the
 
 ------
 #### [ TypeScript ]
+
+```
+const asset = new DockerImageAsset(this, 'MyBuildImage', {
+  directory: path.join(__dirname, 'my-image'),
+  buildArgs: {
+    HTTP_PROXY: 'http://10.20.30.2:1234'
+  }
+});
+```
+
+------
+#### [ JavaScript ]
 
 ```
 const asset = new DockerImageAsset(this, 'MyBuildImage', {

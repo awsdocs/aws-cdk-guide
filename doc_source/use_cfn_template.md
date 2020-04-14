@@ -28,6 +28,18 @@ new cdk.CfnInclude(this, "ExistingInfrastructure", {
 ```
 
 ------
+#### [ JavaScript ]
+
+```
+import * as cdk from "@aws-cdk/core";
+import * as fs from "fs";
+
+new cdk.CfnInclude(this, "ExistingInfrastructure", {
+  template: JSON.parse(fs.readFileSync("my-template.json").toString())
+});
+```
+
+------
 #### [ Python ]
 
 ```
@@ -73,6 +85,13 @@ Then to access an attribute of the resource, such as the bucket's ARN:
 
 ------
 #### [ TypeScript ]
+
+```
+const bucketArn = cdk.Fn.getAtt("S3Bucket", "Arn");
+```
+
+------
+#### [ JavaScript ]
 
 ```
 const bucketArn = cdk.Fn.getAtt("S3Bucket", "Arn");

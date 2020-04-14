@@ -59,6 +59,27 @@ new HelloCdkStack(app, "HelloCdkStack");
 ```
 
 ------
+#### [ JavaScript ]
+
+```
+import { App, Stack } from '@aws-cdk/core';
+import * as s3 from '@aws-cdk/aws-s3';
+
+class HelloCdkStack extends Stack {
+  constructor(scope, id, props) {
+    super(scope, id, props);
+
+    new s3.Bucket(this, 'MyFirstBucket', {
+      versioned: true
+    });
+  }
+}
+
+const app = new App();
+new HelloCdkStack(app, "HelloCdkStack");
+```
+
+------
 #### [ Python ]
 
 ```
@@ -132,6 +153,19 @@ class HelloCdkStack extends Stack {
 ```
 
 ------
+#### [ JavaScript ]
+
+```
+class HelloCdkStack extends Stack {
+  constructor(scope, id, props) {
+    super(scope, id, props);
+
+    //...
+  }
+}
+```
+
+------
 #### [ Python ]
 
 ```
@@ -181,6 +215,18 @@ Once you have defined a stack, you can populate it with resources\. The followin
 
 ------
 #### [ TypeScript ]
+
+```
+import * as s3 from '@aws-cdk/aws-s3';
+
+// "this" is HelloCdkStack
+new s3.Bucket(this, 'MyFirstBucket', {
+  versioned: true
+});
+```
+
+------
+#### [ JavaScript ]
 
 ```
 import * as s3 from '@aws-cdk/aws-s3';
@@ -256,6 +302,16 @@ new s3.Bucket(this, 'MyEncryptedBucket', {
 ```
 
 ------
+#### [ JavaScript ]
+
+```
+new s3.Bucket(this, 'MyEncryptedBucket', {
+  encryption: s3.BucketEncryption.KMS,
+  websiteIndexDocument: 'index.html'
+});
+```
+
+------
 #### [ Python ]
 
 ```
@@ -303,6 +359,15 @@ rawData.grantRead(dataScience);
 ```
 
 ------
+#### [ JavaScript ]
+
+```
+const rawData = new s3.Bucket(this, 'raw-data');
+const dataScience = new iam.Group(this, 'data-science');
+rawData.grantRead(dataScience);
+```
+
+------
 #### [ Python ]
 
 ```
@@ -335,6 +400,21 @@ Another common pattern is for AWS constructs to set one of the resource's attrib
 
 ------
 #### [ TypeScript ]
+
+```
+const jobsQueue = new sqs.Queue(this, 'jobs');
+const createJobLambda = new lambda.Function(this, 'create-job', {
+  runtime: lambda.Runtime.NODEJS_10_X,
+  handler: 'index.handler',
+  code: lambda.Code.fromAsset('./create-job-lambda-code'),
+  environment: {
+    QUEUE_URL: jobsQueue.queueUrl
+  }
+});
+```
+
+------
+#### [ JavaScript ]
 
 ```
 const jobsQueue = new sqs.Queue(this, 'jobs');
@@ -425,6 +505,21 @@ export class NotifyingBucket extends Construct {
 ```
 
 ------
+#### [ JavaScript ]
+
+```
+export class NotifyingBucket extends Construct {
+  constructor(scope, id, props = {}) {
+    super(scope, id);
+    const bucket = new s3.Bucket(this, 'bucket');
+    const topic = new sns.Topic(this, 'topic');
+    bucket.addObjectCreatedNotification(new s3notify.SnsDestination(topic),
+    { prefix: props.prefix });
+  }
+}
+```
+
+------
 #### [ Python ]
 
 ```
@@ -503,6 +598,13 @@ new NotifyingBucket(this, 'MyNotifyingBucket');
 ```
 
 ------
+#### [ JavaScript ]
+
+```
+new NotifyingBucket(this, 'MyNotifyingBucket');
+```
+
+------
 #### [ Python ]
 
 ```
@@ -532,6 +634,13 @@ Or you could use `props` \(in Java, an additional parameter\) to specify the pat
 
 ```
 new NotifyingBucket(this, 'MyNotifyingBucket', { prefix: 'images/' });
+```
+
+------
+#### [ JavaScript ]
+
+```
+new NotifyingBucket(this, 'MyNotifyingBucket', { prefix: 'images/'});
 ```
 
 ------
@@ -570,6 +679,21 @@ export class NotifyingBucket extends Construct {
   public readonly topic: sns.Topic;
 
   constructor(scope: Construct, id: string, props: NotifyingBucketProps) {
+    super(scope, id);
+    const bucket = new s3.Bucket(this, 'bucket');
+    this.topic = new sns.Topic(this, 'topic');
+    bucket.addObjectCreatedNotification(this.topic, { prefix: props.prefix });
+  }
+}
+```
+
+------
+#### [ JavaScript ]
+
+```
+export class NotifyingBucket extends Construct {
+
+  constructor(scope, id, props) {
     super(scope, id);
     const bucket = new s3.Bucket(this, 'bucket');
     this.topic = new sns.Topic(this, 'topic');
@@ -650,6 +774,15 @@ Now, consumers can subscribe to the topic, for example:
 
 ------
 #### [ TypeScript ]
+
+```
+const queue = new sqs.Queue(this, 'NewImagesQueue');
+const images = new NotifyingBucket(this, 'Images');
+images.topic.addSubscription(new sns_sub.SqsSubscription(queue));
+```
+
+------
+#### [ JavaScript ]
 
 ```
 const queue = new sqs.Queue(this, 'NewImagesQueue');

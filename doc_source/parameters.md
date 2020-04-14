@@ -28,8 +28,18 @@ We recommend defining parameters at the stack level to ensure that their logical
 #### [ TypeScript ]
 
 ```
-const uploadBucketName = new CfnParameter(this, "uploadBucketName", {type: "String",
-    description: "The name of the Amazon S3 bucket where uploaded files will be stored."});
+const uploadBucketName = new CfnParameter(this, "uploadBucketName", {
+  type: "String",
+  description: "The name of the Amazon S3 bucket where uploaded files will be stored."});
+```
+
+------
+#### [ JavaScript ]
+
+```
+const uploadBucketName = new CfnParameter(this, "uploadBucketName", {
+  type: "String",
+  description: "The name of the Amazon S3 bucket where uploaded files will be stored."});
 ```
 
 ------
@@ -81,6 +91,17 @@ You can retrieve the token as an instance of the `Token` class, or in string, st
 | valueAsString | The token represented as a string | 
 
 ------
+#### [ JavaScript ]
+
+
+| Property | Kind of value | 
+| --- |--- |
+| value | Token class instance | 
+| valueAsList | The token represented as a string list | 
+| valueAsNumber | The token represented as a number | 
+| valueAsString | The token represented as a string | 
+
+------
 #### [ Python ]
 
 
@@ -122,7 +143,15 @@ For example, to use a parameter in a Bucket definition:
 
 ```
 const bucket = new Bucket(this, "myBucket", 
-    {bucketName: uploadBucketName.valueAsString});
+  { bucketName: uploadBucketName.valueAsString});
+```
+
+------
+#### [ JavaScript ]
+
+```
+const bucket = new Bucket(this, "myBucket",
+  { bucketName: uploadBucketName.valueAsString});
 ```
 
 ------

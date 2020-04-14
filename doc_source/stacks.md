@@ -21,6 +21,18 @@ app.synth();
 ```
 
 ------
+#### [ JavaScript ]
+
+```
+const app = new App();
+
+new MyFirstStack(app, 'stack1');
+new MySecondStack(app, 'stack2');
+
+app.synth();
+```
+
+------
 #### [ Python ]
 
 ```
@@ -110,6 +122,36 @@ class MyService extends Construct {
 const app = new App();
 new MyService(app, "beta");
 new MyService(app, "prod", { prod: true });
+
+app.synth();
+```
+
+------
+#### [ JavaScript ]
+
+```
+import { App, Construct, Stack } from "@aws-cdk/core";
+
+// imagine these stacks declare a bunch of related resources
+class ControlPlane extends Stack {}
+class DataPlane extends Stack {}
+class Monitoring extends Stack {}
+
+class MyService extends Construct {
+
+  constructor(scope, id, props) {
+
+    super(scope, id);
+
+ // we might use the prod argument to change how the service is configured
+    new ControlPlane(this, "cp");
+    new DataPlane(this, "data");
+    new Monitoring(this, "mon"); }
+}
+
+const app = new App();
+new MyService(app, "beta");
+new MyService(app, "prod", { prod: true});
 
 app.synth();
 ```
@@ -266,6 +308,13 @@ The physical names of the AWS CloudFormation stacks are automatically determined
 
 ```
 new MyStack(this, 'not:a:stack:name', { stackName: 'this-is-stack-name' });
+```
+
+------
+#### [ JavaScript ]
+
+```
+new MyStack(this, 'not:a:stack:name', { stackName: 'this-is-stack-name'});
 ```
 
 ------

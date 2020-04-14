@@ -20,6 +20,15 @@ cdk init --language=typescript
 ```
 
 ------
+#### [ JavaScript ]
+
+```
+mkdir multistack
+cd multistack
+cdk init --language=javascript
+```
+
+------
 #### [ Python ]
 
 ```
@@ -58,6 +67,13 @@ Finally, install the `core` and `s3` AWS Construct Library modules\. We use thes
 
 ------
 #### [ TypeScript ]
+
+```
+npm install @aws-cdk/core @aws-cdk/aws-s3
+```
+
+------
+#### [ JavaScript ]
 
 ```
 npm install @aws-cdk/core @aws-cdk/aws-s3
@@ -123,6 +139,11 @@ export class MultistackStack extends cdk.Stack {
   }
 }
 ```
+
+------
+#### [ JavaScript ]
+
+JavaScript does not have an interface feature, so we don't need to make any changes\.
 
 ------
 #### [ Python ]
@@ -247,6 +268,36 @@ export class MultistackStack extends cdk.Stack {
     }
   }
 }
+```
+
+------
+#### [ JavaScript ]
+
+File: `lib/multistack-stack.js`
+
+```
+import * as cdk from '@aws-cdk/core';
+import * as s3 from '@aws-cdk/aws-s3';
+
+export class MultistackStack extends cdk.Stack { 
+  constructor(scope, id, props) { 
+    super(scope, id, props); 
+    
+    // Add a Boolean property "encryptBucket" to the stack constructor.
+    // If true, creates an encrypted bucket. Otherwise, the bucket is unencrypted.
+    // Encrypted bucket uses AWS KMS-managed keys (SSE-KMS).
+    if (props && props.encryptBucket) { 
+      new s3.Bucket(this, "MyGroovyBucket", { 
+        encryption: s3.BucketEncryption.KMS_MANAGED, 
+        removalPolicy: cdk.RemovalPolicy.DESTROY 
+      }); 
+    } else { 
+      new s3.Bucket(this, "MyGroovyBucket", { 
+        removalPolicy: cdk.RemovalPolicy.DESTROY }); 
+    } 
+  } 
+}
+>>>
 ```
 
 ------
@@ -400,6 +451,30 @@ new MultistackStack(app, "MyEastCdkStack", {
 ```
 
 ------
+#### [ JavaScript ]
+
+File: `bin/multistack.js`
+
+```
+#!/usr/bin/env node
+import 'source-map-support/register';
+import * as cdk from '@aws-cdk/core';
+import { MultistackStack } from '../lib/multistack-stack';
+
+const app = new cdk.App();
+
+new MultistackStack(app, "MyWestCdkStack", {
+  env: { region: "us-west-1" },
+  encryptBucket: false
+});
+
+new MultistackStack(app, "MyEastCdkStack", {
+  env: { region: "us-east-1" },
+  encryptBucket: true
+});
+```
+
+------
 #### [ Python ]
 
 File: `./app.py`
@@ -504,6 +579,11 @@ Now you can deploy stacks from the app\. First, build the project, if necessary\
 ```
 npm run build
 ```
+
+------
+#### [ JavaScript ]
+
+No build step is necessary\.
 
 ------
 #### [ Python ]

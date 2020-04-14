@@ -29,6 +29,23 @@ const secureStringToken = ssm.StringParameter.valueForSecureStringParameter(
 ```
 
 ------
+#### [ JavaScript ]
+
+```
+import * as ssm from '@aws-cdk/aws-ssm';
+
+// Get latest version or specified version of plain string attribute
+const latestStringToken = ssm.StringParameter.valueForStringParameter(
+this, 'my-plain-parameter-name'); // latest version
+const versionOfStringToken = ssm.StringParameter.valueForStringParameter(
+this, 'my-plain-parameter-name', 1); // version 1
+
+// Get specified version of secure string attribute
+const secureStringToken = ssm.StringParameter.valueForSecureStringParameter(
+this, 'my-secure-parameter-name', 1); // must specify version
+```
+
+------
 #### [ Python ]
 
 ```
@@ -89,6 +106,15 @@ To read a value from the Systems Manager parameter store at synthesis time, use 
 
 ------
 #### [ TypeScript ]
+
+```
+import * as ssm from '@aws-cdk/aws-ssm';
+
+const stringValue = ssm.StringParameter.valueFromLookup(this, 'my-plain-parameter-name');
+```
+
+------
+#### [ JavaScript ]
 
 ```
 import * as ssm from '@aws-cdk/aws-ssm';

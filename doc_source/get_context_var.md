@@ -28,6 +28,13 @@ const bucket_name = this.node.tryGetContext('bucket_name');
 ```
 
 ------
+#### [ JavaScript ]
+
+```
+const bucket_name = this.node.tryGetContext('bucket_name');
+```
+
+------
 #### [ Python ]
 
 ```
@@ -58,6 +65,14 @@ Outside the context of a construct, you can access the context variable from the
 ```
 const app = new cdk.App();
 const bucket_name = app.node.tryGetContext('bucket_name')
+```
+
+------
+#### [ JavaScript ]
+
+```
+const app = new cdk.App();
+const bucket_name = app.node.tryGetContext('bucket_name');
 ```
 
 ------

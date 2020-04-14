@@ -18,6 +18,19 @@ class MyFirstStack extends Stack {
 ```
 
 ------
+#### [ JavaScript ]
+
+```
+class MyFirstStack extends Stack { 
+  constructor(scope, id, props) { 
+    super(scope, id, props); 
+    
+    new s3.Bucket(this, 'MyFirstBucket'); 
+  } 
+}
+```
+
+------
 #### [ Python ]
 
 ```
@@ -75,6 +88,15 @@ app.synth();
 ```
 
 ------
+#### [ JavaScript ]
+
+```
+const app = new App();
+new MyFirstStack(app, 'hello-cdk');
+app.synth();
+```
+
+------
 #### [ Python ]
 
 ```
@@ -115,6 +137,19 @@ class MyApp extends App {
   constructor() {
     new MyFirstStack(this, 'hello-cdk');
   }
+}
+
+new MyApp().synth();
+```
+
+------
+#### [ JavaScript ]
+
+```
+class MyApp extends App { 
+  constructor() { 
+    new MyFirstStack(this, 'hello-cdk'); 
+  } 
 }
 
 new MyApp().synth();

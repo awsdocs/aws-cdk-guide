@@ -28,6 +28,20 @@ new s3.CfnBucket(this, 'MyBucket', {
 ```
 
 ------
+#### [ JavaScript ]
+
+```
+new s3.CfnBucket(this, 'MyBucket', {
+  analyticsConfigurations: [
+    {
+      id: 'Config'
+      // ...
+    }
+  ]
+});
+```
+
+------
 #### [ Python ]
 
 ```
@@ -82,6 +96,24 @@ new cdk.CfnResource(this, 'MyBucket', {
         // ...
       }
     ] 
+  }
+});
+```
+
+------
+#### [ JavaScript ]
+
+```
+new cdk.CfnResource(this, 'MyBucket', {
+  type: 'AWS::S3::Bucket',
+  properties: {
+ // Note the PascalCase here! These are CloudFormation identifiers.
+    AnalyticsConfigurations: [
+      {
+        Id: 'Config'
+        // ...
+      }
+    ]
   }
 });
 ```
@@ -168,6 +200,22 @@ cfnBucket.analyticsConfiguration = [
 ```
 
 ------
+#### [ JavaScript ]
+
+```
+// Get the AWS CloudFormation resource
+const cfnBucket = bucket.node.defaultChild;
+
+// Change its properties
+cfnBucket.analyticsConfiguration = [
+  {
+    id: 'Config'
+    // ...
+  }
+];
+```
+
+------
 #### [ Python ]
 
 ```
@@ -227,6 +275,15 @@ cfnBucket.cfnOptions.metadata = {
 ```
 
 ------
+#### [ JavaScript ]
+
+```
+cfnBucket.cfnOptions.metadata = {
+  MetadataKey: 'MetadataValue'
+};
+```
+
+------
 #### [ Python ]
 
 ```
@@ -268,6 +325,23 @@ Use one of the `addOverride` methods \(Python: `add_override`\) methods, as show
 ```
 // Get the AWS CloudFormation resource
 const cfnBucket = bucket.node.defaultChild as s3.CfnBucket;
+
+// Use dot notation to address inside the resource template fragment
+cfnBucket.addOverride('Properties.VersioningConfiguration.Status', 'NewStatus');
+cfnBucket.addDeletionOverride('Properties.VersioningConfiguration.Status');
+
+// addPropertyOverride is a convenience function, which implies the
+// path starts with "Properties."
+cfnBucket.addPropertyOverride('VersioningConfiguration.Status', 'NewStatus');
+cfnBucket.addPropertyDeletionOverride('VersioningConfiguration.Status');
+```
+
+------
+#### [ JavaScript ]
+
+```
+// Get the AWS CloudFormation resource
+const cfnBucket = bucket.node.defaultChild;
 
 // Use dot notation to address inside the resource template fragment
 cfnBucket.addOverride('Properties.VersioningConfiguration.Status', 'NewStatus');

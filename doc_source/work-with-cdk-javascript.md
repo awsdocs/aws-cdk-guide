@@ -136,7 +136,9 @@ interface myFuncProps {
 
 JavaScript does not have an interface feature, so once you've removed the type annotations, delete the interface declarations as well\.
 
-Knowing how to identify and remove type annotations and interface definitions goes a long way toward adapting short TypeScript snippets to JavaScript\. But it may be impractical to convert longer TypeScript examples in this fashion, since they are more likely to use TypeScript features you're not familiar with\. For these situations, we recommend [Babel](https://babeljs.io/) with the [TypeScript plug\-in](https://babeljs.io/docs/en/babel-plugin-transform-typescript)\. Babel won't complain if code uses an undefined variable, for example, as `tsc` would\. If it is syntactically valid, then with few exceptions, Babel can translate it to JavaScript\. This makes Babel particularly valuable for converting snippets that may not be runnable in on their own\.
+Finally, TypeScript supports the access modifiers `public`, `protected`, and `private` for members of classes\. All class members in JavaScript are public\. Simply remove these modifiers wherever you see them\.
+
+Knowing how to identify and remove these three TypeScript features goes a long way toward adapting short TypeScript snippets to JavaScript\. But it may be impractical to convert longer TypeScript examples in this fashion, since they are more likely to use TypeScript features you're not familiar with\. For these situations, we recommend [Babel](https://babeljs.io/) with the [TypeScript plug\-in](https://babeljs.io/docs/en/babel-plugin-transform-typescript)\. Babel won't complain if code uses an undefined variable, for example, as `tsc` would\. If it is syntactically valid, then with few exceptions, Babel can translate it to JavaScript\. This makes Babel particularly valuable for converting snippets that may not be runnable in on their own\.
 
 ## Migrating to TypeScript<a name="javascript-to-typescript"></a>
 

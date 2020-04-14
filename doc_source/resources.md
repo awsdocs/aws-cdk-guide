@@ -16,6 +16,17 @@ new sqs.Queue(this, 'MyQueue', {
 ```
 
 ------
+#### [ JavaScript ]
+
+```
+import * as sqs from '@aws-cdk/aws-sqs';
+
+new sqs.Queue(this, 'MyQueue', {
+  encryption: sqs.QueueEncryption.KMS_MANAGED
+});
+```
+
+------
 #### [ Python ]
 
 ```
@@ -60,6 +71,16 @@ Most resources in the AWS Construct Library expose attributes, which are resolve
 ```
 import * as sqs from '@aws-cdk/aws-sqs';
       
+const queue = new sqs.Queue(this, 'MyQueue');
+const url = queue.queueUrl; // => A string representing a deploy-time value
+```
+
+------
+#### [ JavaScript ]
+
+```
+import * as sqs from '@aws-cdk/aws-sqs';
+
 const queue = new sqs.Queue(this, 'MyQueue');
 const url = queue.queueUrl; // => A string representing a deploy-time value
 ```
@@ -116,6 +137,15 @@ const service = new ecs.Ec2Service(this, 'Service', { cluster: cluster });
 ```
 
 ------
+#### [ JavaScript ]
+
+```
+const cluster = new ecs.Cluster(this, 'Cluster', { /* ... */});
+
+const service = new ecs.Ec2Service(this, 'Service', { cluster: cluster});
+```
+
+------
 #### [ Python ]
 
 ```
@@ -158,6 +188,21 @@ const stack1 = new StackThatProvidesABucket(app, 'Stack1' , { env: prod });
 // stack2 will take a property { bucket: IBucket }
 const stack2 = new StackThatExpectsABucket(app, 'Stack2', {
   bucket: stack1.bucket, 
+  env: prod
+});
+```
+
+------
+#### [ JavaScript ]
+
+```
+const prod = { account: '123456789012', region: 'us-east-1'};
+
+const stack1 = new StackThatProvidesABucket(app, 'Stack1', { env: prod});
+
+// stack2 will take a property { bucket: IBucket }
+const stack2 = new StackThatExpectsABucket(app, 'Stack2', {
+  bucket: stack1.bucket,
   env: prod
 });
 ```
@@ -236,6 +281,15 @@ const bucket = new s3.Bucket(this, 'MyBucket', {
 ```
 
 ------
+#### [ JavaScript ]
+
+```
+const bucket = new s3.Bucket(this, 'MyBucket', {
+  bucketName: 'my-bucket-name'
+});
+```
+
+------
 #### [ Python ]
 
 ```
@@ -273,6 +327,15 @@ const bucket = new s3.Bucket(this, 'MyBucket', {
 ```
 
 ------
+#### [ JavaScript ]
+
+```
+const bucket = new s3.Bucket(this, 'MyBucket', {
+  bucketName: core.PhysicalName.GENERATE_IF_NEEDED
+});
+```
+
+------
 #### [ Python ]
 
 ```
@@ -306,6 +369,15 @@ These identifiers are available as attributes on the resources, such as the foll
 
 ------
 #### [ TypeScript ]
+
+```
+bucket.bucketName
+lambdaFunc.functionArn
+securityGroup.groupArn
+```
+
+------
+#### [ JavaScript ]
 
 ```
 bucket.bucketName
@@ -353,10 +425,24 @@ The following example shows how to pass a generated bucket name to an AWS Lambda
 const bucket = new s3.Bucket(this, 'Bucket');
 
 new lambda.Function(this, 'MyLambda', {
-  /* ... */,
+  /* ... */
   environment: {
     BUCKET_NAME: bucket.bucketName,
   },
+});
+```
+
+------
+#### [ JavaScript ]
+
+```
+const bucket = new s3.Bucket(this, 'Bucket');
+
+new lambda.Function(this, 'MyLambda', {
+  /* ... */
+  environment: {
+    BUCKET_NAME: bucket.bucketName
+  }
 });
 ```
 
@@ -417,6 +503,22 @@ s3.Bucket.fromArn(this, 'MyBucket', 'arn:aws:s3:::my-bucket-name');
 // Construct a resource by giving attribute(s) (complex resources)
 ec2.Vpc.fromVpcAttributes(this, 'MyVpc', {
   vpcId: 'vpc-1234567890abcde',
+});
+```
+
+------
+#### [ JavaScript ]
+
+```
+// Construct a resource (bucket) just by its name (must be same account)
+s3.Bucket.fromBucketName(this, 'MyBucket', 'my-bucket-name');
+
+// Construct a resource (bucket) by its full ARN (can be cross account)
+s3.Bucket.fromArn(this, 'MyBucket', 'arn:aws:s3:::my-bucket-name');
+
+// Construct a resource by giving attribute(s) (complex resources)
+ec2.Vpc.fromVpcAttributes(this, 'MyVpc', {
+  vpcId: 'vpc-1234567890abcde'
 });
 ```
 
@@ -483,6 +585,15 @@ ec2.Vpc.fromLookup(this, 'DefaultVpc', {
 ```
 
 ------
+#### [ JavaScript ]
+
+```
+ec2.Vpc.fromLookup(this, 'DefaultVpc', {
+  isDefault: true
+});
+```
+
+------
 #### [ Python ]
 
 ```
@@ -517,7 +628,14 @@ You can use the `tags` property to query by tag\. Tags may be added to the VPC a
 ```
 ec2.Vpc.fromLookup(this, 'PublicVpc', 
     {tags: {'aws-cdk:subnet-type': "Public"}});
-});
+```
+
+------
+#### [ JavaScript ]
+
+```
+ec2.Vpc.fromLookup(this, 'PublicVpc',
+{ tags: { 'aws-cdk:subnet-type': "Public" }});
 ```
 
 ------
@@ -567,6 +685,15 @@ if (bucket.grantReadWrite(func).success) {
 ```
 
 ------
+#### [ JavaScript ]
+
+```
+if (bucket.grantReadWrite(func).success) {
+  // ...
+}
+```
+
+------
 #### [ Python ]
 
 ```
@@ -603,6 +730,13 @@ The following example shows how to grant a Lambda function access to the Amazon 
 
 ------
 #### [ TypeScript ]
+
+```
+table.grant(func, 'dynamodb:CreateBackup');
+```
+
+------
+#### [ JavaScript ]
 
 ```
 table.grant(func, 'dynamodb:CreateBackup');
@@ -664,13 +798,35 @@ metric.createAlarm(this, 'TooManyMessagesAlarm', {
 ```
 
 ------
+#### [ JavaScript ]
+
+```
+import * as cw from '@aws-cdk/aws-cloudwatch';
+import * as sqs from '@aws-cdk/aws-sqs';
+import { Duration } from '@aws-cdk/core';
+
+const queue = new sqs.Queue(this, 'MyQueue');
+
+const metric = queue.metricApproximateNumberOfMessagesNotVisible({
+  label: 'Messages Visible (Approx)',
+  period: Duration.minutes(5)
+  // ...
+});
+metric.createAlarm(this, 'TooManyMessagesAlarm', {
+  comparisonOperator: cw.ComparisonOperator.GREATER_THAN_THRESHOLD,
+  threshold: 100
+  // ...
+});
+```
+
+------
 #### [ Python ]
 
 ```
 import aws_cdk.aws_cloudwatch as cw
 import aws_cdk.aws_sqs as sqs
 from aws_cdk.core import Duration
-      
+
 queue = sqs.Queue(self, "MyQueue")
 metric = queue.metric_approximate_number_of_messages_not_visible(
     label="Messages Visible (Approx)",
@@ -753,12 +909,28 @@ You enable data to flow on a given network path by using `allow` methods\. The f
 import * as asg from '@aws-cdk/aws-autoscaling';
 import * as ec2 from '@aws-cdk/aws-ec2';
 
-const fleet1: asg.AutoScalingGroup = /* ... */
+const fleet1: asg.AutoScalingGroup = asg.AutoScalingGroup(/* ... */);
 
 // Allow surfing the (secure) web
 fleet1.connections.allowTo(new ec2.Peer.anyIpv4(), new ec2.Port({ fromPort: 443, toPort: 443 }));
 
-const fleet2: asg.AutoScalingGroup = /* ... */;
+const fleet2: asg.AutoScalingGroup = asg.AutoScalingGroup(/* ... */);
+fleet1.connections.allowFrom(fleet2, ec2.Port.AllTraffic());
+```
+
+------
+#### [ JavaScript ]
+
+```
+import * as asg from '@aws-cdk/aws-autoscaling';
+import * as ec2 from '@aws-cdk/aws-ec2';
+
+const fleet1 = asg.AutoScalingGroup();
+
+// Allow surfing the (secure) web
+fleet1.connections.allowTo(new ec2.Peer.anyIpv4(), new ec2.Port({ fromPort: 443, toPort: 443}));
+
+const fleet2 = asg.AutoScalingGroup();
 fleet1.connections.allowFrom(fleet2, ec2.Port.AllTraffic());
 ```
 
@@ -832,6 +1004,15 @@ fleet.connections.allowToDefaultPort(rdsDatabase, 'Fleet can access database');
 ```
 
 ------
+#### [ JavaScript ]
+
+```
+listener.connections.allowDefaultPortFromAnyIpv4('Allow public access');
+
+fleet.connections.allowToDefaultPort(rdsDatabase, 'Fleet can access database');
+```
+
+------
 #### [ Python ]
 
 ```
@@ -870,9 +1051,20 @@ The following example shows how to trigger a Lambda function when an object is a
 #### [ TypeScript ]
 
 ```
-import * s3nots from '@aws-cdk/aws-s3-notifications';
+import * as s3nots from '@aws-cdk/aws-s3-notifications';
 
 const handler = new lambda.Function(this, 'Handler', { /*…*/ });
+const bucket = new s3.Bucket(this, 'Bucket');
+bucket.addObjectCreatedNotification(new s3nots.LambdaDestination(handler));
+```
+
+------
+#### [ JavaScript ]
+
+```
+import * as s3nots from '@aws-cdk/aws-s3-notifications';
+
+const handler = new lambda.Function(this, 'Handler', { /*…*/});
 const bucket = new s3.Bucket(this, 'Bucket');
 bucket.addObjectCreatedNotification(new s3nots.LambdaDestination(handler));
 ```

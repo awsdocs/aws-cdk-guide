@@ -41,6 +41,15 @@ cdk init --language typescript
 ```
 
 ------
+#### [ JavaScript ]
+
+```
+mkdir MyEcsConstruct
+cd MyEcsConstruct
+cdk init --language javascript
+```
+
+------
 #### [ Python ]
 
 ```
@@ -82,6 +91,13 @@ Build and run the app and confirm that it creates an empty stack\.
 
 ```
 npm run build
+cdk synth
+```
+
+------
+#### [ JavaScript ]
+
+```
 cdk synth
 ```
 
@@ -132,6 +148,13 @@ Install the AWS construct library modules for Amazon EC2 and Amazon ECS\.
 
 ------
 #### [ TypeScript ]
+
+```
+npm install @aws-cdk/aws-ec2 @aws-cdk/aws-ecs @aws-cdk/aws-ecs-patterns
+```
+
+------
+#### [ JavaScript ]
 
 ```
 npm install @aws-cdk/aws-ec2 @aws-cdk/aws-ecs @aws-cdk/aws-ecs-patterns
@@ -194,6 +217,17 @@ import * as ecs_patterns from "@aws-cdk/aws-ecs-patterns";
 ```
 
 ------
+#### [ JavaScript ]
+
+File: `lib/my_ecs_construct-stack.js`
+
+```
+import * as ec2 from "@aws-cdk/aws-ec2";
+import * as ecs from "@aws-cdk/aws-ecs";
+import * as ecs_patterns from "@aws-cdk/aws-ecs-patterns";
+```
+
+------
 #### [ Python ]
 
 File: `my_ecs_construct/my_ecs_construct_stack.py`
@@ -231,6 +265,29 @@ Replace the comment at the end of the constructor with the following code\.
 
 ------
 #### [ TypeScript ]
+
+```
+    const vpc = new ec2.Vpc(this, "MyVpc", {
+      maxAzs: 3 // Default is all AZs in region
+    });
+
+    const cluster = new ecs.Cluster(this, "MyCluster", {
+      vpc: vpc
+    });
+
+    // Create a load-balanced Fargate service and make it public
+    new ecs_patterns.ApplicationLoadBalancedFargateService(this, "MyFargateService", {
+      cluster: cluster, // Required
+      cpu: 512, // Default is 256
+      desiredCount: 6, // Default is 1
+      taskImageOptions: { image: ecs.ContainerImage.fromRegistry("amazon/amazon-ecs-sample") },
+      memoryLimitMiB: 2048, // Default is 512
+      publicLoadBalancer: true // Default is false
+    });
+```
+
+------
+#### [ JavaScript ]
 
 ```
     const vpc = new ec2.Vpc(this, "MyVpc", {
@@ -334,14 +391,21 @@ Save it and make sure it builds and creates a stack\.
 
 ```
 npm run build
-cdk deploy
+cdk synth
+```
+
+------
+#### [ JavaScript ]
+
+```
+cdk synth
 ```
 
 ------
 #### [ Python ]
 
 ```
-cdk deploy
+cdk synth
 ```
 
 ------
@@ -349,7 +413,7 @@ cdk deploy
 
 ```
 mvn compile
-cdk deploy
+cdk synth
 ```
 
 **Note**  
@@ -360,7 +424,7 @@ Instead of issuing `mvn compile`, you can instead press Control\-B in Eclipse\.
 
 ```
 dotnet build src
-cdk deploy
+cdk synth
 ```
 
 **Note**  

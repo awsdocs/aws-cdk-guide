@@ -36,6 +36,15 @@ cdk init --language typescript
 ```
 
 ------
+#### [ JavaScript ]
+
+```
+mkdir MyWidgetService
+cd MyWidgetService
+cdk init --language javascript
+```
+
+------
 #### [ Python ]
 
 ```
@@ -78,6 +87,11 @@ The important files in the blank project are as follows\. \(We will also be addi
 + `lib/my_widget_service-stack.ts` – Defines the widget service stack
 
 ------
+#### [ JavaScript ]
++ `bin/my_widget_service.js` – Main entry point for the application
++ `lib/my_widget_service-stack.js` – Defines the widget service stack
+
+------
 #### [ Python ]
 + `app.py` – Main entry point for the application
 + `my_widget_service/my_widget_service_stack.py` – Defines the widget service stack
@@ -101,6 +115,13 @@ Build the app and note that it synthesizes an empty stack\.
 
 ```
 npm run build
+cdk synth
+```
+
+------
+#### [ JavaScript ]
+
+```
 cdk synth
 ```
 
@@ -209,6 +230,13 @@ cdk synth
 ```
 
 ------
+#### [ JavaScript ]
+
+```
+cdk synth
+```
+
+------
 #### [ Python ]
 
 ```
@@ -245,6 +273,13 @@ Add the API Gateway, Lambda, and Amazon S3 packages to the app\.
 
 ------
 #### [ TypeScript ]
+
+```
+npm install @aws-cdk/aws-apigateway @aws-cdk/aws-lambda @aws-cdk/aws-s3
+```
+
+------
+#### [ JavaScript ]
 
 ```
 npm install @aws-cdk/aws-apigateway @aws-cdk/aws-lambda @aws-cdk/aws-s3
@@ -291,6 +326,48 @@ Create a new source file to define the widget service with the source code shown
 #### [ TypeScript ]
 
 File: `lib/widget_service.ts`
+
+```
+import * as core from "@aws-cdk/core";
+import * as apigateway from "@aws-cdk/aws-apigateway";
+import * as lambda from "@aws-cdk/aws-lambda";
+import * as s3 from "@aws-cdk/aws-s3";
+
+export class WidgetService extends core.Construct {
+  constructor(scope: core.Construct, id: string) {
+    super(scope, id);
+
+    const bucket = new s3.Bucket(this, "WidgetStore");
+
+    const handler = new lambda.Function(this, "WidgetHandler", {
+      runtime: lambda.Runtime.NODEJS_10_X, // So we can use async in widget.js
+      code: lambda.Code.asset("resources"),
+      handler: "widgets.main",
+      environment: {
+        BUCKET: bucket.bucketName
+      }
+    });
+
+    bucket.grantReadWrite(handler); // was: handler.role);
+
+    const api = new apigateway.RestApi(this, "widgets-api", {
+      restApiName: "Widget Service",
+      description: "This service serves widgets."
+    });
+
+    const getWidgetsIntegration = new apigateway.LambdaIntegration(handler, {
+      requestTemplates: { "application/json": '{ "statusCode": "200" }' }
+    });
+
+    api.root.addMethod("GET", getWidgetsIntegration); // GET /
+  }
+}
+```
+
+------
+#### [ JavaScript ]
+
+File: `lib/widget_service.js`
 
 ```
 import * as core from "@aws-cdk/core";
@@ -485,6 +562,13 @@ cdk synth
 ```
 
 ------
+#### [ JavaScript ]
+
+```
+cdk synth
+```
+
+------
 #### [ Python ]
 
 ```
@@ -523,6 +607,23 @@ To add the widget service to our AWS CDK app, we'll need to modify the source fi
 #### [ TypeScript ]
 
 File: `lib/my_widget_service-stack.ts`
+
+Add the following line of code after the existing `import` statement\.
+
+```
+import * as widget_service from '../lib/widget_service';
+```
+
+Replace the comment in the constructor with the following line of code\.
+
+```
+    new widget_service.WidgetService(this, 'Widgets');
+```
+
+------
+#### [ JavaScript ]
+
+File: `lib/my_widget_service-stack.js`
 
 Add the following line of code after the existing `import` statement\.
 
@@ -584,6 +685,13 @@ Be sure the app builds and synthesizes a stack \(we won't show the stack here: i
 
 ```
 npm run build
+cdk synth
+```
+
+------
+#### [ JavaScript ]
+
+```
 cdk synth
 ```
 
@@ -795,6 +903,28 @@ File: `lib/widget_service.ts`
 ```
 
 ------
+#### [ JavaScript ]
+
+File: `lib/widget_service.js`
+
+```
+    const widget = api.root.addResource("{id}");
+
+    // Add new widget to bucket with: POST /{id}
+    const postWidgetIntegration = new apigateway.LambdaIntegration(handler);
+
+    // Get a specific widget from bucket with: GET /{id}
+    const getWidgetIntegration = new apigateway.LambdaIntegration(handler);
+
+    // Remove a specific widget from the bucket with: DELETE /{id}
+    const deleteWidgetIntegration = new apigateway.LambdaIntegration(handler);
+
+    widget.addMethod("POST", postWidgetIntegration); // POST /{id}
+    widget.addMethod("GET", getWidgetIntegration); // GET /{id}
+    widget.addMethod("DELETE", deleteWidgetIntegration); // DELETE /{id}
+```
+
+------
 #### [ Python ]
 
 File: `my_widget_service/widget_service.py`
@@ -867,6 +997,13 @@ Save, build, and deploy the app\.
 
 ```
 npm run build
+cdk deploy
+```
+
+------
+#### [ JavaScript ]
+
+```
 cdk deploy
 ```
 
