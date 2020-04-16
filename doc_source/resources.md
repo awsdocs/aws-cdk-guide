@@ -1107,3 +1107,153 @@ bucket.AddObjectCreatedNotification(new s3_not.LambdaDestination(handler));
 ```
 
 ------
+
+## Removal Policies<a name="resources_removal"></a>
+
+Resources that maintain persistent data, such as databases and Amazon S3 buckets, have a *removal policy* that indicates whether to delete persistent object when the AWS CDK stack that contains them is destroyed\. The values specifying the removal policy are available through the `RemovalPolicy` enumeration in the AWS CDK `core` module\.
+
+
+| Value | Meaning | 
+| --- |--- |
+| RemovalPolicy\.RETAIN | Keep the contents of the resource when destroying the stack \(default\)\. The resource is orphaned from the stack; if you attempt to re\-deploy the stack, you will receive an error message because the resource already exists\. | 
+| RemovalPolicy\.DESTROY | The resource will be destroyed along with the stack\. | 
+
+AWS CloudFormation does not remove Amazon S3 buckets that contain files even if their removal policy is set to `DESTROY`\. Attempting to do so is a AWS CloudFormation error\. Delete the files from the bucket before destroying the stack\. You can automate this using a custom resource; see the third\-party construct [https://github.com/mobileposse/auto-delete-bucket/tree/master/src/lambda](https://github.com/mobileposse/auto-delete-bucket/tree/master/src/lambda) for an example\.
+
+Following is an example of creating an Amazon S3 bucket with `RemovalPolicy.DESTROY`\.
+
+------
+#### [ TypeScript ]
+
+```
+import * as cdk from '@aws-cdk/core';
+import * as s3 from '@aws-cdk/aws-s3';
+  
+export class CdkTestStack extends cdk.Stack {
+  constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
+    super(scope, id, props);
+  
+    const bucket = new s3.Bucket(this, 'Bucket', {
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+    });
+  }
+}
+```
+
+------
+#### [ JavaScript ]
+
+```
+import * as cdk from '@aws-cdk/core';
+import * as s3 from '@aws-cdk/aws-s3';
+
+export class CdkTestStack extends cdk.Stack {
+  constructor(scope, id, props) {
+    super(scope, id, props);
+
+    const bucket = new s3.Bucket(this, 'Bucket', {
+      removalPolicy: cdk.RemovalPolicy.DESTROY
+    });
+  }
+}
+```
+
+------
+#### [ Python ]
+
+```
+import aws_cdk.core as cdk
+import aws_cdk.aws_s3 as s3
+
+class CdkTestStack(cdk.stack):
+    def __init__(self, scope: cdk.Construct, id: str, **kwargs):
+        super().__init__(scope, id, **kwargs)
+        
+        bucket = s3.Bucket(self, "Bucket",
+            removal_policy=cdk.RemovalPolicy.DESTROY)
+```
+
+------
+#### [ Java ]
+
+```
+software.amazon.awscdk.core.*;
+import software.amazon.awscdk.services.s3.*;
+
+public class CdkTestStack extends Stack {
+    public CdkTestStack(final Construct scope, final String id) {
+        this(scope, id, null);
+    }
+
+    public CdkTestStack(final Construct scope, final String id, final StackProps props) {
+        super(scope, id, props);
+
+        Bucket.Builder.create(this, "Bucket")
+                .removalPolicy(RemovalPolicy.DESTROY).build();
+    }
+}
+```
+
+------
+#### [ C\# ]
+
+```
+using Amazon.CDK;
+using Amazon.CDK.AWS.S3;
+
+public CdkTestStack(Construct scope, string id, IStackProps props) : base(scope, id, props)
+{
+    new Bucket(this, "Bucket", new BucketProps {
+        RemovalPolicy = RemovalPolicy.DESTROY
+    });
+}
+```
+
+------
+
+You can also apply a removal policy directly to the underlying AWS CloudFormation resource via the `applyRemovalPolicy()` method\.
+
+------
+#### [ TypeScript ]
+
+```
+const resource = bucket.node.findChild('Resource') as cdk.CfnResource;
+resource.applyRemovalPolicy(cdk.RemovalPolicy.DESTROY);
+```
+
+------
+#### [ JavaScript ]
+
+```
+const resource = bucket.node.findChild('Resource') as cdk.CfnResource;
+resource.applyRemovalPolicy(cdk.RemovalPolicy.DESTROY);
+```
+
+------
+#### [ Python ]
+
+```
+resource = bucket.node.find_child('Resource')
+resource.apply_removal_policy(cdk.RemovalPolicy.DESTROY);
+```
+
+------
+#### [ Java ]
+
+```
+CfnResource resource = (CfnResource)bucket.node.findChild("Resource");
+resource.applyRemovalPolicy(cdk.RemovalPolicy.DESTROY);
+```
+
+------
+#### [ C\# ]
+
+```
+var resource = (CfnResource)bucket.node.findChild('Resource');
+resource.ApplyRemovalPolicy(cdk.RemovalPolicy.DESTROY);
+```
+
+------
+
+**Note**  
+The AWS CDK's `RemovalPolicy` translates to AWS CloudFormation's `DeletionPolicy`, but the default in AWS CDK is to retain the data, which is the opposite of the AWS CloudFormation default\.

@@ -232,7 +232,7 @@ if (path) fs.readFile(path, 'utf8', function(err, contents) {
 As your stack's resource count approaches 200, consider re\-architecting to reduce the number of resources your stack contains, for example by combining some Lambda functions, or to break it up into multiple stacks\. The CDK supports [references between stacks](https://docs.aws.amazon.com/cdk/latest/guide/resources.html#resource_stack), so it is straightforward to separate your app's functionality into different stacks in whatever way makes the most sense to you\.
 
 **Note**  
-AWS CloudFormation experts often suggest the use of nested stacks as a solution to the 200 resource limit\. The AWS CDK supports this approach via the [https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-cloudformation.NestedStack.html](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-cloudformation.NestedStack.html) construct\.
+AWS CloudFormation experts often suggest the use of nested stacks as a solution to the 200 resource limit\. The AWS CDK supports this approach via the [`NestedStack`](stacks.md#stack_nesting) construct\.
 
 \([back to list](#troubleshooting_top)\)<a name="troubleshooting_availability_zones"></a>
 

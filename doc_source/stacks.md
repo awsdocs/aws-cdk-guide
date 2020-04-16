@@ -357,3 +357,16 @@ The [Stack](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/core/stack
 + `stack.parseArn(arn)` and `stack.formatArn(comps)` \(Python: `parse_arn`, `format_arn`\) – Can be used to work with Amazon Resource Names \(ARNs\)\.
 + `stack.toJsonString(obj)` \(Python: `to_json_string`\) – Can be used to format an arbitrary object as a JSON string that can be embedded in an AWS CloudFormation template\. The object can include tokens, attributes, and references, which are only resolved during deployment\.
 + `stack.templateOptions` \(Python: `template_options`\) – Enables you to specify AWS CloudFormation template options, such as Transform, Description, and Metadata, for your stack\.
+
+## Nested Stacks<a name="stack_nesting"></a>
+
+The [NestedStack](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-cloudformation.NestedStack.html) construct offers a way around the AWS CloudFormation 200\-resource limit for stacks\. A nested stack counts as only one resource in the stack that contains it, but can itself contain up to 200 resources, including additional nested stacks\.
+
+The scope of a nested stack must be a `Stack` or `NestedStack` construct\. The nested stack needn't be declared lexically inside its parent stack; it is necessary only to pass the parent stack as the first parameter \(`scope`\) when instantiating the nested stack\. Aside from this restriction, defining constructs in a nested stack works exactly the same as in an ordinary stack\.
+
+At synthesis time, the nested stack is synthesized to its own AWS CloudFormation template, which is uploaded to the AWS CDK staging bucket at deployment\. Nested stacks are bound to their parent stack and are not treated as independent deployment artifacts; they are not listed by `cdk list` nor can they be deployed by `cdk deploy`\.
+
+ References between parent stacks and nested stacks are automatically translated to stack parameters and outputs in the generated AWS CloudFormation templates\. 
+
+**Warning**  
+Changes in security posture are not displayed before deployment for nested stacks\. This information is displayed only for top\-level stacks\.
