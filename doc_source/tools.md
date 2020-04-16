@@ -263,7 +263,7 @@ The setting can also be configured in the `cdk.json` file\.
 
 To gain insight into how the AWS CDK is used, the versions of libraries used by AWS CDK applications are collected and reported by using a resource identified as `AWS::CDK::Metadata`\. This resource is added to AWS CloudFormation templates, and can easily be reviewed\. This information can also be used to identify stacks using a package with known serious security or reliability issues, and to contact their users with important information\.
 
-The AWS CDK reports the name and version of `npm` modules that are loaded into the application at synthesis time, unless their `package.json` file contains the `"private": true` attribute\.
+The AWS CDK reports the name and version of AWS CDK and AWS Solutions Konstruk `npm` modules that are loaded into the application at synthesis time, unless their `package.json` file contains the `"private": true` attribute\.
 
 The `AWS::CDK::Metadata` resource looks like the following\.
 
@@ -271,7 +271,7 @@ The `AWS::CDK::Metadata` resource looks like the following\.
 CDKMetadata:
   Type: "AWS::CDK::Metadata"
   Properties:
-    Modules: "@aws-cdk/core=0.7.2-beta,@aws-cdk/s3=0.7.2-beta,lodash=4.17.10"
+    Modules: "@aws-cdk/core=0.7.2-beta,@aws-cdk/s3=0.7.2-beta,@aws-solutions-konstruk/aws-apigateway-lambda=0.8.0"
 ```
 
 ### Opting Out from Version Reporting<a name="version_reporting_opt_out"></a>
