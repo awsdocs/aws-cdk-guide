@@ -1110,12 +1110,12 @@ bucket.AddObjectCreatedNotification(new s3_not.LambdaDestination(handler));
 
 ## Removal Policies<a name="resources_removal"></a>
 
-Resources that maintain persistent data, such as databases and Amazon S3 buckets, have a *removal policy* that indicates whether to delete persistent object when the AWS CDK stack that contains them is destroyed\. The values specifying the removal policy are available through the `RemovalPolicy` enumeration in the AWS CDK `core` module\.
+Resources that maintain persistent data, such as databases and Amazon S3 buckets, have a *removal policy* that indicates whether to delete persistent objects when the AWS CDK stack that contains them is destroyed\. The values specifying the removal policy are available through the `RemovalPolicy` enumeration in the AWS CDK `core` module\.
 
 
 | Value | Meaning | 
 | --- |--- |
-| RemovalPolicy\.RETAIN | Keep the contents of the resource when destroying the stack \(default\)\. The resource is orphaned from the stack; if you attempt to re\-deploy the stack, you will receive an error message because the resource already exists\. | 
+| RemovalPolicy\.RETAIN | Keep the contents of the resource when destroying the stack \(default\)\. The resource is orphaned from the stack and must be deleted manually\. If you attempt to re\-deploy the stack while the resource still exists, you will receive an error message due to a name conflict\. | 
 | RemovalPolicy\.DESTROY | The resource will be destroyed along with the stack\. | 
 
 AWS CloudFormation does not remove Amazon S3 buckets that contain files even if their removal policy is set to `DESTROY`\. Attempting to do so is a AWS CloudFormation error\. Delete the files from the bucket before destroying the stack\. You can automate this using a custom resource; see the third\-party construct [https://github.com/mobileposse/auto-delete-bucket/tree/master/src/lambda](https://github.com/mobileposse/auto-delete-bucket/tree/master/src/lambda) for an example\.
