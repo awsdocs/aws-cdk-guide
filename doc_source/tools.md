@@ -263,7 +263,10 @@ The setting can also be configured in the `cdk.json` file\.
 
 To gain insight into how the AWS CDK is used, the versions of libraries used by AWS CDK applications are collected and reported by using a resource identified as `AWS::CDK::Metadata`\. This resource is added to AWS CloudFormation templates, and can easily be reviewed\. This information can also be used to identify stacks using a package with known serious security or reliability issues, and to contact their users with important information\.
 
-The AWS CDK reports the name and version of AWS CDK and AWS Solutions Konstruk `npm` modules that are loaded into the application at synthesis time, unless their `package.json` file contains the `"private": true` attribute\.
+By default, the AWS CDK reports the name and version of the following NPM modules that are loaded at synthesis time:
++ AWS CDK core module
++ AWS Construct Library modules
++ AWS Solutions Konstruk module
 
 The `AWS::CDK::Metadata` resource looks like the following\.
 
