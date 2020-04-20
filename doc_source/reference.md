@@ -4,9 +4,35 @@ The [API Reference](https://docs.aws.amazon.com/cdk/api/latest) contains informa
 
 Each library contains information about how to use the library\. For example, the [S3](https://docs.aws.amazon.com/cdk/api/latest/docs/aws-s3-readme.html) library demonstrates how to set default encryption on an Amazon S3 bucket\.
 
-## Versioning and Stability Model<a name="versioning"></a>
+## Versioning<a name="versioning"></a>
 
-Version numbers consist of three numeric version parts: *major*\.*minor*\.*patch*, and adhere to the [semantic versioning](https://semver.org) model\. This means that breaking changes to stable APIs, which is described in the next section, are limited to major releases\. Minor and patch releases are backward compatible, meaning that the code written in a previous version with the same major version can be upgraded to a newer version and be expected to continue to build and run, producing the same output\.
+Version numbers consist of three numeric version parts: *major*\.*minor*\.*patch*, and adhere to the [semantic versioning](https://semver.org) model\. This means that breaking changes to stable APIs, are limited to major releases\. Minor and patch releases are backward compatible, meaning that the code written in a previous version with the same major version can be upgraded to a newer version and be expected to continue to build and run, producing the same output\. 
+
+**Note that this compatibility promise does not apply to *Experimental* API's, see [AWS CDK Stability Index](#aws_construct_lib_versioning_stability) for more details.**
+
+## AWS CDK CLI Compatibility<a name="aws_cdk_compatibility"></a>
+
+Following is the expected behavior of the CLI in relation to different versions of the framework libraries.
+
+- CLI versions are **always** compatible with framework libraries of a semantically **lower** or **equal** version number. This means that CLI upgardes are safe.
+Note that `major` version exceptions still apply. That is, CDK CLI version 2.1.0 is not necessarily compatible with a framework library of version 1.56.0.
+
+- CLI versions are **not always** compatible with framework libraries of a semantically **higher** version number. This is determined by whether or not the `cloud-assembly-schema` version has changed.
+
+    #### What is the cloud-assembly-schema?
+
+    The AWS CDK API framework produces a *cloud-assembly* directory during `synthesis`. This assembly is then consumed by the CDK CLI in order to deploy it assembly to the cloud.
+
+    In essence, this *cloud-assembly* acts as a protocol between the framework and the CLI, and as such, it is versioned.
+
+    For more details, see [Cloud Assembly Versioning](https://github.com/aws/aws-cdk/tree/master/packages/%40aws-cdk/cloud-assembly-schema#versioning).
+
+    This means that you might see the following message when upgrading framework libraries:
+
+    ```console
+    Cloud assembly schema version mismatch: Maximum schema version supported is 2.0.0, but found 3.0.0.
+    Please upgrade your CLI in order to interact with this app.    
+    ```
 
 ### AWS CDK Stability Index<a name="aws_construct_lib_versioning_stability"></a>
 
@@ -21,7 +47,7 @@ CloudFormation Only
 These APIs are automatically built from the AWS CloudFormation resource specification and are subject to any changes introduced by AWS CloudFormation\.
 
 Experimental  
-The API is still under active development and subject to non\-backward\-compatible changes or removal in any future version\. We recommend that you do not use this API in production environments\. Experimental APIs are not subject to the semantic versioning model\.
+The API is still under active development and subject to non\-backward\-compatible changes or removal in any future version\. Such changes will be announed under the **BREAKING\-CHANGES** section in our release notes. We recommend that you do not use this API in production environments\. Experimental APIs are not subject to the semantic versioning model\.
 
 Deprecated  
 The API may emit warnings\. We do not guarantee backward compatibility\.
