@@ -6,53 +6,44 @@ Each library contains information about how to use the library\. For example, th
 
 ## Versioning<a name="versioning"></a>
 
-Version numbers consist of three numeric version parts: *major*\.*minor*\.*patch*, and adhere to the [semantic versioning](https://semver.org) model\. This means that breaking changes to stable APIs, are limited to major releases\. Minor and patch releases are backward compatible, meaning that the code written in a previous version with the same major version can be upgraded to a newer version and be expected to continue to build and run, producing the same output\. 
+Version numbers consist of three numeric version parts: *major*\.*minor*\.*patch*, and adhere to the [semantic versioning](https://semver.org) model\. This means that breaking changes to stable APIs are limited to major releases\. Minor and patch releases are backward compatible, meaning that the code written in a previous version with the same major version can be upgraded to a newer version and be expected to continue to build and run, producing the same output\.
 
-**Note that this compatibility promise does not apply to *Experimental* API's, see [AWS CDK Stability Index](#aws_construct_lib_versioning_stability) for more details.**
+**Note**  
+This compatibility promise does not apply to APIs designated as experimental\. See [AWS CDK Stability Index](#aws_construct_lib_stability) for more details\.
 
-## AWS CDK CLI Compatibility<a name="aws_cdk_compatibility"></a>
+### AWS CDK Toolkit \(CLI\) Compatibility<a name="aws_construct_lib_versioning"></a>
 
-Following is the expected behavior of the CLI in relation to different versions of the framework libraries.
+The AWS CDK Toolkit \(that is, the `cli` command line command\) is *always* compatible with construct libraries of a semantically *lower* or *equal* version number\. It is, therefore, always safe to upgrade the AWS CDK Toolkit within the same major version\. 
 
-- CLI versions are **always** compatible with framework libraries of a semantically **lower** or **equal** version number. This means that CLI upgardes are safe.
-Note that `major` version exceptions still apply. That is, CDK CLI version 2.1.0 is not necessarily compatible with a framework library of version 1.56.0.
+The AWS CDK Toolkit may be, but is *not always*, compatible with construct libraries of a semantically *higher* version, depending on whether the same cloud assembly schema version is employed by the two components\. The AWS CDK framework generates a cloud assembly during synthesis; the AWS CDK Toolkit consumes it for deployment\. The schema that defines the format of the cloud assembly is strictly specified and versioned\. AWS construct libraries using a given cloud assembly schema version are compatible with AWS CDK toolkit versions using that schema version or later, which may include releases of the AWS CDK Toolkit *older than* a given construct library release\.
 
-- CLI versions are **not always** compatible with framework libraries of a semantically **higher** version number. This is determined by whether or not the `cloud-assembly-schema` version has changed.
+When the cloud assembly version required by the construct library is not compatible with the version supported by the AWS CDK Toolkit, you receive an error message like this one\.
 
-    #### What is the cloud-assembly-schema?
+```
+Cloud assembly schema version mismatch: Maximum schema version supported is 3.0.0, but found 4.0.0.
+    Please upgrade your CLI in order to interact with this app.
+```
 
-    The AWS CDK API framework produces a *cloud-assembly* directory during `synthesis`. This assembly is then consumed by the CDK CLI in order to deploy it assembly to the cloud.
+**Note**  
+For more details on the cloud assembly schema, see [Cloud Assembly Versioning](https://github.com/aws/aws-cdk/tree/master/packages/%40aws-cdk/cloud-assembly-schema#versioning)\.
 
-    In essence, this *cloud-assembly* acts as a protocol between the framework and the CLI, and as such, it is versioned.
+### AWS CDK Stability Index<a name="aws_construct_lib_stability"></a>
 
-    For more details, see [Cloud Assembly Versioning](https://github.com/aws/aws-cdk/tree/master/packages/%40aws-cdk/cloud-assembly-schema#versioning).
-
-    This means that you might see the following message when upgrading framework libraries:
-
-    ```console
-    Cloud assembly schema version mismatch: Maximum schema version supported is 2.0.0, but found 3.0.0.
-    Please upgrade your CLI in order to interact with this app.    
-    ```
-
-### AWS CDK Stability Index<a name="aws_construct_lib_versioning_stability"></a>
-
-However, certain APIs do not adhere to the semantic versioning model\. The AWS CDK team has added a stability index to help developers determine which APIs deviate from the semantic versioning model\.
-
-There are three levels of stability in the AWS CDK Construct Library:
+Certain APIs do not adhere to the semantic versioning model\. There are three levels of stability in the AWS Construct Library, which define the level of semantic versioning that applies to each module\.
 
 Stable  
 The API is subject to the semantic versioning model\. We will not introduce non\-backward\-compatible changes or remove the API in a subsequent patch or feature release\.
 
 CloudFormation Only  
-These APIs are automatically built from the AWS CloudFormation resource specification and are subject to any changes introduced by AWS CloudFormation\.
+These APIs are automatically built from the AWS CloudFormation resource specification and are subject only to changes introduced by AWS CloudFormation\.
 
 Experimental  
-The API is still under active development and subject to non\-backward\-compatible changes or removal in any future version\. Such changes will be announed under the **BREAKING\-CHANGES** section in our release notes. We recommend that you do not use this API in production environments\. Experimental APIs are not subject to the semantic versioning model\.
+The API is still under active development and subject to non\-backward\-compatible changes or removal in any future version\. Such changes are announced in the AWS CDK release notes under *BREAKING CHANGES*\. We recommend that you do not use this API in production environments\. Experimental APIs are not subject to the semantic versioning model\.
 
 Deprecated  
 The API may emit warnings\. We do not guarantee backward compatibility\.
 
-Experimental and stable modules receive the same level of support from AWS\. The only difference is that we might change experimental APIs within a major version\. Although we don't recommend using experimental APIs in production, we vet them the same way as we vet stable APIs before we include them in an AWS CDK release\.
+Experimental and stable modules receive the same level of support from AWS\. The only difference is that we might change experimental APIs within a major version\. Although we don't recommend using experimental APIs in production, we vet them the same way as we vet stable APIs before we include them in a release\.
 
 ### Identifying the Support Level of an API<a name="aws_construct_lib_versioning_support"></a>
 
