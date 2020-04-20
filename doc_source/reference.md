@@ -25,13 +25,13 @@ Note that `major` version exceptions still apply. That is, CDK CLI version 2.1.0
 
     In essence, this *cloud-assembly* acts as a protocol between the framework and the CLI, and as such, it is versioned.
 
-    For more details, see [Cloud Assembly Versioning](https://github.com/aws/aws-cdk/tree/epolon/cli-framework-compatibility/packages/%40aws-cdk/cloud-assembly-schema#versioning).
+    For more details, see [Cloud Assembly Versioning](https://github.com/aws/aws-cdk/tree/master/packages/%40aws-cdk/cloud-assembly-schema#versioning).
 
     This means that you might see the following message when upgrading framework libraries:
 
     ```console
-    Cloud assembly schema version mismatch: Maximum schema version supported is 3.0.0, but found 4.0.0.
-    Please upgrade your CLI in order to interact with this app.
+    Cloud assembly schema version mismatch: Maximum schema version supported is 2.0.0, but found 3.0.0.
+    Please upgrade your CLI in order to interact with this app.    
     ```
 
 ### AWS CDK Stability Index<a name="aws_construct_lib_versioning_stability"></a>
