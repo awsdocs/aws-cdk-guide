@@ -26,7 +26,7 @@ npm install @aws-cdk/aws-codecommit @aws-cdk/aws-codepipeline-actions @aws-cdk/a
 ```
 mkdir pipeline
 cd pipeline
-cdk init --language javascript
+cdk init ‐-language javascript
 mkdir Lambda
 npm install @aws-cdk/aws-codedeploy @aws-cdk/aws-lambda @aws-cdk/aws-codebuild
 npm install @aws-cdk/aws-codecommit @aws-cdk/aws-codepipeline-actions @aws-cdk/aws-s3
@@ -154,36 +154,37 @@ export class LambdaStack extends Stack {
 File: `lib/lambda-stack.js`
 
 ```
-import * as codedeploy from '@aws-cdk/aws-codedeploy';
-import * as lambda from '@aws-cdk/aws-lambda';
-import { Stack } from '@aws-cdk/core';
-
-export class LambdaStack extends Stack {
-
+const codedeploy = require('@aws-cdk/aws-codedeploy');
+const lambda = require('@aws-cdk/aws-lambda');
+const { Stack } = require('@aws-cdk/core');
+      
+class LambdaStack extends Stack {
 
   constructor(app, id, props) {
     super(app, id, props);
-
+      
     this.lambdaCode = lambda.Code.fromCfnParameters();
-
+      
     const func = new lambda.Function(this, 'Lambda', {
       code: this.lambdaCode,
       handler: 'index.handler',
       runtime: lambda.Runtime.NODEJS_10_X
     });
-
+      
     const version = func.addVersion(new Date().toISOString());
     const alias = new lambda.Alias(this, 'LambdaAlias', {
       aliasName: 'Prod',
       version
     });
-
+      
     new codedeploy.LambdaDeploymentGroup(this, 'DeploymentGroup', {
       alias,
       deploymentConfig: codedeploy.LambdaDeploymentConfig.LINEAR_10PERCENT_EVERY_1MINUTE
     });
   }
 }
+
+module.exports = { LambdaStack }
 ```
 
 ------
@@ -477,21 +478,19 @@ export class PipelineStack extends Stack {
 File: `lib/pipeline-stack.js`
 
 ```
-import * as codebuild from '@aws-cdk/aws-codebuild';
-import * as codecommit from '@aws-cdk/aws-codecommit';
-import * as codepipeline from '@aws-cdk/aws-codepipeline';
-import * as codepipeline_actions from '@aws-cdk/aws-codepipeline-actions';
+const codebuild = require('@aws-cdk/aws-codebuild');
+const codecommit = require('@aws-cdk/aws-codecommit');
+const codepipeline = require('@aws-cdk/aws-codepipeline');
+const codepipeline_actions = require('@aws-cdk/aws-codepipeline-actions');
 
-import { Stack } from '@aws-cdk/core';
+const { Stack  } = require('@aws-cdk/core');
 
-
-
-export class PipelineStack extends Stack {
+class PipelineStack extends Stack {
   constructor(app, id, props) {
     super(app, id, props);
 
     const code = codecommit.Repository.fromRepositoryName(this, 'ImportedRepo',
-    'NameOfYourCodeCommitRepository');
+      'NameOfYourCodeCommitRepository');
 
     const cdkBuild = new codebuild.PipelineProject(this, 'CdkBuild', {
       buildSpec: codebuild.BuildSpec.fromObject({
@@ -502,15 +501,15 @@ export class PipelineStack extends Stack {
           },
           build: {
             commands: [
-            'npm run build',
-            'npm run cdk synth -- -o dist'
+              'npm run build',
+              'npm run cdk synth -- -o dist'
             ]
           }
         },
         artifacts: {
           'base-directory': 'dist',
           files: [
-          'LambdaStack.template.json'
+            'LambdaStack.template.json'
           ]
         }
       }),
@@ -524,8 +523,8 @@ export class PipelineStack extends Stack {
         phases: {
           install: {
             commands: [
-            'cd lambda',
-            'npm install'
+              'cd lambda',
+              'npm install'
             ]
           },
           build: {
@@ -535,8 +534,8 @@ export class PipelineStack extends Stack {
         artifacts: {
           'base-directory': 'lambda',
           files: [
-          'index.js',
-          'node_modules/**/*'
+            'index.js',
+            'node_modules/**/*'
           ]
         }
       }),
@@ -550,52 +549,54 @@ export class PipelineStack extends Stack {
     const lambdaBuildOutput = new codepipeline.Artifact('LambdaBuildOutput');
     new codepipeline.Pipeline(this, 'Pipeline', {
       stages: [
-      {
-        stageName: 'Source',
-        actions: [
-        new codepipeline_actions.CodeCommitSourceAction({
-          actionName: 'CodeCommit_Source',
-          repository: code,
-          output: sourceOutput
-        })
-        ]
-      },
-      {
-        stageName: 'Build',
-        actions: [
-        new codepipeline_actions.CodeBuildAction({
-          actionName: 'Lambda_Build',
-          project: lambdaBuild,
-          input: sourceOutput,
-          outputs: [lambdaBuildOutput]
-        }),
-        new codepipeline_actions.CodeBuildAction({
-          actionName: 'CDK_Build',
-          project: cdkBuild,
-          input: sourceOutput,
-          outputs: [cdkBuildOutput]
-        })
-        ]
-      },
-      {
-        stageName: 'Deploy',
-        actions: [
-        new codepipeline_actions.CloudFormationCreateUpdateStackAction({
-          actionName: 'Lambda_CFN_Deploy',
-          templatePath: cdkBuildOutput.atPath('LambdaStack.template.json'),
-          stackName: 'LambdaDeploymentStack',
-          adminPermissions: true,
-          parameterOverrides: {
-            ...props.lambdaCode.assign(lambdaBuildOutput.s3Location)
-          },
-          extraInputs: [lambdaBuildOutput]
-        })
-        ]
-      }
+        {
+          stageName: 'Source',
+          actions: [
+            new codepipeline_actions.CodeCommitSourceAction({
+              actionName: 'CodeCommit_Source',
+              repository: code,
+              output: sourceOutput
+            })
+          ]
+        },
+        {
+          stageName: 'Build',
+          actions: [
+            new codepipeline_actions.CodeBuildAction({
+              actionName: 'Lambda_Build',
+              project: lambdaBuild,
+              input: sourceOutput,
+              outputs: [lambdaBuildOutput]
+            }),
+            new codepipeline_actions.CodeBuildAction({
+              actionName: 'CDK_Build',
+              project: cdkBuild,
+              input: sourceOutput,
+              outputs: [cdkBuildOutput]
+            })
+          ]
+        },
+        {
+          stageName: 'Deploy',
+          actions: [
+            new codepipeline_actions.CloudFormationCreateUpdateStackAction({
+              actionName: 'Lambda_CFN_Deploy',
+              templatePath: cdkBuildOutput.atPath('LambdaStack.template.json'),
+              stackName: 'LambdaDeploymentStack',
+              adminPermissions: true,
+              parameterOverrides: {
+                ...props.lambdaCode.assign(lambdaBuildOutput.s3Location)
+              },
+              extraInputs: [lambdaBuildOutput]
+            })
+          ]
+        }
       ]
     });
   }
 }
+
+module.exports = { PipelineStack }
 ```
 
 ------
@@ -1025,14 +1026,14 @@ app.synth();
 ------
 #### [ JavaScript ]
 
-File: `bin/pipeline.ts`
+File: `bin/pipeline.js`
 
 ```
 #!/usr/bin/env node
 
-import { App } from '@aws-cdk/core';
-import { LambdaStack } from '../lib/lambda-stack';
-import { PipelineStack } from '../lib/pipeline-stack';
+const { App } = require('@aws-cdk/core');
+const { LambdaStack } = require('../lib/lambda-stack');
+const { PipelineStack } = require('../lib/pipeline-stack');
 
 const app = new App();
 

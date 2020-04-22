@@ -222,9 +222,9 @@ import * as ecs_patterns from "@aws-cdk/aws-ecs-patterns";
 File: `lib/my_ecs_construct-stack.js`
 
 ```
-import * as ec2 from "@aws-cdk/aws-ec2";
-import * as ecs from "@aws-cdk/aws-ecs";
-import * as ecs_patterns from "@aws-cdk/aws-ecs-patterns";
+const ec2 = require("@aws-cdk/aws-ec2");
+const ecs = require("@aws-cdk/aws-ecs");
+const ecs_patterns = require("@aws-cdk/aws-ecs-patterns");
 ```
 
 ------

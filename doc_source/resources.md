@@ -19,10 +19,10 @@ new sqs.Queue(this, 'MyQueue', {
 #### [ JavaScript ]
 
 ```
-import * as sqs from '@aws-cdk/aws-sqs';
-
+const sqs = require('@aws-cdk/aws-sqs');
+            
 new sqs.Queue(this, 'MyQueue', {
-  encryption: sqs.QueueEncryption.KMS_MANAGED
+    encryption: sqs.QueueEncryption.KMS_MANAGED
 });
 ```
 
@@ -79,8 +79,8 @@ const url = queue.queueUrl; // => A string representing a deploy-time value
 #### [ JavaScript ]
 
 ```
-import * as sqs from '@aws-cdk/aws-sqs';
-
+const sqs = require('@aws-cdk/aws-sqs');
+      
 const queue = new sqs.Queue(this, 'MyQueue');
 const url = queue.queueUrl; // => A string representing a deploy-time value
 ```
@@ -131,7 +131,7 @@ Because every resource implements its corresponding interface, you can directly 
 #### [ TypeScript ]
 
 ```
-const cluster = new ecs.Cluster(this, 'Cluster', { /* ... */ });
+const cluster = new ecs.Cluster(this, 'Cluster', { /*...*/ });
 
 const service = new ecs.Ec2Service(this, 'Service', { cluster: cluster });
 ```
@@ -140,9 +140,9 @@ const service = new ecs.Ec2Service(this, 'Service', { cluster: cluster });
 #### [ JavaScript ]
 
 ```
-const cluster = new ecs.Cluster(this, 'Cluster', { /* ... */});
+const cluster = new ecs.Cluster(this, 'Cluster', { /*...*/ });
 
-const service = new ecs.Ec2Service(this, 'Service', { cluster: cluster});
+const service = new ecs.Ec2Service(this, 'Service', { cluster: cluster });
 ```
 
 ------
@@ -196,13 +196,13 @@ const stack2 = new StackThatExpectsABucket(app, 'Stack2', {
 #### [ JavaScript ]
 
 ```
-const prod = { account: '123456789012', region: 'us-east-1'};
+const prod = { account: '123456789012', region: 'us-east-1' };
 
-const stack1 = new StackThatProvidesABucket(app, 'Stack1', { env: prod});
+const stack1 = new StackThatProvidesABucket(app, 'Stack1' , { env: prod });
 
 // stack2 will take a property { bucket: IBucket }
 const stack2 = new StackThatExpectsABucket(app, 'Stack2', {
-  bucket: stack1.bucket,
+  bucket: stack1.bucket, 
   env: prod
 });
 ```
@@ -425,7 +425,7 @@ The following example shows how to pass a generated bucket name to an AWS Lambda
 const bucket = new s3.Bucket(this, 'Bucket');
 
 new lambda.Function(this, 'MyLambda', {
-  /* ... */
+  // ...
   environment: {
     BUCKET_NAME: bucket.bucketName,
   },
@@ -439,7 +439,7 @@ new lambda.Function(this, 'MyLambda', {
 const bucket = new s3.Bucket(this, 'Bucket');
 
 new lambda.Function(this, 'MyLambda', {
-  /* ... */
+  // ...
   environment: {
     BUCKET_NAME: bucket.bucketName
   }
@@ -588,8 +588,8 @@ ec2.Vpc.fromLookup(this, 'DefaultVpc', {
 #### [ JavaScript ]
 
 ```
-ec2.Vpc.fromLookup(this, 'DefaultVpc', {
-  isDefault: true
+ec2.Vpc.fromLookup(this, 'DefaultVpc', { 
+  isDefault: true 
 });
 ```
 
@@ -634,8 +634,8 @@ ec2.Vpc.fromLookup(this, 'PublicVpc',
 #### [ JavaScript ]
 
 ```
-ec2.Vpc.fromLookup(this, 'PublicVpc',
-{ tags: { 'aws-cdk:subnet-type': "Public" }});
+ec2.Vpc.fromLookup(this, 'PublicVpc', 
+    {tags: {'aws-cdk:subnet-type': "Public"}});
 ```
 
 ------
@@ -688,7 +688,7 @@ if (bucket.grantReadWrite(func).success) {
 #### [ JavaScript ]
 
 ```
-if (bucket.grantReadWrite(func).success) {
+if ( bucket.grantReadWrite(func).success) {
   // ...
 }
 ```
@@ -801,9 +801,9 @@ metric.createAlarm(this, 'TooManyMessagesAlarm', {
 #### [ JavaScript ]
 
 ```
-import * as cw from '@aws-cdk/aws-cloudwatch';
-import * as sqs from '@aws-cdk/aws-sqs';
-import { Duration } from '@aws-cdk/core';
+const cw = require('@aws-cdk/aws-cloudwatch');
+const sqs = require('@aws-cdk/aws-sqs');
+const { Duration  } = require('@aws-cdk/core');
 
 const queue = new sqs.Queue(this, 'MyQueue');
 
@@ -909,12 +909,12 @@ You enable data to flow on a given network path by using `allow` methods\. The f
 import * as asg from '@aws-cdk/aws-autoscaling';
 import * as ec2 from '@aws-cdk/aws-ec2';
 
-const fleet1: asg.AutoScalingGroup = asg.AutoScalingGroup(/* ... */);
+const fleet1: asg.AutoScalingGroup = asg.AutoScalingGroup(/*...*/);
 
 // Allow surfing the (secure) web
 fleet1.connections.allowTo(new ec2.Peer.anyIpv4(), new ec2.Port({ fromPort: 443, toPort: 443 }));
 
-const fleet2: asg.AutoScalingGroup = asg.AutoScalingGroup(/* ... */);
+const fleet2: asg.AutoScalingGroup = asg.AutoScalingGroup(/*...*/);
 fleet1.connections.allowFrom(fleet2, ec2.Port.AllTraffic());
 ```
 
@@ -922,13 +922,13 @@ fleet1.connections.allowFrom(fleet2, ec2.Port.AllTraffic());
 #### [ JavaScript ]
 
 ```
-import * as asg from '@aws-cdk/aws-autoscaling';
-import * as ec2 from '@aws-cdk/aws-ec2';
+const asg = require('@aws-cdk/aws-autoscaling');
+const ec2 = require('@aws-cdk/aws-ec2');
 
 const fleet1 = asg.AutoScalingGroup();
 
 // Allow surfing the (secure) web
-fleet1.connections.allowTo(new ec2.Peer.anyIpv4(), new ec2.Port({ fromPort: 443, toPort: 443}));
+fleet1.connections.allowTo(new ec2.Peer.anyIpv4(), new ec2.Port({ fromPort: 443, toPort: 443 }));
 
 const fleet2 = asg.AutoScalingGroup();
 fleet1.connections.allowFrom(fleet2, ec2.Port.AllTraffic());
@@ -1062,9 +1062,9 @@ bucket.addObjectCreatedNotification(new s3nots.LambdaDestination(handler));
 #### [ JavaScript ]
 
 ```
-import * as s3nots from '@aws-cdk/aws-s3-notifications';
+const s3nots = require('@aws-cdk/aws-s3-notifications');
 
-const handler = new lambda.Function(this, 'Handler', { /*…*/});
+const handler = new lambda.Function(this, 'Handler', { /*…*/ });
 const bucket = new s3.Bucket(this, 'Bucket');
 bucket.addObjectCreatedNotification(new s3nots.LambdaDestination(handler));
 ```
@@ -1144,18 +1144,20 @@ export class CdkTestStack extends cdk.Stack {
 #### [ JavaScript ]
 
 ```
-import * as cdk from '@aws-cdk/core';
-import * as s3 from '@aws-cdk/aws-s3';
-
-export class CdkTestStack extends cdk.Stack {
+const cdk = require('@aws-cdk/core');
+const s3 = require('@aws-cdk/aws-s3');
+  
+class CdkTestStack extends cdk.Stack {
   constructor(scope, id, props) {
     super(scope, id, props);
-
+  
     const bucket = new s3.Bucket(this, 'Bucket', {
       removalPolicy: cdk.RemovalPolicy.DESTROY
     });
   }
 }
+
+module.exports = { CdkTestStack }
 ```
 
 ------
@@ -1225,7 +1227,7 @@ resource.applyRemovalPolicy(cdk.RemovalPolicy.DESTROY);
 #### [ JavaScript ]
 
 ```
-const resource = bucket.node.findChild('Resource') as cdk.CfnResource;
+const resource = bucket.node.findChild('Resource');
 resource.applyRemovalPolicy(cdk.RemovalPolicy.DESTROY);
 ```
 

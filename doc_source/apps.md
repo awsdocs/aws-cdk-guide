@@ -21,12 +21,12 @@ class MyFirstStack extends Stack {
 #### [ JavaScript ]
 
 ```
-class MyFirstStack extends Stack { 
-  constructor(scope, id, props) { 
-    super(scope, id, props); 
-    
-    new s3.Bucket(this, 'MyFirstBucket'); 
-  } 
+class MyFirstStack extends Stack {
+  constructor(scope, id, props) {
+    super(scope, id, props);
+
+    new s3.Bucket(this, 'MyFirstBucket');
+  }
 }
 ```
 
@@ -146,10 +146,10 @@ new MyApp().synth();
 #### [ JavaScript ]
 
 ```
-class MyApp extends App { 
-  constructor() { 
-    new MyFirstStack(this, 'hello-cdk'); 
-  } 
+class MyApp extends App {
+  constructor() {
+    new MyFirstStack(this, 'hello-cdk');
+  }
 }
 
 new MyApp().synth();
@@ -262,6 +262,15 @@ The \-\-app option instructs the CLI to run your AWS CDK app, and its contents d
 
 ------
 #### [ TypeScript ]
+
+```
+{
+  "app": "node bin/my-app.js"
+}
+```
+
+------
+#### [ JavaScript ]
 
 ```
 {

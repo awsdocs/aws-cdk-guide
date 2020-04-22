@@ -36,8 +36,8 @@ new MyStack(app, 'Stack2');
 #### [ JavaScript ]
 
 ```
-import { App, Stack } from '@aws-cdk/core';
-import * as s3 from '@aws-cdk/aws-s3';
+const { App , Stack  } = require('@aws-cdk/core');
+const s3 = require('@aws-cdk/aws-s3');
 
 class MyStack extends Stack {
   constructor(scope, id, props = {}) {

@@ -19,7 +19,7 @@ const alarm = new cloudwatch.Alarm(this, 'Alarm', {
 
 ```
 const alarm = new cloudwatch.Alarm(this, 'Alarm', {
-  metric: metric, // see below
+  metric: metric,  // see below
   threshold: 100,
   evaluationPeriods: 3,
   datapointsToAlarm: 2

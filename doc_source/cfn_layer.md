@@ -33,10 +33,10 @@ new s3.CfnBucket(this, 'MyBucket', {
 ```
 new s3.CfnBucket(this, 'MyBucket', {
   analyticsConfigurations: [
-    {
+    { 
       id: 'Config'
-      // ...
-    }
+      // ...        
+    } 
   ]
 });
 ```
@@ -107,13 +107,13 @@ new cdk.CfnResource(this, 'MyBucket', {
 new cdk.CfnResource(this, 'MyBucket', {
   type: 'AWS::S3::Bucket',
   properties: {
- // Note the PascalCase here! These are CloudFormation identifiers.
+    // Note the PascalCase here! These are CloudFormation identifiers.
     AnalyticsConfigurations: [
       {
         Id: 'Config'
         // ...
       }
-    ]
+    ] 
   }
 });
 ```
@@ -208,10 +208,10 @@ const cfnBucket = bucket.node.defaultChild;
 
 // Change its properties
 cfnBucket.analyticsConfiguration = [
-  {
+  { 
     id: 'Config'
-    // ...
-  }
+    // ...        
+  } 
 ];
 ```
 
@@ -341,7 +341,7 @@ cfnBucket.addPropertyDeletionOverride('VersioningConfiguration.Status');
 
 ```
 // Get the AWS CloudFormation resource
-const cfnBucket = bucket.node.defaultChild;
+const cfnBucket = bucket.node.defaultChild ;
 
 // Use dot notation to address inside the resource template fragment
 cfnBucket.addOverride('Properties.VersioningConfiguration.Status', 'NewStatus');

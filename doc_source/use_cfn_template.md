@@ -31,8 +31,8 @@ new cdk.CfnInclude(this, "ExistingInfrastructure", {
 #### [ JavaScript ]
 
 ```
-import * as cdk from "@aws-cdk/core";
-import * as fs from "fs";
+const cdk = require("@aws-cdk/core");
+const fs = require("fs");
 
 new cdk.CfnInclude(this, "ExistingInfrastructure", {
   template: JSON.parse(fs.readFileSync("my-template.json").toString())

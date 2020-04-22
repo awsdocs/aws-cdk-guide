@@ -26,11 +26,11 @@ new MyFirstStack(app, 'first-stack-eu', { env: envEU });
 #### [ JavaScript ]
 
 ```
-const envEU = { account: '2383838383', region: 'eu-west-1'};
-const envUSA = { account: '8373873873', region: 'us-west-2'};
+const envEU  = { account: '2383838383', region: 'eu-west-1' };
+const envUSA = { account: '8373873873', region: 'us-west-2' };
 
-new MyFirstStack(app, 'first-stack-us', { env: envUSA});
-new MyFirstStack(app, 'first-stack-eu', { env: envEU});
+new MyFirstStack(app, 'first-stack-us', { env: envUSA });
+new MyFirstStack(app, 'first-stack-eu', { env: envEU });
 ```
 
 ------
@@ -125,12 +125,19 @@ new MyDevStack(app, 'dev', {
 
 Access environment variables via the `process` object\. 
 
+**Note**  
+TypeScript users must install the DefinitelyTyped NodeJS module with NPM to be able to use `process`\. `cdk init` now installs this module for you, but if you are working with a project created before it was added, or didn't set up your project using `cdk init`, install it manually\.  
+
 ```
-new MyDevStack(app, 'dev', {
-  env: {
-    account: process.env.CDK_DEFAULT_ACCOUNT,
-    region: process.env.CDK_DEFAULT_REGION
-  }});
+npm install @types/node
+```
+
+```
+new MyDevStack(app, 'dev', { 
+  env: { 
+    account: process.env.CDK_DEFAULT_ACCOUNT, 
+    region: process.env.CDK_DEFAULT_REGION 
+}});
 ```
 
 ------
@@ -221,11 +228,11 @@ new MyDevStack(app, 'dev', {
 #### [ JavaScript ]
 
 ```
-new MyDevStack(app, 'dev', {
-  env: {
-    account: process.env.CDK_DEPLOY_ACCOUNT || process.env.CDK_DEFAULT_ACCOUNT,
-    region: process.env.CDK_DEPLOY_REGION || process.env.CDK_DEFAULT_REGION
-  }});
+new MyDevStack(app, 'dev', { 
+  env: { 
+    account: process.env.CDK_DEPLOY_ACCOUNT || process.env.CDK_DEFAULT_ACCOUNT, 
+    region: process.env.CDK_DEPLOY_REGION || process.env.CDK_DEFAULT_REGION 
+}});
 ```
 
 ------
@@ -336,7 +343,7 @@ bash cdk-deploy-to.sh 123457689 us-east-1 "$@"
 ```
 
 ------
-#### [  Windows  ]
+#### [ Windows ]
 
 ```
 @echo off
@@ -359,7 +366,7 @@ bash cdk-deploy-to.sh 246813579 eu-west-1 "$@"
 ```
 
 ------
-#### [  Windows  ]
+#### [ Windows ]
 
 ```
 @echo off
