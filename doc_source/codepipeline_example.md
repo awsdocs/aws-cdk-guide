@@ -29,7 +29,7 @@ cd pipeline
 cdk init ‐-language javascript
 mkdir Lambda
 npm install @aws-cdk/aws-codedeploy @aws-cdk/aws-lambda @aws-cdk/aws-codebuild
-npm install @aws-cdk/aws-codecommit @aws-cdk/aws-codepipeline-actions @aws-cdk/aws-s3 @aws-cdk/aws-codepipeline
+npm install @aws-cdk/aws-codecommit @aws-cdk/aws-codepipeline-actions @aws-cdk/aws-s3
 ```
 
 ------
@@ -154,10 +154,10 @@ export class LambdaStack extends Stack {
 File: `lib/lambda-stack.js`
 
 ```
-const codedeploy = require("@aws-cdk/aws-codedeploy");
-const lambda = require("@aws-cdk/aws-lambda");
-const { Stack } = require("@aws-cdk/core");
-
+const codedeploy = require('@aws-cdk/aws-codedeploy');
+const lambda = require('@aws-cdk/aws-lambda');
+const { Stack } = require('@aws-cdk/core');
+      
 class LambdaStack extends Stack {
 
   constructor(app, id, props) {
@@ -184,7 +184,7 @@ class LambdaStack extends Stack {
   }
 }
 
-exports.LambdaStack = LambdaStack;
+module.exports = { LambdaStack }
 ```
 
 ------
@@ -483,7 +483,7 @@ const codecommit = require('@aws-cdk/aws-codecommit');
 const codepipeline = require('@aws-cdk/aws-codepipeline');
 const codepipeline_actions = require('@aws-cdk/aws-codepipeline-actions');
 
-const { Stack } = require('@aws-cdk/core');
+const { Stack  } = require('@aws-cdk/core');
 
 class PipelineStack extends Stack {
   constructor(app, id, props) {
@@ -1037,13 +1037,12 @@ const { PipelineStack } = require('../lib/pipeline-stack');
 
 const app = new App();
 
-const lambdaStack = new LambdaStack(app, "LambdaStack");
-new PipelineStack(app, "PipelineDeployingLambdaStack", {
-  lambdaCode: lambdaStack.lambdaCode,
+const lambdaStack = new LambdaStack(app, 'LambdaStack');
+new PipelineStack(app, 'PipelineDeployingLambdaStack', {
+  lambdaCode: lambdaStack.lambdaCode
 });
 
 app.synth();
-
 ```
 
 ------
