@@ -62,8 +62,8 @@ new HelloCdkStack(app, "HelloCdkStack");
 #### [ JavaScript ]
 
 ```
-import { App, Stack } from '@aws-cdk/core';
-import * as s3 from '@aws-cdk/aws-s3';
+const { App , Stack  } = require('@aws-cdk/core');
+const s3 = require('@aws-cdk/aws-s3');
 
 class HelloCdkStack extends Stack {
   constructor(scope, id, props) {
@@ -229,7 +229,7 @@ new s3.Bucket(this, 'MyFirstBucket', {
 #### [ JavaScript ]
 
 ```
-import * as s3 from '@aws-cdk/aws-s3';
+const s3 = require('@aws-cdk/aws-s3');
 
 // "this" is HelloCdkStack
 new s3.Bucket(this, 'MyFirstBucket', {
@@ -508,15 +508,17 @@ export class NotifyingBucket extends Construct {
 #### [ JavaScript ]
 
 ```
-export class NotifyingBucket extends Construct {
+class NotifyingBucket extends Construct {
   constructor(scope, id, props = {}) {
     super(scope, id);
     const bucket = new s3.Bucket(this, 'bucket');
     const topic = new sns.Topic(this, 'topic');
     bucket.addObjectCreatedNotification(new s3notify.SnsDestination(topic),
-    { prefix: props.prefix });
+      { prefix: props.prefix });
   }
 }
+
+module.exports = { NotifyingBucket }
 ```
 
 ------
@@ -588,7 +590,7 @@ public class NotifyingBucket : Construct
 
 ------
 
-The `NotifyingBucket` constructors have signature compatible with the base `Construct` class: `scope`, `id`, and `props`\. The last argument, `props`, is optional \(gets the default value `{}`\) because all props are optional\. This means that you could define an instance of this construct in your app without `props`, for example: 
+The `NotifyingBucket` constructor has a signature compatible with the base `Construct` class: `scope`, `id`, and `props`\. The last argument, `props`, is optional \(gets the default value `{}`\) because all props are optional\. This means that you could define an instance of this construct in your app without `props`, for example: 
 
 ------
 #### [ TypeScript ]
@@ -640,7 +642,7 @@ new NotifyingBucket(this, 'MyNotifyingBucket', { prefix: 'images/' });
 #### [ JavaScript ]
 
 ```
-new NotifyingBucket(this, 'MyNotifyingBucket', { prefix: 'images/'});
+new NotifyingBucket(this, 'MyNotifyingBucket', { prefix: 'images/' });
 ```
 
 ------
@@ -691,7 +693,7 @@ export class NotifyingBucket extends Construct {
 #### [ JavaScript ]
 
 ```
-export class NotifyingBucket extends Construct {
+class NotifyingBucket extends Construct {
 
   constructor(scope, id, props) {
     super(scope, id);
@@ -700,6 +702,8 @@ export class NotifyingBucket extends Construct {
     bucket.addObjectCreatedNotification(this.topic, { prefix: props.prefix });
   }
 }
+
+module.exports = { NotifyingBucket }
 ```
 
 ------

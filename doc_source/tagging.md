@@ -305,7 +305,7 @@ Tag.remove(theBestStack, 'StackType', {
 #### [ JavaScript ]
 
 ```
-import { App, Stack, Tag } from '@aws-cdk/core';
+const { App , Stack , Tag  } = require('@aws-cdk/core');
 
 const app = new App();
 const theBestStack = new Stack(app, 'MarketingSystem');
@@ -387,7 +387,7 @@ Tag.add(theBestStack, 'StackType', 'TheBest',
 #### [ JavaScript ]
 
 ```
-Tag.add(theBestStack, 'StackType', 'TheBest',
+Tag.add(theBestStack, 'StackType', 'TheBest', 
   { includeResourceTypes: ['AWS::EC2::Subnet']});
 ```
 

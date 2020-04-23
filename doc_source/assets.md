@@ -57,7 +57,7 @@ const fileAsset = new Asset(this, 'SampleSingleFileAsset', {
 #### [ JavaScript ]
 
 ```
-import { Asset } from '@aws-cdk/aws-s3-assets';
+const { Asset } = require('@aws-cdk/aws-s3-assets');
 
 // Archived and uploaded to Amazon S3 as a .zip file
 const directoryAsset = new Asset(this, "SampleZippedDirAsset", {
@@ -175,11 +175,11 @@ export class HelloAssetStack extends cdk.Stack {
 #### [ JavaScript ]
 
 ```
-import * as cdk from '@aws-cdk/core';
-import * as lambda from '@aws-cdk/aws-lambda';
-import * as path from 'path';
+const cdk = require('@aws-cdk/core');
+const lambda = require('@aws-cdk/aws-lambda');
+const path = require('path');
 
-export class HelloAssetStack extends cdk.Stack {
+class HelloAssetStack extends cdk.Stack {
   constructor(scope, id, props) {
     super(scope, id, props);
 
@@ -190,6 +190,8 @@ export class HelloAssetStack extends cdk.Stack {
     });
   }
 }
+
+module.exports = { HelloAssetStack }
 ```
 
 ------
@@ -301,8 +303,8 @@ new lambda.Function(this, "myLambdaFunction", {
 #### [ JavaScript ]
 
 ```
-import { Asset } from '@aws-cdk/aws-s3-assets';
-import * as path from 'path';
+const { Asset } = require('@aws-cdk/aws-s3-assets');
+const path = require('path');
 
 const imageAsset = new Asset(this, "SampleAsset", {
   path: path.join(__dirname, "images/my-image.png")
@@ -434,8 +436,8 @@ asset.grantRead(group);
 #### [ JavaScript ]
 
 ```
-import { Asset } from '@aws-cdk/aws-s3-assets';
-import * as path from 'path';
+const { Asset } = require('@aws-cdk/aws-s3-assets');
+const path = require('path');
 
 const asset = new Asset(this, 'MyFile', {
   path: path.join(__dirname, 'my-image.png')
@@ -527,7 +529,7 @@ const asset = new DockerImageAsset(this, 'MyBuildImage', {
 #### [ JavaScript ]
 
 ```
-import { DockerImageAsset } from '@aws-cdk/aws-ecr-assets';
+const { DockerImageAsset } = require('@aws-cdk/aws-ecr-assets');
 
 const asset = new DockerImageAsset(this, 'MyBuildImage', {
   directory: path.join(__dirname, 'my-image')
@@ -601,8 +603,8 @@ taskDefinition.addContainer("my-other-container", {
 #### [ JavaScript ]
 
 ```
-import * as ecs from '@aws-cdk/aws-ecs';
-import * as path from 'path';
+const ecs = require('@aws-cdk/aws-ecs');
+const path = require('path');
 
 const taskDefinition = new ecs.FargateTaskDefinition(this, "TaskDef", {
   memoryLimitMiB: 1024,
@@ -704,9 +706,9 @@ taskDefinition.addContainer("my-other-container", {
 #### [ JavaScript ]
 
 ```
-import * as ecs from '@aws-cdk/aws-ecs';
-import * as path from 'path';
-import { DockerImageAsset } from '@aws-cdk/aws-ecr-assets';
+const ecs = require('@aws-cdk/aws-ecs');
+const path = require('path');
+const { DockerImageAsset } = require('@aws-cdk/aws-ecr-assets');
 
 const asset = new DockerImageAsset(this, 'my-image', {
   directory: path.join(__dirname, "..", "demo-image")

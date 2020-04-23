@@ -15,7 +15,7 @@ myConstruct.node.applyAspect(new SomeAspect(/*...*/));
 #### [ JavaScript ]
 
 ```
-myConstruct.node.applyAspect(new SomeAspect(/*...*/));
+myConstruct.node.applyAspect(new SomeAspect());
 ```
 
 ------
@@ -58,7 +58,7 @@ interface IAspect {
 ------
 #### [ JavaScript ]
 
-JavaScript doesn't have interfaces as a language feature, so an aspect is simply an instance of a class having a `visit` method that accepts the node to be operated on\. 
+JavaScript doesn't have interfaces as a language feature, so an aspect is simply an instance of a class having a `visit` method that accepts the node to be operated on\.
 
 ------
 #### [ Python ]
@@ -125,15 +125,15 @@ stack.node.applyAspect(new BucketVersioningChecker());
 
 ```
 class BucketVersioningChecker {
-  visit(node) {
+   visit(node) {
     // See that we're dealing with a CfnBucket
-    if (node instanceof s3.CfnBucket) {
+    if ( node instanceof s3.CfnBucket) {
 
       // Check for versioning property, exclude the case where the property
       // can be a token (IResolvable).
-      if (!node.versioningConfiguration
+      if ( !node.versioningConfiguration 
         || !Tokenization.isResolvable(node.versioningConfiguration)
-          && node.versioningConfiguration.status !== 'Enabled') {
+            && node.versioningConfiguration.status !== 'Enabled') {
         node.node.addError('Bucket versioning is not enabled');
       }
     }

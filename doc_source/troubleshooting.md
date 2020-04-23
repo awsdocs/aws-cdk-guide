@@ -275,18 +275,20 @@ export class CdkTestStack extends cdk.Stack {
 #### [ JavaScript ]
 
 ```
-import * as cdk from '@aws-cdk/core';
-import * as s3 from '@aws-cdk/aws-s3';
-
-export class CdkTestStack extends cdk.Stack {
+const cdk = require('@aws-cdk/core');
+const s3 = require('@aws-cdk/aws-s3');
+  
+class CdkTestStack extends cdk.Stack {
   constructor(scope, id, props) {
     super(scope, id, props);
-
+  
     const bucket = new s3.Bucket(this, 'Bucket', {
       removalPolicy: cdk.RemovalPolicy.DESTROY
     });
   }
 }
+
+module.exports = { CdkTestStack }
 ```
 
 ------

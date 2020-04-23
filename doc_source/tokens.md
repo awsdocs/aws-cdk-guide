@@ -112,8 +112,8 @@ if (!Token.isUnresolved(name) && name.length > 10) {
 #### [ JavaScript ]
 
 ```
-if (!Token.isUnresolved(name) && name.length > 10) {
-  throw new Error(`Maximum length for name is 10 characters`);
+if ( !Token.isUnresolved(name) && name.length > 10) {
+  throw ( new Error(`Maximum length for name is 10 characters`));
 }
 ```
 
@@ -290,9 +290,9 @@ let actualValue;
 
 new AutoScalingGroup(this, 'Group', {
   desiredCapacity: Lazy.numberValue({
-    produce(context) {
-      return actualValue;
-    }
+     produce(context) {
+          return (actualValue);
+      }
   })
 });
 
@@ -380,9 +380,9 @@ Sometimes you want to produce a JSON string of arbitrary data, and you may not k
 
 ```
 const stack = Stack.of(this);
-      const str = stack.toJsonString({
-      value: bucket.bucketName
-      });
+const str = stack.toJsonString({
+  value: bucket.bucketName
+});
 ```
 
 ------

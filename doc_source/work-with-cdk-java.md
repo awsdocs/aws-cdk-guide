@@ -71,7 +71,7 @@ If you are not using an IDE, or just want full control over the versions of your
 </dependency>
 ```
 
-The version specifier `[1.0,2.0)` in this example indicates that the latest version between 1\.0 \(inclusive\) and 2\.0 \(exclusive\) will be installed\. Since the AWS CDK uses semantic versioning for stable AWS Construct Library modules, \(see [Versioning and Stability Model](reference.md#versioning)\), this ensures that only newer versions without breaking API changes will be installed\.
+The version specifier `[1.0,2.0)` in this example indicates that the latest version between 1\.0 \(inclusive\) and 2\.0 \(exclusive\) will be installed\. Since the AWS CDK uses semantic versioning for stable AWS Construct Library modules, \(see [Versioning](reference.md#versioning)\), this ensures that only newer versions without breaking API changes will be installed\.
 
 Maven automatically downloads a version of your dependencies that will match the requirements in `pom.xml`, if necessary, the next time you build your project\.
 

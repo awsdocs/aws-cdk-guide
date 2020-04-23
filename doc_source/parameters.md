@@ -150,7 +150,7 @@ const bucket = new Bucket(this, "myBucket",
 #### [ JavaScript ]
 
 ```
-const bucket = new Bucket(this, "myBucket",
+const bucket = new Bucket(this, "myBucket", 
   { bucketName: uploadBucketName.valueAsString});
 ```
 

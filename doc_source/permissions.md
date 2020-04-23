@@ -51,10 +51,10 @@ const role = new iam.Role(this, 'Role', {
 #### [ JavaScript ]
 
 ```
-import * as iam from '@aws-cdk/aws-iam';
+const iam = require('@aws-cdk/aws-iam');
 
 const role = new iam.Role(this, 'Role', {
-  assumedBy: new iam.ServicePrincipal('ec2.amazonaws.com') // required
+  assumedBy: new iam.ServicePrincipal('ec2.amazonaws.com')   // required
 });
 ```
 
@@ -118,8 +118,8 @@ role.addToPolicy(new iam.PolicyStatement({
   effect: iam.Effect.DENY,
   resources: [bucket.bucketArn, otherRole.roleArn],
   actions: ['ec2:SomeAction', 's3:AnotherAction'],
-  conditions: { StringEquals: {
-      'ec2:AuthorizedService': 'codebuild.amazonaws.com'
+  conditions: {StringEquals: {
+    'ec2:AuthorizedService': 'codebuild.amazonaws.com'
 }}}));
 ```
 
@@ -197,14 +197,14 @@ const project = new codebuild.Project(this, 'Project', {
 #### [ JavaScript ]
 
 ```
-import * as codebuild from '@aws-cdk/aws-codebuild';
+const codebuild = require('@aws-cdk/aws-codebuild');
 
 // imagine roleOrUndefined is a function that might return a Role object
 // under some conditions, and undefined under other conditions
 const someRole = roleOrUndefined();
 
 const project = new codebuild.Project(this, 'Project', {
-  // if someRole is undefined, the Project creates a new default role,
+  // if someRole is undefined, the Project creates a new default role, 
   // trusting the codebuild.amazonaws.com service principal
   role: someRole
 });
@@ -287,7 +287,7 @@ const project = codebuild.Project.fromProjectName(this, 'Project', 'ProjectName'
 
 // project is imported, so project.role is undefined, and this call has no effect
 project.addToRolePolicy(new iam.PolicyStatement({
-  effect: iam.Effect.ALLOW // ... and so on defining the policy
+  effect: iam.Effect.ALLOW   // ... and so on defining the policy
 }));
 ```
 

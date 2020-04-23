@@ -24,7 +24,7 @@ TypeScript >= 2\.7
 ------
 #### [ JavaScript ]
 
-none
+No additional prerequisites
 
 ------
 #### [ Python ]
@@ -32,7 +32,7 @@ none
 
 ------
 #### [ Java ]
-+ Maven = 3\.5 and Java >= 8
++ Maven <= 3\.5 and Java >= 8
 + A Java IDE is preferred \(the examples in this guide may refer to Eclipse\)\. `cdk init` creates a Maven project, which most IDEs can import\. Some IDEs may need to be configured to use Java 8 \(also known as 1\.8\)\.
 + Set the `JAVA_HOME` environment variable to the path to where you have installed the JDK on your machine
 
@@ -128,10 +128,10 @@ new MyStack(app, 'MyStack', {
 
 ```
 new MyStack(app, 'MyStack', {
-  env: {
-    region: 'REGION',
-    account: 'ACCOUNT'
-  }
+    env: {
+        region: 'REGION',
+        account: 'ACCOUNT' 
+    } 
 });
 ```
 
@@ -190,10 +190,10 @@ new MyStack(app, 'Stack-Three-E', { env: { account: 'THREE', region: 'us-east-1'
 #### [ JavaScript ]
 
 ```
-new MyStack(app, 'Stack-One-W', { env: { account: 'ONE', region: 'us-west-2' }});
-new MyStack(app, 'Stack-One-E', { env: { account: 'ONE', region: 'us-east-1' }});
-new MyStack(app, 'Stack-Two-W', { env: { account: 'TWO', region: 'us-west-2' }});
-new MyStack(app, 'Stack-Two-E', { env: { account: 'TWO', region: 'us-east-1' }});
+new MyStack(app, 'Stack-One-W',   { env: { account: 'ONE',   region: 'us-west-2' }});
+new MyStack(app, 'Stack-One-E',   { env: { account: 'ONE',   region: 'us-east-1' }});
+new MyStack(app, 'Stack-Two-W',   { env: { account: 'TWO',   region: 'us-west-2' }});
+new MyStack(app, 'Stack-Two-E',   { env: { account: 'TWO',   region: 'us-east-1' }});
 new MyStack(app, 'Stack-Three-W', { env: { account: 'THREE', region: 'us-west-2' }});
 new MyStack(app, 'Stack-Three-E', { env: { account: 'THREE', region: 'us-east-1' }});
 ```
@@ -403,7 +403,7 @@ cdk init --language typescript
 #### [ JavaScript ]
 
 ```
-cdk init --language javascript
+cdk init ‐-language javascript
 ```
 
 ------
@@ -588,10 +588,10 @@ export class HelloCdkStack extends core.Stack {
 In `lib/hello-cdk-stack.js`:
 
 ```
-import * as core from '@aws-cdk/core';
-import * as s3 from '@aws-cdk/aws-s3';
+const core = require('@aws-cdk/core');
+const s3 = require('@aws-cdk/aws-s3');
 
-export class HelloCdkStack extends core.Stack {
+class HelloCdkStack extends core.Stack {
   constructor(scope, id, props) {
     super(scope, id, props);
 
@@ -600,6 +600,8 @@ export class HelloCdkStack extends core.Stack {
     });
   }
 }
+
+module.exports = { HelloCdkStack }
 ```
 
 ------

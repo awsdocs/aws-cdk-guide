@@ -130,7 +130,7 @@ app.synth();
 #### [ JavaScript ]
 
 ```
-import { App, Construct, Stack } from "@aws-cdk/core";
+const { App , Construct , Stack } = require("@aws-cdk/core");
 
 // imagine these stacks declare a bunch of related resources
 class ControlPlane extends Stack {}
@@ -140,18 +140,18 @@ class Monitoring extends Stack {}
 class MyService extends Construct {
 
   constructor(scope, id, props) {
-
+  
     super(scope, id);
-
- // we might use the prod argument to change how the service is configured
+  
+    // we might use the prod argument to change how the service is configured
     new ControlPlane(this, "cp");
     new DataPlane(this, "data");
-    new Monitoring(this, "mon"); }
+    new Monitoring(this, "mon");  }
 }
 
 const app = new App();
 new MyService(app, "beta");
-new MyService(app, "prod", { prod: true});
+new MyService(app, "prod", { prod: true });
 
 app.synth();
 ```
@@ -314,7 +314,7 @@ new MyStack(this, 'not:a:stack:name', { stackName: 'this-is-stack-name' });
 #### [ JavaScript ]
 
 ```
-new MyStack(this, 'not:a:stack:name', { stackName: 'this-is-stack-name'});
+new MyStack(this, 'not:a:stack:name', { stackName: 'this-is-stack-name' });
 ```
 
 ------

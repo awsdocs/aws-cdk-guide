@@ -41,7 +41,7 @@ cdk init --language typescript
 ```
 mkdir MyWidgetService
 cd MyWidgetService
-cdk init --language javascript
+cdk init ‐-language javascript
 ```
 
 ------
@@ -370,13 +370,13 @@ export class WidgetService extends core.Construct {
 File: `lib/widget_service.js`
 
 ```
-import * as core from "@aws-cdk/core";
-import * as apigateway from "@aws-cdk/aws-apigateway";
-import * as lambda from "@aws-cdk/aws-lambda";
-import * as s3 from "@aws-cdk/aws-s3";
+const core = require("@aws-cdk/core");
+const apigateway = require("@aws-cdk/aws-apigateway");
+const lambda = require("@aws-cdk/aws-lambda");
+const s3 = require("@aws-cdk/aws-s3");
 
-export class WidgetService extends core.Construct {
-  constructor(scope: core.Construct, id: string) {
+class WidgetService extends core.Construct {
+  constructor(scope, id) {
     super(scope, id);
 
     const bucket = new s3.Bucket(this, "WidgetStore");
@@ -404,6 +404,8 @@ export class WidgetService extends core.Construct {
     api.root.addMethod("GET", getWidgetsIntegration); // GET /
   }
 }
+
+module.exports = { WidgetService }
 ```
 
 ------
@@ -625,10 +627,10 @@ Replace the comment in the constructor with the following line of code\.
 
 File: `lib/my_widget_service-stack.js`
 
-Add the following line of code after the existing `import` statement\.
+Add the following line of code after the existing `require()` line\.
 
 ```
-import * as widget_service from '../lib/widget_service';
+const widget_service = require('../lib/widget_service');
 ```
 
 Replace the comment in the constructor with the following line of code\.

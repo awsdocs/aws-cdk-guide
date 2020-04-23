@@ -47,7 +47,7 @@ NuGet has four standard, mostly\-equivalent interfaces; you can use the one that
 Visual Studio's NuGet tools are accessible from **Tools** > **NuGet Package Manager** > **Manage NuGet Packages for Solution**\. Use the **Browse** tab to find the AWS Construct Library packages you want to install\. You can choose the desired version, including pre\-release versions \(mark the **Include prerelease** checkbox\) and add them to any of the open projects\. 
 
 **Note**  
-All AWS Construct Library modules deemed "experimental" \(see [Versioning and Stability Model](reference.md#versioning)\) are flagged as pre\-release in NuGet\.
+All AWS Construct Library modules deemed "experimental" \(see [Versioning](reference.md#versioning)\) are flagged as pre\-release in NuGet\.
 
 ![\[Image NOT FOUND\]](http://docs.aws.amazon.com/cdk/latest/guide/images/visual-studio-nuget.png)
 
@@ -73,7 +73,7 @@ You may issue the command from another directory by including the path to the pr
 dotnet add src/PROJECT-DIR package Amazon.CDK.AWS.S3
 ```
 
-To install a specific version of a package, include the `-v` flag and the desired version\. AWS Construct Library modules that are deemed "experimental" \(see [Versioning and Stability Model](reference.md#versioning)\) are flagged as pre\-release in NuGet, and must be installed using an explicit version number\.
+To install a specific version of a package, include the `-v` flag and the desired version\. AWS Construct Library modules that are deemed "experimental" \(see [Versioning](reference.md#versioning)\) are flagged as pre\-release in NuGet, and must be installed using an explicit version number\.
 
 ```
 dotnet add package Amazon.CDK.AWS.S3 -v VERSION-NUMBER

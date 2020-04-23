@@ -143,7 +143,23 @@ export class MultistackStack extends cdk.Stack {
 ------
 #### [ JavaScript ]
 
-JavaScript does not have an interface feature, so we don't need to make any changes\.
+File: `lib/multistack-stack.js`
+
+JavaScript doesn't have an interface feature; we don't need to add any code\.
+
+```
+const cdk = require('@aws-cdk/core');
+
+class MultistackStack extends cdk.Stack {
+  constructor(scope, id, props) {
+    super(scope, id, props);
+
+    // The code that defines your stack goes here
+  }
+}
+
+module.exports = { MultistackStack }
+```
 
 ------
 #### [ Python ]
@@ -276,28 +292,29 @@ export class MultistackStack extends cdk.Stack {
 File: `lib/multistack-stack.js`
 
 ```
-import * as cdk from '@aws-cdk/core';
-import * as s3 from '@aws-cdk/aws-s3';
+const cdk = require('@aws-cdk/core');
+const s3 = require('@aws-cdk/aws-s3');
 
-export class MultistackStack extends cdk.Stack { 
-  constructor(scope, id, props) { 
-    super(scope, id, props); 
+class MultistackStack extends cdk.Stack {
+  constructor(scope, id, props) {
+    super(scope, id, props);
     
     // Add a Boolean property "encryptBucket" to the stack constructor.
     // If true, creates an encrypted bucket. Otherwise, the bucket is unencrypted.
     // Encrypted bucket uses AWS KMS-managed keys (SSE-KMS).
-    if (props && props.encryptBucket) { 
-      new s3.Bucket(this, "MyGroovyBucket", { 
+    if ( props && props.encryptBucket) {
+      new s3.Bucket(this, "MyGroovyBucket", {
         encryption: s3.BucketEncryption.KMS_MANAGED, 
-        removalPolicy: cdk.RemovalPolicy.DESTROY 
-      }); 
-    } else { 
-      new s3.Bucket(this, "MyGroovyBucket", { 
-        removalPolicy: cdk.RemovalPolicy.DESTROY }); 
-    } 
-  } 
+        removalPolicy: cdk.RemovalPolicy.DESTROY
+      });
+    } else {
+      new s3.Bucket(this, "MyGroovyBucket", {
+        removalPolicy: cdk.RemovalPolicy.DESTROY});
+    }
+  }
 }
->>>
+
+module.exports = { MultistackStack }
 ```
 
 ------
@@ -457,20 +474,19 @@ File: `bin/multistack.js`
 
 ```
 #!/usr/bin/env node
-import 'source-map-support/register';
-import * as cdk from '@aws-cdk/core';
-import { MultistackStack } from '../lib/multistack-stack';
+const cdk = require('@aws-cdk/core');
+const { MultistackStack  } = require('../lib/multistack-stack');
 
 const app = new cdk.App();
 
 new MultistackStack(app, "MyWestCdkStack", {
-  env: { region: "us-west-1" },
-  encryptBucket: false
+    env: {region: "us-west-1"},
+    encryptBucket: false
 });
-
+  
 new MultistackStack(app, "MyEastCdkStack", {
-  env: { region: "us-east-1" },
-  encryptBucket: true
+    env: {region: "us-east-1"},
+    encryptBucket: true
 });
 ```
 

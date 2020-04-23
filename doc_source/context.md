@@ -78,10 +78,6 @@ Therefore, if you want to update to the latest version of the Amazon Linux AMI, 
 $ cdk synth
 ```
 
-```
-...
-```
-
 To clear all of the stored context values for your app, run cdk context \-\-clear, as follows\.
 
 ```
@@ -123,27 +119,29 @@ export class ExistsVpcStack extends cdk.Stack {
 #### [ JavaScript ]
 
 ```
-import * as cdk from '@aws-cdk/core';
-import * as ec2 from '@aws-cdk/aws-ec2';
+const cdk = require('@aws-cdk/core');
+const ec2 = require('@aws-cdk/aws-ec2');
 
-export class ExistsVpcStack extends cdk.Stack {
+class ExistsVpcStack extends cdk.Stack {
 
   constructor(scope, id, props) {
-
+  
     super(scope, id, props);
-
+    
     const vpcid = this.node.tryGetContext('vpcid');
     const vpc = ec2.Vpc.fromLookup(this, 'VPC', {
       vpcId: vpcid
     });
-
-    const pubsubnets = vpc.selectSubnets({ subnetType: ec2.SubnetType.PUBLIC });
-
+    
+    const pubsubnets = vpc.selectSubnets({subnetType: ec2.SubnetType.PUBLIC});
+    
     new cdk.CfnOutput(this, 'publicsubnets', {
       value: pubsubnets.subnetIds.toString()
     });
   }
 }
+
+module.exports = { ExistsVpcStack }
 ```
 
 ------
