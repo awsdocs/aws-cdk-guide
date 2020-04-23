@@ -305,7 +305,7 @@ Tag.remove(theBestStack, 'StackType', {
 #### [ JavaScript ]
 
 ```
-const { App , Stack , Tag  } = require('@aws-cdk/core');
+const { App , Stack , Tag } = require('@aws-cdk/core');
 
 const app = new App();
 const theBestStack = new Stack(app, 'MarketingSystem');

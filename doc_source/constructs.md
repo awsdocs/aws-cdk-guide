@@ -62,7 +62,7 @@ new HelloCdkStack(app, "HelloCdkStack");
 #### [ JavaScript ]
 
 ```
-const { App , Stack  } = require('@aws-cdk/core');
+const { App , Stack } = require('@aws-cdk/core');
 const s3 = require('@aws-cdk/aws-s3');
 
 class HelloCdkStack extends Stack {

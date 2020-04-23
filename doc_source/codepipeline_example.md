@@ -483,7 +483,7 @@ const codecommit = require('@aws-cdk/aws-codecommit');
 const codepipeline = require('@aws-cdk/aws-codepipeline');
 const codepipeline_actions = require('@aws-cdk/aws-codepipeline-actions');
 
-const { Stack  } = require('@aws-cdk/core');
+const { Stack } = require('@aws-cdk/core');
 
 class PipelineStack extends Stack {
   constructor(app, id, props) {

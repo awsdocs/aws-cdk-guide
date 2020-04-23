@@ -36,7 +36,7 @@ new MyStack(app, 'Stack2');
 #### [ JavaScript ]
 
 ```
-const { App , Stack  } = require('@aws-cdk/core');
+const { App , Stack } = require('@aws-cdk/core');
 const s3 = require('@aws-cdk/aws-s3');
 
 class MyStack extends Stack {

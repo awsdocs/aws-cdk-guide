@@ -146,7 +146,8 @@ class MyService extends Construct {
     // we might use the prod argument to change how the service is configured
     new ControlPlane(this, "cp");
     new DataPlane(this, "data");
-    new Monitoring(this, "mon");  }
+    new Monitoring(this, "mon");
+  }
 }
 
 const app = new App();

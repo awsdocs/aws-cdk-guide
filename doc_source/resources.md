@@ -803,7 +803,7 @@ metric.createAlarm(this, 'TooManyMessagesAlarm', {
 ```
 const cw = require('@aws-cdk/aws-cloudwatch');
 const sqs = require('@aws-cdk/aws-sqs');
-const { Duration  } = require('@aws-cdk/core');
+const { Duration } = require('@aws-cdk/core');
 
 const queue = new sqs.Queue(this, 'MyQueue');
 

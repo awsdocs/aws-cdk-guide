@@ -475,7 +475,7 @@ File: `bin/multistack.js`
 ```
 #!/usr/bin/env node
 const cdk = require('@aws-cdk/core');
-const { MultistackStack  } = require('../lib/multistack-stack');
+const { MultistackStack } = require('../lib/multistack-stack');
 
 const app = new cdk.App();
 
