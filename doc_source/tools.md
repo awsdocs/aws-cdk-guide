@@ -111,8 +111,9 @@ cdk list [STACKS..]
 Lists all stacks in the app
 
 Options:
-  --long, -l            Display environment information for each stack
-                                                      [boolean] [default: false]
+  --long, -l            
+  Display environment information for each stack
+  [boolean] [default: false]
 ```
 
 #### `cdk synthesize` \(`synth`\)<a name="cli-synth"></a>
@@ -123,8 +124,9 @@ cdk synthesize [STACKS..]
 Synthesizes and prints the CloudFormation template for this stack
 
 Options:
-  --exclusively, -e     Only synthesize requested stacks, don't include
-                        dependencies                                   [boolean]
+  --exclusively, -e     
+  Only synthesize requested stacks, don't include dependencies                                   
+  [boolean]
 ```
 
 If your app has a single stack, you don't have to specify the stack name\.
@@ -137,15 +139,21 @@ cdk bootstrap [ENVIRONMENTS..]
 Deploys the CDK toolkit stack into an AWS environment
 
 Options:
-  --bootstrap-bucket-name, -b,              The name of the CDK toolkit bucket
-  --toolkit-bucket-name                                                 [string]
-  --bootstrap-kms-key-id                    AWS KMS master key ID used for the
-                                            SSE-KMS encryption          [string]
-  --tags, -t                                Tags to add for the stack
-                                            (KEY=VALUE)    [array] [default: []]
-  --execute                                 Whether to execute ChangeSet
-                                            (--no-execute will NOT execute the
-                                            ChangeSet) [boolean] [default: true]
+  --bootstrap-bucket-name, -b, --toolkit-bucket-name
+  The name of the CDK toolkit bucket that bootstrap creates for you.
+  [string]
+  
+  --bootstrap-kms-key-id                    
+  AWS KMS master key ID used for the SSE-KMS encryption          
+  [string]
+  
+  --tags, -t                                
+  Tags to add for the stack
+  (KEY=VALUE)    [array] [default: []]
+  
+  --execute                                 
+  Whether to execute ChangeSet (--no-execute will NOT execute the ChangeSet) 
+  [boolean] [default: true]
 ```
 
 #### `cdk deploy`<a name="cli-deploy"></a>
