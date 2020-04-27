@@ -85,9 +85,9 @@ All AWS Construct Library modules used in your project must be the same version\
 
 ### Props<a name="python-props"></a>
 
-All AWS Construct Library classes are instantiated using three arguments: the *scope* in which the construct is being defined \(its parent in the construct tree\), a *name*, and *props*, a bundle of key/value pairs that the construct uses to configure the resources it creates\. Other classes and methods also use the "bundle of attributes" pattern for arguments\.
+Natively, all AWS Construct Library classes are instantiated using three arguments: the *scope* in which the construct is being defined \(its parent in the construct tree\), a *name*, and *props*, a bundle of key/value pairs that the construct uses to configure the resources it creates\. Other classes and methods also use the "bundle of attributes" pattern for arguments\.
 
-In Python, props are expressed as keyword arguments\. If an argument contains nested data structures, these are expressed using a class which takes its own keyword arguments at instantiation\. The same pattern applies to other method calls that take a single structured argument\.
+In Python, props are expressed as keyword arguments\. If an argument contains nested data structures, these are expressed using a class which takes its own keyword arguments at instantiation\. The same pattern is applied to other method calls that take a single structured argument\.
 
 For example, in a Amazon S3 bucket's `add_lifecycle_rule` method, the `transitions` property is a list of `Transition` instances\.
 
@@ -132,6 +132,16 @@ class MyAspect():
     def visit(self, node: IConstruct) -> None:
         print("Visited", node.node.path)
 ```
+
+### Type Pitfalls<a name="python-type-pitfalls"></a>
+
+Python natively uses dynamic typing, where variables may refer to a value of any type\. Parameters and return values may be annotated with types, but these are "hints" and are not enforced\. This means that in Python, it is easy to pass the incorrect type of value to a AWS CDK construct\. Instead of getting a type error during build, as you would from a statically\-typed language, you may instead get a runtime error when the JSII layer \(which translates between Python and the AWS CDK's TypeScript core\) is unable to deal with the unexpected type\.
+
+In our experience, the type errors Python programmers make tend to fall into these categories\. Be especially alert to these pitfalls\.
++ Passing a single value where a construct expects a container \(Python list or dictionary\) or vice versa\.
++ Passing a value of a type associated with a Level 1 \(`CfnXxxxxx`\) construct to a higher\-level construct, or vice versa\.
+
+The AWS CDK Python modules do include type annotations\. If you are not using an IDE that supports these, such as [PyCharm](https://www.jetbrains.com/pycharm/), you might want to call the [MyPy](http://mypy-lang.org/) type validator as a step in your build process\. There are also runtime type checkers that can improve errror messages for type\-related errors\.
 
 ## Synthesizing and Deploying<a name="python-running"></a>
 

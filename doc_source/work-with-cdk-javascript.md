@@ -94,9 +94,77 @@ For full documentation of the `cdk` command, see [AWS CDK Toolkit \(`cdk`\)](too
 
 ## Using TypeScript Examples with JavaScript<a name="javascript-using-typescript-examples"></a>
 
-[TypeScript](https://www.typescriptlang.org/) is the language we use to develop the AWS CDK, and it was the first language supported for developing applications, so many available AWS CDK code examples are written in TypeScript\. These code examples can be a good resource for JavaScript developers; you just need to remove the TypeScript\-specific parts of the code\. The most commonly\-used features are type annotations and interface declarations\.
+[TypeScript](https://www.typescriptlang.org/) is the language we use to develop the AWS CDK, and it was the first language supported for developing applications, so many available AWS CDK code examples are written in TypeScript\. These code examples can be a good resource for JavaScript developers; you just need to remove the TypeScript\-specific parts of the code\.
+
+TypeScript snippets often use the newer ECMAScript `import` and `export` keywords to import objects from other modules and to declare the objects to be made available outside the current module\. Node\.js has just begun supporting these keywords in its latest releases\. Depending on the version of Node\.js you're using, you might rewrite imports and exports to use the older syntax\.
+
+Imports can be replaced with calls to the `require()` function\.
+
+------
+#### [ TypeScript ]
+
+```
+import * as cdk from '@aws-cdk/core';
+import { Bucket, BucketPolicy } from '@aws-cdk/aws-s3';
+```
+
+------
+#### [ JavaScript ]
+
+```
+const cdk = require('@aws-cdk/core');
+const { Bucket, BucketPolicy } = require('@aws-cdk/aws-s3');
+```
+
+------
+
+Exports can be assigned to the `module.exports` object\.
+
+------
+#### [ TypeScript ]
+
+```
+export class Stack1 extends cdk.Stack {
+  // ...
+}
+
+export class Stack2 extends cdk.Stack {
+  // ...
+}
+```
+
+------
+#### [ JavaScript ]
+
+```
+class Stack1 extends cdk.Stack {
+  // ...
+}
+
+class Stack2 extends cdk.Stack {
+  // ...
+}
+
+module.exports = { Stack1, Stack2 }
+```
+
+------
+
+**Note**  
+An alternative to using the old\-style imports and exports is to use the [https://www.npmjs.com/package/esm](https://www.npmjs.com/package/esm) module\.
+
+Once you've got the imports and exports sorted, you can dig into the actual code\. You may run into these commonly\-used TypeScript features:
++ Type annotations
++ Interface definitions
++ Type conversions/casts
++ Access modifiers
 
 Type annotations may be provided for variables, class members, function parameters, and function return types\. For variables, parameters, and members, types are specified by following the identifier with a colon and the type\. Function return values follow the function signature and consist of a colon and the type\.
+
+To convert type\-annotated code to JavaScript, remove the colon and the type\. Class members must have some value in JavaScript; set them to `undefined` if they only have a type annotation in TypeScript\.
+
+------
+#### [ TypeScript ]
 
 ```
 var encrypted: boolean = true;
@@ -111,12 +179,14 @@ function makeEnv(account: string, region: string) : object {
 }
 ```
 
-To convert type\-annotated code to JavaScript, remove the colon and the type\. Class members must have some value in JavaScript; remove them entirely if they only have a type annotation in TypeScript\.
+------
+#### [ JavaScript ]
 
 ```
 var encrypted = true;
 
 class myStack extends core.Stack {
+    bucket = undefined;
     // ...
 }
 
@@ -124,6 +194,8 @@ function makeEnv(account, region) {
     // ...
 }
 ```
+
+------
 
 In TypeScript, interfaces are used to give bundles of required and optional properties, and their types, a name\. You can then use the interface name as a type annotation\. TypeScript will make sure that the object you use as, for example, an argument to a function has the required properties of the right types\.
 
@@ -134,11 +206,13 @@ interface myFuncProps {
 }
 ```
 
-JavaScript does not have an interface feature, so once you've removed the type annotations, delete the interface declarations as well\.
+JavaScript does not have an interface feature, so once you've removed the type annotations, delete the interface declarations entirely\.
+
+When a function or method returns a general\-purpose type \(such as `object`\), but you want to treat that value as a more specific child type to access properties or methods that are not part of the more general type's interface, TypeScript lets you *cast* the value using `as` followed by a type or interface name\. JavaScript doesn't support \(or need\) this, so simply remove `as` and the following identifier\. A less\-common cast syntax is to use a type name in brackets, `<LikeThis>`; these casts, too, must be removed\.
 
 Finally, TypeScript supports the access modifiers `public`, `protected`, and `private` for members of classes\. All class members in JavaScript are public\. Simply remove these modifiers wherever you see them\.
 
-Knowing how to identify and remove these three TypeScript features goes a long way toward adapting short TypeScript snippets to JavaScript\. But it may be impractical to convert longer TypeScript examples in this fashion, since they are more likely to use TypeScript features you're not familiar with\. For these situations, we recommend [Babel](https://babeljs.io/) with the [TypeScript plug\-in](https://babeljs.io/docs/en/babel-plugin-transform-typescript)\. Babel won't complain if code uses an undefined variable, for example, as `tsc` would\. If it is syntactically valid, then with few exceptions, Babel can translate it to JavaScript\. This makes Babel particularly valuable for converting snippets that may not be runnable in on their own\.
+Knowing how to identify and remove these TypeScript features goes a long way toward adapting short TypeScript snippets to JavaScript\. But it may be impractical to convert longer TypeScript examples in this fashion, since they are more likely to use other TypeScript features\. For these situations, we recommend [Babel](https://babeljs.io/) with the [TypeScript plug\-in](https://babeljs.io/docs/en/babel-plugin-transform-typescript)\. Babel won't complain if code uses an undefined variable, for example, as `tsc` would\. If it is syntactically valid, then with few exceptions, Babel can translate it to JavaScript\. This makes Babel particularly valuable for converting snippets that may not be runnable on their own\.
 
 ## Migrating to TypeScript<a name="javascript-to-typescript"></a>
 
