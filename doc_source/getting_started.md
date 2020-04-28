@@ -139,7 +139,9 @@ new MyStack(app, 'MyStack', {
 #### [ Python ]
 
 ```
-MyStack(app, "MyStack", env=core.Environment(region="REGION",account="ACCOUNT")
+MyStack(app, "MyStack", env=core.Environment(
+        region="REGION",
+        account="ACCOUNT"))
 ```
 
 ------

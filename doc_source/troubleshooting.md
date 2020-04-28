@@ -13,9 +13,11 @@ This topic describes how to troubleshoot the following issues with the AWS CDK\.
 **After updating the AWS CDK, code that used to work fine now results in errors**  
 Errors in code that used to work is typically a symptom of having mismatched versions of AWS Construct Library modules\. Make sure all library modules are the same version and up\-to\-date\.
 
-The modules that make up the AWS Construct Library are a matched set\. They are released together and are intended to be used together\. Interfaces between modules are considered private; we may change them when necessary to implement new features in the library\. 
+The modules that make up the AWS Construct Library are a matched set\. They are released together and are intended to be used together\. Interfaces between modules are considered private; we may change them when necessary to implement new features in the library\.
 
 We also update the libraries that are used by the AWS Construct Library from time to time, and different versions of the library modules may have incompatible dependencies\. Synchronizing the versions of the library modules will also address this issue\.
+
+[JSII](https://github.com/aws/jsii) is an important AWS CDK dependency, especially if you are using the AWS CDK in a language other than TypeScript or JavaScript\. You do not ordinarily have to concern yourself with the JSII versions, since it is a declared dependency of all AWS CDK modules\. If a compatible version is not installed, however, you can see unexpected type\-relatd errors, such as `'undefined' is not a valid TargetType`\. Making sure all AWS CDK modules are the same version will resolve JSII compatibility issues, since they will all depend on the same JSII version\.
 
 Below, you'll find details on managing the versions of your installed AWS Construct Library modules in TypeScript, JavaScript, Python, Java, and C\#\.
 

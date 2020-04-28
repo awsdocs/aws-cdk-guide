@@ -21,7 +21,7 @@ cdk init --language=typescript lib
 npm install @aws-cdk/aws-sqs @aws-cdk/aws-cloudwatch
 ```
 
- Place the following code in `lib/dead-letter-queue.ts`: 
+ Place the following code in `lib/index.ts`: 
 
 ```
 import * as cloudwatch from '@aws-cdk/aws-cloudwatch';
@@ -88,7 +88,7 @@ Add a snapshot test by placing the following code in `test/dead-letter-queue.tes
 import { SynthUtils } from '@aws-cdk/assert';
 import { Stack } from '@aws-cdk/core';
 
-import * as dlq from '../lib/dead-letter-queue';
+import * as dlq from '../lib/index';
 
 test('dlq creates an alarm', () => {
   const stack = new Stack();
@@ -132,7 +132,7 @@ Object {
 
 ### Testing the Test<a name="testing_testing_test"></a>
 
-To make sure the test works, change the construct so that it generates different AWS CloudFormation output, then build and test again\. For example, add a `period` property of 1 minute to override the default of 5 minutes\. The boldface line below shows the code that needs to be added to `dead-letter-queue.ts`\. 
+To make sure the test works, change the construct so that it generates different AWS CloudFormation output, then build and test again\. For example, add a `period` property of 1 minute to override the default of 5 minutes\. The boldface line below shows the code that needs to be added to `index.ts`\. 
 
 ```
 this.messagesInQueueAlarm = new cloudwatch.Alarm(this, 'Alarm', {
@@ -224,7 +224,7 @@ Replace the code in `test/dead-letter-queue.test.ts` with the following\.
 import { Stack } from '@aws-cdk/core';
 import '@aws-cdk/assert/jest';
 
-import * as dlq from '../lib/dead-letter-queue';
+import * as dlq from '../lib/index';
 
 test('dlq creates an alarm', () => {
   const stack = new Stack();

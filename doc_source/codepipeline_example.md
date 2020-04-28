@@ -16,7 +16,7 @@ mkdir pipeline
 cd pipeline
 cdk init --language typescript
 mkdir Lambda
-npm install @aws-cdk/aws-codedeploy @aws-cdk/aws-lambda @aws-cdk/aws-codebuild
+npm install @aws-cdk/aws-codedeploy @aws-cdk/aws-lambda @aws-cdk/aws-codebuild @aws-cdk/aws-codepipeline
 npm install @aws-cdk/aws-codecommit @aws-cdk/aws-codepipeline-actions @aws-cdk/aws-s3
 ```
 
@@ -28,7 +28,7 @@ mkdir pipeline
 cd pipeline
 cdk init ‐-language javascript
 mkdir Lambda
-npm install @aws-cdk/aws-codedeploy @aws-cdk/aws-lambda @aws-cdk/aws-codebuild
+npm install @aws-cdk/aws-codedeploy @aws-cdk/aws-lambda @aws-cdk/aws-codebuild @aws-cdk/aws-codepipeline
 npm install @aws-cdk/aws-codecommit @aws-cdk/aws-codepipeline-actions @aws-cdk/aws-s3
 ```
 
@@ -42,7 +42,7 @@ cdk init --language python
 source .env/bin/activate
 pip install -r requirements.txt
 mkdir Lambda
-pip install aws_cdk.aws_codedeploy aws_cdk.aws_lambda aws_cdk.aws_codebuild
+pip install aws_cdk.aws_codedeploy aws_cdk.aws_lambda aws_cdk.aws_codebuild aws_cdk.aws_codepipeline
 pip install aws_cdk.aws_codecommit aws_cdk.aws_codepipeline_actions aws_cdk.aws_s3
 ```
 
@@ -64,6 +64,7 @@ lambda
 codedeploy
 codebuild
 codecommit
+codepipeline
 codepipeline-actions
 s3
 ```
@@ -86,6 +87,7 @@ Amazon.CDK.AWS.CodeDeploy
 Amazon.CDK.AWS.Lambda
 Amazon.CDK.AWS.CodeBuild
 Amazon.CDK.AWS.CodeCommit
+Amazon.CDK.AWS.CodePipeline
 Amazon.CDK.AWS.CodePipeline.Actions
 Amazon.CDK.AWS.S3
 ```
@@ -1178,5 +1180,5 @@ Try making a change, such as to your `LambdaStack` AWS CDK code or to your Lambd
 To avoid unexpected AWS charges, destroy your AWS CDK stack after you're done with this exercise\.
 
 ```
-cdk destroy
+cdk destroy *
 ```
