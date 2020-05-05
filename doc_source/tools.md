@@ -38,7 +38,6 @@ Commands:
   cdk synthesize [STACKS..]       Synthesizes and prints the CloudFormation
                                   template for this stack       [aliases: synth]
 
-
   cdk bootstrap [ENVIRONMENTS..]  Deploys the CDK toolkit stack into an AWS
                                   environment
 
@@ -62,7 +61,6 @@ Commands:
 
   cdk docs                        Opens the reference documentation in a browser
                                                                   [aliases: doc]
-
 
   cdk doctor                      Check your set-up for potential problems
 
@@ -132,7 +130,6 @@ Options:
 
   -h, --help            Show help                                      [boolean]
 
-
 If your app has a single stack, there is no need to specify the stack name
 
 If one of cdk.json or ~/.cdk.json exists, options specified there will be used
@@ -182,94 +179,6 @@ Deploys the CDK toolkit stack into an AWS environment
 
 Options:
 
-
-Deploys the CDK toolkit stack into an AWS environment
-
-Options:
-  --app, -a                                 REQUIRED: command-line for executing
-                                            your app or a cloud assembly
-                                            directory (e.g. "node
-                                            bin/my-app.js")             [string]
-
-  --context, -c                             Add contextual string parameter
-                                            (KEY=VALUE)                  [array]
-
-  --plugin, -p                              Name or path of a node package that
-                                            extend the CDK features. Can be
-                                            specified multiple times     [array]
-
-  --trace                                   Print trace for stack warnings
-                                                                       [boolean]
-
-  --strict                                  Do not construct stacks with
-                                            warnings                   [boolean]
-
-  --ignore-errors                           Ignores synthesis errors, which will
-                                            likely produce an invalid output
-                                                      [boolean] [default: false]
-
-  --json, -j                                Use JSON output instead of YAML when
-                                            templates are printed to STDOUT
-                                                      [boolean] [default: false]
-
-  --verbose, -v                             Show debug logs
-                                                      [boolean] [default: false]
-
-  --profile                                 Use the indicated AWS profile as the
-                                            default environment         [string]
-
-  --proxy                                   Use the indicated proxy. Will read
-                                            from HTTPS_PROXY environment
-                                            variable if not specified.  [string]
-
-  --ca-bundle-path                          Path to CA certificate to use when
-                                            validating HTTPS requests. Will read
-                                            from AWS_CA_BUNDLE environment
-                                            variable if not specified.  [string]
-
-  --ec2creds, -i                            Force trying to fetch EC2 instance
-                                            credentials. Default: guess EC2
-                                            instance status.           [boolean]
-
-  --version-reporting                       Include the "AWS::CDK::Metadata"
-                                            resource in synthesized templates
-                                            (enabled by default)       [boolean]
-
-  --path-metadata                           Include "aws:cdk:path"
-                                            CloudFormation metadata for each
-                                            resource (enabled by default)
-                                                       [boolean] [default: true]
-
-  --asset-metadata                          Include "aws:asset:*" CloudFormation
-                                            metadata for resources that user
-                                            assets (enabled by default)
-                                                       [boolean] [default: true]
-
-  --role-arn, -r                            ARN of Role to use when invoking
-                                            CloudFormation              [string]
-
-  --toolkit-stack-name                      The name of the CDK toolkit stack
-                                                                        [string]
-
-  --staging                                 Copy assets to the output directory
-                                            (use --no-staging to disable, needed
-                                            for local debugging the source files
-                                            with SAM CLI)
-                                                       [boolean] [default: true]
-
-  --output, -o                              Emits the synthesized cloud assembly
-                                            into a directory (default: cdk.out)
-                                                                        [string]
-
-  --no-color                                Removes colors and other style from
-                                            console output
-                                                      [boolean] [default: false]
-
-  --fail                                    Fail with exit code 1 in case of
-                                            diff      [boolean] [default: false]
-
-  --version                                 Show version number        [boolean]
-
   --bootstrap-bucket-name, -b,              The name of the CDK toolkit bucket
   --toolkit-bucket-name                                                 [string]
 
@@ -282,10 +191,6 @@ Options:
   --execute                                 Whether to execute ChangeSet
                                             (--no-execute will NOT execute the
                                             ChangeSet) [boolean] [default: true]
-
-  --force, -f                               Always bootstrap even if it would
-                                            downgrade template version
-                                                      [boolean] [default: false]
 ```
 
 #### `cdk deploy`<a name="cli-deploy"></a>
