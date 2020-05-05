@@ -309,7 +309,7 @@ With your stack's environment declared this way, you can now write a short scrip
 ```
 #!/bin/bash
 # cdk-deploy-to.sh
-export CDK_DEPLOY_ACCOUNT=$1
+export CDK_DEPLOY_ACCOUNT=$0
 shift
 export CDK_DEPLOY_REGION=$1
 shift
@@ -322,7 +322,7 @@ cdk deploy "$@"
 ```
 @echo off
 rem cdk-deploy-to.bat
-set CDK_DEPLOY_ACCOUNT=%1
+set CDK_DEPLOY_ACCOUNT=%0
 shift
 set CDK_DEPLOY_REGION=%1
 shift
