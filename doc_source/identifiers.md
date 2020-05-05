@@ -138,7 +138,7 @@ class Program
 
 ## Paths<a name="identifiers_paths"></a>
 
-As the constructs in an AWS CDK application form a hierarchy, we refer to the collection of IDs from a given construct, then of its parent construct, then grandparent construct, and so on up to the root of the construct tree, which is an instance of the `App` class, as a *path*\.
+The constructs in an AWS CDK application form a hierarchy rooted in the `App` class\. We refer to the collection of IDs from a given construct, its parent construct, its grandparent, and so on to the root of the construct tree, as a *path*\.
 
 The AWS CDK typically displays paths in your templates as a string, with the IDs from the levels separated by slashes, starting at the node just below the root `App` instance, which is usually a stack\. For example, the paths of the two Amazon S3 bucket resources in the previous code example are `Stack1/MyBucket` and `Stack2/MyBucket`\.
 
