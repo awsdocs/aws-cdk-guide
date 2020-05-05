@@ -179,8 +179,9 @@ Deploys the CDK toolkit stack into an AWS environment
 
 Options:
 
-  --bootstrap-bucket-name, -b,              The name of the CDK toolkit bucket
-  --toolkit-bucket-name                                                 [string]
+  --bootstrap-bucket-name, -b,              The name of the CDK toolkit bucket;
+  --toolkit-bucket-name                     bucket will be created and must not
+                                            exist                       [string]
 
   --bootstrap-kms-key-id                    AWS KMS master key ID used for the
                                             SSE-KMS encryption          [string]
@@ -191,6 +192,10 @@ Options:
   --execute                                 Whether to execute ChangeSet
                                             (--no-execute will NOT execute the
                                             ChangeSet) [boolean] [default: true]
+
+  --force, -f                               Always bootstrap even if it would
+                                            downgrade template version
+                                                      [boolean] [default: false]
 ```
 
 #### `cdk deploy`<a name="cli-deploy"></a>
