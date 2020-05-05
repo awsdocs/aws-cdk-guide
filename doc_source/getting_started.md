@@ -32,7 +32,7 @@ No additional prerequisites
 
 ------
 #### [ Java ]
-+ Maven <= 3\.5 and Java >= 8
++ Maven >= 3\.5 and Java >= 8
 + A Java IDE is preferred \(the examples in this guide may refer to Eclipse\)\. `cdk init` creates a Maven project, which most IDEs can import\. Some IDEs may need to be configured to use Java 8 \(also known as 1\.8\)\.
 + Set the `JAVA_HOME` environment variable to the path to where you have installed the JDK on your machine
 
