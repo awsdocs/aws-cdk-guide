@@ -24,7 +24,7 @@ import * as s3 from '@aws-cdk/aws-s3';
 const s3 = require('@aws-cdk/aws-s3');
 
 // TypeScript version of require() (again, import * as s3 generally preferred)
-import s3 = require('@aws-cdk/aws-3');
+import s3 = require('@aws-cdk/aws-s3');
 
 // Now use s3 to access the S3 types
 const bucket = s3.Bucket(...);
