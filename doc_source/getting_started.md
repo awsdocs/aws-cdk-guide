@@ -570,7 +570,7 @@ Next, define an Amazon S3 bucket in the stack\. Amazon S3 buckets are represente
 In `lib/hello-cdk-stack.ts`:
 
 ```
-import * as core = from '@aws-cdk/core';
+import * as core from '@aws-cdk/core';
 import * as s3 from '@aws-cdk/aws-s3';
 
 export class HelloCdkStack extends core.Stack {
