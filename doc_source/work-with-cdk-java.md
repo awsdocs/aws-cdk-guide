@@ -109,9 +109,12 @@ In Java, missing values in AWS CDK objects such as props are represented by `nul
 
 ## Building, Synthesizing, and Deploying<a name="java-running"></a>
 
-Before running, build \(compile\) the app in your IDE \(for example, press Control\-B in Eclipse\) or by issuing `mvn build` at a command prompt while in your project's root directory\.
+Before running, build \(compile\) the app in your IDE \(for example, press Control\-B in Eclipse\) or by running `mvn compile` at a command prompt while in your project's root directory\.
+The build step reports any syntax or type errors in your code\.
 
-The build step reports any syntax or type errors in your code\. Once you can build your application without errors, you're ready to synthesize or deploy\.
+Run any tests you've written by running `mvn test` at a command prompt\.
+
+Once you've built your application and run tests without errors, you're ready to synthesize or deploy\.
 
 The [stacks](stacks.md) defined in your AWS CDK app can be deployed individually or together using the commands below\. Generally, you should be in your project's main directory when you issue them\.
 + `cdk synth`: Synthesizes a AWS CloudFormation template from one or more of the stacks in your AWS CDK app\.
@@ -121,5 +124,9 @@ You can specify the names of multiple stacks to be synthesized or deployed in a 
 
 **Tip**  
 You don't need to explicitly synthesize stacks before deploying them; `cdk deploy` performs this step for you\.
+
+**NOTE**
+Whenever you change your application code, you need to run `mvn compile` or `mvn test` before using the `cdk` command\.
+If you run CDK commands _without_ re-compiling the application, the `cdk` command will use the previously compiled version of your application code\.
 
 For full documentation of the `cdk` command, see [AWS CDK Toolkit \(`cdk`\)](tools.md#cli)\.
