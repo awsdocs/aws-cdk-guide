@@ -1,19 +1,22 @@
 # Runtime context<a name="context"></a>
 
-The AWS CDK uses *context* to retrieve information such as the Availability Zones in your account or Amazon Machine Image \(AMI\) IDs used to start your instances\. Context entries are key\-value pairs\.
-
-To avoid unexpected changes to your deployments when, for example, a new Amazon Linux AMI is released, thus changing your Auto Scaling group, the AWS CDK stores context values in the `cdk.context.json` file within your project\. This ensures that the AWS CDK uses the same context values the next time it synthesizes your app\. Don't forget to put this file under version control\.
+Context values are key\-value pairs that can be associated with a stack or construct\. The AWS CDK uses context to cache information from your AWS account, such as the Availability Zones in your account or the Amazon Machine Image \(AMI\) IDs used to start your instances\. [Feature flags](featureflags.md) are also context values\. You can create your own context values for use by your apps or constructs\.
 
 ## Construct context<a name="context_construct"></a>
 
-Context values are made available to your AWS CDK app in five different ways:
+Context values are made available to your AWS CDK app in six different ways:
 + Automatically from the current AWS account\.
 + Through the \-\-context option to the cdk command\.
++ In the `context` key of the project's `cdk.context.json` file\.
 + In the `context` key of the project's `cdk.json` file\.
-+ In the `context` key of a `~/cdk.json` file\.
-+ In code using the `construct.node.setContext` method\.
++ In the `context` key of your `~/cdk.json` file\.
++ In your AWS CDK app using the `construct.node.setContext` method\.
 
-Context values are scoped to the construct that created them; they are visible to child constructs, but not to siblings\. Context values set by the AWS CDK Toolkit \(the cdk command\), either automatically or from the \-\-context option, are implicitly set on the `App` construct, and so are visible to every construct in the app\.
+The project file `cdk.context.json` is where the AWS CDK caches context values retrieved from your AWS account\. This practice avoids unexpected changes to your deployments when, for example, a new Amazon Linux AMI is released, changing your Auto Scaling group\. The AWS CDK does not write context data to any of the other files listed\. 
+
+We recommend that your project's context files be placed under version control along with the rest of your application, as the information in them is part of your app's state and is critical to being able to synthesize and deploy consistently\.
+
+Context values are scoped to the construct that created them; they are visible to child constructs, but not to siblings\. Context values set by the AWS CDK Toolkit \(the cdk command\), whether automatically, from a file, or from the \-\-context option, are implicitly set on the `App` construct, and so are visible to every construct in the app\.
 
 You can get a context value using the `construct.node.tryGetContext` method\. If the requested entry is not found on the current construct or any of its parents, the result is `undefined` \(or your language's equivalent, such as `None` in Python\)\.
 
@@ -57,10 +60,10 @@ Context found in cdk.json:
 │ 2 │ availability-zones:account=123456789012:region=eu-west-1    │ [ "eu-west-1a", "eu-west-1b", "eu-west-1c" ]            │
 └───┴─────────────────────────────────────────────────────────────┴─────────────────────────────────────────────────────────┘
 
-Run cdk context --reset KEY_OR_NUMBER to remove a context key. It will be refreshed on the next CDK synthesis run.
+Run cdk context --reset KEY_OR_NUMBER to remove a context key. If it is a cached value, it will be refreshed on the next cdk synth.
 ```
 
-To remove a context value, run cdk context \-\-reset, specifying the value's corresponding key number\. The following example removes the value that corresponds to the key value of `2` in the preceding example, which is the list of availability zones in the Ireland region\.
+To remove a context value, run cdk context \-\-reset, specifying the value's corresponding key or number\. The following example removes the value that corresponds to the second key in the preceding example, which is the list of availability zones in the Ireland region\.
 
 ```
 $ cdk context --reset 2
@@ -83,6 +86,8 @@ To clear all of the stored context values for your app, run cdk context \-\-clea
 ```
 $ cdk context --clear
 ```
+
+Only context values stored in `cdk.context.json` can be reset or cleared\. The AWS CDK does not touch other context files\. To protect a context value from being reset by the AWS CDK using these commands, then, you might copy the value to `cdk.json`\.
 
 ## Example<a name="context_example"></a>
 
