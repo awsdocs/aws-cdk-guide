@@ -9,7 +9,7 @@ Cloud security at Amazon Web Services \(AWS\) is the highest priority\. As an AW
 The AWS CDK follows the [shared responsibility model](https://aws.amazon.com/compliance/shared-responsibility-model/) through the specific Amazon Web Services \(AWS\) services it supports\. For AWS service security information, see the [AWS service security documentation page](https://docs.aws.amazon.com/security/?id=docs_gateway#aws-security) and [AWS services that are in scope of AWS compliance efforts by compliance program](https://aws.amazon.com/compliance/services-in-scope/)\.
 
 **Topics**
-+ [Identity and Access Management](security-iam.md)
-+ [Compliance Validation](compliance-validation.md)
++ [Identity and access management](security-iam.md)
++ [Compliance validation](compliance-validation.md)
 + [Resilience](disaster-recovery-resiliency.md)
-+ [Infrastructure Security](infrastructure-security.md)
++ [Infrastructure security](infrastructure-security.md)

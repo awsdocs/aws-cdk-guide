@@ -10,7 +10,7 @@ To work with the AWS CDK, you must have an AWS account and credentials and have 
 
 JavaScript AWS CDK applications require no additional prerequisites beyond these\.
 
-## Creating a Project<a name="javascript-newproject"></a>
+## Creating a project<a name="javascript-newproject"></a>
 
 You create a new AWS CDK project by invoking `cdk init` in an empty directory\.
 
@@ -24,7 +24,7 @@ Creating a project also installs the [https://docs.aws.amazon.com/cdk/api/latest
 
 `cdk init` uses the name of the project folder to name various elements of the project, including classes, subfolders, and files\. 
 
-## Managing AWS Construct Library Modules<a name="javascript-managemodules"></a>
+## Managing AWS construct library modules<a name="javascript-managemodules"></a>
 
 Use the Node Package Manager \(`npm`\), included with Node\.js, to install and update AWS Construct Library modules for use by your apps, as well as other packages you need\. \(You may use `yarn` instead of `npm` if you prefer\.\) `npm` also installs the dependencies for those modules automatically\.
 
@@ -43,7 +43,7 @@ npm update
 **Note**  
 All AWS Construct Library modules used in your project must be the same version\.
 
-## AWS CDK Idioms in JavaScript<a name="javascript-cdk-idioms"></a>
+## AWS CDK idioms in JavaScript<a name="javascript-cdk-idioms"></a>
 
 ### Props<a name="javascript-props"></a>
 
@@ -61,7 +61,7 @@ super(scope, name, {...props, encryptionKeys: undefined});
 
 Alternatively, name your properties so that it is clear that they belong to your construct\. This way, it is unlikely they will collide with properties in future AWS CDK releases\. If there are many of them, use a single appropriately\-named object to hold them\.
 
-### Missing Values<a name="javascript-missing-values"></a>
+### Missing values<a name="javascript-missing-values"></a>
 
 Missing values in an object \(such as `props`\) have the value `undefined` in JavaScript\. The usual techniques apply for dealing with these\. For example, a common idiom for accessing a property of a value that may be undefined is as follows:
 
@@ -79,7 +79,7 @@ let c = a == null ? a : a.b;
 
 A version of the ECMAScript standard currently in development specifies new operators that will simplify the handling of undefined values\. Using them can simplify your code, but you will need a new version of Node\.js to use them\. For more information, see the [optional chaining](https://github.com/tc39/proposal-optional-chaining/blob/master/README.md) and [nullish coalescing](https://github.com/tc39/proposal-nullish-coalescing/blob/master/README.md) proposals\.
 
-## Synthesizing and Deploying<a name="javascript-running"></a>
+## Synthesizing and deploying<a name="javascript-running"></a>
 
 The [stacks](stacks.md) defined in your AWS CDK app can be deployed individually or together using the commands below\. Generally, you should be in your project's main directory when you issue them\.
 + `cdk synth`: Synthesizes a AWS CloudFormation template from one or more of the stacks in your AWS CDK app\.
@@ -92,7 +92,7 @@ You don't need to explicitly synthesize stacks before deploying them; `cdk deplo
 
 For full documentation of the `cdk` command, see [AWS CDK Toolkit \(`cdk`\)](tools.md#cli)\.
 
-## Using TypeScript Examples with JavaScript<a name="javascript-using-typescript-examples"></a>
+## Using TypeScript examples with JavaScript<a name="javascript-using-typescript-examples"></a>
 
 [TypeScript](https://www.typescriptlang.org/) is the language we use to develop the AWS CDK, and it was the first language supported for developing applications, so many available AWS CDK code examples are written in TypeScript\. These code examples can be a good resource for JavaScript developers; you just need to remove the TypeScript\-specific parts of the code\.
 

@@ -1,12 +1,12 @@
-# Create an App with Multiple Stacks<a name="stack_how_to_create_multiple_stacks"></a>
+# Create an app with multiple stacks<a name="stack_how_to_create_multiple_stacks"></a>
 
 Most of the other code examples in the *AWS CDK Developer Guide* involve only a single stack\. However, you can create apps containing any number of stacks\. Each stack results in its own AWS CloudFormation template\. Stacks are the *unit of deployment:* each stack in an app can be synthesized and deployed individually using the `cdk deploy` command\.
 
 This topic illustrates how to extend the `Stack` class to accept new properties or arguments, how to use these properties affect what resources the stack contains and their configuration, and how to instantiate multiple stacks from this class\. The example uses a Boolean property, named `encryptBucket` \(Python: `encrypt_bucket`\), to indicate whether an Amazon S3 bucket should be encrypted\. If so, the stack enables encryption using a key managed by AWS Key Management Service \(AWS KMS\)\. The app creates two instances of this stack, one with encryption and one without\.
 
-## Before You Begin<a name="cdk-how-to-create-multiple-stacks-prereqs"></a>
+## Before you begin<a name="cdk-how-to-create-multiple-stacks-prereqs"></a>
 
-First, install Node\.js and the AWS CDK command line tools, if you haven't already\. See [Getting Started With the AWS CDK](getting_started.md) for details\.
+First, install Node\.js and the AWS CDK command line tools, if you haven't already\. See [Getting started with the AWS CDK](getting_started.md) for details\.
 
 Next, create an AWS CDK project by entering the following commands at the command line\.
 
@@ -112,7 +112,7 @@ For a better experience, also add the `Amazon.Jsii.Analyzers` package to provide
 
 ------
 
-## Add Optional Parameter<a name="cdk-how-to-create-multiple-stacks-extend-stackprops"></a>
+## Add optional parameter<a name="cdk-how-to-create-multiple-stacks-extend-stackprops"></a>
 
 The `props` argument of the `Stack` constructor fulfills the interface `StackProps`\. Because we want our stack to accept an additional property to tell us whether to encrypt the Amazon S3 bucket, we should create an interface or class that includes that property\. This allows the compiler to make sure the property has a Boolean value and enables autocompletion for it in your IDE\.
 
@@ -249,7 +249,7 @@ namespace Multistack
 
 The new property is optional\. If `encryptBucket` \(Python: `encrypt_bucket`\) is not present, its value is `undefined`, or the local equivalent\. The bucket will be unencrypted by default\.
 
-## Define the Stack Class<a name="cdk-how-to-create-multiple-stacks-define-stack"></a>
+## Define the stack class<a name="cdk-how-to-create-multiple-stacks-define-stack"></a>
 
  Now let's define our stack class, using our new property\. Make the code look like the following\. The code you need to add or change is shown in boldface\. 
 
@@ -439,7 +439,7 @@ namespace Multistack
 
 ------
 
-## Create Two Stack Instances<a name="stack_how_to_create_multiple_stacks-create-stacks"></a>
+## Create two stack instances<a name="stack_how_to_create_multiple_stacks-create-stacks"></a>
 
 Now we'll add the code to instantiate two separate stacks\. As before, the lines of code shown in boldface are the ones you need to add\. Delete the existing `MultistackStack` definition\.
 
@@ -585,7 +585,7 @@ namespace Multistack
 +  One stack with an encrypted Amazon S3 bucket in the `us-east-1` AWS Region\. 
 +  One stack with an unencrypted Amazon S3 bucket in the `us-west-1` AWS Region\. 
 
-## Synthesize and Deploy the Stack<a name="cdk-how-to-create-multiple-stacks-synth-deploy"></a>
+## Synthesize and deploy the stack<a name="cdk-how-to-create-multiple-stacks-synth-deploy"></a>
 
 Now you can deploy stacks from the app\. First, build the project, if necessary\.
 
@@ -665,7 +665,7 @@ cdk deploy MyEastCdkStack
 cdk deploy MyEastCdkStack --profile=PROFILE_NAME
 ```
 
-## Clean Up<a name="cdk-how-to-create-multiple-stacks-destroy-stack"></a>
+## Clean up<a name="cdk-how-to-create-multiple-stacks-destroy-stack"></a>
 
 To avoid charges for resources that you deployed, destroy the stack using the following command\.
 

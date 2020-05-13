@@ -1,4 +1,4 @@
-# Translating TypeScript AWS CDK Code to Other Languages<a name="multiple_languages"></a>
+# Translating TypeScript AWS CDK code to other languages<a name="multiple_languages"></a>
 
 TypeScript was the first language supported for developing AWS CDK applications, and for that reason, there is a substantial amount of example CDK code written in TypeScript\. If you are developing in another language, it may be useful to compare how AWS CDK code is implemented in TypeScript and your language of choice, so you can, with a little effort, make use of these examples\.
 
@@ -9,7 +9,7 @@ For more details on working with the AWS CDK in its supported programming langua
 + [Working with the AWS CDK in Java](work-with-cdk-java.md)
 + [Working with the AWS CDK in C\#](work-with-cdk-csharp.md)
 
-## Importing a Module<a name="multiple_languages_import"></a>
+## Importing a module<a name="multiple_languages_import"></a>
 
 ------
 #### [ TypeScript/JavaScript ]
@@ -115,7 +115,7 @@ var bucket = new Amazon.CDK.AWS.S3.Bucket(...)
 
 ------
 
-## Instantiating a Construct<a name="multiple_languages_class"></a>
+## Instantiating a construct<a name="multiple_languages_class"></a>
 
 AWS CDK construct classes have the same name in all supported languages\. Most languages use the `new` keyword to instantiate a class \(Python is the only one that doesn't\)\. Also, in most languages, the keyword `this` refers to the current instance\. Python, again, is the exception \(it uses `self` by convention\)\. You should pass a reference to the current instance as the `scope` parameter to every construct you create\.
 
@@ -214,7 +214,7 @@ var bucket = Bucket(self, "MyBucket", new BucketProps {
 
 ------
 
-## Accessing Members<a name="multiple_languages_members"></a>
+## Accessing members<a name="multiple_languages_members"></a>
 
 It is common to refer to attributes or properties of constructs and other AWS CDK classes and use these values as, for examples, inputs to build other constructs\. The naming differences described above for methods apply\. Furthermore, in Java, it is not possible to access members directly; instead, a getter method is provided\.
 
@@ -258,7 +258,7 @@ bucket.BucketArn
 
 ------
 
-## Enum Constants<a name="multiple_languages_enums"></a>
+## Enum constants<a name="multiple_languages_enums"></a>
 
 Enum constants are scoped to a class, and have uppercase names with underscores in all languages \(sometimes referred to as `SCREAMING_SNAKE_CASE`\)\. Since class names also use the same casing in all supported languages, qualified enum names are also the same\.
 
@@ -266,7 +266,7 @@ Enum constants are scoped to a class, and have uppercase names with underscores 
 s3.BucketEncryption.KMS_MANAGED
 ```
 
-## Object Interfaces<a name="multiple_languages_object"></a>
+## Object interfaces<a name="multiple_languages_object"></a>
 
 The AWS CDK uses TypeScript object interfaces to indicate that a class implements an expected set of methods and properties\. You can recognize an object interface because its name starts with `I`\. A concrete class indicates the interface\(s\) it implements using the `implements` keyword\.
 

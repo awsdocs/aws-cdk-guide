@@ -43,7 +43,7 @@ myConstruct.Node.ApplyAspect(new SomeAspect(...));
 
 The AWS CDK currently uses aspects only to [tag resources](tagging.md), but the framework is extensible and can also be used for other purposes\. For example, you can use it to validate or change the AWS CloudFormation resources that are defined for you\.
 
-## Aspects in Detail<a name="aspects_detail"></a>
+## Aspects in detail<a name="aspects_detail"></a>
 
 The AWS CDK implements tagging using a more generic system, called *aspects*, which is an instance of the visitor pattern\. An aspect is a class that implements the following interface\.
 

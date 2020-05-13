@@ -1,4 +1,4 @@
-# Creating a Serverless Application Using the AWS CDK<a name="serverless_example"></a>
+# Creating a serverless application using the AWS CDK<a name="serverless_example"></a>
 
 This example walks you through how to create the resources for a simple widget dispensing service\. \(For the purpose of this example, a widget is just a name or identifier that can be added to, retrieved from, and deleted from a collection\.\) The example includes:
 + An AWS Lambda function\.
@@ -22,7 +22,7 @@ This tutorial contains the following steps\.
    + Get a widget by name with GET /\{name\}
    + Delete a widget by name with DELETE /\{name\}
 
-## Create a AWS CDK App<a name="serverless_example_create_app"></a>
+## Create a AWS CDK app<a name="serverless_example_create_app"></a>
 
 Create the app **MyWidgetService** in the current folder\.
 
@@ -166,7 +166,7 @@ Resources:
       Modules: "@aws-cdk/cdk=CDK-VERSION,@aws-cdk/cx-api=CDK-VERSION,my_widget_service=0.1.0"
 ```
 
-## Create a Lambda Function to List All Widgets<a name="serverless_example_create_iam_function"></a>
+## Create a Lambda function to list all widgets<a name="serverless_example_create_iam_function"></a>
 
 The next step is to create a Lambda function to list all of the widgets in our Amazon S3 bucket\. We will provide the Lambda function's code in JavaScript\.
 
@@ -267,7 +267,7 @@ Instead of issuing `dotnet build`, you can instead press F6 in Visual Studio\.
 
 ------
 
-## Creating a Widget Service<a name="serverless_example_create_widget_service"></a>
+## Creating a widget service<a name="serverless_example_create_widget_service"></a>
 
 Add the API Gateway, Lambda, and Amazon S3 packages to the app\.
 
@@ -601,7 +601,7 @@ Instead of issuing `dotnet build`, you can instead press F6 in Visual Studio\.
 
 ------
 
-## Add the Service to the App<a name="serverless_example_add_service"></a>
+## Add the service to the app<a name="serverless_example_add_service"></a>
 
 To add the widget service to our AWS CDK app, we'll need to modify the source file that defines the stack to instantiate the service construct\.
 
@@ -728,9 +728,9 @@ Instead of issuing `dotnet build`, you can instead press F6 in Visual Studio\.
 
 ------
 
-## Deploy and Test the App<a name="serverless_example_deploy_and_test"></a>
+## Deploy and test the app<a name="serverless_example_deploy_and_test"></a>
 
-Before you can deploy your first AWS CDK app containing a lambda function, you must bootstrap your AWS environment\. This creates a staging bucket that the AWS CDK uses to deploy stacks containing assets\. For details, see the **bootstrap** section of the [AWS CDK Tools](tools.md) \(if you've already bootstrapped, you'll get a warning and nothing will change\)\.
+Before you can deploy your first AWS CDK app containing a lambda function, you must bootstrap your AWS environment\. This creates a staging bucket that the AWS CDK uses to deploy stacks containing assets\. For details, see the **bootstrap** section of the [AWS CDK tools](tools.md) \(if you've already bootstrapped, you'll get a warning and nothing will change\)\.
 
 ```
 cdk bootstrap
@@ -770,7 +770,7 @@ Because we haven't stored any widgets yet, the output should be similar to the f
 { "widgets": [] }
 ```
 
-## Add the Individual Widget Functions<a name="serverless_example_add_widget_functions"></a>
+## Add the individual widget functions<a name="serverless_example_add_widget_functions"></a>
 
 The next step is to create Lambda functions to create, show, and delete individual widgets\. 
 
@@ -1053,7 +1053,7 @@ curl -X GET 'https://GUID.execute-api-REGION.amazonaws.com/prod'
 
 You can also use the API Gateway console to test these functions\. Set the **name** value to the name of a widget, such as **example**\.
 
-## Clean Up<a name="serverless_example_destroy"></a>
+## Clean up<a name="serverless_example_destroy"></a>
 
 To avoid unexpected AWS charges, destroy your AWS CDK stack after you're done with this exercise\.
 

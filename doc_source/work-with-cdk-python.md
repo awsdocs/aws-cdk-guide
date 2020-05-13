@@ -25,7 +25,7 @@ It is common for Linux distros to use the executable name `python3` for Python 3
 
 Make sure the `pip` executable \(on Windows, `pip.exe`\) is in a directory included on the system `PATH`\. You should be able to type `pip --version` and see its version, not an error message\.
 
-## Creating a Project<a name="python-newproject"></a>
+## Creating a project<a name="python-newproject"></a>
 
 You create a new AWS CDK project by invoking `cdk init` in an empty directory\.
 
@@ -52,7 +52,7 @@ pip install -r requirements.txt
 **Important**  
 Activate the project's virtual environment whenever you start working on it\. If you don't, you won't have access to the modules installed there, and modules you install will go in Python's global module directory \(or will result in a permission error\)\.
 
-## Managing AWS Construct Library Modules<a name="python-managemodules"></a>
+## Managing AWS construct library modules<a name="python-managemodules"></a>
 
 Use the Python package installer, `pip`, to install and update AWS Construct Library modules for use by your apps, as well as other packages you need\. `pip` also installs the dependencies for those modules automatically\.
 
@@ -81,7 +81,7 @@ pip install --upgrade -r requirements.txt
 **Note**  
 All AWS Construct Library modules used in your project must be the same version\.
 
-## AWS CDK Idioms in Python<a name="python-cdk-idioms"></a>
+## AWS CDK idioms in Python<a name="python-cdk-idioms"></a>
 
 ### Props<a name="python-props"></a>
 
@@ -106,7 +106,7 @@ When extending a class or overriding a method, you may want to accept additional
 
 Future releases of the AWS CDK may coincidentally add a new property with a name you used for your own property\. This won't cause any technical issues for users of your construct or method \(since your property isn't passed "up the chain," the parent class or overridden method will simply use a default value\) but it may cause confusion\. You can avoid this potential problem by naming your properties so they clearly belong to your construct \(e\.g\. `bob_encryption` rather than just `encryption`, assuming you're Bob\)\. If there are many new properties, bundle them into an appropriately\-named class \(`BobBucketPoperties`?\) and pass it as a single keyword argument\.
 
-### Missing Values<a name="python-missing-values"></a>
+### Missing values<a name="python-missing-values"></a>
 
 When working with `**kwargs`, use the dictionary's `get()` method to provide a default value if a property is not provided\. Avoid using `kwargs[...]`, as this raises `KeyError` for missing values\.
 
@@ -117,7 +117,7 @@ encrypted = kwargs.get("encrypted", False)	# specify default of False if propert
 
 Some AWS CDK methods \(such as `tryGetContext()` to get a runtime context value\) return `None` to indicate a missing value, which you will need to check for and handle\.
 
-### Using Interfaces<a name="python-interfaces"></a>
+### Using interfaces<a name="python-interfaces"></a>
 
 Python doesn't have an interface feature as some other languages do\. \(If you're not familiar with the concept, Wikipedia has [a good introduction](https://en.wikipedia.org/wiki/Interface_(computing)#In_object-oriented_languages)\.\) TypeScript, the language in which the AWS CDK is implemented does, however, and constructs and other AWS CDK objects often require an instance that adheres to a particular interface, rather than inheriting from a particular class\. So the AWS CDK provides its own interface feature as part of the [JSII](https://github.com/aws/jsii) layer\.
 
@@ -133,7 +133,7 @@ class MyAspect():
         print("Visited", node.node.path)
 ```
 
-### Type Pitfalls<a name="python-type-pitfalls"></a>
+### Type pitfalls<a name="python-type-pitfalls"></a>
 
 Python natively uses dynamic typing, where variables may refer to a value of any type\. Parameters and return values may be annotated with types, but these are "hints" and are not enforced\. This means that in Python, it is easy to pass the incorrect type of value to a AWS CDK construct\. Instead of getting a type error during build, as you would from a statically\-typed language, you may instead get a runtime error when the JSII layer \(which translates between Python and the AWS CDK's TypeScript core\) is unable to deal with the unexpected type\.
 
@@ -143,7 +143,7 @@ In our experience, the type errors Python programmers make tend to fall into the
 
 The AWS CDK Python modules do include type annotations\. If you are not using an IDE that supports these, such as [PyCharm](https://www.jetbrains.com/pycharm/), you might want to call the [MyPy](http://mypy-lang.org/) type validator as a step in your build process\. There are also runtime type checkers that can improve errror messages for type\-related errors\.
 
-## Synthesizing and Deploying<a name="python-running"></a>
+## Synthesizing and deploying<a name="python-running"></a>
 
 The [stacks](stacks.md) defined in your AWS CDK app can be deployed individually or together using the commands below\. Generally, you should be in your project's main directory when you issue them\.
 + `cdk synth`: Synthesizes a AWS CloudFormation template from one or more of the stacks in your AWS CDK app\.

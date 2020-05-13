@@ -1,4 +1,4 @@
-# Creating an AWS Fargate Service Using the AWS CDK<a name="ecs_example"></a>
+# Creating an AWS Fargate service using the AWS CDK<a name="ecs_example"></a>
 
 This example walks you through how to create an AWS Fargate service running on an Amazon Elastic Container Service \(Amazon ECS\) cluster that's fronted by an internet\-facing Application Load Balancer from an image on Amazon ECR\.
 
@@ -27,7 +27,7 @@ The Amazon ECS construct used in this tutorial helps you use AWS services by pro
 
 See [ECS](https://docs.aws.amazon.com/cdk/api/latest/docs/aws-ecs-readme.html) for details\.
 
-## Creating the Directory and Initializing the AWS CDK<a name="ecs_example_initialize"></a>
+## Creating the directory and initializing the AWS CDK<a name="ecs_example_initialize"></a>
 
 Let's start by creating a directory to hold the AWS CDK code, and then creating a AWS CDK app in that directory\.
 
@@ -142,7 +142,7 @@ Resources:
       Modules: aws-cdk=CDK-VERSION,@aws-cdk/core=CDK-VERSION,@aws-cdk/cx-api=CDK-VERSION,jsii-runtime=node.js/NODE-VERSION
 ```
 
-## Add the Amazon EC2 and Amazon ECS Packages<a name="ecs_example_add_packages"></a>
+## Add the Amazon EC2 and Amazon ECS packages<a name="ecs_example_add_packages"></a>
 
 Install the AWS construct library modules for Amazon EC2 and Amazon ECS\.
 
@@ -195,7 +195,7 @@ For a better experience, also add the `Amazon.Jsii.Analyzers` package to provide
 
 ------
 
-## Create a Fargate Service<a name="ecs_example_create_fargate_service"></a>
+## Create a Fargate service<a name="ecs_example_create_fargate_service"></a>
 
 There are two different ways to run your container tasks with Amazon ECS:
 + Use the `Fargate` launch type, where Amazon ECS manages the physical machines that your containers are running on for you\.
@@ -444,7 +444,7 @@ AWS CloudFormation displays information about the dozens of steps that it takes 
 
 That's how easy it is to create a Fargate service to run a Docker image\.
 
-## Clean Up<a name="ecs_example_destroy"></a>
+## Clean up<a name="ecs_example_destroy"></a>
 
 To avoid unexpected AWS charges, destroy your AWS CDK stack after you're done with this exercise\.
 

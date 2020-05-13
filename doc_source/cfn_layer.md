@@ -1,4 +1,4 @@
-# Escape Hatches<a name="cfn_layer"></a>
+# Escape hatches<a name="cfn_layer"></a>
 
 It's possible that neither the high\-level constructs nor the low\-level CFN Resource constructs have a specific feature you are looking for\. There are three possible reasons for this lack of functionality:
 + The AWS service feature is available through AWS CloudFormation, but there are no Construct classes for the service\.
@@ -7,7 +7,7 @@ It's possible that neither the high\-level constructs nor the low\-level CFN Res
 
 To determine whether a feature is available through AWS CloudFormation, see [AWS Resource and Property Types Reference](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-template-resource-type-ref.html)\.
 
-## Using AWS CloudFormation Constructs Directly<a name="cfn_layer_cfn"></a>
+## Using AWS CloudFormation constructs directly<a name="cfn_layer_cfn"></a>
 
 If there are no Construct classes available for the service, you can fall back to the automatically generated CFN Resources, which map 1:1 onto all available AWS CloudFormation resources and properties\. These resources can be recognized by their name starting with `Cfn`, such as `CfnBucket` or `CfnRole`\. You instantiate them exactly as you would use the equivalent AWS CloudFormation resource\. For more information, see [AWS Resource and Property Types Reference](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-template-resource-type-ref.html)\.
 
@@ -175,7 +175,7 @@ new CfnResource(this, "MyBucket", new CfnResourceProps
 
 For more information, see [AWS Resource and Property Types Reference](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-template-resource-type-ref.html)\.
 
-## Modifying the AWS CloudFormation Resource behind AWS Constructs<a name="cfn_layer_resource"></a>
+## Modifying the AWS CloudFormation resource behind AWS constructs<a name="cfn_layer_resource"></a>
 
 If a Construct is missing a feature or you are trying to work around an issue, you can modify the CFN Resource that is encapsulated by the Construct\.
 
@@ -313,7 +313,7 @@ cfnBucket.CfnOptions.Metadata = new Dictionary<string, object>
 
 ------
 
-## Raw Overrides<a name="cfn_layer_raw"></a>
+## Raw overrides<a name="cfn_layer_raw"></a>
 
 If there are properties that are missing from the CFN Resource, you can bypass all typing using raw overrides\. This also makes it possible to delete synthesized properties\. 
 
@@ -406,7 +406,7 @@ cfnBucket.AddPropertyDeletionOverride("VersioningConfiguration.Status");
 
 ------
 
-## Custom Resources<a name="cfn_layer_custom"></a>
+## Custom resources<a name="cfn_layer_custom"></a>
 
 If the feature isn't available through AWS CloudFormation, but only through a direct API call, the only solution is to write an AWS CloudFormation Custom Resource to make the API call you need\. Don't worry, the AWS CDK makes it easier to write these, and wrap them up into a regular construct interface, so from another user's perspective the feature feels native\.
 

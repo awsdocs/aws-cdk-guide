@@ -1,8 +1,8 @@
-# AWS CDK Tools<a name="tools"></a>
+# AWS CDK tools<a name="tools"></a>
 
 This section contains information about AWS CDK tools\.
 
-## AWS Toolkit for Visual Studio Code<a name="vscode"></a>
+## AWS Toolkit for Visual Studio code<a name="vscode"></a>
 
 The [AWS Toolkit for Visual Studio Code](https://aws.amazon.com/visualstudiocode/) is an open source plug\-in for Visual Studio Code that makes it easier to create, debug, and deploy applications on AWS\. The toolkit provides an integrated experience for developing AWS CDK applications, including the AWS CDK Explorer feature to list your AWS CDK projects and browse the various components of the CDK application\. [Install the AWS Toolkit](https://docs.aws.amazon.com/toolkit-for-vscode/latest/userguide/setup-toolkit.html) and learn more about [using the AWS CDK Explorer](https://docs.aws.amazon.com/toolkit-for-vscode/latest/userguide/cdk-explorer.html)\.
 
@@ -138,7 +138,7 @@ as defaults. Settings in cdk.json take precedence.
 
 If a `cdk.json` or `~/.cdk.json` file exists, options specified there are used as defaults\. Settings in `cdk.json` take precedence\.
 
-### AWS CDK Toolkit Commands<a name="cli_commands"></a>
+### AWS CDK toolkit commands<a name="cli_commands"></a>
 
 The AWS CDK CLI supports several distinct commands\. Help for each \(including only the command\-line options specific to the particular command\) follows\. Commands with no command\-specific options are not listed\. All commands additionally accept the options listed above\.
 
@@ -294,13 +294,13 @@ Options:
   --clear               Clear all context                              [boolean]
 ```
 
-### Bootstrapping your AWS Environment<a name="tools_bootstrap"></a>
+### Bootstrapping your AWS environment<a name="tools_bootstrap"></a>
 
 Before you can use the AWS CDK you must bootstrap your AWS environment to create the infrastructure that the AWS CDK CLI needs to deploy your AWS CDK app\. Currently the bootstrap command creates only an Amazon S3 bucket\.
 
 You incur any charges for what the AWS CDK stores in the bucket\. Because the AWS CDK does not remove any objects from the bucket, the bucket can accumulate objects as you use the AWS CDK\. You can get rid of the bucket by deleting the **CDKToolkit** stack from your AWS account\. 
 
-### Security\-Related Changes<a name="tools_security"></a>
+### Security\-related changes<a name="tools_security"></a>
 
 To protect you against unintended changes that affect your security posture, the AWS CDK toolkit prompts you to approve security\-related changes before deploying them\.
 
@@ -330,7 +330,7 @@ The setting can also be configured in the `cdk.json` file\.
 }
 ```
 
-### Version Reporting<a name="version_reporting"></a>
+### Version reporting<a name="version_reporting"></a>
 
 To gain insight into how the AWS CDK is used, the versions of libraries used by AWS CDK applications are collected and reported by using a resource identified as `AWS::CDK::Metadata`\. This resource is added to AWS CloudFormation templates, and can easily be reviewed\. This information can also be used to identify stacks using a package with known serious security or reliability issues, and to contact their users with important information\.
 
@@ -348,7 +348,7 @@ CDKMetadata:
     Modules: "@aws-cdk/core=0.7.2-beta,@aws-cdk/s3=0.7.2-beta,@aws-solutions-konstruk/aws-apigateway-lambda=0.8.0"
 ```
 
-### Opting Out from Version Reporting<a name="version_reporting_opt_out"></a>
+### Opting out from version reporting<a name="version_reporting_opt_out"></a>
 
 To opt out of version reporting, use one of the following methods:
 + Use the cdk command with the \-\-no\-version\-reporting argument\.

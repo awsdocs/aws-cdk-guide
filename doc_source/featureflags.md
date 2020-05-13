@@ -1,6 +1,6 @@
-# Feature Flags<a name="featureflags"></a>
+# Feature flags<a name="featureflags"></a>
 
-The AWS CDK uses *feature flags* to enable potentially breaking behaviors in a release\. Flags are stored as [Runtime Context](context.md) values in `cdk.json` \(or `~/.cdk.json`\) as shown here\.
+The AWS CDK uses *feature flags* to enable potentially breaking behaviors in a release\. Flags are stored as [Runtime context](context.md) values in `cdk.json` \(or `~/.cdk.json`\) as shown here\.
 
 ```
 {

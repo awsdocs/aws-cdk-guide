@@ -1,6 +1,6 @@
 # Tokens<a name="tokens"></a>
 
-Tokens represent values that can only be resolved at a later time in the lifecycle of an app \(see [App Lifecycle](apps.md#lifecycle)\)\. For example, the name of an Amazon S3 bucket that you define in your AWS CDK app is only allocated by AWS CloudFormation when you deploy your app\. If you print the `bucket.bucketName` attribute, which is a string, you see it contains something like the following\.
+Tokens represent values that can only be resolved at a later time in the lifecycle of an app \(see [App lifecycle](apps.md#lifecycle)\)\. For example, the name of an Amazon S3 bucket that you define in your AWS CDK app is only allocated by AWS CloudFormation when you deploy your app\. If you print the `bucket.bucketName` attribute, which is a string, you see it contains something like the following\.
 
 ```
 ${TOKEN[Bucket.Name.1234]}
@@ -78,7 +78,7 @@ var fn = new Function(this, "MyLambda", new FunctionProps {
 
 When the AWS CloudFormation template is finally synthesized, the token is rendered as the AWS CloudFormation intrinsic `{ "Ref": "MyBucket" }`\. At deployment time, AWS CloudFormation replaces this intrinsic with the actual name of the bucket that was created\.
 
-## Tokens and Token Encodings<a name="tokens_encoding"></a>
+## Tokens and token encodings<a name="tokens_encoding"></a>
 
 Tokens are objects that implement the [IResolvable](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.IResolvable.html) interface, which contains a single `resolve` method\. The AWS CDK calls this method during synthesis to produce the final value for the AWS CloudFormation template\. Tokens participate in the synthesis process to produce arbitrary values of any type\.
 
@@ -148,7 +148,7 @@ If **name** is a token, validation isn't performed, and the error could occur in
 **Note**  
 You can use token encodings to escape the type system\. For example, you could string\-encode a token that produces a number value at synthesis time\. If you use these functions, it's your responsibility to ensure that your template resolves to a usable state after synthesis\.
 
-## String\-Encoded Tokens<a name="tokens_string"></a>
+## String\-encoded tokens<a name="tokens_string"></a>
 
 String\-encoded tokens look like the following\.
 
@@ -236,7 +236,7 @@ string functionName = $"${bucket.bucketName}Function";
 
 Avoid manipulating the string in other ways\. For example, taking a substring of a string is likely to break the string token\.
 
-## List\-Encoded Tokens<a name="tokens_list"></a>
+## List\-encoded tokens<a name="tokens_list"></a>
 
 List\-encoded tokens look like the following
 
@@ -246,7 +246,7 @@ List\-encoded tokens look like the following
 
 The only safe thing to do with these lists is pass them directly to other constructs\. Tokens in string list form cannot be concatenated, nor can an element be taken from the token\. The only safe way to manipulate them is by using AWS CloudFormation intrinsic functions like [Fn\.select](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/intrinsic-function-reference-select.html)\.
 
-## Number\-Encoded Tokens<a name="tokens_number"></a>
+## Number\-encoded tokens<a name="tokens_number"></a>
 
 Number\-encoded tokens are a set of tiny negative floating\-point numbers that look like the following\.
 
@@ -256,7 +256,7 @@ Number\-encoded tokens are a set of tiny negative floating\-point numbers that l
 
 As with list tokens, you cannot modify the number value, as doing so is likely to break the number token\. The only allowed operation is to pass the value around to another construct\. 
 
-## Lazy Values<a name="tokens_lazy"></a>
+## Lazy values<a name="tokens_lazy"></a>
 
 In addition to representing deploy\-time values, such as AWS CloudFormation [parameters](parameters.md), Tokens are also commonly used to represent synthesis\-time lazy values\. These are values for which the final value will be determined before synthesis has completed, just not at the point where the value is constructed\. Use tokens to pass a literal string or number value to another construct, while the actual value at synthesis time may depend on some calculation that has yet to occur\.
 

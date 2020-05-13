@@ -1,4 +1,4 @@
-# Identity and Access Management for the AWS Cloud Development Kit \(AWS CDK\)<a name="security-iam"></a>
+# Identity and access management for the AWS Cloud Development Kit \(AWS CDK\)<a name="security-iam"></a>
 
 AWS Identity and Access Management \(IAM\) is an Amazon Web Services \(AWS\) service that helps an administrator securely control access to AWS resources\. IAM administrators control who can be *authenticated* \(signed in\) and *authorized* \(have permissions\) to use resources in AWS services\. IAM is an AWS service that you can use with no additional charge\.
 

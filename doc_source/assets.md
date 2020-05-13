@@ -4,13 +4,13 @@ Assets are local files, directories, or Docker images that can be bundled into A
 
 You typically reference assets through APIs that are exposed by specific AWS constructs\. For example, when you define a [lambda\.Function](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-lambda.Function.html) construct, the [code](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-lambda.Function.html#code) property lets you pass an [asset](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-lambda.Code.html#static-assetpath) \(directory\)\. `Function` uses assets to bundle the contents of the directory and use it for the function's code\. Similarly, [ecs\.ContainerImage\.fromAsset](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-ecs.ContainerImage.html#static-from-assetdirectory-props) uses a Docker image built from a local directory when defining an Amazon ECS task definition\.
 
-## Assets in Detail<a name="assets_details"></a>
+## Assets in detail<a name="assets_details"></a>
 
 When you refer to an asset in your app, the [cloud assembly](apps.md#apps_cloud_assembly) synthesized from your application includes metadata information with instructions for the AWS CDK CLI on where to find the asset on the local disk, and what type of bundling to perform based on the type of asset, such as a directory to compress \(zip\) or a Docker image to build\.
 
 The AWS CDK generates a source hash for assets and can be used at construction time to determine whether the contents of an asset have changed\.
 
-By default, the AWS CDK creates a copy of the asset in the cloud assembly directory, which defaults to `cdk.out`, under the source hash\. This is so that the cloud assembly is self\-contained and moved over to a different host for deployment\. See [Cloud Assemblies](apps.md#apps_cloud_assembly) for details\.
+By default, the AWS CDK creates a copy of the asset in the cloud assembly directory, which defaults to `cdk.out`, under the source hash\. This is so that the cloud assembly is self\-contained and moved over to a different host for deployment\. See [Cloud assemblies](apps.md#apps_cloud_assembly) for details\.
 
 The AWS CDK also synthesizes AWS CloudFormation parameters that the AWS CDK CLI specifies during deployment\. The AWS CDK uses those parameters to refer to the deploy\-time values of the asset\.
 
@@ -18,7 +18,7 @@ When the AWS CDK deploys an app that references assets \(either directly by the 
 
 This section describes the low\-level APIs available in the framework\.
 
-## Asset Types<a name="assets_types"></a>
+## Asset types<a name="assets_types"></a>
 
 The AWS CDK supports the following types of assets:
 
@@ -30,7 +30,7 @@ These are Docker images that the AWS CDK uploads to Amazon ECR\.
 
 These asset types are explained in the following sections\.
 
-### Amazon S3 Assets<a name="assets_types_s3"></a>
+### Amazon S3 assets<a name="assets_types_s3"></a>
 
 You can define local files and directories as assets, and the AWS CDK packages and uploads them to Amazon S3 through the [aws\-s3\-assets](https://docs.aws.amazon.com/cdk/api/latest/docs/aws-s3-assets-readme.html) module\.
 
@@ -134,7 +134,7 @@ var fileAsset = new Asset(this, "SampleSingleFileAsset", new AssetProps
 
 In most cases, you don't need to directly use the APIs in the `aws-s3-assets` module\. Modules that support assets, such as `aws-lambda`, have convenience methods that enable you to use assets\. For Lambda functions, the [asset](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-lambda.Code.html#static-assetpath) property enables you to specify a directory or a \.zip file in the local file system\.
 
-#### Lambda Function Example<a name="assets_types_s3_lambda"></a>
+#### Lambda function example<a name="assets_types_s3_lambda"></a>
 
 A common use case is to create AWS Lambda functions with the handler code, which is the entry point for the function, as an Amazon S3 asset\. 
 
@@ -270,7 +270,7 @@ public class HelloAssetStack : Stack
 
 The `Function` method uses assets to bundle the contents of the directory and use it for the function's code\.
 
-#### Deploy\-Time Attributes Example<a name="assets_types_s3_deploy"></a>
+#### Deploy\-time attributes example<a name="assets_types_s3_deploy"></a>
 
 Amazon S3 asset types also expose [deploy\-time attributes](resources.md#resources_attributes) that can be referenced in AWS CDK libraries and apps\. The AWS CDK CLI command cdk synth displays asset properties as AWS CloudFormation parameters\.
 
@@ -508,7 +508,7 @@ asset.GrantRead(group);
 
 ------
 
-### Docker Image Assets<a name="assets_types_docker"></a>
+### Docker image assets<a name="assets_types_docker"></a>
 
 The AWS CDK supports bundling local Docker images as assets through the [aws\-ecr\-assets](https://docs.aws.amazon.com/cdk/api/latest/docs/aws-ecr-assets-readme.html) module\.
 
@@ -578,7 +578,7 @@ var asset = new DockerImageAsset(this, "MyBuildImage", new DockerImageAssetProps
 
 The `my-image` directory must include a Dockerfile\. The AWS CDK CLI builds a Docker image from `my-image`, pushes it to an Amazon ECR repository, and specifies the name of the repository as an AWS CloudFormation parameter to your stack\. Docker image asset types expose [deploy\-time attributes](resources.md#resources_attributes) that can be referenced in AWS CDK libraries and apps\. The AWS CDK CLI command cdk synth displays asset properties as AWS CloudFormation parameters\.
 
-#### Amazon ECS Task Definition Example<a name="assets_types_docker_ecs"></a>
+#### Amazon ECS task definition example<a name="assets_types_docker_ecs"></a>
 
 A common use case is to create an Amazon ECS [TaskDefinition](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-ecs.TaskDefinition.html) to run docker containers\. The following example specifies the location of a Docker image asset that the AWS CDK builds locally and pushes to Amazon ECR\. 
 
@@ -676,7 +676,7 @@ taskDefinition.AddContainer("my-other-container", new ContainerDefinitionOptions
 
 ------
 
-#### Deploy\-Time Attributes Example<a name="assets_types_docker_deploy"></a>
+#### Deploy\-time attributes example<a name="assets_types_docker_deploy"></a>
 
 The following example shows how to use the deploy\-time attributes `repository` and `imageUri` to create an Amazon ECS task definition with the AWS Fargate launch type\.
 
@@ -796,7 +796,7 @@ taskDefinition.AddContainer("my-other-container", new ContainerDefinitionOptions
 
 ------
 
-#### Build Arguments Example<a name="assets_types_docker_build"></a>
+#### Build arguments example<a name="assets_types_docker_build"></a>
 
 You can provide customized build arguments for the Docker build step through the `buildArgs` \(Python: `build_args`\) property option when the AWS CDK CLI builds the image during deployment\.
 
@@ -865,7 +865,7 @@ If you use a module that supports Docker image assets, such as [aws\-ecs](https:
 
 In most cases, you should use [asset\.repository\.grantPull](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-ecr.Repository.html#grant-pullgrantee) method \(Python: `grant_pull`\. This modifies the IAM policy of the principal to enable it to pull images from this repository\. If the principal that is pulling the image is not in the same account or is an AWS service, such as AWS CodeBuild, that does not assume a role in your account, you must grant pull permissions on the resource policy and not on the principal's policy\. Use the [asset\.repository\.addToResourcePolicy](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-ecr.Repository.html#add-to-resource-policystatement) method \(Python: `add_to_resource_policy`\) to grant the appropriate principal permissions\. 
 
-## AWS CloudFormation Resource Metadata<a name="assets_cfn"></a>
+## AWS CloudFormation resource metadata<a name="assets_cfn"></a>
 
 **Note**  
 This section is relevant only for construct authors\. In certain situations, tools need to know that a certain CFN resource is using a local asset\. For example, you can use the AWS SAM CLI to invoke Lambda functions locally for debugging purposes\. See [SAM CLI](tools.md#sam) for details\.

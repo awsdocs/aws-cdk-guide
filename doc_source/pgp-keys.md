@@ -1,8 +1,8 @@
-# OpenPGP Keys for the AWS CDK and JSII<a name="pgp-keys"></a>
+# OpenPGP keys for the AWS CDK and JSII<a name="pgp-keys"></a>
 
 This topic contains the OpenPGP keys for the AWS CDK and JSII\.
 
-## AWS CDK OpenPGP Key<a name="cdk_pgp_key"></a>
+## AWS CDK OpenPGP key<a name="cdk_pgp_key"></a>
 
 
 |  |  | 
@@ -48,7 +48,7 @@ EkSlc/RoDqZCpBGgcoy1FFWvV/ZLgNU6OTQlYH6oYOWiylSJnaTDyurrktsxJI6d
 -----END PGP PUBLIC KEY BLOCK-----
 ```
 
-## JSII OpenPGP Key<a name="jsii_pgp_key"></a>
+## JSII OpenPGP key<a name="jsii_pgp_key"></a>
 
 
 |  |  | 

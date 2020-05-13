@@ -333,7 +333,7 @@ project.AddToRolePolicy(new PolicyStatement(new PolicyStatementProps
 
 ------
 
-## Resource Policies<a name="permissions_resource_policies"></a>
+## Resource policies<a name="permissions_resource_policies"></a>
 
 A few resources in AWS, such as Amazon S3 buckets and IAM roles, also have a resource policy\. These constructs have an `addToResourcePolicy` method \(Python: `add_to_resource_policy`\), which takes a `[PolicyStatement](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-iam.PolicyStatement.html)` as its argument\. Every policy statement added to a resource policy must specify at least one principal\.
 

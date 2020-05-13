@@ -1,4 +1,4 @@
-# Get a Value from a Context Variable<a name="get_context_var"></a>
+# Get a value from a context variable<a name="get_context_var"></a>
 
 You can specify a context variable either as part of an AWS CDK CLI command, or in `cdk.json`\.
 
@@ -101,4 +101,4 @@ var bucketName = app.Node.TryGetContext("bucket_name");
 
 ------
 
-For more details on working with context variables, see [Runtime Context](context.md)\.
+For more details on working with context variables, see [Runtime context](context.md)\.

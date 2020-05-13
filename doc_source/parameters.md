@@ -17,7 +17,7 @@ It is better, again in general, to have your CDK app accept any necessary inform
 
 There are, however, use cases to which AWS CloudFormation parameters are uniquely suited\. If you have separate teams defining and deploying infrastructure, for example, you can use parameters to make the generated templates more widely useful\. Additionally, the AWS CDK's support for AWS CloudFormation parameters lets you use the AWS CDK with AWS services that use AWS CloudFormation templates \(such as AWS Service Catalog\), which use parameters to configure the template being deployed\.
 
-## Defining Parameters<a name="parameters_define"></a>
+## Defining parameters<a name="parameters_define"></a>
 
 Use the [https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.CfnParameter.html](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.CfnParameter.html) class to define a parameter\. You'll want to specify at least a type and a description for most parameters, though both are technically optional\. The description appears when the user is prompted to enter the parameter's value in the AWS CloudFormation console\.
 
@@ -73,7 +73,7 @@ var uploadBucketName = new CfnParameter(this, "uploadBucketName", new CfnParamet
 
 ------
 
-## Using Parameters<a name="parameters_use"></a>
+## Using parameters<a name="parameters_use"></a>
 
 A `CfnParameter` instance exposes its value to your AWS CDK app via a [token](tokens.md)\. Like all tokens, the parameter's token is resolved at synthesis time, but it resolves to a reference to the parameter defined in the AWS CloudFormation template, which will be resolved at deploy time, rather than to a concrete value\.
 
@@ -83,7 +83,7 @@ You can retrieve the token as an instance of the `Token` class, or in string, st
 #### [ TypeScript ]
 
 
-| Property | Kind of value | 
+| Property | kind of value | 
 | --- |--- |
 | value | Token class instance | 
 | valueAsList | The token represented as a string list | 
@@ -94,7 +94,7 @@ You can retrieve the token as an instance of the `Token` class, or in string, st
 #### [ JavaScript ]
 
 
-| Property | Kind of value | 
+| Property | kind of value | 
 | --- |--- |
 | value | Token class instance | 
 | valueAsList | The token represented as a string list | 
@@ -105,7 +105,7 @@ You can retrieve the token as an instance of the `Token` class, or in string, st
 #### [ Python ]
 
 
-| Property | Kind of value | 
+| Property | kind of value | 
 | --- |--- |
 | value | Token class instance | 
 | value\_as\_list | The token represented as a string list | 
@@ -116,7 +116,7 @@ You can retrieve the token as an instance of the `Token` class, or in string, st
 #### [ Java ]
 
 
-| Property | Kind of value | 
+| Property | kind of value | 
 | --- |--- |
 | getValue\(\) | Token class instance | 
 | getValueAsList\(\) | The token represented as a string list | 
@@ -127,7 +127,7 @@ You can retrieve the token as an instance of the `Token` class, or in string, st
 #### [ C\# ]
 
 
-| Property | Kind of value | 
+| Property | kind of value | 
 | --- |--- |
 | Value | Token class instance | 
 | ValueAsList | The token represented as a string list | 
@@ -183,7 +183,7 @@ var bucket = new Bucket(this, "myBucket")
 
 ------
 
-## Deploying with Parameters<a name="parameters_deploy"></a>
+## Deploying with parameters<a name="parameters_deploy"></a>
 
 A generated template containing parameters can be deployed in the usual way through the AWS CloudFormation console; you are prompted for the values of each parameter\.
 

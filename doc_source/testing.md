@@ -1,4 +1,4 @@
-# Testing Constructs<a name="testing"></a>
+# Testing constructs<a name="testing"></a>
 
 With the AWS CDK, your infrastructure can be as testable as any other code you write\. This article illustrates one approach to testing AWS CDK apps written in TypeScript using the [Jest](https://jestjs.io/) test framework\. Currently, TypeScript is the only supported language for testing AWS CDK infrastructure, though we intend to eventually make this capability available in all languages supported by the AWS CDK\.
 
@@ -7,11 +7,11 @@ There are three categories of tests you can write for AWS CDK apps\.
 +  **Fine\-grained assertions** test specific aspects of the generated AWS CloudFormation template, such as "this resource has this property with this value\." These tests help when you're developing new features, since any code you add will cause your snapshot test to fail even if existing features still work\. When this happens, your fine\-grained tests will reassure you that the existing functionality is unaffected\. 
 +  **Validation tests** help you "fail fast" by making sure your AWS CDK constructs raise errors when you pass them invalid data\. The ability to do this type of testing is a big advantage of developing your infrastructure in a general\-purpose programming language\. 
 
-## Getting Started<a name="testing_getting_started"></a>
+## Getting started<a name="testing_getting_started"></a>
 
 As an example, we'll create a [dead letter queue](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-dead-letter-queues.html) construct\. A dead letter queue holds messages from another queue that have failed delivery for some time\. This usually indicates failure of the message processor, which we want to know about, so our dead letter queue has an alarm that fires when a message arrives\. The user of the construct can hook up actions such as notifying an Amazon SNS topic to this alarm\. 
 
-### Creating the Construct<a name="testing_creating_construct"></a>
+### Creating the construct<a name="testing_creating_construct"></a>
 
  Start by creating an empty construct library project using the AWS CDK Toolkit and installing the construct libraries we'll need: 
 
@@ -45,7 +45,7 @@ export class DeadLetterQueue extends sqs.Queue {
 }
 ```
 
-### Installing the Testing Framework<a name="testing_installing"></a>
+### Installing the testing framework<a name="testing_installing"></a>
 
 Since we're using the Jest framework, our next setup step is to install Jest\. We'll also need the AWS CDK assert module, which includes helpers for writing tests for CDK libraries, including `assert` and `expect`\.
 
@@ -80,7 +80,7 @@ These changes are shown in outline below\. Place the new text where indicated in
 }
 ```
 
-## Snapshot Tests<a name="testing_snapshot"></a>
+## Snapshot tests<a name="testing_snapshot"></a>
 
 Add a snapshot test by placing the following code in `test/dead-letter-queue.test.ts`\.
 
@@ -130,7 +130,7 @@ Object {
 ...
 ```
 
-### Testing the Test<a name="testing_testing_test"></a>
+### Testing the test<a name="testing_testing_test"></a>
 
 To make sure the test works, change the construct so that it generates different AWS CloudFormation output, then build and test again\. For example, add a `period` property of 1 minute to override the default of 5 minutes\. The boldface line below shows the code that needs to be added to `index.ts`\. 
 
@@ -183,7 +183,7 @@ Snapshot Summary
  › 1 snapshot failed from 1 test suite. Inspect your code changes or run `npm test -- -u` to update them.
 ```
 
-### Accepting the New Snapshot<a name="testing_accepting"></a>
+### Accepting the new snapshot<a name="testing_accepting"></a>
 
 Jest has told us that the `Period` attribute of the synthesized AWS CloudFormation template has changed from 300 to 60\. To accept the new snapshot, issue:
 
@@ -212,7 +212,7 @@ export class DeadLetterQueue extends sqs.Queue {
 
 When we run the test again, it breaks\. The name we've given the test hints that we are interested mainly in testing whether the alarm is created, but the snapshot test also tests whether the queue is created with default options—along with literally everything else about the synthesized template\. This problem is magnified when a project contains many constructs, each with a snapshot test\.
 
-## Fine\-Grained Assertions<a name="testing_fine_grained"></a>
+## Fine\-grained assertions<a name="testing_fine_grained"></a>
 
 To avoid needing to review every snapshot whenever you make a change, use the custom assertions in the `@aws-cdk/assert/jest` module to write fine\-grained tests that verify only part of the construct's behavior\. For example, the test we called "dlq creates an alarm" in our example really should assert only that an alarm is created with the appropriate metric\.
 
@@ -265,7 +265,7 @@ npm run build && npm test
 **Note**  
 Since we've replaced the snapshot test, the first time we run the new tests, Jest reminds us that we have a snapshot that is not used by any test\. Issue `npm test -- -u` to tell Jest to clean it up\.
 
-## Validation Tests<a name="testing_validation"></a>
+## Validation tests<a name="testing_validation"></a>
 
 Suppose we want to make the dead letter queue's retention period configurable\. Of course, we also want to make sure that the value provided by the user of the construct is within an allowable range\. We can write a test to make sure that the validation logic works: pass in invalid values and see what happens\.
 
@@ -347,7 +347,7 @@ Test Suites: 1 passed, 1 total
 Tests:       4 passed, 4 total
 ```
 
-## Tips for Tests<a name="testing_tips"></a>
+## Tips for tests<a name="testing_tips"></a>
 
 Remember, your tests will live just as long as the code they test, and be read and modified just as often, so it pays to take a moment to consider how best to write them\. Don't copy and paste setup lines or common assertions, for example; refactor this logic into helper functions\. Use good names that reflect what each test actually tests\.
 

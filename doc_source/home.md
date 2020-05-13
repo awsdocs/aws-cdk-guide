@@ -1,4 +1,4 @@
-# What Is the AWS CDK?<a name="home"></a>
+# What is the AWS CDK?<a name="home"></a>
 
 Welcome to the *AWS Cloud Development Kit \(AWS CDK\) Developer Guide*\. This document provides information about the AWS CDK, which is a software development framework for defining cloud infrastructure in code and provisioning it through AWS CloudFormation\.
 
@@ -14,9 +14,9 @@ Developers can use one of the supported programming languages to define reusable
 
 ![\[Image NOT FOUND\]](http://docs.aws.amazon.com/cdk/latest/guide/images/AppStacks.png)
 
-## Why Use the AWS CDK?<a name="why_use_cdk"></a>
+## Why use the AWS CDK?<a name="why_use_cdk"></a>
 
-Let's look at the power of the AWS CDK\. Here is some code in an AWS CDK project to create an AWS Fargate service \(this is the code we use in the [Creating an AWS Fargate Service Using the AWS CDK](ecs_example.md)\)\.
+Let's look at the power of the AWS CDK\. Here is some code in an AWS CDK project to create an AWS Fargate service \(this is the code we use in the [Creating an AWS Fargate service using the AWS CDK](ecs_example.md)\)\.
 
 ------
 #### [ TypeScript ]
@@ -210,9 +210,9 @@ Other advantages of the AWS CDK include:
 
 ## Developing with the AWS CDK<a name="developing"></a>
 
-Code snippets and longer examples are available in the AWS CDK's supported programming languages: TypeScript, JavaScript, Python, Java, and C\#\. See [AWS CDK Examples](about_examples.md) for a list of the examples\.
+Code snippets and longer examples are available in the AWS CDK's supported programming languages: TypeScript, JavaScript, Python, Java, and C\#\. See [AWS CDK examples](about_examples.md) for a list of the examples\.
 
-The [AWS CDK Tools](tools.md) is a command line tool for interacting with CDK apps\. It enables developers to synthesize artifacts such as AWS CloudFormation templates, deploy stacks to development AWS accounts, and diff against a deployed stack to understand the impact of a code change\.
+The [AWS CDK tools](tools.md) is a command line tool for interacting with CDK apps\. It enables developers to synthesize artifacts such as AWS CloudFormation templates, deploy stacks to development AWS accounts, and diff against a deployed stack to understand the impact of a code change\.
 
 The [AWS Construct Library](constructs.md) includes a module for each AWS service with constructs that offer rich APIs that encapsulate the details of how to create resources for an Amazon or AWS service\. The aim of the AWS Construct Library is to reduce the complexity and glue logic required when integrating various AWS services to achieve your goals on AWS\.
 
@@ -223,7 +223,7 @@ There is no charge for using the AWS CDK, but you might incur AWS charges for cr
 
 Because the AWS CDK is open source, the team encourages you contribute to make it an even better tool\. For details, see [Contributing](https://github.com/awslabs/aws-cdk/blob/master/CONTRIBUTING.md)\.
 
-## Additional Documentation and Resources<a name="additional_docs"></a>
+## Additional documentation and resources<a name="additional_docs"></a>
 
 In addition to this guide, the following are other resources available to AWS CDK users:
 + [API Reference](https://docs.aws.amazon.com/cdk/api/latest)
@@ -239,8 +239,8 @@ In addition to this guide, the following are other resources available to AWS CD
   + [Documentation Source](https://github.com/awsdocs/aws-cdk-user-guide/tree/master/doc_source)
   + [License](https://github.com/awslabs/aws-cdk/blob/master/LICENSE)
   + [Releases](https://github.com/awslabs/aws-cdk/releases)
-    + [AWS CDK OpenPGP Key](pgp-keys.md#cdk_pgp_key)
-    + [JSII OpenPGP Key](pgp-keys.md#jsii_pgp_key)
+    + [AWS CDK OpenPGP key](pgp-keys.md#cdk_pgp_key)
+    + [JSII OpenPGP key](pgp-keys.md#jsii_pgp_key)
 + [AWS CDK Sample for Cloud9](https://docs.aws.amazon.com/cloud9/latest/user-guide/sample-cdk.html)
 + [AWS CloudFormation Concepts](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-whatis-concepts.html)
 + [AWS Glossary](https://docs.aws.amazon.com/general/latest/gr/glos-chap.html)

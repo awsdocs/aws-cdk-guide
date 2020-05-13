@@ -19,7 +19,7 @@ If you have an up\-to\-date Windows 10 installation, you already have a suitable
 
 The \.NET Standard toolchain includes `dotnet`, a command\-line tool for building and running \.NET applications and managing NuGet packages\. Even if you are using Visual Studio, this command is useful for batch operations and for installing AWS Construct Library packages\.
 
-## Creating a Project<a name="csharp-newproject"></a>
+## Creating a project<a name="csharp-newproject"></a>
 
 You create a new AWS CDK project by invoking `cdk init` in an empty directory\.
 
@@ -33,7 +33,7 @@ cdk init app --language csharp
 
 The resulting project includes a reference to the `Amazon.CDK` NuGet package\. It and its dependencies are installed automatically by NuGet\.
 
-## Managing AWS Construct Library Modules<a name="csharp-managemodules"></a>
+## Managing AWS construct library modules<a name="csharp-managemodules"></a>
 
 The \.NET ecosystem uses the NuGet package manager\. AWS Construct Library modules are named like `Amazon.CDK.AWS.SERVICE-NAME`\. For example, the NuGet package name for the Amazon S3 module is `Amazon.CDK.AWS.S3`\.
 
@@ -53,11 +53,11 @@ All AWS Construct Library modules deemed "experimental" \(see [Versioning](refer
 
 Look in the **Updates** panel to install new versions of your packages\.
 
-### The NuGet Console<a name="csharp-vs-nuget-console"></a>
+### The NuGet console<a name="csharp-vs-nuget-console"></a>
 
 The NuGet console is a PowerShell\-based interface to NuGet that works in the context of a Visual Studio project\. You can open it in Visual Studio by choosing **Tools** > **NuGet Package Manager** > **Package Manager Console**\. For more information on using this tool, see [Install and Manage Packages with the Package Manager Console in Visual Studio](https://docs.microsoft.com/en-us/nuget/consume-packages/install-use-packages-powershell)\.
 
-### The `dotnet` Command<a name="csharp-vs-dotnet-command"></a>
+### The `dotnet` command<a name="csharp-vs-dotnet-command"></a>
 
 The `dotnet` command is the primary command\-line tool for working with Visual Studio C\# projects\. You can invoke it from any Windows command prompt\. Among its many capabilities, `dotnet` can add NuGet dependencies to a Visual Studio project\.
 
@@ -83,13 +83,13 @@ To update a package, issue the same `dotnet add` command you used to install it\
 
 For more information on managing packages using the `dotnet` command, see [Install and Manage Packages Using the dotnet CLI](https://docs.microsoft.com/en-us/nuget/consume-packages/install-use-packages-dotnet-cli)\.
 
-### The `nuget` Command<a name="csharp-vs-nuget-command"></a>
+### The `nuget` command<a name="csharp-vs-nuget-command"></a>
 
 The `nuget` command line tool can install and update NuGet packages\. However, it requires your Visual Studio project to be set up differently from the way `cdk init` sets up projects\. \(Technical details: `nuget` works with `Packages.config` projects, while `cdk init` creates a newer\-style `PackageReference` project\.\)
 
 We do not recommend the use of the `nuget` tool with AWS CDK projects created by `cdk init`\. If you are using another type of project, and want to use `nuget`, see the [NuGet CLI Reference](https://docs.microsoft.com/en-us/nuget/reference/nuget-exe-cli-reference)\.
 
-## AWS CDK Idioms in C\#<a name="csharp-cdk-idioms"></a>
+## AWS CDK idioms in C\#<a name="csharp-cdk-idioms"></a>
 
 ### Props<a name="csharp-props"></a>
 
@@ -132,7 +132,7 @@ When calling the parent class's initializer or overridden method, you can genera
 
 Keep in mind that future releases of the AWS CDK may coincidentally add a new property with a name you used for your own property\. This won't cause any technical issues using your construct or method \(since your property isn't passed "up the chain," the parent class or overridden method will simply use a default value\) but it may cause confusion for your construct's users\. You can avoid this potential problem by naming your properties so they clearly belong to your construct \(e\.g\. `BobEncryption` rather than just `encryption`, assuming you're Bob\)\. If there are many new properties, bundle them into an appropriately\-named class \(`BobBucketPoperties`?\) and pass them as a single property\.
 
-### Missing Values<a name="csharp-missing-values"></a>
+### Missing values<a name="csharp-missing-values"></a>
 
 In C\#, missing values in AWS CDK objects such as props are represented by `null`\. The null\-conditional member access operator `?.` and the null coalescing operator `??` are convenient for working with these values\.
 
@@ -144,7 +144,7 @@ string mimeType = props?.MimeType;
 string MimeType = props?.MimeType ?? "text/plain";
 ```
 
-## Building, Synthesizing, and Deploying<a name="csharp-running"></a>
+## Building, synthesizing, and deploying<a name="csharp-running"></a>
 
 Before running, build \(compile\) the app by pressing F6 in Visual Studio or by issuing `dotnet build src` from the command line, where `src` is the directory in your project directory that contains the Visual Studio Solution \(`.sln`\) file\.
 

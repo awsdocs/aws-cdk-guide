@@ -1,4 +1,4 @@
-# Set a CloudWatch Alarm<a name="how_to_set_cw_alarm"></a>
+# Set a CloudWatch alarm<a name="how_to_set_cw_alarm"></a>
 
 The **aws\-cloudwatch** package supports setting CloudWatch alarms on CloudWatch metrics\. The syntax is as follows, where *METRIC* is a CloudWatch metric you have created, and the alarm is raised there are more than 100 of the measured metrics in two of the last three seconds:
 

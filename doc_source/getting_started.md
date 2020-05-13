@@ -1,4 +1,4 @@
-# Getting Started With the AWS CDK<a name="getting_started"></a>
+# Getting started with the AWS CDK<a name="getting_started"></a>
 
 This topic describes how to install and configure the AWS CDK and create your first AWS CDK app\.
 
@@ -12,7 +12,7 @@ The [AWS Toolkit for Visual Studio Code](https://aws.amazon.com/visualstudiocode
 
 All CDK developers need to install [Node\.js](https://nodejs.org/en/download) >= 10\.3\.0, even those working in languages other than TypeScript or JavaScript\. The AWS CDK Toolkit \(`cdk` command\-line tool\) and the AWS Construct Library are developed in TypeScript and run on Node\.js\. The bindings for other supported languages use this backend and toolset\.
 
-You must provide your credentials and an AWS Region to use the AWS CDK CLI, as described in [Specifying Your Credentials and Region](#getting_started_credentials)\.
+You must provide your credentials and an AWS Region to use the AWS CDK CLI, as described in [Specifying your credentials and Region](#getting_started_credentials)\.
 
 Other prerequisites depend on your development language, as follows\.
 
@@ -62,7 +62,7 @@ Run the following command to verify correct installation and print the version n
 cdk --version
 ```
 
-## Updating Your Language Dependencies<a name="getting_started_update"></a>
+## Updating your language dependencies<a name="getting_started_update"></a>
 
 If you get an error message that your language framework is out of date, use one of the following commands to update the components that the AWS CDK needs to support the language\.
 
@@ -107,7 +107,7 @@ Or **Tools** > **NuGet Package Manager** > **Manage NuGet Packages for Solution*
 
 ------
 
-## Using the env Property to Specify Account and Region<a name="getting_started_credentials_prop"></a>
+## Using the env property to specify account and Region<a name="getting_started_credentials_prop"></a>
 
 You can use the `env` property on a stack to specify the account and region used when deploying a stack, as shown in the following example, where *REGION* is the region and *ACCOUNT* is the account ID\.
 
@@ -283,14 +283,14 @@ cdk deploy Stack-Two-E
 **Note**  
 If the existing credentials do not have permission to create resources within the account you specify, the AWS CDK returns an AWS CloudFormation error when you attempt to deploy the stack\.
 
-## Specifying Your Credentials and Region<a name="getting_started_credentials"></a>
+## Specifying your credentials and Region<a name="getting_started_credentials"></a>
 
 You must specify your credentials and an AWS Region to use the AWS CDK CLI\. The CDK looks for credentials and region in the following order:
 + Using the \-\-profile option to cdk commands\.
 + Using environment variables\.
 + Using the default profile as set by the AWS Command Line Interface \(AWS CLI\)\.
 
-### Using the \-\-profile Option to Specify Credentials and Region<a name="getting_started_credentials_profile"></a>
+### Using the \-\-profile option to specify credentials and Region<a name="getting_started_credentials_profile"></a>
 
 Use the \-\-profile *PROFILE* option to a cdk command to use a specific profile when executing the command\.
 
@@ -314,7 +314,7 @@ The profile must contain the access key, secret access key, and region\.
 
 See [Named Profiles](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html) in the AWS CLI documentation for details\.
 
-### Using Environment Variables to Specify Credentials and a Region<a name="getting_started_credentials_env_vars"></a>
+### Using environment variables to specify credentials and a Region<a name="getting_started_credentials_env_vars"></a>
 
 Use environment variables to specify your credentials and region\.
 + `AWS_ACCESS_KEY_ID` – Specifies your access key\.
@@ -335,11 +335,11 @@ set AWS_DEFAULT_REGION=us-east-2
 
 See [Environment Variables](https://docs.aws.amazon.com/cli/latest/userguide/cli-environment.html) in the *AWS Command Line Interface User Guide* for details\.
 
-### Using the AWS CLI to Specify Credentials and a Region<a name="getting_started_credentials_config"></a>
+### Using the AWS CLI to specify credentials and a Region<a name="getting_started_credentials_config"></a>
 
 Use the [AWS Command Line Interface](https://docs.aws.amazon.com/cli/latest/userguide) aws configure command to specify your default credentials and a region\.
 
-## Hello World Tutorial<a name="hello_world_tutorial"></a>
+## Hello World tutorial<a name="hello_world_tutorial"></a>
 
 The typical workflow for creating a new app is:
 
@@ -361,7 +361,7 @@ And of course, keep your code under version control\.
 
 This tutorial walks you through how to create and deploy a simple AWS CDK app, from initializing the project to deploying the resulting AWS CloudFormation template\. The app contains one resource, an Amazon S3 bucket\.
 
-### Creating the App Directory<a name="hello_world_tutorial_create_directory"></a>
+### Creating the app directory<a name="hello_world_tutorial_create_directory"></a>
 
 Create a directory for your app with an empty Git repository\.
 
@@ -373,7 +373,7 @@ cd hello-cdk
 **Note**  
  Be sure to use the name `hello-cdk` for your project directory\. The AWS CDK project template uses the directory name to name things in the generated code, so if you use a different name, you'll need to change some of the code in this article\. 
 
-### Initializing the App<a name="tutorial_init_project"></a>
+### Initializing the app<a name="tutorial_init_project"></a>
 
 To initialize your new AWS CDK app, you use the `cdk init` command\.
 
@@ -449,7 +449,7 @@ cdk init --language csharp
 
 ------
 
-### Compiling the App<a name="hello_world_tutorial_compile_project"></a>
+### Compiling the app<a name="hello_world_tutorial_compile_project"></a>
 
 Compile your program, as follows\.
 
@@ -493,7 +493,7 @@ or press F6 in Visual Studio
 
 ------
 
-### Listing the Stacks in the App<a name="hello_world_tutorial_list_stacks"></a>
+### Listing the stacks in the app<a name="hello_world_tutorial_list_stacks"></a>
 
 List the stacks in the app\.
 
@@ -507,7 +507,7 @@ The result is just the name of the stack\.
 HelloCdkStack
 ```
 
-### Adding an Amazon S3 Bucket<a name="hello_world_tutorial_add_bucket"></a>
+### Adding an Amazon S3 bucket<a name="hello_world_tutorial_add_bucket"></a>
 
 At this point, what can you do with this app? Nothing, because the stack is empty, so there's nothing to deploy\. Let's define an Amazon S3 bucket\.
 
@@ -726,7 +726,7 @@ or press F6 in Visual Studio
 
 ------
 
-### Synthesizing an AWS CloudFormation Template<a name="hello_world_tutorial_synth_template"></a>
+### Synthesizing an AWS CloudFormation template<a name="hello_world_tutorial_synth_template"></a>
 
 Synthesize an AWS CloudFormation template for the app, as follows\. If you get an error like "\-\-app is required\.\.\.", it's because you are running the command from a subdirectory of your project directory\. Navigate to the project directory and try again\.
 
@@ -757,9 +757,9 @@ Resources:
 You can see that the stack contains an `AWS::S3::Bucket` resource with the versioning configuration we want\.
 
 **Note**  
-The AWS CDK CLI automatically adds the **AWS::CDK::Metadata** resource to your template\. The AWS CDK uses metadata to gain insight into how the AWS CDK is used\. One possible benefit is that the CDK team could notify users if a construct is going to be deprecated\. For details, including how to [opt out](tools.md#version_reporting_opt_out) of version reporting, see [Version Reporting](tools.md#version_reporting) \.
+The AWS CDK CLI automatically adds the **AWS::CDK::Metadata** resource to your template\. The AWS CDK uses metadata to gain insight into how the AWS CDK is used\. One possible benefit is that the CDK team could notify users if a construct is going to be deprecated\. For details, including how to [opt out](tools.md#version_reporting_opt_out) of version reporting, see [Version reporting](tools.md#version_reporting) \.
 
-### Deploying the Stack<a name="hello_world_tutorial_deploy_stack"></a>
+### Deploying the stack<a name="hello_world_tutorial_deploy_stack"></a>
 
 Deploy the stack, as follows\.
 
@@ -769,7 +769,7 @@ cdk deploy
 
 The deploy command synthesizes an AWS CloudFormation template from the app's stack, and then invokes AWS CloudFormation to deploy it in your AWS account\. If your code would change your infrastructure's security posture, the command displays information about those changes and requires you to confirm them before your stack is deployed\. The command displays information as it completes various steps in the process\.
 
-### Modifying the App<a name="hello_world_tutorial_modify_code"></a>
+### Modifying the app<a name="hello_world_tutorial_modify_code"></a>
 
 Configure the bucket to use AWS Key Management Service \(AWS KMS\) managed encryption\.
 
@@ -880,7 +880,7 @@ or press F6 in Visual Studio
 
 ------
 
-### Preparing for Deployment<a name="hello_world_tutorial_prep_deployment"></a>
+### Preparing for deployment<a name="hello_world_tutorial_prep_deployment"></a>
 
 Before you deploy the updated app, evaluate the difference between the AWS CDK app and the deployed app\.
 
@@ -922,7 +922,7 @@ Stack ARN:
 arn:aws:cloudformation:REGION:ACCOUNT-ID:stack/HelloCdkStack/ID
 ```
 
-### Destroying the App's Resources<a name="hello_world_tutorial_delete_stack"></a>
+### Destroying the app's resources<a name="hello_world_tutorial_delete_stack"></a>
 
 Destroy the app's resources to avoid incurring any costs from the resources created in this tutorial, as follows\.
 

@@ -1,4 +1,4 @@
-# Creating a Code Pipeline Using the AWS CDK<a name="codepipeline_example"></a>
+# Creating a code pipeline using the AWS CDK<a name="codepipeline_example"></a>
 
 This example creates a code pipeline using the AWS CDK\.
 
@@ -98,7 +98,7 @@ For a better experience, also add the `Amazon.Jsii.Analyzers` package to provide
 
 ------
 
-## Lambda Stack<a name="codepipeline_example_lambda"></a>
+## Lambda stack<a name="codepipeline_example_lambda"></a>
 
 The first step is to define the AWS CloudFormation stack that will create the Lambda function\. This is the stack that we'll deploy in our pipeline\.
 
@@ -328,7 +328,7 @@ namespace Pipeline
 
 ------
 
-## Pipeline Stack<a name="codepipeline_example_stack"></a>
+## Pipeline stack<a name="codepipeline_example_stack"></a>
 
 The second class, `PipelineStack`, is the stack that contains our pipeline\.
 
@@ -997,7 +997,7 @@ namespace Pipeline
 
 ------
 
-## Main Program<a name="codepipeline_example_main"></a>
+## Main program<a name="codepipeline_example_main"></a>
 
 Finally, we have our main AWS CDK entry point file, which contains our app\.
 
@@ -1120,7 +1120,7 @@ namespace Pipeline
 
 ------
 
-## Creating the Pipeline<a name="codepipeline_example_create"></a>
+## Creating the pipeline<a name="codepipeline_example_create"></a>
 
 The final steps are building the code and deploying the pipeline\.
 
@@ -1175,7 +1175,7 @@ After the deployment finishes, you should have a three\-stage pipeline that look
 
 Try making a change, such as to your `LambdaStack` AWS CDK code or to your Lambda function code, and push it to the repository\. The pipeline should pick up your change, build it, and deploy it automatically, without any human intervention\.
 
-## Cleaning Up<a name="codepipeline_example_destroy"></a>
+## Cleaning up<a name="codepipeline_example_destroy"></a>
 
 To avoid unexpected AWS charges, destroy your AWS CDK stack after you're done with this exercise\.
 

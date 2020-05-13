@@ -61,7 +61,7 @@ new Queue(this, "MyQueue", new QueueProps
 
 Some configuration props are optional, and in many cases have default values\. In some cases, all props are optional, and the last argument can be omitted entirely\.
 
-## Resource Attributes<a name="resources_attributes"></a>
+## Resource attributes<a name="resources_attributes"></a>
 
 Most resources in the AWS Construct Library expose attributes, which are resolved at deployment time by AWS CloudFormation\. Attributes are exposed in the form of properties on the resource classes with the type name as a prefix\. The following example shows how to get the URL of an Amazon SQS queue using the `queueUrl` \(Python: `queue_url`\) property\.
 
@@ -115,7 +115,7 @@ var url = queue.QueueUrl; // => A string representing a deploy-time value
 
 See [Tokens](tokens.md) for information about how the AWS CDK encodes deploy\-time attributes as strings\.
 
-## Referencing Resources<a name="resources_referencing"></a>
+## Referencing resources<a name="resources_referencing"></a>
 
 Many AWS CDK classes require properties that are AWS CDK resource objects \(resources\)\. To satisfy these requirements, you can refer to a resource in one of two ways:
 + By passing the resource directly
@@ -173,7 +173,7 @@ var service = new Ec2Service(this, "Service", new Ec2ServiceProps { Cluster = cl
 
 ------
 
-## Accessing Resources in a Different Stack<a name="resource_stack"></a>
+## Accessing resources in a different stack<a name="resource_stack"></a>
 
 You can access resources in a different stack, as long as they are in the same account and AWS Region\. The following example defines the stack `stack1`, which defines an Amazon S3 bucket\. Then it defines a second stack, `stack2`, which takes the bucket from `stack1` as a constructor property\.
 
@@ -263,7 +263,7 @@ var stack2 = new StackThatExpectsABucket(app, "Stack2", new StackProps { Env = p
 
 If the AWS CDK determines that the resource is in the same account and Region, but in a different stack, it automatically synthesizes AWS CloudFormation [exports](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-stack-exports.html) in the producing stack and an [Fn::ImportValue](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/intrinsic-function-reference-importvalue.html) in the consuming stack to transfer that information from one stack to the other\.
 
-## Physical Names<a name="resources_physical_names"></a>
+## Physical names<a name="resources_physical_names"></a>
 
 The logical names of resources in AWS CloudFormation are different from the names of resources that are shown in the AWS Management Console after AWS CloudFormation has deployed the resources\. The AWS CDK calls these final names *physical names*\.
 
@@ -361,7 +361,7 @@ var bucket = new Bucket(this, "MyBucket", new BucketProps
 
 ------
 
-## Passing Unique Identifiers<a name="resources_identifiers"></a>
+## Passing unique identifiers<a name="resources_identifiers"></a>
 
 Whenever possible, you should pass resources by reference, as described in the previous section\. However, there are cases where you have no other choice but to refer to a resource by one of its attributes\. For example, when you are using the low\-level AWS CloudFormation resources, or need to expose resources to the runtime components of an AWS CDK application, such as when referring to Lambda functions through environment variables\.
 
@@ -484,7 +484,7 @@ new Function(this, "MyLambda", new FunctionProps
 
 ------
 
-## Importing Existing External Resources<a name="resources_importing"></a>
+## Importing existing external resources<a name="resources_importing"></a>
 
 Sometimes you already have a resource in your AWS account and want to use it in your AWS CDK app, for example, a resource that was defined through the console, the AWS SDK, directly with AWS CloudFormation, or in a different AWS CDK application\. You can turn the resource's ARN \(or another identifying attribute, or group of attributes\) into an AWS CDK object in the current stack by calling a static factory method on the resource's class\. 
 
@@ -669,7 +669,7 @@ Note that `Vpc.fromLookup()` works only in stacks that are defined with an expli
 
 Although you can use an imported resource anywhere, you cannot modify the imported resource\. For example, calling `addToResourcePolicy` \(Python: `add_to_resource_policy`\) on an imported `s3.IBucket` does nothing\.
 
-## Permission Grants<a name="resources_grants"></a>
+## Permission grants<a name="resources_grants"></a>
 
 AWS constructs make least\-privilege permissions easy to achieve by offering simple, intent\-based APIs to express permission requirements\. Many AWS constructs offer grant methods that enable you to easily grant an entity, such as an IAM role or a user, permission to work with the resource without having to manually craft one or more IAM permission statements\.
 
@@ -769,7 +769,7 @@ Many resources, such as Lambda functions, require a role to be assumed when exec
 
 The grant methods are built using lower\-level APIs for handling with IAM policies\. Policies are modeled as [PolicyDocument](https://docs.aws.amazon.com/cdk/api/latest/docs/aws-iam-readme.html) objects\. Add statements directly to roles \(or a construct's attached role\) using the `addToRolePolicy` method \(Python: `add_to_role_policy`\), or to a resource's policy \(such as a `Bucket` policy\) using the `addToResourcePolicy` \(Python: `add_to_resource_policy`\) method\. 
 
-## Metrics and Alarms<a name="resources_metrics"></a>
+## Metrics and alarms<a name="resources_metrics"></a>
 
 Many resources emit CloudWatch metrics that can be used to set up monitoring dashboards and alarms\. AWS constructs have metric methods that allow easy access to the metrics without having to look up the correct name to use\.
 
@@ -894,7 +894,7 @@ If there is no method for a particular metric, you can use the general metric me
 
 Metrics can also be added to CloudWatch dashboards\. See [CloudWatch](https://docs.aws.amazon.com/cdk/api/latest/docs/aws-cloudwatch-readme.html)\.
 
-## Network Traffic<a name="resources_traffic"></a>
+## Network traffic<a name="resources_traffic"></a>
 
 In many cases, you must enable permissions on a network for an application to work, such as when the compute infrastructure needs to access the persistence layer\. Resources that establish or listen for connections expose methods that enable traffic flows, including setting security group rules or network ACLs\.
 
@@ -1108,7 +1108,7 @@ bucket.AddObjectCreatedNotification(new s3_not.LambdaDestination(handler));
 
 ------
 
-## Removal Policies<a name="resources_removal"></a>
+## Removal policies<a name="resources_removal"></a>
 
 Resources that maintain persistent data, such as databases and Amazon S3 buckets, have a *removal policy* that indicates whether to delete persistent objects when the AWS CDK stack that contains them is destroyed\. The values specifying the removal policy are available through the `RemovalPolicy` enumeration in the AWS CDK `core` module\.
 
@@ -1116,7 +1116,7 @@ Resources that maintain persistent data, such as databases and Amazon S3 buckets
 Resources besides those that store data persistently may also have a `removalPolicy` that is used for a different purpose\. For example, a Lambda function version uses a `removalPolicy` attribute to determine whether a given version is retained when a new version is deployed\. These have different meanings and defaults compared to the removal policy on an Amazon S3 bucket or DynamoDB table\.
 
 
-| Value | Meaning | 
+| Value | meaning | 
 | --- |--- |
 | RemovalPolicy\.RETAIN | Keep the contents of the resource when destroying the stack \(default\)\. The resource is orphaned from the stack and must be deleted manually\. If you attempt to re\-deploy the stack while the resource still exists, you will receive an error message due to a name conflict\. | 
 | RemovalPolicy\.DESTROY | The resource will be destroyed along with the stack\. | 

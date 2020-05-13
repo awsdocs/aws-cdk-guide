@@ -1,10 +1,10 @@
-# Runtime Context<a name="context"></a>
+# Runtime context<a name="context"></a>
 
 The AWS CDK uses *context* to retrieve information such as the Availability Zones in your account or Amazon Machine Image \(AMI\) IDs used to start your instances\. Context entries are key\-value pairs\.
 
 To avoid unexpected changes to your deployments when, for example, a new Amazon Linux AMI is released, thus changing your Auto Scaling group, the AWS CDK stores context values in the `cdk.context.json` file within your project\. This ensures that the AWS CDK uses the same context values the next time it synthesizes your app\. Don't forget to put this file under version control\.
 
-## Construct Context<a name="context_construct"></a>
+## Construct context<a name="context_construct"></a>
 
 Context values are made available to your AWS CDK app in five different ways:
 + Automatically from the current AWS account\.
@@ -17,7 +17,7 @@ Context values are scoped to the construct that created them; they are visible t
 
 You can get a context value using the `construct.node.tryGetContext` method\. If the requested entry is not found on the current construct or any of its parents, the result is `undefined` \(or your language's equivalent, such as `None` in Python\)\.
 
-## Context Methods<a name="context_methods"></a>
+## Context methods<a name="context_methods"></a>
 
 The AWS CDK supports several context methods that enable AWS CDK apps to get contextual information\. For example, you can get a list of Availability Zones that are available in a given AWS account and AWS Region, using the [stack\.availabilityZones](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Stack.html#availabilityzones) method\.
 
@@ -42,7 +42,7 @@ If a given context information isn't available, the AWS CDK app notifies the AWS
 
 Don't forget to add the `cdk.context.json` file to your source control repository to ensure that subsequent synth commands will return the same result, and that your AWS account won't be needed when synthesizing from your build system\.
 
-## Viewing and Managing Context<a name="context_viewing"></a>
+## Viewing and managing context<a name="context_viewing"></a>
 
 Use the cdk context command to view and manage the information in your `cdk.context.json` file\. To see this information, use the cdk context command without any options\. The output should be something like the following\.
 

@@ -74,7 +74,7 @@ public class MyFirstStack : Stack
 
 ------
 
-## The App Construct<a name="apps_construct"></a>
+## The app construct<a name="apps_construct"></a>
 
 To define the previous stack within the scope of an application, use the [App](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/core/app.html) construct\. The following example app instantiates a `MyFirstStack` and produces the AWS CloudFormation template that the stack defined\.
 
@@ -217,7 +217,7 @@ class Program
 
 These two methods are equivalent\.
 
-## App Lifecycle<a name="lifecycle"></a>
+## App lifecycle<a name="lifecycle"></a>
 
 The following diagram shows the phases that the AWS CDK goes through when you call the cdk deploy\. This command deploys the resources that your app defines\.
 
@@ -235,7 +235,7 @@ All constructs that have implemented the `prepare` method participate in a final
 All constructs that have implemented the `validate` method can validate themselves to ensure that they're in a state that will correctly deploy\. You will get notified of any validation failures that happen during this phase\. Generally, we recommend that you perform validation as soon as possible \(usually as soon as you get some input\) and throw exceptions as early as possible\. Performing validation early improves diagnosability as stack traces will be more accurate, and ensures that your code can continue to execute safely\.
 
 4\. Synthesis  
-This is the final stage of the execution of your AWS CDK app\. It's triggered by a call to `app.synth()`, and it traverses the construct tree and invokes the `synthesize` method on all constructs\. Constructs that implement `synthesize` can participate in synthesis and emit deployment artifacts to the resulting cloud assembly\. These constructs include AWS CloudFormation templates, AWS Lambda application bundles, file and Docker image assets, and other deployment artifacts\. [Cloud Assemblies](#apps_cloud_assembly) describes the output of this phase\. In most cases, you won't need to implement the `synthesize` method
+This is the final stage of the execution of your AWS CDK app\. It's triggered by a call to `app.synth()`, and it traverses the construct tree and invokes the `synthesize` method on all constructs\. Constructs that implement `synthesize` can participate in synthesis and emit deployment artifacts to the resulting cloud assembly\. These constructs include AWS CloudFormation templates, AWS Lambda application bundles, file and Docker image assets, and other deployment artifacts\. [Cloud assemblies](#apps_cloud_assembly) describes the output of this phase\. In most cases, you won't need to implement the `synthesize` method
 
 5\. Deployment  
 In this phase, the AWS CDK CLI takes the deployment artifacts cloud assembly produced by the synthesis phase and deploys it to an AWS environment\. It uploads assets to Amazon S3 and Amazon ECR, or wherever they need to go, and then starts an AWS CloudFormation deployment to deploy the application and create the resources\.
@@ -244,7 +244,7 @@ By the time the AWS CloudFormation deployment phase \(step 5\) starts, your AWS 
 + The AWS CDK app can't respond to events that happen during deployment, such as a resource being created or the whole deployment finishing\. To run code during the deployment phase, you have to inject it into the AWS CloudFormation template as a [custom resource](cfn_layer.md#cfn_layer_custom)\. For more information about adding a custom resource to your app, see the [AWS CloudFormation module](https://docs.aws.amazon.com/cdk/api/latest/docs/aws-cloudformation-readme.html), or the [custom\-resource](https://github.com/aws-samples/aws-cdk-examples/tree/master/typescript/custom-resource/) example\.
 + The AWS CDK app might have to work with values that can't be known at the time it runs\. For example, if the AWS CDK app defines an Amazon S3 bucket with an automatically generated name, and you retrieve the `bucket.bucketName` \(Python: `bucket_name`\) attribute, that value is not the name of the deployed bucket\. Instead, you get a `Token` value\. To determine whether a particular value is available, call `cdk.isToken(value)` \(Python: `is_token`\)\. See [Tokens](tokens.md) for details\.
 
-## Cloud Assemblies<a name="apps_cloud_assembly"></a>
+## Cloud assemblies<a name="apps_cloud_assembly"></a>
 
 The call to `app.synth()` is what tells the AWS CDK to synthesize a cloud assembly from an app\. Typically you don't interact directly with cloud assemblies\. They are files that include everything needed to deploy your app to a cloud environment\. For example, it includes an AWS CloudFormation template for each stack in your app, and a copy of any file assets or Docker images that you reference in your app\.
 

@@ -16,7 +16,7 @@ npm install -g typescript
 
 Keep TypeScript up to date with a regular `npm update -g typescript`\.
 
-## Creating a Project<a name="typescript-newproject"></a>
+## Creating a project<a name="typescript-newproject"></a>
 
 You create a new AWS CDK project by invoking `cdk init` in an empty directory\.
 
@@ -30,7 +30,7 @@ Creating a project also installs the [https://docs.aws.amazon.com/cdk/api/latest
 
 `cdk init` uses the name of the project folder to name various elements of the project, including classes, subfolders, and files\. 
 
-## Managing AWS Construct Library Modules<a name="typescript-managemodules"></a>
+## Managing AWS construct library modules<a name="typescript-managemodules"></a>
 
 Use the Node Package Manager \(`npm`\), included with Node\.js, to install and update AWS Construct Library modules for use by your apps, as well as other packages you need\. \(You may use `yarn` instead of `npm` if you prefer\.\) `npm` also installs the dependencies for those modules automatically\.
 
@@ -49,7 +49,7 @@ npm update
 **Note**  
 All AWS Construct Library modules used in your project must be the same version\.
 
-## AWS CDK Idioms in TypeScript<a name="typescript-cdk-idioms"></a>
+## AWS CDK idioms in TypeScript<a name="typescript-cdk-idioms"></a>
 
 ### Props<a name="typescript-props"></a>
 
@@ -69,11 +69,11 @@ super(scope, name, {...props, encryptionKeys: undefined});
 
 Alternatively, name your properties so that it is clear that they belong to your construct\. This way, it is unlikely they will collide with properties in future AWS CDK releases\. If there are many of them, use a single appropriately\-named object to hold them\.
 
-### Missing Values<a name="typescript-missing-values"></a>
+### Missing values<a name="typescript-missing-values"></a>
 
 Missing values in an object \(such as props\) have the value `undefined` in TypeScript\. Recent versions of the language include operators that simplify working with these values, making it easier to specify defaults and "short\-circuit" chaining when an undefined value is reached\. For more information on these features, see the [TypeScript 3\.7 Release Notes](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-7.html), specifically the first two features, Optional Chaining and Nullish Coalescing\.
 
-## Building, Synthesizing, and Deploying<a name="typescript-running"></a>
+## Building, synthesizing, and deploying<a name="typescript-running"></a>
 
 Generally, you should be in the project's root directory when building and running your application\.
 

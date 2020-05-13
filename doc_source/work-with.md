@@ -4,7 +4,7 @@ The AWS Cloud Development Kit \(AWS CDK\) lets you define your AWS cloud infrast
 
 We develop the AWS CDK in TypeScript and use [JSII](https://github.com/aws/jsii) to provide a "native" experience in other supported languages\. For example, we distribute AWS Construct Library modules using your preferred language's standard repository, and you install them using the language's standard package manager\. Methods and properties are even named using your language's recommended naming patterns\.<a name="work-with-prerequisites"></a>
 
-**AWS CDK Prerequisites**  
+**AWS CDK prerequisites**  
 To use the AWS CDK, you need an AWS account and a corresponding access key\. If you don't have an AWS account yet, see [Create and Activate an AWS Account](https://aws.amazon.com/premiumsupport/knowledge-center/create-and-activate-aws-account/)\. To find out how to obtain an access key ID and secret access key for your AWS account, see [Understanding and Getting Your Security Credentials](https://docs.aws.amazon.com/general/latest/gr/aws-sec-cred-types.html)\. To find out how to configure your workstation so the AWS CDK uses your credentials, see [Setting Credentials in Node\.js](https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/setting-credentials-node.html)\.
 
 **Tip**  

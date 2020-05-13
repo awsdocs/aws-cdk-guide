@@ -359,7 +359,7 @@ The [Stack](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/core/stack
 + `stack.toJsonString(obj)` \(Python: `to_json_string`\) – Can be used to format an arbitrary object as a JSON string that can be embedded in an AWS CloudFormation template\. The object can include tokens, attributes, and references, which are only resolved during deployment\.
 + `stack.templateOptions` \(Python: `template_options`\) – Enables you to specify AWS CloudFormation template options, such as Transform, Description, and Metadata, for your stack\.
 
-## Nested Stacks<a name="stack_nesting"></a>
+## Nested stacks<a name="stack_nesting"></a>
 
 The [NestedStack](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-cloudformation.NestedStack.html) construct offers a way around the AWS CloudFormation 200\-resource limit for stacks\. A nested stack counts as only one resource in the stack that contains it, but can itself contain up to 200 resources, including additional nested stacks\.
 
