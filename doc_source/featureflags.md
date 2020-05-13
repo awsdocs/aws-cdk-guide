@@ -17,4 +17,4 @@ Feature flags are disabled by default, so existing projects that do not specify 
 
 See the `CHANGELOG` in a given release for a description of any new feature flags added in that release\. The AWS CDK source file [https://github.com/aws/aws-cdk/blob/master/packages/@aws-cdk/cx-api/lib/features.ts](https://github.com/aws/aws-cdk/blob/master/packages/@aws-cdk/cx-api/lib/features.ts) provides a complete list of all current feature flags\.
 
-As feature flags are stored in `cdk.json`, they are not removed by the cdk context \-\-reset or cdk context \-\-reset commands\.
+As feature flags are stored in `cdk.json`, they are not removed by the cdk context \-\-reset or cdk context \-\-clear commands\.
