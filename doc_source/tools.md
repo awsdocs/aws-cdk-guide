@@ -207,34 +207,38 @@ Deploys the stack(s) named STACKS into your AWS account
 
 Options:
 
-  --build-exclude, -E   Do not rebuild asset with the given ID. Can be specified
-                        multiple times.                    [array] [default: []]
+  --build-exclude, -E    Do not rebuild asset with the given ID. Can be
+                         specified multiple times.         [array] [default: []]
 
-  --exclusively, -e     Only deploy requested stacks, don't include dependencies
-                                                                       [boolean]
+  --exclusively, -e      Only deploy requested stacks, don't include
+                         dependencies                                  [boolean]
 
-  --require-approval    What security-sensitive changes need manual approval
+  --require-approval     What security-sensitive changes need manual approval
                          [string] [choices: "never", "any-change", "broadening"]
 
-  --ci                  Force CI detection (deprecated)
+  --ci                   Force CI detection (deprecated)
                                                       [boolean] [default: false]
 
-  --notification-arns   ARNs of SNS topics that CloudFormation will notify with
-                        stack related events                             [array]
+  --notification-arns    ARNs of SNS topics that CloudFormation will notify with
+                         stack related events                            [array]
 
-  --tags, -t            Tags to add to the stack (KEY=VALUE)             [array]
+  --tags, -t             Tags to add to the stack (KEY=VALUE)            [array]
 
-  --execute             Whether to execute ChangeSet (--no-execute will NOT
-                        execute the ChangeSet)         [boolean] [default: true]
+  --execute              Whether to execute ChangeSet (--no-execute will NOT
+                         execute the ChangeSet)        [boolean] [default: true]
 
-  --force, -f           Always deploy stack even if templates are identical
+  --force, -f            Always deploy stack even if templates are identical
                                                       [boolean] [default: false]
 
-  --parameters          Additional parameters passed to CloudFormation at deploy
-                        time (STACK:KEY=VALUE)             [array] [default: {}]
+  --parameters           Additional parameters passed to CloudFormation at
+                         deploy time (STACK:KEY=VALUE)     [array] [default: {}]
 
-  --outputs-file, -O    Path to file where stack outputs will be written as JSON
-                                                                        [string]
+  --outputs-file, -O     Path to file where stack outputs will be written as
+                         JSON                                           [string]
+
+  --previous-parameters  Use previous values for existing parameters (you must
+                         specify all parameters on every deployment if this is
+                         disabled)                     [boolean] [default: true]
 ```
 
 If your app has a single stack, you don't have to specify the stack name\.

@@ -7,7 +7,7 @@ Context values are key\-value pairs that can be associated with a stack or const
 Context values are made available to your AWS CDK app in six different ways:
 + Automatically from the current AWS account\.
 + Through the \-\-context option to the cdk command\.
-+ In the `context` key of the project's `cdk.context.json` file\.
++ In the project's `cdk.context.json` file\.
 + In the `context` key of the project's `cdk.json` file\.
 + In the `context` key of your `~/cdk.json` file\.
 + In your AWS CDK app using the `construct.node.setContext` method\.
@@ -87,7 +87,7 @@ To clear all of the stored context values for your app, run cdk context \-\-clea
 $ cdk context --clear
 ```
 
-Only context values stored in `cdk.context.json` can be reset or cleared\. The AWS CDK does not touch other context files\. To protect a context value from being reset by the AWS CDK using these commands, then, you might copy the value to `cdk.json`\.
+Only context values stored in `cdk.context.json` can be reset or cleared\. The AWS CDK does not touch other context files\. To protect a context value from being reset using these commands, then, you might copy the value to `cdk.json`\.
 
 ## Example<a name="context_example"></a>
 
