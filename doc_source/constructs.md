@@ -125,12 +125,27 @@ public class HelloCdkStack extends Stack {
 using Amazon.CDK;
 using Amazon.CDK.AWS.S3;
 
-public HelloCdkStack(Construct scope, string id, IStackProps props) : base(scope, id, props)
+namespace HelloCdkApp
 {
-    new Bucket(this, "MyFirstBucket", new BucketProps {
-        Versioned = true
-    });
+    internal static class Program
+    {
+        public static void Main(string[] args)
+        {
+            var app = new App();
+            new HelloCdkStack(app, "HelloCdkStack");
+            app.Synth();
+        }
+    }
+    
+    public class HelloCdkStack : Stack
+    {
+        public HelloCdkStack(Construct scope, string id, IStackProps props= null) : base(scope, id, props)
+        {
+            new Bucket(this, "MyFirstBucket", new BucketProps { Versioned = true });
+        }
+    }
 }
+
 ```
 
 ------
@@ -200,7 +215,7 @@ public class HelloCdkStack extends Stack {
 ```
 public class HelloCdkStack : Stack
 {
-    public HelloCdkStack(App scope, string id, StackProps props) : base(scope, id, props)
+    public HelloCdkStack(Construct scope, string id, IStackProps props=null) : base(scope, id, props)
     {
         //...
     }
