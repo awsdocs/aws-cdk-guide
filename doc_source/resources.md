@@ -1041,9 +1041,9 @@ fleet.Connections.AllowToDefaultPort(rdsDatabase, "Fleet can access database");
 
 ------
 
-## Amazon CloudWatch Events<a name="resources_cloudwatch"></a>
+## Event handling<a name="resources_events"></a>
 
-Some resources can act as event sources\. Use the `addEventNotification` method \(Python: `add_event_notification`\) to register an event target to a particular event type emitted by the resource\. In addition to this, `addXxxNotification` methods offer a simplified way to register a handler for a common event type\. 
+Some resources can act as event sources\. Use the `addEventNotification` method \(Python: `add_event_notification`\) to register an event target to a particular event type emitted by the resource\. In addition to this, `addXxxNotification` methods offer a simple way to register a handler for common event types\. 
 
 The following example shows how to trigger a Lambda function when an object is added to an Amazon S3 bucket\.
 
