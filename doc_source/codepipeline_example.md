@@ -1180,5 +1180,5 @@ Try making a change, such as to your `LambdaStack` AWS CDK code or to your Lambd
 To avoid unexpected AWS charges, destroy your AWS CDK stack after you're done with this exercise\.
 
 ```
-cdk destroy *
+cdk destroy '*'
 ```
