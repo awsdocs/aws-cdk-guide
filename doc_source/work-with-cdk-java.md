@@ -103,6 +103,10 @@ Bucket bucket = Bucket.Builder.create(this, "MyBucket")
 
 When deriving your own construct from an existing construct, you may want to accept additional properties\. We recommend that you follow these builder patterns\. However, this isn't as simple as subclassing a construct class\. You must provide the moving parts of the two new `Builder` classes yourself\. Given this fact, you may prefer to simply have your construct accept additional arguments\. In this case, provide additional constructors when an argument is optional\.
 
+### Generic structures<a name="java-generic-structures"></a>
+
+In some places, the AWS CDK uses JavaScript arrays or untyped objects or as input to a method\. \(See, for example, AWS CodeBuild's [https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-codebuild.BuildSpec.html#to-wbr-build-wbr-spec](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-codebuild.BuildSpec.html#to-wbr-build-wbr-spec) method\.\) In Java, objects are represented as `java.util.HashMap<String, Object>`\. In cases where the values are all strings, you can use `HashMap<String, String>`\. JavaScript arrays are represented as `Object[]` or `String[]` in Java\.
+
 ### Missing values<a name="java-missing-values"></a>
 
 In Java, missing values in AWS CDK objects such as props are represented by `null`\. You must explicitly test any value that could be `null` to make sure it contains a value before doing anything with it\. Java does not have "syntactic sugar" to help handle null values as some other languages do\. You may find Apache ObjectUtil's [defaultIfNull](https://commons.apache.org/proper/commons-lang/apidocs/org/apache/commons/lang3/ObjectUtils.html#defaultIfNull-T-T-) and [firstNonNull](https://commons.apache.org/proper/commons-lang/apidocs/org/apache/commons/lang3/ObjectUtils.html#firstNonNull-T...-) useful in some situations\. Alternatively, write your own static helper methods to make it easier to handle potentially null values and make your code more readable\.

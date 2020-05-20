@@ -132,6 +132,10 @@ When calling the parent class's initializer or overridden method, you can genera
 
 Keep in mind that future releases of the AWS CDK may coincidentally add a new property with a name you used for your own property\. This won't cause any technical issues using your construct or method \(since your property isn't passed "up the chain," the parent class or overridden method will simply use a default value\) but it may cause confusion for your construct's users\. You can avoid this potential problem by naming your properties so they clearly belong to your construct \(e\.g\. `BobEncryption` rather than just `encryption`, assuming you're Bob\)\. If there are many new properties, bundle them into an appropriately\-named class \(`BobBucketPoperties`?\) and pass them as a single property\.
 
+### Generic structures<a name="csharp-generic-structures"></a>
+
+In some places, the AWS CDK uses JavaScript arrays or untyped objects or as input to a method\. \(See, for example, AWS CodeBuild's [https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-codebuild.BuildSpec.html#to-wbr-build-wbr-spec](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-codebuild.BuildSpec.html#to-wbr-build-wbr-spec) method\.\) In C\#, objects are represented as `System.Collections.Generic.Dictionary<String, Object>`\. In cases where the values are all strings, you can use `Dictionary<String, String>`\. JavaScript arrays are represented as `object[]` or `string[]` in C\#\.
+
 ### Missing values<a name="csharp-missing-values"></a>
 
 In C\#, missing values in AWS CDK objects such as props are represented by `null`\. The null\-conditional member access operator `?.` and the null coalescing operator `??` are convenient for working with these values\.
