@@ -6,6 +6,9 @@ The AWS CDK enables you to easily create applications running in the AWS Cloud\.
 
 The following example shows how to deploy an AWS Lambda function in a pipeline\. In this example, your AWS CDK code and your Lambda code are in the same project\. The Lambda code is in the `Lambda` directory\.
 
+**Note**  
+The Lambda function itself is assumed to be written in TypeScript regardless of the language you're using for your AWS CDK app\.
+
 To set up a project like this from scratch, follow these instructions\.
 
 ------
@@ -53,6 +56,7 @@ pip install aws_cdk.aws_codecommit aws_cdk.aws_codepipeline_actions aws_cdk.aws_
 mkdir pipeline
 cd pipeline
 cdk init --language java
+mkdir Lambda
 ```
 
 You can import the resulting Maven project into your Java IDE\.
@@ -76,6 +80,7 @@ s3
 mkdir pipeline
 cd pipeline
 cdk init --language csharp
+mkdir Lambda
 ```
 
 You can open the file `src/Pipeline.sln` in Visual Studio\.
@@ -84,17 +89,13 @@ Choose **Tools** > **NuGet Package Manager** > **Manage NuGet Packages for Solut
 
 ```
 Amazon.CDK.AWS.CodeDeploy
-Amazon.CDK.AWS.Lambda
 Amazon.CDK.AWS.CodeBuild
 Amazon.CDK.AWS.CodeCommit
 Amazon.CDK.AWS.CodePipeline
 Amazon.CDK.AWS.CodePipeline.Actions
+Amazon.CDK.AWS.Lambda
 Amazon.CDK.AWS.S3
 ```
-
-**Tip**  
-If you don't see these packages in the **Browse** tab of the **Manage Packages for Solution** page, make sure the **Include prerelease** checkbox is ticked\.  
-For a better experience, also add the `Amazon.Jsii.Analyzers` package to provide compile\-time checks for missing required properties\.
 
 ------
 
@@ -108,7 +109,7 @@ This class includes the `lambdaCode` \(Python: `lambda_code`\) property, which i
 
 The example also uses the CodeDeploy support for blue\-green deployments to Lambda, and the deployment increases the traffic to the new version in 10\-percent increments every minute\. As blue\-green deployment can only operate on aliases, not on the function directly, we create an alias for our function, named `Prod`\.
 
-The alias uses a Lambda version, which is named after the date when the code executed\. This ensures that every invocation of the AWS CDK code publishes a new version of the function\.
+The alias uses a Lambda version obtained using the function's `currentVersion` property\. This ensures that every invocation of the AWS CDK code publishes a new version of the function\.
 
 If the Lambda function needs any other resources when executing, such as an Amazon S3 bucket, Amazon DynamoDB table, or Amazon API Gateway, declare those resources here\.
 
@@ -136,7 +137,7 @@ export class LambdaStack extends Stack {
       runtime: lambda.Runtime.NODEJS_10_X,
     });
       
-    const version = func.addVersion(new Date().toISOString());
+    const version = func.latestVersion;
     const alias = new lambda.Alias(this, 'LambdaAlias', {
       aliasName: 'Prod',
       version,
@@ -173,7 +174,7 @@ class LambdaStack extends Stack {
       runtime: lambda.Runtime.NODEJS_10_X
     });
       
-    const version = func.addVersion(new Date().toISOString());
+    const version = func.latestVersion;
     const alias = new lambda.Alias(this, 'LambdaAlias', {
       aliasName: 'Prod',
       version
@@ -197,8 +198,6 @@ File: `pipeline/lambda_stack.py`
 ```
 from aws_cdk import core, aws_codedeploy as codedeploy, aws_lambda as lambda_
 
-from datetime import datetime
-      
 class LambdaStack(core.Stack):
   def __init__(self, app: core.App, id: str, **kwargs):
     super().__init__(app, id, **kwargs)
@@ -211,7 +210,7 @@ class LambdaStack(core.Stack):
                             runtime=lambda_.Runtime.NODEJS_10_X,
     )
       
-    version = func.add_version(datetime.now().isoformat())
+    version = func.latest_version
     alias = lambda_.Alias(self, "LambdaAlias",
                           alias_name="Prod", version=version)
       
@@ -225,12 +224,10 @@ class LambdaStack(core.Stack):
 ------
 #### [ Java ]
 
-File: src/main/java/com/myorg/LambdaStack\.java
+File: `src/main/java/com/myorg/LambdaStack.java`
 
 ```
 package com.myorg;
-
-import java.time.Instant;
 
 import software.amazon.awscdk.core.App;
 import software.amazon.awscdk.core.Stack;
@@ -269,7 +266,7 @@ public class LambdaStack extends Stack {
                 .handler("index.handler")
                 .runtime(Runtime.NODEJS_10_X).build();
         
-        Version version = func.addVersion(Instant.now().toString());
+        Version version = func.getCurrentVersion();
         Alias alias = Alias.Builder.create(this, "LambdaAlias")
                 .aliasName("LambdaAlias")
                 .version(version).build();
@@ -284,7 +281,7 @@ public class LambdaStack extends Stack {
 ------
 #### [ C\# ]
 
-File: `src/pipeline/LambdaStack.cs`
+File: `src/Pipeline/LambdaStack.cs`
 
 ```
 using System;
@@ -298,7 +295,7 @@ namespace Pipeline
     {
         public readonly CfnParametersCode lambdaCode;
 
-        public LambdaStack(App app, string id, StackProps props=null) : base(app, id, props)
+        public LambdaStack(App app, string id, StackProps props = null) : base(app, id, props)
         {
             lambdaCode = Code.FromCfnParameters();
 
@@ -309,7 +306,7 @@ namespace Pipeline
                 Runtime = Runtime.NODEJS_10_X
             });
 
-            var version = func.AddVersion(DateTime.UtcNow.ToString("s"));
+            var version = func.LatestVersion;
             var alias = new Alias(this, "LambdaAlias", new AliasProps
             {
                 AliasName = "Prod",
@@ -703,7 +700,7 @@ class PipelineStack(core.Stack):
 ------
 #### [ Java ]
 
-File: src/main/java/com/myorg/PipelineStack\.java
+File: `src/main/java/com/myorg/PipelineStack.java`
 
 ```
 package com.myorg;
@@ -722,6 +719,7 @@ import software.amazon.awscdk.services.codebuild.LinuxBuildImage;
 import software.amazon.awscdk.services.codebuild.PipelineProject;
 
 import software.amazon.awscdk.services.codecommit.Repository;
+import software.amazon.awscdk.services.codecommit.IRepository;
 
 import software.amazon.awscdk.services.codepipeline.Artifact;
 import software.amazon.awscdk.services.codepipeline.StageProps;
@@ -810,8 +808,8 @@ public class PipelineStack extends Stack {
                                 .project(lambdaBuild)
                                 .input(sourceOutput)
                                 .outputs(Arrays.asList(lambdaBuildOutput)).build(),
-                            CodeBuildAction.Buildercreate()
-                                .actionName("Lambda_Build")
+                            CodeBuildAction.Builder.create()
+                                .actionName("CDK_Build")
                                 .project(cdkBuild)
                                 .input(sourceOutput)
                                 .outputs(Arrays.asList(cdkBuildOutput))
@@ -826,7 +824,8 @@ public class PipelineStack extends Stack {
                                          .adminPermissions(true)
                                          .parameterOverrides(lambdaCode.assign(lambdaBuildOutput.getS3Location()))
                                          .extraInputs(Arrays.asList(lambdaBuildOutput))
-                                         .build())
+                                         .stackName("LambdaDeploymentStack")
+                                         .build()))
                         .build()))
                 .build();
     }
@@ -836,7 +835,7 @@ public class PipelineStack extends Stack {
 ------
 #### [ C\# ]
 
-File: src/pipeline/PipelineStack\.cs
+File: `src/Pipeline/PipelineStack.cs`
 
 ```
 using Amazon.CDK;
@@ -856,9 +855,9 @@ namespace Pipeline
 
     public class PipelineStack : Stack
     {
-        public PipelineStack(App app, string id, PipelineStackProps props=null)
+        public PipelineStack(App app, string id, PipelineStackProps props = null)
         {
-            var code = Repository.FromRepositoryName(this, "ImportedRepo", 
+            var code = Repository.FromRepositoryName(this, "ImportedRepo",
                 "NameOfYourCodeCommitRepository");
 
             var cdkBuild = new PipelineProject(this, "CDKBuild", new PipelineProjectProps
@@ -868,23 +867,23 @@ namespace Pipeline
                     ["version"] = "0.2",
                     ["phases"] = new Dictionary<string, object>
                     {
-                        ["install"] = new Dictionary<string, string>
+                        ["install"] = new Dictionary<string, object>
                         {
                             ["commands"] = "npm install"
                         },
                         ["build"] = new Dictionary<string, object>
                         {
-                            ["commands"] = new List<string> {
+                            ["commands"] = new string[] {
                                 "npm run build",
                                 "npm run cdk synth -- o dist"
                             }
                         }
                     },
-                    ["artifacts"] = new Dictionary<string, string>
+                    ["artifacts"] = new Dictionary<string, object>
                     {
                         ["base-directory"] = "dist"
                     },
-                    ["files"] = new List<string>
+                    ["files"] = new string[]
                     {
                         "LambdaStack.template.json"
                     }
@@ -904,7 +903,7 @@ namespace Pipeline
                     {
                         ["install"] = new Dictionary<string, object>
                         {
-                            ["commands"] = new List<string>
+                            ["commands"] = new string[]
                             {
                                 "cd lambda",
                                 "npm install"
@@ -918,7 +917,7 @@ namespace Pipeline
                     ["artifacts"] = new Dictionary<string, object>
                     {
                         ["base-directory"] = "lambda",
-                        ["files"] = new List<string>
+                        ["files"] = new string[]
                         {
                             "index.js",
                             "node_modules/**/*"
@@ -937,7 +936,7 @@ namespace Pipeline
 
             new Amazon.CDK.AWS.CodePipeline.Pipeline(this, "Pipeline", new PipelineProps
             {
-                Stages = new []
+                Stages = new[]
                 {
                     new StageProps
                     {
@@ -1073,7 +1072,7 @@ app.synth()
 ------
 #### [ Java ]
 
-File: src/main/java/com/myorg/PipelineApp\.java
+File: `src/main/java/com/myorg/PipelineApp.java`
 
 ```
 package com.myorg;
@@ -1095,6 +1094,8 @@ public class PipelineApp {
 ------
 #### [ C\# ]
 
+File: `src/Pipeline/Program.cs`
+
 ```
 using Amazon.CDK;
 
@@ -1111,7 +1112,7 @@ namespace Pipeline
             {
                 LambdaCode = lambdaStack.lambdaCode
             });
-            
+
             app.Synth();
         }
     }
