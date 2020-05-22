@@ -186,6 +186,9 @@ Options:
   --bootstrap-kms-key-id                    AWS KMS master key ID used for the
                                             SSE-KMS encryption          [string]
 
+  --qualifier                               Unique string to distinguish
+                                            multiple bootstrap stacks   [string]
+
   --tags, -t                                Tags to add for the stack
                                             (KEY=VALUE)    [array] [default: []]
 
