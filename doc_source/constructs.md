@@ -139,13 +139,12 @@ namespace HelloCdkApp
     
     public class HelloCdkStack : Stack
     {
-        public HelloCdkStack(Construct scope, string id, IStackProps props= null) : base(scope, id, props)
+        public HelloCdkStack(Construct scope, string id, IStackProps props=null) : base(scope, id, props)
         {
             new Bucket(this, "MyFirstBucket", new BucketProps { Versioned = true });
         }
     }
 }
-
 ```
 
 ------

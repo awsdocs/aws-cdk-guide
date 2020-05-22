@@ -103,10 +103,10 @@ The following code fragment shows how to access the account and region passed fr
 ------
 #### [ TypeScript ]
 
-Access environment variables via the `process` object\. 
+Access environment variables via Node's `process` object\.
 
 **Note**  
-TypeScript users must install the DefinitelyTyped NodeJS module with NPM to be able to use `process`\. `cdk init` now installs this module for you, but if you are working with a project created before it was added, or didn't set up your project using `cdk init`, install it manually\.  
+ You need the DefinitelyTyped module to use `process` in TypeScript\. `cdk init` installs this module for you, but if you are working with a project created before it was added, or didn't set up your project using `cdk init`, install it manually\.  
 
 ```
 npm install @types/node
@@ -123,14 +123,7 @@ new MyDevStack(app, 'dev', {
 ------
 #### [ JavaScript ]
 
-Access environment variables via the `process` object\. 
-
-**Note**  
-TypeScript users must install the DefinitelyTyped NodeJS module with NPM to be able to use `process`\. `cdk init` now installs this module for you, but if you are working with a project created before it was added, or didn't set up your project using `cdk init`, install it manually\.  
-
-```
-npm install @types/node
-```
+Access environment variables via Node's `process` object\. 
 
 ```
 new MyDevStack(app, 'dev', { 
@@ -143,7 +136,7 @@ new MyDevStack(app, 'dev', {
 ------
 #### [ Python ]
 
-Use the `os` module's `environ` dictonary to access environment variables\.
+Use the `os` module's `environ` dictionary to access environment variables\.
 
 ```
 import os
