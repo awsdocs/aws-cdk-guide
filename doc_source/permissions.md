@@ -30,7 +30,95 @@ The first argument of a **grant** method is always of type [IGrantable](https://
 
 Other entities can also be granted permissions\. For example, later in this topic, we show how to grant a CodeBuild project access to an Amazon S3 bucket\. Generally, the associated role is obtained via a `role` property on the entity being granted access\. Other entities that can be granted permissions are Amazon EC2 instances and CodeBuild projects\.
 
-Resources that use execution roles, such as `[lambda\.Function](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-lambda.Function.html)`, also implement `IGrantable`, so you can grant them access directly \(`bucket.grantRead(lambda)`, or `grant_read` in Python\) instead of granting access to their role\.
+Resources that use execution roles, such as `[lambda\.Function](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-lambda.Function.html)`, also implement `IGrantable`, so you can grant them access directly \(`bucket.grantRead(lambda)`, or `grant_read` in Python\) instead of granting access to their role\. For example, if `bucket` is an Amazon S3 bucket, and `function` is a Lambda function, the code below grants the function read access to the bucket\.
+
+------
+#### [ TypeScript ]
+
+```
+bucket.grantRead(function);
+```
+
+------
+#### [ JavaScript ]
+
+```
+bucket.grantRead(function);
+```
+
+------
+#### [ Python ]
+
+```
+bucket.grant_read(function)
+```
+
+------
+#### [ Java ]
+
+```
+bucket.grantRead(function);
+```
+
+------
+#### [ C\# ]
+
+```
+bucket.GrantRead(function);
+```
+
+------
+
+ Sometimes permissions must be applied while your stack is being deployed\. One such case is when you grant a AWS CloudFormation custom resource access to some other resource\. The custom resource will be invoked during deployment, so it must have the specified permissions at deployment time\. Another case is when a service verifies that the role you pass to it has the right policies applied \(a number of AWS services do this to make sure you didn't forget to set the policies\)\. In those cases, the deployment may fail if the permissions are applied too late\. 
+
+ To force the grant's permissions to be applied before another resource is created, you can add a dependency on the grant itself, as shown here\. Though the return value of grant methods is commonly discarded, every grant method in fact returns an `iam.Grant` object\.
+
+------
+#### [ TypeScript ]
+
+```
+const grant = bucket.grantRead(lambda);
+const custom = new CustomResource(...);
+custom.node.addDependency(grant);
+```
+
+------
+#### [ JavaScript ]
+
+```
+const grant = bucket.grantRead(lambda);
+const custom = new CustomResource(...);
+custom.node.addDependency(grant);
+```
+
+------
+#### [ Python ]
+
+```
+grant = bucket.grant_read(function)
+custom = CustomResource(...)
+custom.node.add_dependency(grant)
+```
+
+------
+#### [ Java ]
+
+```
+Grant grant = bucket.grantRead(function);
+CustomResource custom = new CustomResource(...);
+custom.node.addDependency(grant);
+```
+
+------
+#### [ C\# ]
+
+```
+var grant = bucket.GrantRead(function);
+var custom = new CustomResource(...);
+custom.node.AddDependency(grant);
+```
+
+------
 
 ## Roles<a name="permissions_roles"></a>
 
