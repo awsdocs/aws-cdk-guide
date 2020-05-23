@@ -1077,7 +1077,7 @@ import aws_cdk.aws_s3_notifications as s3_nots
 
 handler = lambda_.Function(self, "Handler", ...)
 bucket = s3.Bucket(self, "Bucket")
-bucket.add_object_created_notification(s3_not.LambdaDestination(handler))
+bucket.add_object_created_notification(s3_nots.LambdaDestination(handler))
 ```
 
 ------
@@ -1099,11 +1099,11 @@ bucket.addObjectCreatedNotification(new LambdaDestination(handler));
 ```
 using lambda = Amazon.CDK.AWS.Lambda;
 using s3 = Amazon.CDK.AWS.S3;
-using s3_not = Amazon.CDK.AWS.S3.Notifications;
+using s3Nots = Amazon.CDK.AWS.S3.Notifications;
 
 var handler = new lambda.Function(this, "Handler", new lambda.FunctionProps { .. });
 var bucket = new s3.Bucket(this, "Bucket");
-bucket.AddObjectCreatedNotification(new s3_not.LambdaDestination(handler));
+bucket.AddObjectCreatedNotification(new s3Nots.LambdaDestination(handler));
 ```
 
 ------
