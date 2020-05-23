@@ -4,10 +4,10 @@ This example creates a code pipeline using the AWS CDK\.
 
 The AWS CDK enables you to easily create applications running in the AWS Cloud\. But creating the application is just the start of the journey\. You also want to make changes to it, test those changes, and finally deploy them to your stack\. The AWS CDK enables this workflow by using the **Code\*** suite of AWS tools: AWS CodeCommit, AWS CodeBuild, AWS CodeDeploy, and AWS CodePipeline\. Together, they allow you to build what's called a [deployment pipeline](https://aws.amazon.com/getting-started/tutorials/continuous-deployment-pipeline/) for your application\.
 
-The following example shows how to deploy an AWS Lambda function in a pipeline\. In this example, your AWS CDK code and your Lambda code are in the same project\. The Lambda code is in the `Lambda` directory\.
+The following example shows how to deploy an AWS Lambda function in a pipeline\. Two stacks are created: one to deploy your Lambda code, and one to define a pipeline to deploy the first stack whenever your Lambda code changes\. Your Lambda code is intended to be in a AWS CodeCommit repository, although you can work through this example without any Lambda code \(the pipeline will fail, but the stack that defines it will deploy\)\.
 
 **Note**  
-The Lambda function itself is assumed to be written in TypeScript regardless of the language you're using for your AWS CDK app\.
+The Lambda function itself is assumed to be written in TypeScript regardless of the language you're using for your AWS CDK app\. To use this example to deploy a Lambda function written in a different language, you'll need to modify the pipeline\.
 
 To set up a project like this from scratch, follow these instructions\.
 
@@ -18,7 +18,6 @@ To set up a project like this from scratch, follow these instructions\.
 mkdir pipeline
 cd pipeline
 cdk init --language typescript
-mkdir Lambda
 npm install @aws-cdk/aws-codedeploy @aws-cdk/aws-lambda @aws-cdk/aws-codebuild @aws-cdk/aws-codepipeline
 npm install @aws-cdk/aws-codecommit @aws-cdk/aws-codepipeline-actions @aws-cdk/aws-s3
 ```
@@ -30,7 +29,6 @@ npm install @aws-cdk/aws-codecommit @aws-cdk/aws-codepipeline-actions @aws-cdk/a
 mkdir pipeline
 cd pipeline
 cdk init ‐-language javascript
-mkdir Lambda
 npm install @aws-cdk/aws-codedeploy @aws-cdk/aws-lambda @aws-cdk/aws-codebuild @aws-cdk/aws-codepipeline
 npm install @aws-cdk/aws-codecommit @aws-cdk/aws-codepipeline-actions @aws-cdk/aws-s3
 ```
@@ -44,7 +42,6 @@ cd pipeline
 cdk init --language python
 source .env/bin/activate
 pip install -r requirements.txt
-mkdir Lambda
 pip install aws_cdk.aws_codedeploy aws_cdk.aws_lambda aws_cdk.aws_codebuild aws_cdk.aws_codepipeline
 pip install aws_cdk.aws_codecommit aws_cdk.aws_codepipeline_actions aws_cdk.aws_s3
 ```
@@ -56,7 +53,6 @@ pip install aws_cdk.aws_codecommit aws_cdk.aws_codepipeline_actions aws_cdk.aws_
 mkdir pipeline
 cd pipeline
 cdk init --language java
-mkdir Lambda
 ```
 
 You can import the resulting Maven project into your Java IDE\.
@@ -80,7 +76,6 @@ s3
 mkdir pipeline
 cd pipeline
 cdk init --language csharp
-mkdir Lambda
 ```
 
 You can open the file `src/Pipeline.sln` in Visual Studio\.
@@ -1121,7 +1116,7 @@ namespace Pipeline
 
 ------
 
-## Creating the pipeline<a name="codepipeline_example_create"></a>
+## Deploying the pipeline<a name="codepipeline_example_create"></a>
 
 The final steps are building the code and deploying the pipeline\.
 
@@ -1170,15 +1165,18 @@ cdk deploy PipelineDeployingLambdaStack
 
 The name, **PipelineDeployingLambdaStack**, is the name we used when we instantiated `PipelineStack`\.
 
+**Note**  
+Don't deploy *LambdaStack*\. This stack is meant to be deployed by the pipeline\.
+
 After the deployment finishes, you should have a three\-stage pipeline that looks something like the following\.
 
 ![\[Image NOT FOUND\]](http://docs.aws.amazon.com/cdk/latest/guide/images/pipeline.jpg)
 
-Try making a change, such as to your `LambdaStack` AWS CDK code or to your Lambda function code, and push it to the repository\. The pipeline should pick up your change, build it, and deploy it automatically, without any human intervention\.
+Try making a change to your Lambda function code and push it to the repository\. The pipeline should pick up your change, build it, and deploy it automatically, without any human intervention\.
 
 ## Cleaning up<a name="codepipeline_example_destroy"></a>
 
-To avoid unexpected AWS charges, destroy your AWS CDK stack after you're done with this exercise\.
+To avoid unexpected AWS charges, destroy your AWS CDK stacks after you're done with this exercise\.
 
 ```
 cdk destroy '*'
