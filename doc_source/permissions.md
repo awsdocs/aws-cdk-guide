@@ -30,7 +30,7 @@ The first argument of a **grant** method is always of type [IGrantable](https://
 
 Other entities can also be granted permissions\. For example, later in this topic, we show how to grant a CodeBuild project access to an Amazon S3 bucket\. Generally, the associated role is obtained via a `role` property on the entity being granted access\. Other entities that can be granted permissions are Amazon EC2 instances and CodeBuild projects\.
 
-Resources that use execution roles, such as `[lambda\.Function](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-lambda.Function.html)`, also implement `IGrantable`, so you can grant them access directly \(`bucket.grantRead(lambda)`, or `grant_read` in Python\) instead of granting access to their role\. For example, if `bucket` is an Amazon S3 bucket, and `function` is a Lambda function, the code below grants the function read access to the bucket\.
+Resources that use execution roles, such as `[lambda\.Function](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-lambda.Function.html)`, also implement `IGrantable`, so you can grant them access directly instead of granting access to their role\. For example, if `bucket` is an Amazon S3 bucket, and `function` is a Lambda function, the code below grants the function read access to the bucket\.
 
 ------
 #### [ TypeScript ]
