@@ -6,8 +6,10 @@ The AWS CDK enables you to easily create applications running in the AWS Cloud\.
 
 The following example shows how to deploy an AWS Lambda function in a pipeline\. Two stacks are created: one to deploy your Lambda code, and one to define a pipeline to deploy the first stack whenever your Lambda code changes\. Your Lambda code is intended to be in a AWS CodeCommit repository, although you can work through this example without any Lambda code \(the pipeline will fail, but the stack that defines it will deploy\)\.
 
+The Lambda code must be in a directory named `Lambda` in the named AWS CodeCommit repository\. The AWS CDK code does not need to be in a repository\.
+
 **Note**  
-The Lambda function itself is assumed to be written in TypeScript regardless of the language you're using for your AWS CDK app\. To use this example to deploy a Lambda function written in a different language, you'll need to modify the pipeline\.
+The Lambda function is assumed to be written in TypeScript regardless of the language you're using for your AWS CDK app\. To use this example to deploy a Lambda function written in anotehr language, you'll need to modify the pipeline\. This is outside the scope of this example\.
 
 To set up a project like this from scratch, follow these instructions\.
 
