@@ -9,7 +9,7 @@ The following example shows how to deploy an AWS Lambda function in a pipeline\.
 The Lambda code must be in a directory named `Lambda` in the named AWS CodeCommit repository\. The AWS CDK code does not need to be in a repository\.
 
 **Note**  
-The Lambda function is assumed to be written in TypeScript regardless of the language you're using for your AWS CDK app\. To use this example to deploy a Lambda function written in anotehr language, you'll need to modify the pipeline\. This is outside the scope of this example\.
+The Lambda function is assumed to be written in TypeScript regardless of the language you're using for your AWS CDK app\. To use this example to deploy a Lambda function written in another language, you'll need to modify the pipeline\. This is outside the scope of this example\.
 
 To set up a project like this from scratch, follow these instructions\.
 
