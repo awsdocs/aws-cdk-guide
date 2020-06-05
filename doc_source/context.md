@@ -8,7 +8,7 @@ Context values are made available to your AWS CDK app in six different ways:
 + Automatically from the current AWS account\.
 + Through the \-\-context option to the cdk command\.
 + In the project's `cdk.context.json` file\.
-+ In the `context` key of the project's `cdk.json` file\.
++ In the project's `cdk.json` file\.
 + In the `context` key of your `~/cdk.json` file\.
 + In your AWS CDK app using the `construct.node.setContext` method\.
 
