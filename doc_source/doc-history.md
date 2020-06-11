@@ -7,6 +7,7 @@ The table below represents significant documentation milestones\. We fix errors 
 
 | Change | Description | Date | 
 | --- |--- |--- |
+| [Update stability index](#doc-history) | Incorporate the latest definitions of the stability levels for AWS Construct Library modules\. | June 11, 2020 | 
 | [CDK Toolkit versioning](#doc-history) | Add information about cloud assembly versioning and compatibility of the CDK Toolkit \(CLI\) with the AWS Construct Library | April 22, 2020 | 
 | [Translating from TypeScript](#doc-history) | Updated "CDK in Other Languages" topic to also include JavaScript, Java, and C\# and renamed it "Translating from TypeScript\." | April 10, 2020 | 
 | [Parameters topic](#doc-history) | Add Concepts topic on using parameters with the AWS CDK\. | April 8, 2020 | 

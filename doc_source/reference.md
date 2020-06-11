@@ -6,10 +6,10 @@ Each library contains information about how to use the library\. For example, th
 
 ## Versioning<a name="versioning"></a>
 
-Version numbers consist of three numeric version parts: *major*\.*minor*\.*patch*, and adhere to the [semantic versioning](https://semver.org) model\. This means that breaking changes to stable APIs are limited to major releases\. Minor and patch releases are backward compatible, meaning that the code written in a previous version with the same major version can be upgraded to a newer version and be expected to continue to build and run, producing the same output\.
+Version numbers consist of three numeric version parts: *major*\.*minor*\.*patch*, and generally adhere to the [semantic versioning](https://semver.org) model\. This means that breaking changes to stable APIs are limited to major releases\. Minor and patch releases are backward compatible, meaning that the code written in a previous version with the same major version can be upgraded to a newer version and be expected to continue to build and run, producing the same output\. 
 
 **Note**  
-This compatibility promise does not apply to APIs designated as experimental\. See [AWS CDK stability index](#aws_construct_lib_stability) for more details\.
+This compatibility promise does not apply to APIs under active development, which are designated as experimental\. See [AWS CDK stability index](#aws_construct_lib_stability) for more details\.
 
 ### AWS CDK Toolkit \(CLI\) compatibility<a name="cdk_toolkit_versioning"></a>
 
@@ -29,41 +29,33 @@ For more details on the cloud assembly schema, see [Cloud Assembly Versioning](h
 
 ### AWS CDK stability index<a name="aws_construct_lib_stability"></a>
 
-Certain APIs do not adhere to the semantic versioning model\. There are three levels of stability in the AWS Construct Library, which define the level of semantic versioning that applies to each module\.
+The modules in the AWS Construct Library move through various stages as they are developed from concept to mature API\. Different stages imply different promises for API stability in subsequent versions of the AWS CDK\.
 
-Stable  
-The API is subject to the semantic versioning model\. We will not introduce non\-backward\-compatible changes or remove the API in a subsequent patch or feature release\.
+Stage 0: CFN resources  
+All construct library modules start in stage 0 when they are auto\-generated from the AWS CloudFormation resource specification\. The goal of stage 0 is to make new AWS CloudFormation resources/properties available to CDK customers as quickly as possible\. We create tracking documents that to capture the data required to decide when L2 resources to add in the future\.  
+AWS CloudFormation resources themselves are considered stable APIs, regardless of whether other constructs in the module are under active development\.
 
-CloudFormation Only  
-These APIs are automatically built from the AWS CloudFormation resource specification and are subject only to changes introduced by AWS CloudFormation\.
+Stage 1: Experimental  
+The goal of the experimental stage is to retain the freedom to make breaking changes to APIs while we design and build a module During this stage, the primary use cases and the set of L2 constructs required to support them are incrementally identified, implemented, and validated\.  
+Development of L2 constructs is community\-oriented and transparent\. For large and/or complex changes, we author a Request for Comments \(RFC\) that outlines our intended design and publish it for feedback\. We also use pull requests to conduct API design reviews\.  
+At this stage, individual APIs may be in flux, and breaking changes may occur from release to release if we deem these necessary to support customer use cases\.
 
-Experimental  
-The API is still under active development and subject to non\-backward\-compatible changes or removal in any future version\. Such changes are announced in the AWS CDK release notes under *BREAKING CHANGES*\. We recommend that you do not use this API in production environments\. Experimental APIs are not subject to the semantic versioning model\.
+Stage 2: Developer preview \(DP\)  
+At the developer preview stage, our aim is to deliver a release candidate with a stable API with which to conduct user acceptance testing\. When the API passes acceptance, it is deemed suitable for general availability\.  
+We make breaking changes at this stage only when required to address unforeseen customer use cases or issues\. Since breaking changes are still possible, the package itself retains the "experimental" label while in developer preview\.
 
-Deprecated  
-The API may emit warnings\. We do not guarantee backward compatibility\.
+Stage 3: General availability \(GA\)  
+The module is generally available with a backwards compatible guarantee across minor versions\. We will only make backward\-compatible changes to the API, so that your existing apps will continue to work until the next major AWS CDK release\.  
+In some cases, we may use [feature flags](featureflags.md) to optionally enable new behavior while retaining the previous behavior to support existing apps\.
 
-Experimental and stable modules receive the same level of support from AWS\. The only difference is that we might change experimental APIs within a major version\. Although we don't recommend using experimental APIs in production, we vet them the same way as we vet stable APIs before we include them in a release\.
-
-### Identifying the support level of an API<a name="aws_construct_lib_versioning_support"></a>
-
-Each module in the [API Reference](https://docs.aws.amazon.com/cdk/api/latest) starts with a section outlining the module's stability index\. The libraries that include only AWS CloudFormation resources, and no hand\-curated constructs, are labeled with the maturity indicator **CloudFormation\-only**\.
-
-The module level gives an indication of the stability of the majority of the APIs included in the module, however, individual APIs within the module can be annotated with different stability levels\.
-
-
-| Stability | TypeScript | JavaScript | Python | C\#/\.NET | Java | 
-| --- |--- |--- |--- |--- |--- |
-| Experimental | @experimental | @stability Experimental | @experimental | Stability: Experimental | Stability: Experimental | 
-| Stable | @stable | @stability Stable | @stable | Stability: Stable | Stability: Stable | 
-| Deprecated | @deprecated | @Deprecated | @deprecated | \[Obsolete\] | Stability: Deprecated | 
+For more information on these stages, see [AWS Construct Library Module Lifecycle](https://github.com/aws/aws-cdk-rfcs/blob/master/text/0107-construct-library-module-lifecycle.md)\.
 
 ### Language binding stability<a name="aws_construct_lib_versioning_binding"></a>
 
-In addition to modules of the AWS CDK Construct Library, language support is also subject to a stability indication\. Although the API described in all the languages is the same, the way that API is expressed varies by language and may change as the language support evolves\. For this reason, language bindings are deemed experimental for a time until they are considered ready for production use\.
+From time to time, we may add support to the AWS CDK for additional programming languages\. Although the API described in all the languages is the same, the way that API is expressed varies by language and may change as the language support evolves\. For this reason, language bindings are deemed experimental for a time until they are considered ready for production use\. Currently, all supported languages are considered stable\.
 
 
-| Language | stability | 
+| Language | Stability | 
 | --- |--- |
 | TypeScript | Stable | 
 | JavaScript | Stable | 
