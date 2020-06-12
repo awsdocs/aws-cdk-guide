@@ -344,7 +344,7 @@ To gain insight into how the AWS CDK is used, the versions of libraries used by 
 By default, the AWS CDK reports the name and version of the following NPM modules that are loaded at synthesis time:
 + AWS CDK core module
 + AWS Construct Library modules
-+ AWS Solutions Konstruk module
++ AWS Solutions Constructs module
 
 The `AWS::CDK::Metadata` resource looks like the following\.
 
@@ -352,7 +352,7 @@ The `AWS::CDK::Metadata` resource looks like the following\.
 CDKMetadata:
   Type: "AWS::CDK::Metadata"
   Properties:
-    Modules: "@aws-cdk/core=0.7.2-beta,@aws-cdk/s3=0.7.2-beta,@aws-solutions-konstruk/aws-apigateway-lambda=0.8.0"
+    Modules: "@aws-cdk/core=0.7.2-beta,@aws-cdk/s3=0.7.2-beta,@aws-solutions-consturcts/aws-apigateway-lambda=0.8.0"
 ```
 
 ### Opting out from version reporting<a name="version_reporting_opt_out"></a>
