@@ -32,11 +32,11 @@ For more details on the cloud assembly schema, see [Cloud Assembly Versioning](h
 The modules in the AWS Construct Library move through various stages as they are developed from concept to mature API\. Different stages imply different promises for API stability in subsequent versions of the AWS CDK\.
 
 Stage 0: CFN resources  
-All construct library modules start in stage 0 when they are auto\-generated from the AWS CloudFormation resource specification\. The goal of stage 0 is to make new AWS CloudFormation resources/properties available to CDK customers as quickly as possible\. We create tracking documents that to capture the data required to decide when L2 resources to add in the future\.  
+All construct library modules start in stage 0 when they are auto\-generated from the AWS CloudFormation resource specification\. The goal of stage 0 is to make new AWS CloudFormation resources/properties available to CDK customers as quickly as possible\. We create tracking documents to capture the data required to decide when L2 resources to add in the future\.  
 AWS CloudFormation resources themselves are considered stable APIs, regardless of whether other constructs in the module are under active development\.
 
 Stage 1: Experimental  
-The goal of the experimental stage is to retain the freedom to make breaking changes to APIs while we design and build a module During this stage, the primary use cases and the set of L2 constructs required to support them are incrementally identified, implemented, and validated\.  
+The goal of the experimental stage is to retain the freedom to make breaking changes to APIs while we design and build a module\. During this stage, the primary use cases and the set of L2 constructs required to support them are incrementally identified, implemented, and validated\.  
 Development of L2 constructs is community\-oriented and transparent\. For large and/or complex changes, we author a Request for Comments \(RFC\) that outlines our intended design and publish it for feedback\. We also use pull requests to conduct API design reviews\.  
 At this stage, individual APIs may be in flux, and breaking changes may occur from release to release if we deem these necessary to support customer use cases\.
 
@@ -45,7 +45,7 @@ At the developer preview stage, our aim is to deliver a release candidate with a
 We make breaking changes at this stage only when required to address unforeseen customer use cases or issues\. Since breaking changes are still possible, the package itself retains the "experimental" label while in developer preview\.
 
 Stage 3: General availability \(GA\)  
-The module is generally available with a backwards compatible guarantee across minor versions\. We will only make backward\-compatible changes to the API, so that your existing apps will continue to work until the next major AWS CDK release\.  
+The module is generally available with a backwards\-compatible guarantee across minor versions\. We will only make backward\-compatible changes to the API, so that your existing apps will continue to work until the next major AWS CDK release\.  
 In some cases, we may use [feature flags](featureflags.md) to optionally enable new behavior while retaining the previous behavior to support existing apps\.
 
 For more information on these stages, see [AWS Construct Library Module Lifecycle](https://github.com/aws/aws-cdk-rfcs/blob/master/text/0107-construct-library-module-lifecycle.md)\.

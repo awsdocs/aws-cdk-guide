@@ -68,7 +68,7 @@ bucket = Bucket(...)
 
 Java's imports work differently from TypeScript's\. Each import statement imports either a single class name from a given package, or all classes defined in that package \(using `*`\)\. After importing, classes may be accessed using either the class name by itself or \(in case of name conflicts\) the *qualified* class name including its package\.
 
-Packages are named like `software.amazon.awscdk.services.xxx` for AWS Construct Library packages \(the core module is `software.amazon.awscdk.core`\)\. The Maven group ID is for AWS CDK packages `software.amazon.awscdk`\.
+Packages are named like `software.amazon.awscdk.services.xxx` for AWS Construct Library packages \(the core module is `software.amazon.awscdk.core`\)\. The Maven group ID for AWS CDK packages is `software.amazon.awscdk`\.
 
 ```
 // Make all Amazon S3 construct library classes available
