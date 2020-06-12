@@ -134,9 +134,9 @@ const bucket = new s3.Bucket(this, 'MyBucket', {
    versioned: true,
 });
 
-// Instantiate Bucket with redirectTarget, which has its own sub-properties
+// Instantiate Bucket with websiteRedirect, which has its own sub-properties
 const bucket = new s3.Bucket(this, 'MyBucket', {
-  redirectTarget: {host: 'aws.amazon.com'}});
+  websiteRedirect: {host: 'aws.amazon.com'}});
 ```
 
 ------
@@ -157,8 +157,8 @@ bucket = s3.Bucket(self, "MyBucket")
 # Instantiate Bucket with bucket_name and versioned properties
 bucket = s3.Bucket(self, "MyBucket", bucket_name="my-bucket", versioned=true)
 
-# Instantiate Bucket with redirect_target, which has its own sub-properties
-bucket = s3.Bucket(self, "MyBucket", redirect_target=s3.RedirectTarget(
+# Instantiate Bucket with website_redirect, which has its own sub-properties
+bucket = s3.Bucket(self, "MyBucket", website_redirect=s3.WebsiteRedirect(
             host_name="aws.amazon.com"))
 ```
 
@@ -180,9 +180,9 @@ Bucket bucket = Bucket.Builder.create(self, "MyBucket")
                       .bucketName("my-bucket").versioned(true)
                       .build();
 
-# Instantiate Bucket with redirectTarget, which has its own sub-properties
+# Instantiate Bucket with websiteRedirect, which has its own sub-properties
 Bucket bucket = Bucket.Builder.create(self, "MyBucket")
-                      .redirectTarget(new RedirectTarget.Builder()
+                      .websiteRedirect(new websiteRedirect.Builder()
                           .hostName("aws.amazon.com").build())
                       .build();
 ```
@@ -205,9 +205,9 @@ var bucket =  Bucket(self, "MyBucket", new BucketProps {
                       BucketName = "my-bucket",
                       Versioned  = true});
 
-// Instantiate Bucket with RedirectTarget, which has its own sub-properties
+// Instantiate Bucket with WebsiteRedirect, which has its own sub-properties
 var bucket = Bucket(self, "MyBucket", new BucketProps {
-                      RedirectTarget = new RedirectTarget {
+                      WebsiteRedirect = new WebsiteRedirect {
                               HostName = "aws.amazon.com"
                       }});
 ```
