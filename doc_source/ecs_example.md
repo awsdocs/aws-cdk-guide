@@ -84,53 +84,11 @@ You may now open `src/MyEcsConstruct.sln` in Visual Studio\./
 
 ------
 
-Build and run the app and confirm that it creates an empty stack\.
-
-------
-#### [ TypeScript ]
-
-```
-npm run build
-cdk synth
-```
-
-------
-#### [ JavaScript ]
+Run the app and confirm that it creates an empty stack\.
 
 ```
 cdk synth
 ```
-
-------
-#### [ Python ]
-
-```
-cdk synth
-```
-
-------
-#### [ Java ]
-
-```
-mvn compile
-cdk synth
-```
-
-**Note**  
-Instead of issuing `mvn compile`, you can instead press Control\-B in Eclipse\.
-
-------
-#### [ C\# ]
-
-```
-dotnet build src
-cdk synth
-```
-
-**Note**  
-Instead of issuing `dotnet build`, you can instead press F6 in Visual Studio\.
-
-------
 
 You should see a stack like the following, where *CDK\-VERSION* is the version of the CDK and *NODE\-VERSION* is the version of Node\.js\. \(Your output may differ slightly from what's shown here\.\)
 
@@ -384,53 +342,11 @@ Replace the comment at the end of the constructor with the following code\.
 
 ------
 
-Save it and make sure it builds and creates a stack\.
-
-------
-#### [ TypeScript ]
-
-```
-npm run build
-cdk synth
-```
-
-------
-#### [ JavaScript ]
+Save it and make sure it runs and creates a stack\.
 
 ```
 cdk synth
 ```
-
-------
-#### [ Python ]
-
-```
-cdk synth
-```
-
-------
-#### [ Java ]
-
-```
-mvn compile
-cdk synth
-```
-
-**Note**  
-Instead of issuing `mvn compile`, you can instead press Control\-B in Eclipse\.
-
-------
-#### [ C\# ]
-
-```
-dotnet build src
-cdk synth
-```
-
-**Note**  
-Instead of issuing `dotnet build`, you can instead press F6 in Visual Studio\.
-
-------
 
 The stack is hundreds of lines, so we don't show it here\. The stack should contain one default instance, a private subnet and a public subnet for the three Availability Zones, and a security group\.
 

@@ -134,7 +134,7 @@ Keep in mind that future releases of the AWS CDK may coincidentally add a new pr
 
 ### Generic structures<a name="csharp-generic-structures"></a>
 
-In some places, the AWS CDK uses JavaScript arrays or untyped objects or as input to a method\. \(See, for example, AWS CodeBuild's [https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-codebuild.BuildSpec.html#to-wbr-build-wbr-spec](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-codebuild.BuildSpec.html#to-wbr-build-wbr-spec) method\.\) In C\#, objects are represented as `System.Collections.Generic.Dictionary<String, Object>`\. In cases where the values are all strings, you can use `Dictionary<String, String>`\. JavaScript arrays are represented as `object[]` or `string[]` in C\#\.
+In some places, the AWS CDK uses JavaScript arrays or untyped objects as input to a method\. \(See, for example, AWS CodeBuild's [https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-codebuild.BuildSpec.html#to-wbr-build-wbr-spec](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-codebuild.BuildSpec.html#to-wbr-build-wbr-spec) method\.\) In C\#, objects are represented as `System.Collections.Generic.Dictionary<String, Object>`\. In cases where the values are all strings, you can use `Dictionary<String, String>`\. JavaScript arrays are represented as `object[]` or `string[]` in C\#\.
 
 ### Missing values<a name="csharp-missing-values"></a>
 
@@ -150,9 +150,7 @@ string MimeType = props?.MimeType ?? "text/plain";
 
 ## Building, synthesizing, and deploying<a name="csharp-running"></a>
 
-Before running, build \(compile\) the app by pressing F6 in Visual Studio or by issuing `dotnet build src` from the command line, where `src` is the directory in your project directory that contains the Visual Studio Solution \(`.sln`\) file\.
-
-The build step reports any syntax or type errors in your code\. Once you can build your application without errors, you're ready to synthesize or deploy\.
+The AWS CDK automatically compiles your app before running it\. However, it can be useful to build your app manually to check for errors and run tests\. You can do this by pressing F6 in Visual Studio or by issuing `dotnet build src` from the command line, where `src` is the directory in your project directory that contains the Visual Studio Solution \(`.sln`\) file\.
 
 The [stacks](stacks.md) defined in your AWS CDK app can be deployed individually or together using the commands below\. Generally, you should be in your project's main directory when you issue them\.
 + `cdk synth`: Synthesizes a AWS CloudFormation template from one or more of the stacks in your AWS CDK app\.
@@ -161,6 +159,6 @@ The [stacks](stacks.md) defined in your AWS CDK app can be deployed individually
 You can specify the names of multiple stacks to be synthesized or deployed in a single command\. If your app defines only one stack, its name is assumed and you do not need to specify it\.
 
 **Tip**  
-You don't need to explicitly synthesize stacks before deploying them; `cdk deploy` performs this step for you\.
+You don't need to explicitly buiild your app or synthesize stacks before deploying them; `cdk deploy` performs these steps for you\.
 
 For full documentation of the `cdk` command, see [AWS CDK Toolkit \(`cdk`\)](tools.md#cli)\.

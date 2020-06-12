@@ -1120,46 +1120,7 @@ namespace Pipeline
 
 ## Deploying the pipeline<a name="codepipeline_example_create"></a>
 
-The final steps are building the code and deploying the pipeline\.
-
-------
-#### [ TypeScript ]
-
-```
-npm run build
-```
-
-------
-#### [ JavaScript ]
-
-No build step is necessary\.
-
-------
-#### [ Python ]
-
-No build step is necessary\.
-
-------
-#### [ Java ]
-
-```
-mvn compile
-```
-
-**Note**  
-Instead of issuing `mvn compile`, you can instead press Control\-B in Eclipse\.
-
-------
-#### [ C\# ]
-
-```
-dotnet build src
-```
-
-**Note**  
-Instead of issuing `dotnet build`, you can instead press F6 in Visual Studio\.
-
-------
+The final steps is to deploy the pipeline\.
 
 ```
 cdk deploy PipelineDeployingLambdaStack

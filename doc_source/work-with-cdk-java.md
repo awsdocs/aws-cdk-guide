@@ -73,7 +73,7 @@ If you are not using an IDE, or just want full control over the versions of your
 
 The version specifier `[1.0,2.0)` in this example indicates that the latest version between 1\.0 \(inclusive\) and 2\.0 \(exclusive\) will be installed\. Since the AWS CDK uses semantic versioning for stable AWS Construct Library modules, \(see [Versioning](reference.md#versioning)\), this ensures that only newer versions without breaking API changes will be installed\.
 
-Maven automatically downloads a version of your dependencies that will match the requirements in `pom.xml`, if necessary, the next time you build your project\.
+Maven automatically downloads a version of your dependencies that will match the requirements in `pom.xml`, if necessary, the next time your project is built\.
 
 ## AWS CDK idioms in Java<a name="java-cdk-idioms"></a>
 
@@ -113,12 +113,7 @@ In Java, missing values in AWS CDK objects such as props are represented by `nul
 
 ## Building, synthesizing, and deploying<a name="java-running"></a>
 
-Before running, build \(compile\) the app in your IDE \(for example, press Control\-B in Eclipse\) or by issuing `mvn compile` at a command prompt while in your project's root directory\.
-
-The build step reports any syntax or type errors in your code\. Once you can build your application without errors, you're ready to synthesize or deploy\.
-
-**Note**  
-Every time you change your application code, re\-compile \(e\.g\. `mvn compile` or `mvn test`\) before using the `cdk` command\. Otherwise, the `cdk` command uses the previously compiled version of your application code\.
+The AWS CDK automatically compiles your app before running it\. However, it can be useful to build your app manually to check for errors and run tests\. You can do this in your IDE \(for example, press Control\-B in Eclipse\) or by issuing `mvn compile` at a command prompt while in your project's root directory\.
 
 Run any tests you've written by running `mvn test` at a command prompt\.
 
@@ -129,6 +124,6 @@ The [stacks](stacks.md) defined in your AWS CDK app can be deployed individually
 You can specify the names of multiple stacks to be synthesized or deployed in a single command\. If your app defines only one stack, its name is assumed and you do not need to specify it\.
 
 **Tip**  
-You don't need to explicitly synthesize stacks before deploying them; `cdk deploy` performs this step for you\.
+You don't need to explicitly buiild your app or synthesize stacks before deploying them; `cdk deploy` performs these steps for you\.
 
 For full documentation of the `cdk` command, see [AWS CDK Toolkit \(`cdk`\)](tools.md#cli)\.

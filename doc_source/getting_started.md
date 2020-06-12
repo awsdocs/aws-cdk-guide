@@ -451,48 +451,6 @@ cdk init --language csharp
 
 ### Compiling the app<a name="hello_world_tutorial_compile_project"></a>
 
-Compile your program, as follows\.
-
-------
-#### [ TypeScript ]
-
-```
-npm run build
-```
-
-------
-#### [ JavaScript ]
-
-Nothing to compile\.
-
-------
-#### [ Python ]
-
-Nothing to compile\.
-
-------
-#### [ Java ]
-
-```
-mvn compile
-```
-
-or press Control\-B in Eclipse
-
-**Tip**  
-You can suppress the **\[INFO\]** messages in the build log by adding the **\-q** option to your `mvn` commands\. \(Don"t forget the one in `cdk.json`\.\)
-
-------
-#### [ C\# ]
-
-```
-dotnet build src
-```
-
-or press F6 in Visual Studio
-
-------
-
 ### Listing the stacks in the app<a name="hello_world_tutorial_list_stacks"></a>
 
 List the stacks in the app\.
@@ -684,48 +642,6 @@ Notice a few things:
 + `MyFirstBucket` is the **id** of the bucket construct, not the physical name of the Amazon S3 bucket\. The logical ID is used to uniquely identify resources in your stack across deployments\.  To specify a physical name for your bucket, set the [bucketName](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/aws-s3/bucket.html#bucketname) property \(`bucket_name` in Python\) when you define your bucket\.
 + Because the bucket's [versioned](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/aws-s3/bucket.html#versioned) property is `true`, [versioning](https://docs.aws.amazon.com/AmazonS3/latest/dev/Versioning.html) is enabled on the bucket\.
 
-Compile your program, as follows\.
-
-------
-#### [ TypeScript ]
-
-```
-npm run build
-```
-
-------
-#### [ JavaScript ]
-
-Nothing to compile\.
-
-------
-#### [ Python ]
-
-Nothing to compile\.
-
-------
-#### [ Java ]
-
-```
-mvn compile
-```
-
-or press Control\-B in Eclipse
-
-**Tip**  
-You can suppress the **\[INFO\]** messages in the build log by adding the **\-q** option to your `mvn` commands\. \(Don"t forget the one in `cdk.json`\.\)
-
-------
-#### [ C\# ]
-
-```
-dotnet build src
-```
-
-or press F6 in Visual Studio
-
-------
-
 ### Synthesizing an AWS CloudFormation template<a name="hello_world_tutorial_synth_template"></a>
 
 Synthesize an AWS CloudFormation template for the app, as follows\. If you get an error like "\-\-app is required\.\.\.", it's because you are running the command from a subdirectory of your project directory\. Navigate to the project directory and try again\.
@@ -835,48 +751,6 @@ new Bucket(this, "MyFirstBucket", new BucketProps
     Encryption = BucketEncryption.KMS_MANAGED
 });
 ```
-
-------
-
-Compile your program, as follows\.
-
-------
-#### [ TypeScript ]
-
-```
-npm run build
-```
-
-------
-#### [ JavaScript ]
-
-Nothing to compile\.
-
-------
-#### [ Python ]
-
-Nothing to compile\.
-
-------
-#### [ Java ]
-
-```
-mvn compile
-```
-
-or press Control\-B in Eclipse
-
-**Tip**  
-You can suppress the **\[INFO\]** messages in the build log by adding the **\-q** option to your `mvn` commands\. \(Don"t forget the one in `cdk.json`\.\)
-
-------
-#### [ C\# ]
-
-```
-dotnet build src
-```
-
-or press F6 in Visual Studio
 
 ------
 

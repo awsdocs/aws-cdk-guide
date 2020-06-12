@@ -152,6 +152,6 @@ The [stacks](stacks.md) defined in your AWS CDK app can be deployed individually
 You can specify the names of multiple stacks to be synthesized or deployed in a single command\. If your app defines only one stack, its name is assumed and you do not need to specify it\.
 
 **Tip**  
-You don't need to explicitly synthesize stacks before deploying them; `cdk deploy` performs this step for you\.
+You don't need to explicitly buiild your app or synthesize stacks before deploying them; `cdk deploy` performs these steps for you\.
 
 For full documentation of the `cdk` command, see [AWS CDK Toolkit \(`cdk`\)](tools.md#cli)\.

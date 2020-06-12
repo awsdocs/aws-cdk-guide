@@ -587,48 +587,7 @@ namespace Multistack
 
 ## Synthesize and deploy the stack<a name="cdk-how-to-create-multiple-stacks-synth-deploy"></a>
 
-Now you can deploy stacks from the app\. First, build the project, if necessary\.
-
-------
-#### [ TypeScript ]
-
-```
-npm run build
-```
-
-------
-#### [ JavaScript ]
-
-No build step is necessary\.
-
-------
-#### [ Python ]
-
-No build step is necessary\.
-
-------
-#### [ Java ]
-
-```
-mvn compile
-```
-
-**Note**  
-Instead of issuing `mvn compile`, you can instead press Control\-B in Eclipse\.
-
-------
-#### [ C\# ]
-
-```
-dotnet build src
-```
-
-**Note**  
-Instead of issuing `dotnet build`, you can instead press F6 in Visual Studio\.
-
-------
-
-Next, synthesize a AWS CloudFormation template for `MyEastCdkStack`—the stack in `us-east-1`\. This is the stack with the encrypted S3 bucket\.
+Now you can deploy stacks from the app\. First, synthesize a AWS CloudFormation template for `MyEastCdkStack`—the stack in `us-east-1`\. This is the stack with the encrypted S3 bucket\.
 
 ```
 $ cdk synth MyEastCdkStack

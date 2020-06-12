@@ -79,9 +79,7 @@ Generally, you should be in the project's root directory when building and runni
 
 Node\.js cannot run TypeScript directly; instead, your application is converted to JavaScript using the TypeScript compiler, `tsc`\. The resulting JavaScript code is then executed\.
 
-To compile your TypeScript app, issue `npm run build`\. You may also issue `npm run watch` to enter watch mode, in which the TypeScript compiler automatically rebuilds your app whenever you save changes to a source file\.
-
-The build step reports any syntax or type errors in your code\. Once you can build your application without errors, you're ready to synthesize or deploy\.
+The AWS CDK automatically does this whenever it needs to run your app\. However, it can be useful to compile manually to check for errors and to run tests\. To compile your TypeScript app manually, issue `npm run build`\. You may also issue `npm run watch` to enter watch mode, in which the TypeScript compiler automatically rebuilds your app whenever you save changes to a source file\.
 
 The [stacks](stacks.md) defined in your AWS CDK app can be deployed individually or together using the commands below\. Generally, you should be in your project's main directory when you issue them\.
 + `cdk synth`: Synthesizes a AWS CloudFormation template from one or more of the stacks in your AWS CDK app\.
@@ -90,6 +88,6 @@ The [stacks](stacks.md) defined in your AWS CDK app can be deployed individually
 You can specify the names of multiple stacks to be synthesized or deployed in a single command\. If your app defines only one stack, its name is assumed and you do not need to specify it\.
 
 **Tip**  
-You don't need to explicitly synthesize stacks before deploying them; `cdk deploy` performs this step for you\.
+You don't need to explicitly buiild your app or synthesize stacks before deploying them; `cdk deploy` performs these steps for you\.
 
 For full documentation of the `cdk` command, see [AWS CDK Toolkit \(`cdk`\)](tools.md#cli)\.

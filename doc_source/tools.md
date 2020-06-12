@@ -414,10 +414,9 @@ This topic describes how to use the SAM CLI with the AWS CDK to test a Lambda fu
      return "This is a Lambda Function defined through CDK"
    ```
 
-1. Compile your AWS CDK app and create a AWS CloudFormation template
+1. Run your AWS CDK app and create a AWS CloudFormation template
 
    ```
-   npm run build
    cdk synth --no-staging > template.yaml
    ```
 

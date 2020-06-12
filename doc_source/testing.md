@@ -100,8 +100,7 @@ test('dlq creates an alarm', () => {
 To build the project and run the test, issue these commands\.
 
 ```
-npm run build
-npm test
+npm run build && npm test
 ```
 
 The output from Jest indicates that it has run the test and recorded a snapshot\.
