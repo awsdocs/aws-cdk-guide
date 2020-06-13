@@ -616,9 +616,14 @@ Because we haven't stored any widgets yet, the output should be similar to the f
 
 The next step is to create Lambda functions to create, show, and delete individual widgets\. 
 
-Replace the existing `exports.main` function in `widgets.js` \(in `resources`\) with the following code\.
+Replace the code in `widgets.js` \(in `resources`\) with the following\.
 
 ```
+const AWS = require('aws-sdk');
+const S3 = new AWS.S3();
+
+const bucketName = process.env.BUCKET;
+
 /* 
 This code uses callbacks to handle asynchronous function responses.
 It currently demonstrates using an async-await pattern. 
