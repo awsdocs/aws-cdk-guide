@@ -553,7 +553,7 @@ class NotifyingBucket(core.Construct):
 #### [ Java ]
 
 ```
-public class NotifyingBucket extends Bucket {
+public class NotifyingBucket extends Construct {
 
     public NotifyingBucket(final Construct scope, final String id) {
         this(scope, id, null, null);
