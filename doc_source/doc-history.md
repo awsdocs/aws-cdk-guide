@@ -13,7 +13,6 @@ The table below represents significant documentation milestones\. We fix errors 
 | [Translating from TypeScript](#doc-history) | Updated "CDK in Other Languages" topic to also include JavaScript, Java, and C\# and renamed it "Translating from TypeScript\." | April 10, 2020 | 
 | [Parameters topic](#doc-history) | Add Concepts topic on using parameters with the AWS CDK\. | April 8, 2020 | 
 | [JavaScript code snippets](#doc-history) | Reinstate JavaScript code snippets throughout \(automated translation via Babel\)\. | April 3, 2020 | 
-| [JavaScript code snippets](#doc-history) | Reinstate JavaScript code snippets throughout \(automated translation via Babel\) | April 3, 2020 | 
 | [Working with the CDK](#doc-history) | Add "Working with the CDK" articles for the five supported languages\. Various other improvements and fixes\. | February 4, 2020 | 
 | [Java code snippets](#doc-history) | Add Java code snippets throughout\. Designate Java and C\# bindings stable\. | November 25, 2019 | 
 | [C\# code snippets](#doc-history) | Add C\# code snippets throughout\. | November 19, 2019 | 

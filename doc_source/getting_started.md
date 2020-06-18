@@ -25,8 +25,12 @@ The AWS CDK includes the AWS CDK Toolkit \(also called the CLI\), a command\-lin
 The AWS CDK includes a library of AWS constructs called the AWS Construct Library\. Each AWS service has at least one corresponding module in the library containing the constructs that represent that service's resources\.
 
 Constructs come in three fundamental flavors:
-+ **AWS CloudFormation\-only** or L1 \(short for "level 1"\)\. These constructs correspond directly to resource types defined by AWS CloudFormation\. In fact, these constructs are automatically generated from the AWS CloudFormation specification, so when a new AWS service is launched, the AWS CDK supports it as soon as AWS CloudFormation does\. AWS CloudFormation resources always have names that begin with `Cfn`\. For example, in the Amazon S3 module, `CfnBucket` is the L1 module for an Amazon S3 bucket\.
-+ **Curated** or L2\. These constructs are carefully developed by the AWS CDK team to address specific use cases and simplify infrastructure development\. For the most part, they encapsulate L1 modules, providing sensible defaults and best\-practice security policies\. L2 modules may also define supporting resources needed by the primary resource\. For example, in the Amazon S3 module, `Bucket` is the L2 module for an Amazon S3 bucket\. Some services have more than one L2 module in the Construct Library for organizational purposes\. 
++ **AWS CloudFormation\-only** or L1 \(short for "level 1"\)\. These constructs correspond directly to resource types defined by AWS CloudFormation\. In fact, these constructs are automatically generated from the AWS CloudFormation specification, so when a new AWS service is launched, the AWS CDK supports it as soon as AWS CloudFormation does\.
+
+  AWS CloudFormation resources always have names that begin with `Cfn`\. For example, in the Amazon S3 module, `CfnBucket` is the L1 module for an Amazon S3 bucket\.
++ **Curated** or L2\. These constructs are carefully developed by the AWS CDK team to address specific use cases and simplify infrastructure development\. For the most part, they encapsulate L1 modules, providing sensible defaults and best\-practice security policies\. For example, in the Amazon S3 module, `Bucket` is the L2 module for an Amazon S3 bucket\. 
+
+  L2 modules may also define supporting resources needed by the primary resource\. Some services have more than one L2 module in the Construct Library for organizational purposes\. 
 + **Patterns** or L3\. Patterns declare multiple resources to create entire AWS architectures for particular use cases\. All the plumbing is already hooked up, and configuration is boiled down to a few important parameters\. In the AWS Construct Library, patterns are in separate modules from L1 and L2 constructs\.
 
 The AWS CDK's core module \(usually imported into code as `cdk`\) contains constructs used by the AWS CDK itself as well as base classes for constructs, apps, resources, and other AWS CDK objects\.
@@ -35,7 +39,9 @@ The AWS CDK's core module \(usually imported into code as `cdk`\) contains const
 
 The AWS CDK has first\-class support for TypeScript, JavaScript, Python, Java, and C\#\. \(Other JVM and \.NET CLR languages may also be used, at least in theory, but we are unable to offer support for them at this time\.\)
 
-To facilitate supporting so many languages, the AWS CDK is developed in one language \(TypeScript\) and language bindings are generated for the other languages through the use of a tool called [JSII](https://github.com/aws/jsii)\. We have taken pains to make AWS CDK app development in each language follow that language's usual conventions, so writing AWS CDK apps feels natural, not like writing TypeScript in Python \(for example\)\. Take a look:
+To facilitate supporting so many languages, the AWS CDK is developed in one language \(TypeScript\) and language bindings are generated for the other languages through the use of a tool called [JSII](https://github.com/aws/jsii)\.
+
+We have taken pains to make AWS CDK app development in each language follow that language's usual conventions, so writing AWS CDK apps feels natural, not like writing TypeScript in Python \(for example\)\. Take a look:
 
 ------
 #### [ TypeScript ]
@@ -148,7 +154,7 @@ Other prerequisites depend on your development language and are as follows\.
 
 ------
 #### [ TypeScript ]
-+ TypeScript 2\.7 or later
++ TypeScript 2\.7 or later \(`npm -g install typescript`\)
 
 ------
 #### [ JavaScript ]
