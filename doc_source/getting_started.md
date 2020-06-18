@@ -1,6 +1,6 @@
 # Getting started with the AWS CDK<a name="getting_started"></a>
 
-This topic introduces you to important AWS CDK concepts, describes how to install and configure the AWS CDK, and walks you through creating your first AWS CDK app\.
+This topic introduces you to important AWS CDK concepts and describes how to install and configure the AWS CDK\. When you're done, you'll be ready to create [your first AWS CDK app\.](hello_world.md)\.
 
 ## Your background<a name="getting_started_background"></a>
 
@@ -16,7 +16,7 @@ Finally, you should be proficient in the programming language you intend to use 
 
 The AWS CDK is designed around a handful of important concepts\. We will introduce a few of these here briefly\. Follow the links to learn more, or see the Concepts topics in this guide's Table of Contents\.
 
-An AWS CDK [app](apps.md) is an application written in TypeScript, JavaScript, Python, Java, or C\# that uses the AWS CDK to define AWS infrastructure\. An app defines one or more [stacks](stacks.md)\. Stacks \(equivalent to AWS CloudFormation stacks\) contains [constructs](constructs.md), each of which defines one or more concrete AWS resources, such as Amazon S3 buckets, Lambda functions, Amazon DynamoDB tables, and so on\.
+An AWS CDK [app](apps.md) is an application written in TypeScript, JavaScript, Python, Java, or C\# that uses the AWS CDK to define AWS infrastructure\. An app defines one or more [stacks](stacks.md)\. Stacks \(equivalent to AWS CloudFormation stacks\) contain [constructs](constructs.md), each of which defines one or more concrete AWS resources, such as Amazon S3 buckets, Lambda functions, Amazon DynamoDB tables, and so on\.
 
 Constructs \(as well as stacks and apps\) are represented as types in your programming language of choice\. You instantiate constructs within a stack to declare them to AWS, and connect them to each other using well\-defined interfaces\.
 
@@ -112,7 +112,7 @@ With the concepts out of the way, here's what you need to have on your workstati
 All CDK developers need to [install Node\.js](https://nodejs.org/en/download/) 10\.3\.0 or later, even those working in languages other than TypeScript or JavaScript\. The AWS CDK Toolkit \(cdk command\-line tool\) and the AWS Construct Library are developed in TypeScript and run on Node\.js\. The bindings for other supported languages use this back end and tool set\. We suggest the latest LTS version\.
 
 **Important**  
-Node\.js versions 13\.0\.0 through 13\.6\.0 are not compatible with the AWS CDK
+Node\.js versions 13\.0\.0 through 13\.6\.0 are not compatible with the AWS CDK\.
 
 You must provide your credentials and an AWS Region to use AWS CDK, if you have not already done so\.
 
