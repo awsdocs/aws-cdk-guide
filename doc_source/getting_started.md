@@ -35,7 +35,7 @@ The AWS CDK's core module \(usually imported into code as `cdk`\) contains const
 
 The AWS CDK has first\-class support for TypeScript, JavaScript, Python, Java, and C\#\. \(Other JVM and \.NET CLR languages may also be used, at least in theory, but we are unable to offer support for them at this time\.\)
 
-To facilitate supporting so many languages, the AWS CDK is developed in one language \(TypeScript\) and language bindings are generated for the other languages through the use of a tool called [JSII](https://github.com/aws/jsii)\. We have taken pains to make AWS CDK app development in each language follow that language's usual conventions\. For example, note how the names of methods, classes, and so on are adapted to each language in the snippets below
+To facilitate supporting so many languages, the AWS CDK is developed in one language \(TypeScript\) and language bindings are generated for the other languages through the use of a tool called [JSII](https://github.com/aws/jsii)\. We have taken pains to make AWS CDK app development in each language follow that language's usual conventions, so writing AWS CDK apps feels natural, not like writing TypeScript in Python \(for example\)\. Take a look:
 
 ------
 #### [ TypeScript ]
