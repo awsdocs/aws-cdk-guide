@@ -1,12 +1,13 @@
 # AWS CDK Developer Guide history<a name="doc-history"></a>
 
-See [Releases](https://github.com/awslabs/aws-cdk/releases) for information on AWS CDK releases\. The AWS CDK is updated approximately once a week\. Maintenance versions may be released between weekly releases to address critical issues in the weekly release\. Each release includes a matched AWS CDK Toolkit \(CDK CLI\), AWS Construct Library, and API Reference\.
+See [Releases](https://github.com/awslabs/aws-cdk/releases) for information on AWS CDK releases\. The AWS CDK is updated approximately once a week\. Maintenance versions may be released between weekly releases to address critical issues\. Each release includes a matched AWS CDK Toolkit \(CDK CLI\), AWS Construct Library, and API Reference\.
 
 **Note**  
 The table below represents significant documentation milestones\. We fix errors and improve content on an ongoing basis\.
 
 | Change | Description | Date | 
 | --- |--- |--- |
+| [Improve Getting Started](#doc-history) | Remove extraneous material from Getting Started, use a more conversational tone, incorporate current best practices\. Break out Hello World into its own topic\. | June 17, 2020 | 
 | [Update stability index](#doc-history) | Incorporate the latest definitions of the stability levels for AWS Construct Library modules\. | June 11, 2020 | 
 | [CDK Toolkit versioning](#doc-history) | Add information about cloud assembly versioning and compatibility of the CDK Toolkit \(CLI\) with the AWS Construct Library | April 22, 2020 | 
 | [Translating from TypeScript](#doc-history) | Updated "CDK in Other Languages" topic to also include JavaScript, Java, and C\# and renamed it "Translating from TypeScript\." | April 10, 2020 | 
