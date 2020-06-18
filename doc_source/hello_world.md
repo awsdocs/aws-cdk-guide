@@ -1,6 +1,6 @@
 # Your first AWS CDK app<a name="hello_world"></a>
 
-You're read [Getting started with the AWS CDK](getting_started.md)? Great\! Now let's see how it feels to work with the AWS CDK\.
+You're read [Getting started with the AWS CDK](getting_started.md)? Great\! Now let's see how it feels to work with the AWS CDK by building the simplest possible AWS CDK app\. In this process you'll learn about the structure of a AWS CDK project, how to access the AWS Construct Library, and how to use the AWS CDK Toolkit command\-line tool\.\.
 
 The standard AWS CDK development workflow is similar to the workflow you're already familiar with as a developer, just with a few extra steps to synthesize your stack to an AWS CloudFormation template and deploy it\.
 
@@ -32,7 +32,7 @@ mkdir hello-cdk
 cd hello-cdk
 ```
 
-**Note**  
+**Important**  
 Be sure to use the name `hello-cdk` for your project directory, *exactly as shown here\.* The AWS CDK project template uses the directory name to name things in the generated code, so if you use a different name, some of the code in this tutorial won't work\.
 
 Now initialize the app using the cdk init command, specifying the desired template \("app"\) and programming language\.
@@ -292,7 +292,7 @@ It's interesting to take note of how praps are represented in the different supp
 
 ## Build the app<a name="hello_world_tutorial_build"></a>
 
-Normally, after making any changes to your code, you'd build \(compile\) it\. This isn't strictly necessary with the AWS CDK—the Toolkit does it for you\. But you can still build manually to catch syntax and type errors\. For reference, here's how\.
+Normally, after making any changes to your code, you'd build \(compile\) it\. This isn't strictly necessary with the AWS CDK—the Toolkit does it for you so you can't forget\. But you can still build manually to catch syntax and type errors\. For reference, here's how\.
 
 ------
 #### [ TypeScript ]
@@ -346,7 +346,7 @@ If your app contained more than one stack, you'd need to specify which stack\(s\
 **Tip**  
 If you received an error like `--app is required...`, it's probably because you are running the command from a subdirectory\. Navigate to the main app directory and try again\.
 
-The cdk synth command executes your app, which causes the resources defined in it to be translated to an AWS CloudFormation template\. The output of `cdk synth` is a YAML\-format AWS CloudFormation template, which looks something like this\. Even if you aren't very familiar with AWS CloudFormation, you should be able to find the definition for an `AWS::S3::Bucket` 
+The `cdk synth` command executes your app, which causes the resources defined in it to be translated to an AWS CloudFormation template\. The output of `cdk synth` is a YAML\-format AWS CloudFormation template, which looks something like this\. Even if you aren't very familiar with AWS CloudFormation, you should be able to find the definition for an `AWS::S3::Bucket`\. 
 
 ```
 Resources:
@@ -362,7 +362,7 @@ Resources:
   CDKMetadata:
     Type: AWS::CDK::Metadata
     Properties:
-      Modules: aws-cdk=1.45.0,@aws-cdk/aws-events=1.45.0,@aws-cdk/aws-iam=1.45.0,@aws-cdk/aws-kms=1.45.0,@aws-cdk/aws-s3=1.45.0,@aws-cdk/cdk-assets-schema=1.45.0,@aws-cdk/cloud-assembly-schema=1.45.0,@aws-cdk/core=1.45.0,@aws-cdk/cx-api=1.45.0,@aws-cdk/region-info=1.45.0,jsii-runtime=node.js/v12.16.3
+      Modules: aws-cdk=1.XX.X,@aws-cdk/aws-events=1.XX.X,@aws-cdk/aws-iam=1.XX.X,@aws-cdk/aws-kms=1.XX.X,@aws-cdk/aws-s3=1.XX.X,@aws-cdk/cdk-assets-schema=1.XX.X,@aws-cdk/cloud-assembly-schema=1.XX.X,@aws-cdk/core=1.XX.X,@aws-cdk/cx-api=1.XX.X,@aws-cdk/region-info=1.XX.X,jsii-runtime=node.js/vXX.XX.X
 ```
 
 **Note**  
@@ -476,7 +476,7 @@ The AWS CDK Toolkit queries your AWS account for the current AWS CloudFormation 
      └─ [+] Delete
 ```
 
-As you can see, the diff indicates that the `DeletionPolicy` property of the bucket is now set to `DESTROY`, enabling the bucket to be deleted when its stack is deleted\. The `UpdateReplacePolicy `is also changed\.
+As you can see, the diff indicates that the `DeletionPolicy` property of the bucket is now set to `Delete`, enabling the bucket to be deleted when its stack is deleted\. The `UpdateReplacePolicy `is also changed\.
 
 Don't be confused by the difference in name\. The AWS CDK calls it `RemovalPolicy` because its meaning is slightly different from AWS CloudFormation's `DeletionPolicy`: the AWS CDK default is to retain the bucket when the stack is deleted, while AWS CloudFormation's default is to delete it\. See [Removal policies](resources.md#resources_removal) for further details\.
 
@@ -493,13 +493,14 @@ Enter y to approve the changes and deploy the updated stack\. The Toolkit update
 ```
 HelloCdkStack: deploying...
 HelloCdkStack: creating CloudFormation changeset...
- 0/2 | 10:55:30 AM | UPDATE_IN_PROGRESS   | AWS::S3::Bucket    | MyFirstBucket (MyFirstBucketID) 
- 1/2 | 10:55:50 AM | UPDATE_COMPLETE      | AWS::S3::Bucket    | MyFirstBucket (MyFirstBucketID) 
+ 1/1 | 8:39:43 AM | UPDATE_COMPLETE      | AWS::S3::Bucket    | MyFirstBucket (MyFirstBucketB8884501)
+ 1/1 | 8:39:44 AM | UPDATE_COMPLETE_CLEA | AWS::CloudFormation::Stack | HelloCdkStack
+ 2/1 | 8:39:45 AM | UPDATE_COMPLETE      | AWS::CloudFormation::Stack | HelloCdkStack
 
-HelloCdkStack
+ ✅  HelloCdkStack
 
 Stack ARN:
-arn:aws:cloudformation:REGION:ACCOUNT-ID:stack/HelloCdkStack/ID
+arn:aws:cloudformation:REDION:ACCOUNT:stack/HelloCdkStack/ID
 ```
 
 ## Destroying the app's resources<a name="hello_world_tutorial_destroy"></a>
@@ -516,3 +517,13 @@ Enter y to approve the changes and delete any stack resources\.
 This wouldn't have worked if we hadn't changed tho bucket's `RemovalPolicy` just a minute ago\!
 
 If cdk destroy fails, it probably means you put something in your Amazon S3 bucket\. AWS CloudFormation won't delete buckets with files in them\. Delete the files and try again\.
+
+## Next steps<a name="hello_world_next_steps"></a>
+
+Where do you go now that you've dipped your toes in the AWS CDK?
++ Try the [CDK Workshop](https://cdkworkshop.com/) for a more in\-depth tour involving a more complex project\.
++ See the [API reference](https://docs.aws.amazon.com/cdk/api/latest/docs/aws-construct-library.html) to begin exploring the CDK constructs available for your favorite API services\.
++ Dig deeper into concepts like [Environments](environments.md), [Assets](assets.md), [Permissions](permissions.md), [Runtime context](context.md), [Parameters](parameters.md), and [Escape hatches](cfn_layer.md)\.
++ Explore [Examples](https://github.com/aws-samples/aws-cdk-examples) of using the AWS CDK\.
+
+The AWS CDK is an open\-source project\. Want to [contribute](https://github.com/aws/aws-cdk)?
