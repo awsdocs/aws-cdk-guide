@@ -94,7 +94,7 @@ If you are using Visual Studio, open the solution file, `src\HelloCdk.sln`\.
 **Tip**  
 If you don't specify a template, the default is "app," which is the one we wanted anyway, so technically you can leave it out and save four keystrokes\.
 
-Each project you create using cdk init is also a Git repository\. We'll ignore that for now, but it's there when you need it\.
+If you have Git installed, ach project you create using cdk init is also initialized as a Git repository\. We'll ignore that for now, but it's there when you need it\.
 
 ## List the stacks in the app<a name="hello_world_tutorial_list_stacks"></a>
 
@@ -286,7 +286,7 @@ All constructs take these same three arguments, so it's easy to stay oriented as
 **Tip**  
 If all a construct's props are optional, you can omit the third parameter entirely\.
 
-It's interesting to take note of how praps are represented in the different supported languages\.
+It's interesting to take note of how props are represented in the different supported languages\.
 + In TypeScript and JavaScript, `props` is a single argument and you pass in an object containing the desired properties\.
 + In Python, props are represented as keyword arguments\.
 + In Java, a Builder is provided to pass the props\. \(Two, actually; one for `BucketProps`, and a second for `Bucket` to let you build the construct and its props object in one step\. This code uses the latter\.\)
