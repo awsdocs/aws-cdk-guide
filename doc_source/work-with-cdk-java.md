@@ -51,7 +51,7 @@ If you're using an IDE, its Maven integration is probably the simplest way to in
 
 1. In the search results, find the desired package \(e\.g\. `s3`\) and double\-click it\. \(You may also expand the package and choose a specific version, if you don't want the latest\.\)
 
-1. Repeat step 5 for each additional AWS Construct Library package you want to install\.
+1. Repeat steps 3\-5 for each additional AWS Construct Library package you want to install\.
 
 You can periodically issue the following command to update your dependencies to the latest version\. Maven updates the version specification in `pom.xml` with the latest version of each specified package available in the Maven Central Repository\.
 
@@ -67,7 +67,7 @@ If you are not using an IDE, or just want full control over the versions of your
 <dependency>
     <groupId>software.amazon.awscdk</groupId>
     <artifactId>s3</artifactId>
-    <version> [1.0,2.0)</version>
+    <version>[1.0,2.0)</version>
 </dependency>
 ```
 

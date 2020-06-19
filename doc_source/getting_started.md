@@ -33,7 +33,7 @@ Constructs come in three fundamental flavors:
   L2 modules may also define supporting resources needed by the primary resource\. Some services have more than one L2 module in the Construct Library for organizational purposes\. 
 + **Patterns** or L3\. Patterns declare multiple resources to create entire AWS architectures for particular use cases\. All the plumbing is already hooked up, and configuration is boiled down to a few important parameters\. In the AWS Construct Library, patterns are in separate modules from L1 and L2 constructs\.
 
-The AWS CDK's core module \(usually imported into code as `cdk`\) contains constructs used by the AWS CDK itself as well as base classes for constructs, apps, resources, and other AWS CDK objects\.
+The AWS CDK's core module \(usually imported into code as `core` or `cdk`\) contains constructs used by the AWS CDK itself as well as base classes for constructs, apps, resources, and other AWS CDK objects\.
 
 ## Supported programming languages<a name="getting_started_languages"></a>
 

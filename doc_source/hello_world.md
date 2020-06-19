@@ -67,7 +67,7 @@ cdk init app --language python
 After the app has been created, also enter the following two commands to activate the app's Python virtual environment and install its dependencies\.
 
 ```
-source env/bin/activate
+source .env/bin/activate
 pip install -r requirements.txt
 ```
 
@@ -136,15 +136,17 @@ pip install aws-cdk.aws-s3
 ------
 #### [ Java ]
 
-If necessary, add the following to `pom.xml`, where *CDK\-VERSION* is the version of the AWS CDK\.
+If necessary, add the following to the `<dependencies>` container of `pom.xml`, where *CDK\-VERSION* is the version of the AWS CDK\.
 
 ```
 <dependency>
-  <groupId>software.amazon.awscdk</groupId>
-  <artifactId>s3</artifactId>
-  <version>CDK-VERSION</version>
+    <groupId>software.amazon.awscdk</groupId>
+    <artifactId>s3</artifactId>
+    <version>[1.0,2.0)</version>
 </dependency>
 ```
+
+If you are using a Java IDE, it should have a simpler way to add this dependency to your project\. For example, in Eclipse, you can use the **Dependencies** tab of the POM editor\. See [Using a Java IDE](work-with-cdk-java.md#java-maven-ide-gui) for further instructions\.
 
 ------
 #### [ C\# ]
@@ -390,7 +392,7 @@ You've deployed your first stack using the AWS CDK—congratulations\! But that'
 
 ## Modifying the app<a name="hello_world_tutorial_modify"></a>
 
-The AWS CDK can update your deployed resources after you modify your app\. Let's make a little change to our bucket\. We want to be able to delete the bucket automatically when we delete the stack, so we'll change the RemovalPolicy\. 
+The AWS CDK can update your deployed resources after you modify your app\. Let's make a little change to our bucket\. We want to be able to delete the bucket automatically when we delete the stack, so we'll change the `RemovalPolicy`\. 
 
 ------
 #### [ TypeScript ]
