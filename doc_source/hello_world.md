@@ -348,7 +348,7 @@ If your app contained more than one stack, you'd need to specify which stack\(s\
 **Tip**  
 If you received an error like `--app is required...`, it's probably because you are running the command from a subdirectory\. Navigate to the main app directory and try again\.
 
-The `cdk synth` command executes your app, which causes the resources defined in it to be translated to an AWS CloudFormation template\. The output of `cdk synth` is a YAML\-format AWS CloudFormation template, which looks something like this\. Even if you aren't very familiar with AWS CloudFormation, you should be able to find the definition for an `AWS::S3::Bucket`\. 
+The `cdk synth` command executes your app, which causes the resources defined in it to be translated to an AWS CloudFormation template\. The output of `cdk synth` is a YAML\-format AWS CloudFormation template, which looks something like this\.
 
 ```
 Resources:
@@ -366,6 +366,8 @@ Resources:
     Properties:
       Modules: aws-cdk=1.XX.X,@aws-cdk/aws-events=1.XX.X,@aws-cdk/aws-iam=1.XX.X,@aws-cdk/aws-kms=1.XX.X,@aws-cdk/aws-s3=1.XX.X,@aws-cdk/cdk-assets-schema=1.XX.X,@aws-cdk/cloud-assembly-schema=1.XX.X,@aws-cdk/core=1.XX.X,@aws-cdk/cx-api=1.XX.X,@aws-cdk/region-info=1.XX.X,jsii-runtime=node.js/vXX.XX.X
 ```
+
+Even if you aren't very familiar with AWS CloudFormation, you should be able to find the definition for an `AWS::S3::Bucket` and see how the versioning configuration was translated\. 
 
 **Note**  
 Every generated template contains a `AWS::CDK::Metadata` resource by default\. The AWS CDK team uses this metadata to gain insight into how the AWS CDK is used, so we can continue to improve it\. For details, including how to opt out of version reporting, see [Version reporting](tools.md#version_reporting)\.
@@ -524,7 +526,7 @@ If cdk destroy fails, it probably means you put something in your Amazon S3 buck
 
 Where do you go now that you've dipped your toes in the AWS CDK?
 + Try the [CDK Workshop](https://cdkworkshop.com/) for a more in\-depth tour involving a more complex project\.
-+ See the [API reference](https://docs.aws.amazon.com/cdk/api/latest/docs/aws-construct-library.html) to begin exploring the CDK constructs available for your favorite API services\.
++ See the [API reference](https://docs.aws.amazon.com/cdk/api/latest/docs/aws-construct-library.html) to begin exploring the CDK constructs available for your favorite AWS services\.
 + Dig deeper into concepts like [Environments](environments.md), [Assets](assets.md), [Permissions](permissions.md), [Runtime context](context.md), [Parameters](parameters.md), and [Escape hatches](cfn_layer.md)\.
 + Explore [Examples](https://github.com/aws-samples/aws-cdk-examples) of using the AWS CDK\.
 

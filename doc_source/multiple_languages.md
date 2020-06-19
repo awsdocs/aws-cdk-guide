@@ -295,6 +295,7 @@ Python doesn't have an interface feature\. However, for the AWS CDK you can indi
 
 ```
 from aws_cdk.core import IAspect, IConstruct
+import jsii
 
 @jsii.implements(IAspect)
 class MyAspect():

@@ -209,7 +209,7 @@ The [AWS Toolkit for Visual Studio Code](https://aws.amazon.com/visualstudiocode
 Where do you go now that you've dipped your toes in the AWS CDK?
 + Come on in; the water's fine\! Build [your first AWS CDK app](hello_world.md)\.
 + Try the [CDK Workshop](https://cdkworkshop.com/) for a more in\-depth tour involving a more complex project\.
-+ See the [API reference](https://docs.aws.amazon.com/cdk/api/latest/docs/aws-construct-library.html) to begin exploring the CDK constructs available for your favorite API services\.
++ See the [API reference](https://docs.aws.amazon.com/cdk/api/latest/docs/aws-construct-library.html) to begin exploring the CDK constructs available for your favorite AWS services\.
 + Dig deeper into concepts like [Environments](environments.md), [Assets](assets.md), [Permissions](permissions.md), [Runtime context](context.md), [Parameters](parameters.md), and [Escape hatches](cfn_layer.md)\.
 + Explore [Examples](https://github.com/aws-samples/aws-cdk-examples) of using the AWS CDK\.
 
