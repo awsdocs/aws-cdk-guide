@@ -134,7 +134,6 @@ Object {
 To make sure the test works, change the construct so that it generates different AWS CloudFormation output, then build and test again\. For example, add a `period` property of 1 minute to override the default of 5 minutes\. The boldface line below shows the code that needs to be added to `index.ts`\. 
 
 ```
-this.messagesInQueueAlarm = new cloudwatch.Alarm(this, 'Alarm', {
     this.messagesInQueueAlarm = new cloudwatch.Alarm(this, 'Alarm', {
     alarmDescription: 'There are messages in the Dead Letter Queue',
     evaluationPeriods: 1,
