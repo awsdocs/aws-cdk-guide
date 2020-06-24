@@ -509,7 +509,7 @@ export interface NotifyingBucketProps {
 
 export class NotifyingBucket extends Construct {
   constructor(scope: Construct, id: string, props: NotifyingBucketProps = {}) {
-    super(scope, id);
+    super(scope, id, props);
     const bucket = new s3.Bucket(this, 'bucket');
     const topic = new sns.Topic(this, 'topic');
     bucket.addObjectCreatedNotification(new s3notify.SnsDestination(topic),
@@ -524,7 +524,7 @@ export class NotifyingBucket extends Construct {
 ```
 class NotifyingBucket extends Construct {
   constructor(scope, id, props = {}) {
-    super(scope, id);
+    super(scope, id, props);
     const bucket = new s3.Bucket(this, 'bucket');
     const topic = new sns.Topic(this, 'topic');
     bucket.addObjectCreatedNotification(new s3notify.SnsDestination(topic),
@@ -542,7 +542,7 @@ module.exports = { NotifyingBucket }
 class NotifyingBucket(core.Construct):
 
     def __init__(self, scope: core.Construct, id: str, *, prefix=None, **kwargs):
-        super().__init__(scope, id)
+        super().__init__(scope, id, **kwargs)
         bucket = s3.Bucket(self, "bucket")
         topic = sns.Topic(self, "topic")
         bucket.add_object_created_notification(s3notify.SnsDestination(topic),
@@ -568,7 +568,7 @@ public class NotifyingBucket extends Construct {
     }
 
     public NotifyingBucket(final Construct scope, final String id, final BucketProps props, final String prefix) {
-        super(scope, id);
+        super(scope, id, props);
 
         Bucket bucket = new Bucket(this, "bucket");
         Topic topic = new Topic(this, "topic");
@@ -590,7 +590,7 @@ public class NotifyingBucketProps : BucketProps
 
 public class NotifyingBucket : Construct
 {
-    public NotifyingBucket(Construct scope, string id, NotifyingBucketProps props = null) : base(scope, id)
+    public NotifyingBucket(Construct scope, string id, NotifyingBucketProps props = null) : base(scope, id, props)
     {
         var bucket = new Bucket(this, "bucket");
         var topic = new Topic(this, "topic");
@@ -695,7 +695,7 @@ export class NotifyingBucket extends Construct {
   public readonly topic: sns.Topic;
 
   constructor(scope: Construct, id: string, props: NotifyingBucketProps) {
-    super(scope, id);
+    super(scope, id, props);
     const bucket = new s3.Bucket(this, 'bucket');
     this.topic = new sns.Topic(this, 'topic');
     bucket.addObjectCreatedNotification(this.topic, { prefix: props.prefix });
@@ -710,7 +710,7 @@ export class NotifyingBucket extends Construct {
 class NotifyingBucket extends Construct {
 
   constructor(scope, id, props) {
-    super(scope, id);
+    super(scope, id, props);
     const bucket = new s3.Bucket(this, 'bucket');
     this.topic = new sns.Topic(this, 'topic');
     bucket.addObjectCreatedNotification(this.topic, { prefix: props.prefix });
@@ -774,7 +774,7 @@ public class NotifyingBucket : Construct
 {
     public readonly Topic topic;
 
-    public NotifyingBucket(Construct scope, string id, NotifyingBucketProps props = null) : base(scope, id)
+    public NotifyingBucket(Construct scope, string id, NotifyingBucketProps props = null) : base(scope, id, props)
     {
         var bucket = new Bucket(this, "bucket");
         topic = new Topic(this, "topic");
@@ -795,7 +795,7 @@ Now, consumers can subscribe to the topic, for example:
 
 ```
 const queue = new sqs.Queue(this, 'NewImagesQueue');
-const images = new NotifyingBucket(this, 'Images');
+const images = new NotifyingBucket(this, '/images');
 images.topic.addSubscription(new sns_sub.SqsSubscription(queue));
 ```
 
@@ -804,7 +804,7 @@ images.topic.addSubscription(new sns_sub.SqsSubscription(queue));
 
 ```
 const queue = new sqs.Queue(this, 'NewImagesQueue');
-const images = new NotifyingBucket(this, 'Images');
+const images = new NotifyingBucket(this, '/images');
 images.topic.addSubscription(new sns_sub.SqsSubscription(queue));
 ```
 
