@@ -94,7 +94,7 @@ If you are using Visual Studio, open the solution file, `src\HelloCdk.sln`\.
 **Tip**  
 If you don't specify a template, the default is "app," which is the one we wanted anyway, so technically you can leave it out and save four keystrokes\.
 
-If you have Git installed, ach project you create using cdk init is also initialized as a Git repository\. We'll ignore that for now, but it's there when you need it\.
+If you have Git installed, each project you create using cdk init is also initialized as a Git repository\. We'll ignore that for now, but it's there when you need it\.
 
 ## List the stacks in the app<a name="hello_world_tutorial_list_stacks"></a>
 
@@ -405,7 +405,6 @@ Update `lib/hello-cdk-stack.ts`
 new s3.Bucket(this, 'MyFirstBucket', {
   versioned: true,
   removalPolicy: core.RemovalPolicy.DESTROY
-
 });
 ```
 
@@ -504,7 +503,7 @@ HelloCdkStack: creating CloudFormation changeset...
  ✅  HelloCdkStack
 
 Stack ARN:
-arn:aws:cloudformation:REDION:ACCOUNT:stack/HelloCdkStack/ID
+arn:aws:cloudformation:REGION:ACCOUNT:stack/HelloCdkStack/ID
 ```
 
 ## Destroying the app's resources<a name="hello_world_tutorial_destroy"></a>
