@@ -141,7 +141,7 @@ In our experience, the type errors Python programmers make tend to fall into the
 + Passing a single value where a construct expects a container \(Python list or dictionary\) or vice versa\.
 + Passing a value of a type associated with a Level 1 \(`CfnXxxxxx`\) construct to a higher\-level construct, or vice versa\.
 
-The AWS CDK Python modules do include type annotations\. If you are not using an IDE that supports these, such as [PyCharm](https://www.jetbrains.com/pycharm/), you might want to call the [MyPy](http://mypy-lang.org/) type validator as a step in your build process\. There are also runtime type checkers that can improve errror messages for type\-related errors\.
+The AWS CDK Python modules do include type annotations\. If you are not using an IDE that supports these, such as [PyCharm](https://www.jetbrains.com/pycharm/), you might want to call the [MyPy](http://mypy-lang.org/) type validator as a step in your build process\. There are also runtime type checkers that can improve error messages for type\-related errors\.
 
 ## Synthesizing and deploying<a name="python-running"></a>
 
