@@ -32,7 +32,7 @@ new sqs.Queue(this, 'MyQueue', {
 ```
 import aws_cdk.aws_sqs as sqs
       
-sqs_Queue(self, "MyQueue", encryption=sqs.QueueEncryption.KMS_MANAGED)
+sqs.Queue(self, "MyQueue", encryption=sqs.QueueEncryption.KMS_MANAGED)
 ```
 
 ------
