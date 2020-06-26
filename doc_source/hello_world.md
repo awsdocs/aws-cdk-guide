@@ -1,6 +1,6 @@
 # Your first AWS CDK app<a name="hello_world"></a>
 
-You're read [Getting started with the AWS CDK](getting_started.md)? Great\! Now let's see how it feels to work with the AWS CDK by building the simplest possible AWS CDK app\. In this process you'll learn about the structure of a AWS CDK project, how to access the AWS Construct Library, and how to use the AWS CDK Toolkit command\-line tool\.\.
+You've read [Getting started with the AWS CDK](getting_started.md)? Great\! Now let's see how it feels to work with the AWS CDK by building the simplest possible AWS CDK app\. In this process you'll learn about the structure of a AWS CDK project, how to access the AWS Construct Library, and how to use the AWS CDK Toolkit command\-line tool\.\.
 
 The standard AWS CDK development workflow is similar to the workflow you're already familiar with as a developer, just with a few extra steps to synthesize your stack to an AWS CloudFormation template and deploy it\.
 
