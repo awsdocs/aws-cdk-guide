@@ -36,7 +36,7 @@ To set up a new AWS CDK project in CodeCommit;
 
    Enter your credentials if prompted for them\. 
 **Note**  
-During cloning, Git will warn you that you appear have cloned an empty repository; this is normal and expected\.
+During cloning, Git will warn you that you appear to have cloned an empty repository; this is normal and expected\.
 
 1. Change to the pipeline directory and initialize it as a new CDK project, then install the AWS Construct Libraries we'll use in our app\.
 
