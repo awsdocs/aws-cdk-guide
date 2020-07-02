@@ -1,114 +1,219 @@
-# Creating a code pipeline using the AWS CDK<a name="codepipeline_example"></a>
+# Creating a pipeline using the AWS CDK<a name="codepipeline_example"></a>
 
-This example creates a code pipeline using the AWS CDK\.
+The AWS CDK lets you easily define applications in the AWS Cloud using your programming language of choice\. But creating an application is just the start of the journey\. You also want to make changes to it and deploy them\. You can do this through the **Code** suite of tools: AWS CodeCommit, AWS CodeBuild, AWS CodeDeploy, and AWS CodePipeline\. Together, they allow you to build what's called a [deployment pipeline](https://aws.amazon.com/getting-started/tutorials/continuous-deployment-pipeline/) for your application\. This example shows how to deploy an AWS Lambda function using such a pipeline\.
 
-The AWS CDK enables you to easily create applications running in the AWS Cloud\. But creating the application is just the start of the journey\. You also want to make changes to it, test those changes, and finally deploy them to your stack\. The AWS CDK enables this workflow by using the **Code\*** suite of AWS tools: AWS CodeCommit, AWS CodeBuild, AWS CodeDeploy, and AWS CodePipeline\. Together, they allow you to build what's called a [deployment pipeline](https://aws.amazon.com/getting-started/tutorials/continuous-deployment-pipeline/) for your application\.
+## How it works<a name="codepipeline_example.how"></a>
 
-The following example shows how to deploy an AWS Lambda function in a pipeline\. Two stacks are created: one to deploy your Lambda code, and one to define a pipeline to deploy the first stack whenever your Lambda code changes\. Your Lambda code is intended to be in a AWS CodeCommit repository, although you can work through this example without any Lambda code \(the pipeline will fail, but the stack that defines it will deploy\)\.
+Our application contains two AWS CDK stacks\. The first stack, `PipelineStack`, defines the pipeline itself\. The second, `LambdaStack`, is used to deploy the Lambda function\.
 
-The Lambda code must be in a directory named `Lambda` in the named AWS CodeCommit repository\. The AWS CDK code does not need to be in a repository\.
+The key to this example is that you deploy `PipelineStack` from your own workstation, but `LambdaStack` is deployed by the pipeline; you never deploy it yourself\.
 
+Since the `LambdaStack` is deployed by the pipeline, it must be available to the pipeline \(along with the Lambda code\)\. Therefore, this app and the Lambda function are stored in a CodeCommit repository\.
+
+The `PipelineStack` contains the definitions of the pipeline, which includes build steps for both the Lambda function and the `LambdaStack`\.
+
+## Prerequisites<a name="codepipeline_example.prerequisites"></a>
+
+Beyond having the AWS CDK set up and configured, your workstation needs to be able to push to AWS CodeCommit using Git, which means you need some way of identifying yourself to CodeCommit\. The easiest way to do this is to configure Git credentials for an IAM user, as described in [Setup for HTTPS users using Git credentials](https://docs.aws.amazon.com/codecommit/latest/userguide/setting-up-gc.html)\.
+
+You can also use the `git-remote-codecommit` Git add\-on or other methods of connecting and authenticating [supported by CodeCommit](https://docs.aws.amazon.com/codecommit/latest/userguide/setting-up.html)\.
+
+Also, make sure you have issued `cdk bootstrap`, as the Amazon S3 bucket in the bootstrap stack is required to deploy a Lambda function with the AWS CDK\.
+
+## Setting up the project<a name="codepipeline_example.setup"></a>
+
+To set up a new AWS CDK project in CodeCommit;
+
+1. [Create a new CodeCommit repository](https://docs.aws.amazon.com/codecommit/latest/userguide/how-to-create-repository.html) named `pipeline` using the CodeCommit console or the AWS CLI\.
+
+   if you already have a CodeCommit repository named `pipeline`, you can use another name\. Just make sure you clone it to a directory named pipeline on your local system\.
+
+1. Clone this new repository to your local computer in a directory named pipeline\. If you are authenticating with an IAM user with Git credentials, copy the HTTPS URL from the CodeCommit console\. \(Other authentication methods require a different URL\.\)
+
+   ```
+   git clone CODECOMMIT-REPO-URL pipeline
+   ```
+
+   Enter your credentials if prompted for them\. 
 **Note**  
-The Lambda function is assumed to be written in TypeScript regardless of the language you're using for your AWS CDK app\. To use this example to deploy a Lambda function written in another language, you'll need to modify the pipeline\. This is outside the scope of this example\.
+During cloning, Git will warn you that you appear have cloned an empty repository; this is normal and expected\.
 
-To set up a project like this from scratch, follow these instructions\.
+1. Change to the pipeline directory and initialize it as a new CDK project, then install the AWS Construct Libraries we'll use in our app\.
 
 ------
 #### [ TypeScript ]
 
-```
-mkdir pipeline
-cd pipeline
-cdk init --language typescript
-npm install @aws-cdk/aws-codedeploy @aws-cdk/aws-lambda @aws-cdk/aws-codebuild @aws-cdk/aws-codepipeline
-npm install @aws-cdk/aws-codecommit @aws-cdk/aws-codepipeline-actions @aws-cdk/aws-s3
-```
+   ```
+   cd pipeline
+   cdk init --language typescript
+   npm install @aws-cdk/aws-codedeploy @aws-cdk/aws-lambda @aws-cdk/aws-codebuild @aws-cdk/aws-codepipeline
+   npm install @aws-cdk/aws-codecommit @aws-cdk/aws-codepipeline-actions @aws-cdk/aws-s3
+   ```
 
 ------
 #### [ JavaScript ]
 
-```
-mkdir pipeline
-cd pipeline
-cdk init ‐-language javascript
-npm install @aws-cdk/aws-codedeploy @aws-cdk/aws-lambda @aws-cdk/aws-codebuild @aws-cdk/aws-codepipeline
-npm install @aws-cdk/aws-codecommit @aws-cdk/aws-codepipeline-actions @aws-cdk/aws-s3
-```
+   ```
+   cd pipeline
+   cdk init ‐-language javascript
+   npm install @aws-cdk/aws-codedeploy @aws-cdk/aws-lambda @aws-cdk/aws-codebuild @aws-cdk/aws-codepipeline
+   npm install @aws-cdk/aws-codecommit @aws-cdk/aws-codepipeline-actions @aws-cdk/aws-s3
+   ```
 
 ------
 #### [ Python ]
 
-```
-mkdir pipeline
-cd pipeline
-cdk init --language python
-source .env/bin/activate
-pip install -r requirements.txt
-pip install aws_cdk.aws_codedeploy aws_cdk.aws_lambda aws_cdk.aws_codebuild aws_cdk.aws_codepipeline
-pip install aws_cdk.aws_codecommit aws_cdk.aws_codepipeline_actions aws_cdk.aws_s3
-```
+   A couple of commands differ between Windows and Linux or Mac OS\. 
+
+   **Linux or Mac OS X**
+
+   ```
+   cd pipeline
+   cdk init --language python
+   source .env/bin/activate
+   pip install -r requirements.txt
+   pip install aws_cdk.aws_codedeploy aws_cdk.aws_lambda aws_cdk.aws_codebuild aws_cdk.aws_codepipeline
+   pip install aws_cdk.aws_codecommit aws_cdk.aws_codepipeline_actions aws_cdk.aws_s3
+   pip freeze | grep -v '-e git' > requirements.txt
+   ```
+
+   **Windows**
+
+   ```
+   cd pipeline
+   cdk init --language python
+   .env\Scripts\activate.bat
+   pip install -r requirements.txt
+   pip install aws_cdk.aws_codedeploy aws_cdk.aws_lambda aws_cdk.aws_codebuild aws_cdk.aws_codepipeline
+   pip install aws_cdk.aws_codecommit aws_cdk.aws_codepipeline_actions aws_cdk.aws_s3
+   pip freeze | find /V "-e git" > requirements.txt
+   ```
 
 ------
 #### [ Java ]
 
-```
-mkdir pipeline
-cd pipeline
-cdk init --language java
-```
+   ```
+   cd pipeline
+   cdk init --language java
+   ```
 
-You can import the resulting Maven project into your Java IDE\.
+   You can import the resulting Maven project into your Java IDE\.
 
-Using the Maven integration in your IDE \(for example, in Eclipse, right\-click the project and choose **Maven** > **Add Dependency**\), add the following packages in the group `software.amazon.awscdk`\.
+   Using the Maven integration in your IDE \(for example, in Eclipse, right\-click the project and choose **Maven** > **Add Dependency**\), add the following packages in the group `software.amazon.awscdk`\.
 
-```
-lambda
-codedeploy
-codebuild
-codecommit
-codepipeline
-codepipeline-actions
-s3
-```
+   ```
+   lambda
+   codedeploy
+   codebuild
+   codecommit
+   codepipeline
+   codepipeline-actions
+   s3
+   ```
+
+   Alternatively, add `<dependency>` elements like the following to `pom.xml`\. You can copy the existing dependency for the AWS CDK core module and modify it\. For example, a dependency for the AWS Lambda module looks like this\.
+
+   ```
+           <dependency>
+               <groupId>software.amazon.awscdk</groupId>
+               <artifactId>lambda</artifactId>
+               <version>${cdk.version}</version>
+           </dependency>
+   ```
 
 ------
 #### [ C\# ]
 
-```
-mkdir pipeline
-cd pipeline
-cdk init --language csharp
-```
+   ```
+   cd pipeline
+   cdk init --language csharp
+   ```
 
-You can open the file `src/Pipeline.sln` in Visual Studio\.
+   You can open the file `src/Pipeline.sln` in Visual Studio\.
 
-Choose **Tools** > **NuGet Package Manager** > **Manage NuGet Packages for Solution** in Visual Studio and add the following packages\.
+   Choose **Tools** > **NuGet Package Manager** > **Manage NuGet Packages for Solution** in Visual Studio and add the following packages\.
 
-```
-Amazon.CDK.AWS.CodeDeploy
-Amazon.CDK.AWS.CodeBuild
-Amazon.CDK.AWS.CodeCommit
-Amazon.CDK.AWS.CodePipeline
-Amazon.CDK.AWS.CodePipeline.Actions
-Amazon.CDK.AWS.Lambda
-Amazon.CDK.AWS.S3
-```
+   ```
+   Amazon.CDK.AWS.CodeDeploy
+   Amazon.CDK.AWS.CodeBuild
+   Amazon.CDK.AWS.CodeCommit
+   Amazon.CDK.AWS.CodePipeline
+   Amazon.CDK.AWS.CodePipeline.Actions
+   Amazon.CDK.AWS.Lambda
+   Amazon.CDK.AWS.S3
+   ```
 
 ------
 
-## Lambda stack<a name="codepipeline_example_lambda"></a>
+1. If a directory named `test` exists, delete it\. We won't be using it in this example, and some of the code in the tests will cause errors because of other changes we'll be making\.
 
-The first step is to define the AWS CloudFormation stack that will create the Lambda function\. This is the stack that we'll deploy in our pipeline\.
+------
+#### [ Linux or Mac OS X ]
 
-We'll create a new file to hold this stack\.
+   ```
+   rm -rf test
+   ```
 
-This class includes the `lambdaCode` \(Python: `lambda_code`\) property, which is an instance of the `CfnParametersCode` class\. This property represents the code that is supplied later by the pipeline\. Because the pipeline needs access to the object, we expose it as a public property of our class\.
+------
+#### [ Windows ]
 
-The example also uses the CodeDeploy support for blue\-green deployments to Lambda, and the deployment increases the traffic to the new version in 10\-percent increments every minute\. As blue\-green deployment can only operate on aliases, not on the function directly, we create an alias for our function, named `Prod`\.
+   ```
+   cd test
+   del /f /q /s *.*
+   cd ..
+   rmdir test
+   ```
+
+------
+
+1. Stage all the files in the directory, commit them to your local repository, and push to CodeCommit\.
+
+   ```
+   git add --all
+   git commit -m "initial commit"
+   git push
+   ```
+
+## Add Lambda code<a name="codepipeline_example_lambda"></a>
+
+1. Create a directory for your AWS Lambda code\.
+
+   ```
+   mkdir lambda
+   ```
+
+1. Place your AWS Lambda function in the new directory\. Our CDK app expects a Lambda function written in TypeScript, with a main file of `index.ts` and a main function named `main()`, regardless of what language the rest of the app is written in\. The function will be built \(transpiled to JavaScript\) by the TypeScript compiler as part of the pipeline\. Some changes will be needed in the Lambda build process if your function is written in another language\.
+
+   If you don't have a function handy to play with, this one will do:
+
+   ```
+   // index.ts
+   const GREETING = "Hello, AWS!";
+   export async function handler(event: any, context: any) {
+     console.log(GREETING);
+     return GREETING;
+   }
+   ```
+
+1. Commit your changes and push\.
+
+   ```
+   git add --all/index.ts
+   git commit -m "add lambda function"
+   git push
+   ```
+
+## Define Lambda stack<a name="codepipeline_example_lambdastack"></a>
+
+Let's define the AWS CloudFormation stack that will create the Lambda function, the stack that we'll deploy in our pipeline\. We'll create a new file to hold this stack\.
+
+We need some way to get a reference to the Lambda function we'll be deploying\. This code is built by the pipeline, and the pipeline passes us a reference to it as AWS CloudFormation parameters\. We get it using the `fromCfnParameters()` method and store it as an attribute named `lambdaCode`, where it can be picked up by the deployment stage of the pipeline\.
+
+The example also uses the CodeDeploy support for blue\-green deployments to Lambda, transferring traffic to the new version in 10\-percent increments every minute\. As blue\-green deployment can only operate on aliases, not on the function directly, we create an alias for our function, named `Prod`\.
 
 The alias uses a Lambda version obtained using the function's `currentVersion` property\. This ensures that every invocation of the AWS CDK code publishes a new version of the function\.
 
-If the Lambda function needs any other resources when executing, such as an Amazon S3 bucket, Amazon DynamoDB table, or Amazon API Gateway, declare those resources here\.
+If the Lambda function needs any other resources when executing, such as an Amazon S3 bucket, Amazon DynamoDB table, or Amazon API Gateway, you'd declare those resources here\.
 
 ------
 #### [ TypeScript ]
@@ -134,10 +239,9 @@ export class LambdaStack extends Stack {
       runtime: lambda.Runtime.NODEJS_10_X,
     });
       
-    const version = func.latestVersion;
     const alias = new lambda.Alias(this, 'LambdaAlias', {
       aliasName: 'Prod',
-      version,
+      version: func.latestVersion,
     });
       
     new codedeploy.LambdaDeploymentGroup(this, 'DeploymentGroup', {
@@ -171,10 +275,9 @@ class LambdaStack extends Stack {
       runtime: lambda.Runtime.NODEJS_10_X
     });
       
-    const version = func.latestVersion;
     const alias = new lambda.Alias(this, 'LambdaAlias', {
       aliasName: 'Prod',
-      version
+      version: func.latestVersion
     });
       
     new codedeploy.LambdaDeploymentGroup(this, 'DeploymentGroup', {
@@ -207,9 +310,8 @@ class LambdaStack(core.Stack):
                             runtime=lambda_.Runtime.NODEJS_10_X,
     )
       
-    version = func.latest_version
-    alias = lambda_.Alias(self, "LambdaAlias",
-                          alias_name="Prod", version=version)
+    alias = lambda_.Alias(self, "LambdaAlias", alias_name="Prod",
+                            version=func.latest_version)
       
     codedeploy.LambdaDeploymentGroup(self, "DeploymentGroup",
         alias=alias,
@@ -230,14 +332,9 @@ import software.amazon.awscdk.core.App;
 import software.amazon.awscdk.core.Stack;
 import software.amazon.awscdk.core.StackProps;
 
-import software.amazon.awscdk.services.codedeploy.LambdaDeploymentConfig;
-import software.amazon.awscdk.services.codedeploy.LambdaDeploymentGroup;
-
-import software.amazon.awscdk.services.lambda.Alias;
-import software.amazon.awscdk.services.lambda.CfnParametersCode;
-import software.amazon.awscdk.services.lambda.Function;
+import software.amazon.awscdk.services.codedeploy.*;
+import software.amazon.awscdk.services.lambda.*;
 import software.amazon.awscdk.services.lambda.Runtime;
-import software.amazon.awscdk.services.lambda.Version;
 
 public class LambdaStack extends Stack {
 
@@ -281,7 +378,6 @@ public class LambdaStack extends Stack {
 File: `src/Pipeline/LambdaStack.cs`
 
 ```
-using System;
 using Amazon.CDK;
 using Amazon.CDK.AWS.CodeDeploy;
 using Amazon.CDK.AWS.Lambda;
@@ -292,7 +388,8 @@ namespace Pipeline
     {
         public readonly CfnParametersCode lambdaCode;
 
-        public LambdaStack(App app, string id, StackProps props = null) : base(app, id, props)
+        public LambdaStack(Construct scope, string id, StackProps props = null) :
+            base(scope, id, props)
         {
             lambdaCode = Code.FromCfnParameters();
 
@@ -322,21 +419,24 @@ namespace Pipeline
 
 ------
 
-## Pipeline stack<a name="codepipeline_example_stack"></a>
+## Define pipeline stack<a name="codepipeline_example_stack"></a>
 
-The second class, `PipelineStack`, is the stack that contains our pipeline\.
+Our second stack, `PipelineStack`, contains the code that defines our pipeline\.
 
-First it needs a reference to the Lambda code it's deploying\. For that, we define a new props interface for it, `PipelineStackProps`\. \(This isn't necessary in Python, where properties are instead passed as keyword arguments\.\) This extends the standard `StackProps` and is how clients of this class \(including ourselves\) pass the Lambda code that the class needs\.
+First it needs a reference to the Lambda code it's deploying\. For that, we define a new props interface for it, `PipelineStackProps`\. This extends the standard `StackProps` and is how clients of this class \(including ourselves\) pass the Lambda code that the class needs\.
 
-Then comes the Git repository used to store the source code\. In the example, it's hosted by CodeCommit\. The `Repository.fromRepositoryName` method \(Python: `from_repository_name`\) is a standard AWS CDK idiom for referencing a resource, such as a CodeCommit repository, that lives outside the AWS CDK code\. Replace *NameOfYourCodeCommitRepository* with the name of your repository\.
+The name of the CodeCommit repo hosting our source code is also passed in the stack's props\. The `Repository.fromRepositoryName` method is a standard AWS CDK idiom for referencing a resource, such as a CodeCommit repository, that lives outside the AWS CDK code\.
 
-The example has two CodeBuild projects\. The first project obtains the AWS CloudFormation template from the AWS CDK code\. To do that, it calls the standard install and build targets for Node\.js, and then calls the cdk synth command\. This produces AWS CloudFormation templates in the target directory `dist`\. Finally, it uses the `dist/LambdaStack.template.json` file as its output\.
+The pipeline has two CodeBuild projects\. The first project synthesizes the AWS CloudFormation template to deploy the Lambda function from the AWS CDK code\. To do that, it installs the AWS CDK Toolkit using `npm`, then any dependencies, and then issues cdk synth command to produce AWS CloudFormation templates in the target directory `dist`\. The `dist/LambdaStack.template.json` file is this step's output\.
 
-The second project does a similar thing, except for the Lambda code\. Because of that, it starts by changing the current directory to `lambda`, which is where we said the Lambda code lives in the repository\. It then invokes the same install and build Node\.js targets as before\. The output is the contents of the node\_modules directory, plus the `index.js` file\. Because `index.handler` is the entry point to the Lambda code, `index.js` must exist, and must export a `handler` function\. This function is called by the Lambda runtime to handle requests\. If your Lambda code uses more files than just `index.js`, add them here\.
+The second project builds the Lambda code\. It begins by changing the current directory to `lambda`, which is where the Lambda code lives\. It then installs any dependencies and the TypeScript compiler, then builds the code\. The output is the contents of the `node_modules` directory, plus the `index.js` file\. The Lambda runtime will call the `handler\(\)` function in this file to handle requests\.
 
-Finally, we create our pipeline\. It has a source Action targeting the CodeCommit repository, two build Actions using the previously defined projects, and finally a deploy Action that uses AWS CloudFormation\. It takes the template generated by the AWS CDK build Project \(stored in the `LambdaStack.template.json` file, same as the build specified\), and then uses the Lambda code that was passed in its props to reference the output of the build of our Lambda function\. The deployed Lambda function uses the output of that build as its code\. We have to make sure that the Lambda build output is an input to the AWS CloudFormation action though, and that's why we pass it in the `extraInputs` property \(Python: `extra_inputs`\)\.
+**Tip**  
+This is where you'll need some changes if you use a Lambda function written in a language other than TypeScript\.
 
-We also change the name of the stack that will be deployed, from `LambdaStack` to `LambdaDeploymentStack`\. The name change isn't required\. We could have left it the same\.
+Finally, we define our pipeline\. It has a source Action targeting the CodeCommit repository, two build Actions using the previously defined projects, and finally a deploy Action that uses AWS CloudFormation\. It takes the template generated by the AWS CDK build Project \(stored in the `LambdaStack.template.json` file\), passes it to AWS CloudFormation for deployment\. To make the Lambda build output is an input to the AWS CloudFormation action, we pass it in the `extraInputs` property\.
+
+We also change the name of the stack that will be deployed, from `LambdaStack` to `LambdaDeploymentStack`\. This isn't required; it's just an example of how you'd do this if you wanted\.
 
 ------
 #### [ TypeScript ]
@@ -354,6 +454,7 @@ import { App, Stack, StackProps } from '@aws-cdk/core';
 
 export interface PipelineStackProps extends StackProps {
   readonly lambdaCode: lambda.CfnParametersCode;
+  readonly repoName: string
 }
 
 export class PipelineStack extends Stack {
@@ -361,7 +462,7 @@ export class PipelineStack extends Stack {
     super(app, id, props);
 
     const code = codecommit.Repository.fromRepositoryName(this, 'ImportedRepo',
-      'NameOfYourCodeCommitRepository');
+      props.repoName);
 
     const cdkBuild = new codebuild.PipelineProject(this, 'CdkBuild', {
       buildSpec: codebuild.BuildSpec.fromObject({
@@ -486,7 +587,7 @@ class PipelineStack extends Stack {
     super(app, id, props);
 
     const code = codecommit.Repository.fromRepositoryName(this, 'ImportedRepo',
-      'NameOfYourCodeCommitRepository');
+      props.repoName);
 
     const cdkBuild = new codebuild.PipelineProject(this, 'CdkBuild', {
       buildSpec: codebuild.BuildSpec.fromObject({
@@ -496,10 +597,7 @@ class PipelineStack extends Stack {
             commands: 'npm install'
           },
           build: {
-            commands: [
-              'npm run build',
-              'npm run cdk synth -- -o dist'
-            ]
+            commands: 'npm run cdk synth -- -o dist'
           }
         },
         artifacts: {
@@ -513,6 +611,7 @@ class PipelineStack extends Stack {
         buildImage: codebuild.LinuxBuildImage.STANDARD_2_0
       }
     });
+
     const lambdaBuild = new codebuild.PipelineProject(this, 'LambdaBuild', {
       buildSpec: codebuild.BuildSpec.fromObject({
         version: '0.2',
@@ -520,11 +619,12 @@ class PipelineStack extends Stack {
           install: {
             commands: [
               'cd lambda',
-              'npm install'
+              'npm install',
+              'npm install typescript'
             ]
           },
           build: {
-            commands: 'npm run build'
+            commands: 'npx tsc index.ts'
           }
         },
         artifacts: {
@@ -609,22 +709,25 @@ from aws_cdk import (core, aws_codebuild as codebuild,
 
 class PipelineStack(core.Stack):
 
-    def __init__(self, scope: core.Construct, id: str, *,
-                 lambda_code: lambda_.CfnParametersCode = None, **kwargs) -> None:
+    def __init__(self, scope: core.Construct, id: str, *, repo_name: str=None,
+                 lambda_code: lambda_.CfnParametersCode=None, **kwargs) -> None:
         super().__init__(scope, id, **kwargs)
 
         code = codecommit.Repository.from_repository_name(self, "ImportedRepo",
-                  "NameOfYourCodeCommitRepository");
+                  repo_name)
 
         cdk_build = codebuild.PipelineProject(self, "CdkBuild",
                         build_spec=codebuild.BuildSpec.from_object(dict(
                             version="0.2",
                             phases=dict(
                                 install=dict(
-                                    commands="npm install"),
+                                    commands=[
+                                        "npm install aws-cdk",
+                                        "npm update",
+                                        "python -m pip install -r requirements.txt"
+                                    ]),
                                 build=dict(commands=[
-                                    "npm run build",
-                                    "npm run cdk synth -- -o dist"])),
+                                    "npx cdk synth -o dist"])),
                             artifacts={
                                 "base-directory": "dist",
                                 "files": [
@@ -639,9 +742,11 @@ class PipelineStack(core.Stack):
                                 install=dict(
                                     commands=[
                                         "cd lambda",
-                                        "npm install"]),
+                                        "npm install",
+                                        "npm install typescript"]),
                                 build=dict(
-                                    commands="npm run build")),
+                                    commands=[
+                                        "npx tsc index.ts"])),
                             artifacts={
                                 "base-directory": "lambda",
                                 "files": [
@@ -706,51 +811,39 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.HashMap;
 
-import software.amazon.awscdk.core.App;
-import software.amazon.awscdk.core.Stack;
-import software.amazon.awscdk.core.StackProps;
-
-import software.amazon.awscdk.services.codebuild.BuildEnvironment;
-import software.amazon.awscdk.services.codebuild.BuildSpec;
-import software.amazon.awscdk.services.codebuild.LinuxBuildImage;
-import software.amazon.awscdk.services.codebuild.PipelineProject;
-
-import software.amazon.awscdk.services.codecommit.Repository;
-import software.amazon.awscdk.services.codecommit.IRepository;
-
-import software.amazon.awscdk.services.codepipeline.Artifact;
+import software.amazon.awscdk.core.*;
+import software.amazon.awscdk.services.codebuild.*;
+import software.amazon.awscdk.services.codecommit.*;
+import software.amazon.awscdk.services.codepipeline.*;
 import software.amazon.awscdk.services.codepipeline.StageProps;
-import software.amazon.awscdk.services.codepipeline.Pipeline;
-
-import software.amazon.awscdk.services.codepipeline.actions.CloudFormationCreateUpdateStackAction;
-import software.amazon.awscdk.services.codepipeline.actions.CodeBuildAction;
-import software.amazon.awscdk.services.codepipeline.actions.CodeCommitSourceAction;
-
-import software.amazon.awscdk.services.lambda.CfnParametersCode;
+import software.amazon.awscdk.services.codepipeline.actions.*;
+import software.amazon.awscdk.services.lambda.*;
 
 public class PipelineStack extends Stack {
-    // alternate constructor for calls without props. lambdaCode is required. 
-    public PipelineStack(final App scope, final String id, final CfnParametersCode lambdaCode) {
-        this(scope, id, null, lambdaCode);
+    // alternate constructor for calls without props.
+    // lambdaCode and repoName are both required. 
+    public PipelineStack(final App scope, final String id, 
+            final CfnParametersCode lambdaCode, final String repoName) {
+        this(scope, id, null, lambdaCode, repoName);
     }
     
     @SuppressWarnings("serial")
-    public PipelineStack(final App scope, final String id, final StackProps props, final CfnParametersCode lambdaCode) {
+    public PipelineStack(final App scope, final String id, final StackProps props,
+        final CfnParametersCode lambdaCode, final String repoName) {
         super(scope, id, props);
 
-        IRepository code = Repository.fromRepositoryName(this, "ImportedRepo", 
-                "NameOfYourCodeCommitRepository");
+        IRepository code = Repository.fromRepositoryName(this, "ImportedRepo", repoName);
 
         PipelineProject cdkBuild = PipelineProject.Builder.create(this, "CDKBuild") 
                     .buildSpec(BuildSpec.fromObject(new HashMap<String, Object>() {{
                         put("version", "0.2");
                         put("phases", new HashMap<String, Object>() {{
                             put("install", new HashMap<String, String>() {{
-                                put("commands", "npm install");
+                                put("commands", "npm install aws-cdk");
                             }});
                             put("build", new HashMap<String, Object>() {{
-                                put("commands", Arrays.asList("npm run build", 
-                                                              "npm run cdk synth -- o dist"));
+                                put("commands", Arrays.asList("mvn compile -q -DskipTests",
+                                        "npx cdk synth -o dist"));
                             }});
                         }});
                         put("artifacts", new HashMap<String, String>() {{
@@ -767,10 +860,11 @@ public class PipelineStack extends Stack {
                         put("version", "0.2");
                         put("phases", new HashMap<String, Object>() {{ 
                             put("install", new HashMap<String, List<String>>() {{
-                                put("commands", Arrays.asList("cd lambda", "npm install"));
+                                put("commands", Arrays.asList("cd lambda", "npm install",
+                                        "npm install typescript"));
                             }});
                             put("build", new HashMap<String, List<String>>() {{
-                                put("commands", Arrays.asList("npm run build"));
+                                put("commands", Arrays.asList("npx tsc index.ts"));
                             }});
                         }});
                         put("artifacts", new HashMap<String, Object>() {{
@@ -848,14 +942,15 @@ namespace Pipeline
     public class PipelineStackProps : StackProps
     {
         public CfnParametersCode LambdaCode { get; set; }
+        public string RepoName { get; set; }
     }
 
     public class PipelineStack : Stack
     {
-        public PipelineStack(App app, string id, PipelineStackProps props = null)
+        public PipelineStack(Construct scope, string id, PipelineStackProps props = null) :
+            base(scope, id, props)
         {
-            var code = Repository.FromRepositoryName(this, "ImportedRepo",
-                "NameOfYourCodeCommitRepository");
+            var code = Repository.FromRepositoryName(this, "ImportedRepo", props.RepoName);
 
             var cdkBuild = new PipelineProject(this, "CDKBuild", new PipelineProjectProps
             {
@@ -866,14 +961,11 @@ namespace Pipeline
                     {
                         ["install"] = new Dictionary<string, object>
                         {
-                            ["commands"] = "npm install"
+                            ["commands"] = "npm install aws-cdk"
                         },
                         ["build"] = new Dictionary<string, object>
                         {
-                            ["commands"] = new string[] {
-                                "npm run build",
-                                "npm run cdk synth -- o dist"
-                            }
+                            ["commands"] = "npx cdk synth -o dist"
                         }
                     },
                     ["artifacts"] = new Dictionary<string, object>
@@ -887,7 +979,7 @@ namespace Pipeline
                 }),
                 Environment = new BuildEnvironment
                 {
-                    BuildImage = LinuxBuildImage.STANDARD_2_0
+                    BuildImage = WindowsBuildImage.WINDOWS_BASE_2_0
                 }
             });
 
@@ -903,12 +995,13 @@ namespace Pipeline
                             ["commands"] = new string[]
                             {
                                 "cd lambda",
-                                "npm install"
+                                "npm install",
+                                "npm install typescript"
                             }
                         },
                         ["build"] = new Dictionary<string, string>
                         {
-                            ["commands"] = "npm run build"
+                            ["commands"] = "npx tsc index.ts"
                         }
                     },
                     ["artifacts"] = new Dictionary<string, object>
@@ -935,7 +1028,7 @@ namespace Pipeline
             {
                 Stages = new[]
                 {
-                    new StageProps
+                    new Amazon.CDK.AWS.CodePipeline.StageProps
                     {
                         StageName = "Source",
                         Actions = new []
@@ -948,7 +1041,7 @@ namespace Pipeline
                             })
                         }
                     },
-                    new StageProps
+                    new Amazon.CDK.AWS.CodePipeline.StageProps
                     {
                         StageName = "Build",
                         Actions = new []
@@ -969,7 +1062,7 @@ namespace Pipeline
                             })
                         }
                     },
-                    new StageProps
+                    new Amazon.CDK.AWS.CodePipeline.StageProps
                     {
                         StageName = "Deploy",
                         Actions = new []
@@ -995,9 +1088,12 @@ namespace Pipeline
 
 ## Main program<a name="codepipeline_example_main"></a>
 
-Finally, we have our main AWS CDK entry point file, which contains our app\.
+Finally, we have our main AWS CDK application file\.
 
-This code is straightforward: it first instantiates the `LambdaStack` class as `LambdaStack`, which is what the AWS CDK build in the pipeline expects\. Then it instantiates the `PipelineStack` class, passing the required Lambda code from the `LambdaStack` object\.
+**Note**  
+If you didn't name your new CodeCommit repository `pipeline`, here's where you'd change it\. Just edit the value of `CODECOMMIT_REPO_NAME`\.
+
+This code is straightforward: it first instantiates the `LambdaStack` class as `LambdaStack`, which is what the AWS CDK build in the pipeline expects\. Then it instantiates the `PipelineStack` class, passing the Lambda code from the `LambdaStack` object\.
 
 ------
 #### [ TypeScript ]
@@ -1006,6 +1102,8 @@ File: `bin/pipeline.ts`
 
 ```
 #!/usr/bin/env node
+
+const CODECOMMIT_REPO_NAME = "pipeline";
 
 import { App } from '@aws-cdk/core';
 import { LambdaStack } from '../lib/lambda-stack';
@@ -1016,6 +1114,7 @@ const app = new App();
 const lambdaStack = new LambdaStack(app, 'LambdaStack');
 new PipelineStack(app, 'PipelineDeployingLambdaStack', {
   lambdaCode: lambdaStack.lambdaCode,
+  repoName: CODECOMMIT_REPO_NAME
 });
 
 app.synth();
@@ -1029,6 +1128,8 @@ File: `bin/pipeline.js`
 ```
 #!/usr/bin/env node
 
+const CODECOMMIT_REPO_NAME = "pipeline";
+
 const { App } = require('@aws-cdk/core');
 const { LambdaStack } = require('../lib/lambda-stack');
 const { PipelineStack } = require('../lib/pipeline-stack');
@@ -1037,7 +1138,8 @@ const app = new App();
 
 const lambdaStack = new LambdaStack(app, 'LambdaStack');
 new PipelineStack(app, 'PipelineDeployingLambdaStack', {
-  lambdaCode: lambdaStack.lambdaCode
+  lambdaCode: lambdaStack.lambdaCode,
+  repoName: CODECOMMIT_REPO_NAME
 });
 
 app.synth();
@@ -1051,6 +1153,8 @@ File: `app.py`
 ```
 #!/usr/bin/env python3
 
+CODECOMMIT_REPO_NAME = "pipeline"
+
 from aws_cdk import core
 
 from pipeline.pipeline_stack import PipelineStack
@@ -1061,7 +1165,8 @@ app = core.App()
 lambda_stack = LambdaStack(app, "LambdaStack")
 
 PipelineStack(app, "PipelineDeployingLambdaStack",
-    lambda_code=lambda_stack.lambda_code)
+    lambda_code=lambda_stack.lambda_code,
+    repo_name=CODECOMMIT_REPO_NAME)
 
 app.synth()
 ```
@@ -1074,14 +1179,17 @@ File: `src/main/java/com/myorg/PipelineApp.java`
 ```
 package com.myorg;
 
-import software.amazon.awscdk.core.App;
+import software.amazon.awscdk.core.*;
 
 public class PipelineApp {
-    public static void main(final String argv[]) {
+    static final String CODECOMMIT_REPO_NAME = "pipeline";
+
+    public static void main(final String[] argv) {
         App app = new App();
 
         LambdaStack lambdaStack = new LambdaStack(app, "LambdaStack");
-        new PipelineStack(app, "PipelineStack", lambdaStack.getLambdaCode());
+        new PipelineStack(app, "PipelineStack", 
+                lambdaStack.getLambdaCode(), CODECOMMIT_REPO_NAME);
 
         app.synth();
     }
@@ -1100,6 +1208,8 @@ namespace Pipeline
 {
     class Program
     {
+        const string CODECOMMIT_REPO_NAME = "pipeline";
+
         static void Main(string[] args)
         {
             var app = new App();
@@ -1107,7 +1217,8 @@ namespace Pipeline
             var lambdaStack = new LambdaStack(app, "LambdaStack");
             new PipelineStack(app, "PipelineDeployingLambdaStack", new PipelineStackProps
             {
-                LambdaCode = lambdaStack.lambdaCode
+                LambdaCode = lambdaStack.lambdaCode,
+                RepoName = CODECOMMIT_REPO_NAME
             });
 
             app.Synth();
@@ -1118,29 +1229,50 @@ namespace Pipeline
 
 ------
 
+Now check this code in to Git and push it to AWS CodeCommit\.
+
+```
+git add --all
+git commit -m "add CDK app"
+git push
+```
+
 ## Deploying the pipeline<a name="codepipeline_example_create"></a>
 
-The final steps is to deploy the pipeline\.
+Now we can deploy the pipeline\.
 
 ```
 cdk deploy PipelineDeployingLambdaStack
 ```
 
-The name, **PipelineDeployingLambdaStack**, is the name we used when we instantiated `PipelineStack`\.
+The name, `PipelineDeployingLambdaStack`, is the name we used when we instantiated `PipelineStack`\.
 
-**Note**  
-Don't deploy *LambdaStack*\. This stack is meant to be deployed by the pipeline\.
+**Tip**  
+Rather than typing that whole name out, this is a good place to use a wildcard\! Put quotes around the name pattern to prevent the shell from tyring to expand it\.  
+
+```
+cdk deploy "Pipe*"
+```
+
+You'll be asked to approve your stack's security changes\. Type **y** to accept them and continue with deployment\.
+
+Don't deploy `LambdaStack`\. This stack is deployed by the pipeline, and it won't deploy without values provided by the pipeline\.
 
 After the deployment finishes, you should have a three\-stage pipeline that looks something like the following\.
 
 ![\[Image NOT FOUND\]](http://docs.aws.amazon.com/cdk/latest/guide/images/pipeline.jpg)
 
-Try making a change to your Lambda function code and push it to the repository\. The pipeline should pick up your change, build it, and deploy it automatically, without any human intervention\.
+Try making a change to your Lambda function code and push it to the repository\. The pipeline should pick up your change, build it, and deploy it automatically, without any other action from you\.
 
 ## Cleaning up<a name="codepipeline_example_destroy"></a>
 
 To avoid unexpected AWS charges, destroy your AWS CDK stacks after you're done with this exercise\.
 
+Delete the `LambdaStack` first, then the `PipelineDeployingLambdaStack`\. The IAM role needed to delete `LambdaStack` is provided by `PipelineDeployingLambdaStack`, so if you delete it first, you no longer have permission to destroy `LambdaStack`\.
+
 ```
-cdk destroy '*'
+cdk destroy LambdaStack 
+cdk destroy PipelineDeployingLambdaStack
 ```
+
+Finally, delete your AWS CodeCommit repository from the AWS Console\.

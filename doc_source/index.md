@@ -44,7 +44,7 @@ Amazon's trademarks and trade dress may not be used in
 + [Examples](examples.md)
    + [Creating a serverless application using the AWS CDK](serverless_example.md)
    + [Creating an AWS Fargate service using the AWS CDK](ecs_example.md)
-   + [Creating a code pipeline using the AWS CDK](codepipeline_example.md)
+   + [Creating a pipeline using the AWS CDK](codepipeline_example.md)
    + [AWS CDK examples](about_examples.md)
 + [AWS CDK how-tos](how_tos.md)
    + [Get a value from an environment variable](get_env_var.md)
