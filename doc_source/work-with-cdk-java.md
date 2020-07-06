@@ -30,50 +30,31 @@ If you are using an IDE, you can now open or import the project\. In Eclipse, fo
 
 ## Managing AWS construct library modules<a name="java-managemodules"></a>
 
-Use Maven to install AWS Construct Library packages, which are in the group `software.amazon.awscdk` and named for their service\. For example, the Maven artifact ID for Amazon S3 is `s3`\. Its Java package name, for use in import statements, is `software.amazon.awscdk.services.s3`\.
+Use Maven to install AWS Construct Library packages, which are in the group `software.amazon.awscdk` and named for their service\. For example, the Maven artifact ID for Amazon S3 is `s3`\. Its Java package name, for use in import statements, is `software.amazon.awscdk.services.s3`\. [Search the Maven Central Repository](https://search.maven.org/search?q=software.amazon.awscdk) to find the names of all AWS Construct Module libraries\.
 
 **Note**  
 All AWS Construct Library modules used in your project must be the same version\.
 
-### Using a Java IDE<a name="java-maven-ide-gui"></a>
-
-If you're using an IDE, its Maven integration is probably the simplest way to install AWS Construct Library packages\. For example, in Eclipse:
-
-![\[Image NOT FOUND\]](http://docs.aws.amazon.com/cdk/latest/guide/images/eclipse-maven.png)
-
-1. Open your project's `pom.xml` file in the Eclipse editor\.
-
-1. Switch to the editor's **Dependencies** page\.
-
-1. Click the **Add** button next to the **Dependencies** list\.
-
-1. Enter the AWS CDK Maven group ID, `software.amazon.awscdk`, in the search field\.
-
-1. In the search results, find the desired package \(e\.g\. `s3`\) and double\-click it\. \(You may also expand the package and choose a specific version, if you don't want the latest\.\)
-
-1. Repeat steps 3\-5 for each additional AWS Construct Library package you want to install\.
-
-You can periodically issue the following command to update your dependencies to the latest version\. Maven updates the version specification in `pom.xml` with the latest version of each specified package available in the Maven Central Repository\.
-
-```
-mvn versions:use-latest-versions
-```
-
-### Setting dependencies manually<a name="java-maven-manual"></a>
-
-If you are not using an IDE, or just want full control over the versions of your dependencies, you can specify the modules that your application depends on by editing `pom.xml` and adding a new `<dependency>` element in the `<dependencies>` container\. For example, the following `<dependency>` element specifies the Amazon S3 construct library module:
+Specify the modules that your application depends on by editing `pom.xml` and adding a new `<dependency>` element in the `<dependencies>` container\. For example, the following `<dependency>` element specifies the Amazon S3 construct library module:
 
 ```
 <dependency>
     <groupId>software.amazon.awscdk</groupId>
     <artifactId>s3</artifactId>
-    <version>[1.0,2.0)</version>
+    <version>${cdk.version}</version>
 </dependency>
 ```
 
-The version specifier `[1.0,2.0)` in this example indicates that the latest version between 1\.0 \(inclusive\) and 2\.0 \(exclusive\) will be installed\. Since the AWS CDK uses semantic versioning for stable AWS Construct Library modules, \(see [Versioning](reference.md#versioning)\), this ensures that only newer versions without breaking API changes will be installed\.
+**Tip**  
+If you use a Java IDE, it probably has features for managing Maven dependencies\. We recommend always editing `pom.xml` directly, however, unless you are absolutely sure the IDE's functionality matches what you'd do by hand\.
 
-Maven automatically downloads a version of your dependencies that will match the requirements in `pom.xml`, if necessary, the next time your project is built\.
+The default `pom.xml` defines the variable `cdk.version` to be the version of the AWS CDK that created the project\. You can easily update the version by updating the value of this variable\.
+
+```
+<cdk.version>1.XX.Y</cdk.version>
+```
+
+This value can be any valid Maven version specifier\. For example, `[1.XX.Y,2.0)` indicates that any version between the current version 1\.XX\.Y \(inclusive\) and 2\.0 \(exclusive\), may be installed\. However, to avoid mismatched versions, we recommend using a fixed version like 1\.XX and updating it when moving a new AWS CDK release\.
 
 ## AWS CDK idioms in Java<a name="java-cdk-idioms"></a>
 
@@ -105,7 +86,23 @@ When deriving your own construct from an existing construct, you may want to acc
 
 ### Generic structures<a name="java-generic-structures"></a>
 
-In some places, the AWS CDK uses JavaScript arrays or untyped objects or as input to a method\. \(See, for example, AWS CodeBuild's [https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-codebuild.BuildSpec.html#to-wbr-build-wbr-spec](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-codebuild.BuildSpec.html#to-wbr-build-wbr-spec) method\.\) In Java, objects are represented as `java.util.HashMap<String, Object>`\. In cases where the values are all strings, you can use `HashMap<String, String>`\. JavaScript arrays are represented as `Object[]` or `String[]` in Java\.
+In some places, the AWS CDK uses JavaScript arrays or untyped objects or as input to a method\. \(See, for example, AWS CodeBuild's [https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-codebuild.BuildSpec.html#to-wbr-build-wbr-spec](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-codebuild.BuildSpec.html#to-wbr-build-wbr-spec) method\.\) In Java, objects are represented as `java.util.HashMap<String, Object>`\. In cases where the values are all strings, you can use `HashMap<String, String>`\. It is convenient to use double braces to define `HashMap`s\. 
+
+```
+new HashMap<String, String>() {{
+    put("base-directory", "dist");
+    put("files", "LambdaStack.template.json");
+}};
+```
+
+**Note**  
+The double\-brace notation \(which technically declares an anonymous inner class\) is sometimes considered an anti\-pattern\. However, its disadvantages are not very relevant to this use case, and it is a reasonably compact way to write what would be object or dictionary literals in other languages\.
+
+JavaScript arrays are represented as `Object[]` or `String[]` arrays in Java\. The method `Arrays.asList` is convenient for defining short arrays\.
+
+```
+String[] cmds = Arrays.asList("cd lambda", "npm install", "npm install typescript")
+```
 
 ### Missing values<a name="java-missing-values"></a>
 
@@ -113,7 +110,7 @@ In Java, missing values in AWS CDK objects such as props are represented by `nul
 
 ## Building, synthesizing, and deploying<a name="java-running"></a>
 
-The AWS CDK automatically compiles your app before running it\. However, it can be useful to build your app manually to check for errors and run tests\. You can do this in your IDE \(for example, press Control\-B in Eclipse\) or by issuing `mvn compile` at a command prompt while in your project's root directory\.
+ Build your app  to check for errors and to run tests\. You can do this in your IDE \(for example, press Control\-B in Eclipse\) or by issuing `mvn compile` at a command prompt while in your project's root directory\.
 
 Run any tests you've written by running `mvn test` at a command prompt\.
 

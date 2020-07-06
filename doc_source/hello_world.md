@@ -146,7 +146,7 @@ If necessary, add the following to the `<dependencies>` container of `pom.xml`, 
 </dependency>
 ```
 
-If you are using a Java IDE, it should have a simpler way to add this dependency to your project\. For example, in Eclipse, you can use the **Dependencies** tab of the POM editor\. See [Using a Java IDE](work-with-cdk-java.md#java-maven-ide-gui) for further instructions\.
+If you are using a Java IDE, it should have a simpler way to add this dependency to your project\. For example, in Eclipse, you can use the **Dependencies** tab of the POM editor\. See [Managing AWS construct library modules](work-with-cdk-java.md#java-managemodules) for further instructions\.
 
 ------
 #### [ C\# ]
