@@ -7,6 +7,7 @@ The table below represents significant documentation milestones\. We fix errors 
 
 | Change | Description | Date | 
 | --- |--- |--- |
+| [Improve CodePipeline example](#doc-history) | Update pipeline stack to build in proper language and add more material dealing with the CodeCommit repository\. | July 6, 2020 | 
 | [Improve Getting Started](#doc-history) | Remove extraneous material from Getting Started, use a more conversational tone, incorporate current best practices\. Break out Hello World into its own topic\. | June 17, 2020 | 
 | [Update stability index](#doc-history) | Incorporate the latest definitions of the stability levels for AWS Construct Library modules\. | June 11, 2020 | 
 | [CDK Toolkit versioning](#doc-history) | Add information about cloud assembly versioning and compatibility of the CDK Toolkit \(CLI\) with the AWS Construct Library | April 22, 2020 | 

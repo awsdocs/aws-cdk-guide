@@ -406,7 +406,7 @@ Update `lib/hello-cdk-stack.ts`
 ```
 new s3.Bucket(this, 'MyFirstBucket', {
   versioned: true,
-  removalPolicy: core.RemovalPolicy.DESTROY
+  removalPolicy: cdk.RemovalPolicy.DESTROY
 });
 ```
 
@@ -418,7 +418,7 @@ Update `lib/hello-cdk-stack.js`\.
 ```
 new s3.Bucket(this, 'MyFirstBucket', {
     versioned: true,
-    removalPolicy: core.RemovalPolicy.DESTROY
+    removalPolicy: cdk.RemovalPolicy.DESTROY
 });
 ```
 
