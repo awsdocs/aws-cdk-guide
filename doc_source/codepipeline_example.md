@@ -198,7 +198,7 @@ During cloning, Git will warn you that you appear to have cloned an empty reposi
 1. Commit your changes and push\.
 
    ```
-   git add --all/index.ts
+   git add --all
    git commit -m "add lambda function"
    git push
    ```
