@@ -1268,7 +1268,9 @@ Try making a change to your Lambda function code and push it to the repository\.
 
 To avoid unexpected AWS charges, destroy your AWS CDK stacks after you're done with this exercise\.
 
-Delete the `LambdaStack` first, then the `PipelineDeployingLambdaStack`\. The IAM role needed to delete `LambdaStack` is provided by `PipelineDeployingLambdaStack`, so if you delete it first, you no longer have permission to destroy `LambdaStack`\.
+Delete the `LambdaStack` first using the AWS CloudFormation console\. The IAM role needed to delete `LambdaStack` is provided by `PipelineDeployingLambdaStack`, so if you delete it first, you no longer have permission to destroy `LambdaStack`\.
+
+Then you may delete the `PipelineDeployingLambdaStack`\. 
 
 ```
 cdk destroy LambdaStack 
