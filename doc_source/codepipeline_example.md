@@ -848,8 +848,8 @@ public class PipelineStack extends Stack {
                         }});
                         put("artifacts", new HashMap<String, String>() {{
                             put("base-directory", "dist");
+                            put("files", Arrays.asList("LambdaStack.template.json"));
                         }});
-                        put("files", Arrays.asList("LambdaStack.template.json"));
                     }}))
                     .environment(BuildEnvironment.builder().buildImage(
                             LinuxBuildImage.STANDARD_2_0).build())
@@ -970,11 +970,11 @@ namespace Pipeline
                     },
                     ["artifacts"] = new Dictionary<string, object>
                     {
-                        ["base-directory"] = "dist"
-                    },
-                    ["files"] = new string[]
-                    {
-                        "LambdaStack.template.json"
+                        ["base-directory"] = "dist",
+                        ["files"] = new string[]
+                        {
+                            "LambdaStack.template.json"
+                        }
                     }
                 }),
                 Environment = new BuildEnvironment
