@@ -1242,6 +1242,7 @@ git push
 Now we can deploy the pipeline\.
 
 ```
+npm run build
 cdk deploy PipelineDeployingLambdaStack
 ```
 

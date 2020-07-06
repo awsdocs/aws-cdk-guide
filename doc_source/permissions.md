@@ -387,7 +387,7 @@ project.addToRolePolicy(new iam.PolicyStatement({
 project = codebuild.Project.from_project_name(self, 'Project', 'ProjectName')
 
 # project is imported, so project.role is undefined, and this call has no effect
-project.add_to_role_policy(new iam.PolicyStatement(
+project.add_to_role_policy(iam.PolicyStatement(
   effect=iam.Effect.ALLOW,   # ... and so on defining the policy
 )
 ```

@@ -87,7 +87,7 @@ Bucket bucket = Bucket.Builder.create(self, "MyBucket")
 #### [ C\# ]
 
 ```
-var bucket =  Bucket(self, "MyBucket", new BucketProps {
+var bucket = new Bucket(this, "MyBucket", new BucketProps {
                       BucketName = "my-bucket",
                       Versioned  = true,
                       WebsiteRedirect = new WebsiteRedirect {

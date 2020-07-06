@@ -228,7 +228,7 @@ bucket = s3.Bucket(self,
 ------
 #### [ Java ]
 
-In `src/main/java/com/myorg/HelloStack.java`:
+In `src/main/java/com/myorg/HelloCdkStack.java`:
 
 ```
 package com.myorg;
@@ -236,12 +236,12 @@ package com.myorg;
 import software.amazon.awscdk.core.*;
 import software.amazon.awscdk.services.s3.Bucket;
 
-public class HelloStack extends Stack {
-    public HelloStack(final Construct scope, final String id) {
+public class HelloCdkStack extends Stack {
+    public HelloCdkStack(final Construct scope, final String id) {
         this(scope, id, null);
     }
 
-    public HelloStack(final Construct scope, final String id, final StackProps props) {
+    public HelloCdkStack(final Construct scope, final String id, final StackProps props) {
         super(scope, id, props);
 
         Bucket.Builder.create(this, "MyFirstBucket")
@@ -253,7 +253,7 @@ public class HelloStack extends Stack {
 ------
 #### [ C\# ]
 
-Update `HelloStack.cs` to look like this\.
+Update `HelloCdkStack.cs` to look like this\.
 
 ```
 using Amazon.CDK;
@@ -261,9 +261,9 @@ using Amazon.CDK.AWS.S3;
 
 namespace HelloCdk
 {
-    public class HelloStack : Stack
+    public class HelloCdkStack : Stack
     {
-        public HelloStack(Construct scope, string id, IStackProps props) : base(scope, id, props)
+        public HelloCdkStack(Construct scope, string id, IStackProps props=null) : base(scope, id, props)
         {
             new Bucket(this, "MyFirstBucket", new BucketProps
             {
@@ -340,6 +340,7 @@ Instead of issuing `dotnet build`, you can instead press F6 in Visual Studio\.
 Synthesize an AWS CloudFormation template for the app, as follows\. 
 
 ```
+npm run build
 cdk synth
 ```
 
@@ -379,6 +380,7 @@ The output of `cdk synth` is a perfectly valid AWS CloudFormation template\. You
 To deploy the stack using AWS CloudFormation, issue:
 
 ```
+npm run build
 cdk deploy
 ```
 
@@ -388,7 +390,7 @@ It is optional \(though good practice\) to synthesize before deploying\. The AWS
 
 If your code changes have security implications, you'll see a summary of these, and be asked to confirm them before deployment proceeds\.
 
-`cdk deploy` displays progress information as your stack is deployed\. When it's done, the command prompt reappears\. You can go to the [AWS CloudFormation console](https://console.aws.amazon.com/cloudformation/home) and see that it now lists `HelloStack`\. You'll also find `MyFirstBucket` in the Amazon S3 console\.
+`cdk deploy` displays progress information as your stack is deployed\. When it's done, the command prompt reappears\. You can go to the [AWS CloudFormation console](https://console.aws.amazon.com/cloudformation/home) and see that it now lists `HelloSCdktack`\. You'll also find `MyFirstBucket` in the Amazon S3 console\.
 
 You've deployed your first stack using the AWS CDK—congratulations\! But that's not all there is to the AWS CDK\.
 
@@ -423,6 +425,8 @@ new s3.Bucket(this, 'MyFirstBucket', {
 ------
 #### [ Python ]
 
+Update `hello_cdk/hello_cdk_stack.py`
+
 ```
 bucket = s3.Bucket(self, 
     "MyFirstBucket", 
@@ -433,7 +437,7 @@ bucket = s3.Bucket(self,
 ------
 #### [ Java ]
 
-Update `src/main/java/com/myorg/HelloStack.java`\.
+Update `src/main/java/com/myorg/HelloCdkStack.java`\.
 
 ```
 import software.amazon.awscdk.services.s3.BucketEncryption;
@@ -449,7 +453,7 @@ Bucket.Builder.create(this, "MyFirstBucket")
 ------
 #### [ C\# ]
 
-Update `HelloStack.cs`\.
+Update `HelloCdkStack.cs`\.
 
 ```
 new Bucket(this, "MyFirstBucket", new BucketProps
@@ -464,6 +468,7 @@ new Bucket(this, "MyFirstBucket", new BucketProps
 Now we'll use the `cdk diff` command to see the differences between what's already been deployed, and the code we just changed\.
 
 ```
+npm run build
 cdk diff
 ```
 
@@ -488,6 +493,7 @@ You can also see that the bucket isn't going to be replaced, but will be updated
 Now let's deploy\.
 
 ```
+npm run build
 cdk deploy
 ```
 
