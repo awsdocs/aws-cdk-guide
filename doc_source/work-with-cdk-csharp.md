@@ -161,7 +161,7 @@ You can specify the names of multiple stacks to be synthesized or deployed in a 
 You may also use the wildcards \* \(any number of characters\) and ? \(any single character\) to specify partial names\. When using wildcards, place quotes around the partial name to avoid having the shell try to expand them to filenames before they are passed to the CDK Toolkit\.
 
 ```
-cdk sytnh "Stack?"    # Stack1, StackA, etc.
+cdk synth "Stack?"    # Stack1, StackA, etc.
 cdk deploy "*Stack"   @ PipeStack, LambdaStack, etc.
 ```
 
