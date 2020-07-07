@@ -110,9 +110,45 @@ The important files in the blank project are as follows\. \(We will also be addi
 
 Run the app and note that it synthesizes an empty stack\.
 
+------
+#### [ TypeScript ]
+
+```
+npm run build
+cdk synth
+```
+
+------
+#### [ JavaScript ]
+
 ```
 cdk synth
 ```
+
+------
+#### [ Python ]
+
+```
+cdk synth
+```
+
+------
+#### [ Java ]
+
+```
+mvn compile
+cdk synth
+```
+
+------
+#### [ C\# ]
+
+```
+dotnet build src
+cdk synth
+```
+
+------
 
 You should see output like the following, where *CDK\-VERSION* is the version of the AWS CDK\.
 
@@ -189,9 +225,45 @@ exports.main = async function(event, context) {
 
 Save it and be sure the project still results in an empty stack\. We haven't yet wired the Lambda function to the AWS CDK app, so the Lambda asset doesn't appear in the output\.
 
+------
+#### [ TypeScript ]
+
+```
+npm run build
+cdk synth
+```
+
+------
+#### [ JavaScript ]
+
 ```
 cdk synth
 ```
+
+------
+#### [ Python ]
+
+```
+cdk synth
+```
+
+------
+#### [ Java ]
+
+```
+mvn compile
+cdk synth
+```
+
+------
+#### [ C\# ]
+
+```
+dotnet build src
+cdk synth
+```
+
+------
 
 ## Creating a widget service<a name="serverless_example_create_widget_service"></a>
 
@@ -481,9 +553,45 @@ namespace MyWidgetService
 
 Save the app and make sure it still synthesizes an empty stack\.
 
+------
+#### [ TypeScript ]
+
+```
+npm run build
+cdk synth
+```
+
+------
+#### [ JavaScript ]
+
 ```
 cdk synth
 ```
+
+------
+#### [ Python ]
+
+```
+cdk synth
+```
+
+------
+#### [ Java ]
+
+```
+mvn compile
+cdk synth
+```
+
+------
+#### [ C\# ]
+
+```
+dotnet build src
+cdk synth
+```
+
+------
 
 ## Add the service to the app<a name="serverless_example_add_service"></a>
 
@@ -566,9 +674,45 @@ new WidgetService(this, "Widgets");
 
 Be sure the app runs and synthesizes a stack \(we won't show the stack here: it's over 250 lines\)\.
 
+------
+#### [ TypeScript ]
+
+```
+npm run build
+cdk synth
+```
+
+------
+#### [ JavaScript ]
+
 ```
 cdk synth
 ```
+
+------
+#### [ Python ]
+
+```
+cdk synth
+```
+
+------
+#### [ Java ]
+
+```
+mvn compile
+cdk synth
+```
+
+------
+#### [ C\# ]
+
+```
+dotnet build src
+cdk synth
+```
+
+------
 
 ## Deploy and test the app<a name="serverless_example_deploy_and_test"></a>
 
@@ -851,9 +995,45 @@ File: `src/MyWidgetService/WidgetService.cs`
 
 Save and deploy the app\.
 
+------
+#### [ TypeScript ]
+
+```
+npm run build
+cdk deploy
+```
+
+------
+#### [ JavaScript ]
+
 ```
 cdk deploy
 ```
+
+------
+#### [ Python ]
+
+```
+cdk deploy
+```
+
+------
+#### [ Java ]
+
+```
+mvn compile
+cdk deploy
+```
+
+------
+#### [ C\# ]
+
+```
+dotnet build src
+cdk deploy
+```
+
+------
 
 We can now store, show, or delete an individual widget\. Use the following commands to list the widgets, create the widget **example**, list all of the widgets, show the contents of **example** \(it should show today's date\), delete **example**, and then show the list of widgets again\.
 

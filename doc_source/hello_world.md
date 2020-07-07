@@ -96,13 +96,88 @@ If you don't specify a template, the default is "app," which is the one we wante
 
 If you have Git installed, each project you create using cdk init is also initialized as a Git repository\. We'll ignore that for now, but it's there when you need it\.
 
+## Build the app<a name="hello_world_tutorial_build"></a>
+
+Here's how to build \(compile\) your code to find syntax and type errors\. Try it now, if you like\. It should work perfectly because you haven't yet made any changes to the template code\.
+
+------
+#### [ TypeScript ]
+
+```
+npm run build
+```
+
+------
+#### [ JavaScript ]
+
+No build step is necessary\.
+
+------
+#### [ Python ]
+
+No build step is necessary\.
+
+------
+#### [ Java ]
+
+```
+mvn compile
+```
+
+------
+#### [ C\# ]
+
+```
+dotnet build src
+```
+
+------
+
+Don't worry about memorizing this command; in this tutorial, we'll provide it when it's needed\.
+
 ## List the stacks in the app<a name="hello_world_tutorial_list_stacks"></a>
 
 Just to verify everything is working correctly, list the stacks in your app\.
 
+------
+#### [ TypeScript ]
+
+```
+npm run build
+cdk ls
+```
+
+------
+#### [ JavaScript ]
+
 ```
 cdk ls
 ```
+
+------
+#### [ Python ]
+
+```
+cdk ls
+```
+
+------
+#### [ Java ]
+
+```
+mvn compile
+cdk ls
+```
+
+------
+#### [ C\# ]
+
+```
+dotnet build src
+cdk ls
+```
+
+------
 
 If you don't see `HelloCdk`, make sure you named your app's directory `hello-cdk`\. If you didn't, go back to [Create the app](#hello_world_tutorial_create_app) and try again\.
 
@@ -142,11 +217,11 @@ If necessary, add the following to the `<dependencies>` container of `pom.xml`, 
 <dependency>
     <groupId>software.amazon.awscdk</groupId>
     <artifactId>s3</artifactId>
-    <version>[1.0,2.0)</version>
+    <version>$(cdk.version)</version>
 </dependency>
 ```
 
-If you are using a Java IDE, it should have a simpler way to add this dependency to your project\. For example, in Eclipse, you can use the **Dependencies** tab of the POM editor\. See [Managing AWS construct library modules](work-with-cdk-java.md#java-managemodules) for further instructions\.
+If you are using a Java IDE, it probably has a simpler way to add this dependency to your project\. Resist temptation and edit `pom.xml` by hand\.
 
 ------
 #### [ C\# ]
@@ -292,57 +367,49 @@ It's interesting to take note of how props are represented in the different supp
 + In Java, a Builder is provided to pass the props\. \(Two, actually; one for `BucketProps`, and a second for `Bucket` to let you build the construct and its props object in one step\. This code uses the latter\.\)
 + In C\#, you instantiate a `BucketProps` object using an object initializer and pass it as the third parameter\.
 
-## Build the app<a name="hello_world_tutorial_build"></a>
+## Synthesize an AWS CloudFormation template<a name="hello_world_tutorial_synth"></a>
 
-Normally, after making any changes to your code, you'd build \(compile\) it\. This isn't strictly necessary with the AWS CDK—the Toolkit does it for you so you can't forget\. But you can still build manually to catch syntax and type errors\. For reference, here's how\.
+Synthesize an AWS CloudFormation template for the app, as follows\. 
 
 ------
 #### [ TypeScript ]
 
 ```
 npm run build
+cdk synth
 ```
 
 ------
 #### [ JavaScript ]
 
-No build step is necessary\.
+```
+cdk synth
+```
 
 ------
 #### [ Python ]
 
-No build step is necessary\.
+```
+cdk synth
+```
 
 ------
 #### [ Java ]
 
 ```
 mvn compile
+cdk synth
 ```
-
-**Note**  
-Instead of issuing `mvn compile`, you can instead press Control\-B in Eclipse\.
 
 ------
 #### [ C\# ]
 
 ```
 dotnet build src
-```
-
-**Note**  
-Instead of issuing `dotnet build`, you can instead press F6 in Visual Studio\.
-
-------
-
-## Synthesize an AWS CloudFormation template<a name="hello_world_tutorial_synth"></a>
-
-Synthesize an AWS CloudFormation template for the app, as follows\. 
-
-```
-npm run build
 cdk synth
 ```
+
+------
 
 If your app contained more than one stack, you'd need to specify which stack\(s\) to synthesize\. But since it only contains one, the Toolkit knows you must mean that one\.
 
@@ -373,16 +440,51 @@ Even if you aren't very familiar with AWS CloudFormation, you should be able to 
 **Note**  
 Every generated template contains a `AWS::CDK::Metadata` resource by default\. The AWS CDK team uses this metadata to gain insight into how the AWS CDK is used, so we can continue to improve it\. For details, including how to opt out of version reporting, see [Version reporting](tools.md#version_reporting)\.
 
-The output of `cdk synth` is a perfectly valid AWS CloudFormation template\. You could take it and deploy it using the AWS CloudFormation console\. But the AWS CDK Toolkit also has that feature built\-in\.
+The `cdk synth` generates a perfectly valid AWS CloudFormation template\. You could take it and deploy it using the AWS CloudFormation console\. But the AWS CDK Toolkit also has that feature built\-in\.
 
 ## Deploying the stack<a name="hello_world_tutorial_deploy"></a>
 
 To deploy the stack using AWS CloudFormation, issue:
 
+------
+#### [ TypeScript ]
+
 ```
 npm run build
 cdk deploy
 ```
+
+------
+#### [ JavaScript ]
+
+```
+cdk deploy
+```
+
+------
+#### [ Python ]
+
+```
+cdk deploy
+```
+
+------
+#### [ Java ]
+
+```
+mvn compile
+cdk deploy
+```
+
+------
+#### [ C\# ]
+
+```
+dotnet build src
+cdk deploy
+```
+
+------
 
 As with `cdk synth`, you don't need to specify the name of the stack since there's only one in the app\.
 
@@ -467,10 +569,45 @@ new Bucket(this, "MyFirstBucket", new BucketProps
 
 Now we'll use the `cdk diff` command to see the differences between what's already been deployed, and the code we just changed\.
 
+------
+#### [ TypeScript ]
+
 ```
 npm run build
 cdk diff
 ```
+
+------
+#### [ JavaScript ]
+
+```
+cdk diff
+```
+
+------
+#### [ Python ]
+
+```
+cdk diff
+```
+
+------
+#### [ Java ]
+
+```
+mvn compile
+cdk diff
+```
+
+------
+#### [ C\# ]
+
+```
+dotnet build src
+cdk diff
+```
+
+------
 
 The AWS CDK Toolkit queries your AWS account for the current AWS CloudFormation template for the `hello-cdk` stack, and compares it with the template it synthesized from your app\. The Resources section of the output should look like the following\.
 
@@ -492,10 +629,45 @@ You can also see that the bucket isn't going to be replaced, but will be updated
 
 Now let's deploy\.
 
+------
+#### [ TypeScript ]
+
 ```
 npm run build
 cdk deploy
 ```
+
+------
+#### [ JavaScript ]
+
+```
+cdk deploy
+```
+
+------
+#### [ Python ]
+
+```
+cdk deploy
+```
+
+------
+#### [ Java ]
+
+```
+mvn compile
+cdk deploy
+```
+
+------
+#### [ C\# ]
+
+```
+dotnet build src
+cdk deploy
+```
+
+------
 
 Enter y to approve the changes and deploy the updated stack\. The Toolkit updates the bucket configuration as you requested\.
 
