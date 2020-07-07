@@ -10,9 +10,9 @@ The AWS CDK includes the [AWS Construct Library](https://docs.aws.amazon.com/cdk
 
 This library includes constructs that represent all the resources available on AWS\. For example, the `[s3\.Bucket](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.Bucket.html)` class represents an Amazon S3 bucket, and the `[dynamodb\.Table](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-dynamodb.Table.html)` class represents an Amazon DynamoDB table\.
 
-There are different levels of constructs in this library, beginning with low\-level constructs, which we call *CFN Resources*\. These constructs represent all of the AWS resources that are available in AWS CloudFormation\. CFN Resources are generated from the [AWS CloudFormation Resource Specification](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-resource-specification.html) on a regular basis\. They are named **Cfn***Xyz*, where *Xyz* represents the name of the resource\. For example, [s3\.CfnBucket](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.CfnBucket.html) represents the [AWS::S3::Bucket](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-s3-bucket.html) CFN Resource\. When you use CFN resources, you must explicitly configure all resource properties, which requires a complete understanding of the details of the underlying resource model\.
+There are different levels of constructs in this library, beginning with low\-level constructs, which we call *CFN Resources* \(or L1, short for "level 1"\)\. These constructs directly represent all of the AWS resources that are available in AWS CloudFormation\. CFN Resources are periodically generated from the [AWS CloudFormation Resource Specification](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-resource-specification.html)\. They are named **Cfn***Xyz*, where *Xyz* is name of the resource\. For example, [s3\.CfnBucket](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.CfnBucket.html) represents the [AWS::S3::Bucket](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-s3-bucket.html) CFN Resource\. When you use CFN resources, you must explicitly configure all resource properties, which requires a complete understanding of the details of the underlying AWS CloudFormation resource model\.
 
-The next level of constructs also represent AWS resources, but with a higher\-level, intent\-based API\. They provide the same functionality, but handle much of the details, boilerplate, and glue logic required by CFN constructs\. AWS constructs offer convenient defaults and reduce the need to know all the details about the AWS resources they represent, while providing convenience methods that make it simpler to work with the resource\. For example, the [s3\.Bucket](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.Bucket.html) class represents an Amazon S3 bucket with additional properties and methods, such as [bucket\.addLifeCycleRule\(\)](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.Bucket.html#add-wbr-lifecycle-wbr-rulerule), which adds a lifecycle rule to the bucket\.
+The next level of constructs, L2, also represent AWS resources, but with a higher\-level, intent\-based API\. They provide similar functionality, but provide the defaults, boilerplate, and glue logic you'd be writing yourself with a CFN Resource construct\. AWS constructs offer convenient defaults and reduce the need to know all the details about the AWS resources they represent, while providing convenience methods that make it simpler to work with the resource\. For example, the [s3\.Bucket](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.Bucket.html) class represents an Amazon S3 bucket with additional properties and methods, such as [bucket\.addLifeCycleRule\(\)](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.Bucket.html#add-wbr-lifecycle-wbr-rulerule), which adds a lifecycle rule to the bucket\.
 
 Finally, the AWS Construct Library includes even higher\-level constructs, which we call *patterns*\. These constructs are designed to help you complete common tasks in AWS, often involving multiple kinds of resources\. For example, the [aws\-ecs\-patterns\.ApplicationLoadBalancedFargateService](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-ecs-patterns.ApplicationLoadBalancedFargateService.html) construct represents an architecture that includes an AWS Fargate container cluster employing an Application Load Balancer \(ALB\)\. The [aws\-apigateway\.LambdaRestApi](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-apigateway.LambdaRestApi.html) construct represents an Amazon API Gateway API that's backed by an AWS Lambda function\.
 
@@ -223,9 +223,144 @@ public class HelloCdkStack : Stack
 
 ------
 
-## Using constructs<a name="constructs_using"></a>
+## Using L1 constructs<a name="constructs_l1_using"></a>
 
-Once you have defined a stack, you can populate it with resources\. The following example imports the [Amazon S3](https://docs.aws.amazon.com/cdk/api/latest/docs/aws-s3-readme.html) module and uses it to define a new Amazon S3 bucket by creating an instance of the [https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.Bucket.html](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.Bucket.html) class within the current scope \(`this` or, in Python, `self`\) which, in our case is the `HelloCdkStack` instance\.
+ L1 constructs are exactly the resources defined by AWS CloudFormation—no more, no less\. You must provide the resource's required configuration yourself\. Here, for example, is how to create an Amazon S3 bucket using the `CfnBucket` class\. \(You'll see a similar definition using the `Bucket` class in the next section\.\) 
+
+------
+#### [ TypeScript ]
+
+```
+const bucket = new s3.CfnBucket(this, "MyBucket", {
+  bucketName: "MyBucket"
+});
+```
+
+------
+#### [ JavaScript ]
+
+```
+const bucket = new s3.CfnBucket(this, "MyBucket", {
+  bucketName: "MyBucket"
+});
+```
+
+------
+#### [ Python ]
+
+```
+bucket = s3.CfnBucket(self, "MyBucket", bucket_name="MyBucket")
+```
+
+------
+#### [ Java ]
+
+```
+CfnBucket bucket = new CfnBucket.Builder().bucketName("MyBucket").build();
+```
+
+------
+#### [ C\# ]
+
+```
+var bucket = new CfnBucket(this, "MyBucket", new CfnBucketProps
+{
+    BucketName= "MyBucket"
+});
+```
+
+------
+
+In Python, Java, and C\#, L1 construct properties that aren't simple Booleans, strings, numbers, or containers are represented by types defined as inner classes of the L1 construct\. For example, the optional property `corsConfiguration` of a `CfnBucket` requires a wrapper of type `Cfn.CorsConfigurationProperty`\. Here we are defining `corsConfiguration` on a `CfnBucket` instance\. 
+
+------
+#### [ TypeScript ]
+
+```
+const bucket = new s3.CfnBucket(this, "MyBucket", {
+  bucketName: "MyBucket",
+  corsConfiguration: {
+    corsRules: [{
+          allowedOrigins: ["*"],
+          allowedMethods: ["*"]
+    }]
+  }
+});
+```
+
+------
+#### [ JavaScript ]
+
+```
+const bucket = new s3.CfnBucket(this, "MyBucket", {
+  bucketName: "MyBucket",
+  corsConfiguration: {
+    corsRules: [{
+          allowedOrigins: ["*"],
+          allowedMethods: ["*"]
+    }]
+  }
+});
+```
+
+------
+#### [ Python ]
+
+```
+bucket = CfnBucket(self, "MyBucket", bucket_name="MyBucket",
+    cors_configuration=CfnBucket.CorsConfigurationProperty(
+        cors_rules=[CfnBucket.CorsRuleProperty(
+            allowed_origins=["*"],
+            allowed_methods=["GET"]
+        )]
+    )
+)
+```
+
+------
+#### [ Java ]
+
+```
+CfnBucket bucket = CfnBucket.Builder.create(this, "MyBucket")
+                        .bucketName("MyBucket")
+                        .corsConfiguration(new CfnBucket.CorsConfigurationProperty.Builder()
+                            .corsRules(Arrays.asList(new CfnBucket.CorsRuleProperty.Builder()
+                                .allowedOrigins(Arrays.asList("*"))
+                                .allowedMethods(Arrays.asList("GET"))
+                                .build()))
+                            .build())
+                        .build();
+```
+
+------
+#### [ C\# ]
+
+```
+var bucket = new CfnBucket(this, "MyBucket", new CfnBucketProps
+{
+    BucketName = "MyBucket",
+    CorsConfiguration = new CfnBucket.CorsConfigurationProperty
+    {
+        CorsRules = new object[] {
+            new CfnBucket.CorsRuleProperty
+            {
+                AllowedOrigins = new string[] { "*" },
+                AllowedMethods = new string[] { "GET" },
+            }
+        }
+    }
+});
+```
+
+------
+
+**Important**  
+You can't use L2 property types with L1 constructs, or vice versa\. When working with L1 constructs, always use the type defined inside the L1 construct you're using\. Do not use types from other L1 constructs \(there are some that have the same name, but they are not the same type\)\.   
+Some of our language\-specific API references currently have errors in the paths to L1 property types, or don't document these classes at all\. We hope to fix this soon\. In the meantime, just remember that these types are always inner classes of the L1 construct they are used with\.
+
+## Using L2 constructs<a name="constructs_using"></a>
+
+Once you have defined a stack, you can populate it with resources by instantiating constructs\. The following example imports the [Amazon S3](https://docs.aws.amazon.com/cdk/api/latest/docs/aws-s3-readme.html) module and uses it to define a new Amazon S3 bucket by creating an instance of the [https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.Bucket.html](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.Bucket.html) class within the current scope \(`this` or, in Python, `self`\) which, in our case is the `HelloCdkStack` instance\.
 
 ------
 #### [ TypeScript ]

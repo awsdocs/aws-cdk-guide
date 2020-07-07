@@ -86,7 +86,7 @@ When deriving your own construct from an existing construct, you may want to acc
 
 ### Generic structures<a name="java-generic-structures"></a>
 
-In some places, the AWS CDK uses JavaScript arrays or untyped objects or as input to a method\. \(See, for example, AWS CodeBuild's [https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-codebuild.BuildSpec.html#to-wbr-build-wbr-spec](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-codebuild.BuildSpec.html#to-wbr-build-wbr-spec) method\.\) In Java, objects are represented as `java.util.HashMap<String, Object>`\. In cases where the values are all strings, you can use `HashMap<String, String>`\. It is convenient to use double braces to define `HashMap`s\. 
+In some places, the AWS CDK uses JavaScript arrays or untyped objects or as input to a method\. \(See, for example, AWS CodeBuild's [https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-codebuild.BuildSpec.html#to-wbr-build-wbr-spec](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-codebuild.BuildSpec.html#to-wbr-build-wbr-spec) method\.\) In Java, objects are represented as `java.util.Map<String, Object>`\. In cases where the values are all strings, you can use `Map<String, String>`\. It is convenient to use double braces to define `HashMap`s\. 
 
 ```
 new HashMap<String, String>() {{
@@ -98,7 +98,7 @@ new HashMap<String, String>() {{
 **Note**  
 The double\-brace notation \(which technically declares an anonymous inner class\) is sometimes considered an anti\-pattern\. However, its disadvantages are not very relevant to this use case, and it is a reasonably compact way to write what would be object or dictionary literals in other languages\.
 
-JavaScript arrays are represented as `Object[]` or `String[]` arrays in Java\. The method `Arrays.asList` is convenient for defining short arrays\.
+JavaScript arrays are represented as `List<Object>` or `List<String>` in Java\. The method `java.util.Arrays.asList` is convenient for defining short `ArrayList`s\.
 
 ```
 String[] cmds = Arrays.asList("cd lambda", "npm install", "npm install typescript")
