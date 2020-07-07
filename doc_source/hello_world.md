@@ -211,7 +211,7 @@ pip install aws-cdk.aws-s3
 ------
 #### [ Java ]
 
-If necessary, add the following to the `<dependencies>` container of `pom.xml`, where *CDK\-VERSION* is the version of the AWS CDK\.
+Add the following to the `<dependencies>` container of `pom.xml`\.
 
 ```
 <dependency>
