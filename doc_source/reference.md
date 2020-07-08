@@ -13,7 +13,7 @@ This compatibility promise does not apply to APIs under active development, whic
 
 ### AWS CDK Toolkit \(CLI\) compatibility<a name="cdk_toolkit_versioning"></a>
 
-The AWS CDK Toolkit \(that is, the `cli` command line command\) is *always* compatible with construct libraries of a semantically *lower* or *equal* version number\. It is, therefore, always safe to upgrade the AWS CDK Toolkit within the same major version\. 
+The AWS CDK Toolkit \(that is, the `cdk` command line command\) is *always* compatible with construct libraries of a semantically *lower* or *equal* version number\. It is, therefore, always safe to upgrade the AWS CDK Toolkit within the same major version\. 
 
 The AWS CDK Toolkit may be, but is *not always*, compatible with construct libraries of a semantically *higher* version, depending on whether the same cloud assembly schema version is employed by the two components\. The AWS CDK framework generates a cloud assembly during synthesis; the AWS CDK Toolkit consumes it for deployment\. The schema that defines the format of the cloud assembly is strictly specified and versioned\. AWS construct libraries using a given cloud assembly schema version are compatible with AWS CDK toolkit versions using that schema version or later, which may include releases of the AWS CDK Toolkit *older than* a given construct library release\.
 
