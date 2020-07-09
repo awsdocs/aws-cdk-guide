@@ -218,7 +218,7 @@ cdk synth "*"     # all stacks in app
 ```
 
 **Note**  
-The CDK Toolkit actually runs your app and synthesizes fresh templates before most operations \(e\.g\. when deploying or comparing stacks\)\. These templates are stored by default in the cdk\.out directory\. The `cdk synth` command simply prints the generated templates for the specified stack\(s\)\.
+The CDK Toolkit actually runs your app and synthesizes fresh templates before most operations \(e\.g\. when deploying or comparing stacks\)\. These templates are stored by default in the `cdk.out` directory\. The `cdk synth` command simply prints the generated templates for the specified stack\(s\)\.
 
 See `cdk synth --help` for all available options\. A few of the most\-frequently\-used options are covered below\.
 
@@ -275,7 +275,7 @@ See `cdk deploy --help` for all available options\. A few of the most\-frequentl
 
 ### Specifying AWS CloudFormation parameters<a name="w4aac23b7c23c11"></a>
 
-The AWS CDK Toolkit supports specifying parameters at deployment\. You may provide these on the command line following the `--parameters` flag\.
+The AWS CDK Toolkit supports specifying AWS CloudFormation [parameters](parameters.md) at deployment\. You may provide these on the command line following the `--parameters` flag\.
 
 ```
 cdk deploy MyStack --parameters uploadBucketName=UploadBucket
