@@ -438,7 +438,7 @@ Resources:
 Even if you aren't very familiar with AWS CloudFormation, you should be able to find the definition for an `AWS::S3::Bucket` and see how the versioning configuration was translated\. 
 
 **Note**  
-Every generated template contains a `AWS::CDK::Metadata` resource by default\. The AWS CDK team uses this metadata to gain insight into how the AWS CDK is used, so we can continue to improve it\. For details, including how to opt out of version reporting, see [Version reporting](tools.md#version_reporting)\.
+Every generated template contains a `AWS::CDK::Metadata` resource by default\. The AWS CDK team uses this metadata to gain insight into how the AWS CDK is used, so we can continue to improve it\. For details, including how to opt out of version reporting, see [Version reporting](cli.md#version_reporting)\.
 
 The `cdk synth` generates a perfectly valid AWS CloudFormation template\. You could take it and deploy it using the AWS CloudFormation console\. But the AWS CDK Toolkit also has that feature built\-in\.
 

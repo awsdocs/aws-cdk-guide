@@ -200,7 +200,7 @@ cdk --version
 
 ## AWS CDK tools<a name="getting_started_tools"></a>
 
-We've already been using the AWS CDK Toolkit, also known as the Command Line Interface \(CLI\)\. It's the main tool you use to interact with your AWS CDK app\. It executes the AWS CDK app you wrote and compiled, interrogates the application model you defined, and produces and deploys the AWS CDK templates it generates\. It also has deployment, diff, deletion, and troubleshooting capabilities\. For more information, see cdk \-\-help or [AWS CDK Toolkit \(`cdk`\)](tools.md#cli)\.
+We've already been using the AWS CDK Toolkit, also known as the Command Line Interface \(CLI\)\. It's the main tool you use to interact with your AWS CDK app\. It executes the AWS CDK app you wrote and compiled, interrogates the application model you defined, and produces and deploys the AWS CDK templates it generates\. It also has deployment, diff, deletion, and troubleshooting capabilities\. For more information, see cdk \-\-help or [AWS CDK Toolkit \(`cdk` command\)](cli.md)\.
 
 The [AWS Toolkit for Visual Studio Code](https://aws.amazon.com/visualstudiocode/) is an open\-source plug\-in for Visual Studio Code that makes it easier to create, debug, and deploy applications on AWS\. The toolkit provides an integrated experience for developing AWS CDK applications, including the AWS CDK Explorer feature to list your AWS CDK projects and browse the various components of the CDK application\. [Install the plug\-in](https://docs.aws.amazon.com/toolkit-for-vscode/latest/userguide/setup-toolkit.html) and learn more about [using the AWS CDK Explorer](https://docs.aws.amazon.com/toolkit-for-vscode/latest/userguide/cdk-explorer.html)\.
 

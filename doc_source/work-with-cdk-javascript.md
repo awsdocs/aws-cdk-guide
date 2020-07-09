@@ -102,7 +102,7 @@ cdk deploy "*Stack"   @ PipeStack, LambdaStack, etc.
 **Tip**  
 You don't need to explicitly synthesize stacks before deploying them; `cdk deploy` performs this step for you to make sure your latest code gets deployed\.
 
-For full documentation of the `cdk` command, see [AWS CDK Toolkit \(`cdk`\)](tools.md#cli)\.
+For full documentation of the `cdk` command, see [AWS CDK Toolkit \(`cdk` command\)](cli.md)\.
 
 ## Using TypeScript examples with JavaScript<a name="javascript-using-typescript-examples"></a>
 
