@@ -217,7 +217,7 @@ Add the following to the `<dependencies>` container of `pom.xml`\.
 <dependency>
     <groupId>software.amazon.awscdk</groupId>
     <artifactId>s3</artifactId>
-    <version>$(cdk.version)</version>
+    <version>${cdk.version}</version>
 </dependency>
 ```
 
