@@ -74,7 +74,7 @@ To opt out of version reporting, use one of the following methods:
 
 ## Specifying the environment<a name="cli-environment"></a>
 
- In AWS CDK terms, the [Environment](environments.md) consists of a region and AWS credentials valid in that region\. The CDK Toolkit needs credentials in order to query your AWS account and to deploy CloudFormation templates\. 
+ In AWS CDK terms, the [environment](environments.md) consists of a region and AWS credentials valid in that region\. The CDK Toolkit needs credentials in order to query your AWS account and to deploy CloudFormation templates\. 
 
 **Important**  
 We strongly recommend against using your AWS root account for day\-to\-day tasks\. Instead, create a user in IAM and use its credentials with the CDK\.
@@ -166,7 +166,7 @@ The CDK Toolkit does not guarantee that stacks are processed in the specified or
 
 ## Bootstrapping your AWS environment<a name="cli-bootstrap"></a>
 
-Stacks that contain [Assets](assets.md) or large AWS Lambda functions require special dedicated AWS CDK resources to be provisioned\. Currently, this is only an Amazon S3 bucket\. The `cdk bootstrap` command creates the necessary resources for you\. You only need to bootstrap if you are deploying a stack that requires these dedicated resources\.
+Stacks that contain [assets](assets.md) or large AWS Lambda functions require special dedicated AWS CDK resources to be provisioned\. Currently, this is only an Amazon S3 bucket\. The `cdk bootstrap` command creates the necessary resources for you\. You only need to bootstrap if you are deploying a stack that requires these dedicated resources\.
 
 **Important**  
 Each region to which you deploy such a stack must be bootstrapped separately\.
