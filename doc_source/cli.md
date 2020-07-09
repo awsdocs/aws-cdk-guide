@@ -9,17 +9,17 @@ All CDK Toolkit commands start with `cdk`, which is followed by a subcommand \(`
 
 | Command | Function | 
 | --- | --- | 
-| cdk list \(ls\) | Lists the stacks in the app | 
-| cdk synthesize \(synth\) | Synthesizes and prints the CloudFormation template for the specified stack\(s\) | 
-| cdk bootstrap | Deploys the CDK Toolkit stack, required to deploy stacks containing assets | 
-| cdk deploy | Deploys the specified stack\(s\) | 
-| cdk destroy | Destroys the specified stack\(s\) | 
-| cdk diff | Compares the specified stack with the deployed stack or a local CloudFormation template | 
-| cdk metadata | Displays metadata about the specified stack | 
-| cdk init | Creates a new CDK project in the current directory from a specified template | 
-| cdk context | Manages cached context values | 
-| cdk docs \(doc\) | Opens the CDK API reference in your browser | 
-| cdk doctor | Checks your CDK project for potential problems | 
+| `cdk list` \(`ls`\) | Lists the stacks in the app | 
+| `cdk synthesize` \(`synth`\) | Synthesizes and prints the CloudFormation template for the specified stack\(s\) | 
+| `cdk bootstrap` | Deploys the CDK Toolkit stack, required to deploy stacks containing assets | 
+| `cdk deploy` | Deploys the specified stack\(s\) | 
+| `cdk destroy` | Destroys the specified stack\(s\) | 
+| `cdk diff` | Compares the specified stack with the deployed stack or a local CloudFormation template | 
+| `cdk metadata` | Displays metadata about the specified stack | 
+| `cdk init` | Creates a new CDK project in the current directory from a specified template | 
+| `cdk context` | Manages cached context values | 
+| `cdk docs` \(`doc`\) | Opens the CDK API reference in your browser | 
+| `cdk doctor` | Checks your CDK project for potential problems | 
 
 ## Built\-in help<a name="cli-help"></a>
 
@@ -190,18 +190,19 @@ The supported languages \(*LANGUAGE*\) are:
 
 | Code | Language | 
 | --- | --- | 
-| typescript | TypeScript | 
-| javascript | JavaScript | 
-| python | Python | 
-| java | Java | 
-| csharp | C\# | 
+| `typescript` | TypeScript | 
+| `javascript` | JavaScript | 
+| `python` | Python | 
+| `java` | Java | 
+| `csharp` | C\# | 
 
 *TEMPLATE* is an optional template\. If the desired template is *app*, the default, you may omit it\. The available templates are:
 
-|  |  | 
-| --- |--- |
-| app \(default\) |  Creates an empty AWS CDK app\.  | 
-| sample\-app |  Creates an AWS CDK app with a stack containing an Amazon SQS queue and an Amazon SNS topic\.  | 
+
+| Template | Description | 
+| --- | --- | 
+| `app` \(default\) |  Creates an empty AWS CDK app\.  | 
+| `sample-app` |  Creates an AWS CDK app with a stack containing an Amazon SQS queue and an Amazon SNS topic\.  | 
 
 The templates use the name of the project folder to generate names for files and classes inside your new app\.
 
@@ -221,7 +222,8 @@ The CDK Toolkit actually runs your app and synthesizes fresh templates before mo
 
 See `cdk synth --help` for all available options\. A few of the most\-frequently\-used options are covered below\.
 
-**Specifying context values**  
+### Specifying context values<a name="w4aac23b7c21c11"></a>
+
 Use the `--context` or `-c` option to pass [runtime context](context.md) values to your CDK app\.
 
 ```
@@ -239,14 +241,16 @@ When deploying multiple stacks, the specified context values are passed to all o
 cdk synth --context Stack1:key=value Stack2:key=value Stack1 Stack2
 ```
 
-**Specifying display format**  
+### Specifying display format<a name="w4aac23b7c21c13"></a>
+
 By default, the synthesized template is displayed in YAML format\. Add the `--json` flag to display it in JSON format instead\.
 
 ```
 cdk synth –json MyStack
 ```
 
-**Specifying output directory**  
+### Specifying output directory<a name="w4aac23b7c21c15"></a>
+
 Add the \-\-output \(\-o\) option to write the synthesized templates to a directory other than cdk\.out\.
 
 ```
@@ -269,7 +273,8 @@ The CDK Toolkit runs your app and synthesizes fresh AWS CloudFormation templates
 
 See `cdk deploy --help` for all available options\. A few of the most\-frequently\-used options are covered below\.
 
-**Specifying AWS CloudFormation parameters**  
+### Specifying AWS CloudFormation parameters<a name="w4aac23b7c23c11"></a>
+
 The AWS CDK Toolkit supports specifying parameters at deployment\. You may provide these on the command line following the `--parameters` flag\.
 
 ```
@@ -290,7 +295,8 @@ cdk deploy MyStack YourStack --parameters MyStack:uploadBucketName=UploadBucket 
 
 By default, the AWS CDK retains values of parameters from previous deployments and uses them in later deployments if they are not specified explicitly\. Use the `--no-previous-parameters` flag to require all parameters to be specified\.
 
-**Specifying outputs file**  
+### Specifying outputs file<a name="w4aac23b7c23c13"></a>
+
 If your stack declares AWS CloudFormation outputs, these are normally displayed on the screen at the conclusion of deployment\. To write them to a file in JSON format, use the `--output-file` flag\.
 
 ```
@@ -312,9 +318,9 @@ cdk deploy --require-approval LEVEL
 
 | Term | Meaning | 
 | --- | --- | 
-| never | Approval is never required | 
-| any\-change | Requires approval on any IAM or security\-group\-related change | 
-| broadening \(default\) | Requires approval when IAM statements or traffic rules are added; removals don't require approval | 
+| `never` | Approval is never required | 
+| `any-change` | Requires approval on any IAM or security\-group\-related change | 
+| `broadening` \(default\) | Requires approval when IAM statements or traffic rules are added; removals don't require approval | 
 
 The setting can also be configured in the `cdk.json` file\.
 
