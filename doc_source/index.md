@@ -57,7 +57,7 @@ Amazon's trademarks and trade dress may not be used in
    + [Get a value from a context variable](get_context_var.md)
 + [AWS CDK tools](tools.md)
    + [AWS CDK Toolkit (cdk command)](cli.md)
-   + [AWS Toolkit for Visual Studio code](vscode.md)
+   + [AWS Toolkit for Visual Studio Code](vscode.md)
    + [SAM CLI](sam.md)
 + [Testing constructs](testing.md)
 + [Security for the AWS Cloud Development Kit (AWS CDK)](security.md)
