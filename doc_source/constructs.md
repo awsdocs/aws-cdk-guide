@@ -225,7 +225,9 @@ public class HelloCdkStack : Stack
 
 ## Using L1 constructs<a name="constructs_l1_using"></a>
 
- L1 constructs are exactly the resources defined by AWS CloudFormation—no more, no less\. You must provide the resource's required configuration yourself\. Here, for example, is how to create an Amazon S3 bucket using the `CfnBucket` class\. \(You'll see a similar definition using the `Bucket` class in the next section\.\) 
+Once you have defined a stack, you can populate it with resources by instantiating constructs\. First, we'll do it with an L1 construct\.
+
+L1 constructs are exactly the resources defined by AWS CloudFormation—no more, no less\. You must provide the resource's required configuration yourself\. Here, for example, is how to create an Amazon S3 bucket using the `CfnBucket` class\. \(You'll see a similar definition using the `Bucket` class in the next section\.\) 
 
 ------
 #### [ TypeScript ]
@@ -355,12 +357,12 @@ var bucket = new CfnBucket(this, "MyBucket", new CfnBucketProps
 ------
 
 **Important**  
-You can't use L2 property types with L1 constructs, or vice versa\. When working with L1 constructs, always use the type defined inside the L1 construct you're using\. Do not use types from other L1 constructs \(there are some that have the same name, but they are not the same type\)\.   
-Some of our language\-specific API references currently have errors in the paths to L1 property types, or don't document these classes at all\. We hope to fix this soon\. In the meantime, just remember that these types are always inner classes of the L1 construct they are used with\.
+You can't use L2 property types with L1 constructs, or vice versa\. When working with L1 constructs, always use the types defined inside the L1 construct you're using\. Do not use types from other L1 constructs \(some may have the same name, but they are not the same type\)\.   
+Some of our language\-specific API references currently have errors in the paths to L1 property types, or don't document these classes at all\. We hope to fix this soon\. In the meantime, just remember that such types are always inner classes of the L1 construct they are used with\.
 
 ## Using L2 constructs<a name="constructs_using"></a>
 
-Once you have defined a stack, you can populate it with resources by instantiating constructs\. The following example imports the [Amazon S3](https://docs.aws.amazon.com/cdk/api/latest/docs/aws-s3-readme.html) module and uses it to define a new Amazon S3 bucket by creating an instance of the [https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.Bucket.html](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.Bucket.html) class within the current scope \(`this` or, in Python, `self`\) which, in our case is the `HelloCdkStack` instance\.
+The following example defines an Amazon S3 bucket by creating an instance of the [https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.Bucket.html](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.Bucket.html) class, an L2 construct\.
 
 ------
 #### [ TypeScript ]

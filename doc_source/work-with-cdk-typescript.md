@@ -85,16 +85,21 @@ The [stacks](stacks.md) defined in your AWS CDK app can be deployed individually
 + `cdk synth`: Synthesizes a AWS CloudFormation template from one or more of the stacks in your AWS CDK app\.
 + `cdk deploy`: Deploys the resources defined by one or more of the stacks in your AWS CDK app to AWS\.
 
-You can specify the names of multiple stacks to be synthesized or deployed in a single command\. If your app defines only one stack, its name is assumed and you do not need to specify it\. 
-
-You may also use the wildcards \* \(any number of characters\) and ? \(any single character\) to specify partial names\. When using wildcards, place quotes around the partial name to avoid having the shell try to expand them to filenames before they are passed to the CDK Toolkit\.
+You can specify the names of multiple stacks to be synthesized or deployed in a single command\. If your app defines only one stack, you do not need to specify it\. 
 
 ```
-cdk sytnh "Stack?"    # Stack1, StackA, etc.
+cdk synth                 # app defines single stack
+cdk deploy Happy Grumpy   @ app defines two or more stacks; two are deployed
+```
+
+You may also use the wildcards \* \(any number of characters\) and ? \(any single character\) to identify stacks by pattern\. When using wildcards, enclose the pattern in quotes; otherwise, the shell may try to expand \("glob"\) it to the names of files in the current directory before they are passed to the AWS CDK Toolkit\.
+
+```
+cdk synth "Stack?"    # Stack1, StackA, etc.
 cdk deploy "*Stack"   @ PipeStack, LambdaStack, etc.
 ```
 
 **Tip**  
 You don't need to explicitly synthesize stacks before deploying them; `cdk deploy` performs this step for you to make sure your latest code gets deployed\.
 
-For full documentation of the `cdk` command, see [AWS CDK Toolkit \(`cdk`\)](tools.md#cli)\.
+For full documentation of the `cdk` command, see [AWS CDK Toolkit \(`cdk` command\)](cli.md)\.

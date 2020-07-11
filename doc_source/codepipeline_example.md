@@ -1279,3 +1279,7 @@ cdk destroy PipelineDeployingLambdaStack
 ```
 
 Finally, delete your AWS CodeCommit repository from the AWS Console\.
+
+## Help us help you<a name="codepipeline-feedback"></a>
+
+Did you find what you were looking for? We recently revamped this topic and are keenly interested in hearing about how it's working for you\. Please click **Provide feedback** below and let us know\! Providing your e\-mail address is optional, but very helpful in case we have further questions\. \(We'll keep it to ourselves\.\)

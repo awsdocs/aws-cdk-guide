@@ -438,7 +438,7 @@ Resources:
 Even if you aren't very familiar with AWS CloudFormation, you should be able to find the definition for an `AWS::S3::Bucket` and see how the versioning configuration was translated\. 
 
 **Note**  
-Every generated template contains a `AWS::CDK::Metadata` resource by default\. The AWS CDK team uses this metadata to gain insight into how the AWS CDK is used, so we can continue to improve it\. For details, including how to opt out of version reporting, see [Version reporting](tools.md#version_reporting)\.
+Every generated template contains a `AWS::CDK::Metadata` resource by default\. The AWS CDK team uses this metadata to gain insight into how the AWS CDK is used, so we can continue to improve it\. For details, including how to opt out of version reporting, see [Version reporting](cli.md#version_reporting)\.
 
 The `cdk synth` generates a perfectly valid AWS CloudFormation template\. You could take it and deploy it using the AWS CloudFormation console\. But the AWS CDK Toolkit also has that feature built\-in\.
 
@@ -508,7 +508,7 @@ Update `lib/hello-cdk-stack.ts`
 ```
 new s3.Bucket(this, 'MyFirstBucket', {
   versioned: true,
-  removalPolicy: cdk.RemovalPolicy.DESTROY
+  removalPolicy: core.RemovalPolicy.DESTROY
 });
 ```
 
@@ -520,7 +520,7 @@ Update `lib/hello-cdk-stack.js`\.
 ```
 new s3.Bucket(this, 'MyFirstBucket', {
     versioned: true,
-    removalPolicy: cdk.RemovalPolicy.DESTROY
+    removalPolicy: core.RemovalPolicy.DESTROY
 });
 ```
 
@@ -708,3 +708,7 @@ Where do you go now that you've dipped your toes in the AWS CDK?
 + Explore [Examples](https://github.com/aws-samples/aws-cdk-examples) of using the AWS CDK\.
 
 The AWS CDK is an open\-source project\. Want to [contribute](https://github.com/aws/aws-cdk)?
+
+## Help us help you<a name="hello-world-feedback"></a>
+
+Did you find what you were looking for? We recently revamped this topic and are keenly interested in hearing about how it's working for you\. Please click **Provide feedback** below and let us know\! Providing your e\-mail address is optional, but very helpful in case we have further questions\. \(We'll keep it to ourselves\.\)
