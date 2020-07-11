@@ -89,6 +89,25 @@ $ cdk context --clear
 
 Only context values stored in `cdk.context.json` can be reset or cleared\. The AWS CDK does not touch other context files\. To protect a context value from being reset using these commands, then, you might copy the value to `cdk.json`\.
 
+## AWS CDK Toolkit `--context` flag<a name="context_cli"></a>
+
+Use the `--context` \(`-c` for short\) option to pass runtime context values to your CDK app during synthesis or deployment\.
+
+```
+# specify a single context value
+cdk synth –context key=value MyStack
+
+# specify multiple context values (any number)
+cdk synth --context key1=value1 --context key2=value2 MyStack
+```
+
+When deploying multiple stacks, the specified context values are normally passed to all of them\. If you wish, you may specify different values for each stack by prefixing the stack name to the context value\.
+
+```
+# different context values for each stack
+cdk synth --context Stack1:key=value Stack2:key=value Stack1 Stack2
+```
+
 ## Example<a name="context_example"></a>
 
 Below is an example of importing an existing Amazon VPC using AWS CDK context\.

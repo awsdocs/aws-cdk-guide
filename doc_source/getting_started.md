@@ -214,3 +214,7 @@ Where do you go now that you've dipped your toes in the AWS CDK?
 + Explore [Examples](https://github.com/aws-samples/aws-cdk-examples) of using the AWS CDK\.
 
 The AWS CDK is an open\-source project\. Want to [contribute](https://github.com/aws/aws-cdk)?
+
+## Help us help you<a name="getting-started-feedback"></a>
+
+Did you find what you were looking for? We recently revamped this topic and are keenly interested in hearing about how it's working for you\. Please click **Provide feedback** below and let us know\! Providing your e\-mail address is optional, but very helpful in case we have further questions\. \(We'll keep it to ourselves\.\)
