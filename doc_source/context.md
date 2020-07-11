@@ -95,7 +95,7 @@ Use the `--context` \(`-c` for short\) option to pass runtime context values to 
 
 ```
 # specify a single context value
-cdk synth –context key=value MyStack
+cdk synth -–context key=value MyStack
 
 # specify multiple context values (any number)
 cdk synth --context key1=value1 --context key2=value2 MyStack
