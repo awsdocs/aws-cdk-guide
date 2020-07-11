@@ -48,7 +48,7 @@ Specify the modules that your application depends on by editing `pom.xml` and ad
 **Tip**  
 If you use a Java IDE, it probably has features for managing Maven dependencies\. We recommend always editing `pom.xml` directly, however, unless you are absolutely sure the IDE's functionality matches what you'd do by hand\.
 
-The default `pom.xml` defines the variable `cdk.version` to be the version of the AWS CDK that created the project\. You can easily update the version by updating the value of this variable\.
+The default `pom.xml` defines the variable `cdk.version` to be the version of the AWS CDK that created the project\. You can easily update the version required by updating the value of this variable, while keeping all module versions in sync\.
 
 ```
 <cdk.version>1.XX.Y</cdk.version>
