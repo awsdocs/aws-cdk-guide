@@ -847,7 +847,7 @@ export class NotifyingBucket extends Construct {
 class NotifyingBucket extends Construct {
 
   constructor(scope, id, props) {
-    super(scope, id, props);
+    super(scope, id);
     const bucket = new s3.Bucket(this, 'bucket');
     this.topic = new sns.Topic(this, 'topic');
     bucket.addObjectCreatedNotification(this.topic, { prefix: props.prefix });
