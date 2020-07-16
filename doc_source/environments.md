@@ -316,10 +316,8 @@ cdk deploy "$@"
 @echo off
 rem cdk-deploy-to.bat
 set CDK_DEPLOY_ACCOUNT=%1
-shift
-set CDK_DEPLOY_REGION=%1
-shift
-cdk deploy %*
+set CDK_DEPLOY_REGION=%2
+cdk deploy %3
 ```
 
 ------
@@ -341,7 +339,7 @@ bash cdk-deploy-to.sh 123457689 us-east-1 "$@"
 ```
 @echo off
 rem cdk-deploy-to-test.bat
-cdk-deploy-to 135792469 us-east-1 %*
+cdk-deploy-to 135792469 us-east-1 %1
 ```
 
 ------
@@ -364,8 +362,8 @@ bash cdk-deploy-to.sh 246813579 eu-west-1 "$@"
 ```
 @echo off
 rem cdk-deploy-to-prod.bat
-cdk-deploy-to 135792469 us-west-1 %* || goto :eof
-cdk-deploy-to 245813579 eu-west-1 %*
+cdk-deploy-to 135792469 us-west-1 %1 || goto :eof
+cdk-deploy-to 245813579 eu-west-1 %1
 ```
 
 ------
