@@ -737,7 +737,7 @@ https://GUID.execute-api-REGION.amazonaws.com/prod/
 Test your app by getting the list of widgets \(currently empty\) by navigating to this URL in a browser, or use the following command\.
 
 ```
-curl -X GET 'https://GUID.execute-REGION.amazonaws.com/prod'
+curl -X GET 'https://GUID.execute-api.REGION.amazonaws.com/prod'
 ```
 
 You can also test the app by:
@@ -1038,12 +1038,12 @@ cdk deploy
 We can now store, show, or delete an individual widget\. Use the following commands to list the widgets, create the widget **example**, list all of the widgets, show the contents of **example** \(it should show today's date\), delete **example**, and then show the list of widgets again\.
 
 ```
-curl -X GET 'https://GUID.execute-api-REGION.amazonaws.com/prod'
-curl -X POST 'https://GUID.execute-api-REGION.amazonaws.com/prod/example'
-curl -X GET 'https://GUID.execute-api-REGION.amazonaws.com/prod'
-curl -X GET 'https://GUID.execute-api-REGION.amazonaws.com/prod/example'
-curl -X DELETE 'https://GUID.execute-api-REGION.amazonaws.com/prod/example'
-curl -X GET 'https://GUID.execute-api-REGION.amazonaws.com/prod'
+curl -X GET 'https://GUID.execute-api.REGION.amazonaws.com/prod'
+curl -X POST 'https://GUID.execute-api.REGION.amazonaws.com/prod/example'
+curl -X GET 'https://GUID.execute-api.REGION.amazonaws.com/prod'
+curl -X GET 'https://GUID.execute-api.REGION.amazonaws.com/prod/example'
+curl -X DELETE 'https://GUID.execute-api.REGION.amazonaws.com/prod/example'
+curl -X GET 'https://GUID.execute-api.REGION.amazonaws.com/prod'
 ```
 
 You can also use the API Gateway console to test these functions\. Set the **name** value to the name of a widget, such as **example**\.
