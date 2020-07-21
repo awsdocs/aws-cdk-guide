@@ -294,43 +294,59 @@ new MyDevStack(app, "dev", new StackProps { Env = makeEnv() });
 
 ------
 
-With your stack's environment declared this way, you can now write a short script or batch file like the following to set the variables from command line arguments, then call `cdk deploy`\.
+With your stack's environment declared this way, you can now write a short script or batch file like the following to set the variables from command line arguments, then call `cdk deploy`\. Any arguments beyond the first two are passed through to `cdk deploy` and can be used to specify command\-line options or stacks\.
 
 ------
 #### [ Linux/Mac OS X ]
 
 ```
-#!/bin/bash
-# cdk-deploy-to.sh
-export CDK_DEPLOY_ACCOUNT=$1
-shift
-export CDK_DEPLOY_REGION=$1
-shift
-cdk deploy "$@"
+#!/usr/bin/env bash
+if [[ $# -ge 2 ]]; then
+    export CDK_DEPLOY_ACCOUNT=$1
+    export CDK_DEPLOY_REGION=$2
+    shift; shift
+    npx cdk deploy "$@"
+    exit $?
+else
+    echo 1>&2 "Provide AWS account and region as first two args."
+    echo 1>&2 "Addiitonal args are passed through to cdk deploy."
+    exit 1
+fi
 ```
+
+Save the script as `cdk-deploy-to.sh`, then execute `chmod +x cdk-deploy-to.sh` to make it executable\.
 
 ------
 #### [ Windows ]
 
 ```
-@echo off
-rem cdk-deploy-to.bat
-set CDK_DEPLOY_ACCOUNT=%1
-set CDK_DEPLOY_REGION=%2
-cdk deploy %3
+@findstr /B /V @ %~dpnx0 > %~dpn0.ps1 && powershell -ExecutionPolicy Bypass %~dpn0.ps1 %*
+@exit /B %ERRORLEVEL%
+if ($args.length -ge 2) {
+    $env:CDK_DEPLOY_ACCOUNT, $args = $args
+    $env:CDK_DEPLOY_REGION,  $args = $args
+    npx cdk deploy $args
+    exit $lastExitCode
+} else {
+    [console]::error.writeline("Provide AWS account and region as first two args.")
+    [console]::error.writeline("Additional args are passed through to cdk deploy.")
+    exit 1
+}
 ```
+
+The Windows version of the script uses PowerShell to provide the same functionality as the Linux/Mac OS X version\. It also contains instructions to allow it to be run as a batch file so it can be easily invoked from a command line\. It should be saved as `cdk-deploy-to.bat`\. The file `cdk-deploy-to.ps1` will be created when the batch file is invoked\.
 
 ------
 
-Then you can write additional scripts that call that script to deploy to specific environments \(even multiple environments per script\):
+Then you can write additional scripts that call the "deploy\-to" script to deploy to specific environments \(even multiple environments per script\):
 
 ------
 #### [ Linux/Mac OS X ]
 
 ```
-#!/bin/bash
+#!/usr/bin/env bash
 # cdk-deploy-to-test.sh
-bash cdk-deploy-to.sh 123457689 us-east-1 "$@"
+./cdk-deploy-to.sh 123457689 us-east-1 "$@"
 ```
 
 ------
@@ -339,7 +355,7 @@ bash cdk-deploy-to.sh 123457689 us-east-1 "$@"
 ```
 @echo off
 rem cdk-deploy-to-test.bat
-cdk-deploy-to 135792469 us-east-1 %1
+cdk-deploy-to 135792469 us-east-1 %*
 ```
 
 ------
@@ -350,10 +366,10 @@ When deploying to multiple environments, consider whether you want to continue d
 #### [ Linux/Mac OS X ]
 
 ```
-#!/bin/bash
+#!/usr/bin/env bash
 # cdk-deploy-to-prod.sh
-bash cdk-deploy-to.sh 135792468 us-west-1 "$@" || exit
-bash cdk-deploy-to.sh 246813579 eu-west-1 "$@"
+./cdk-deploy-to.sh 135792468 us-west-1 "$@" || exit
+./cdk-deploy-to.sh 246813579 eu-west-1 "$@"
 ```
 
 ------
@@ -362,10 +378,10 @@ bash cdk-deploy-to.sh 246813579 eu-west-1 "$@"
 ```
 @echo off
 rem cdk-deploy-to-prod.bat
-cdk-deploy-to 135792469 us-west-1 %1 || goto :eof
-cdk-deploy-to 245813579 eu-west-1 %1
+cdk-deploy-to 135792469 us-west-1 %* || exit /B
+cdk-deploy-to 245813579 eu-west-1 %*
 ```
 
 ------
 
-Developers would continue to use the normal `cdk deploy` command to deploy to their own AWS environments\.
+Developers could still use the normal `cdk deploy` command to deploy to their own AWS environments for development\.
