@@ -1,6 +1,6 @@
 # Getting started with the AWS CDK<a name="getting_started"></a>
 
-This topic introduces you to important AWS CDK concepts and describes how to install and configure the AWS CDK\. When you're done, you'll be ready to create [your first AWS CDK app\.](hello_world.md)\.
+This topic introduces you to important AWS CDK concepts and describes how to install and configure the AWS CDK\. When you're done, you'll be ready to create [your first AWS CDK app](hello_world.md)\.
 
 ## Your background<a name="getting_started_background"></a>
 
@@ -109,7 +109,7 @@ To help you use the AWS CDK in your favorite language, this Guide includes topic
 + [Working with the AWS CDK in Java](work-with-cdk-java.md)
 + [Working with the AWS CDK in C\#](work-with-cdk-csharp.md)
 
-Furthermore, since TypeScript was the first language supported by the AWS CDK, much AWS CDK example code is written in TypeScript\. For this reason, this Guide also includes a topic specifically to show how to adapt TypeScript AWS CDK code for use with the other supported languages\. See [Translating TypeScript AWS CDK code to other languages ](multiple_languages.md)\.
+Furthermore, since TypeScript was the first language supported by the AWS CDK, much AWS CDK example code is written in TypeScript\. For this reason, this Guide also includes a topic specifically to show how to adapt TypeScript AWS CDK code for use with the other supported languages\. See [Translating TypeScript AWS CDK code to other languages](multiple_languages.md)\.
 
 ## Prerequisites<a name="getting_started_prerequisites"></a>
 
