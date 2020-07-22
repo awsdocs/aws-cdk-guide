@@ -492,7 +492,7 @@ It is optional \(though good practice\) to synthesize before deploying\. The AWS
 
 If your code changes have security implications, you'll see a summary of these, and be asked to confirm them before deployment proceeds\.
 
-`cdk deploy` displays progress information as your stack is deployed\. When it's done, the command prompt reappears\. You can go to the [AWS CloudFormation console](https://console.aws.amazon.com/cloudformation/home) and see that it now lists `HelloSCdktack`\. You'll also find `MyFirstBucket` in the Amazon S3 console\.
+`cdk deploy` displays progress information as your stack is deployed\. When it's done, the command prompt reappears\. You can go to the [AWS CloudFormation console](https://console.aws.amazon.com/cloudformation/home) and see that it now lists `HelloCdkStack`\. You'll also find `MyFirstBucket` in the Amazon S3 console\.
 
 You've deployed your first stack using the AWS CDK—congratulations\! But that's not all there is to the AWS CDK\.
 
