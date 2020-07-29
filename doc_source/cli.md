@@ -57,6 +57,7 @@ By default, the AWS CDK reports the name and version of the following NPM module
 + AWS CDK core module
 + AWS Construct Library modules
 + AWS Solutions Constructs module
++ AWS Render Farm Deployment Kit module
 
 The `AWS::CDK::Metadata` resource looks something like the following\.
 
@@ -64,7 +65,7 @@ The `AWS::CDK::Metadata` resource looks something like the following\.
 CDKMetadata:
   Type: "AWS::CDK::Metadata"
   Properties:
-    Modules: "@aws-cdk/core=X.YY.Z,@aws-cdk/s3=X.YY.Z,@aws-solutions-consturcts/aws-apigateway-lambda=X.YY.Z"
+    Modules: "@aws-cdk/core=X.YY.Z,@aws-cdk/s3=X.YY.Z,@aws-solutions-consturcts/aws-apigateway-lambda=X.YY.Z,aws-rfdk=X.YY.Z"
 ```
 
 To opt out of version reporting, use one of the following methods:
