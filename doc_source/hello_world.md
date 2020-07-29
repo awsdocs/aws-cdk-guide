@@ -68,7 +68,7 @@ After the app has been created, also enter the following two commands to activat
 
 ```
 source .env/bin/activate
-pip install -r requirements.txt
+python -m pip install -r requirements.txt
 ```
 
 ------
@@ -87,7 +87,7 @@ If you are using an IDE, you can now open or import the project\. In Eclipse, fo
 cdk init app --language csharp
 ```
 
-If you are using Visual Studio, open the solution file, `src\HelloCdk.sln`\.
+If you are using Visual Studio, open the solution file in the `src` directory\.
 
 ------
 

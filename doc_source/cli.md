@@ -555,6 +555,10 @@ Options:
   --force, -f                               Always bootstrap even if it would
                                             downgrade template version
                                                       [boolean] [default: false]
+
+  --termination-protection                  Toggle CloudFormation termination
+                                            protection on the bootstrap stacks
+                                                      [boolean] [default: false]
 ```
 
 ### `cdk deploy`<a name="w4aac23b7c35b7b7"></a>
