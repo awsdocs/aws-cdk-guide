@@ -347,6 +347,6 @@ Tests:       4 passed, 4 total
 
 ## Tips for tests<a name="testing_tips"></a>
 
-Remember, your tests will live just as long as the code they test, and be read and modified just as often, so it pays to take a moment to consider how best to write them\. Don't copy and paste setup lines or common assertions, for example; refactor this logic into helper functions\. Use good names that reflect what each test actually tests\.
+Remember, your tests will live just as long as the code they test, and be read and modified just as often, so it pays to take a moment to consider how best to write them\. Don't copy and paste setup lines or common assertions, for example, refactor this logic into helper functions\. Use good names that reflect what each test actually tests\.
 
-Don't assert too much in one test\. Preferably, a test should test one and only one behavior\. If you accidentally break that behavior, exactly one test should fail, and the name of the test should tell you exactly what failed\. This is more an ideal to be striven for, however; sometimes you will unavoidably \(or inadvertently\) write tests that test more than one behavior\. Snapshot tests are, for reasons we've already described, especially prone to this problem, so use them sparingly\.
+Don't assert too much in one test\. Preferably, a test should test one and only one behavior\. If you accidentally break that behavior, exactly one test should fail, and the name of the test should tell you exactly what failed\. This is more an ideal to be striven for, however, sometimes you will unavoidably \(or inadvertently\) write tests that test more than one behavior\. Snapshot tests are, for reasons we've already described, especially prone to this problem, so use them sparingly\.
