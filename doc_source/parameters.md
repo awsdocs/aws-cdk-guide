@@ -6,7 +6,7 @@ Using the AWS CDK, you can both define parameters, which can then be used in the
 
 When deploying the AWS CloudFormation template using the AWS CDK Toolkit, you provide the parameter values on the command line\. If you deploy the template through the AWS CloudFormation console, you are prompted for the parameter values\.
 
-In general, we recommend against using AWS CloudFormation parameters with the AWS CDK\. Parameter values are not available at synthesis time and thus cannot be easily used in other parts of your AWS CDK app, particularly for control flow\.
+In general, we recommend against using AWS CloudFormation parameters with the AWS CDK\. Unlike [context values](context.md) or environment variables, the usual way to pass values into your AWS CDK apps without hard\-coding them, parameter values are not available at synthesis time, and thus cannot be easily used in other parts of your AWS CDK app, particularly for control flow\.
 
 **Note**  
 To do control flow with parameters, you can use [https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.CfnCondition.html](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.CfnCondition.html) constructs, although this is awkward compared to native `if` statements\.

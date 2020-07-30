@@ -126,7 +126,7 @@ Use the `--profile` flag to choose a set of credentials and default region from 
 cdk deploy --profile test PipelineStack
 ```
 
-Instead of the configuration file, you can set the environment variables `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_DEFAULT_REGION` to appropriate values\. 
+Instead of using the configuration files, you can set the environment variables `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_DEFAULT_REGION` to appropriate values\. 
 
 You may optionally use the `--role-arn` \(or `-r`\) option to specify the ARN of an IAM role that should be used for deployment\. This role must be assumable by the AWS account being used\.
 

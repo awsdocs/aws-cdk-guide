@@ -846,7 +846,7 @@ public class PipelineStack extends Stack {
                                         "npx cdk synth -o dist"));
                             }});
                         }});
-                        put("artifacts", new HashMap<String, String>() {{
+                        put("artifacts", new HashMap<String, Object>() {{
                             put("base-directory", "dist");
                             put("files", Arrays.asList("LambdaStack.template.json"));
                         }});
