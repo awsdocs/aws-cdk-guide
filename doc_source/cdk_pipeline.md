@@ -18,7 +18,7 @@ You may have already bootstrapped one or more environments so you can deploy ass
 To bootstrap an environment that will provision a pipeline:
 
 ------
-#### [ Linux/Mac OS X ]
+#### [ Mac OS X/Linux ]
 
 ```
 CDK_NEW_BOOTSTRAP=1 
@@ -42,7 +42,7 @@ npx cdk bootstrap --profile ADMIN-PROFILE ^
 To bootstrap additional environments into which AWS CDK applications will be deployed by the pipeline:
 
 ------
-#### [ Linux/Mac OS X ]
+#### [ Mac OS X/Linux ]
 
 ```
 CDK_NEW_BOOTSTRAP=1 
@@ -168,7 +168,7 @@ python -m pip install aws_cdk.aws_codepipeline aws_cdk.aws_codepipeline_actions
 
 Freeze your dependencies in `requirements.txt`\.
 
-**Linux/Mac OS X**  
+**Mac OS X/Linux**  
 
 ```
 python -m pip freeze | grep -v '^[-#]' > requirements.txt
