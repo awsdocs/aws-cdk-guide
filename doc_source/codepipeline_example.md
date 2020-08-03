@@ -241,7 +241,7 @@ export class LambdaStack extends Stack {
       
     const alias = new lambda.Alias(this, 'LambdaAlias', {
       aliasName: 'Prod',
-      version: func.latestVersion,
+      version: func.currentVersion,
     });
       
     new codedeploy.LambdaDeploymentGroup(this, 'DeploymentGroup', {
@@ -277,7 +277,7 @@ class LambdaStack extends Stack {
       
     const alias = new lambda.Alias(this, 'LambdaAlias', {
       aliasName: 'Prod',
-      version: func.latestVersion
+      version: func.currentVersion
     });
       
     new codedeploy.LambdaDeploymentGroup(this, 'DeploymentGroup', {
@@ -311,7 +311,7 @@ class LambdaStack(core.Stack):
     )
       
     alias = lambda_.Alias(self, "LambdaAlias", alias_name="Prod",
-                            version=func.latest_version)
+                            version=func.current_version)
       
     codedeploy.LambdaDeploymentGroup(self, "DeploymentGroup",
         alias=alias,
@@ -400,7 +400,7 @@ namespace Pipeline
                 Runtime = Runtime.NODEJS_10_X
             });
 
-            var version = func.LatestVersion;
+            var version = func.currentVersion;
             var alias = new Alias(this, "LambdaAlias", new AliasProps
             {
                 AliasName = "Prod",
