@@ -2,7 +2,7 @@
 
 Most of the other code examples in the *AWS CDK Developer Guide* involve only a single stack\. However, you can create apps containing any number of stacks\. Each stack results in its own AWS CloudFormation template\. Stacks are the *unit of deployment:* each stack in an app can be synthesized and deployed individually using the `cdk deploy` command\.
 
-This topic illustrates how to extend the `Stack` class to accept new properties or arguments, how to use these properties affect what resources the stack contains and their configuration, and how to instantiate multiple stacks from this class\. The example uses a Boolean property, named `encryptBucket` \(Python: `encrypt_bucket`\), to indicate whether an Amazon S3 bucket should be encrypted\. If so, the stack enables encryption using a key managed by AWS Key Management Service \(AWS KMS\)\. The app creates two instances of this stack, one with encryption and one without\.
+This topic illustrates how to extend the `Stack` class to accept new properties or arguments, how to use these properties to affect what resources the stack contains and their configuration, and how to instantiate multiple stacks from this class\. The example uses a Boolean property, named `encryptBucket` \(Python: `encrypt_bucket`\), to indicate whether an Amazon S3 bucket should be encrypted\. If so, the stack enables encryption using a key managed by AWS Key Management Service \(AWS KMS\)\. The app creates two instances of this stack, one with encryption and one without\.
 
 ## Before you begin<a name="cdk-how-to-create-multiple-stacks-prereqs"></a>
 

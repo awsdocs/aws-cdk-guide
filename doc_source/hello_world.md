@@ -1,6 +1,6 @@
 # Your first AWS CDK app<a name="hello_world"></a>
 
-You've read [Getting started with the AWS CDK](getting_started.md)? Great\! Now let's see how it feels to work with the AWS CDK by building the simplest possible AWS CDK app\. In this process you'll learn about the structure of a AWS CDK project, how to access the AWS Construct Library, and how to use the AWS CDK Toolkit command\-line tool\.\.
+You've read [Getting started with the AWS CDK](getting_started.md)? Great\! Now let's see how it feels to work with the AWS CDK by building the simplest possible AWS CDK app\. In this process you'll learn about the structure of a AWS CDK project, how to access the AWS Construct Library, and how to use the AWS CDK Toolkit command\-line tool\.
 
 The standard AWS CDK development workflow is similar to the workflow you're already familiar with as a developer, just with a few extra steps to synthesize your stack to an AWS CloudFormation template and deploy it\.
 
@@ -139,45 +139,9 @@ Don't worry about memorizing this command; in this tutorial, we'll provide it wh
 
 Just to verify everything is working correctly, list the stacks in your app\.
 
-------
-#### [ TypeScript ]
-
-```
-npm run build
-cdk ls
-```
-
-------
-#### [ JavaScript ]
-
 ```
 cdk ls
 ```
-
-------
-#### [ Python ]
-
-```
-cdk ls
-```
-
-------
-#### [ Java ]
-
-```
-mvn compile
-cdk ls
-```
-
-------
-#### [ C\# ]
-
-```
-dotnet build src
-cdk ls
-```
-
-------
 
 If you don't see `HelloCdkStack`, make sure you named your app's directory `hello-cdk`\. If you didn't, go back to [Create the app](#hello_world_tutorial_create_app) and try again\.
 
@@ -371,45 +335,9 @@ It's interesting to take note of how props are represented in the different supp
 
 Synthesize an AWS CloudFormation template for the app, as follows\. 
 
-------
-#### [ TypeScript ]
-
-```
-npm run build
-cdk synth
-```
-
-------
-#### [ JavaScript ]
-
 ```
 cdk synth
 ```
-
-------
-#### [ Python ]
-
-```
-cdk synth
-```
-
-------
-#### [ Java ]
-
-```
-mvn compile
-cdk synth
-```
-
-------
-#### [ C\# ]
-
-```
-dotnet build src
-cdk synth
-```
-
-------
 
 If your app contained more than one stack, you'd need to specify which stack\(s\) to synthesize\. But since it only contains one, the Toolkit knows you must mean that one\.
 
@@ -446,45 +374,9 @@ The `cdk synth` generates a perfectly valid AWS CloudFormation template\. You co
 
 To deploy the stack using AWS CloudFormation, issue:
 
-------
-#### [ TypeScript ]
-
-```
-npm run build
-cdk deploy
-```
-
-------
-#### [ JavaScript ]
-
 ```
 cdk deploy
 ```
-
-------
-#### [ Python ]
-
-```
-cdk deploy
-```
-
-------
-#### [ Java ]
-
-```
-mvn compile
-cdk deploy
-```
-
-------
-#### [ C\# ]
-
-```
-dotnet build src
-cdk deploy
-```
-
-------
 
 As with `cdk synth`, you don't need to specify the name of the stack since there's only one in the app\.
 
@@ -569,45 +461,9 @@ new Bucket(this, "MyFirstBucket", new BucketProps
 
 Now we'll use the `cdk diff` command to see the differences between what's already been deployed, and the code we just changed\.
 
-------
-#### [ TypeScript ]
-
-```
-npm run build
-cdk diff
-```
-
-------
-#### [ JavaScript ]
-
 ```
 cdk diff
 ```
-
-------
-#### [ Python ]
-
-```
-cdk diff
-```
-
-------
-#### [ Java ]
-
-```
-mvn compile
-cdk diff
-```
-
-------
-#### [ C\# ]
-
-```
-dotnet build src
-cdk diff
-```
-
-------
 
 The AWS CDK Toolkit queries your AWS account for the current AWS CloudFormation template for the `hello-cdk` stack, and compares it with the template it synthesized from your app\. The Resources section of the output should look like the following\.
 
@@ -629,45 +485,9 @@ You can also see that the bucket isn't going to be replaced, but will be updated
 
 Now let's deploy\.
 
-------
-#### [ TypeScript ]
-
-```
-npm run build
-cdk deploy
-```
-
-------
-#### [ JavaScript ]
-
 ```
 cdk deploy
 ```
-
-------
-#### [ Python ]
-
-```
-cdk deploy
-```
-
-------
-#### [ Java ]
-
-```
-mvn compile
-cdk deploy
-```
-
-------
-#### [ C\# ]
-
-```
-dotnet build src
-cdk deploy
-```
-
-------
 
 Enter y to approve the changes and deploy the updated stack\. The Toolkit updates the bucket configuration as you requested\.
 
@@ -695,7 +515,7 @@ cdk destroy
 Enter y to approve the changes and delete any stack resources\.
 
 **Note**  
-This wouldn't have worked if we hadn't changed tho bucket's `RemovalPolicy` just a minute ago\!
+This wouldn't have worked if we hadn't changed the bucket's `RemovalPolicy` just a minute ago\!
 
 If cdk destroy fails, it probably means you put something in your Amazon S3 bucket\. AWS CloudFormation won't delete buckets with files in them\. Delete the files and try again\.
 

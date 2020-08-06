@@ -8,7 +8,7 @@ You typically reference assets through APIs that are exposed by specific AWS con
 
 When you refer to an asset in your app, the [cloud assembly](apps.md#apps_cloud_assembly) synthesized from your application includes metadata information with instructions for the AWS CDK CLI on where to find the asset on the local disk, and what type of bundling to perform based on the type of asset, such as a directory to compress \(zip\) or a Docker image to build\.
 
-The AWS CDK generates a source hash for assets and can be used at construction time to determine whether the contents of an asset have changed\.
+The AWS CDK generates a source hash for assets, which can be used at construction time to determine whether the contents of an asset have changed\.
 
 By default, the AWS CDK creates a copy of the asset in the cloud assembly directory, which defaults to `cdk.out`, under the source hash\. This is so that the cloud assembly is self\-contained and moved over to a different host for deployment\. See [Cloud assemblies](apps.md#apps_cloud_assembly) for details\.
 

@@ -71,6 +71,7 @@ During cloning, Git will warn you that you appear to have cloned an empty reposi
    cd pipeline
    cdk init --language python
    source .env/bin/activate
+   git commit -m "project started"
    pip install -r requirements.txt
    pip install aws_cdk.aws_codedeploy aws_cdk.aws_lambda aws_cdk.aws_codebuild aws_cdk.aws_codepipeline
    pip install aws_cdk.aws_codecommit aws_cdk.aws_codepipeline_actions aws_cdk.aws_s3
@@ -189,7 +190,7 @@ During cloning, Git will warn you that you appear to have cloned an empty reposi
    ```
    // index.ts
    const GREETING = "Hello, AWS!";
-   export async function handler(event: any, context: any) {
+   export async function main(event: any, context: any) {
      console.log(GREETING);
      return GREETING;
    }
@@ -235,7 +236,7 @@ export class LambdaStack extends Stack {
       
     const func = new lambda.Function(this, 'Lambda', {
       code: this.lambdaCode,
-      handler: 'index.handler',
+      handler: 'index.main',
       runtime: lambda.Runtime.NODEJS_10_X,
     });
       
@@ -271,7 +272,7 @@ class LambdaStack extends Stack {
       
     const func = new lambda.Function(this, 'Lambda', {
       code: this.lambdaCode,
-      handler: 'index.handler',
+      handler: 'index.main',
       runtime: lambda.Runtime.NODEJS_10_X
     });
       
@@ -306,7 +307,7 @@ class LambdaStack(core.Stack):
       
     func = lambda_.Function(self, "Lambda",
                             code=self.lambda_code,
-                            handler="index.handler",
+                            handler="index.main",
                             runtime=lambda_.Runtime.NODEJS_10_X,
     )
       
@@ -357,7 +358,7 @@ public class LambdaStack extends Stack {
         
         Function func = Function.Builder.create(this, "Lambda")
                 .code(lambdaCode)
-                .handler("index.handler")
+                .handler("index.main")
                 .runtime(Runtime.NODEJS_10_X).build();
         
         Version version = func.getCurrentVersion();
@@ -396,7 +397,7 @@ namespace Pipeline
             var func = new Function(this, "Lambda", new FunctionProps
             {
                 Code = lambdaCode,
-                Handler = "index.handler",
+                Handler = "index.main",
                 Runtime = Runtime.NODEJS_10_X
             });
 
@@ -1242,7 +1243,6 @@ git push
 Now we can deploy the pipeline\.
 
 ```
-npm run build
 cdk deploy PipelineDeployingLambdaStack
 ```
 

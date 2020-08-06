@@ -309,7 +309,7 @@ if [[ $# -ge 2 ]]; then
     exit $?
 else
     echo 1>&2 "Provide AWS account and region as first two args."
-    echo 1>&2 "Addiitonal args are passed through to cdk deploy."
+    echo 1>&2 "Additional args are passed through to cdk deploy."
     exit 1
 fi
 ```

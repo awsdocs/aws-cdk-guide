@@ -367,7 +367,7 @@ The scope of a nested stack must be a `Stack` or `NestedStack` construct\. The n
 
 At synthesis time, the nested stack is synthesized to its own AWS CloudFormation template, which is uploaded to the AWS CDK staging bucket at deployment\. Nested stacks are bound to their parent stack and are not treated as independent deployment artifacts; they are not listed by `cdk list` nor can they be deployed by `cdk deploy`\.
 
- References between parent stacks and nested stacks are automatically translated to stack parameters and outputs in the generated AWS CloudFormation templates\. 
+References between parent stacks and nested stacks are automatically translated to stack parameters and outputs in the generated AWS CloudFormation templates, as with any [cross\-stack reference](resources.md#resource_stack)\.
 
 **Warning**  
 Changes in security posture are not displayed before deployment for nested stacks\. This information is displayed only for top\-level stacks\.

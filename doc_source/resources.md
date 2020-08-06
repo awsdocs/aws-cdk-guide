@@ -255,8 +255,8 @@ var prod = makeEnv(account: "123456789012", region: "us-east-1");
 var stack1 = new StackThatProvidesABucket(app, "Stack1", new StackProps { Env = prod });
 
 // stack2 will take an argument "bucket"
-var stack2 = new StackThatExpectsABucket(app, "Stack2", new StackProps { Env = prod },
-    bucket: stack1.Bucket);
+var stack2 = new StackThatExpectsABucket(app, "Stack2", new StackProps { Env = prod,
+    bucket = stack1.Bucket});
 ```
 
 ------
@@ -315,7 +315,7 @@ var bucket = new Bucket(this, "MyBucket", new BucketProps { BucketName = "my-buc
 
 Assigning physical names to resources has some disadvantages in AWS CloudFormation\. Most importantly, any changes to deployed resources that require a resource replacement, such as changes to a resource's properties that are immutable after creation, will fail if a resource has a physical name assigned\. If you end up in a state like that, the only solution is to delete the AWS CloudFormation stack, then deploy the AWS CDK app again\. See the [AWS CloudFormation documentation](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-name.html) for details\.
 
-In some cases, such as when creating an AWS CDK app with cross\-environment references, physical names are required for the AWS CDK to function correctly\. In those cases, if you don't want to bother with coming up with a physical name yourself, you can let the AWS CDK name it for you by using the special value `PhysicalName.GENERATE_IF_NEEDED,`, as follows\.
+In some cases, such as when creating an AWS CDK app with cross\-environment references, physical names are required for the AWS CDK to function correctly\. In those cases, if you don't want to bother with coming up with a physical name yourself, you can let the AWS CDK name it for you by using the special value `PhysicalName.GENERATE_IF_NEEDED`, as follows\.
 
 ------
 #### [ TypeScript ]

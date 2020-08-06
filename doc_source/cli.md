@@ -156,13 +156,13 @@ cdk --app "npx ts-node bin/hello-cdk.ts" ls
 
 Many CDK Toolkit commands \(for example, `cdk deploy`\) work on stacks defined in your app\. If your app contains only one stack, the CDK Toolkit assumes you mean that one if you don't specify a stack explicitly\.
 
-Otherwise, you must specify the stack or stacks you want to work with\. You can do this by specifying the desired stacks by name individually on the command line\.
+Otherwise, you must specify the stack or stacks you want to work with\. You can do this by specifying the desired stacks by ID individually on the command line\. Recall that the ID is the value specified by the second argument when you instantiate the stack\.
 
 ```
 cdk synth PipelineStack LambdaStack
 ```
 
-You may also use wildcards to specify names that match a pattern\.
+You may also use wildcards to specify IDs that match a pattern\.
 + ? matches any single character
 + \* matches any number of characters
 

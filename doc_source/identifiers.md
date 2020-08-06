@@ -10,7 +10,10 @@ If you attempt to create an identifier with the same value within the same scope
 
 The most common identifier, `id`, is the identifier passed as the second argument when instantiating a construct object\. This identifier, like all identifiers, need only be unique within the scope in which it is created, which is the first argument when instantiating a construct object\.
 
-Lets look at an example where we have two constructs with the identifier `MyBucket` in our app\. However, since they are defined in different scopes, the first in the scope of the stack with the identifier `Stack1`, and the second in the scope of a stack with the identifier `Stack2`, that doesn't cause any sort of conflict, and they can co\-exist in the same app without any issues\.
+**Note**  
+The `id` of a stack is also the identifier you use to refer to it in the [AWS CDK Toolkit \(`cdk` command\)](cli.md)\.
+
+Let's look at an example where we have two constructs with the identifier `MyBucket` in our app\. However, since they are defined in different scopes, the first in the scope of the stack with the identifier `Stack1`, and the second in the scope of a stack with the identifier `Stack2`, that doesn't cause any sort of conflict, and they can co\-exist in the same app without any issues\.
 
 ------
 #### [ TypeScript ]

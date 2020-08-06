@@ -16,7 +16,7 @@ Developers can use one of the supported programming languages to define reusable
 
 ## Why use the AWS CDK?<a name="why_use_cdk"></a>
 
-Let's look at the power of the AWS CDK\. Here is some code in an AWS CDK project to create an AWS Fargate service \(this is the code we use in the [Creating an AWS Fargate service using the AWS CDK](ecs_example.md)\)\.
+Let's look at the power of the AWS CDK\. Here is some code in an AWS CDK project to create an Amazon ECS service with AWS Fargate launch type \(this is the code we use in the [Creating an AWS Fargate service using the AWS CDK](ecs_example.md)\)\.
 
 ------
 #### [ TypeScript ]

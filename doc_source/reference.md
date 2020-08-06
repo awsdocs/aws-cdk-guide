@@ -32,7 +32,7 @@ For more details on the cloud assembly schema, see [Cloud Assembly Versioning](h
 The modules in the AWS Construct Library move through various stages as they are developed from concept to mature API\. Different stages imply different promises for API stability in subsequent versions of the AWS CDK\.
 
 Stage 0: CFN resources  
-All construct library modules start in stage 0 when they are auto\-generated from the AWS CloudFormation resource specification\. The goal of stage 0 is to make new AWS CloudFormation resources/properties available to CDK customers as quickly as possible\. We create tracking documents to capture the data required to decide when L2 resources to add in the future\.  
+All construct library modules start in stage 0 when they are auto\-generated from the AWS CloudFormation resource specification\. The goal of stage 0 is to make new AWS CloudFormation resources/properties available to AWS CDK customers as quickly as possible\. We capture feedback from customers to better understand what L2 resources to add\.  
 AWS CloudFormation resources themselves are considered stable APIs, regardless of whether other constructs in the module are under active development\.
 
 Stage 1: Experimental  
@@ -45,7 +45,7 @@ At the developer preview stage, our aim is to deliver a release candidate with a
 We make breaking changes at this stage only when required to address unforeseen customer use cases or issues\. Since breaking changes are still possible, the package itself retains the "experimental" label while in developer preview\.
 
 Stage 3: General availability \(GA\)  
-The module is generally available with a backwards\-compatible guarantee across minor versions\. We will only make backward\-compatible changes to the API, so that your existing apps will continue to work until the next major AWS CDK release\.  
+The module is generally available with a compatibility guarantee across minor versions\. We will only make backward\-compatible changes to the API, so that your existing apps will continue to work until the next major AWS CDK release\.  
 In some cases, we may use [feature flags](featureflags.md) to optionally enable new behavior while retaining the previous behavior to support existing apps\.
 
 For more information on these stages, see [AWS Construct Library Module Lifecycle](https://github.com/aws/aws-cdk-rfcs/blob/master/text/0107-construct-library-module-lifecycle.md)\.

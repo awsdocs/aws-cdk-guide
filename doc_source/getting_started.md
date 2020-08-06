@@ -123,7 +123,7 @@ Node\.js versions 13\.0\.0 through 13\.6\.0 are not compatible with the AWS CDK\
 You must provide your credentials and an AWS Region to use AWS CDK, if you have not already done so\.
 
 **Important**  
-We strongly recommend against using your AWS root account for day\-to\-day tasks\. Instead, create a user in IAM and use its credentials with the CDK\.
+We strongly recommend against using your AWS root account for day\-to\-day tasks\. Instead, create a user in IAM and use its credentials with the CDK\. Best practices are to change this account's access key regularly and to use a least\-privileges role \(specifying `--role-arn`\) when deploying\.
 
 If you have the AWS CLI installed, the easiest way to satisfy this requirement is to install the AWS CLI and issue the following command:
 

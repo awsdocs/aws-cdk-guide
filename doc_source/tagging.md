@@ -135,7 +135,7 @@ Tag.Add(myConstruct, "key", "value", new TagProps { Priority = 300 });
 
 `Tag.add()` supports properties that fine\-tune how tags are applied to resources\. All properties are optional\.
 
-The following example applies the tag **tagname** with the value **value** and priority **100** to resources of type **AWS::Xxx::Yzz** in the construct, but not to instances launched in an Amazon EC2 Auto Scaling group or to resources of type **AWS::Xxx::Zss**\.
+The following example applies the tag **tagname** with the value **value** and priority **100** to resources of type **AWS::Xxx::Yyy** in the construct, but not to instances launched in an Amazon EC2 Auto Scaling group or to resources of type **AWS::Xxx::Zzz**\. \(These are placeholders for two arbitrary but different AWS CloudFormation resource types\.\)
 
 ------
 #### [ TypeScript ]
@@ -213,7 +213,7 @@ Use this to set the priority of this operation with respect to other `Tag.add()`
 
  `Tag.remove()` supports properties to fine\-tune how tags are removed from resources\. All properties are optional\.
 
-The following example removes the tag **tagname** with priority **200** from resources of type **AWS::Xxx::Yzz** in the construct, but not from resources of type **AWS::Xxx::Zzz**\.
+The following example removes the tag **tagname** with priority **200** from resources of type **AWS::Xxx::Yyy** in the construct, but not from resources of type **AWS::Xxx::Zzz**\.
 
 ------
 #### [ TypeScript ]

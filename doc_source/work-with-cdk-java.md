@@ -26,7 +26,7 @@ cdk init app --language java
 
 The resulting project includes a reference to the `software.amazon.awscdk.core` Maven package\. It and its dependencies are automatically installed by Maven\.
 
-If you are using an IDE, you can now open or import the project\. In Eclipse, for example, choose **File** > **Import** > **Maven** > **Existing Maven Projects**\. Make sure that the project settings are set ta use Java 8 \(1\.8\)\.
+If you are using an IDE, you can now open or import the project\. In Eclipse, for example, choose **File** > **Import** > **Maven** > **Existing Maven Projects**\. Make sure that the project settings are set to use Java 8 \(1\.8\)\.
 
 ## Managing AWS construct library modules<a name="java-managemodules"></a>
 
@@ -110,7 +110,7 @@ In Java, missing values in AWS CDK objects such as props are represented by `nul
 
 ## Building, synthesizing, and deploying<a name="java-running"></a>
 
- Build your app  to check for errors and to run tests\. You can do this in your IDE \(for example, press Control\-B in Eclipse\) or by issuing `mvn compile` at a command prompt while in your project's root directory\.
+The AWS CDK automatically compiles your app before running it\. However, it can be useful to build your app manually to check for errors and to run tests\. You can do this in your IDE \(for example, press Control\-B in Eclipse\) or by issuing `mvn compile` at a command prompt while in your project's root directory\.
 
 Run any tests you've written by running `mvn test` at a command prompt\.
 
