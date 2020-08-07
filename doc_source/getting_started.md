@@ -133,7 +133,7 @@ aws configure
 
 Provide your AWS access key ID, secret access key, and default region when prompted\.
 
-You may also manually create or edit the `~/.aws/config` and `~/.aws/credentials` \(Linux or Mac\) or `%USERPROFILE%\.aws\config` and `%USERPROFILE%\.aws\credentials` \(Windows\) files to contain credentials and a default region, in the following format\.
+You may also manually create or edit the `~/.aws/config` and `~/.aws/credentials` \(Mac OS X or Linux\) or `%USERPROFILE%\.aws\config` and `%USERPROFILE%\.aws\credentials` \(Windows\) files to contain credentials and a default region, in the following format\.
 + In `~/.aws/config` or `%USERPROFILE%\.aws\config`
 
   ```
