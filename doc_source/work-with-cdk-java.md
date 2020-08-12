@@ -122,14 +122,14 @@ You can specify the names of multiple stacks to be synthesized or deployed in a 
 
 ```
 cdk synth                 # app defines single stack
-cdk deploy Happy Grumpy   @ app defines two or more stacks; two are deployed
+cdk deploy Happy Grumpy   # app defines two or more stacks; two are deployed
 ```
 
 You may also use the wildcards \* \(any number of characters\) and ? \(any single character\) to identify stacks by pattern\. When using wildcards, enclose the pattern in quotes\. Otherwise, the shell may try to expand it to the names of files in the current directory before they are passed to the AWS CDK Toolkit\.
 
 ```
 cdk synth "Stack?"    # Stack1, StackA, etc.
-cdk deploy "*Stack"   @ PipeStack, LambdaStack, etc.
+cdk deploy "*Stack"   # PipeStack, LambdaStack, etc.
 ```
 
 **Tip**  
