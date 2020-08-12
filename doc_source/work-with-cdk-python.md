@@ -122,7 +122,7 @@ Some AWS CDK methods \(such as `tryGetContext()` to get a runtime context value\
 
 ### Using interfaces<a name="python-interfaces"></a>
 
-Python doesn't have an interface feature as some other languages do, though it does have [abstract base classes](https://docs.python.org/3/library/abc.html), which are similar\. \(If you're not familiar with interfaces, Wikipedia has [a good introduction](https://en.wikipedia.org/wiki/Interface_(computing)#In_object-oriented_languages)\.\) TypeScript, the language in which the AWS CDK is implemented, does provide intefaces, and constructs and other AWS CDK objects often require an object that adheres to a particular interface, rather than inheriting from a particular class\. So the AWS CDK provides its own interface feature as part of the [JSII](https://github.com/aws/jsii) layer\.
+Python doesn't have an interface feature as some other languages do, though it does have [abstract base classes](https://docs.python.org/3/library/abc.html), which are similar\. \(If you're not familiar with interfaces, Wikipedia has [a good introduction](https://en.wikipedia.org/wiki/Interface_(computing)#In_object-oriented_languages)\.\) TypeScript, the language in which the AWS CDK is implemented, does provide interfaces, and constructs and other AWS CDK objects often require an object that adheres to a particular interface, rather than inheriting from a particular class\. So the AWS CDK provides its own interface feature as part of the [JSII](https://github.com/aws/jsii) layer\.
 
 To indicate that a class implements a particular interface, you can use the `@jsii.implements` decorator:
 
