@@ -136,7 +136,7 @@ In most cases, you don't need to directly use the APIs in the `aws-s3-assets` mo
 
 #### Lambda function example<a name="assets_types_s3_lambda"></a>
 
-A common use case is to create AWS Lambda functions with the handler code, which is the entry point for the function, as an Amazon S3 asset\. 
+A common use case is to create AWS Lambda functions with the handler code, which is the entry point for the function, as an Amazon S3 asset\.
 
 The following example uses an Amazon S3 asset to define a Python handler in the local directory `handler` and creates a Lambda function with the local directory asset as the `code` property\. Below is the Python code for the handler\.
 
@@ -678,7 +678,7 @@ taskDefinition.AddContainer("my-other-container", new ContainerDefinitionOptions
 
 #### Deploy\-time attributes example<a name="assets_types_docker_deploy"></a>
 
-The following example shows how to use the deploy\-time attributes `repository` and `imageUri` to create an Amazon ECS task definition with the AWS Fargate launch type\.
+The following example shows how to use the deploy\-time attributes `repository` and `imageUri` to create an Amazon ECS task definition with the AWS Fargate launch type\. Note that the Amazon ECR repo lookup requires the image's tag, not its URI, so we snip it from the end of the asset's URI\.
 
 ------
 #### [ TypeScript ]
@@ -698,7 +698,7 @@ const taskDefinition = new ecs.FargateTaskDefinition(this, "TaskDef", {
 });
 
 taskDefinition.addContainer("my-other-container", {
-  image: ecs.ContainerImage.fromEcrRepository(asset.repository, asset.imageUri)
+  image: ecs.ContainerImage.fromEcrRepository(asset.repository, asset.imageUri.split(":").pop())
 });
 ```
 
@@ -720,7 +720,7 @@ const taskDefinition = new ecs.FargateTaskDefinition(this, "TaskDef", {
 });
 
 taskDefinition.addContainer("my-other-container", {
-  image: ecs.ContainerImage.fromEcrRepository(asset.repository, asset.imageUri)
+  image: ecs.ContainerImage.fromEcrRepository(asset.repository, asset.imageUri.split(":").pop())
 });
 ```
 
@@ -742,7 +742,7 @@ task_definition = ecs.FargateTaskDefinition(self, "TaskDef",
 
 task_definition.add_container("my-other-container",
     image=ecs.ContainerImage.fromEcrRepository(
-        asset.repository, asset.image_uri))
+        asset.repository, asset.image_uri.rpartition(":")[-1]))
 ```
 
 ------
@@ -765,9 +765,13 @@ DockerImageAsset asset = DockerImageAsset.Builder.create(this, "my-image")
 FargateTaskDefinition taskDefinition = FargateTaskDefinition.Builder.create(
         this, "TaskDef").memoryLimitMiB(1024).cpu(512).build();
 
+// extract the tag from the asset's image URI for use in ECR repo lookup
+String imageUri = asset.getImageUri();
+String imageTag = imageUri.substring(imageUri.lastIndexOf(":") + 1);
+
 taskDefinition.addContainer("my-other-container",
         ContainerDefinitionOptions.builder().image(ContainerImage.fromEcrRepository(
-                asset.getRepository(), asset.getImageUri())).build());
+                asset.getRepository(), imageTag)).build());
 ```
 
 ------
@@ -790,7 +794,7 @@ var taskDefinition = new FargateTaskDefinition(this, "TaskDef", new FargateTaskD
 
 taskDefinition.AddContainer("my-other-container", new ContainerDefinitionOptions
 {
-    Image = ContainerImage.FromEcrRepository(asset.Repository, asset.ImageUri)
+    Image = ContainerImage.FromEcrRepository(asset.Repository, asset.ImageUri.Split(":").Last())
 });
 ```
 
