@@ -64,6 +64,13 @@ AWS Construct Library modules are named like `aws-cdk.SERVICE-NAME`\. For exampl
 python -m pip install aws-cdk.aws-s3 aws-cdk.aws-lambda
 ```
 
+Similar names are used for importing AWS Construct Library modules into your Python code \(just replace the hyphens with underscores\)\.
+
+```
+import aws_cdk.aws_s3 as s3
+import aws_cdk.aws_lambda as lam
+```
+
 After installing a module, update your project's `requirements.txt` file, which lists your project's dependencies\. It is best to do this manually rather than using `pip freeze`\. `pip freeze` captures the current versions of all modules installed in your Python virtual environment, which can be useful when bundling up a project to be run elsewhere\.
 
 Usually, though, your `requirements.txt` should list only top\-level dependencies \(modules that your app depends on directly\) and not the dependencies of those modules\. This strategy makes updating your dependencies simpler\. Here is what your `requirements.txt` file might look like if you have installed the Amazon S3 and AWS Lambda modules as shown earlier\. 
