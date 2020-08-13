@@ -71,7 +71,7 @@ Alternatively, name your properties so that it is clear that they belong to your
 
 ### Missing values<a name="typescript-missing-values"></a>
 
-Missing values in an object \(such as props\) have the value `undefined` in TypeScript\. Recent versions of the language include operators that simplify working with these values, making it easier to specify defaults and "short\-circuit" chaining when an undefined value is reached\. For more information on these features, see the [TypeScript 3\.7 Release Notes](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-7.html), specifically the first two features, Optional Chaining and Nullish Coalescing\.
+Missing values in an object \(such as props\) have the value `undefined` in TypeScript\. Recent versions of the language include operators that simplify working with these values, making it easier to specify defaults and "short\-circuit" chaining when an undefined value is reached\. For more information about these features, see the [TypeScript 3\.7 Release Notes](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-7.html), specifically the first two features, Optional Chaining and Nullish Coalescing\.
 
 ## Building, synthesizing, and deploying<a name="typescript-running"></a>
 

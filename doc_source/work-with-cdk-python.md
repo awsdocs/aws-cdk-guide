@@ -18,7 +18,7 @@ python -m pip install --upgrade pip
 python -m pip install --upgrade virtualenv
 ```
 
-If you encounter a permission error, run the above commands with the `--user` flag to each command so that the modules are installed in your user directory, or use `sudo` to get the permissions to install the modules system\-wide\.
+If you encounter a permission error, run the above commands with the `--user` flag so that the modules are installed in your user directory, or use `sudo` to obtain the permissions to install the modules system\-wide\.
 
 **Note**  
 It is common for Linux distros to use the executable name `python3` for Python 3\.x, and have `python` refer to a Python 2\.x installation\. You can adjust the command used to run your application by editing `cdk.json` in the project's main directory\.

@@ -246,7 +246,7 @@ At this writing, there is one AWS region that has only one availability zone: ap
 
 You can change this behavior by overriding your stack's [https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Stack.html#availabilityzones](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Stack.html#availabilityzones) \(Python: `availability_zones`\) property to explicitly specify the zones you want to use\.
 
-For more information on how to specify a stack's account and region at synthesis time, while retaining the flexibility to deploy to any region, see [Environments](environments.md)\.
+For more information about specifying a stack's account and region at synthesis time, while retaining the flexibility to deploy to any region, see [Environments](environments.md)\.
 
 \([back to list](#troubleshooting_top)\)<a name="troubleshooting_resource_not_deleted"></a>
 

@@ -48,7 +48,7 @@ Stage 3: General availability \(GA\)
 The module is generally available with a compatibility guarantee across minor versions\. We will only make backward\-compatible changes to the API, so that your existing apps will continue to work until the next major AWS CDK release\.  
 In some cases, we may use [feature flags](featureflags.md) to optionally enable new behavior while retaining the previous behavior to support existing apps\.
 
-For more information on these stages, see [AWS Construct Library Module Lifecycle](https://github.com/aws/aws-cdk-rfcs/blob/master/text/0107-construct-library-module-lifecycle.md)\.
+For more information about these maturity stages, see [AWS Construct Library Module Lifecycle](https://github.com/aws/aws-cdk-rfcs/blob/master/text/0107-construct-library-module-lifecycle.md)\.
 
 ### Language binding stability<a name="aws_construct_lib_versioning_binding"></a>
 

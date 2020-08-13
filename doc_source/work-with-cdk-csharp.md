@@ -55,7 +55,7 @@ Look in the **Updates** panel to install new versions of your packages\.
 
 ### The NuGet console<a name="csharp-vs-nuget-console"></a>
 
-The NuGet console is a PowerShell\-based interface to NuGet that works in the context of a Visual Studio project\. You can open it in Visual Studio by choosing **Tools** > **NuGet Package Manager** > **Package Manager Console**\. For more information on using this tool, see [Install and Manage Packages with the Package Manager Console in Visual Studio](https://docs.microsoft.com/en-us/nuget/consume-packages/install-use-packages-powershell)\.
+The NuGet console is a PowerShell\-based interface to NuGet that works in the context of a Visual Studio project\. You can open it in Visual Studio by choosing **Tools** > **NuGet Package Manager** > **Package Manager Console**\. For more information about using this tool, see [Install and Manage Packages with the Package Manager Console in Visual Studio](https://docs.microsoft.com/en-us/nuget/consume-packages/install-use-packages-powershell)\.
 
 ### The `dotnet` command<a name="csharp-vs-dotnet-command"></a>
 
@@ -81,7 +81,7 @@ dotnet add package Amazon.CDK.AWS.S3 -v VERSION-NUMBER
 
 To update a package, issue the same `dotnet add` command you used to install it\. If you do not specify a version number, the latest version is installed\. For experimental modules, again, you must specify an explicit version number\.
 
-For more information on managing packages using the `dotnet` command, see [Install and Manage Packages Using the dotnet CLI](https://docs.microsoft.com/en-us/nuget/consume-packages/install-use-packages-dotnet-cli)\.
+For more information about managing packages using the `dotnet` command, see [Install and Manage Packages Using the dotnet CLI](https://docs.microsoft.com/en-us/nuget/consume-packages/install-use-packages-dotnet-cli)\.
 
 ### The `nuget` command<a name="csharp-vs-nuget-command"></a>
 
