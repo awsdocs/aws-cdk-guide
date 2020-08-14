@@ -1,6 +1,51 @@
 # Set a CloudWatch alarm<a name="how_to_set_cw_alarm"></a>
 
-The **aws\-cloudwatch** package supports setting CloudWatch alarms on CloudWatch metrics\. So the first thing you need is a metric\. You can use a predefined metric or you can create your own\. Create your own metric as follows, where the *namespace* value should be something like **AWS/SQS** for an Amazon SQS queue\.
+The [aws\-cloudwatch](https://docs.aws.amazon.com/cdk/api/latest/docs/aws-cloudwatch-readme.html) package supports setting CloudWatch alarms on CloudWatch metrics\. So the first thing you need is a metric\. You can use a predefined metric or you can create your own\.
+
+## Using an existing metric<a name="how_to_set_cw_alarm_use_metric"></a>
+
+Many AWS Construct Library modules let you set an alarm on an existing metric by passing the metric's name to a convenience method on an instance of an object that has metrics\. For example, given an Amazon SQS queue, you can get the metric **ApproximateNumberOfMessagesVisible** from the queue's [metric\(\)](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-sqs.Queue.html#metricmetricname-props) method\.
+
+------
+#### [ TypeScript ]
+
+```
+const metric = queue.metric("ApproximateNumberOfMessagesVisible");
+```
+
+------
+#### [ JavaScript ]
+
+```
+const metric = queue.metric("ApproximateNumberOfMessagesVisible");
+```
+
+------
+#### [ Python ]
+
+```
+metric = queue.metric("ApproximateNumberOfMessagesVisible")
+```
+
+------
+#### [ Java ]
+
+```
+Metric metric = queue.metric("ApproximateNumberOfMessagesVisible");
+```
+
+------
+#### [ C\# ]
+
+```
+var metric = queue.Metric("ApproximateNumberOfMessagesVisible");
+```
+
+------
+
+## Creating your own metric<a name="how_to_set_cw_alarm_new_metric"></a>
+
+Create your own [wetric](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-cloudwatch.Metric.html) as follows, where the *namespace* value should be something like **AWS/SQS** for an Amazon SQS queue\. You also need to specify your metric's name and dimension\.
 
 ------
 #### [ TypeScript ]
@@ -64,7 +109,9 @@ var metric = new Metric(this, "Metric", new MetricProps
 
 ------
 
-Once you have a metric, either an existing one or one you defined, you can create an alarm\. In this case, the alarm is raised when there are more than 100 of your metric in two of the last three seconds:
+## Creating the alarm<a name="how_to_set_cw_alarm_create"></a>
+
+Once you have a metric, either an existing one or one you defined, you can create an alarm\. In this example, the alarm is raised when there are more than 100 of your metric in two of the last three seconds\. Assuming the metric is the **ApproximateNumberOfMessagesVisible** metric from an Amazon SQS queue, it would raise when 100 messages are visible in the queue in two of the last three seconds\.
 
 ------
 #### [ TypeScript ]
@@ -131,7 +178,7 @@ var alarm = new Alarm(this, "Alarm", new AlarmProps
 
 ------
 
-An alternative way to create an alarm is using the metric's `createAlarm()` method, which takes essentially the same properties as the `Alarm` constructor; you just don't need to pass in the metric, since it's already known\.
+An alternative way to create an alarm is using the metric's [createAlarm\(\)](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-cloudwatch.Metric.html#create-wbr-alarmscope-id-props) method, which takes essentially the same properties as the `Alarm` constructor; you just don't need to pass in the metric, since it's already known\.
 
 ------
 #### [ TypeScript ]
@@ -159,7 +206,7 @@ metric.createAlarm(this, 'Alarm', {
 #### [ Python ]
 
 ```
-metric.create_alarm(this, "Alarm",
+metric.create_alarm(self, "Alarm",
     threshold=100,
     evaluation_periods=3,
     datapoints_to_alarm=2
@@ -183,79 +230,6 @@ metric.createAlarm(this, "Alarm", new CreateAlarmOptions.Builder()
 ```
 metric.CreateAlarm(this, "Alarm", new CreateAlarmOptions
 {
-    Threshold = 100,
-    EvaluationPeriods = 3,
-    DatapointsToAlarm = 2
-});
-```
-
-------
-
-Many AWS Construct Library modules let you set an alarm on an existing metric\. For example, you can create an Amazon SQS alarm for the **ApproximateNumberOfMessagesVisible** metric that raises an alarm if the queue has more than 100 messages available for retrieval in two of the last three seconds\.
-
-------
-#### [ TypeScript ]
-
-```
-    const qMetric = queue.metric("ApproximateNumberOfMessagesVisible");
-
-    new cloudwatch.Alarm(this, "Alarm", {
-      metric: qMetric,
-      threshold: 100,
-      evaluationPeriods: 3,
-      datapointsToAlarm: 2
-    });
-```
-
-------
-#### [ JavaScript ]
-
-```
-    const qMetric = queue.metric("ApproximateNumberOfMessagesVisible");
-
-    new cloudwatch.Alarm(this, "Alarm", {
-      metric: qMetric,
-      threshold: 100,
-      evaluationPeriods: 3,
-      datapointsToAlarm: 2
-    });
-```
-
-------
-#### [ Python ]
-
-```
-q_metric = queue.metric("ApproximateNumberOfMessagesVisible")
-        
-cloudwatch.Alarm(self, "Alarm",
-    metric=q_metric,
-    threshold=100,
-    evaluation_periods=3,
-    datapoints_to_alarm=2
-)
-```
-
-------
-#### [ Java ]
-
-```
-Metric qMetric = queue.metric("ApproximateNumberOfMessagesVisible");
-
-Alarm.Builder.create(this, "Alarm")
-        .metric(qMetric)
-        .threshold(100)
-        .evaluationPeriods(3)
-        .datapointsToAlarm(2).build();
-```
-
-------
-#### [ C\# ]
-
-```
-var qMetric = queue.Metric("ApproximateNumberOfMessagesVisible");
-
-new Alarm(this, "Alarm", new AlarmProps {
-    Metric = qMetric,
     Threshold = 100,
     EvaluationPeriods = 3,
     DatapointsToAlarm = 2
