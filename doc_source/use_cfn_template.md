@@ -119,3 +119,44 @@ var bucketArn = Fn.GetAtt("S3Bucket", "Arn");
 ```
 
 ------
+
+The result of a `getAtt()` call is a [token](tokens.md)\. The actual value won't be available until later in the synthesis process\. If you need to pass such an attribute to another API that requires a string, call `toString()` on the result\.
+
+------
+#### [ TypeScript ]
+
+```
+const bucketArn = cdk.Fn.getAtt("S3Bucket", "Arn").toString();
+```
+
+------
+#### [ JavaScript ]
+
+```
+const bucketArn = cdk.Fn.getAtt("S3Bucket", "Arn").toString();
+```
+
+------
+#### [ Python ]
+
+```
+bucket_arn = cdk.Fn.get_att("S3Bucket", "Arn").to_string()
+```
+
+------
+#### [ Java ]
+
+```
+String bucketArn = Fn.getAtt("S3Bucket", "Arn").toString();
+```
+
+------
+#### [ C\# ]
+
+```
+var bucketArn = Fn.GetAtt("S3Bucket", "Arn").ToString();
+```
+
+------
+
+This string is still a token, just in a string encoding, so you still don't have the actual ARN\. But in many ways, you can treat the string as if you did have the real value \(for example, adding text to the beginning or end\) and it will work just as you expect\.
