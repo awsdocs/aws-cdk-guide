@@ -488,7 +488,7 @@ new Function(this, "MyLambda", new FunctionProps
 
 Sometimes you already have a resource in your AWS account and want to use it in your AWS CDK app, for example, a resource that was defined through the console, the AWS SDK, directly with AWS CloudFormation, or in a different AWS CDK application\. You can turn the resource's ARN \(or another identifying attribute, or group of attributes\) into an AWS CDK object in the current stack by calling a static factory method on the resource's class\. 
 
-The following example shows how to define a bucket based on the existing bucket with the ARN **arn:aws:s3:::my\-bucket\-name**, and a VPC based on the existing VPC with the resource name `booh`\.
+The following example shows how to define a bucket based on an existing bucket with the ARN **arn:aws:s3:::my\-bucket\-name**, and a Amazon Virtual Private Cloud based on an existing VPC having a specific ID\.
 
 ------
 #### [ TypeScript ]
@@ -667,7 +667,7 @@ Vpc.FromLookup(this, id = "PublicVpc", new VpcLookupOptions
 
 Note that `Vpc.fromLookup()` works only in stacks that are defined with an explicit **account** and **region** in their `env` property\. If the AWS CDK attempts to look up an Amazon VPC from an [environment\-agnostic stack](stacks.md#stack_api), the CLI does not know which environment to query to find the VPC\.
 
-Although you can use an imported resource anywhere, you cannot modify the imported resource\. For example, calling `addToResourcePolicy` \(Python: `add_to_resource_policy`\) on an imported `s3.IBucket` does nothing\.
+Although you can use an imported resource anywhere, you cannot modify the imported resource\. For example, calling `addToResourcePolicy` \(Python: `add_to_resource_policy`\) on an imported `s3.Bucket` does nothing\.
 
 ## Permission grants<a name="resources_grants"></a>
 
