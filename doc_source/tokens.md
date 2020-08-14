@@ -143,7 +143,7 @@ if (!Token.IsUnresolved(name) && name.Length > 10)
 
 ------
 
-If **name** is a token, validation isn't performed, and the error could occur in a later stage in the lifecycle, such as during deployment\.
+If **name** is a token, validation isn't performed, and an error could still occur in a later stage in the lifecycle, such as during deployment\.
 
 **Note**  
 You can use token encodings to escape the type system\. For example, you could string\-encode a token that produces a number value at synthesis time\. If you use these functions, it's your responsibility to ensure that your template resolves to a usable state after synthesis\.
