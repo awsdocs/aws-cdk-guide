@@ -41,6 +41,9 @@ After initializing the project, activate the project's virtual environment\. Thi
 source .env/bin/activate
 ```
 
+**Note**  
+You may recognize this as the Mac/Linux command to activate a virtual environment\. The Python templates include a batch file, `source.bat`, that allows the same command to be used on Windows\. The traditional Windows command, `.env\Scripts\activate.bat`, works, too\.
+
 Then install the app's standard dependencies:
 
 ```
