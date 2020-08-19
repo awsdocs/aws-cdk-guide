@@ -81,7 +81,7 @@ new CfnInclude(this, "ExistingInfrastructure", new CfnIncludeProps
 
 ------
 
-Then to access an attribute of the resource, such as the bucket's ARN:
+Then to access an attribute of the resource, such as the bucket's ARN, call `Fn.getAtt()` with the logical name of the resource in the AWS CloudFormation template and the desired attribute of the resource\. \(The resource must be defined in the template; `Fn.getAtt()` does not query actual resources you have deployed using the template\.
 
 ------
 #### [ TypeScript ]
@@ -120,43 +120,9 @@ var bucketArn = Fn.GetAtt("S3Bucket", "Arn");
 
 ------
 
-The result of a `getAtt()` call is a [token](tokens.md)\. The actual value won't be available until later in the synthesis process\. If you need to pass such an attribute to another API that requires a string, call `toString()` on the result\.
+The result of a `getAtt()` call is a [token](tokens.md), a type of placeholder\. The actual value of the attribute isn't available until later in the synthesis process\. If you need to pass such an attribute to another API that requires a concrete value, such as a string or a number, use the following static methods of the `[Token](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Token.html)` class to convert the token to a string, number, or list\. 
++ [https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Token.html#static-as-stringvalue-options](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Token.html#static-as-stringvalue-options) to generate a string encocding \(or call `.toString()` on the token object\)
++ [https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Token.html#static-as-listvalue-options](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Token.html#static-as-listvalue-options) to generate a list encoding
++ [https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Token.html#static-as-numbervalue](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Token.html#static-as-numbervalue) to generate a numeric encoding
 
-------
-#### [ TypeScript ]
-
-```
-const bucketArn = cdk.Fn.getAtt("S3Bucket", "Arn").toString();
-```
-
-------
-#### [ JavaScript ]
-
-```
-const bucketArn = cdk.Fn.getAtt("S3Bucket", "Arn").toString();
-```
-
-------
-#### [ Python ]
-
-```
-bucket_arn = cdk.Fn.get_att("S3Bucket", "Arn").to_string()
-```
-
-------
-#### [ Java ]
-
-```
-String bucketArn = Fn.getAtt("S3Bucket", "Arn").toString();
-```
-
-------
-#### [ C\# ]
-
-```
-var bucketArn = Fn.GetAtt("S3Bucket", "Arn").ToString();
-```
-
-------
-
-This string is still a token, just in a string encoding, so you still don't have the actual ARN\. But in many ways, you can treat the string as if you did have the real value \(for example, adding text to the beginning or end\) and it will work just as you expect\.
+In our example of getting a bucket's ARN, you'd convert it to a string, but that string is still a token, just in a string encoding\. You still don't have the actual ARN\. But in many ways, you can treat the string as if you did have the real value \(for example, adding text to the beginning or end\) and it will work aas you expect\.

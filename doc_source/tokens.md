@@ -86,11 +86,11 @@ Tokens are objects that implement the [IResolvable](https://docs.aws.amazon.com/
 You'll hardly ever work directly with the `IResolvable` interface\. You will most likely only see string\-encoded versions of tokens\.
 
 Other functions typically only accept arguments of basic types, such as `string` or `number`\. To use tokens in these cases, you can encode them into one of three types using static methods on the [core\.Token](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Token.html) class\.
-+ Strings using [Token\.asString](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Token.html#static-as-stringvalue-options) \(Python: `as_string`\)
-+ List of strings using [Token\.asList](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Token.html#static-as-listvalue-options) \(Python: `as_list`\)
-+ Number \(float\) using [Token\.asNumber](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Token.html#static-as-numbervalue) \(Python: `as_number`\)
++ [https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Token.html#static-as-stringvalue-options](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Token.html#static-as-stringvalue-options) to generate a string encocding \(or call `.toString()` on the token object\)
++ [https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Token.html#static-as-listvalue-options](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Token.html#static-as-listvalue-options) to generate a list encoding
++ [https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Token.html#static-as-numbervalue](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Token.html#static-as-numbervalue) to generate a numeric encoding
 
-These take an arbitrary value, which can also be an `IResolvable` interface, and encode them into a primitive value of the appropriate type\.
+These take an arbitrary value, which can be an `IResolvable`, and encode them into a primitive value of the indicated type\.
 
 **Important**  
 Because any one of the previous types can potentially be an encoded token, be careful when you parse or try to read their contents\. For example, if you attempt to parse a string to extract a value from it, and the string is an encoded token, your parsing will fail\. Similarly, if you attempt to query the length of an array, or perform math operations with a number, you must first verify that they are not encoded tokens\.
