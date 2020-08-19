@@ -45,7 +45,7 @@ var metric = queue.Metric("ApproximateNumberOfMessagesVisible");
 
 ## Creating your own metric<a name="how_to_set_cw_alarm_new_metric"></a>
 
-Create your own [wetric](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-cloudwatch.Metric.html) as follows, where the *namespace* value should be something like **AWS/SQS** for an Amazon SQS queue\. You also need to specify your metric's name and dimension\.
+Create your own [metric](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-cloudwatch.Metric.html) as follows, where the *namespace* value should be something like **AWS/SQS** for an Amazon SQS queue\. You also need to specify your metric's name and dimension\.
 
 ------
 #### [ TypeScript ]
