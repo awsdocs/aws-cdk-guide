@@ -592,8 +592,7 @@ Options:
   --require-approval     What security-sensitive changes need manual approval
                          [string] [choices: "never", "any-change", "broadening"]
 
-  --ci                   Force CI detection (deprecated)
-                                                      [boolean] [default: false]
+  --ci                   Force CI detection           [boolean] [default: false]
 
   --notification-arns    ARNs of SNS topics that CloudFormation will notify with
                          stack related events                            [array]
