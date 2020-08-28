@@ -247,7 +247,7 @@ In addition to this guide, the following are other resources available to AWS CD
 
 ## About Amazon Web Services<a name="about_aws"></a>
 
-Amazon Web Services \(AWS\) is a collection of digital infrastructure services that developers can use when developing their applications\. The services include computing, storage, database, and application synchronization \(messaging and queuing\)\.
+Amazon Web Services \(AWS\) is a collection of digital infrastructure services that developers can use when developing their applications\. The services include computing, storage, database, and application synchronization \(messaging and queueing\)\.
 
 AWS uses a pay\-as\-you\-go service model\. You are charged only for the services that you — or your applications — use\. Also, to make AWS useful as a platform for prototyping and experimentation, AWS offers a free usage tier, in which services are free below a certain level of usage\. For more information about AWS costs and the free usage tier, see [Test\-Driving AWS in the Free Usage Tier](http://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/billing-free-tier.html)\.
 

@@ -1,6 +1,6 @@
 # Your first AWS CDK app<a name="hello_world"></a>
 
-You've read [Getting started with the AWS CDK](getting_started.md)? Great\! Now let's see how it feels to work with the AWS CDK by building the simplest possible AWS CDK app\. In this process you'll learn about the structure of a AWS CDK project, how to access the AWS Construct Library, and how to use the AWS CDK Toolkit command\-line tool\.
+You've read [Getting started with the AWS CDK](getting_started.md)? Great\! Now let's see how it feels to work with the AWS CDK by building the simplest possible AWS CDK app\. In this tutorial you'll learn about the structure of a AWS CDK project, how to work with the AWS Construct Library, and how to use the AWS CDK Toolkit command\-line tool\.
 
 The standard AWS CDK development workflow is similar to the workflow you're already familiar with as a developer, just with a few extra steps to synthesize your stack to an AWS CloudFormation template and deploy it\.
 
@@ -33,7 +33,7 @@ cd hello-cdk
 ```
 
 **Important**  
-Be sure to use the name `hello-cdk` for your project directory, *exactly as shown here\.* The AWS CDK project template uses the directory name to name things in the generated code, so if you use a different name, some of the code in this tutorial won't work\.
+Be sure to name your project directory `hello-cdk`, *exactly as shown here\.* The AWS CDK project template uses the directory name to name things in the generated code, so if you use a different name, some of the code in this tutorial won't work\.
 
 Now initialize the app using the cdk init command, specifying the desired template \("app"\) and programming language\.
 
@@ -94,11 +94,13 @@ If you are using Visual Studio, open the solution file in the `src` directory\.
 **Tip**  
 If you don't specify a template, the default is "app," which is the one we wanted anyway, so technically you can leave it out and save four keystrokes\.
 
+The cdk init command creates a number of files and folders inside the `hello-cdk` directory to help you organize the source code for your AWS CDK app\. Take a moment to explore\. The structure of a basic app is all there; you'll fill in the details as you progress in this tutorial\.
+
 If you have Git installed, each project you create using cdk init is also initialized as a Git repository\. We'll ignore that for now, but it's there when you need it\.
 
 ## Build the app<a name="hello_world_tutorial_build"></a>
 
-Here's how to build \(compile\) your code to find syntax and type errors\. Try it now, if you like\. It should work perfectly because you haven't yet made any changes to the template code\.
+Normally, after making any changes to your code, you'd build \(compile\) it\. This isn't strictly necessary with the AWS CDK—the Toolkit does it for you so you can't forget\. But you can still build manually to catch syntax and type errors\. For reference, here's how\.
 
 ------
 #### [ TypeScript ]
@@ -121,8 +123,11 @@ No build step is necessary\.
 #### [ Java ]
 
 ```
-mvn compile
+mvn compile -q
 ```
+
+**Note**  
+Or press Control\-B in Eclipse \(other Java IDEs may vary\)
 
 ------
 #### [ C\# ]
@@ -131,9 +136,10 @@ mvn compile
 dotnet build src
 ```
 
-------
+**Note**  
+Or press F6 in Visual Studio
 
-Don't worry about memorizing this command; in this tutorial, we'll provide it when it's needed\.
+------
 
 ## List the stacks in the app<a name="hello_world_tutorial_list_stacks"></a>
 
