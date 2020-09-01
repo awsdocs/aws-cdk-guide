@@ -206,7 +206,7 @@ Or **Tools** > **NuGet Package Manager** > **Manage NuGet Packages for Solution*
 
 ------
 
-Next, define an Amazon S3 bucket in the stack using an L2 construct, the [Bucket](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/aws-s3/bucket.html) class\.
+Next, define an Amazon S3 bucket in the stack using an L2 construct, the [Bucket](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.Bucket.html) class\.
 
 ------
 #### [ TypeScript ]
