@@ -626,7 +626,7 @@ var createJobLambda = new Function(this, "create-job", new FunctionProps
 
 ------
 
-For information about the most common API patterns in the AWS Construct Library, see [Resources](https://docs.aws.amazon.com/cdk/latest/guide/resources.html)\.
+For information about the most common API patterns in the AWS Construct Library, see [Resources](resources.md)\.
 
 ## Authoring constructs<a name="constructs_author"></a>
 
