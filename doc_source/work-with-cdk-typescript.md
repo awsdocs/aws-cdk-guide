@@ -2,7 +2,7 @@
 
 TypeScript is a fully\-supported client language for the AWS CDK and is considered stable\. Working with the AWS CDK in TypeScript uses familiar tools, including Microsoft's TypeScript compiler \(`tsc`\), [Node\.js](https://nodejs.org/) and the Node Package Manager \(`npm`\)\. You may also use [Yarn](https://yarnpkg.com/) if you prefer, though the examples in this Guide use NPM\. The modules comprising the AWS Construct Library are distributed via the NPM repository, [npmjs\.org](https://www.npmjs.com/)\.
 
-You can use any editor or IDE; many AWS CDK developers use [Visual Studio Code](https://code.visualstudio.com/) \(or its open\-source equivalent [VSCodium](https://github.com/VSCodium/vscodium)\), which has excellent support for TypeScript\.
+You can use any editor or IDE; many AWS CDK developers use [Visual Studio Code](https://code.visualstudio.com/) \(or its open\-source equivalent [VSCodium](https://vscodium.com/)\), which has excellent support for TypeScript\.
 
 ## Prerequisites<a name="typescript-prerequisites"></a>
 

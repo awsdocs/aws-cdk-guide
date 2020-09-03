@@ -2,7 +2,7 @@
 
 Python is a fully\-supported client language for the AWS CDK and is considered stable\. Working with the AWS CDK in Python uses familiar tools, including the standard Python implementation \(CPython\), virtual environments with `virtualenv`, and the Python package installer `pip`\. The modules comprising the AWS Construct Library are distributed via [pypi\.org](https://pypi.org/search/?q=aws-cdk)\. The Python version of the AWS CDK even uses Python\-style identifiers \(for example, `snake_case` method names\)\.
 
-You can use any editor or IDE; many AWS CDK developers use [Visual Studio Code](https://code.visualstudio.com/) \(or its open\-source equivalent [VSCodium](https://github.com/VSCodium/vscodium)\), which has good support for Python via an [official extension](https://marketplace.visualstudio.com/items?itemName=ms-python.python)\. The IDLE editor included with Python will suffice to get started\. The Python modules for the AWS CDK do have type hints, which are useful for a linting tool or an IDE that supports type validation\.
+You can use any editor or IDE\. Many AWS CDK developers use [Visual Studio Code](https://code.visualstudio.com/) \(or its open\-source equivalent [VSCodium](https://vscodium.com/)\), which has good support for Python via an [official extension](https://marketplace.visualstudio.com/items?itemName=ms-python.python)\. The IDLE editor included with Python will suffice to get started\. The Python modules for the AWS CDK do have type hints, which are useful for a linting tool or an IDE that supports type validation\.
 
 ## Prerequisites<a name="python-prerequisites"></a>
 
@@ -154,7 +154,7 @@ In our experience, the type errors Python programmers make tend to fall into the
 + Passing a single value where a construct expects a container \(Python list or dictionary\) or vice versa\.
 + Passing a value of a type associated with a Level 1 \(`CfnXxxxxx`\) construct to a higher\-level construct, or vice versa\.
 
-The AWS CDK Python modules do include type annotations\. If you are not using an IDE that supports these, such as [PyCharm](https://www.jetbrains.com/pycharm/), you might want to call the [MyPy](http://mypy-lang.org/) type validator as a step in your build process\. There are also runtime type checkers that can improve error messages for type\-related errors\.
+The AWS CDK Python modules do include type annotations, so you can use tools that support them to help with types\. If you are not using an IDE that supports these, such as [PyCharm](https://www.jetbrains.com/pycharm/), you might want to call the [MyPy](http://mypy-lang.org/) type validator as a step in your build process\. There are also runtime type checkers that can improve error messages for type\-related errors\.
 
 ## Synthesizing and deploying<a name="python-running"></a>
 
