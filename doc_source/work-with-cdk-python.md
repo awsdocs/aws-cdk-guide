@@ -96,6 +96,12 @@ All AWS Construct Library modules used in your project must be the same version\
 
 ## AWS CDK idioms in Python<a name="python-cdk-idioms"></a>
 
+### Language conflicts<a name="python-keywords"></a>
+
+In Python, `lambda` is a language keyword, so you cannot use it as a name for the AWS Lambda construct library module or Lambda functions\. The Python convention for such conflicts is to use a trailing underscore, as in `lambda_`, in the variable name\.
+
+By convention, the second argument to AWS CDK constructs is named `id`\. When writing your own stacks and constructs, calling a parameter `id` "shadows" the Python built\-in function `id()`, which gets an object's unique identifier\. This function isn't used very often, but if you should happen to need it in your construct, rename the argument, for example `id_`, or else call the built\-in function as `__builtins__.id()`\.
+
 ### Props<a name="python-props"></a>
 
 All AWS Construct Library classes are instantiated using three arguments: the *scope* in which the construct is being defined \(its parent in the construct tree\), a *name*, and *props*, a bundle of key/value pairs that the construct uses to configure the resources it creates\. Other classes and methods also use the "bundle of attributes" pattern for arguments\.
