@@ -13,15 +13,19 @@ CDK Pipelines is currently in developer preview, and its API is subject to chang
 
 Before you can use CDK Pipelines, you must bootstrap the AWS environment\(s\) to which you will deploy your stacks\. An [environment](environments.md) is an account/region pair to which you want to deploy a CDK stack\. A CDK Pipeline involves at least two environments: the environment where the pipeline is provisioned, and the environment where you want to deploy the application's stacks \(or its stages, which are groups of related stacks\)\. These environments can be the same, though best practices recommend you isolate stages from each other in different AWS accounts or regions\.
 
-You may have already bootstrapped one or more environments so you can deploy assets and Lambda functions using the AWS CDK\. Continuous deployment with CDK Pipelines requires that the CDK Toolkit stack include additional resources, so the stack has been extended to include an additional Amazon S3 bucket, an Amazon ECR repository, and IAM roles to give the various parts of a pipeline the permissions they need\. This new style of CDK Toolkit stack will eventually become the default, but at this writing, you must opt in\. The AWS CDK Toolkit will upgrade your existing bootstrap stack or create a new one, as necessary\.
+You may have already bootstrapped one or more environments so you can deploy assets and Lambda functions using the AWS CDK\. Continuous deployment with CDK Pipelines requires that the CDK Toolkit stack include additional resources, so the boostrap stack has been extended to include an additional Amazon S3 bucket, an Amazon ECR repository, and IAM roles to give the various parts of a pipeline the permissions they need\. This new style of CDK Toolkit stack will eventually become the default, but at this writing, you must opt in\. The AWS CDK Toolkit will upgrade your existing bootstrap stack or create a new one, as necessary\.
 
-To bootstrap an environment that will provision a pipeline:
+To bootstrap an environment that can provision an AWS CDK pipeline, set the environment variable `CDK_NEW_BOOTSTRAP` before invoking `cdk bootstarp`, as shown below\. Invoking the AWS CDK Toolkit via the `npx` command installs it if necessary, and will use the version of the Toolkit installed in the current project if one exists\. 
+
+\-\-cloudformation\-execution\-policies specifies the ARN of a policy under which future CDK Pipelines deployments will execute\. The `AdministratorAccess` policy is the default; your organization may require a more constrained policy\.
+
+You may omit the \-\-profile option if your default AWS profile contains the necessary credentials or to instead the environment variables `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_DEFAULT_REGION` to provide your AWS account credentials\.
 
 ------
 #### [ Mac OS X/Linux ]
 
 ```
-CDK_NEW_BOOTSTRAP=1 
+export CDK_NEW_BOOTSTRAP=1 
 npx cdk bootstrap --profile ADMIN-PROFILE \
     --cloudformation-execution-policies arn:aws:iam::aws:policy/AdministratorAccess \
     aws://ACCOUNT-ID/REGION
@@ -39,13 +43,15 @@ npx cdk bootstrap --profile ADMIN-PROFILE ^
 
 ------
 
-To bootstrap additional environments into which AWS CDK applications will be deployed by the pipeline:
+To bootstrap additional environments into which AWS CDK applications will be deployed by the pipeline, use the commands below instead\. The `--trust` option indicates which other account should have permissions to deploy AWS CDK applications into this environment; specify the pipeline's AWS account ID\.
+
+Again, you may omit the \-\-profile option if your default AWS profile contains the necessary credentials or if you are using the `AWS_*` environment variables to provide your AWS account credentials\.
 
 ------
 #### [ Mac OS X/Linux ]
 
 ```
-CDK_NEW_BOOTSTRAP=1 
+export CDK_NEW_BOOTSTRAP=1 
 npx cdk bootstrap --profile ADMIN-PROFILE \
     --cloudformation-execution-policies arn:aws:iam::aws:policy/AdministratorAccess \
     --trust PIPELINE-ACCOUNT-ID \
@@ -65,14 +71,6 @@ npx cdk bootstrap --profile ADMIN-PROFILE ^
 
 ------
 
-Note the following:
-+ `CDK_NEW_BOOTSTRAP` is a variable that enables the bootstrapping of the new style of Toolkit stack required by the CDK Pipelines feature\.
-+ *`ADMIN-PROFILE`* is a profile defined in your AWS configuration files that has credentials for the account and region being bootstrapped\. You may omit `--profile` and this value if you are using the default profile or the environment variables `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_DEFAULT_REGION` to provide your AWS account credentials\.
-+ `npx cdk` invokes the AWS CDK Toolkit, either the version installed in your project if any, or the global installation\.
-+ `--cloudformation-execution-policies` specifies the ARN of a policy under which future CDK Pipelines deployments will execute\. The `AdministratorAccess` policy is the default; your organization may require a more constrained policy\.
-+ `--trust` \(in the second example\) indicates which other accounts should have permissions to deploy AWS CDK applications into this environment\. This should be the pipeline's AWS account ID\.
-+ `aws://ACCOUNT-ID/REGION` is the account and region we're bootstrapping\. It may be omitted if you are bootstrapping the profile's default region\.
-
 **Tip**  
 Use administrative credentials only to bootstrap and to provision the initial pipeline\. Drop administrative credentials as soon as possible\.
 
@@ -80,7 +78,7 @@ If you are upgrading an existing bootstrapped environment, the old Amazon S3 buc
 
 ## Initialize project<a name="cdk_pipeline_init"></a>
 
-Create a new, empty GitHub project and clone it to your workstation in the `cdk-pipeline` directory\. \(Our code examples in this topic use GitHub; you can also use BitBucket or AWS CodeCommit\.\)
+Create a new, empty GitHub project and clone it to your workstation in the `my-pipeline` directory\. \(Our code examples in this topic use GitHub; you can also use BitBucket or AWS CodeCommit\.\)
 
 ```
 git clone GITHUB-CLONE-URL my-pipeline
