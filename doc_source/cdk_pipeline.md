@@ -17,9 +17,9 @@ You may have already bootstrapped one or more environments so you can deploy ass
 
 To bootstrap an environment that can provision an AWS CDK pipeline, set the environment variable `CDK_NEW_BOOTSTRAP` before invoking `cdk bootstarp`, as shown below\. Invoking the AWS CDK Toolkit via the `npx` command installs it if necessary, and will use the version of the Toolkit installed in the current project if one exists\. 
 
-\-\-cloudformation\-execution\-policies specifies the ARN of a policy under which future CDK Pipelines deployments will execute\. The `AdministratorAccess` policy is the default; your organization may require a more constrained policy\.
+\-\-cloudformation\-execution\-policies specifies the ARN of a policy under which future CDK Pipelines deployments will execute\. The `AdministratorAccess` policy is the default; if you're using it, you may omit this option\. Your organization may require a more restrictive policy\.
 
-You may omit the \-\-profile option if your default AWS profile contains the necessary credentials or to instead the environment variables `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_DEFAULT_REGION` to provide your AWS account credentials\.
+You may omit the \-\-profile option if your default AWS profile contains the necessary credentials or to instead use the environment variables `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_DEFAULT_REGION` to provide your AWS account credentials\.
 
 ------
 #### [ Mac OS X/Linux ]
