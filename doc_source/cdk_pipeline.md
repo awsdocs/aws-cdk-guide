@@ -15,7 +15,7 @@ Before you can use CDK Pipelines, you must bootstrap the AWS environment\(s\) to
 
 You may have already bootstrapped one or more environments so you can deploy assets and Lambda functions using the AWS CDK\. Continuous deployment with CDK Pipelines requires that the CDK Toolkit stack include additional resources, so the boostrap stack has been extended to include an additional Amazon S3 bucket, an Amazon ECR repository, and IAM roles to give the various parts of a pipeline the permissions they need\. This new style of CDK Toolkit stack will eventually become the default, but at this writing, you must opt in\. The AWS CDK Toolkit will upgrade your existing bootstrap stack or create a new one, as necessary\.
 
-To bootstrap an environment that can provision an AWS CDK pipeline, set the environment variable `CDK_NEW_BOOTSTRAP` before invoking `cdk bootstarp`, as shown below\. Invoking the AWS CDK Toolkit via the `npx` command installs it if necessary, and will use the version of the Toolkit installed in the current project if one exists\. 
+To bootstrap an environment that can provision an AWS CDK pipeline, set the environment variable `CDK_NEW_BOOTSTRAP` before invoking `cdk bootstrap`, as shown below\. Invoking the AWS CDK Toolkit via the `npx` command installs it if necessary, and will use the version of the Toolkit installed in the current project if one exists\. 
 
 \-\-cloudformation\-execution\-policies specifies the ARN of a policy under which future CDK Pipelines deployments will execute\. The `AdministratorAccess` policy is the default; if you're using it, you may omit this option\. Your organization may require a more restrictive policy\.
 
