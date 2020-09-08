@@ -49,7 +49,7 @@ cdk bootstrap aws://123456789012/us-east-1
 cdk bootstrap 123456789012/us-east-1 123456789012/us-west-1
 ```
 
-If you do not specify at least one environment in the `cdk bootstrap` command, the AWS CDK Toolkit synthesizes the AWS CDK app in the current directory and bootstraps all the environments referenced in the app\. These references may be derived from the `CDK_DEFAULT_ACCOUNT` and `CDK_DEFAULT_REGION` environment variables, which ultimately come from your default AWS profile, or another profile that you specify using the \-\-profile option\. \(See [Environments](environments.md)\.\)
+If you do not specify at least one environment in the `cdk bootstrap` command, the AWS CDK Toolkit synthesizes the AWS CDK app in the current directory and bootstraps all the environments referenced in the app\. If a stack is environment\-agnostic \(that is, it does not have an `env` property\), the CDK's environment \(for example, the one specified using \-\-profile, or the default AWS environment otherwise\) is applied to make the stack environment\-specific, and that environment is then bootstrapped\.
 
 For example, the following command synthesizes the current AWS CDK app using the `prod` AWS profile, then bootstraps its environments\.
 
@@ -97,15 +97,9 @@ The legacy template is fully supported by the AWS CDK and is in fact the templat
 
 The main differences between the templates are as follows\.
 
+[\[See the AWS documentation website for more details\]](http://docs.aws.amazon.com/cdk/latest/guide/bootstrapping.html)
 
-| Feature | Legacy | Modern | 
-| --- | --- | --- | 
-| Cross\-account deployments | Not allowed | Allowed | 
-| AWS CloudFormation Permissions | Deploys using current user's permissions \(determined by AWS profile, environment variables, etc\.\) | Deploys using the permissions specified when the bootstrap stack was provisioned | 
-| Versioning | Only one version of bootstrap stack is available | Bootstrap stack is versioned; new resources can be added in future versions, and AWS CDK apps can require a minimum version | 
-| Resources | Amazon S3 bucket |  [\[See the AWS documentation website for more details\]](http://docs.aws.amazon.com/cdk/latest/guide/bootstrapping.html) Additional resources may be added  | 
-| Resource naming | Automatically generated | Deterministic | 
-| Bucket encryption | Default key | Customer\-managed key | 
+\* *Additional resources may be added to Modern template as needed\.*
 
 At some point in the future, the modern template will become the default bootstrapping template\. Until then, you must manually select the modern template when bootstrapping by setting the `CDK_NEW_BOOTSTRAP` environment variable\.
 

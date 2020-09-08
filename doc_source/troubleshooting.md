@@ -135,7 +135,7 @@ If, for some reason, you need to work with multiple versions of the AWS CDK Tool
 If you are using a language other than TypeScript or JavaScript, first create a `node_modules` folder in your project directory\. Then, regardless of language, use `npm` to install the AWS CDK Toolkit, omitting the `-g` flag and specifying the desired version\. For example:
 
 ```
-npm install aws-cdk@1.9.0
+npm install aws-cdk@1.50.0
 ```
 
 To run a locally\-installed AWS CDK Toolkit, use the command `npx cdk` rather than just `cdk`\. For example:
@@ -153,9 +153,7 @@ alias cdk=npx cdk
 \([back to list](#troubleshooting_top)\)<a name="troubleshooting_nobucket"></a>
 
 **When deploying my AWS CDK stack, I receive a `NoSuchBucket` error**  
-Your AWS environment does not have a staging bucket, which the AWS CDK uses to hold resources during deployment\. Stacks require staging if they contain [Assets](assets.md) or synthesize to AWS CloudFormation templates larger than 50 kilobytes\. See [Bootstrapping](bootstrapping.md) for complete details\.
-
-You can create the staging bucket with the following command:
+Your AWS environment does not have a staging bucket, which the AWS CDK uses to hold resources during deployment\. Stacks require this bucket if they contain [Assets](assets.md) or synthesize to AWS CloudFormation templates larger than 50 kilobytes\. You can create the staging bucket with the following command:
 
 ```
 cdk bootstrap
@@ -171,7 +169,7 @@ cdk bootstrap aws://123456789/us-east-1
 
 You must bootstrap in every region where you will deploy stacks that require a staging bucket\.
 
-To avoid undesired AWS charges, you can delete the contents of the staging bucket after deploying\. You can find the bucket in the Amazon S3 management console; it has a name starting with `cdktoolkit-stagingbucket` \(It is possible to specify a different name when bootstrapping, but generally you should use the default name\.\) You should, however, leave the bucket itself intact\.
+For more information, see [Bootstrapping](bootstrapping.md)
 
 \([back to list](#troubleshooting_top)\)<a name="troubleshooting_forbidden_null"></a>
 
