@@ -1,10 +1,12 @@
 # Environments<a name="environments"></a>
 
-Each `Stack` instance in your AWS CDK app is explicitly or implicitly associated with an environment \(`env`\)\. An environment is the target AWS account and AWS Region into which the stack is intended to be deployed\.
+Each `Stack` instance in your AWS CDK app is explicitly or implicitly associated with an environment \(`env`\)\. An environment is the target AWS account and region into which the stack is intended to be deployed\.
+
+**Note**  
+For all but the simplest deployments, you will need to [bootstrap](bootstrapping.md) each environment you will deploy into\. Deployment requires certain AWS resources to be availeble, and these resources are provisined by bootstrapping\.
 
 If you don't specify an environment when you define a stack, the stack is said to be *environment\-agnostic*\. AWS CloudFormation templates synthesized from such a stack will try to use deploy\-time resolution on environment\-related attributes such as `stack.account`, `stack.region`, and `stack.availablityZones` \(Python: `availability_zones`\)\.
 
-**Note**  
 In an environment\-agnostic stack, any constructs that use availability zones will see two of them\. This allows the stack to be deployed to almost any region, since nearly all regions have at least two availability zones\. The only exception is Osaka \(`ap-northeast-3`\), which has one\.
 
 When using cdk deploy to deploy environment\-agnostic stacks, the AWS CDK CLI uses the specified AWS CLI profile \(or the default profile, if none is specified\) to determine where to deploy\. The AWS CDK CLI follows a protocol similar to the AWS CLI to determine which AWS credentials to use when performing operations against your AWS account\. See [AWS CDK Toolkit \(`cdk` command\)](cli.md) for details\.

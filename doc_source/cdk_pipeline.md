@@ -13,6 +13,9 @@ CDK Pipelines is currently in developer preview, and its API is subject to chang
 
 Before you can use CDK Pipelines, you must bootstrap the AWS environment\(s\) to which you will deploy your stacks\. An [environment](environments.md) is an account/region pair to which you want to deploy a CDK stack\. A CDK Pipeline involves at least two environments: the environment where the pipeline is provisioned, and the environment where you want to deploy the application's stacks \(or its stages, which are groups of related stacks\)\. These environments can be the same, though best practices recommend you isolate stages from each other in different AWS accounts or regions\.
 
+**Note**  
+See [Bootstrapping](bootstrapping.md) for more information on the kinds of resources created by bootstrapping and how to customize the bootstrap stack\.
+
 You may have already bootstrapped one or more environments so you can deploy assets and Lambda functions using the AWS CDK\. Continuous deployment with CDK Pipelines requires that the CDK Toolkit stack include additional resources, so the boostrap stack has been extended to include an additional Amazon S3 bucket, an Amazon ECR repository, and IAM roles to give the various parts of a pipeline the permissions they need\. This new style of CDK Toolkit stack will eventually become the default, but at this writing, you must opt in\. The AWS CDK Toolkit will upgrade your existing bootstrap stack or create a new one, as necessary\.
 
 To bootstrap an environment that can provision an AWS CDK pipeline, set the environment variable `CDK_NEW_BOOTSTRAP` before invoking `cdk bootstrap`, as shown below\. Invoking the AWS CDK Toolkit via the `npx` command installs it if necessary, and will use the version of the Toolkit installed in the current project if one exists\. 

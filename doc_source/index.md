@@ -40,6 +40,7 @@ Amazon's trademarks and trade dress may not be used in
    + [Feature flags](featureflags.md)
    + [Aspects](aspects.md)
    + [Escape hatches](cfn_layer.md)
+   + [Bootstrapping](bootstrapping.md)
 + [API reference](reference.md)
 + [Examples](examples.md)
    + [Creating a serverless application using the AWS CDK](serverless_example.md)

@@ -21,7 +21,7 @@ All CDK Toolkit commands start with `cdk`, which is followed by a subcommand \(`
 | --- | --- | 
 | `cdk list` \(`ls`\) | Lists the stacks in the app | 
 | `cdk synthesize` \(`synth`\) | Synthesizes and prints the CloudFormation template for the specified stack\(s\) | 
-| `cdk bootstrap` | Deploys the CDK Toolkit stack, required to deploy stacks containing assets | 
+| `cdk bootstrap` | Deploys the CDK Toolkit stack; see [Bootstrapping](bootstrapping.md) | 
 | `cdk deploy` | Deploys the specified stack\(s\) | 
 | `cdk destroy` | Destroys the specified stack\(s\) | 
 | `cdk diff` | Compares the specified stack with the deployed stack or a local CloudFormation template | 
@@ -179,7 +179,7 @@ The CDK Toolkit does not guarantee that stacks are processed in the specified or
 
 ## Bootstrapping your AWS environment<a name="cli-bootstrap"></a>
 
-Stacks that contain [assets](assets.md) or large AWS Lambda functions require special dedicated AWS CDK resources to be provisioned\. Currently, this is only an Amazon S3 bucket\. The `cdk bootstrap` command creates the necessary resources for you\. You only need to bootstrap if you are deploying a stack that requires these dedicated resources\.
+Deploying stacks that contain [assets](assets.md), synthesize to large templates, or use [CDK Pipelines](cdk_pipeline.md) require special dedicated AWS CDK resources to be provisioned\. The `cdk bootstrap` command creates the necessary resources for you\. You only need to bootstrap if you are deploying a stack that requires these dedicated resources\. See [Bootstrapping](bootstrapping.md) for details\.
 
 ```
 cdk bootstrap                  # bootstraps default account/region
@@ -197,9 +197,7 @@ cdk bootstrap --profile test 1111111111/us-east-1
 **Important**  
 Each environment \(account/region combination\) to which you deploy such a stack must be bootstrapped separately\.
 
-You may incur charges for what the AWS CDK stores in the bucket\. Because the AWS CDK does not remove any objects from the bucket, the bucket can accumulate objects as you use the AWS CDK\. From time to time, then, you might want to clear out the bucket from the Amazon S3 console\.
-
-You can use the `--bootstrap-bucket-name` option of `cdk bootstrap` to specify the name of the bootstrap bucket, if the default \(`StagingBucket`\) is not suitable for some reason\. You can use the `--toolkit-stack-name` option if the standard name of the stack itself \(`CDKToolkit`\) is not suitable\.
+You may incur AWS charges for what the AWS CDK stores in the bootstrapped resources\.
 
 ## Creating a new app<a name="cli-init"></a>
 

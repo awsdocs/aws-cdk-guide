@@ -153,7 +153,9 @@ alias cdk=npx cdk
 \([back to list](#troubleshooting_top)\)<a name="troubleshooting_nobucket"></a>
 
 **When deploying my AWS CDK stack, I receive a `NoSuchBucket` error**  
-Your AWS environment does not have a staging bucket, which the AWS CDK uses to hold resources during deployment\. Stacks require staging if they contain [Assets](assets.md) or synthesize to AWS CloudFormation templates larger than 50 kilobytes\. You can create the staging bucket with the following command:
+Your AWS environment does not have a staging bucket, which the AWS CDK uses to hold resources during deployment\. Stacks require staging if they contain [Assets](assets.md) or synthesize to AWS CloudFormation templates larger than 50 kilobytes\. See [Bootstrapping](bootstrapping.md) for complete details\.
+
+You can create the staging bucket with the following command:
 
 ```
 cdk bootstrap
@@ -169,9 +171,7 @@ cdk bootstrap aws://123456789/us-east-1
 
 You must bootstrap in every region where you will deploy stacks that require a staging bucket\.
 
-To avoid undesired AWS charges, you can delete the contents of the staging bucket after deploying\. You can find the bucket in the Amazon S3 management console; it has a name starting with `cdktoolkit-stagingbucket` \(It is possible to specify a different name when bootstrapping, but generally you should use the default name\.\)
-
-You should not need to delete the bucket itself, but if you do, it is best to delete the entire `CDKToolkit` stack through the AWS CloudFormation management console\. If you delete the staging bucket entirely, you must re\-bootstrap before deploying a stack that requires staging\.
+To avoid undesired AWS charges, you can delete the contents of the staging bucket after deploying\. You can find the bucket in the Amazon S3 management console; it has a name starting with `cdktoolkit-stagingbucket` \(It is possible to specify a different name when bootstrapping, but generally you should use the default name\.\) You should, however, leave the bucket itself intact\.
 
 \([back to list](#troubleshooting_top)\)<a name="troubleshooting_forbidden_null"></a>
 
