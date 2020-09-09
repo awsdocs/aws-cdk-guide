@@ -94,18 +94,19 @@ Only context values stored in `cdk.context.json` can be reset or cleared\. The A
 Use the `--context` \(`-c` for short\) option to pass runtime context values to your CDK app during synthesis or deployment\.
 
 ```
-# specify a single context value
 cdk synth --context key=value MyStack
+```
 
-# specify multiple context values (any number)
+To specify multiple context values, repeat the \-\-context option any number of times, providing one key\-value pair each time\.
+
+```
 cdk synth --context key1=value1 --context key2=value2 MyStack
 ```
 
 When deploying multiple stacks, the specified context values are normally passed to all of them\. If you wish, you may specify different values for each stack by prefixing the stack name to the context value\.
 
 ```
-# different context values for each stack
-cdk synth --context Stack1:key=value Stack2:key=value Stack1 Stack2
+cdk synth --context Stack1:key=value --context Stack2:key=value Stack1 Stack2
 ```
 
 ## Example<a name="context_example"></a>
