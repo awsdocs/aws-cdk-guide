@@ -99,7 +99,7 @@ The main differences between the templates are as follows\.
 
 [\[See the AWS documentation website for more details\]](http://docs.aws.amazon.com/cdk/latest/guide/bootstrapping.html)
 
-\* *Additional resources may be added to the modern template as needed\.*
+\* *We will add additional resources to the modern template as needed\.*
 
 At some point in the future, the modern template will become the default bootstrapping template\. Until then, you must manually select the modern template when bootstrapping by setting the `CDK_NEW_BOOTSTRAP` environment variable\.
 
@@ -121,7 +121,7 @@ cdk bootstrap
 
 ------
 
-The modern template is also selected by default when you issue cdk bootstrap in an AWS CDK app directory where the `@aws-cdk/core:newStyleStackSynthesis` feature flag is set in the app's `cdk.json` file\.
+The modern template is also selected when you issue cdk bootstrap in an AWS CDK app directory where the `@aws-cdk/core:newStyleStackSynthesis` feature flag is set in the app's `cdk.json` file\.
 
 ```
 {
@@ -135,25 +135,25 @@ The modern template is also selected by default when you issue cdk bootstrap in 
 **Tip**  
 We recommend always setting `CDK_NEW_BOOTSTRAP` when you want to bootstrap using the modern template\. The context key is supported to make sure you bootstrap correctly if your app uses the `DefaultStackSynthesizer`, but relies on you being in an app's directory when bootstrapping\.
 
-These two ways to specify the modern template also apply to `cdk bootstrap --show-template`, which will display the modern template depending on the presence of one or the other of these flags\.
+These two ways to specify the modern template also apply to `cdk bootstrap --show-template`, which will display the modern template if one or the other of these flags is present\.
 
 If the environment you are bootstrapping with the modern template has already been bootstrapped with the legacy template, the environment is upgraded to the modern template\. The Amazon S3 bucket from the legacy stack is orphaned in the process\. Re\-deploy all AWS CDK applications in the environment at least once before deleting the legacy bucket\.
 
 ## Customizing bootstrapping<a name="bootstrapping-customizing"></a>
 
 There are two ways to customize the bootstrapping resources\.
-+ Use command\-line parameters with the `cdk bootstrap` command\. This lets you tweak a few aspects of the template\.
++ Use command\-line parameters with the `cdk bootstrap` command\. This lets you modify a few aspects of the template\.
 + Modify the default bootstrap template and deploy it yourself\. This gives you unlimited control over the bootstrap resources\.
 
-The following command\-line options, when used with CDK Toolkit's cdk bootstrap, modify the bootstrap template in commonly\-needed ways\.
+The following command\-line options, when used with CDK Toolkit's cdk bootstrap, provide commonly\-needed adjustments to the bootstrapping template\.\.
 +  \-\-bootstrap\-bucket\-name overrides the name of the Amazon S3 bucket\. May require changes to your CDK app \(see [Stack synthesizers](#bootstrapping-synthesizers)\)\.
 + \-\-bootstrap\-kms\-key\-id overrides the AWS KMS key used to encrypt the S3 bucket\.
 + \-\-tags adds one or more AWS CloudFormation tags to the bootstrap stack\.
-+ \-\-termination\-protection prevents the bootstrap stack from being deleted\.
++ \-\-termination\-protection prevents the bootstrap stack from being deleted \(see [Protecting a stack from being deleted](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-protect-stacks.html) in the AWS CloudFormation User Guide\)
 
 The following additional switches are available only with the modern bootstrapping template\.
 + \-\-cloudformation\-execution\-policies specifies the ARNs of managed policies that should be attached to the deployment role assumed by AWS CloudFormation during deployment of your stacks\. At least one policy is required; otherwise, AWS CloudFormation will attempt to deploy without permissions and deployments will fail\.
-+ \-\-trust lists the AWS accounts that may deploy into the environment being bootstrapped\. The account doing the bootstrapping is always trusted\.
++ \-\-trust lists the AWS accounts that may deploy into the environment being bootstrapped\. Use this flag when bootstrapping an evironment that a CDK Pipeline in another environment will deploy into\. The account doing the bootstrapping is always trusted\.
 + \-\-qualifier a string that is added to the names of all resources in the bootstrap stack\. A qualifier lets you avoid name clashes when you provision two bootstrap stacks in the same environment\. The default is `hnb659fds` \(this value has no significance\)\. Changing the qualifier will require changes to your AWS CDK app \(see [Stack synthesizers](#bootstrapping-synthesizers)\)\. 
 
 ### Customizing the template<a name="bootstrapping-customizing-extended"></a>
@@ -191,10 +191,10 @@ cdk bootstrap --template bootstrap-template.yaml
 Your AWS CDK app needs to know about the bootstrapping resources available to it in order to successfully synthesize a stack that can be deployed\. The *stack synthesizer* is an AWS CDK class that controls how the stack's template is synthesized, including how it uses bootstrapping resources \(for example, how it refers to assets stored in the bootstrap bucket\)\.
 
 The AWS CDK includes two stack synthesizers:
-+ `LegacyStackSynthesizer` can be used with either legacy bootstrap template or the modern bootstrap template\. \(It requires only an Amazon S3 bucket, and both templates include one\.\)
++ `LegacyStackSynthesizer` can be used with either bootstrap template\. \(It requires only an Amazon S3 bucket, and both templates include one\.\)
 + `DefaultStackSynthesizer` requires the modern bootstrap template\. It includes capabilities for cross\-account deployments and [CDK Pipelines](cdk_pipeline.md) deployments\.
 
-You can pass a stack synthesizer to a stack when you instantiate it using the synthesizer property\.
+You can pass a stack synthesizer to a stack when you instantiate it using the `synthesizer` property\.
 
 ------
 #### [ TypeScript ]
@@ -259,7 +259,7 @@ new MyStack(app, "MyStack", new StackProps
 
 ------
 
-If you don't pass a synthesizer property, the default behavior depends on whether the context key `@aws-cdk/core:newStyleStackSynthesis` is set, either in the AWS CDK app's source code or in `cdk.json`\. If it is set, synthesis uses a `DefaultStackSynthesizer`; otherwise, a `LegacyStackSynthesizer` is used\. This is the usual way of choosing a synthesizer unless you have customized the bootstrap template\.
+If you don't provide the `synthesizer` property, the default behavior depends on whether the context key `@aws-cdk/core:newStyleStackSynthesis` is set, either in the AWS CDK app's source code or in `cdk.json`\. If it is set, synthesis uses a `DefaultStackSynthesizer`; otherwise, a `LegacyStackSynthesizer` is used\. This is the usual way of choosing a synthesizer unless you have customized the bootstrap template\.
 
 The most important differences between the two built\-in stack synthesizers are summarized here\.
 
@@ -275,14 +275,14 @@ The most important differences between the two built\-in stack synthesizers are 
 
 ## Customizing synthesis<a name="bootstrapping-custom-synth"></a>
 
-If you customize your bootstrapping resources, depending on the changes you made, you may also need to customize synthesis\. The `DefaultStackSynthesizer` can be customized using the properties described below\. If none of these properties provide the customizations you require, you can write your synthesizer as a class that implements `IStackSynthesizer`\.
+Depending on the changes you made to the bootstrap template, you may also need to customize synthesis\. The `DefaultStackSynthesizer` can be customized using the properties described below\. If none of these properties provide the customizations you require, you can write your synthesizer as a class that implements `IStackSynthesizer` \(perhaps deriving from `DefaultStackSynthesizer`\)\.
 
 **Note**  
 The `LegacyStackSynthesizer` does not offer any customization properties\.
 
 ### Changing the qualifier<a name="bootstrapping-custom-synth-qualifiers"></a>
 
-The *qualifier* is added to the name of bootstrap resources to distinguish the resources in separate bootstrap stacks\. To deploy two different versions of the bootstrap stack in the same environment \(AWS account and region\), then, the stacks must have different qualifiers\. This feature is intended for naming isolation between automated tests of the CDK itself\. Unless you can very precisely scope down the IAM permissions given to the AWS CloudFormation execution role, there are no privilege isolation benefits to having two different bootstrap stacks in a single account, so there is usually no need to change this value\.
+The *qualifier* is added to the name of bootstrap resources to distinguish the resources in separate bootstrap stacks\. To deploy two different versions of the bootstrap stack in the same environment \(AWS account and region\), then, the stacks must have different qualifiers\. This feature is intended for name isolation between automated tests of the CDK itself\. Unless you can very precisely scope down the IAM permissions given to the AWS CloudFormation execution role, there are no privilege isolation benefits to having two different bootstrap stacks in a single account, so there is usually no need to change this value\.
 
 To change the qualifier, configure the `DefaultStackSynthesizer` either by instantiating the synthesizer with the property:
 
@@ -357,11 +357,11 @@ Or by configuring the qualifier as a context key in `cdk.json`\.
 
 ### Changing the resource names<a name="bootstrapping-custom-synth-names"></a>
 
-All the other `DefaultStackSynthesizer` properties relate to the names of the resources in the modern bootstrapping template\. You only need to pass any of these properties if you modified the bootstrap template and changed the resource names or naming scheme\.
+All the other `DefaultStackSynthesizer` properties relate to the names of the resources in the modern bootstrapping template\. You only need to provide any of these properties if you modified the bootstrap template and changed the resource names or naming scheme\.
 
 All properties accept the special placeholders `${Qualifier}`, `${AWS::Partition}`, `${AWS::AccountId}`, and `${AWS::Region}`\. These placeholders are replaced with the values of the `qualifier` parameter and with the values of the AWS partition, account ID, and region for the stack's environment, respectively\.
 
-The following example shows all the available properties for `DefaultStackSynthesizer` along with their default values, as if you were instantiating the synthesizer that way\.
+The following example shows all the available properties for `DefaultStackSynthesizer` along with their default values, as if you were instantiating the synthesizer\.
 
 ------
 #### [ TypeScript ]
@@ -503,7 +503,7 @@ new DefaultStackSynthesizer(new DefaultStackSynthesizerProps
 
 ## The bootstrapping template contract<a name="bootstrapping-contract"></a>
 
-The stack synthesizer's requirements of the bootstrapping stack depend on the stack synthesizer being used\. If you write your own stack synthesizer, you have complete freedom over the bootstrap resources that your synthesizer requires\. This section describes the expectations that the `DefaultStackSynthesizer` has of the bootstrapping template\.
+The requirements of the bootstrapping stack depend on the stack synthesizer being used\. If you write your own stack synthesizer, you have complete control of the bootstrap resources that your synthesizer requires and how the synthesizer finds them\. This section describes the expectations that the `DefaultStackSynthesizer` has of the bootstrapping template\.
 
 ### Versioning<a name="bootstrapping-contract-versioning"></a>
 
@@ -511,7 +511,7 @@ The template should contain a resource to create an SSM parameter with a well\-k
 
 ```
 Resources:
-  CdkBootstrapVersion:
+  CdkBootstrapVersion:`
     Type: AWS::SSM::Parameter
     Properties:
       Type: String
@@ -526,7 +526,7 @@ Outputs:
 
 ### Versioning<a name="bootstrapping-contract-roles"></a>
 
-The `DefaultStackSynthesizer` requires four IAM roles for four different purposes\. If these are given non\-standard ARNs, the synthesizer needs to be told about the ARNs\. The roles are:
+The `DefaultStackSynthesizer` requires four IAM roles for four different purposes\. If you are not using the default roles, the synthesizer needs to be told the ARNs for the roles you want to use\. The roles are:
 + The *deployment role* is assumed by the AWS CDK Toolkit and by AWS CodePipeline to deploy into an environment\. Its `AssumeRolePolicy` controls who can deploy into the environment\. The permissions this role needs can be seen in the template\.
 + The *file publishing role* and the *image publishing role* are assumed by the AWS CDK Toolkit and by AWS CodeBuild projects to publish assets into an environment: that is, to write to the S3 bucket and the ECR repository, respectively\. These roles require write access to these resources\.
 + *The AWS CloudFormation execution role* is passed to AWS CloudFormation to perform the actual deployment\. Its permissions are the permissions that the deployment will execute under\. The permissions are passed to the stack as a parameter that lists managed policy ARNs\.
