@@ -51,7 +51,7 @@ Use the cdk context command to view and manage the information in your `cdk.cont
 
 ```
 Context found in cdk.json:
-      
+
 ┌───┬─────────────────────────────────────────────────────────────┬─────────────────────────────────────────────────────────┐
 │ # │ Key                                                         │ Value                                                   │
 ├───┼─────────────────────────────────────────────────────────────┼─────────────────────────────────────────────────────────┤
@@ -66,7 +66,7 @@ Run cdk context --reset KEY_OR_NUMBER to remove a context key. If it is a cached
 To remove a context value, run cdk context \-\-reset, specifying the value's corresponding key or number\. The following example removes the value that corresponds to the second key in the preceding example, which is the list of availability zones in the Ireland region\.
 
 ```
-$ cdk context --reset 2
+cdk context --reset 2
 ```
 
 ```
@@ -78,13 +78,13 @@ reset. It will be refreshed on the next SDK synthesis run.
 Therefore, if you want to update to the latest version of the Amazon Linux AMI, you can use the preceding example to do a controlled update of the context value and reset it, and then synthesize and deploy your app again\.
 
 ```
-$ cdk synth
+cdk synth
 ```
 
 To clear all of the stored context values for your app, run cdk context \-\-clear, as follows\.
 
 ```
-$ cdk context --clear
+cdk context --clear
 ```
 
 Only context values stored in `cdk.context.json` can be reset or cleared\. The AWS CDK does not touch other context files\. To protect a context value from being reset using these commands, then, you might copy the value to `cdk.json`\.
@@ -257,7 +257,7 @@ class ExistsVpcStack : Stack
 You can use cdk diff to see the effects of passing in a context value on the command line:
 
 ```
-$ cdk diff -c vpcid=vpc-0cb9c31031d0d3e22
+cdk diff -c vpcid=vpc-0cb9c31031d0d3e22
 ```
 
 ```
@@ -269,7 +269,7 @@ Outputs
 The resulting context values can be viewed as shown here\.
 
 ```
-$ cdk context -j
+cdk context -j
 ```
 
 ```
