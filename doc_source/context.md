@@ -9,7 +9,7 @@ Context values are made available to your AWS CDK app in six different ways:
 + Through the \-\-context option to the cdk command\.
 + In the project's `cdk.context.json` file\.
 + In the project's `cdk.json` file\.
-+ In the `context` key of your `~/cdk.json` file\.
++ In the `context` key of your `~/.cdk.json` file\.
 + In your AWS CDK app using the `construct.node.setContext` method\.
 
 The project file `cdk.context.json` is where the AWS CDK caches context values retrieved from your AWS account\. This practice avoids unexpected changes to your deployments when, for example, a new Amazon Linux AMI is released, changing your Auto Scaling group\. The AWS CDK does not write context data to any of the other files listed\. 
