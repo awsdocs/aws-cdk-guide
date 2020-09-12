@@ -11,4 +11,6 @@ Since the AWS CDK is always evolving, some of the code presented in these videos
 
 ## Contributing to the AWS Construct Library<a name="videos-contributing"></a>
 
-## How to contribute to the AWS CDK using GitPod<a name="videos-contributing"></a>
+## Faster deployments with CDK Pipelines<a name="videos-pipeliens"></a>
+
+## How to contribute to the AWS CDK using GitPod<a name="videos-gitpod"></a>
