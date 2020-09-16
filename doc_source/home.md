@@ -221,7 +221,7 @@ There is no charge for using the AWS CDK, but you might incur AWS charges for cr
 
 ## Contributing to the AWS CDK<a name="contributing"></a>
 
-Because the AWS CDK is open source, the team encourages you contribute to make it an even better tool\. For details, see [Contributing](https://github.com/awslabs/aws-cdk/blob/master/CONTRIBUTING.md)\.
+Because the AWS CDK is open source, the team encourages you to contribute to make it an even better tool\. For details, see [Contributing](https://github.com/awslabs/aws-cdk/blob/master/CONTRIBUTING.md)\.
 
 ## Additional documentation and resources<a name="additional_docs"></a>
 
