@@ -865,7 +865,7 @@ class MyPipelineStack(Stack):
         # Do this as many times as necessary with any account and region
         # Account and region may be different from the pipeline's.
         pipeline.add_application_stage(MyApplication(self, 'Prod',
-            env=Environmentironment(account="123456789012", region="eu-west-1")))
+            env=Environment(account="123456789012", region="eu-west-1")))
 ```
 
 ------
