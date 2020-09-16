@@ -21,7 +21,7 @@ python -m pip install --upgrade virtualenv
 If you encounter a permission error, run the above commands with the `--user` flag so that the modules are installed in your user directory, or use `sudo` to obtain the permissions to install the modules system\-wide\.
 
 **Note**  
-It is common for Linux distros to use the executable name `python3` for Python 3\.x, and have `python` refer to a Python 2\.x installation\. You can adjust the command used to run your application by editing `cdk.json` in the project's main directory\.
+It is common for Linux distros to use the executable name `python3` for Python 3\.x, and have `python` refer to a Python 2\.x installation\. Some distros have an optional package you can install that makes the `python` command refer to Python 3\. Failing that, you can adjust the command used to run your application by editing `cdk.json` in the project's main directory\.
 
 ## Creating a project<a name="python-newproject"></a>
 
@@ -53,26 +53,45 @@ python -m pip install -r requirements.txt
 **Important**  
 Activate the project's virtual environment whenever you start working on it\. Otherwise, you won't have access to the modules installed there, and modules you install will go in the Python global module directory \(or will result in a permission error\)\.
 
-## Managing AWS construct library modules<a name="python-managemodules"></a>
+## Managing AWS Construct Library modules<a name="python-managemodules"></a>
 
-Use the Python package installer, `pip`, to install and update AWS Construct Library modules for use by your apps, as well as other packages you need\. `pip` also installs the dependencies for those modules automatically\. To run `pip` without needing it installed in a special directory, invoke it as:
+Use the Python package installer, pip, to install and update AWS Construct Library modules for use by your apps, as well as other packages you need\. pip also installs the dependencies for those modules automatically\. If your system does not recognize pip as a standalone command, invoke pip as a Python module, like this:
 
 ```
 python -m pip PIP-COMMAND
 ```
 
-AWS Construct Library modules are named like `aws-cdk.SERVICE-NAME`\. For example, the command below installs the modules for Amazon S3 and AWS Lambda\.
+The AWS CDK core module is named `aws-cdk.core`\. AWS Construct Library modules are named like `aws-cdk.SERVICE-NAME`\. The service name includes an *aws* prefix\. If you're unsure of a module's name, [search for it at PyPI](https://pypi.org/search/?q=aws-cdk)\. For example, the command below installs the modules for Amazon S3 and AWS Lambda\.
 
 ```
 python -m pip install aws-cdk.aws-s3 aws-cdk.aws-lambda
 ```
 
-Similar names are used for importing AWS Construct Library modules into your Python code \(just replace the hyphens with underscores\)\.
+Some services' Construct Library support is in more than one module\. For example, besides the `aws-cdk.aws-route53` module, there are three additional Amazon Route 53 modules, named `aws-route53-targets`, `aws-route53-patterns`, and `aws-route53resolver`\.
+
+The names used for importing AWS Construct Library modules into your Python code are similar to their package names\. Simply replace the hyphens with underscores\.
 
 ```
 import aws_cdk.aws_s3 as s3
-import aws_cdk.aws_lambda as lam
+import aws_cdk.aws_lambda as lambda_
 ```
+
+We recommend the following practices when importing AWS CDK classes and AWS Construct Library modules in your applications\. Following these guidelines will help make your code consistent with other AWS CDK applications as well as easier to understand\.
++ Generally, import individual classes from `aws_cdk.core`\.
+
+  ```
+  from aws_cdk.core import App, Construct
+  ```
++ If you need many classes from the core module, you may use a namespace alias of `cdk` instead of importing individual classes\. Avoid doing both\.
+
+  ```
+  import aws_cdk.core as cdk
+  ```
++ Generally, import AWS Construct Libraries using short namespace aliases\.
+
+  ```
+  import aws_cdk.aws_s3 as s3
+  ```
 
 After installing a module, update your project's `requirements.txt` file, which lists your project's dependencies\. It is best to do this manually rather than using `pip freeze`\. `pip freeze` captures the current versions of all modules installed in your Python virtual environment, which can be useful when bundling up a project to be run elsewhere\.
 
@@ -91,7 +110,7 @@ With `requirements.txt` edited appropriately to allow upgrades, issue this comma
 pip install --upgrade -r requirements.txt
 ```
 
-**Note**  
+**Important**  
 All AWS Construct Library modules used in your project must be the same version\.
 
 ## AWS CDK idioms in Python<a name="python-cdk-idioms"></a>
@@ -100,7 +119,7 @@ All AWS Construct Library modules used in your project must be the same version\
 
 In Python, `lambda` is a language keyword, so you cannot use it as a name for the AWS Lambda construct library module or Lambda functions\. The Python convention for such conflicts is to use a trailing underscore, as in `lambda_`, in the variable name\.
 
-By convention, the second argument to AWS CDK constructs is named `id`\. When writing your own stacks and constructs, calling a parameter `id` "shadows" the Python built\-in function `id()`, which gets an object's unique identifier\. This function isn't used very often, but if you should happen to need it in your construct, rename the argument, for example `id_`, or else call the built\-in function as `__builtins__.id()`\.
+By convention, the second argument to AWS CDK constructs is named `id`\. When writing your own stacks and constructs, calling a parameter `id` "shadows" the Python built\-in function `id()`, which returns an object's unique identifier\. This function isn't used very often, but if you should happen to need it in your construct, rename the argument, for example `id_`, or else call the built\-in function as `__builtins__.id()`\.
 
 ### Props<a name="python-props"></a>
 
@@ -122,6 +141,13 @@ bucket.add_lifecycle_rule(
 ```
 
 When extending a class or overriding a method, you may want to accept additional arguments for your own purposes that are not understood by the parent class\. In this case you should accept the arguments you don't care about using the `**kwargs` idiom, and use keyword\-only arguments to accept the arguments you're interested in\. When calling the parent's constructor or the overridden method, pass only the arguments it is expecting \(often just `**kwargs`\)\. Passing arguments that the parent class or method doesn't expect results in an error\.
+
+```
+class MyConstruct(Construct):
+    def __init__(self, id, *, MyProperty=42, **kwargs):
+        super().__init__(self, id, **kwargs)
+        # ...
+```
 
 Future releases of the AWS CDK may coincidentally add a new property with a name you used for your own property\. This won't cause any technical issues for users of your construct or method \(since your property isn't passed "up the chain," the parent class or overridden method will simply use a default value\) but it may cause confusion\. You can avoid this potential problem by naming your properties so they clearly belong to your construct\. If there are many new properties, bundle them into an appropriately\-named class and pass it as a single keyword argument\.
 

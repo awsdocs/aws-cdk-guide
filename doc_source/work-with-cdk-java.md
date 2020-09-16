@@ -1,6 +1,6 @@
 # Working with the AWS CDK in Java<a name="work-with-cdk-java"></a>
 
-Java is a fully\-supported client platform for the AWS CDK and is considered stable\. You can develop AWS CDK applications in Java using familiar tools, including the JDK \(Oracle's, or an OpenJDK distribution such as Amazon Corretto\) and Apache Maven\. The modules comprising the AWS Construct Library are distributed via the [Maven Central Repository](https://search.maven.org/search?q=software.amazon.awscdk)\.
+Java is a fully\-supported client platform for the AWS CDK and is considered stable\. You can develop AWS CDK applications in Java using familiar tools, including the JDK \(Oracle's, or an OpenJDK distribution such as Amazon Corretto\) and Apache Maven\. The modules comprising the AWS Construct Library are distributed via the [Maven Central Repository](https://search.maven.org/search?q=g:software.amazon.awscdk)\.
 
 You can use any text editor, or a Java IDE that can read Maven projects, to work on your AWS CDK apps\. We provide [Eclipse](https://www.eclipse.org/downloads/) hints in this Guide, but IntelliJ IDEA, NetBeans, and other IDEs can import Maven projects and will work fine for developing AWS CDK applications in Java\.
 
@@ -28,11 +28,17 @@ The resulting project includes a reference to the `software.amazon.awscdk.core` 
 
 If you are using an IDE, you can now open or import the project\. In Eclipse, for example, choose **File** > **Import** > **Maven** > **Existing Maven Projects**\. Make sure that the project settings are set to use Java 8 \(1\.8\)\.
 
-## Managing AWS construct library modules<a name="java-managemodules"></a>
+## Managing AWS Construct Library modules<a name="java-managemodules"></a>
 
-Use Maven to install AWS Construct Library packages, which are in the group `software.amazon.awscdk` and named for their service\. For example, the Maven artifact ID for Amazon S3 is `s3`\. Its Java package name, for use in import statements, is `software.amazon.awscdk.services.s3`\. [Search the Maven Central Repository](https://search.maven.org/search?q=software.amazon.awscdk) to find the names of all AWS Construct Module libraries\.
+Use Maven to install AWS Construct Library packages, which are in the group `software.amazon.awscdk` and named with a short version \(no AWS or Amazon prefix\) of their service's name\. For example, the Maven artifact ID for Amazon S3 is `s3`\. [Search the Maven Central Repository](https://search.maven.org/search?q=sg:oftware.amazon.awscdk) to find the names of all AWS CDK and AWS Construct Module libraries\.
 
-**Note**  
+Some services' AWS Construct Library support is in more than one module\. For example, Amazon Route 53 has the three modules in addition to the main `software.amazon.awscdk.route53` module, named `route53-patterns`, `route53resolver`, and `route53-targets`\.
+
+The AWS CDK's core module, which you'll need in most AWS CDK apps, is imported in Java code as `software.amazon.awscdk.core`\. Modules for the various services in the AWS Construct Library live under `software.amazon.awscdk.services` and are named similarly to their Maven package name\. For example, the Amazon S3 module's namespace is `software.amazon.awscdk.services.s3`\.
+
+We recommend writing a separate Java `import` statement for each AWS Construct Library class you use in each of your Java source files, and avoiding wildcard imports\. You can always use a type's fully\-qualified name \(including its namespace\) without an `import` statement\.
+
+**Important**  
 All AWS Construct Library modules used in your project must be the same version\.
 
 Specify the modules that your application depends on by editing `pom.xml` and adding a new `<dependency>` element in the `<dependencies>` container\. For example, the following `<dependency>` element specifies the Amazon S3 construct library module:
@@ -46,9 +52,9 @@ Specify the modules that your application depends on by editing `pom.xml` and ad
 ```
 
 **Tip**  
-If you use a Java IDE, it probably has features for managing Maven dependencies\. We recommend always editing `pom.xml` directly, however, unless you are absolutely sure the IDE's functionality matches what you'd do by hand\.
+If you use a Java IDE, it probably has features for managing Maven dependencies\. We recommend editing `pom.xml` directly, however, unless you are absolutely sure the IDE's functionality matches what you'd do by hand\.
 
-The default `pom.xml` defines the variable `cdk.version` to be the version of the AWS CDK that created the project\. You can easily update the version required by updating the value of this variable, while keeping all module versions in sync\.
+The default `pom.xml` defines the variable `cdk.version` to be the version of the AWS CDK that created the project\. You can easily update the version required by updating the value of this variable, which keeps all AWS Construct Library module versions in sync\.
 
 ```
 <cdk.version>1.XX.Y</cdk.version>

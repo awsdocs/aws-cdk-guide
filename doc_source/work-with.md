@@ -22,6 +22,9 @@ After installing Node\.js, install the AWS CDK Toolkit \(the `cdk` command\):
 npm install -g aws-cdk
 ```
 
+**Note**  
+If you get a permission error, and have administrator access on your system, try `sudo npm install -g aws-cdk`\.
+
 Test the installation by issuing `cdk --version`\.
 
 The specific language you work in also has its own prerequisites, described in the corresponding topic listed here\.

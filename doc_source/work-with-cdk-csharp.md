@@ -33,11 +33,17 @@ cdk init app --language csharp
 
 The resulting project includes a reference to the `Amazon.CDK` NuGet package\. It and its dependencies are installed automatically by NuGet\.
 
-## Managing AWS construct library modules<a name="csharp-managemodules"></a>
+## Managing AWS Construct Library modules<a name="csharp-managemodules"></a>
 
-The \.NET ecosystem uses the NuGet package manager\. AWS Construct Library modules are named like `Amazon.CDK.AWS.SERVICE-NAME`\. For example, the NuGet package name for the Amazon S3 module is `Amazon.CDK.AWS.S3`\.
+The \.NET ecosystem uses the NuGet package manager\. AWS Construct Library modules are named like `Amazon.CDK.AWS.SERVICE-NAME` where the service name is a short name without an AWS or Amazon prefix\. For example, the NuGet package name for the Amazon S3 module is `Amazon.CDK.AWS.S3`\.
 
-**Note**  
+Some services' AWS Construct Library support is in more than one module\. For example, Amazon Route 53 has the three modules in addition to the main `Amazon.CDK.AWS.Route53` module, named `Route53.Patterns`, `Route53rResolver`, and `Route53.Targets`\.
+
+The AWS CDK's core module, which you'll need in most AWS CDK apps, is imported in C\# code as `Amazon.CDK`\. Modules for the various services in the AWS Construct Library live under `Amazon.CDK.AWS` and are named similarly to their NuGet package name\. For example, the Amazon S3 module's namespace is `Amazon.CDK.AWS.S3`\.
+
+We recommend writing a single C\# `using` directive for each AWS Construct Library module you use in each of your C\# source files\. You may find it convenient to use an alias for a namespace or type to help resolve name conflicts\. You can always use a type's fully\-qualfiied name \(including its namespace\) without a `using` statement\.
+
+**Important**  
 All AWS Construct Library modules used in your project must be the same version\.
 
 NuGet has four standard, mostly\-equivalent interfaces; you can use the one that suits your needs and working style\. You can also use compatible tools, such as [Paket](https://fsprojects.github.io/Paket/) or [MyGet](https://fsprojects.github.io/Paket/)\.
@@ -51,7 +57,7 @@ All AWS Construct Library modules deemed "experimental" \(see [Versioning](refer
 
 ![\[Image NOT FOUND\]](http://docs.aws.amazon.com/cdk/latest/guide/images/visual-studio-nuget.png)
 
-Look in the **Updates** panel to install new versions of your packages\.
+Look on the **Updates** page to install new versions of your packages\.
 
 ### The NuGet console<a name="csharp-vs-nuget-console"></a>
 

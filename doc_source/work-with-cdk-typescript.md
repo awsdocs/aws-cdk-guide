@@ -14,6 +14,9 @@ You also need TypeScript itself\. If you don't already have it, you can install 
 npm install -g typescript
 ```
 
+**Note**  
+If you get a permission error, and have administrator access on your system, try `sudo npm install -g typescript`\.
+
 Keep TypeScript up to date with a regular `npm update -g typescript`\.
 
 ## Creating a project<a name="typescript-newproject"></a>
@@ -30,23 +33,43 @@ Creating a project also installs the [https://docs.aws.amazon.com/cdk/api/latest
 
 `cdk init` uses the name of the project folder to name various elements of the project, including classes, subfolders, and files\. 
 
-## Managing AWS construct library modules<a name="typescript-managemodules"></a>
+## Managing AWS Construct Library modules<a name="typescript-managemodules"></a>
 
 Use the Node Package Manager \(`npm`\), included with Node\.js, to install and update AWS Construct Library modules for use by your apps, as well as other packages you need\. \(You may use `yarn` instead of `npm` if you prefer\.\) `npm` also installs the dependencies for those modules automatically\.
 
-AWS Construct Library modules are named like `@aws-cdk/SERVICE-NAME`\. For example, the command below installs the modules for Amazon S3 and AWS Lambda\.
+The AWS CDK core module is named `@aws-cdk/core`\. AWS Construct Library modules are named like `@aws-cdk/SERVICE-NAME`\. The service name has an * a* prefix\. If you're unsure of a module's name, [search for it on NPM](https://www.npmjs.com/search?q=%40aws-cdk)\. For example, the command below installs the modules for Amazon S3 and AWS Lambda\.
 
 ```
 npm install @aws-cdk/aws-s3 @aws-cdk/aws-lambda
 ```
 
-Your project's dependencies are maintained in `package.json`\. You can edit this file to lock some or all of your dependencies to a specific version or to allow them to be updated to newer versions under certain criteria\. To update your project's dependencies:
+Some services' Construct Library support is in more than one module\. For example, besides the `@aws-cdk/aws-route53` module, there are three additional Amazon Route 53 modules, named `aws-route53-targets`, `aws-route53-patterns`, and `aws-route53resolver`\.
+
+Your project's dependencies are maintained in `package.json`\. You can edit this file to lock some or all of your dependencies to a specific version or to allow them to be updated to newer versions under certain criteria\. To update your project's NPM dependencies to the latest permitted version according to the rules you specified in `package.json`:
 
 ```
 npm update
 ```
 
-**Note**  
+In TypeScript, you import modules into your code under the same name you use to install them using NPM\. We recommend the following practices when importing AWS CDK classes and AWS Construct Library modules in your applications\. Following these guidelines will help make your code consistent with other AWS CDK applications as well as easier to understand\.
++ Use ES6\-style `import` directives, not `require()`\.
++ Generally, import individual classes from `@aws-cdk/core`\.
+
+  ```
+  import { App, Construct } from '@aws-cdk/core';
+  ```
++ If you need many classes from the core module, you may use a namespace alias of `cdk` instead of importing the individual classes\. Avoid doing both\.
+
+  ```
+  import * as cdk from '@aws-cdk/core';
+  ```
++ Generally, import AWS Construct Libraries using short namespace aliases\.
+
+  ```
+  import * as s3 from '@aws-cdk/aws-s3';
+  ```
+
+**Important**  
 All AWS Construct Library modules used in your project must be the same version\.
 
 ## AWS CDK idioms in TypeScript<a name="typescript-cdk-idioms"></a>
