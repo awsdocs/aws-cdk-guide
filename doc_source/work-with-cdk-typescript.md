@@ -37,7 +37,12 @@ Creating a project also installs the [https://docs.aws.amazon.com/cdk/api/latest
 
 Use the Node Package Manager \(`npm`\), included with Node\.js, to install and update AWS Construct Library modules for use by your apps, as well as other packages you need\. \(You may use `yarn` instead of `npm` if you prefer\.\) `npm` also installs the dependencies for those modules automatically\.
 
-The AWS CDK core module is named `@aws-cdk/core`\. AWS Construct Library modules are named like `@aws-cdk/SERVICE-NAME`\. The service name has an * a* prefix\. If you're unsure of a module's name, [search for it on NPM](https://www.npmjs.com/search?q=%40aws-cdk)\. For example, the command below installs the modules for Amazon S3 and AWS Lambda\.
+The AWS CDK core module is named `@aws-cdk/core`\. AWS Construct Library modules are named like `@aws-cdk/SERVICE-NAME`\. The service name has an * a* prefix\. If you're unsure of a module's name, [search for it on NPM](https://www.npmjs.com/search?q=%40aws-cdk)\.
+
+**Note**  
+The [CDK API Reference](https://docs.aws.amazon.com/cdk/api/latest/docs/aws-construct-library.html) also shows the package names\.
+
+For example, the command below installs the modules for Amazon S3 and AWS Lambda\.
 
 ```
 npm install @aws-cdk/aws-s3 @aws-cdk/aws-lambda

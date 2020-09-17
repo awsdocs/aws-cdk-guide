@@ -35,11 +35,14 @@ The resulting project includes a reference to the `Amazon.CDK` NuGet package\. I
 
 ## Managing AWS Construct Library modules<a name="csharp-managemodules"></a>
 
-The \.NET ecosystem uses the NuGet package manager\. AWS Construct Library modules are named like `Amazon.CDK.AWS.SERVICE-NAME` where the service name is a short name without an AWS or Amazon prefix\. For example, the NuGet package name for the Amazon S3 module is `Amazon.CDK.AWS.S3`\.
+The \.NET ecosystem uses the NuGet package manager\. AWS Construct Library modules are named like `Amazon.CDK.AWS.SERVICE-NAME` where the service name is a short name without an AWS or Amazon prefix\. For example, the NuGet package name for the Amazon S3 module is `Amazon.CDK.AWS.S3`\. If you can't find a package you want, [search Nuget\.org](https://www.nuget.org/packages?q=amazon.cdk.aws)\.
+
+**Note**  
+The [\.NET edition of the CDK API Reference](https://docs.aws.amazon.com/cdk/api/latest/dotnet/api/index.html) also shows the package names\.
 
 Some services' AWS Construct Library support is in more than one module\. For example, Amazon Route 53 has the three modules in addition to the main `Amazon.CDK.AWS.Route53` module, named `Route53.Patterns`, `Route53rResolver`, and `Route53.Targets`\.
 
-The AWS CDK's core module, which you'll need in most AWS CDK apps, is imported in C\# code as `Amazon.CDK`\. Modules for the various services in the AWS Construct Library live under `Amazon.CDK.AWS` and are named similarly to their NuGet package name\. For example, the Amazon S3 module's namespace is `Amazon.CDK.AWS.S3`\.
+The AWS CDK's core module, which you'll need in most AWS CDK apps, is imported in C\# code as `Amazon.CDK`\. Modules for the various services in the AWS Construct Library live under `Amazon.CDK.AWS` and are named the same as their NuGet package name\. For example, the Amazon S3 module's namespace is `Amazon.CDK.AWS.S3`\.
 
 We recommend writing a single C\# `using` directive for each AWS Construct Library module you use in each of your C\# source files\. You may find it convenient to use an alias for a namespace or type to help resolve name conflicts\. You can always use a type's fully\-qualfiied name \(including its namespace\) without a `using` statement\.
 

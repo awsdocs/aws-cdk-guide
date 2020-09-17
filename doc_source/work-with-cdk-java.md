@@ -32,6 +32,9 @@ If you are using an IDE, you can now open or import the project\. In Eclipse, fo
 
 Use Maven to install AWS Construct Library packages, which are in the group `software.amazon.awscdk` and named with a short version \(no AWS or Amazon prefix\) of their service's name\. For example, the Maven artifact ID for Amazon S3 is `s3`\. [Search the Maven Central Repository](https://search.maven.org/search?q=sg:oftware.amazon.awscdk) to find the names of all AWS CDK and AWS Construct Module libraries\.
 
+**Note**  
+The [Java edition of the CDK API Reference](https://docs.aws.amazon.com/cdk/api/latest/java/index.html) also shows the package names\.
+
 Some services' AWS Construct Library support is in more than one module\. For example, Amazon Route 53 has the three modules in addition to the main `software.amazon.awscdk.route53` module, named `route53-patterns`, `route53resolver`, and `route53-targets`\.
 
 The AWS CDK's core module, which you'll need in most AWS CDK apps, is imported in Java code as `software.amazon.awscdk.core`\. Modules for the various services in the AWS Construct Library live under `software.amazon.awscdk.services` and are named similarly to their Maven package name\. For example, the Amazon S3 module's namespace is `software.amazon.awscdk.services.s3`\.
