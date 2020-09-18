@@ -554,7 +554,7 @@ Options:
 
   --public-access-block-configuration       Block public access configuration
                                             on CDK toolkit bucket (enabled by
-                                            default)   [boolean] [default: true]
+                                            default)                   [boolean]
 
   --tags, -t                                Tags to add for the stack
                                             (KEY=VALUE)    [array] [default: []]
@@ -569,7 +569,18 @@ Options:
 
   --termination-protection                  Toggle CloudFormation termination
                                             protection on the bootstrap stacks
+                                                                       [boolean]
+
+  --show-template                           Instead of actual bootstrapping,
+                                            print the current CLI's
+                                            bootstrapping template to stdout for
+                                            customization.
                                                       [boolean] [default: false]
+
+  --template                                Use the template from the given file
+                                            instead of the built-in one (use
+                                            --show-template to obtain an
+                                            example).                   [string]
 ```
 
 ### `cdk deploy`<a name="w350aac23b7c37b7b7"></a>
@@ -595,7 +606,8 @@ Options:
   --notification-arns    ARNs of SNS topics that CloudFormation will notify with
                          stack related events                            [array]
 
-  --tags, -t             Tags to add to the stack (KEY=VALUE)            [array]
+  --tags, -t             Tags to add to the stack (KEY=VALUE), overrides tags
+                         from Cloud Assembly                             [array]
 
   --execute              Whether to execute ChangeSet (--no-execute will NOT
                          execute the ChangeSet)        [boolean] [default: true]
@@ -612,6 +624,9 @@ Options:
   --previous-parameters  Use previous values for existing parameters (you must
                          specify all parameters on every deployment if this is
                          disabled)                     [boolean] [default: true]
+
+  --progress             Display mode for stack activity events.
+                                             [string] [choices: "bar", "events"]
 ```
 
 ### `cdk destroy`<a name="w350aac23b7c37b7b9"></a>
