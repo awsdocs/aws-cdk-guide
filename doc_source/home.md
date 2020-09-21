@@ -229,6 +229,7 @@ In addition to this guide, the following are other resources available to AWS CD
 + [API Reference](https://docs.aws.amazon.com/cdk/api/latest)
 + [AWS CDK Workshop](https://cdkworkshop.com/)
 + [AWS CDK Examples](https://github.com/aws-samples/aws-cdk-examples)
++ [AWS Solutions Constructs](http://aws.amazon.com/solutions/constructs/)
 + [AWS Developer Blog](https://aws.amazon.com/blogs/developer)
 + [Gitter Channel](https://gitter.im/awslabs/aws-cdk)
 + [Stack Overflow](https://stackoverflow.com/questions/tagged/aws-cdk)
