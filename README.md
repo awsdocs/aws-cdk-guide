@@ -1,8 +1,7 @@
 # Welcome to the AWS CDK Developer Guide
 
 This is the GitHub repository for the [AWS CDK Developer Guide](https://docs.aws.amazon.com/cdk/latest/guide/home.html). 
-You're welcome to [report issues](https://github.com/awsdocs/aws-cdk-guide/issues/new) with the documentation here or, if you have a moment, to submit a Pull Request with your 
-suggested changes.
+You're welcome to [report issues](https://github.com/awsdocs/aws-cdk-guide/issues/new) with the documentation here or, if you have a moment, to submit a Pull Request with your suggested changes. PRs should target the main branch, not master, which has been deprecated.
 
 Issues reported through the Feedback link at the bottom of the individual pages of the AWS CDK Developer Guide go to an internal
 Amazon issue tracker and may not appear here. However, we try to track most substantive AWS CDK Developer Guide work on GitHub 
