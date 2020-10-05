@@ -228,10 +228,12 @@ Because the AWS CDK is open source, the team encourages you to contribute to mak
 In addition to this guide, the following are other resources available to AWS CDK users:
 + [API Reference](https://docs.aws.amazon.com/cdk/api/latest)
 + [AWS CDK Workshop](https://cdkworkshop.com/)
++ [cdk\.dev](https://cdk.dev/) community hub, including a Slack channel
 + [AWS CDK Examples](https://github.com/aws-samples/aws-cdk-examples)
++ [CDK Patterns](https://cdkpatterns.com/)
++ [Awesome CDK](https://github.com/kolomied/awesome-cdk)
 + [AWS Solutions Constructs](http://aws.amazon.com/solutions/constructs/)
 + [AWS Developer Blog](https://aws.amazon.com/blogs/developer)
-+ [Gitter Channel](https://gitter.im/awslabs/aws-cdk)
 + [Stack Overflow](https://stackoverflow.com/questions/tagged/aws-cdk)
 + [GitHub Repository](https://github.com/awslabs/aws-cdk)
   + [Issues](https://github.com/awslabs/aws-cdk/issues)

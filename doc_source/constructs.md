@@ -2,7 +2,7 @@
 
 Constructs are the basic building blocks of AWS CDK apps\. A construct represents a "cloud component" and encapsulates everything AWS CloudFormation needs to create the component\. 
 
-A construct can represent a single resource, such as an Amazon Simple Storage Service \(Amazon S3\) bucket, or it can represent a higher\-level component consisting of multiple AWS CDK resources\. Examples of such components include a worker queue with its associated compute capacity, a cron job with monitoring resources and a dashboard, or even an entire app spanning multiple AWS accounts and regions\.
+A construct can represent a single resource, such as an Amazon Simple Storage Service \(Amazon S3\) bucket, or it can represent a higher\-level component consisting of multiple AWS resources\. Examples of such components include a worker queue with its associated compute capacity, a cron job with monitoring resources and a dashboard, or even an entire app spanning multiple AWS accounts and regions\.
 
 ## AWS Construct library<a name="constructs_lib"></a>
 
@@ -10,7 +10,7 @@ The AWS CDK includes the [AWS Construct Library](https://docs.aws.amazon.com/cdk
 
 This library includes constructs that represent all the resources available on AWS\. For example, the `[s3\.Bucket](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.Bucket.html)` class represents an Amazon S3 bucket, and the `[dynamodb\.Table](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-dynamodb.Table.html)` class represents an Amazon DynamoDB table\.
 
-There are different levels of constructs in this library, beginning with low\-level constructs, which we call *CFN Resources* \(or L1, short for "level 1"\)\. These constructs directly represent all of the AWS resources that are available in AWS CloudFormation\. CFN Resources are periodically generated from the [AWS CloudFormation Resource Specification](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-resource-specification.html)\. They are named **Cfn***Xyz*, where *Xyz* is name of the resource\. For example, [s3\.CfnBucket](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.CfnBucket.html) represents the [AWS::S3::Bucket](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-s3-bucket.html) CFN Resource\. When you use CFN resources, you must explicitly configure all resource properties, which requires a complete understanding of the details of the underlying AWS CloudFormation resource model\.
+There are different levels of constructs in this library, beginning with low\-level constructs, which we call *CFN Resources* \(or L1, short for "level 1"\) or Cfn resources\. These constructs directly represent all resources available in AWS CloudFormation\. CFN Resources are periodically generated from the [AWS CloudFormation Resource Specification](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-resource-specification.html)\. They are named **Cfn***Xyz*, where *Xyz* is name of the resource\. For example, [CfnBucket](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.CfnBucket.html) represents the [AWS::S3::Bucket](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-s3-bucket.html) AWS CloudFormation resource\. When you use Cfn resources, you must explicitly configure all resource properties, which requires a complete understanding of the details of the underlying AWS CloudFormation resource model\.
 
 The next level of constructs, L2, also represent AWS resources, but with a higher\-level, intent\-based API\. They provide similar functionality, but provide the defaults, boilerplate, and glue logic you'd be writing yourself with a CFN Resource construct\. AWS constructs offer convenient defaults and reduce the need to know all the details about the AWS resources they represent, while providing convenience methods that make it simpler to work with the resource\. For example, the [s3\.Bucket](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.Bucket.html) class represents an Amazon S3 bucket with additional properties and methods, such as [bucket\.addLifeCycleRule\(\)](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.Bucket.html#add-wbr-lifecycle-wbr-rulerule), which adds a lifecycle rule to the bucket\.
 
@@ -20,16 +20,16 @@ For more information about how to navigate the library and discover constructs t
 
 ## Composition<a name="constructs_composition"></a>
 
-The key pattern for defining higher\-level abstractions through constructs is called *composition*\. A high\-level construct can be composed from any number of lower\-level constructs, and in turn, those could be composed from even lower\-level constructs\. To enable this pattern, constructs are always defined within the scope of another construct\. This scoping pattern results in a hierarchy of constructs known as a *construct tree*\. In the AWS CDK, the root of the tree represents your entire **[AWS CDK app](apps.md)**\. Within the app, you typically define one or more **[stacks](stacks.md)**, which are the unit of deployment, analogous to AWS CloudFormation stacks\. Within stacks, you define resources, or other constructs that eventually contain resources\.
+*Composition* is the key pattern for defining higher\-level abstractions through constructs\. A high\-level construct can be composed from any number of lower\-level constructs, and in turn, those could be composed from even lower\-level constructs, which eventually are composed from AWS resources\. From a bottom\-up perspective, you use constructs to organize the individual AWS resources you want to deploy using whatever abstractions are convenient for your purpose, with as many layers as you need\.
 
-Composition of constructs means that you can define reusable components and share them like any other code\. For example, a central team can define a construct that implements the company's best practice for a DynamoDB table with backup, global replication, auto\-scaling, and monitoring, and share it with teams across a company or publicly\. Teams can now use this construct as they would any other library package in their favorite programming language to define their tables and comply with their team's best practices\. When the library is updated, developers can pick up the updates and enjoy any bug fixes and improvements through the workflows they already have for their other types of code\.
+Composition lets you define reusable components and share them like any other code\. For example, a team can define a construct that implements the company's best practice for a DynamoDB table with backup, global replication, auto\-scaling, and monitoring, and share it with other teams in their organization, or publicly\. Teams can now use this construct as they would any other library package in their preferred programming language to define their tables and comply with their team's best practices\. When the library is updated, developers will get access to the new version's bug fixes and improvements through the workflows they already have for their other types of code\.
 
 ## Initialization<a name="constructs_init"></a>
 
 Constructs are implemented in classes that extend the [https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html) base class\. You define a construct by instantiating the class\. All constructs take three parameters when they are initialized:
-+ **Scope** – The construct within which this construct is defined\. You should almost always pass `this` for the scope, because it represents the current scope in which you are defining the construct\.
-+ **id** – An [identifier](identifiers.md) that must be unique within this scope\. The identifier serves as a namespace for everything that's encapsulated within the scope's subtree and is used to allocate unique identities such as [resource names](resources.md#resources_physical_names) and AWS CloudFormation logical IDs\.
-+ **Props** – A set of properties or keyword arguments, depending upon the supported language, that define the construct's initial configuration\. In most cases, constructs provide sensible defaults, and if all props elements are optional, you can leave out the **props** parameter completely\.
++ **Scope** – The construct within which this construct is defined\. You should usually pass `this` for the scope, because it represents the current scope in which you are defining the construct\.
++ **id** – An [identifier](identifiers.md) that must be unique within this scope\. The identifier serves as a namespace for everything that's defined within the current construct and is used to allocate unique identities such as [resource names](resources.md#resources_physical_names) and AWS CloudFormation logical IDs\.
++ **Props** – A set of properties or keyword arguments, depending upon the language, that define the construct's initial configuration\. In most cases, constructs provide sensible defaults, and if all props elements are optional, you can leave out the **props** parameter completely\.
 
 Identifiers need only be unique within a scope\. This lets you instantiate and reuse constructs without concern for the constructs and identifiers they might contain, and enables composing constructs into higher level abstractions\. In addition, scopes make it possible to refer to groups of constructs all at once, for example for [tagging](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Tag.html) or for specifying where the constructs will be deployed\.
 
@@ -628,9 +628,9 @@ var createJobLambda = new Function(this, "create-job", new FunctionProps
 
 For information about the most common API patterns in the AWS Construct Library, see [Resources](resources.md)\.
 
-## Authoring constructs<a name="constructs_author"></a>
+## Writing your own constructs<a name="constructs_author"></a>
 
-In addition to using existing constructs like `s3.Bucket`, you can also author your own constructs, and then anyone can use them in their apps\. All constructs are equal in the AWS CDK\. An AWS CDK construct such as `s3.Bucket` or `sns.Topic` behaves the same as a construct imported from a third\-party library that someone published on npm or Maven or PyPI—or to your company's internal package repository\.
+In addition to using existing constructs like `s3.Bucket`, you can also write your own constructs, and then anyone can use them in their apps\. All constructs are equal in the AWS CDK\. An AWS CDK construct such as `s3.Bucket` or `sns.Topic` behaves the same as a construct imported from a third\-party library that someone published via NPM or Maven or PyPI—or to your company's internal package repository\.
 
 To declare a new construct, create a class that extends the [Construct](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html) base class, then follow the pattern for initializer arguments\.
 
@@ -975,3 +975,31 @@ images.topic.AddSubscription(new SqsSubscription(queue));
 ```
 
 ------
+
+## The construct tree<a name="constructs_tree"></a>
+
+As we've already seen, in AWS CDK apps, you define constructs "inside" other constructs using the `scope` argument passed to every construct\. In this way, an AWS CDK app defines a hierarchy of constructs known as the *construct tree*\.
+
+The root of this tree is your app—that is, an instance of the `App` class\. Within the app, you instantiate one or more stacks\. Within stacks, you instantiate either AWS CloudFormation resources or higher\-level constructs, which may themselves instantiate resources or other constructs, and so on down the tree\.
+
+Constructs are *always* explicitly defined within the scope of another construct, so there is never any doubt about the relationships between constructs\. Almost always, you should pass `this` \(in Python, `self`\) as the scope, indicating that the new construct is a child of the current construct\. The intended pattern is that you derive your construct from [https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html), then instantiate the constructs it uses in its constructor\.
+
+Passing the scope explicitly allows each construct to add itself to the tree, with this behavior entirely contained within the [`Construct` base class](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Construct.html)\. It works the same way in every language supported by the AWS CDK and does not require introspection or other "magic\."
+
+**Important**  
+Technically, it's possible to pass some scope other than `this` when instantiating a construct, which allows you to add constructs anywhere in the tree, even in another stack entirely\. For example, you could write a mixin\-style function that adds constructs to a scope passed in as an argument\. The practical difficulty here is that it you can't easily ensure that the IDs you choose for your constructs are unique within someone else's scope\. The practice also makes your code more difficult to understand, maintain, and reuse\. It is virtually always better to find a way to express your intent without resorting to abusing the `scope` argument\.
+
+The AWS CDK uses the IDs of all constructs in the path from the tree's root to each child construct to generate the unique IDs required by AWS CloudFormation\. This approach means that construct IDs need be unique only within their scope, rather than within the entire stack as in native AWS CloudFormation\. It does, however, mean that if you move a construct to a different scope, its generated stack\-unique ID will change, and AWS CloudFormation will no longer consider it the same resource\.
+
+The construct tree is separate from the constructs you define in your AWS CDK code, but it is accessible through any construct's `node` attribute, which is a reference to the node that represents that construct in the tree\. Each node is a [https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.ConstructNode.html](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.ConstructNode.html) instance, the attributes of which provide access to the tree's root and to the node's parent scopes and children\.
++ `node.children` – The direct children of the construct\.
++ `node.id` – The identifier of the construct within its scope\.
++ `node.path` – The full path of the construct including the IDs of all of its parents\.
++ `node.root` – The root of the construct tree \(the app\)\.
++ `node.scope` – The scope \(parent\) of the construct, or undefined if the node is the root\.
++ `node.scopes` – All parents of the construct, up to the root\.
++ `node.uniqueId` – The unique alphanumeric identifier for this construct within the tree \(by default, generated from `node.path` and a hash\)\.
+
+The construct tree defines an implicit order in which constructs are synthesized to resources in the final AWS CloudFormation template: depth\-first traversal of the scopes, and in order of construct instantiation within each scope\. Where one resource must be created before another, AWS CloudFormation or the AWS Construct Library will generally infer the dependency and make sure the resources are created in the right order\. You can also add an explicit dependency between two nodes using `node.addDependency()`; see [Dependencies](https://docs.aws.amazon.com/cdk/api/latest/docs/core-readme.html#dependencies) in the AWS CDK API Reference\.
+
+The AWS CDK provides a simple way to visit every node in the construct tree and perform an operation on each one\. See [Aspects](aspects.md)\.
