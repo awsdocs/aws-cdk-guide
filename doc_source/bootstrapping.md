@@ -9,7 +9,7 @@ An environment needs to be bootstrapped if any of the following apply\.
 
 The required resources are defined in a AWS CloudFormation stack, called the *bootstrap stack*, which is usually named `CDKToolkit`\. Just like any AWS CloudFormation stack, you can find it in the AWS CloudFormation console\.
 
-The AWS CDK supports two bootstrap templates\. At this writing, the AWS CDK is transitioning from one of these templates to the other, but the original template \(dubbed "legacy"\) is still the default\. The newer template \("modern"\) is required by CDK Pipelines now and will become the default at some point in the future\. For details, see [Bootstrapping templates](#bootstrapping-templates)\.
+The AWS CDK supports two bootstrap templates\. At this writing, the AWS CDK is transitioning from one of these templates to the other, but the original template \(dubbed "legacy"\) is still the default\. The newer template \("modern"\) is required by CDK Pipelines today, and will become the default at some point in the future\. For details, see [Bootstrapping templates](#bootstrapping-templates)\.
 
 Environments are independent, so if you want to deploy to multiple environments \(different AWS accounts or different regions in the same account\), each environment must be bootstrapped separately\.
 
@@ -93,7 +93,7 @@ aws cloudformation create-stack ^
 
 At this writing, the AWS CDK is transitioning from one set of bootstrap resources to another\. The original bootstrap template, which shipped with the very first version of the AWS CDK, is called the **legacy** template\. A newer version of the template with additional resources was added in version 1\.25\.0\. This newer template is called the **modern** template\.
 
-The legacy template is fully supported by the AWS CDK and is in fact the template that is selected by default when you issue `cdk bootstrap`\. The modern template is required primarily by the CDK Pipelines module, which can be used to set up a continuous delivery pipeline for your CDK applications\. More precisely, the modern template is required if you use the `DefaultSynthesizer` \(see [Stack synthesizers](#bootstrapping-synthesizers)\),
+The legacy template is fully supported by the AWS CDK and is in fact the template that is selected by default when you issue `cdk bootstrap`\. The modern template is required primarily by the CDK Pipelines module, which can be used to set up a continuous delivery pipeline for your CDK applications\. More precisely, the modern template is used by the `DefaultSynthesizer` \(see [Stack synthesizers](#bootstrapping-synthesizers)\), and CDK Pipelines requires this synthesizer,
 
 The main differences between the templates are as follows\.
 
@@ -101,7 +101,7 @@ The main differences between the templates are as follows\.
 
 \* *We will add additional resources to the modern template as needed\.*
 
-At some point in the future, the modern template will become the default bootstrapping template\. Until then, you must manually select the modern template when bootstrapping by setting the `CDK_NEW_BOOTSTRAP` environment variable\.
+At some point in the future, the modern template will become the default bootstrapping template\. Until then, manually select the modern template when bootstrapping by setting the `CDK_NEW_BOOTSTRAP` environment variable\.
 
 ------
 #### [ Mac OS X/Linux ]
@@ -165,7 +165,7 @@ When you need more customization than the AWS CDK Toolkit switches can provide, 
 
 ```
 export CDK_NEW_BOOTSTRAP=1
-cdk bootstrap
+cdk bootstrap --show-template
 ```
 
 ------
@@ -173,14 +173,14 @@ cdk bootstrap
 
 ```
 set CDK_NEW_BOOTSTRAP=1
-cdk bootstrap
+cdk bootstrap --show-template
 ```
 
 ------
 
 Any modifications you make must adhere to the [bootstrapping template contract](#bootstrapping-contract)\.
 
-You can deploy your modified template as described in [Bootstrapping from the AWS CloudFormation template](#bootstrapping-howto-cfn), or using cdk bootstrap\.
+Deploy your modified template as described in [Bootstrapping from the AWS CloudFormation template](#bootstrapping-howto-cfn), or using cdk bootstrap \-\-template\.
 
 ```
 cdk bootstrap --template bootstrap-template.yaml
@@ -503,7 +503,7 @@ new DefaultStackSynthesizer(new DefaultStackSynthesizerProps
 
 ## The bootstrapping template contract<a name="bootstrapping-contract"></a>
 
-The requirements of the bootstrapping stack depend on the stack synthesizer being used\. If you write your own stack synthesizer, you have complete control of the bootstrap resources that your synthesizer requires and how the synthesizer finds them\. This section describes the expectations that the `DefaultStackSynthesizer` has of the bootstrapping template\.
+The requirements of the bootstrapping stack depend on the stack synthesizer in use\. If you write your own stack synthesizer, you have complete control of the bootstrap resources that your synthesizer requires and how the synthesizer finds them\. This section describes the expectations that the `DefaultStackSynthesizer` has of the bootstrapping template\.
 
 ### Versioning<a name="bootstrapping-contract-versioning"></a>
 
@@ -524,14 +524,14 @@ Outputs:
       Fn::GetAtt: [CdkBootstrapVersion, Value]
 ```
 
-### Versioning<a name="bootstrapping-contract-roles"></a>
+### Roles<a name="bootstrapping-contract-roles"></a>
 
 The `DefaultStackSynthesizer` requires four IAM roles for four different purposes\. If you are not using the default roles, the synthesizer needs to be told the ARNs for the roles you want to use\. The roles are:
 + The *deployment role* is assumed by the AWS CDK Toolkit and by AWS CodePipeline to deploy into an environment\. Its `AssumeRolePolicy` controls who can deploy into the environment\. The permissions this role needs can be seen in the template\.
 + The *file publishing role* and the *image publishing role* are assumed by the AWS CDK Toolkit and by AWS CodeBuild projects to publish assets into an environment: that is, to write to the S3 bucket and the ECR repository, respectively\. These roles require write access to these resources\.
 + *The AWS CloudFormation execution role* is passed to AWS CloudFormation to perform the actual deployment\. Its permissions are the permissions that the deployment will execute under\. The permissions are passed to the stack as a parameter that lists managed policy ARNs\.
 
-### Versioning<a name="bootstrapping-contract-outputs"></a>
+### Outputs<a name="bootstrapping-contract-outputs"></a>
 
 The AWS CDK Toolkit requires that the following CloudFormation outputs exist on the bootstrap stack\.
 + `BucketName`: the name of the file asset bucket
