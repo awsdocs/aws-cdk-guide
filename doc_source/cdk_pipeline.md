@@ -379,7 +379,7 @@ app.synth();
 ------
 #### [ Python ]
 
-In `my-pipeline/my-pipeline-stack.js` \(may vary if your project folder isn't named `my-pipeline`\): 
+In `my-pipeline/my-pipeline-stack.py` \(may vary if your project folder isn't named `my-pipeline`\): 
 
 ```
 from aws_cdk.core import Stack, StackProps, Construct, SecretValue
