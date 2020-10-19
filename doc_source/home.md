@@ -233,7 +233,7 @@ In addition to this guide, the following are other resources available to AWS CD
 + [CDK Patterns](https://cdkpatterns.com/)
 + [Awesome CDK](https://github.com/kolomied/awesome-cdk)
 + [AWS Solutions Constructs](http://aws.amazon.com/solutions/constructs/)
-+ [AWS Developer Blog](https://aws.amazon.com/blogs/developer)
++ [AWS Developer Blog](https://aws.amazon.com/blogs/developer/category/developer-tools/aws-cloud-development-kit) CDK category
 + [Stack Overflow](https://stackoverflow.com/questions/tagged/aws-cdk)
 + [GitHub Repository](https://github.com/awslabs/aws-cdk)
   + [Issues](https://github.com/awslabs/aws-cdk/issues)

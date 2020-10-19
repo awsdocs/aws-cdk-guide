@@ -139,7 +139,7 @@ var bucket = new MyBucket(this, "MyBucket", new MimeBucketProps {
 
 When calling the parent class's initializer or overridden method, you can generally pass the props you received\. The new type is compatible with its parent, and extra props you added are ignored\.
 
-Keep in mind that future releases of the AWS CDK may coincidentally add a new property with a name you used for your own property\. This won't cause any technical issues using your construct or method \(since your property isn't passed "up the chain," the parent class or overridden method will simply use a default value\) but it may cause confusion for your construct's users\. You can avoid this potential problem by naming your properties so they clearly belong to your construct \(e\.g\. `BobEncryption` rather than just `encryption`, assuming you're Bob\)\. If there are many new properties, bundle them into an appropriately\-named class \(`BobBucketPoperties`?\) and pass them as a single property\.
+Keep in mind that future releases of the AWS CDK may coincidentally add a new property with a name you used for your own property\. This won't cause any technical issues using your construct or method \(since your property isn't passed "up the chain," the parent class or overridden method will simply use a default value\) but it may cause confusion for your construct's users\. You can avoid this potential problem by naming your properties so they clearly belong to your construct\. If there are many new properties, bundle them into an appropriately\-named class and pass them as a single property\.
 
 ### Generic structures<a name="csharp-generic-structures"></a>
 

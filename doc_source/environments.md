@@ -5,7 +5,7 @@ Each `Stack` instance in your AWS CDK app is explicitly or implicitly associated
 **Note**  
 For all but the simplest deployments, you will need to [bootstrap](bootstrapping.md) each environment you will deploy into\. Deployment requires certain AWS resources to be available, and these resources are provisined by bootstrapping\.
 
-If you don't specify an environment when you define a stack, the stack is said to be *environment\-agnostic*\. AWS CloudFormation templates synthesized from such a stack will try to use deploy\-time resolution on environment\-related attributes such as `stack.account`, `stack.region`, and `stack.availablityZones` \(Python: `availability_zones`\)\.
+If you don't specify an environment when you define a stack, the stack is said to be *environment\-agnostic*\. AWS CloudFormation templates synthesized from such a stack will try to use deploy\-time resolution on environment\-related attributes such as `stack.account`, `stack.region`, and `stack.availabilityZones` \(Python: `availability_zones`\)\.
 
 In an environment\-agnostic stack, any constructs that use availability zones will see two of them\. This allows the stack to be deployed to almost any region, since nearly all regions have at least two availability zones\. The only exception is Osaka \(`ap-northeast-3`\), which has one\.
 
