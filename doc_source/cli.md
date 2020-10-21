@@ -265,7 +265,7 @@ Use the `--context` or `-c` option to pass [runtime context](context.md) values 
 
 ```
 # specify a single context value
-cdk synth –context key=value MyStack
+cdk synth --context key=value MyStack
 
 # specify multiple context values (any number)
 cdk synth --context key1=value1 --context key2=value2 MyStack
@@ -283,7 +283,7 @@ cdk synth --context Stack1:key=value Stack2:key=value Stack1 Stack2
 By default, the synthesized template is displayed in YAML format\. Add the `--json` flag to display it in JSON format instead\.
 
 ```
-cdk synth –json MyStack
+cdk synth --json MyStack
 ```
 
 ### Specifying output directory<a name="w386aac23b7c29c15"></a>
@@ -291,7 +291,7 @@ cdk synth –json MyStack
 Add the `--output` \(`-o`\) option to write the synthesized templates to a directory other than `cdk.out`\.
 
 ```
-cdk synth –output=~/templates
+cdk synth --output=~/templates
 ```
 
 ## Deploying stacks<a name="cli-deploy"></a>
@@ -337,7 +337,7 @@ By default, the AWS CDK retains values of parameters from previous deployments a
 If your stack declares AWS CloudFormation outputs, these are normally displayed on the screen at the conclusion of deployment\. To write them to a file in JSON format, use the `--output-file` flag\.
 
 ```
-cdk deploy –output-file outputs.json MyStack
+cdk deploy --output-file outputs.json MyStack
 ```
 
 ## Security\-related changes<a name="cli-security"></a>
