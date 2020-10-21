@@ -209,9 +209,6 @@ Edit your project's `pom.xml` and add a `<dependency>` element for the `pipeline
 </dependency>
 ```
 
-```
-```
-
 ------
 #### [ C\# ]
 
