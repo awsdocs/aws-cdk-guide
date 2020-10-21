@@ -166,12 +166,12 @@ You may also use wildcards to specify IDs that match a pattern\.
 + ? matches any single character
 + \* matches any number of characters
 
-When using wildcards, enclose the pattern in quotes\. If you don't, your shell may try to expand the pattern to the names of files in the current directory\. At best, this won't do what you expect; at worst, you could deploy stacks you didn't intend to\.
+When using wildcards, enclose the pattern in quotes or escape the wildcards with `\`\. If you don't, your shell may try to expand the pattern to the names of files in the current directory\. At best, this won't do what you expect; at worst, you could deploy stacks you didn't intend to\. This isn't strictly necessary on Windows because `cmd.exe` does not expand wildcards, but is good practice regardless\.
 
 ```
 cdk synth "*Stack"    # PipelineStack, LambdaStack, etc.
-cdk synth "Stack?"    # StackA, StackB, Stack1, etc.
-cdk synth "*"         # All stacks in the app
+cdk synth 'Stack?'    # StackA, StackB, Stack1, etc.
+cdk synth \*          # All stacks in the app
 ```
 
 **Note**  
