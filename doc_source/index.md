@@ -50,7 +50,7 @@ Amazon's trademarks and trade dress may not be used in
 + [AWS CDK how-tos](how_tos.md)
    + [Get a value from an environment variable](get_env_var.md)
    + [Use an AWS CloudFormation parameter](get_cfn_param.md)
-   + [Use an existing AWS CloudFormation template](use_cfn_template.md)
+   + [Import or migrate an existing AWS CloudFormation template](use_cfn_template.md)
    + [Get a value from the Systems Manager Parameter Store](get_ssm_value.md)
    + [Get a value from AWS Secrets Manager](get_secrets_manager_value.md)
    + [Create an app with multiple stacks](stack_how_to_create_multiple_stacks.md)

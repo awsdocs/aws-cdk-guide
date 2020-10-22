@@ -1,4 +1,4 @@
-# Use an existing AWS CloudFormation template<a name="use_cfn_template"></a>
+# Import or migrate an existing AWS CloudFormation template<a name="use_cfn_template"></a>
 
 The AWS CDK provides two mechanisms to incorporate resources from an existing AWS CloudFormation template into your AWS CDK app\.
 + [`core.CfnInclude`](#use_cfn_template_core) \- Includes an AWS CloudFormation template in the current stack, merging its resources with those defined in your AWS CDK code\. You can access attributes of the imported resources using [https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Fn.html](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Fn.html), but these resources are not actually AWS CDK constructs and do not provide the functionality of real constructs\.
@@ -131,7 +131,7 @@ var bucketArn = Fn.GetAtt("S3Bucket", "Arn");
 ------
 
 The result of a `getAtt()` call is a [token](tokens.md), a type of placeholder\. The actual value of the attribute isn't available until later in the synthesis process\. If you need to pass such an attribute to another API that requires a concrete value, such as a string or a number, use the following static methods of the `[Token](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Token.html)` class to convert the token to a string, number, or list\. 
-+ [https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Token.html#static-as-stringvalue-options](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Token.html#static-as-stringvalue-options) to generate a string encocding \(or call `.toString()` on the token object\)
++ [https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Token.html#static-as-stringvalue-options](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Token.html#static-as-stringvalue-options) to generate a string encoding \(or call `.toString()` on the token object\)
 + [https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Token.html#static-as-listvalue-options](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Token.html#static-as-listvalue-options) to generate a list encoding
 + [https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Token.html#static-as-numbervalue](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Token.html#static-as-numbervalue) to generate a numeric encoding
 
