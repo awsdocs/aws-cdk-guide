@@ -86,7 +86,7 @@ Tokens are objects that implement the [IResolvable](https://docs.aws.amazon.com/
 You'll hardly ever work directly with the `IResolvable` interface\. You will most likely only see string\-encoded versions of tokens\.
 
 Other functions typically only accept arguments of basic types, such as `string` or `number`\. To use tokens in these cases, you can encode them into one of three types using static methods on the [core\.Token](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Token.html) class\.
-+ [https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Token.html#static-as-stringvalue-options](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Token.html#static-as-stringvalue-options) to generate a string encocding \(or call `.toString()` on the token object\)
++ [https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Token.html#static-as-stringvalue-options](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Token.html#static-as-stringvalue-options) to generate a string encoding \(or call `.toString()` on the token object\)
 + [https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Token.html#static-as-listvalue-options](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Token.html#static-as-listvalue-options) to generate a list encoding
 + [https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Token.html#static-as-numbervalue](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Token.html#static-as-numbervalue) to generate a numeric encoding
 
