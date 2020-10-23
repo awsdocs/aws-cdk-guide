@@ -361,7 +361,7 @@ The [Stack](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/core/stack
 
 ## Nested stacks<a name="stack_nesting"></a>
 
-The [NestedStack](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-cloudformation.NestedStack.html) construct offers a way around the AWS CloudFormation 200\-resource limit for stacks\. A nested stack counts as only one resource in the stack that contains it, but can itself contain up to 200 resources, including additional nested stacks\.
+The [NestedStack](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-cloudformation.NestedStack.html) construct offers a way around the AWS CloudFormation 500\-resource limit for stacks\. A nested stack counts as only one resource in the stack that contains it, but can itself contain up to 500 resources, including additional nested stacks\.
 
 The scope of a nested stack must be a `Stack` or `NestedStack` construct\. The nested stack needn't be declared lexically inside its parent stack; it is necessary only to pass the parent stack as the first parameter \(`scope`\) when instantiating the nested stack\. Aside from this restriction, defining constructs in a nested stack works exactly the same as in an ordinary stack\.
 
