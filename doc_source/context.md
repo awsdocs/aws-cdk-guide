@@ -2,6 +2,8 @@
 
 Context values are key\-value pairs that can be associated with a stack or construct\. The AWS CDK uses context to cache information from your AWS account, such as the Availability Zones in your account or the Amazon Machine Image \(AMI\) IDs used to start your instances\. [Feature flags](featureflags.md) are also context values\. You can create your own context values for use by your apps or constructs\.
 
+Context keys and values are strings\. If you want to pass other types of value, such as numbers but also including structured data such as JSON, it must be passed as a string\. Code that consumes such a context value will need to convert or parse the data as appropriate\.
+
 ## Construct context<a name="context_construct"></a>
 
 Context values are made available to your AWS CDK app in six different ways:

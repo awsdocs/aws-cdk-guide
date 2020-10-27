@@ -334,10 +334,10 @@ By default, the AWS CDK retains values of parameters from previous deployments a
 
 ### Specifying outputs file<a name="w386aac23b7c31c13"></a>
 
-If your stack declares AWS CloudFormation outputs, these are normally displayed on the screen at the conclusion of deployment\. To write them to a file in JSON format, use the `--output-file` flag\.
+If your stack declares AWS CloudFormation outputs, these are normally displayed on the screen at the conclusion of deployment\. To write them to a file in JSON format, use the `--outputs-file` flag\.
 
 ```
-cdk deploy --output-file outputs.json MyStack
+cdk deploy --outputs-file outputs.json MyStack
 ```
 
 ## Security\-related changes<a name="cli-security"></a>
