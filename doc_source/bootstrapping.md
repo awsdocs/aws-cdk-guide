@@ -32,7 +32,7 @@ Bootstrapping is the deployment of a AWS CloudFormation template to a specific A
 + Use the AWS CDK Toolkit's cdk bootstrap command\. This is the simplest method and works well if you have only a few environments to bootstrap\.
 + Deploy the template provided by the AWS CDK Toolkit using another AWS CloudFormation deployment tool\. This lets you use AWS CloudFormation Stack Sets or AWS Control Tower as well as the AWS CloudFormation console or the AWS CLI\. You can even make small modifications to the template before deployment\. This approach is more flexible and is suitable for large\-scale deployments\.
 
-It is not an error to bootstrap an environmnt more than once\. If an environment you bootstrap has already been bootstrapped, its bootstrap stack will be upgraded if necessary; otherwise, nothing happens\.
+It is not an error to bootstrap an environment more than once\. If an environment you bootstrap has already been bootstrapped, its bootstrap stack will be upgraded if necessary; otherwise, nothing happens\.
 
 ### Bootstrapping with the AWS CDK Toolkit<a name="bootstrapping-howto-cli"></a>
 
@@ -153,7 +153,7 @@ The following command\-line options, when used with CDK Toolkit's cdk bootstrap,
 
 The following additional switches are available only with the modern bootstrapping template\.
 + \-\-cloudformation\-execution\-policies specifies the ARNs of managed policies that should be attached to the deployment role assumed by AWS CloudFormation during deployment of your stacks\. At least one policy is required; otherwise, AWS CloudFormation will attempt to deploy without permissions and deployments will fail\.
-+ \-\-trust lists the AWS accounts that may deploy into the environment being bootstrapped\. Use this flag when bootstrapping an evironment that a CDK Pipeline in another environment will deploy into\. The account doing the bootstrapping is always trusted\.
++ \-\-trust lists the AWS accounts that may deploy into the environment being bootstrapped\. Use this flag when bootstrapping an environment that a CDK Pipeline in another environment will deploy into\. The account doing the bootstrapping is always trusted\.
 + \-\-qualifier a string that is added to the names of all resources in the bootstrap stack\. A qualifier lets you avoid name clashes when you provision two bootstrap stacks in the same environment\. The default is `hnb659fds` \(this value has no significance\)\. Changing the qualifier will require changes to your AWS CDK app \(see [Stack synthesizers](#bootstrapping-synthesizers)\)\. 
 
 ### Customizing the template<a name="bootstrapping-customizing-extended"></a>
@@ -426,7 +426,7 @@ DefaultStackSynthesizer(
   file_assets_bucket_name="cdk-${Qualifier}-assets-${AWS::AccountId}-${AWS::Region}",
   
   # Name of the ECR repository for Docker image assets
-  image_assets_pepository_name="cdk-${Qualifier}-container-assets-${AWS::AccountId}-${AWS::Region}",
+  image_assets_repository_name="cdk-${Qualifier}-container-assets-${AWS::AccountId}-${AWS::Region}",
 
   # ARN of the role assumed by the CLI and Pipeline to deploy here
   deploy_role_arn="arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-${Qualifier}-deploy-role-${AWS::AccountId}-${AWS::Region}",  

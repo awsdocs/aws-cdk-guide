@@ -1018,7 +1018,7 @@ fleet.connections.allowToDefaultPort(rdsDatabase, 'Fleet can access database');
 ```
 listener.connections.allow_default_port_from_any_ipv4("Allow public access")
 
-fleet.connections.allow_to_default_port(rds_database, "Fleet can acceess database")
+fleet.connections.allow_to_default_port(rds_database, "Fleet can access database")
 ```
 
 ------

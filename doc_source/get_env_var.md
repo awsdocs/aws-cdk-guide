@@ -47,7 +47,7 @@ bucket_name = os.getenv("MYBUCKET", "DefaultName")
 // Sets bucketName to null if environment variable doesn't exist
 String bucketName = System.getenv("MYBUCKET");
 
-// Sets bucketName to a defalut if env var doesn't exist
+// Sets bucketName to a default if env var doesn't exist
 String bucketName = System.getenv("MYBUCKET");
 if (bucketName == null) bucketName = "DefaultName";
 ```

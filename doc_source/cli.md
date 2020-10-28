@@ -65,7 +65,7 @@ The `AWS::CDK::Metadata` resource looks something like the following\.
 CDKMetadata:
   Type: "AWS::CDK::Metadata"
   Properties:
-    Modules: "@aws-cdk/core=X.YY.Z,@aws-cdk/s3=X.YY.Z,@aws-solutions-consturcts/aws-apigateway-lambda=X.YY.Z,aws-rfdk=X.YY.Z"
+    Modules: "@aws-cdk/core=X.YY.Z,@aws-cdk/s3=X.YY.Z,@aws-solutions-constrccts/aws-apigateway-lambda=X.YY.Z,aws-rfdk=X.YY.Z"
 ```
 
 To opt out of version reporting, use one of the following methods:

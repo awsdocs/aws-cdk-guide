@@ -1651,7 +1651,7 @@ pipeline = CdkPipeline(self, "Pipeline",
 validation_action = ShellScriptAction(
     action_name="TestUsingBuildArtifact",
     additional_artifacts=[integ_tests_artifact],
-    # 'test.js' was produced from "test/test.ts" durinng the synth step
+    # 'test.js' was produced from "test/test.ts" during the synth step
     commands=["node ./test.js"]
 )
 ```
