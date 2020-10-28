@@ -13,6 +13,8 @@ This topic describes how to troubleshoot the following issues with the AWS CDK\.
 **After updating the AWS CDK, code that used to work fine now results in errors**  
 Errors in code that used to work is typically a symptom of having mismatched versions of AWS Construct Library modules\. Make sure all library modules are the same version and up\-to\-date\.
 
+An error message commonly seen in this situation is `unable to determine cloud assembly output directory. Assets must be defined indirectly within a "Stage" or an "App" scope`\.
+
 The modules that make up the AWS Construct Library are a matched set\. They are released together and are intended to be used together\. Interfaces between modules are considered private; we may change them when necessary to implement new features in the library\.
 
 We also update the libraries that are used by the AWS Construct Library from time to time, and different versions of the library modules may have incompatible dependencies\. Synchronizing the versions of the library modules will also address this issue\.
@@ -47,7 +49,7 @@ npm install @aws-cdk/aws-s3@1.9.0
 
 Repeat these commands for each module your project uses\.
 
-You can edit your `package.json` file to lock the AWS Construct Library modules to a specific version, so `npm update` won't update them\. You can also specify a version using `~` or `^` to allow modules to be updated to versions that are API\-compatible with the current version, such as `^1.0.0` to accept any update API\-compatible with version 1\.x\. Use the same version specification for all AWS Construct Library modules within a project\.
+You can edit your `package.json` file to lock the AWS Construct Library modules to a specific version, so `npm update` won't update them\. You can also specify a version using `~` or `^` to allow modules to be updated to versions that are API\-compatible with the current version, such as `^1.0.0` to accept any update API\-compatible with version 1\.x\. Use the same version specification for all AWS Construct Library modules within a project, including these special characters\. Otherwise, Node\.js may not resolve all these specifications to the same concrete version, resulting in a mismatch\.
 
 ------
 #### [ Python ]
