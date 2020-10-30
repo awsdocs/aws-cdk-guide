@@ -56,7 +56,7 @@ cdk init --language javascript
 mkdir MyEcsConstruct
 cd MyEcsConstruct
 cdk init --language python
-source .env/bin/activate
+source .venv/bin/activate
 pip install -r requirements.txt
 ```
 

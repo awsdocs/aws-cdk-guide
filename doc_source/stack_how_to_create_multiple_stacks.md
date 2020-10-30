@@ -35,7 +35,7 @@ cdk init --language=javascript
 mkdir multistack
 cd multistack
 cdk init --language=python
-source .env/bin/activate
+source .venv/bin/activate
 pip install -r requirements.txt
 ```
 

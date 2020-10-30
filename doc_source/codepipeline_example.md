@@ -70,7 +70,7 @@ During cloning, Git will warn you that you appear to have cloned an empty reposi
    ```
    cd pipeline
    cdk init --language python
-   source .env/bin/activate
+   source .venv/bin/activate
    git commit -m "project started"
    pip install -r requirements.txt
    pip install aws_cdk.aws_codedeploy aws_cdk.aws_lambda aws_cdk.aws_codebuild aws_cdk.aws_codepipeline
@@ -83,7 +83,7 @@ During cloning, Git will warn you that you appear to have cloned an empty reposi
    ```
    cd pipeline
    cdk init --language python
-   .env\Scripts\activate.bat
+   .venv\Scripts\activate.bat
    pip install -r requirements.txt
    pip install aws_cdk.aws_codedeploy aws_cdk.aws_lambda aws_cdk.aws_codebuild aws_cdk.aws_codepipeline
    pip install aws_cdk.aws_codecommit aws_cdk.aws_codepipeline_actions aws_cdk.aws_s3

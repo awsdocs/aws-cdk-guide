@@ -38,11 +38,11 @@ cdk init app --language python
 After initializing the project, activate the project's virtual environment\. This allows the project's dependencies to be installed locally in the project folder, instead of globally\.
 
 ```
-source .env/bin/activate
+source .venv/bin/activate
 ```
 
 **Note**  
-You may recognize this as the Mac/Linux command to activate a virtual environment\. The Python templates include a batch file, `source.bat`, that allows the same command to be used on Windows\. The traditional Windows command, `.env\Scripts\activate.bat`, works, too\.
+You may recognize this as the Mac/Linux command to activate a virtual environment\. The Python templates include a batch file, `source.bat`, that allows the same command to be used on Windows\. The traditional Windows command, `.venv\Scripts\activate.bat`, works, too\.
 
 Then install the app's standard dependencies:
 
