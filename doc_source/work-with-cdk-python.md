@@ -42,9 +42,10 @@ source .venv/bin/activate
 ```
 
 **Note**  
-You may recognize this as the Mac/Linux command to activate a virtual environment\. The Python templates include a batch file, `source.bat`, that allows the same command to be used on Windows\. The traditional Windows command, `.venv\Scripts\activate.bat`, works, too\.
+You may recognize this as the Mac/Linux command to activate a virtual environment\. The Python templates include a batch file, `source.bat`, that allows the same command to be used on Windows\. The traditional Windows command, `.venv\Scripts\activate.bat`, works, too\.  
+If you initialized your AWS CDK project using CDK Toolkit v1\.70\.0 or earlier, your vertual environment is in the `.env` directory instead of `.venv`\.
 
-Then install the app's standard dependencies:
+After activating your virtual environment, install the app's standard dependencies:
 
 ```
 python -m pip install -r requirements.txt
