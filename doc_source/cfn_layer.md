@@ -329,11 +329,15 @@ const cfnBucket = bucket.node.defaultChild as s3.CfnBucket;
 // Use dot notation to address inside the resource template fragment
 cfnBucket.addOverride('Properties.VersioningConfiguration.Status', 'NewStatus');
 cfnBucket.addDeletionOverride('Properties.VersioningConfiguration.Status');
+cfnBucket.addOverride('Properties.Tags.0.Value', 'NewValue');
+cfnBucket.addDeletionOverride('Properties.Tags.0');
 
-// addPropertyOverride is a convenience function, which implies the
+// AddPropertyOverride is a convenience function, which implies the
 // path starts with "Properties."
 cfnBucket.addPropertyOverride('VersioningConfiguration.Status', 'NewStatus');
 cfnBucket.addPropertyDeletionOverride('VersioningConfiguration.Status');
+cfnBucket.addPropertyOverride('Tags.0.Value', 'NewValue');
+cfnBucket.addPropertyDeletionOverride('Tags.0');
 ```
 
 ------
@@ -346,11 +350,15 @@ const cfnBucket = bucket.node.defaultChild ;
 // Use dot notation to address inside the resource template fragment
 cfnBucket.addOverride('Properties.VersioningConfiguration.Status', 'NewStatus');
 cfnBucket.addDeletionOverride('Properties.VersioningConfiguration.Status');
+cfnBucket.addOverride('Properties.Tags.0.Value', 'NewValue');
+cfnBucket.addDeletionOverride('Properties.Tags.0');
 
-// addPropertyOverride is a convenience function, which implies the
+// AddPropertyOverride is a convenience function, which implies the
 // path starts with "Properties."
 cfnBucket.addPropertyOverride('VersioningConfiguration.Status', 'NewStatus');
 cfnBucket.addPropertyDeletionOverride('VersioningConfiguration.Status');
+cfnBucket.addPropertyOverride('Tags.0.Value', 'NewValue');
+cfnBucket.addPropertyDeletionOverride('Tags.0');
 ```
 
 ------
@@ -363,11 +371,15 @@ cfn_bucket = bucket.node.default_child
 # Use dot notation to address inside the resource template fragment
 cfn_bucket.add_override("Properties.VersioningConfiguration.Status", "NewStatus")
 cfn_bucket.add_deletion_override("Properties.VersioningConfiguration.Status")
+cfn_bucket.add_override("Properties.Tags.0.Value", "NewValue");
+cfn_bucket.add_deletion_override("Properties.Tags.0");
 
 # add_property_override is a convenience function, which implies the
 # path starts with "Properties."
 cfn_bucket.add_property_override("VersioningConfiguration.Status", "NewStatus")
 cfn_bucket.add_property_deletion_override("VersioningConfiguration.Status")
+cfn_bucket.add_property_override("Tags.0.Value", "NewValue");
+cfn_bucket.add_property_deletion_override("Tags.0");
 ```
 
 ------
@@ -380,11 +392,15 @@ CfnBucket cfnBucket = (CfnBucket)bucket.getNode().getDefaultChild();
 // Use dot notation to address inside the resource template fragment
 cfnBucket.addOverride("Properties.VersioningConfiguration.Status", "NewStatus");
 cfnBucket.addDeletionOverride("Properties.VersioningConfiguration.Status");
+cfnBucket.addOverride("Properties.Tags.0.Value", "NewValue");
+cfnBucket.addDeletionOverride("Properties.Tags.0");
 
-// addPropertyOverride is a convenience function, which implies the
+// AddPropertyOverride is a convenience function, which implies the
 // path starts with "Properties."
 cfnBucket.addPropertyOverride("VersioningConfiguration.Status", "NewStatus");
 cfnBucket.addPropertyDeletionOverride("VersioningConfiguration.Status");
+cfnBucket.addPropertyOverride("Tags.0.Value", "NewValue");
+cfnBucket.addPropertyDeletionOverride("Tags.0");
 ```
 
 ------
@@ -397,11 +413,15 @@ var cfnBucket = (CfnBucket)bucket.node.defaultChild;
 // Use dot notation to address inside the resource template fragment
 cfnBucket.AddOverride("Properties.VersioningConfiguration.Status", "NewStatus");
 cfnBucket.AddDeletionOverride("Properties.VersioningConfiguration.Status");
+cfnBucket.AddOverride("Properties.Tags.0.Value", "NewValue");
+cfnBucket.AddDeletionOverride("Properties.Tags.0");
 
 // AddPropertyOverride is a convenience function, which implies the
 // path starts with "Properties."
 cfnBucket.AddPropertyOverride("VersioningConfiguration.Status", "NewStatus");
 cfnBucket.AddPropertyDeletionOverride("VersioningConfiguration.Status");
+cfnBucket.AddPropertyOverride("Tags.0.Value", "NewValue");
+cfnBucket.AddPropertyDeletionOverride("Tags.0");
 ```
 
 ------
