@@ -1,51 +1,51 @@
 # Aspects<a name="aspects"></a>
 
-Aspects are the way to apply an operation to all constructs in a given scope\. The functionality could modify the constructs, such as by adding tags, or it could be verifying something about the state of the constructs, such as ensuring that all buckets are encrypted\.
+Aspects are a way to apply an operation to all constructs in a given scope\. The aspect could modify the constructs, such as by adding tags, or it could verify something about the state of the constructs, such as ensuring that all buckets are encrypted\.
 
-To apply an aspect to a construct and all constructs in the same scope, call [node\.applyAspect](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.ConstructNode.html#apply-aspectaspect) \(Python: `apply_aspect`\) with a new aspect, as shown in the following example\.
+To apply an aspect to a construct and all constructs in the same scope, call [https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Aspects.html#static-ofscope](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Aspects.html#static-ofscope)`.of(SCOPE).add()` with a new aspect, as shown in the following example\.
 
 ------
 #### [ TypeScript ]
 
 ```
-myConstruct.node.applyAspect(new SomeAspect(/*...*/));
+Aspects.of(myConstruct).add(new SomeAspect(...));
 ```
 
 ------
 #### [ JavaScript ]
 
 ```
-myConstruct.node.applyAspect(new SomeAspect());
+Aspects.of(myConstruct).add(new SomeAspect(...));
 ```
 
 ------
 #### [ Python ]
 
 ```
-my_construct.node.apply_aspect(SomeAspect(...))
+Aspects.of(my_construct).add(SomeAspect(...))
 ```
 
 ------
 #### [ Java ]
 
 ```
-myConstruct.getNode().applyAspect(new SomeAspect(...));
+Aspects.of(myConstruct).add(new SomeAspect(...));
 ```
 
 ------
 #### [ C\# ]
 
 ```
-myConstruct.Node.ApplyAspect(new SomeAspect(...));
+Aspects.Of(myConstruct).add(new SomeAspect(...));
 ```
 
 ------
 
-The AWS CDK currently uses aspects only to [tag resources](tagging.md), but the framework is extensible and can also be used for other purposes\. For example, you can use it to validate or change the AWS CloudFormation resources that are defined for you\.
+The AWS CDK currently uses aspects only to [tag resources](tagging.md), but the framework is extensible and can also be used for other purposes\. For example, you can use it to validate or change the AWS CloudFormation resources that are defined for you by higher\-level constructs\.
 
 ## Aspects in detail<a name="aspects_detail"></a>
 
-The AWS CDK implements tagging using a more generic system, called *aspects*, which is an instance of the visitor pattern\. An aspect is a class that implements the following interface\.
+Aspects employ the [visitor pattern](https://en.wikipedia.org/wiki/Visitor_pattern)\. An aspect is a class that implements the following interface\.
 
 ------
 #### [ TypeScript ]
@@ -86,11 +86,11 @@ public interface IAspect
 
 ------
 
-When you call `construct.node.applyAspect(aspect)` \(Python: `apply_aspect`\) the construct adds the aspect to an internal list of aspects\.
+When you call `Aspects.of(SCOPE).add(...)`, the construct adds the aspect to an internal list of aspects\. You can obtain the list with `Aspects.of(SCOPE)`\.
 
 During the [prepare phase](apps.md#lifecycle), the AWS CDK calls the `visit` method of the object for the construct and each of its children in top\-down order\.
 
-Although the aspect object is free to change any aspect of the construct object, it only operates on a specific subset of construct types\. After determining the construct type, it can call any method and inspect or assign any property on the construct\.
+Although the aspect object is free to change any aspect of the construct, it only operates on a specific subset of construct types\. After determining the construct type, it can call any method and inspect or assign any property on the construct\.
 
 ## Example<a name="aspects_example"></a>
 
@@ -116,8 +116,8 @@ class BucketVersioningChecker implements IAspect {
   }
 }
 
-// Apply to the stack
-stack.node.applyAspect(new BucketVersioningChecker());
+// Later, apply to the stack
+Aspects.of(stack).add(new BucketVersioningChecker());
 ```
 
 ------
@@ -140,8 +140,8 @@ class BucketVersioningChecker {
   }
 }
 
-// Apply to the stack
-stack.node.applyAspect(new BucketVersioningChecker());
+// Later, apply to the stack
+Aspects.of(stack).add(new BucketVersioningChecker());
 ```
 
 ------
@@ -163,8 +163,8 @@ class BucketVersioningChecker:
         
         node.node.add_error('Bucket versioning is not enabled')
 
-# Apply to the stack
-stack.node.apply_aspect(BucketVersioningChecker())
+# Later, apply to the stack
+Aspects.of(stack).add(BucketVersioningChecker())
 ```
 
 ------
@@ -188,6 +188,10 @@ public class BucketVersioningChecker implements IAspect
         }
     }
 }
+
+
+// Later, apply to the stack
+Aspects.of(stack).add(new BucketVersioningChecker());
 ```
 
 ------
@@ -209,6 +213,9 @@ class BucketVersioningChecker : Amazon.Jsii.Runtime.DeputyBase, IAspect
         }
     }
 }
+
+// Later, apply to the stack
+Aspects.Of(stack).add(new BucketVersioningChecker());
 ```
 
 ------
