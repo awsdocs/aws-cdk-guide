@@ -812,7 +812,7 @@ File: `src/src/main/java/com/myorg/WidgetService.java`
 
 ```
         Resource widget = api.getRoot().addResource("{id}");
-        
+
         // Add new widget to bucket with: POST /{id}
         LambdaIntegration postWidgetIntegration = new LambdaIntegration(handler);
 
