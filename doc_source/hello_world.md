@@ -214,11 +214,11 @@ Next, define an Amazon S3 bucket in the stack using an L2 construct, the [Bucket
 In `lib/hello-cdk-stack.ts`:
 
 ```
-import * as core from '@aws-cdk/core';
+import * as cdk from '@aws-cdk/core';
 import * as s3 from '@aws-cdk/aws-s3';
 
-export class HelloCdkStack extends core.Stack {
-  constructor(scope: core.App, id: string, props?: core.StackProps) {
+export class HelloCdkStack extends cdk.Stack {
+  constructor(scope: cdk.App, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
     new s3.Bucket(this, 'MyFirstBucket', {
@@ -234,10 +234,10 @@ export class HelloCdkStack extends core.Stack {
 In `lib/hello-cdk-stack.js`:
 
 ```
-const core = require('@aws-cdk/core');
+const cdk = require('@aws-cdk/core');
 const s3 = require('@aws-cdk/aws-s3');
 
-class HelloCdkStack extends core.Stack {
+class HelloCdkStack extends cdk.Stack {
   constructor(scope, id, props) {
     super(scope, id, props);
 
@@ -258,7 +258,7 @@ Replace the first import statement in `hello_cdk_stack.py` in the `hello_cdk` di
 ```
 from aws_cdk import (
     aws_s3 as s3,
-    core
+    core as cdk
 )
 ```
 
@@ -406,7 +406,7 @@ Update `lib/hello-cdk-stack.ts`
 ```
 new s3.Bucket(this, 'MyFirstBucket', {
   versioned: true,
-  removalPolicy: core.RemovalPolicy.DESTROY
+  removalPolicy: cdk.RemovalPolicy.DESTROY
 });
 ```
 
@@ -418,7 +418,7 @@ Update `lib/hello-cdk-stack.js`\.
 ```
 new s3.Bucket(this, 'MyFirstBucket', {
     versioned: true,
-    removalPolicy: core.RemovalPolicy.DESTROY
+    removalPolicy: cdk.RemovalPolicy.DESTROY
 });
 ```
 
@@ -431,7 +431,7 @@ Update `hello_cdk/hello_cdk_stack.py`
 bucket = s3.Bucket(self, 
     "MyFirstBucket", 
     versioned=True,
-    removal_policy=core.RemovalPolicy.DESTROY)
+    removal_policy=cdk.RemovalPolicy.DESTROY)
 ```
 
 ------
