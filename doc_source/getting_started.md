@@ -115,17 +115,12 @@ Furthermore, since TypeScript was the first language supported by the AWS CDK, m
 
 With the concepts out of the way, here's what you need to have on your workstation before you install the AWS CDK and start developing\.
 
-All CDK developers need to [install Node\.js](https://nodejs.org/en/download/) 10\.3\.0 or later, even those working in languages other than TypeScript or JavaScript\. The AWS CDK Toolkit \(cdk command\-line tool\) and the AWS Construct Library are developed in TypeScript and run on Node\.js\. The bindings for other supported languages use this back end and tool set\. We suggest the latest LTS version\.
+All CDK developers need to [install Node\.js](https://nodejs.org/en/download/) 10\.3\.0 or later, even those working in languages other than TypeScript or JavaScript\. The AWS CDK Toolkit \(cdk command\-line tool\) and the AWS Construct Library run on Node\.js\. The bindings for other supported languages use this back end and tool set\. We suggest the latest LTS version\.
 
 **Important**  
 Node\.js versions 13\.0\.0 through 13\.6\.0 are not compatible with the AWS CDK\.
 
-You must provide your credentials and an AWS Region to use AWS CDK, if you have not already done so\.
-
-**Important**  
-We strongly recommend against using your AWS root account for day\-to\-day tasks\. Instead, create a user in IAM and use its credentials with the CDK\. Best practices are to change this account's access key regularly and to use a least\-privileges role \(specifying `--role-arn`\) when deploying\.
-
-If you have the AWS CLI installed, the easiest way to satisfy this requirement is to install the AWS CLI and issue the following command:
+You must provide your credentials and an AWS Region to use AWS CDK, if you have not already done so\. If you have the AWS CLI installed, the easiest way to satisfy this requirement is to install the AWS CLI and issue the following command:
 
 ```
 aws configure
@@ -150,7 +145,10 @@ You may also manually create or edit the `~/.aws/config` and `~/.aws/credentials
 
 Finally, you can set the environment variables `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_DEFAULT_REGION` to appropriate values\. 
 
-Other prerequisites depend on your development language and are as follows\.
+**Important**  
+We strongly recommend against using your AWS root account for day\-to\-day tasks\. Instead, create a user in IAM and use its credentials with the CDK\. Best practices are to change this account's access key regularly and to use a least\-privileges role \(specifying `--role-arn`\) when deploying\.
+
+Other prerequisites depend on the language in which you develop AWS CDK applications and are as follows\.
 
 ------
 #### [ TypeScript ]
@@ -175,12 +173,9 @@ Java IDE recommended \(we use Eclipse in some examples in this Developer Guide\)
 ------
 #### [ C\# ]
 
-A \.NET Standard 2\.1\-compatible implementation is required, such as\.
-+ \.NET Core 3\.1 or later
-+ \.NET Framework 4\.6\.1 or later
-+ Mono 5\.4 or later
+\.NET Core 3\.1 or later\.
 
-Visual Studio 2019 \(any edition\) recommended\.
+Visual Studio 2019 \(any edition\) or Visual Studio Code recommended\.
 
 ------
 

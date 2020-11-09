@@ -1,23 +1,18 @@
 # Working with the AWS CDK in C\#<a name="work-with-cdk-csharp"></a>
 
-\.NET is a fully\-supported client platform for the AWS CDK and is considered stable\. Our \.NET code examples are in C\#\. It is possible to write AWS CDK applications in other \.NET languages, such as Visual Basic or F\#, but we are unable to provide support for these languages\.
+\.NET is a fully\-supported client platform for the AWS CDK and is considered stable\. C\# is the main \.NET language we for which provide examples and support\. You can choose to write AWS CDK applications in other \.NET languages, such as Visual Basic or F\#, but AWS offers limited support for these languages\.
 
-You can develop AWS CDK applications in C\# using familiar tools including Visual Studio, the `dotnet` command, and the NuGet package manager\. The modules comprising the AWS Construct Library are distributed via [nuget\.org](https://www.nuget.org/packages?q=amazon.cdk.aws)\.
+You can develop AWS CDK applications in C\# using familiar tools including Visual Studio, Visual Studio Code, the `dotnet` command, and the NuGet package manager\. The modules comprising the AWS Construct Library are distributed via [nuget\.org](https://www.nuget.org/packages?q=amazon.cdk.aws)\.
 
-We suggest using [Visual Studio 2019](https://visualstudio.microsoft.com/downloads/) \(any edition\) and the Microsoft \.NET Framework on Windows to develop AWS CDK apps in C\#\. You may use other tools \(for example, Mono on Mac OS X or Linux\), but our ability to provide instruction and support for these environments may be limited\.
+We suggest using [Visual Studio 2019](https://visualstudio.microsoft.com/downloads/) \(any edition\) on Windows to develop AWS CDK apps in C\#\.
 
 ## Prerequisites<a name="csharp-prerequisites"></a>
 
 To work with the AWS CDK, you must have an AWS account and credentials and have installed Node\.js and the AWS CDK Toolkit\. See [AWS CDK Prerequisites](work-with.md#work-with-prerequisites)\.
 
-C\# AWS CDK applications require a \.NET Standard 2\.1 compatible implementation\. Suitable implementations include:
-+ \.NET Core v3\.1 or later
-+ \.NET Framework v4\.6\.1 or later
-+ Mono v5\.4 or later on Mac OS X or Linux; [download here](https://www.mono-project.com/download/stable/)
+C\# AWS CDK applications require \.NET Core v3\.1 or later, [available here](https://dotnet.microsoft.com/download/dotnet-core/3.1)\.
 
-If you have an up\-to\-date Windows 10 installation, you already have a suitable installation of \.NET Framework\.
-
-The \.NET Standard toolchain includes `dotnet`, a command\-line tool for building and running \.NET applications and managing NuGet packages\. Even if you are using Visual Studio, this command is useful for batch operations and for installing AWS Construct Library packages\.
+The \.NET Standard toolchain includes `dotnet`, a command\-line tool for building and running \.NET applications and managing NuGet packages\. Even if work mainly in Visual Studio, this command can be useful for batch operations and for installing AWS Construct Library packages\.
 
 ## Creating a project<a name="csharp-newproject"></a>
 
