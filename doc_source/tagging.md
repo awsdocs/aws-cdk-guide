@@ -176,11 +176,11 @@ Tags.of(myConstruct).add('tagname', 'value', {
 #### [ Python ]
 
 ```
-Tags.of((my_construct).add("tagname", "value",
+Tags.of(my_construct).add("tagname", "value",
     apply_to_launched_instances=False,
     include_resource_types=["AWS::Xxx::Yyy"],
     exclude_resource_types=["AWS::Xxx::Zzz"],
-    priority=100,)
+    priority=100)
 ```
 
 ------
