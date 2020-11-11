@@ -12,7 +12,7 @@ To work with the AWS CDK, you must have an AWS account and credentials and have 
 
 C\# AWS CDK applications require \.NET Core v3\.1 or later, [available here](https://dotnet.microsoft.com/download/dotnet-core/3.1)\.
 
-The \.NET Standard toolchain includes `dotnet`, a command\-line tool for building and running \.NET applications and managing NuGet packages\. Even if work mainly in Visual Studio, this command can be useful for batch operations and for installing AWS Construct Library packages\.
+The \.NET Standard toolchain includes `dotnet`, a command\-line tool for building and running \.NET applications and managing NuGet packages\. Even if you work mainly in Visual Studio, this command can be useful for batch operations and for installing AWS Construct Library packages\.
 
 ## Creating a project<a name="csharp-newproject"></a>
 
