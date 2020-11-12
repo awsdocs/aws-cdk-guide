@@ -184,10 +184,10 @@ class ExistsVpcStack(cdk.Stack):
   
         super().__init__(scope, id, **kwargs)
     
-        vpcid = self.node.try_get_context("vpcid");
+        vpcid = self.node.try_get_context("vpcid")
         vpc = ec2.Vpc.from_lookup(self, "VPC", vpc_id=vpcid)
     
-        pubsubnets = vpc.select_subnets(subnetType=ec2.SubnetType.PUBLIC);
+        pubsubnets = vpc.select_subnets(subnetType=ec2.SubnetType.PUBLIC)
     
         cdk.CfnOutput(self, "publicsubnets",
             value=pubsubnets.subnet_ids.to_string())
