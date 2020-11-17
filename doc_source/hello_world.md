@@ -100,7 +100,7 @@ If you have Git installed, each project you create using cdk init is also initia
 
 ## Build the app<a name="hello_world_tutorial_build"></a>
 
-In most programming environments, after making changes to your code, you'd build \(compile\) it\. This isn't strictly necessary with the AWS CDK—the Toolkit does it for you so you can't forget\. But you can still build manually to catch syntax and type errors\. For reference, here's how\.
+In most programming environments, after making changes to your code, you'd build \(compile\) it\. This isn't strictly necessary with the AWS CDK—the Toolkit does it for you so you can't forget\. But you can still build manually whenever you want to catch syntax and type errors\. For reference, here's how\.
 
 ------
 #### [ TypeScript ]
@@ -140,6 +140,9 @@ dotnet build src
 Or press F6 in Visual Studio
 
 ------
+
+**Note**  
+If your project was created with an older version of the AWS CDK Toolkit, it may not automatically build when you run it\. If changes you make in your code fail to be reflected in the synthesized template, try a manual build\. Make sure you are using the latest available version of the AWS CDK for this tutorial\.
 
 ## List the stacks in the app<a name="hello_world_tutorial_list_stacks"></a>
 
