@@ -16,6 +16,9 @@ Environments are independent, so if you want to deploy to multiple environments 
 **Important**  
 You may incur AWS charges for data stored in the bootstrapped resources\.
 
+**Note**  
+Older versions of the modern template created a Customer Master Key \(CMK\) in each bootstrapped environment by default\. To avoid charges for the CMK, re\-bootstrap these environments using `--no-bootstrap-customer-key`\. The current default is to not use a CMK to avoid these charges\. 
+
 If you attempt to deploy an AWS CDK application that requires bootstrap resources into an environment that does not have them, you receive an error message telling you that you need to bootstrap\.
 
 If you are using CDK Pipelines to deploy into another account's environment, and you receive a message like the following:
