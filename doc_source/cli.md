@@ -33,6 +33,33 @@ All CDK Toolkit commands start with `cdk`, which is followed by a subcommand \(`
 
 For the options available for each command, see [Toolkit reference](#cli-ref) or [Built\-in help](#cli-help)\.
 
+## Specifying options and their values<a name="cli-options"></a>
+
+Command line options begin with two hyphens \(`--`\)\. Some frequently\-used options have single\-letter synonyms that begin with a single hyphen \(for example, `--app` has a synonym `-a`\)\. The order of options in an AWS CDK Toolkit command is not important\.
+
+All options accept a value, which must follow the option name\. The value may be separated from the name by whitespace or by an equals sign `=`\. The following two options are equivalent
+
+```
+--toolkit-stack-name MyBootstrapStack
+--toolkit-stack-name=MyBootstrapStack
+```
+
+Some options are flags \(Booleans\)\. You may specify `true` or `false` as their value\. If you do not provide a value, the value is taken to be `true`\. You may also prefix the option name with `no-` to imply `false`\.
+
+```
+# sets staging flag to true
+--staging
+--staging=true
+--staging true
+
+# sets staging flag to false
+--no-staging
+--staging=false
+--staging false
+```
+
+A few flags, namely `--context`, `--parameters`, `--plugin`, `--tags`, and `--trust`, may be specified more than once to specify multiple values\. These are noted as having `[array]` type in the CDK Toolkit help\.
+
 ## Built\-in help<a name="cli-help"></a>
 
 The AWS CDK Toolkit has integrated help\. You can see general help about the utility and a list of the provided subcommands by issuing:
@@ -197,7 +224,10 @@ cdk bootstrap --profile test 1111111111/us-east-1
 **Important**  
 Each environment \(account/region combination\) to which you deploy such a stack must be bootstrapped separately\.
 
-You may incur AWS charges for what the AWS CDK stores in the bootstrapped resources\.
+You may incur AWS charges for what the AWS CDK stores in the bootstrapped resources\. Additionally, if you use `-bootstrap-customer-key`, a Customer Master Key \(CMK\) will be created, which also incurs charges per environment\.
+
+**Note**  
+Older versions of the modern template created a Customer Master Key by default\. To avoid charges, re\-bootstrap using `--no-bootstrap-customer-key`\. 
 
 ## Creating a new app<a name="cli-init"></a>
 
@@ -259,7 +289,7 @@ The CDK Toolkit actually runs your app and synthesizes fresh templates before mo
 
 See `cdk synth --help` for all available options\. A few of the most\-frequently\-used options are covered below\.
 
-### Specifying context values<a name="w338aac23b7c29c11"></a>
+### Specifying context values<a name="w338aac23b7c31c11"></a>
 
 Use the `--context` or `-c` option to pass [runtime context](context.md) values to your CDK app\.
 
@@ -278,7 +308,7 @@ When deploying multiple stacks, the specified context values are normally passed
 cdk synth --context Stack1:key=value Stack2:key=value Stack1 Stack2
 ```
 
-### Specifying display format<a name="w338aac23b7c29c13"></a>
+### Specifying display format<a name="w338aac23b7c31c13"></a>
 
 By default, the synthesized template is displayed in YAML format\. Add the `--json` flag to display it in JSON format instead\.
 
@@ -286,7 +316,7 @@ By default, the synthesized template is displayed in YAML format\. Add the `--js
 cdk synth --json MyStack
 ```
 
-### Specifying output directory<a name="w338aac23b7c29c15"></a>
+### Specifying output directory<a name="w338aac23b7c31c15"></a>
 
 Add the `--output` \(`-o`\) option to write the synthesized templates to a directory other than `cdk.out`\.
 
@@ -310,7 +340,7 @@ The CDK Toolkit runs your app and synthesizes fresh AWS CloudFormation templates
 
 See `cdk deploy --help` for all available options\. A few of the most\-frequently\-used options are covered below\.
 
-### Specifying AWS CloudFormation parameters<a name="w338aac23b7c31c11"></a>
+### Specifying AWS CloudFormation parameters<a name="w338aac23b7c33c11"></a>
 
 The AWS CDK Toolkit supports specifying AWS CloudFormation [parameters](parameters.md) at deployment\. You may provide these on the command line following the `--parameters` flag\.
 
@@ -332,7 +362,7 @@ cdk deploy MyStack YourStack --parameters MyStack:uploadBucketName=UploadBucket 
 
 By default, the AWS CDK retains values of parameters from previous deployments and uses them in later deployments if they are not specified explicitly\. Use the `--no-previous-parameters` flag to require all parameters to be specified\.
 
-### Specifying outputs file<a name="w338aac23b7c31c13"></a>
+### Specifying outputs file<a name="w338aac23b7c33c13"></a>
 
 If your stack declares AWS CloudFormation outputs, these are normally displayed on the screen at the conclusion of deployment\. To write them to a file in JSON format, use the `--outputs-file` flag\.
 
@@ -342,9 +372,7 @@ cdk deploy --outputs-file outputs.json MyStack
 
 ## Security\-related changes<a name="cli-security"></a>
 
-To protect you against unintended changes that affect your security posture, the AWS CDK Toolkit prompts you to approve security\-related changes before deploying them\.
-
-You can change the level of change that requires approval by specifying:
+To protect you against unintended changes that affect your security posture, the AWS CDK Toolkit prompts you to approve security\-related changes before deploying them\. You can specify the level of change that requires approval:
 
 ```
 cdk deploy --require-approval LEVEL
@@ -424,8 +452,7 @@ Commands:
                                   stack
 
   cdk init [TEMPLATE]             Create a new, empty CDK project from a
-                                  template. Invoked without TEMPLATE, the app
-                                  template will be used.
+                                  template.
 
   cdk context                     Manage cached context values
 
@@ -436,70 +463,78 @@ Commands:
 
 Options:
 
-  --app, -a             REQUIRED: command-line for executing your app or a cloud
-                        assembly directory (e.g. "node bin/my-app.js")  [string]
-
-  --context, -c         Add contextual string parameter (KEY=VALUE)      [array]
-
-  --plugin, -p          Name or path of a node package that extend the CDK
-                        features. Can be specified multiple times        [array]
-
-  --trace               Print trace for stack warnings                 [boolean]
-
-  --strict              Do not construct stacks with warnings          [boolean]
-
-  --ignore-errors       Ignores synthesis errors, which will likely produce an
-                        invalid output                [boolean] [default: false]
-
-  --json, -j            Use JSON output instead of YAML when templates are
-                        printed to STDOUT             [boolean] [default: false]
-
-  --verbose, -v         Show debug logs (specify multiple times to increase
-                        verbosity)                      [count] [default: false]
-
-  --profile             Use the indicated AWS profile as the default environment
+  -a, --app                 REQUIRED: command-line for executing your app or a
+                            cloud assembly directory (e.g. "node bin/my-app.js")
                                                                         [string]
 
-  --proxy               Use the indicated proxy. Will read from HTTPS_PROXY
-                        environment variable if not specified.          [string]
+  -c, --context             Add contextual string parameter (KEY=VALUE)  [array]
 
-  --ca-bundle-path      Path to CA certificate to use when validating HTTPS
-                        requests. Will read from AWS_CA_BUNDLE environment
-                        variable if not specified.                      [string]
+  -p, --plugin              Name or path of a node package that extend the CDK
+                            features. Can be specified multiple times    [array]
 
-  --ec2creds, -i        Force trying to fetch EC2 instance credentials. Default:
-                        guess EC2 instance status.                     [boolean]
+      --trace               Print trace for stack warnings             [boolean]
 
-  --version-reporting   Include the "AWS::CDK::Metadata" resource in synthesized
-                        templates (enabled by default)                 [boolean]
+      --strict              Do not construct stacks with warnings      [boolean]
 
-  --path-metadata       Include "aws:cdk:path" CloudFormation metadata for each
-                        resource (enabled by default)  [boolean] [default: true]
+      --ignore-errors       Ignores synthesis errors, which will likely produce
+                            an invalid output         [boolean] [default: false]
 
-  --asset-metadata      Include "aws:asset:*" CloudFormation metadata for
-                        resources that user assets (enabled by default)
+  -j, --json                Use JSON output instead of YAML when templates are
+                            printed to STDOUT         [boolean] [default: false]
+
+  -v, --verbose             Show debug logs (specify multiple times to increase
+                            verbosity)                  [count] [default: false]
+
+      --debug               Enable emission of additional debugging information,
+                            such as creation stack traces of tokens
+                                                      [boolean] [default: false]
+
+      --profile             Use the indicated AWS profile as the default
+                            environment                                 [string]
+
+      --proxy               Use the indicated proxy. Will read from HTTPS_PROXY
+                            environment variable if not specified       [string]
+
+      --ca-bundle-path      Path to CA certificate to use when validating HTTPS
+                            requests. Will read from AWS_CA_BUNDLE environment
+                            variable if not specified                   [string]
+
+  -i, --ec2creds            Force trying to fetch EC2 instance credentials.
+                            Default: guess EC2 instance status         [boolean]
+
+      --version-reporting   Include the "AWS::CDK::Metadata" resource in
+                            synthesized templates (enabled by default) [boolean]
+
+      --path-metadata       Include "aws:cdk:path" CloudFormation metadata for
+                            each resource (enabled by default)
                                                        [boolean] [default: true]
 
-  --role-arn, -r        ARN of Role to use when invoking CloudFormation [string]
+      --asset-metadata      Include "aws:asset:*" CloudFormation metadata for
+                            resources that user assets (enabled by default)
+                                                       [boolean] [default: true]
 
-  --toolkit-stack-name  The name of the CDK toolkit stack               [string]
+  -r, --role-arn            ARN of Role to use when invoking CloudFormation
+                                                                        [string]
 
-  --staging             Copy assets to the output directory (use --no-staging to
-                        disable, needed for local debugging the source files
-                        with SAM CLI)                  [boolean] [default: true]
+      --toolkit-stack-name  The name of the CDK toolkit stack           [string]
 
-  --output, -o          Emits the synthesized cloud assembly into a directory
-                        (default: cdk.out)                              [string]
+      --staging             Copy assets to the output directory (use
+                            --no-staging to disable, needed for local debugging
+                            the source files with SAM CLI)
+                                                       [boolean] [default: true]
 
-  --no-color            Removes colors and other style from console output
+  -o, --output              Emits the synthesized cloud assembly into a
+                            directory (default: cdk.out)                [string]
+
+      --no-color            Removes colors and other style from console output
                                                       [boolean] [default: false]
 
-  --fail                Fail with exit code 1 in case of diff
+      --fail                Fail with exit code 1 in case of diff
                                                       [boolean] [default: false]
 
-  --version             Show version number                            [boolean]
+      --version             Show version number                        [boolean]
 
-  -h, --help            Show help                                      [boolean]
+  -h, --help                Show help                                  [boolean]
 
 If your app has a single stack, there is no need to specify the stack name
 
@@ -507,7 +542,7 @@ If one of cdk.json or ~/.cdk.json exists, options specified there will be used
 as defaults. Settings in cdk.json take precedence.
 ```
 
-### `cdk list` \(`ls`\)<a name="w338aac23b7c37b7b1"></a>
+### `cdk list` \(`ls`\)<a name="w338aac23b7c39b7b1"></a>
 
 ```
 cdk list [STACKS..]
@@ -516,11 +551,11 @@ Lists all stacks in the app
 
 Options:
 
-  --long, -l            Display environment information for each stack
+  -l, --long                Display environment information for each stack
                                                       [boolean] [default: false]
 ```
 
-### `cdk synthesize` \(`synth`\)<a name="w338aac23b7c37b7b3"></a>
+### `cdk synthesize` \(`synth`\)<a name="w338aac23b7c39b7b3"></a>
 
 ```
 cdk synthesize [STACKS..]
@@ -529,11 +564,11 @@ Synthesizes and prints the CloudFormation template for this stack
 
 Options:
 
-  --exclusively, -e     Only synthesize requested stacks, don't include
-                        dependencies                                   [boolean]
+  -e, --exclusively         Only synthesize requested stacks, don't include
+                            dependencies                               [boolean]
 ```
 
-### `cdk bootstrap`<a name="w338aac23b7c37b7b5"></a>
+### `cdk bootstrap`<a name="w338aac23b7c39b7b5"></a>
 
 ```
 cdk bootstrap [ENVIRONMENTS..]
@@ -542,48 +577,67 @@ Deploys the CDK toolkit stack into an AWS environment
 
 Options:
 
-  --bootstrap-bucket-name, -b,              The name of the CDK toolkit bucket;
+  -b, --bootstrap-bucket-name,              The name of the CDK toolkit bucket;
   --toolkit-bucket-name                     bucket will be created and must not
                                             exist                       [string]
 
-  --bootstrap-kms-key-id                    AWS KMS master key ID used for the
+      --bootstrap-kms-key-id                AWS KMS master key ID used for the
                                             SSE-KMS encryption          [string]
 
-  --qualifier                               Unique string to distinguish
+      --bootstrap-customer-key              Create a Customer Master Key (CMK)
+                                            for the bootstrap bucket (you will
+                                            be charged but can customize
+                                            permissions, modern bootstrapping
+                                            only)                      [boolean]
+
+      --qualifier                           Unique string to distinguish
                                             multiple bootstrap stacks   [string]
 
-  --public-access-block-configuration       Block public access configuration
+      --public-access-block-configuration   Block public access configuration
                                             on CDK toolkit bucket (enabled by
                                             default)                   [boolean]
 
-  --tags, -t                                Tags to add for the stack
+  -t, --tags                                Tags to add for the stack
                                             (KEY=VALUE)    [array] [default: []]
 
-  --execute                                 Whether to execute ChangeSet
+      --execute                             Whether to execute ChangeSet
                                             (--no-execute will NOT execute the
                                             ChangeSet) [boolean] [default: true]
 
-  --force, -f                               Always bootstrap even if it would
+      --trust                               The AWS account IDs that should be
+                                            trusted to perform deployments into
+                                            this environment (may be repeated,
+                                            modern bootstrapping only)
+                                                           [array] [default: []]
+
+      --cloudformation-execution-policies   The Managed Policy ARNs that should
+                                            be attached to the role performing
+                                            deployments into this environment
+                                            (may be repeated, modern
+                                            bootstrapping only)
+                                                           [array] [default: []]
+
+  -f, --force                               Always bootstrap even if it would
                                             downgrade template version
                                                       [boolean] [default: false]
 
-  --termination-protection                  Toggle CloudFormation termination
+      --termination-protection              Toggle CloudFormation termination
                                             protection on the bootstrap stacks
                                                                        [boolean]
 
-  --show-template                           Instead of actual bootstrapping,
+      --show-template                       Instead of actual bootstrapping,
                                             print the current CLI's
                                             bootstrapping template to stdout for
-                                            customization.
+                                            customization
                                                       [boolean] [default: false]
 
-  --template                                Use the template from the given file
+      --template                            Use the template from the given file
                                             instead of the built-in one (use
                                             --show-template to obtain an
-                                            example).                   [string]
+                                            example)                    [string]
 ```
 
-### `cdk deploy`<a name="w338aac23b7c37b7b7"></a>
+### `cdk deploy`<a name="w338aac23b7c39b7b7"></a>
 
 ```
 cdk deploy [STACKS..]
@@ -592,44 +646,48 @@ Deploys the stack(s) named STACKS into your AWS account
 
 Options:
 
-  --build-exclude, -E    Do not rebuild asset with the given ID. Can be
-                         specified multiple times.         [array] [default: []]
-
-  --exclusively, -e      Only deploy requested stacks, don't include
-                         dependencies                                  [boolean]
-
-  --require-approval     What security-sensitive changes need manual approval
-                         [string] [choices: "never", "any-change", "broadening"]
-
-  --ci                   Force CI detection           [boolean] [default: false]
-
-  --notification-arns    ARNs of SNS topics that CloudFormation will notify with
-                         stack related events                            [array]
-
-  --tags, -t             Tags to add to the stack (KEY=VALUE), overrides tags
-                         from Cloud Assembly                             [array]
-
-  --execute              Whether to execute ChangeSet (--no-execute will NOT
-                         execute the ChangeSet)        [boolean] [default: true]
-
-  --force, -f            Always deploy stack even if templates are identical
+      --all                  Deploy all available stacks
                                                       [boolean] [default: false]
 
-  --parameters           Additional parameters passed to CloudFormation at
-                         deploy time (STACK:KEY=VALUE)     [array] [default: {}]
+  -E, --build-exclude        Do not rebuild asset with the given ID. Can be
+                             specified multiple times      [array] [default: []]
 
-  --outputs-file, -O     Path to file where stack outputs will be written as
-                         JSON                                           [string]
+  -e, --exclusively          Only deploy requested stacks, don't include
+                             dependencies                              [boolean]
 
-  --previous-parameters  Use previous values for existing parameters (you must
-                         specify all parameters on every deployment if this is
-                         disabled)                     [boolean] [default: true]
+      --require-approval     What security-sensitive changes need manual
+                             approval
+                         [string] [choices: "never", "any-change", "broadening"]
 
-  --progress             Display mode for stack activity events.
+      --ci                   Force CI detection       [boolean] [default: false]
+
+      --notification-arns    ARNs of SNS topics that CloudFormation will notify
+                             with stack related events                   [array]
+
+  -t, --tags                 Tags to add to the stack (KEY=VALUE), overrides
+                             tags from Cloud Assembly (deprecated)       [array]
+
+      --execute              Whether to execute ChangeSet (--no-execute will NOT
+                             execute the ChangeSet)    [boolean] [default: true]
+
+  -f, --force                Always deploy stack even if templates are identical
+                                                      [boolean] [default: false]
+
+      --parameters           Additional parameters passed to CloudFormation at
+                             deploy time (STACK:KEY=VALUE) [array] [default: {}]
+
+  -O, --outputs-file         Path to file where stack outputs will be written as
+                             JSON                                       [string]
+
+      --previous-parameters  Use previous values for existing parameters (you
+                             must specify all parameters on every deployment if
+                             this is disabled)         [boolean] [default: true]
+
+      --progress             Display mode for stack activity events
                                              [string] [choices: "bar", "events"]
 ```
 
-### `cdk destroy`<a name="w338aac23b7c37b7b9"></a>
+### `cdk destroy`<a name="w338aac23b7c39b7b9"></a>
 
 ```
 cdk destroy [STACKS..]
@@ -638,14 +696,17 @@ Destroy the stack(s) named STACKS
 
 Options:
 
-  --exclusively, -e     Only destroy requested stacks, don't include dependees
-                                                                       [boolean]
+      --all                 Destroy all available stacks
+                                                      [boolean] [default: false]
 
-  --force, -f           Do not ask for confirmation before destroying the stacks
-                                                                       [boolean]
+  -e, --exclusively         Only destroy requested stacks, don't include
+                            dependees                                  [boolean]
+
+  -f, --force               Do not ask for confirmation before destroying the
+                            stacks                                     [boolean]
 ```
 
-### `cdk diff`<a name="w338aac23b7c37b7c11"></a>
+### `cdk diff`<a name="w338aac23b7c39b7c11"></a>
 
 ```
 cdk diff [STACKS..]
@@ -655,40 +716,39 @@ and returns with status 1 if any difference is found
 
 Options:
 
-  --exclusively, -e     Only diff requested stacks, don't include dependencies
-                                                                       [boolean]
+  -e, --exclusively         Only diff requested stacks, don't include
+                            dependencies                               [boolean]
 
-  --context-lines       Number of context lines to include in arbitrary JSON
-                        diff rendering                     [number] [default: 3]
+      --context-lines       Number of context lines to include in arbitrary JSON
+                            diff rendering                 [number] [default: 3]
 
-  --template            The path to the CloudFormation template to compare with
-                                                                        [string]
+      --template            The path to the CloudFormation template to compare
+                            with                                        [string]
 ```
 
-### `cdk init`<a name="w338aac23b7c37b7c13"></a>
+### `cdk init`<a name="w338aac23b7c39b7c13"></a>
 
 ```
 cdk init [TEMPLATE]
 
-Create a new, empty CDK project from a template. Invoked without TEMPLATE, the
-app template will be used.
+Create a new, empty CDK project from a template.
 
 Options:
 
-  --language, -l        The language to be used for the new project (default can
-                        be configured in ~/.cdk.json)
+  -l, --language            The language to be used for the new project (default
+                            can be configured in ~/.cdk.json)
           [string] [choices: "csharp", "fsharp", "java", "javascript", "python",
                                                                    "typescript"]
 
-  --list                List the available templates                   [boolean]
+      --list                List the available templates               [boolean]
 
-  --generate-only       If true, only generates project files, without executing
-                        additional operations such as setting up a git repo,
-                        installing dependencies or compiling the project
-                                                      [boolean] [default: false]
+      --generate-only       If true, only generates project files, without
+                            executing additional operations such as setting up a
+                            git repo, installing dependencies or compiling the
+                            project                   [boolean] [default: false]
 ```
 
-### `cdk context`<a name="w338aac23b7c37b7c15"></a>
+### `cdk context`<a name="w338aac23b7c39b7c15"></a>
 
 ```
 cdk context
@@ -697,7 +757,7 @@ Manage cached context values
 
 Options:
 
-  --reset, -e           The context key (or its index) to reset         [string]
+  -e, --reset               The context key (or its index) to reset     [string]
 
-  --clear               Clear all context                              [boolean]
+      --clear               Clear all context                          [boolean]
 ```
