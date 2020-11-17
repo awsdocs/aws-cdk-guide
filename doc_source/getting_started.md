@@ -78,7 +78,7 @@ bucket = s3.Bucket(self, "MyBucket", bucket_name="my-bucket", versioned=True,
 Bucket bucket = Bucket.Builder.create(self, "MyBucket")
                       .bucketName("my-bucket")
                       .versioned(true)
-                      .websiteRedirect(new websiteRedirect.Builder()
+                      .websiteRedirect(new RedirectTarget.Builder()
                           .hostName("aws.amazon.com").build())
                       .build();
 ```
@@ -90,7 +90,7 @@ Bucket bucket = Bucket.Builder.create(self, "MyBucket")
 var bucket = new Bucket(this, "MyBucket", new BucketProps {
                       BucketName = "my-bucket",
                       Versioned  = true,
-                      WebsiteRedirect = new WebsiteRedirect {
+                      WebsiteRedirect = new RedirectTarget {
                               HostName = "aws.amazon.com"
                       }});
 ```
