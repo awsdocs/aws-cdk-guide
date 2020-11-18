@@ -398,9 +398,20 @@ The setting can also be configured in the `cdk.json` file\.
 
 ## Comparing stacks<a name="cli-diff"></a>
 
-The `cdk diff` command compares the current version of a stack defined in your app with the already\-deployed version, or with a saved AWS CloudFormation template, and displays a list of differences\.
+The `cdk diff` command compares the current version of a stack defined in your app with the already\-deployed version, or with a saved AWS CloudFormation template, and displays a list of changes \.
 
 ```
+Stack HelloCdkStack
+IAM Statement Changes
+┌───┬────────────────────────┬────────┬──────────────┬───────────┬───────────┐
+│   │ Resource               │ Effect │ Action       │ Principal │ Condition │
+├───┼────────────────────────┼────────┼──────────────┼───────────┼───────────┤
+│ + │ ${MyFirstBucket.Arn}/* │ Allow  │ s3:GetObject │ *         │           │
+└───┴────────────────────────┴────────┴──────────────┴───────────┴───────────┘
+(NOTE: There may be security-related changes not in this list. See https://github.com/aws/aws-cdk/issues/1299)
+
+Resources
+[+] AWS::S3::BucketPolicy MyFirstBucket/Policy MyFirstBucketPolicy3243DEFD
 [~] AWS::S3::Bucket MyFirstBucket MyFirstBucketB8884501
  ├─ [~] DeletionPolicy
  │   ├─ [-] Retain

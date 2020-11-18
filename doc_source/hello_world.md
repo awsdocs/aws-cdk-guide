@@ -194,7 +194,8 @@ Add the following to the `<dependencies>` container of `pom.xml`\.
 </dependency>
 ```
 
-If you are using a Java IDE, it probably has a simpler way to add this dependency to your project\. Resist temptation and edit `pom.xml` by hand\.
+**Tip**  
+If you are using a Java IDE, it probably has a simpler way to add this dependency to your project, such as a GUI for editing the POM\. We recommend editing `pom.xml` by hand because of the use of the `cdk.version` variable, which helps keep the versions of installed modules consistent\.
 
 ------
 #### [ C\# ]
@@ -301,7 +302,7 @@ public class HelloCdkStack extends Stack {
 ------
 #### [ C\# ]
 
-Update `HelloCdkStack.cs` to look like this\.
+In `HelloCdkStack.cs`:
 
 ```
 using Amazon.CDK;
@@ -399,16 +400,17 @@ You've deployed your first stack using the AWS CDK—congratulations\! But that'
 
 ## Modifying the app<a name="hello_world_tutorial_modify"></a>
 
-The AWS CDK can update your deployed resources after you modify your app\. Let's make a little change to our bucket\. We want to be able to delete the bucket automatically when we delete the stack, so we'll change the `RemovalPolicy`\. 
+The AWS CDK can update your deployed resources after you modify your app\. Let's make a couple of changes to our bucket\. First, we'll enable public read access, so people out in the world can access the files we store in the bucket\. We also want to be able to delete the bucket automatically when we delete the stack, so we'll change its `RemovalPolicy`\. 
 
 ------
 #### [ TypeScript ]
 
-Update `lib/hello-cdk-stack.ts`
+Update `lib/hello-cdk-stack.ts`\.
 
 ```
 new s3.Bucket(this, 'MyFirstBucket', {
   versioned: true,
+  publicReadAccess: true,
   removalPolicy: cdk.RemovalPolicy.DESTROY
 });
 ```
@@ -420,27 +422,29 @@ Update `lib/hello-cdk-stack.js`\.
 
 ```
 new s3.Bucket(this, 'MyFirstBucket', {
-    versioned: true,
-    removalPolicy: cdk.RemovalPolicy.DESTROY
+  versioned: true,
+  publicReadAccess: true,
+  removalPolicy: cdk.RemovalPolicy.DESTROY
 });
 ```
 
 ------
 #### [ Python ]
 
-Update `hello_cdk/hello_cdk_stack.py`
+Update `hello_cdk/hello_cdk_stack.py`\.
 
 ```
 bucket = s3.Bucket(self, 
-    "MyFirstBucket", 
+    "MyFirstBucket",
     versioned=True,
+    public_read_access=True,
     removal_policy=cdk.RemovalPolicy.DESTROY)
 ```
 
 ------
 #### [ Java ]
 
-Update `src/main/java/com/myorg/HelloCdkStack.java`\.
+Update `src/main/java/com/myorg/HelloCdkStack.java`, adding the new import and updating the bucket definition in the appropriate places\.
 
 ```
 import software.amazon.awscdk.services.s3.BucketEncryption;
@@ -449,6 +453,7 @@ import software.amazon.awscdk.services.s3.BucketEncryption;
 ```
 Bucket.Builder.create(this, "MyFirstBucket")
         .versioned(true)
+        .publicReadAccess(true)
         .removalPolicy(RemovalPolicy.DESTROY)
         .build();
 ```
@@ -462,21 +467,33 @@ Update `HelloCdkStack.cs`\.
 new Bucket(this, "MyFirstBucket", new BucketProps
 {
     Versioned = true,
+    PublicReadAccess = true,
     RemovalPolicy = RemovalPolicy.DESTROY
 });
 ```
 
 ------
 
-Now we'll use the `cdk diff` command to see the differences between what's already been deployed, and the code we just changed\.
+Now we'll use the `cdk diff` command to see the differences between what's already been deployed, and the app as it stands right now\.
 
 ```
 cdk diff
 ```
 
-The AWS CDK Toolkit queries your AWS account for the current AWS CloudFormation template for the `hello-cdk` stack, and compares it with the template it synthesized from your app\. The Resources section of the output should look like the following\.
+The AWS CDK Toolkit queries your AWS account for the current AWS CloudFormation template for the `hello-cdk` stack, and compares it with the template it just synthesized from your app\. The Resources section of the output should look like the following\.
 
 ```
+Stack HelloCdkStack
+IAM Statement Changes
+┌───┬────────────────────────┬────────┬──────────────┬───────────┬───────────┐
+│   │ Resource               │ Effect │ Action       │ Principal │ Condition │
+├───┼────────────────────────┼────────┼──────────────┼───────────┼───────────┤
+│ + │ ${MyFirstBucket.Arn}/* │ Allow  │ s3:GetObject │ *         │           │
+└───┴────────────────────────┴────────┴──────────────┴───────────┴───────────┘
+(NOTE: There may be security-related changes not in this list. See https://github.com/aws/aws-cdk/issues/1299)
+
+Resources
+[+] AWS::S3::BucketPolicy MyFirstBucket/Policy MyFirstBucketPolicy3243DEFD
 [~] AWS::S3::Bucket MyFirstBucket MyFirstBucketB8884501
  ├─ [~] DeletionPolicy
  │   ├─ [-] Retain
@@ -486,11 +503,16 @@ The AWS CDK Toolkit queries your AWS account for the current AWS CloudFormation 
      └─ [+] Delete
 ```
 
-As you can see, the diff indicates that the `DeletionPolicy` property of the bucket is now set to `Delete`, enabling the bucket to be deleted when its stack is deleted\. The `UpdateReplacePolicy `is also changed\.
+The diff indicates two things\. First, that the stack has a new IAM policy statement that grants everyone \(principal `*`\) read access \(`s3:GetObject` action\) to our bucket\. Note that we didn't need to create this statement; the AWS CDK did it for us\. All we needed to do was set the `publicReadAccess` property when instantiating the bucket\.
 
-Don't be confused by the difference in name\. The AWS CDK calls it `RemovalPolicy` because its meaning is slightly different from AWS CloudFormation's `DeletionPolicy`: the AWS CDK default is to retain the bucket when the stack is deleted, while AWS CloudFormation's default is to delete it\. See [Removal policies](resources.md#resources_removal) for further details\.
+**Note**  
+It's informative to look at the output of cdk synth here and see the twenty additional lines of AWS CloudFormation template that the AWS CDK generated for us when we changed one property of our bucket\.
 
-You can also see that the bucket isn't going to be replaced, but will be updated instead\.
+Besides the new policy, we can also see the `DeletionPolicy` property is set to `Delete`, enabling the bucket to be deleted when its stack is deleted\. The `UpdateReplacePolicy `is also changed to cause the bucket to be deleted if it were to be replaced with a new one\.
+
+Don't be confused by the difference between `RemovalPolicy` in your AWS CDK app and `DeletionPolicy` in the resulting AWS CloudFormation template\. The AWS CDK calls it `RemovalPolicy` because its semantics are slightly different from AWS CloudFormation's `DeletionPolicy`: the AWS CDK default is to retain the bucket when the stack is deleted, while AWS CloudFormation's default is to delete it\. See [Removal policies](resources.md#resources_removal) for further details\.
+
+You can also see that the bucket isn't going to be replaced, but will be updated with the new properties\.
 
 Now let's deploy\.
 
@@ -498,7 +520,7 @@ Now let's deploy\.
 cdk deploy
 ```
 
-Enter y to approve the changes and deploy the updated stack\. The Toolkit updates the bucket configuration as you requested\.
+The AWS CDK warns you about the security policy change we previously saw in the diff\. Enter y to approve the changes and deploy the updated stack\. The Toolkit updates the bucket configuration as you requested\.
 
 ```
 HelloCdkStack: deploying...
@@ -524,9 +546,10 @@ cdk destroy
 Enter y to approve the changes and delete any stack resources\.
 
 **Note**  
-This wouldn't have worked if we hadn't changed the bucket's `RemovalPolicy` just a minute ago\!
+This wouldn't have worked if we hadn't changed the bucket's `RemovalPolicy`\! Instead, the stack deletion would complete successfully, and the bucket would become orphaned \(no longer associated with the stack\)\.
 
-If cdk destroy fails, it probably means you put something in your Amazon S3 bucket\. AWS CloudFormation won't delete buckets with files in them\. Delete the files and try again\.
+**Tip**  
+If the bucket still exists after you delete the stack, it probably means you put something in it\. AWS CloudFormation won't delete buckets with files in them\. Delete the files and try again\.
 
 ## Next steps<a name="hello_world_next_steps"></a>
 
