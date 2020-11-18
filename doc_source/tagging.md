@@ -1,6 +1,11 @@
 # Tagging<a name="tagging"></a>
 
-Tags are informational key\-value elements that you can add to constructs in your AWS CDK app\. A tag applied to a given construct also applies to all of its taggable children\. The [https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Tags.html](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Tags.html) class includes the static method `of()`, through which you can add tags to, or remove tags from, the specified construct\. 
+Tags are informational key\-value elements that you can add to constructs in your AWS CDK app\. A tag applied to a given construct also applies to all of its taggable children\. Tags are included in the AWS CloudFormation template synthesized from your app and are applied to the AWS resources it deploys\. You can use tags to identify and categorize resources to simplify management, in cost allocation, and for access control, as well as for any other purposes you devise\.
+
+**Tip**  
+For more information about how you can use tags with your AWS resources, see the white paper [Tagging Best Practices](https://d1.awsstatic.com/whitepapers/aws-tagging-best-practices.pdf)\.
+
+The [https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Tags.html](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Tags.html) class includes the static method `of()`, through which you can add tags to, or remove tags from, the specified construct\. 
 +  [https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Tag.html#static-addscope-key-value-props](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Tag.html#static-addscope-key-value-props) applies a new tag to the given construct and all of its children\. 
 +  [https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Tag.html#static-removescope-key-props](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Tag.html#static-removescope-key-props) removes a tag from the given construct and any of its children, including tags a child construct may have applied to itself\. 
 
@@ -85,7 +90,7 @@ Tags.Of(myConstruct).Remove("key");
 
 ------
 
-## Tag priorities<a name="w338aac15c23c17"></a>
+## Tag priorities<a name="w338aac15c23c21"></a>
 
 The AWS CDK applies and removes tags recursively\. If there are conflicts, the tagging operation with the highest priority wins\. \(Priorities are set using the optional `priority` property\.\) If the priorities of two operations are the same, the tagging operation closest to the bottom of the construct tree wins\. By default, applying a tag has a priority of 100 \(except for tags added directly to an AWS CloudFormation resource, which has a priority of 50\) and removing a tag has a priority of 200\. 
 
