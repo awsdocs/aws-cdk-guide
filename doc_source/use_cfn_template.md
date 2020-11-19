@@ -645,7 +645,7 @@ param.Default = "AWS CDK";
 
 ### Nested stacks<a name="use_cfn_template_cfninclude_nested"></a>
 
-You may import [nested stacks](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-nested-stacks.html) by specifying them either when you import their main template, or at some later point\. The nested template must be stored in a local file, but referenced in as a `NestedStack` resource in the main template, and the resource name used in the AWS CDK code must match the name used for the nested stack in the main template\.
+You may import [nested stacks](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-nested-stacks.html) by specifying them either when you import their main template, or at some later point\. The nested template must be stored in a local file, but referenced as a `NestedStack` resource in the main template, and the resource name used in the AWS CDK code must match the name used for the nested stack in the main template\.
 
 Given this resource definition in the main template, the following code shows how to import the referenced nested stack both ways\.
 
