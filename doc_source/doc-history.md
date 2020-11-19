@@ -7,6 +7,8 @@ The table below represents significant documentation milestones\. We fix errors 
 
 | Change | Description | Date | 
 | --- |--- |--- |
+| [Import or migrate AWS CloudFormation template](#doc-history) | Add description of the new `cloudformation-include.CfnInclude` class, a powerful way to import and migrate AWS CloudFormation templates, or to vend them as AWS CDK constructs\.\. | October 15, 2020 | 
+| [Add construct tree section](#doc-history) | Information about the construct tree and its relation to the constructs you define in your AWS CDK app\. | October 5, 2020 | 
 | [Add Bootstrapping topic](#doc-history) | A complete explanation of why and how to bootstrap AWS environments for the CDK, including a comprehensive discussion of how to customize the process\. | September 8, 2020 | 
 | [Add CDK Pipelines how\-to](#doc-history) | CDK Pipelines let you easily automate the deployment of your AWS CDK apps from source control whenever they're updated\.  | July 17, 2020 | 
 | [Improve CDK Toolkit topic](#doc-history) | Include more information and examples around performing common tasks with the CLI \(and the relevant flags\) rather than just including a copy of the help\. | July 9, 2020 | 
