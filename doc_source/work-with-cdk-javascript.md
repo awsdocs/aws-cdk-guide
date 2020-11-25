@@ -253,7 +253,7 @@ Knowing how to identify and remove these TypeScript features goes a long way tow
 
 ## Migrating to TypeScript<a name="javascript-to-typescript"></a>
 
-As their projects get larger and more complex, many JavaScript developers move to [TypeScript](https://www.typescriptlang.org/)\. TypeScript is a superset of JavaScript—all JavaScript code is valid TypeScript code, so no changes to your code are required—and it is also a supported AWS CDK language\. Type annotations and other TypeScript features are optional and can be added to your AWS CDK app as you find value in them\. TypeScript also gives you early access to new JavaScript features, such as optional chaining and nullish coalescing, before they're finalized—and without requiring that you upgrade Node\.js\.
+Many JavaScript developers move to [TypeScript](https://www.typescriptlang.org/) as their projects get larger and more complex\. TypeScript is a superset of JavaScript—all JavaScript code is valid TypeScript code, so no changes to your code are required—and it is also a supported AWS CDK language\. Type annotations and other TypeScript features are optional and can be added to your AWS CDK app as you find value in them\. TypeScript also gives you early access to new JavaScript features, such as optional chaining and nullish coalescing, before they're finalized—and without requiring that you upgrade Node\.js\.
 
 TypeScript's "shape\-based" interfaces, which define bundles of required and optional properties \(and their types\) within an object, allow common mistakes to be caught while you're writing the code, and make it easier for your IDE to provide robust autocomplete and other real\-time coding advice\.
 
