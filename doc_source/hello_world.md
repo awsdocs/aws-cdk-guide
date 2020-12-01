@@ -67,7 +67,7 @@ cdk init app --language python
 After the app has been created, also enter the following two commands to activate the app's Python virtual environment and install its dependencies\.
 
 ```
-source .env/bin/activate
+source .venv/bin/activate
 python -m pip install -r requirements.txt
 ```
 

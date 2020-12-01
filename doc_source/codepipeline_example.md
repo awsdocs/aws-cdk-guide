@@ -47,7 +47,7 @@ During cloning, Git will warn you that you appear to have cloned an empty reposi
    cd pipeline
    cdk init --language typescript
    npm install @aws-cdk/aws-codedeploy @aws-cdk/aws-lambda @aws-cdk/aws-codebuild @aws-cdk/aws-codepipeline
-   npm install @aws-cdk/aws-codecommit @aws-cdk/aws-codepipeline-actions @aws-cdk/aws-s3
+   npm install @aws-cdk/aws-codecommit @aws-cdk/aws-codepipeline-actions
    ```
 
 ------
@@ -57,7 +57,7 @@ During cloning, Git will warn you that you appear to have cloned an empty reposi
    cd pipeline
    cdk init ‐-language javascript
    npm install @aws-cdk/aws-codedeploy @aws-cdk/aws-lambda @aws-cdk/aws-codebuild @aws-cdk/aws-codepipeline
-   npm install @aws-cdk/aws-codecommit @aws-cdk/aws-codepipeline-actions @aws-cdk/aws-s3
+   npm install @aws-cdk/aws-codecommit @aws-cdk/aws-codepipeline-actions
    ```
 
 ------
@@ -74,7 +74,7 @@ During cloning, Git will warn you that you appear to have cloned an empty reposi
    git commit -m "project started"
    pip install -r requirements.txt
    pip install aws_cdk.aws_codedeploy aws_cdk.aws_lambda aws_cdk.aws_codebuild aws_cdk.aws_codepipeline
-   pip install aws_cdk.aws_codecommit aws_cdk.aws_codepipeline_actions aws_cdk.aws_s3
+   pip install aws_cdk.aws_codecommit aws_cdk.aws_codepipeline_actions
    pip freeze | grep -v '-e git' > requirements.txt
    ```
 
@@ -86,7 +86,7 @@ During cloning, Git will warn you that you appear to have cloned an empty reposi
    .venv\Scripts\activate.bat
    pip install -r requirements.txt
    pip install aws_cdk.aws_codedeploy aws_cdk.aws_lambda aws_cdk.aws_codebuild aws_cdk.aws_codepipeline
-   pip install aws_cdk.aws_codecommit aws_cdk.aws_codepipeline_actions aws_cdk.aws_s3
+   pip install aws_cdk.aws_codecommit aws_cdk.aws_codepipeline_actions 
    pip freeze | find /V "-e git" > requirements.txt
    ```
 
@@ -100,19 +100,7 @@ During cloning, Git will warn you that you appear to have cloned an empty reposi
 
    You can import the resulting Maven project into your Java IDE\.
 
-   Using the Maven integration in your IDE \(for example, in Eclipse, right\-click the project and choose **Maven** > **Add Dependency**\), add the following packages in the group `software.amazon.awscdk`\.
-
-   ```
-   lambda
-   codedeploy
-   codebuild
-   codecommit
-   codepipeline
-   codepipeline-actions
-   s3
-   ```
-
-   Alternatively, add `<dependency>` elements like the following to `pom.xml`\. You can copy the existing dependency for the AWS CDK core module and modify it\. For example, a dependency for the AWS Lambda module looks like this\.
+   Add `<dependency>` elements like the following to `pom.xml`\. You can copy the existing dependency for the AWS CDK core module and modify it\. For example, a dependency for the AWS Lambda module looks like this\.
 
    ```
            <dependency>
@@ -141,7 +129,6 @@ During cloning, Git will warn you that you appear to have cloned an empty reposi
    Amazon.CDK.AWS.CodePipeline
    Amazon.CDK.AWS.CodePipeline.Actions
    Amazon.CDK.AWS.Lambda
-   Amazon.CDK.AWS.S3
    ```
 
 ------
@@ -450,7 +437,6 @@ import * as codecommit from '@aws-cdk/aws-codecommit';
 import * as codepipeline from '@aws-cdk/aws-codepipeline';
 import * as codepipeline_actions from '@aws-cdk/aws-codepipeline-actions';
 import * as lambda from '@aws-cdk/aws-lambda';
-import * as s3 from '@aws-cdk/aws-s3';
 import { App, Stack, StackProps } from '@aws-cdk/core';
 
 export interface PipelineStackProps extends StackProps {
@@ -706,7 +692,7 @@ from aws_cdk import (core, aws_codebuild as codebuild,
                      aws_codecommit as codecommit,
                      aws_codepipeline as codepipeline,
                      aws_codepipeline_actions as codepipeline_actions,
-                     aws_lambda as lambda_, aws_s3 as s3)
+                     aws_lambda as lambda_)
 
 class PipelineStack(core.Stack):
 
