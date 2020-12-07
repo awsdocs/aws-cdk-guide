@@ -487,6 +487,10 @@ Options:
 
       --strict              Do not construct stacks with warnings      [boolean]
 
+      --lookups             Perform context lookups (synthesis fails if this is
+                            disabled and context lookups need to be performed)
+                                                       [boolean] [default: true]
+
       --ignore-errors       Ignores synthesis errors, which will likely produce
                             an invalid output         [boolean] [default: false]
 
