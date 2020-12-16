@@ -354,7 +354,7 @@ If your app contained more than one stack, you'd need to specify which stack\(s\
 **Tip**  
 If you received an error like `--app is required...`, it's probably because you are running the command from a subdirectory\. Navigate to the main app directory and try again\.
 
-The `cdk synth` command executes your app, which causes the resources defined in it to be translated to an AWS CloudFormation template\. The output of `cdk synth` is a YAML\-format AWS CloudFormation template, which looks something like this\.
+The `cdk synth` command executes your app, which causes the resources defined in it to be translated to an AWS CloudFormation template\. The displayed output of `cdk synth` is a YAML\-format template; our app's output is shown below\. The template is also saved in the `cdk.out` directory in JSON format\.
 
 ```
 Resources:
