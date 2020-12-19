@@ -225,6 +225,7 @@ export class LambdaStack extends Stack {
       code: this.lambdaCode,
       handler: 'index.main',
       runtime: lambda.Runtime.NODEJS_10_X,
+      description: `Function generated on: ${new Date().toISOString()}`,
     });
       
     const alias = new lambda.Alias(this, 'LambdaAlias', {
@@ -260,7 +261,8 @@ class LambdaStack extends Stack {
     const func = new lambda.Function(this, 'Lambda', {
       code: this.lambdaCode,
       handler: 'index.main',
-      runtime: lambda.Runtime.NODEJS_10_X
+      runtime: lambda.Runtime.NODEJS_10_X,
+      description: `Function generated on: ${new Date().toISOString()}`,
     });
       
     const alias = new lambda.Alias(this, 'LambdaAlias', {
@@ -285,6 +287,7 @@ File: `pipeline/lambda_stack.py`
 
 ```
 from aws_cdk import core, aws_codedeploy as codedeploy, aws_lambda as lambda_
+import datetime
 
 class LambdaStack(core.Stack):
   def __init__(self, app: core.App, id: str, **kwargs):
@@ -296,6 +299,7 @@ class LambdaStack(core.Stack):
                             code=self.lambda_code,
                             handler="index.main",
                             runtime=lambda_.Runtime.NODEJS_10_X,
+                            description="Function generated on {}".format(datetime.datetime.now()),
     )
       
     alias = lambda_.Alias(self, "LambdaAlias", alias_name="Prod",
@@ -324,6 +328,8 @@ import software.amazon.awscdk.services.codedeploy.*;
 import software.amazon.awscdk.services.lambda.*;
 import software.amazon.awscdk.services.lambda.Runtime;
 
+import java.time.Instant;
+
 public class LambdaStack extends Stack {
 
     // private attribute to hold our Lambda's code, with public getters
@@ -346,7 +352,9 @@ public class LambdaStack extends Stack {
         Function func = Function.Builder.create(this, "Lambda")
                 .code(lambdaCode)
                 .handler("index.main")
-                .runtime(Runtime.NODEJS_10_X).build();
+                .runtime(Runtime.NODEJS_10_X)
+                .description(String.format("Function generated on %s", Instant.now()))
+                .build();
         
         Version version = func.getCurrentVersion();
         Alias alias = Alias.Builder.create(this, "LambdaAlias")
@@ -370,6 +378,8 @@ using Amazon.CDK;
 using Amazon.CDK.AWS.CodeDeploy;
 using Amazon.CDK.AWS.Lambda;
 
+using System;
+
 namespace Pipeline
 {
     public class LambdaStack : Stack
@@ -385,7 +395,8 @@ namespace Pipeline
             {
                 Code = lambdaCode,
                 Handler = "index.main",
-                Runtime = Runtime.NODEJS_10_X
+                Runtime = Runtime.NODEJS_10_X,
+                Description = "Function generated at " + DateTime.Now.ToString("s")
             });
 
             var version = func.currentVersion;
