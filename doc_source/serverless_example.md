@@ -267,7 +267,7 @@ export class WidgetService extends core.Construct {
 
     const handler = new lambda.Function(this, "WidgetHandler", {
       runtime: lambda.Runtime.NODEJS_10_X, // So we can use async in widget.js
-      code: lambda.Code.asset("resources"),
+      code: lambda.Code.fromAsset("resources"),
       handler: "widgets.main",
       environment: {
         BUCKET: bucket.bucketName
@@ -309,7 +309,7 @@ class WidgetService extends core.Construct {
 
     const handler = new lambda.Function(this, "WidgetHandler", {
       runtime: lambda.Runtime.NODEJS_10_X, // So we can use async in widget.js
-      code: lambda.Code.asset("resources"),
+      code: lambda.Code.fromAsset("resources"),
       handler: "widgets.main",
       environment: {
         BUCKET: bucket.bucketName
@@ -353,7 +353,7 @@ class WidgetService(core.Construct):
 
         handler = lambda_.Function(self, "WidgetHandler",
                     runtime=lambda_.Runtime.NODEJS_10_X,
-                    code=lambda_.Code.asset("resources"),
+                    code=lambda_.Code.from_asset("resources"),
                     handler="widgets.main",
                     environment=dict(
                     BUCKET=bucket.bucket_name)

@@ -237,6 +237,8 @@ MyStack(self, "MyStack",
 ------
 #### [ Java ]
 
+
+
 ```
 new MyStack(app, "MyStack", StackProps.builder()
     // stack properties

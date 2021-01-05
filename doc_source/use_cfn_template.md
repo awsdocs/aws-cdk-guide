@@ -324,7 +324,7 @@ const bucket = s3.Bucket.fromBucketName(this, 'Bucket', cfnBucket.ref);
 #### [ Python ]
 
 ```
-bucket = s3.Bucket.from_bucket_name(this, "Bucket", cfn_bucket.ref)
+bucket = s3.Bucket.from_bucket_name(self, "Bucket", cfn_bucket.ref)
 ```
 
 ------

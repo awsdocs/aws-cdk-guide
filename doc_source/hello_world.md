@@ -78,7 +78,7 @@ python -m pip install -r requirements.txt
 cdk init app --language java
 ```
 
-If you are using an IDE, you can now open or import the project\. In Eclipse, for example, choose **File** > **Import** > **Maven** > **Existing Maven Projects**\. Make sure that the project settings are set ta use Java 8 \(1\.8\)\.
+If you are using an IDE, you can now open or import the project\. In Eclipse, for example, choose **File** > **Import** > **Maven** > **Existing Maven Projects**\. Make sure that the project settings are set to use Java 8 \(1\.8\)\.
 
 ------
 #### [ C\# ]
