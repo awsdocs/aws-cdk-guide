@@ -35,7 +35,7 @@ The \.NET ecosystem uses the NuGet package manager\. AWS Construct Library modul
 **Note**  
 The [\.NET edition of the CDK API Reference](https://docs.aws.amazon.com/cdk/api/latest/dotnet/api/index.html) also shows the package names\.
 
-Some services' AWS Construct Library support is in more than one module\. For example, Amazon Route 53 has the three modules in addition to the main `Amazon.CDK.AWS.Route53` module, named `Route53.Patterns`, `Route53rResolver`, and `Route53.Targets`\.
+Some services' AWS Construct Library support is in more than one module\. For example, Amazon Route 53 has the three modules in addition to the main `Amazon.CDK.AWS.Route53` module, named `Route53.Patterns`, `Route53.Resolver`, and `Route53.Targets`\.
 
 The AWS CDK's core module, which you'll need in most AWS CDK apps, is imported in C\# code as `Amazon.CDK`\. Modules for the various services in the AWS Construct Library live under `Amazon.CDK.AWS` and are named the same as their NuGet package name\. For example, the Amazon S3 module's namespace is `Amazon.CDK.AWS.S3`\.
 
