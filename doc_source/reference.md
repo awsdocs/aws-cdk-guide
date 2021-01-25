@@ -24,6 +24,8 @@ Cloud assembly schema version mismatch: Maximum schema version supported is 3.0.
     Please upgrade your CLI in order to interact with this app.
 ```
 
+To resolve this error, update the AWS CDK Toolkit to a version compatible with the required cloud assembly version, or simply to the latest available version\. The alternative \(downgrading the construct library modules your app uses\) is generally not desirable\.
+
 **Note**  
 For more details on the cloud assembly schema, see [Cloud Assembly Versioning](https://github.com/aws/aws-cdk/tree/master/packages/%40aws-cdk/cloud-assembly-schema#versioning)\.
 
