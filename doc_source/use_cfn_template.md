@@ -1,6 +1,6 @@
 # Import or migrate an existing AWS CloudFormation template<a name="use_cfn_template"></a>
 
-The [https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_cloudformation-include.CfnInclude.html](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_cloudformation-include.CfnInclude.html) construct converts the resources in an imported AWS CloudFormation template to AWS CDK L1 constructs\. You can work with these in your app just as if they were defined in AWS CDK code, even using them within higher\-level AWS CDK constructs, letting you use \(for example\) the L2 permission grant methods with the resources they define\. 
+The [https://docs.aws.amazon.com/cdk/api/latest/docs/cloudformation-include-readme.html](https://docs.aws.amazon.com/cdk/api/latest/docs/cloudformation-include-readme.html) construct converts the resources in an imported AWS CloudFormation template to AWS CDK L1 constructs\. You can work with these in your app just as if they were defined in AWS CDK code, even using them within higher\-level AWS CDK constructs, letting you use \(for example\) the L2 permission grant methods with the resources they define\. 
 
 This construct essentially adds an AWS CDK API wrapper to any resource in the template\. You can use this capability to migrate your existing AWS CloudFormation templates to the AWS CDK a piece at a time in order to take advantage of the AWS CDK's convenient higher\-level abstractions, or just to vend your AWS CloudFormation templates to AWS CDK developers by providing an AWS CDK construct API\.\.
 

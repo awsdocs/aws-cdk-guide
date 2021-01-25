@@ -238,7 +238,7 @@ In addition to this guide, the following are other resources available to AWS CD
 + [GitHub Repository](https://github.com/awslabs/aws-cdk)
   + [Issues](https://github.com/awslabs/aws-cdk/issues)
   + [Examples](https://github.com/aws-samples/aws-cdk-examples)
-  + [Documentation Source](https://github.com/awsdocs/aws-cdk-user-guide/tree/master/doc_source)
+  + [Documentation Source](https://github.com/awsdocs/aws-cdk-guide)
   + [License](https://github.com/awslabs/aws-cdk/blob/master/LICENSE)
   + [Releases](https://github.com/awslabs/aws-cdk/releases)
     + [AWS CDK OpenPGP key](pgp-keys.md#cdk_pgp_key)
