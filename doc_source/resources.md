@@ -1216,7 +1216,7 @@ public CdkTestStack(Construct scope, string id, IStackProps props) : base(scope,
 
 ------
 
-You can also apply a removal policy directly to the underlying AWS CloudFormation resource via the `applyRemovalPolicy()` method\.
+You can also apply a removal policy directly to the underlying AWS CloudFormation resource via the `applyRemovalPolicy()` method\. This method is available on some stateful resources that do not have a `removalPolicy` property in their L2 resource's props, including AWS CloudFormation stacks, Amazon Cognito user pools, Amazon DocumentDB database instances, Amazon EC2 volumes, Amazon Elasticsearch Service domains, Amazon FSx file systems, and Amazon SQS queues\. 
 
 ------
 #### [ TypeScript ]
