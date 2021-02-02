@@ -73,7 +73,7 @@ The template is also available in the [AWS CDK GitHub repository](https://github
  Deploy this template using your preferred deployment mechanism for AWS CloudFormation templates\. For example, the following command deploys the template using the AWS CLI:
 
 ------
-#### [ Mac OS X/Linux ]
+#### [ macOS/Linux ]
 
 ```
 aws cloudformation create-stack \
@@ -107,7 +107,7 @@ The main differences between the templates are as follows\.
 At some point in the future, the modern template will become the default bootstrapping template\. Until then, manually select the modern template when bootstrapping by setting the `CDK_NEW_BOOTSTRAP` environment variable\.
 
 ------
-#### [ Mac OS X/Linux ]
+#### [ macOS/Linux ]
 
 ```
 export CDK_NEW_BOOTSTRAP=1
@@ -164,7 +164,7 @@ The following additional switches are available only with the modern bootstrappi
 When you need more customization than the AWS CDK Toolkit switches can provide, you can modify the bootstrap template to suit your needs\. Remember that you can obtain the template by using the \-\-show\-template flag\. Optionally, set the CDK\_NEW\_BOOTSTRAP environment variable to get the modern template \(otherwise, you'll get the legacy template\)\.
 
 ------
-#### [ Mac OS X/Linux ]
+#### [ macOS/Linux ]
 
 ```
 export CDK_NEW_BOOTSTRAP=1

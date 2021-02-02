@@ -27,7 +27,7 @@ Most organizations mandate stricter controls on what kinds of resources can be d
 You may omit the \-\-profile option if your default AWS profile contains the necessary credentials or to instead use the environment variables `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_DEFAULT_REGION` to provide your AWS account credentials\.
 
 ------
-#### [ Mac OS X/Linux ]
+#### [ macOS/Linux ]
 
 ```
 export CDK_NEW_BOOTSTRAP=1 
@@ -53,7 +53,7 @@ To bootstrap additional environments into which AWS CDK applications will be dep
 Again, you may omit the \-\-profile option if your default AWS profile contains the necessary credentials or if you are using the `AWS_*` environment variables to provide your AWS account credentials\.
 
 ------
-#### [ Mac OS X/Linux ]
+#### [ macOS/Linux ]
 
 ```
 export CDK_NEW_BOOTSTRAP=1 
@@ -171,7 +171,7 @@ python -m pip install aws_cdk.aws_codepipeline aws_cdk.aws_codepipeline_actions
 
 Freeze your dependencies in `requirements.txt`\.
 
-**Mac OS X/Linux**  
+**macOS/Linux**  
 
 ```
 python -m pip freeze | grep -v '^[-#]' > requirements.txt

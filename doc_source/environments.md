@@ -299,7 +299,7 @@ new MyDevStack(app, "dev", new StackProps { Env = makeEnv() });
 With your stack's environment declared this way, you can now write a short script or batch file like the following to set the variables from command line arguments, then call `cdk deploy`\. Any arguments beyond the first two are passed through to `cdk deploy` and can be used to specify command\-line options or stacks\.
 
 ------
-#### [ Mac OS X/Linux ]
+#### [ macOS/Linux ]
 
 ```
 #!/usr/bin/env bash
@@ -336,14 +336,14 @@ if ($args.length -ge 2) {
 }
 ```
 
-The Windows version of the script uses PowerShell to provide the same functionality as the Mac OS X/Linux version\. It also contains instructions to allow it to be run as a batch file so it can be easily invoked from a command line\. It should be saved as `cdk-deploy-to.bat`\. The file `cdk-deploy-to.ps1` will be created when the batch file is invoked\.
+The Windows version of the script uses PowerShell to provide the same functionality as the macOS/Linux version\. It also contains instructions to allow it to be run as a batch file so it can be easily invoked from a command line\. It should be saved as `cdk-deploy-to.bat`\. The file `cdk-deploy-to.ps1` will be created when the batch file is invoked\.
 
 ------
 
 Then you can write additional scripts that call the "deploy\-to" script to deploy to specific environments \(even multiple environments per script\):
 
 ------
-#### [ Mac OS X/Linux ]
+#### [ macOS/Linux ]
 
 ```
 #!/usr/bin/env bash
@@ -365,7 +365,7 @@ cdk-deploy-to 135792469 us-east-1 %*
 When deploying to multiple environments, consider whether you want to continue deploying to other environments after a deployment fails\. The following example avoids deploying to the second production environment if the first doesn't succeed\.
 
 ------
-#### [ Mac OS X/Linux ]
+#### [ macOS/Linux ]
 
 ```
 #!/usr/bin/env bash

@@ -63,9 +63,9 @@ During cloning, Git will warn you that you appear to have cloned an empty reposi
 ------
 #### [ Python ]
 
-   A couple of commands differ between Windows and Mac OS X or Linux\. 
+   A couple of commands differ between Windows and macOS/Linux\. 
 
-   **Mac OS X/Linux**
+   **macOS/Linux**
 
    ```
    cd pipeline
@@ -136,7 +136,7 @@ During cloning, Git will warn you that you appear to have cloned an empty reposi
 1. If a directory named `test` exists, delete it\. We won't be using it in this example, and some of the code in the tests will cause errors because of other changes we'll be making\.
 
 ------
-#### [ Mac OS X/Linux ]
+#### [ macOS/Linux ]
 
    ```
    rm -rf test
