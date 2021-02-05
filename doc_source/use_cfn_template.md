@@ -4,7 +4,7 @@ The [https://docs.aws.amazon.com/cdk/api/latest/docs/cloudformation-include-read
 
 This construct essentially adds an AWS CDK API wrapper to any resource in the template\. You can use this capability to migrate your existing AWS CloudFormation templates to the AWS CDK a piece at a time in order to take advantage of the AWS CDK's convenient higher\-level abstractions, or just to vend your AWS CloudFormation templates to AWS CDK developers by providing an AWS CDK construct API\.\.
 
-## Importing an AWS CloudFormation template<a name="w333aac21b9b7"></a>
+## Importing an AWS CloudFormation template<a name="w335aac21b9b7"></a>
 
  Here is a simple AWS CloudFormation template we'll use for the examples in this topic\. Save it as `my-template.json`\. After you've tried these examples with the provided template, you might explore further using a template for an actual stack you've already deployed, which you can obtain from the AWS CloudFormation console\.
 
@@ -263,7 +263,7 @@ When you `cdk deploy` the stack, your AWS CDK app becomes the source of truth fo
 
 ## Accessing imported resources<a name="use_cfn_template_cfninclude_access"></a>
 
-The name `template` in the example code represents the imported AWS CloudFormation template\. To access a resource from it, use this object's [https://docs.aws.amazon.com/api/latest/docs/@aws-cdk_cloudformation-include.CfnInclude.html#get-wbr-resourcelogicalid-span-class-api-icon-api-icon-experimental-title-this-api-element-is-experimental-it-may-change-without-notice-span](https://docs.aws.amazon.com/api/latest/docs/@aws-cdk_cloudformation-include.CfnInclude.html#get-wbr-resourcelogicalid-span-class-api-icon-api-icon-experimental-title-this-api-element-is-experimental-it-may-change-without-notice-span) method\. To access the returned resource as a specific kind of resource, cast the result to the desired type\. \(Casting is not necessary in Python and JavaScript\.\)
+The name `template` in the example code represents the imported AWS CloudFormation template\. To access a resource from it, use this object's [https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_cloudformation-include.CfnInclude.html#get-wbr-resourcelogicalid-span-class-api-icon-api-icon-experimental-title-this-api-element-is-experimental-it-may-change-without-notice-span](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_cloudformation-include.CfnInclude.html#get-wbr-resourcelogicalid-span-class-api-icon-api-icon-experimental-title-this-api-element-is-experimental-it-may-change-without-notice-span) method\. To access the returned resource as a specific kind of resource, cast the result to the desired type\. \(Casting is not necessary in Python and JavaScript\.\)
 
 ------
 #### [ TypeScript ]

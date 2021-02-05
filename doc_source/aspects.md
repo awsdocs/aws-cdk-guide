@@ -90,11 +90,11 @@ When you call `Aspects.of(SCOPE).add(...)`, the construct adds the aspect to an 
 
 During the [prepare phase](apps.md#lifecycle), the AWS CDK calls the `visit` method of the object for the construct and each of its children in top\-down order\.
 
-Although the aspect object is free to change any aspect of the construct, it only operates on a specific subset of construct types\. After determining the construct type, it can call any method and inspect or assign any property on the construct\.
+The `visit` method is free to change anything in the construct\. In strongly\-typed languages, cast the received construct to a more specific type before accessing construct\-specific properties or methods\.
 
 ## Example<a name="aspects_example"></a>
 
-The following example validates that all buckets created in the stack have versioning enabled\. The aspect adds an error to the constructs that fail the validation, which results in the synth operation failing and prevents deploying the resulting cloud assembly\.
+The following example validates that all buckets created in the stack have versioning enabled\. The aspect adds an error annotation to the constructs that fail the validation, which results in the synth operation failing and prevents deploying the resulting cloud assembly\.
 
 ------
 #### [ TypeScript ]
@@ -110,7 +110,7 @@ class BucketVersioningChecker implements IAspect {
       if (!node.versioningConfiguration 
         || (!Tokenization.isResolvable(node.versioningConfiguration)
             && node.versioningConfiguration.status !== 'Enabled')) {
-        node.node.addError('Bucket versioning is not enabled');
+        Annotations.of(node).addError('Bucket versioning is not enabled');
       }
     }
   }
@@ -134,7 +134,7 @@ class BucketVersioningChecker {
       if ( !node.versioningConfiguration 
         || !Tokenization.isResolvable(node.versioningConfiguration)
             && node.versioningConfiguration.status !== 'Enabled') {
-        node.node.addError('Bucket versioning is not enabled');
+        Annotations.of(node).addError('Bucket versioning is not enabled');
       }
     }
   }
@@ -161,7 +161,7 @@ class BucketVersioningChecker:
          !Tokenization.is_resolvable(node.versioning_configuration)
             and node.versioning_configuration.status != "Enabled"):
         
-        node.node.add_error('Bucket versioning is not enabled')
+        Annotations.of(node).add_error('Bucket versioning is not enabled')
 
 # Later, apply to the stack
 Aspects.of(stack).add(BucketVersioningChecker())
@@ -184,7 +184,7 @@ public class BucketVersioningChecker implements IAspect
             if (versioningConfiguration == null ||
                     !Tokenization.isResolvable(versioningConfiguration.toString()) &&
                     !versioningConfiguration.toString().contains("Enabled")
-                bucket.getNode().addError("Bucket versioning is not enabled");
+                Annotations.of(bucket.getNode()).addError("Bucket versioning is not enabled");
         }
     }
 }
@@ -209,7 +209,7 @@ class BucketVersioningChecker : Amazon.Jsii.Runtime.DeputyBase, IAspect
             if (bucket.VersioningConfiguration is null ||
                     !Tokenization.IsResolvable(bucket.VersioningConfiguration) &&
                     !bucket.VersioningConfiguration.ToString().Contains("Enabled")
-                bucket.Node.AddError("Bucket versioning is not enabled");
+                Annotations.Of(bucket.Node).AddError("Bucket versioning is not enabled");
         }
     }
 }

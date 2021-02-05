@@ -19,10 +19,10 @@ There are, however, use cases to which AWS CloudFormation parameters are uniquel
 
 ## Defining parameters<a name="parameters_define"></a>
 
-Use the [https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.CfnParameter.html](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.CfnParameter.html) class to define a parameter\. You'll want to specify at least a type and a description for most parameters, though both are technically optional\. The description appears when the user is prompted to enter the parameter's value in the AWS CloudFormation console\.
+Use the [https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.CfnParameter.html](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.CfnParameter.html) class to define a parameter\. You'll want to specify at least a type and a description for most parameters, though both are technically optional\. The description appears when the user is prompted to enter the parameter's value in the AWS CloudFormation console\. For more information on the available types, see [Types](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/parameters-section-structure.html#parameters-section-structure-properties-type)\.
 
 **Note**  
-We recommend defining parameters at the stack level to ensure that their logical ID does not change when you refactor your code\.
+You can define parameters in any scope, but we recommend defining parameters at the stack level so that their logical ID does not change when you refactor your code\.
 
 ------
 #### [ TypeScript ]

@@ -80,7 +80,7 @@ cd MyEcsConstruct
 cdk init --language csharp
 ```
 
-You may now open `src/MyEcsConstruct.sln` in Visual Studio\./
+You may now open `src/MyEcsConstruct.sln` in Visual Studio\.
 
 ------
 

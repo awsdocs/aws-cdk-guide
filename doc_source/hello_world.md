@@ -152,7 +152,7 @@ Just to verify everything is working correctly, list the stacks in your app\.
 cdk ls
 ```
 
-If you don't see `HelloCdkStack`, make sure you named your app's directory `hello-cdk`\. If you didn't, go back to [Create the app](#hello_world_tutorial_create_app) and try again\.
+If you don't see `hello-cdk` stack, make sure you named your app's directory `hello-cdk`\. If you didn't, go back to [Create the app](#hello_world_tutorial_create_app) and try again\.
 
 ## Add an Amazon S3 bucket<a name="hello_world_tutorial_add_bucket"></a>
 
@@ -262,7 +262,7 @@ Replace the first import statement in `hello_cdk_stack.py` in the `hello_cdk` di
 ```
 from aws_cdk import (
     aws_s3 as s3,
-    core as cdk
+    core
 )
 ```
 
@@ -438,7 +438,7 @@ bucket = s3.Bucket(self,
     "MyFirstBucket",
     versioned=True,
     public_read_access=True,
-    removal_policy=cdk.RemovalPolicy.DESTROY)
+    removal_policy=core.RemovalPolicy.DESTROY)
 ```
 
 ------

@@ -1,6 +1,6 @@
 # Tokens<a name="tokens"></a>
 
-Tokens represent values that can only be resolved at a later time in the lifecycle of an app \(see [App lifecycle](apps.md#lifecycle)\)\. For example, the name of an Amazon S3 bucket that you define in your AWS CDK app is only allocated by AWS CloudFormation when you deploy your app\. If you print the `bucket.bucketName` attribute, which is a string, you see it contains something like the following\.
+Tokens represent values that can only be resolved at a later time in the lifecycle of an app \(see [App lifecycle](apps.md#lifecycle)\)\. For example, the name of an Amazon S3 bucket that you define in your AWS CDK app is only allocated when the AWS CloudFormation template is synthesized\. If you print the `bucket.bucketName` attribute, which is a string, you see it contains something like the following\.
 
 ```
 ${TOKEN[Bucket.Name.1234]}
