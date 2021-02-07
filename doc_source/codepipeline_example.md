@@ -45,7 +45,7 @@ During cloning, Git will warn you that you appear to have cloned an empty reposi
 
    ```
    cd pipeline
-   cdk init --language typescript
+   cdk init app --language typescript
    npm install @aws-cdk/aws-codedeploy @aws-cdk/aws-lambda @aws-cdk/aws-codebuild @aws-cdk/aws-codepipeline
    npm install @aws-cdk/aws-codecommit @aws-cdk/aws-codepipeline-actions
    ```
@@ -55,7 +55,7 @@ During cloning, Git will warn you that you appear to have cloned an empty reposi
 
    ```
    cd pipeline
-   cdk init ‐-language javascript
+   cdk init app ‐-language javascript
    npm install @aws-cdk/aws-codedeploy @aws-cdk/aws-lambda @aws-cdk/aws-codebuild @aws-cdk/aws-codepipeline
    npm install @aws-cdk/aws-codecommit @aws-cdk/aws-codepipeline-actions
    ```
@@ -69,7 +69,7 @@ During cloning, Git will warn you that you appear to have cloned an empty reposi
 
    ```
    cd pipeline
-   cdk init --language python
+   cdk init app --language python
    source .venv/bin/activate
    git commit -m "project started"
    pip install -r requirements.txt
@@ -82,7 +82,7 @@ During cloning, Git will warn you that you appear to have cloned an empty reposi
 
    ```
    cd pipeline
-   cdk init --language python
+   cdk init app --language python
    .venv\Scripts\activate.bat
    pip install -r requirements.txt
    pip install aws_cdk.aws_codedeploy aws_cdk.aws_lambda aws_cdk.aws_codebuild aws_cdk.aws_codepipeline
@@ -95,7 +95,7 @@ During cloning, Git will warn you that you appear to have cloned an empty reposi
 
    ```
    cd pipeline
-   cdk init --language java
+   cdk init app --language java
    ```
 
    You can import the resulting Maven project into your Java IDE\.
@@ -115,7 +115,7 @@ During cloning, Git will warn you that you appear to have cloned an empty reposi
 
    ```
    cd pipeline
-   cdk init --language csharp
+   cdk init app --language csharp
    ```
 
    You can open the file `src/Pipeline.sln` in Visual Studio\.
