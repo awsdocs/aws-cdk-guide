@@ -32,7 +32,7 @@ Create the app **MyWidgetService** in the current folder\.
 ```
 mkdir MyWidgetService
 cd MyWidgetService
-cdk init --language typescript
+cdk init app --language typescript
 ```
 
 ------
@@ -41,7 +41,7 @@ cdk init --language typescript
 ```
 mkdir MyWidgetService
 cd MyWidgetService
-cdk init ‐-language javascript
+cdk init app ‐-language javascript
 ```
 
 ------
@@ -50,7 +50,7 @@ cdk init ‐-language javascript
 ```
 mkdir MyWidgetService
 cd MyWidgetService
-cdk init --language python
+cdk init app --language python
 source .venv/bin/activate
 pip install -r requirements.txt
 ```
@@ -61,7 +61,7 @@ pip install -r requirements.txt
 ```
 mkdir MyWidgetService
 cd MyWidgetService
-cdk init --language java
+cdk init app --language java
 ```
 
 You may now import the Maven project into your IDE\.
@@ -72,7 +72,7 @@ You may now import the Maven project into your IDE\.
 ```
 mkdir MyWidgetService
 cd MyWidgetService
-cdk init --language csharp
+cdk init app --language csharp
 ```
 
 You may now open `src/MyWidgetService.sln` in Visual Studio\.
