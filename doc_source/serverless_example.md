@@ -41,7 +41,7 @@ cdk init --language typescript
 ```
 mkdir MyWidgetService
 cd MyWidgetService
-cdk init ‐-language javascript
+cdk init --language javascript
 ```
 
 ------

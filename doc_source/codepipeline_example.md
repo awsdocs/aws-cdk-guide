@@ -55,7 +55,7 @@ During cloning, Git will warn you that you appear to have cloned an empty reposi
 
    ```
    cd pipeline
-   cdk init ‐-language javascript
+   cdk init --language javascript
    npm install @aws-cdk/aws-codedeploy @aws-cdk/aws-lambda @aws-cdk/aws-codebuild @aws-cdk/aws-codepipeline
    npm install @aws-cdk/aws-codecommit @aws-cdk/aws-codepipeline-actions
    ```
