@@ -81,7 +81,7 @@ All AWS Construct Library modules used in your project must be the same version\
 
 ### Props<a name="typescript-props"></a>
 
-All AWS Construct Library classes are instantiated using three arguments: the *scope* in which the construct is being defined \(its parent in the construct tree\), a *name*, and *props*, a bundle of key/value pairs that the construct uses to configure the AWS resources it creates\. Other classes and methods also use the "bundle of attributes" pattern for arguments\.
+All AWS Construct Library classes are instantiated using three arguments: the *scope* in which the construct is being defined \(its parent in the construct tree\), an *id*, and *props*, a bundle of key/value pairs that the construct uses to configure the AWS resources it creates\. Other classes and methods also use the "bundle of attributes" pattern for arguments\.
 
 In TypeScript, the shape of `props` is defined using an interface that tells you the required and optional arguments and their types\. Such an interface is defined for each kind of `props` argument, usually specific to a single construct or method\. For example, the [Bucket](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.Bucket.html) construct \(in the `@aws-cdk/aws-s3 module`\) specifies a `props` argument conforming to the [BucketProps](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.BucketProps.html) interface\. 
 
@@ -89,7 +89,7 @@ If a property is itself an object, for example the [websiteRedirect](https://doc
 
 If you are subclassing an AWS Construct Library class \(or overriding a method that takes a props\-like argument\), you can inherit from the existing interface to create a new one that specifies any new props your code requires\. When calling the parent class or base method, generally you can pass the entire props argument you received, since any attributes provided in the object but not specified in the interface will be ignored\.
 
-However, we do occasionally add properties to constructs\. If a property we add in a later version happens to have the same name as one you're accepting, passing it up the chain can cause unexpected behavior\. It's safer to pass a shallow copy of the props you received with your property removed or set to `undefined`\. For example:
+A future release of the AWS CDK could coincidentally add a new property with a name you used for your own property\. Passing the value you receive up the inheritance chain can then cause unexpected behavior\. It's safer to pass a shallow copy of the props you received with your property removed or set to `undefined`\. For example:
 
 ```
 super(scope, name, {...props, encryptionKeys: undefined});

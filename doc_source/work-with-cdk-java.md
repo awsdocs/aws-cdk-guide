@@ -69,7 +69,7 @@ This value can be any valid Maven version specifier\. For example, `[1.XX.Y,2.0)
 
 ### Props<a name="java-props"></a>
 
-All AWS Construct Library classes are instantiated using three arguments: the *scope* in which the construct is being defined \(its parent in the construct tree\), a *name*, and *props*, a bundle of key/value pairs that the construct uses to configure the resources it creates\. Other classes and methods also use the "bundle of attributes" pattern for arguments\.
+All AWS Construct Library classes are instantiated using three arguments: the *scope* in which the construct is being defined \(its parent in the construct tree\), an *id*, and *props*, a bundle of key/value pairs that the construct uses to configure the resources it creates\. Other classes and methods also use the "bundle of attributes" pattern for arguments\.
 
 In Java, props are expressed using the [Builder pattern](https://en.wikipedia.org/wiki/Builder_pattern)\. Each construct type has a corresponding props type; for example, the `Bucket` construct \(which represents an Amazon S3 bucket\) takes as its props an instance of `BucketProps`\.
 
@@ -91,11 +91,11 @@ Bucket bucket = Bucket.Builder.create(this, "MyBucket")
                            .build();
 ```
 
-When deriving your own construct from an existing construct, you may want to accept additional properties\. We recommend that you follow these builder patterns\. However, this isn't as simple as subclassing a construct class\. You must provide the moving parts of the two new `Builder` classes yourself\. Given this fact, you may prefer to simply have your construct accept additional arguments\. In this case, provide additional constructors when an argument is optional\.
+When deriving your own construct from an existing construct, you may want to accept additional properties\. We recommend that you follow these builder patterns\. However, this isn't as simple as subclassing a construct class\. You must provide the moving parts of the two new `Builder` classes yourself\. You may prefer to simply have your construct accept one or more additional arguments\. You should provide additional constructors when an argument is optional\.
 
 ### Generic structures<a name="java-generic-structures"></a>
 
-In some places, the AWS CDK uses JavaScript arrays or untyped objects or as input to a method\. \(See, for example, AWS CodeBuild's [https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-codebuild.BuildSpec.html#to-wbr-build-wbr-spec](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-codebuild.BuildSpec.html#to-wbr-build-wbr-spec) method\.\) In Java, objects are represented as `java.util.Map<String, Object>`\. In cases where the values are all strings, you can use `Map<String, String>`\. It is convenient to use double braces to define `HashMap`s\. 
+In some places, the AWS CDK uses JavaScript arrays or untyped objects as input to a method\. \(See, for example, AWS CodeBuild's [https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-codebuild.BuildSpec.html#to-wbr-build-wbr-spec](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-codebuild.BuildSpec.html#to-wbr-build-wbr-spec) method\.\) In Java, these objects are represented as `java.util.Map<String, Object>`\. In cases where the values are all strings, you can use `Map<String, String>`\. It is convenient to use double braces to define `HashMap`s\. 
 
 ```
 new HashMap<String, String>() {{
@@ -105,7 +105,7 @@ new HashMap<String, String>() {{
 ```
 
 **Note**  
-The double\-brace notation \(which technically declares an anonymous inner class\) is sometimes considered an anti\-pattern\. However, its disadvantages are not very relevant to this use case, and it is a reasonably compact way to write what would be object or dictionary literals in other languages\.
+The double\-brace notation \(which technically declares an anonymous inner class\) is sometimes considered an anti\-pattern\. However, its disadvantages are not very relevant to using it in CDK apps\. It is a reasonable substitute for what would be object or dictionary literals in other languages\.
 
 JavaScript arrays are represented as `List<Object>` or `List<String>` in Java\. The method `java.util.Arrays.asList` is convenient for defining short `ArrayList`s\.
 

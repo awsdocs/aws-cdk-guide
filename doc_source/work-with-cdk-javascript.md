@@ -72,13 +72,13 @@ All AWS Construct Library modules used in your project must be the same version\
 
 ### Props<a name="javascript-props"></a>
 
-All AWS Construct Library classes are instantiated using three arguments: the *scope* in which the construct is being defined \(its parent in the construct tree\), a *name*, and *props*, a bundle of key/value pairs that the construct uses to configure the AWS resources it creates\. Other classes and methods also use the "bundle of attributes" pattern for arguments\.
+All AWS Construct Library classes are instantiated using three arguments: the *scope* in which the construct is being defined \(its parent in the construct tree\), an *id*, and *props*, a bundle of key/value pairs that the construct uses to configure the AWS resources it creates\. Other classes and methods also use the "bundle of attributes" pattern for arguments\.
 
 Using an IDE or editor that has good JavaScript autocomplete will help avoid misspelling property names\. If a construct is expecting an `encryptionKeys` property, and you spell it `encryptionkeys`, when instantiating the construct, you haven't passed the value you intended\. This can cause an error at synthesis time if the property is required, or cause the property to be silently ignored if it is optional\. In the latter case, you may get a default behavior you intended to override\. Take special care here\.
 
 When subclassing an AWS Construct Library class \(or overriding a method that takes a props\-like argument\), you may want to accept additional properties for your own use\. These values will be ignored by the parent class or overridden method, because they are never accessed in that code, so you can generally pass on all the props you received\.
 
-However, we do occasionally add properties to constructs\. If a property we add in a later version happens to have the same name as one you're accepting, passing it up the chain can cause unexpected behavior\. It's safer to pass a shallow copy of the props you received with your property removed or set to undefined\. For example:
+A future release of the AWS CDK could coincidentally add a new property with a name you used for your own property\. Passing the value you receive up the inheritance chain can then cause unexpected behavior\. It's safer to pass a shallow copy of the props you received with your property removed or set to `undefined`\. For example:
 
 ```
 super(scope, name, {...props, encryptionKeys: undefined});
