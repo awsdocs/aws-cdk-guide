@@ -250,22 +250,16 @@ The call to `app.synth()` is what tells the AWS CDK to synthesize a cloud assemb
 
 See the [cloud assembly specification](https://github.com/aws/aws-cdk/blob/master/design/cloud-assembly.md) for details on how cloud assemblies are formatted\.
 
-To interact with the cloud assembly that your AWS CDK app creates, you typically use the AWS CDK CLI\. But any tool that can read the cloud assembly format can be used to deploy your app\.
+To interact with the cloud assembly that your AWS CDK app creates, you typically use the AWS CDK Toolkit, a command\-line tool\. But any tool that can read the cloud assembly format can be used to deploy your app\.
 
-To work with the CDK CLI, you need to let it know how to execute an AWS CDK app\.
-
-```
-cdk --app executable cdk-command
-```
-
-The \-\-app option instructs the CLI to run your AWS CDK app, and its contents depend on the programming language you use\. Eventually it should be a program that the operating system can run\. You can also create the `cdk.json` file and add information to it so that you need to call only `cdk cdk-command`\. For example, for JavaScript apps, the `cdk.json` file might look like the following, where `node bin/my-app.js` executes a Node\.js program\.
+The CDK Toolkit needs to know how to execute your AWS CDK app\. If you created the project from a template using the `cdk init` command, your app's `cdk.json` file includes an `app` key that specifies the necessary command for the language the app is written in\. If your language requires compilation, the command line performs this step before running the app, so you can't forget to do it\.
 
 ------
 #### [ TypeScript ]
 
 ```
 {
-  "app": "node bin/my-app.js"
+  "app": "npx ts-node --prefer-ts-exts bin/my-app.ts"
 }
 ```
 
@@ -292,7 +286,7 @@ The \-\-app option instructs the CLI to run your AWS CDK app, and its contents d
 
 ```
 {
-  "app": "mvn -q exec:java",
+  "app": "mvn -e -q compile exec:java"
 }
 ```
 
@@ -301,18 +295,21 @@ The \-\-app option instructs the CLI to run your AWS CDK app, and its contents d
 
 ```
 {
-  "app": "dotnet run -p src/project-name/project-name.csproj"
+  "app": "dotnet run -p src/MyApp/MyApp.csproj"
 }
 ```
 
 ------
 
-**Note**  
-Use the `cdk init` command to create a language\-specific project, with a `cdk.json` file containing the correct configuration for the programming language you specify\.
+If you did not create your project using the CDK Toolkit, or wish to override the command line given in `cdk.json`, you can use the \-\-app option when issuing the `cdk` command\.
 
-The *cdk\-command* part of the AWS CDK CLI command represents what you want the AWS CDK to do with the app\.
+```
+cdk --app 'executable' cdk-command ...
+```
 
-The CLI can also interact directly with an already synthesized cloud assembly\. To do that, just pass the directory in which the cloud assembly is stored in `--app`\. The following example lists the stacks defined in the cloud assembly stored under `./my-cloud-assembly`\.
+The *executable* part of the command indicates the command that should be run to execute your CDK application\. Use quotation marks as shown, since such commands contain spaces\. The *cdk\-command* is a subcommand like synth or deploy that tells the CDK Toolkit what you want to do with your app\. Follow this with any additional options needed for that subcommand\.
+
+The CLI can also interact directly with an already\-synthesized cloud assembly\. To do that, just pass the directory in which the cloud assembly is stored in \-\-app\. The following example lists the stacks defined in the cloud assembly stored under `./my-cloud-assembly`\.
 
 ```
 cdk --app ./my-cloud-assembly ls
