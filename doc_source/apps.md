@@ -258,7 +258,7 @@ To work with the CDK CLI, you need to let it know how to execute an AWS CDK app\
 cdk --app executable cdk-command
 ```
 
-The \-\-app option instructs the CLI to run your AWS CDK app, and its contents depend on the programming language you use\. Eventually it should be a program that the operating system can run\. You can also create the `cdk.json`file and add information to it so that you need to call only `cdk cdk-command`\. For example, for JavaScript apps, the `cdk.json` file might look like the following, where `node bin/my-app.js` executes a Node\.js program\.
+The \-\-app option instructs the CLI to run your AWS CDK app, and its contents depend on the programming language you use\. Eventually it should be a program that the operating system can run\. You can also create the `cdk.json` file and add information to it so that you need to call only `cdk cdk-command`\. For example, for JavaScript apps, the `cdk.json` file might look like the following, where `node bin/my-app.js` executes a Node\.js program\.
 
 ------
 #### [ TypeScript ]
