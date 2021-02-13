@@ -186,43 +186,82 @@ string path = myConstruct.Node.Path;
 
 ## Unique IDs<a name="identifiers_unique_ids"></a>
 
-Since AWS CloudFormation requires that all logical IDs in a template are unique, the AWS CDK must be able to generate a unique identifier for each construct in an application\. Since the AWS CDK already has paths that are globally unique, the AWS CDK generates these unique identifiers by concatenating the elements of the path, and adds an 8\-digit hash\. The hash is necessary, as otherwise two distinct paths, such as `A/B/C` and `A/BC` would result in the same identifier\. The AWS CDK calls this concatenated path elements and hash the *unique ID* of the construct\.
+Since AWS CloudFormation requires that all logical IDs in a template are unique, the AWS CDK must be able to generate a unique identifier for each construct in an application\. Resources have paths that are globally unique \(the names of all scopes from the stack to a specific resource\) so the AWS CDK generates the necessary unique identifiers by concatenating the elements of the path and adding an 8\-digit hash\. \(The hash is necessary to distinguish distinct paths, such as `A/B/C` and `A/BC`, that would result in the same AWS CloudFormation identifier, since AWS CloudFormation identifiers are alphanumeric and cannot contain slashes or other separator characters\.\) The AWS CDK calls this string the *unique ID* of the construct\.
 
-You can access the unique ID of any construct programmatically, as shown in the following example, which gets the unique ID of `myConstruct` \(or `my_construct` in Python conventions\)\. Since ids must be unique within the scope they are created, their paths are always unique within a AWS CDK application\.
+In general, your AWS CDK app should not need to know about unique IDs\. You can, however, access the unique ID of any construct programmatically, as shown in the following example\.
 
 ------
 #### [ TypeScript ]
 
 ```
-const uid: string = myConstruct.node.uniqueId;
+const uid: string = Names.uniqueId(myConstruct);
 ```
 
 ------
 #### [ JavaScript ]
 
 ```
-const uid = myConstruct.node.uniqueId;
+const uid = Names.uniqueId(myConstruct);
 ```
 
 ------
 #### [ Python ]
 
 ```
-uid = my_construct.node.unique_id
+uid = Names.unique_id(my_construct)
 ```
 
 ------
 #### [ Java ]
 
 ```
-String uid  = myConstruct.getNode().getUniqueId();
+String uid = Names.uniqueId(myConstruct);
 ```
 
 ------
 #### [ C\# ]
 
 ```
-string uid = myConstruct.Node.UniqueId;
+string uid = Names.Uniqueid(myConstruct);
+```
+
+------
+
+The *address* is another kind of unique identifier that uniquely distinguishes CDK resources\. Derived from the SHA\-1 hash of the path, it is not human\-readable, but its constant, relatively short length \(always 42 hexadecimal characters\) makes it useful in situations where the "traditional" unique ID might be too long\. Some constructs may use the address in the synthesized AWS CloudFormation template instead of the unique ID\. Again, your app generally should not need to know about its constructs' addresses, but you can retrieve a construct's address as follows\.
+
+------
+#### [ TypeScript ]
+
+```
+const addr: string = myConstruct.node.addr;
+```
+
+------
+#### [ JavaScript ]
+
+```
+const addr = myConstruct.node.addr;
+```
+
+------
+#### [ Python ]
+
+```
+addr = my_construct.node.addr
+```
+
+------
+#### [ Java ]
+
+```
+String addr = myConstruct.getNode().getAddr();
+```
+
+------
+#### [ C\# ]
+
+```
+string addr = myConstruct.Node.Addr;
 ```
 
 ------
