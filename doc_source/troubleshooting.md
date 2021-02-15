@@ -54,7 +54,7 @@ You can edit your `package.json` file to lock the AWS Construct Library modules 
 ------
 #### [ Python ]
 
-Use a virtual environment to manage your project's AWS Construct Library modules\. For your convenience, `cdk init` creates a virtual environment for new Python projects in the project's `.env` directory\.
+Use a virtual environment to manage your project's AWS Construct Library modules\. For your convenience, `cdk init` creates a virtual environment for new Python projects in the project's `.venv` directory\.
 
 Add the AWS Construct Library modules your project uses to its `requirements.txt` file\. Use the `=` syntax to specify an exact version, or the `~=` syntax to constrain updates to versions without breaking API changes\. For example, the following specifies the latest version of the listed modules that are API\-compatible with version 1\.x: 
 
