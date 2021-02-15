@@ -29,13 +29,13 @@ And here's how you import it into your stack using `cloudformation-include`\.
 
 ```
 import * as cdk from '@aws-cdk/core';
-import * as cfn_inc from '@aws-cdk/cloudformation-include';
+import * as cfninc from '@aws-cdk/cloudformation-include';
 
 export class MyStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    const template = new cfn_inc.CfnInclude(this, 'Template', { 
+    const template = new cfninc.CfnInclude(this, 'Template', { 
       templateFile: 'my-template.json',
     });
   }
@@ -47,13 +47,13 @@ export class MyStack extends cdk.Stack {
 
 ```
 cost cdk = require('@aws-cdk/core');
-const cfn_inc = require('@aws-cdk/cloudformation-include');
+const cfninc = require('@aws-cdk/cloudformation-include');
 
 class MyStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    const template = new cfn_inc.CfnInclude(this, 'Template', { 
+    const template = new cfninc.CfnInclude(this, 'Template', { 
       templateFile: 'my-template.json',
     });
   }
@@ -107,7 +107,7 @@ public class MyStack extends Stack {
 
 ```
 using Amazon.CDK;
-using cfn_inc = Amazon.CDK.CloudFormation.Include;
+using cfnInc = Amazon.CDK.CloudFormation.Include;
 
 namespace MyApp
 {
@@ -115,7 +115,7 @@ namespace MyApp
     {
         internal MyStack(Construct scope, string id, IStackProps props = null) : base(scope, id, props)
         {
-            var template = new cfn_inc.CfnInclude(this, "Template", new cfn_inc.CfnIncludeProps
+            var template = new cfnInc.CfnInclude(this, "Template", new cfnInc.CfnIncludeProps
             {
                 TemplateFile = "my-template.json"
             });
@@ -134,7 +134,7 @@ If you are instead developing an AWS CDK construct wrapper for the template so i
 #### [ TypeScript ]
 
 ```
-const template = new cfn_inc.CfnInclude(this, 'MyConstruct', {
+const template = new cfninc.CfnInclude(this, 'MyConstruct', {
   templateFile: 'my-template.json',
   preserveLogicalIds: false
 });
@@ -144,7 +144,7 @@ const template = new cfn_inc.CfnInclude(this, 'MyConstruct', {
 #### [ JavaScript ]
 
 ```
-const template = new cfn_inc.CfnInclude(this, 'MyConstruct', {
+const template = new cfninc.CfnInclude(this, 'MyConstruct', {
   templateFile: 'my-template.json',
   preserveLogicalIds: false
 });
@@ -173,7 +173,7 @@ CfnInclude template = CfnInclude.Builder.create(this, "Template")
 #### [ C\# ]
 
 ```
-var template = new cfn_inc.CfnInclude(this, "Template", new cfn_inc.CfnIncludeProps
+var template = new cfnInc.CfnInclude(this, "Template", new cfn_inc.CfnIncludeProps
 {
     TemplateFile = "my-template.json",
     PreserveLogicalIds = false
@@ -394,7 +394,7 @@ If your included AWS CloudFormation template has parameters, you can replace the
 #### [ TypeScript ]
 
 ```
-const template = new cfn_inc.CfnInclude(this, 'Template', {
+const template = new cfninc.CfnInclude(this, 'Template', {
   templateFile: 'my-template.json',
   parameters: {
     'UploadBucket': bucket.bucketArn,
@@ -406,7 +406,7 @@ const template = new cfn_inc.CfnInclude(this, 'Template', {
 #### [ JavaScript ]
 
 ```
-const template = new cfn_inc.CfnInclude(this, 'Template', {
+const template = new cfninc.CfnInclude(this, 'Template', {
   templateFile: 'my-template.json',
   parameters: {
     'UploadBucket': bucket.bucketArn,
@@ -440,7 +440,7 @@ CfnInclude template = CfnInclude.Builder.create(this, "Template")
 #### [ C\# ]
 
 ```
-var template = new cfn_inc.CfnInclude(this, "Template", new cfn_inc.CfnIncludeProps
+var template = new cfnInc.CfnInclude(this, "Template", new cfnInc.CfnIncludeProps
 {
     TemplateFile = "my-template.json",
     Parameters = new Dictionary<string, string>
@@ -526,7 +526,7 @@ Given this resource definition in the main template, the following code shows ho
 
 ```
 // include nested stack when importing main stack
-const mainTemplate = new cfn_inc.CfnInclude(this, 'MainStack', {
+const mainTemplate = new cfninc.CfnInclude(this, 'MainStack', {
   templateFile: 'main-template.json',
   loadNestedStacks: {
     'NestedStack': {
@@ -546,7 +546,7 @@ const nestedTemplate = mainTemplate.loadNestedStack('NestedTemplate', {
 
 ```
 // include nested stack when importing main stack
-const mainTemplate = new cfn_inc.CfnInclude(this, 'MainStack', {
+const mainTemplate = new cfninc.CfnInclude(this, 'MainStack', {
   templateFile: 'main-template.json',
   loadNestedStacks: {
     'NestedStack': {
@@ -599,17 +599,17 @@ IncludedNestedStack nestedTemplate = mainTemplate.loadNestedStack("NestedTemplat
 
 ```
 // include nested stack when importing main stack
-var mainTemplate = new cfn_inc.CfnInclude(this, "MainStack", new cfn_inc.CfnIncludeProps
+var mainTemplate = new cfnInc.CfnInclude(this, "MainStack", new cfnInc.CfnIncludeProps
 {
     TemplateFile = "main-template.json",
-    LoadNestedStacks = new Dictionary<string, cfn_inc.ICfnIncludeProps>
+    LoadNestedStacks = new Dictionary<string, cfnInc.ICfnIncludeProps>
     {
-        { "NestedStack", new cfn_inc.CfnIncludeProps { TemplateFile = "nested-template.json" } }
+        { "NestedStack", new cfnInc.CfnIncludeProps { TemplateFile = "nested-template.json" } }
     }
 });
 
 // or add it some time after importing the main stack
-var nestedTemplate = mainTemplate.LoadNestedStack("NestedTemplate", new cfn_inc.CfnIncludeProps {
+var nestedTemplate = mainTemplate.LoadNestedStack("NestedTemplate", new cfnInc.CfnIncludeProps {
     TemplateFile = 'nested-template.json'
 });
 ```
