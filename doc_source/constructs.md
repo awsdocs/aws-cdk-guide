@@ -273,7 +273,7 @@ var bucket = new CfnBucket(this, "MyBucket", new CfnBucketProps
 
 ------
 
-In Python, Java, and C\#, L1 construct properties that aren't simple Booleans, strings, numbers, or containers are represented by types defined as inner classes of the L1 construct\. For example, the optional property `corsConfiguration` of a `CfnBucket` requires a wrapper of type `Cfn.CorsConfigurationProperty`\. Here we are defining `corsConfiguration` on a `CfnBucket` instance\. 
+In Python, Java, and C\#, L1 construct properties that aren't simple Booleans, strings, numbers, or containers are represented by types defined as inner classes of the L1 construct\. For example, the optional property `corsConfiguration` of a `CfnBucket` requires a wrapper of type `CfnBucket.CorsConfigurationProperty`\. Here we are defining `corsConfiguration` on a `CfnBucket` instance\. 
 
 ------
 #### [ TypeScript ]
