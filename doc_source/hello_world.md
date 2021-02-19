@@ -480,7 +480,7 @@ Now we'll use the `cdk diff` command to see the differences between what's alrea
 cdk diff
 ```
 
-The AWS CDK Toolkit queries your AWS account for the current AWS CloudFormation template for the `hello-cdk` stack, and compares it with the template it just synthesized from your app\. The Resources section of the output should look like the following\.
+The AWS CDK Toolkit queries your AWS account for the current AWS CloudFormation template for the `HelloCdkStack` and compares it with the template it just synthesized from your app\. The Resources section of the output should look like the following\.
 
 ```
 Stack HelloCdkStack
