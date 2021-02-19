@@ -1125,9 +1125,9 @@ Resources besides those that store data persistently may also have a `removalPol
 | RemovalPolicy\.RETAIN | Keep the contents of the resource when destroying the stack \(default\)\. The resource is orphaned from the stack and must be deleted manually\. If you attempt to re\-deploy the stack while the resource still exists, you will receive an error message due to a name conflict\. | 
 | RemovalPolicy\.DESTROY | The resource will be destroyed along with the stack\. | 
 
-AWS CloudFormation does not remove Amazon S3 buckets that contain files even if their removal policy is set to `DESTROY`\. Attempting to do so is a AWS CloudFormation error\. Delete the files from the bucket before destroying the stack\. You can automate this using a custom resource; see the third\-party construct [auto\-delete\-bucket](https://github.com/mobileposse/auto-delete-bucket/tree/master/src/lambda) for an example\.
+AWS CloudFormation does not remove Amazon S3 buckets that contain files even if their removal policy is set to `DESTROY`\. Attempting to do so is a AWS CloudFormation error\. To have the AWS CDK delete all files from the bucket before destroying it, set the bucket's `autoDeleteObjects` property to `true`\.
 
-Following is an example of creating an Amazon S3 bucket with `RemovalPolicy.DESTROY`\.
+Following is an example of creating an Amazon S3 bucket with `RemovalPolicy` of `DESTROY` and `autoDeleteOjbects` set to `true`\. \.
 
 ------
 #### [ TypeScript ]
@@ -1142,6 +1142,7 @@ export class CdkTestStack extends cdk.Stack {
   
     const bucket = new s3.Bucket(this, 'Bucket', {
       removalPolicy: cdk.RemovalPolicy.DESTROY,
+      autoDeleteObjects: true
     });
   }
 }
@@ -1159,7 +1160,8 @@ class CdkTestStack extends cdk.Stack {
     super(scope, id, props);
   
     const bucket = new s3.Bucket(this, 'Bucket', {
-      removalPolicy: cdk.RemovalPolicy.DESTROY
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+      autoDeleteObjects: true
     });
   }
 }
@@ -1179,7 +1181,8 @@ class CdkTestStack(cdk.stack):
         super().__init__(scope, id, **kwargs)
         
         bucket = s3.Bucket(self, "Bucket",
-            removal_policy=cdk.RemovalPolicy.DESTROY)
+            removal_policy=cdk.RemovalPolicy.DESTROY,
+            auto_delete_objects=True)
 ```
 
 ------
@@ -1198,7 +1201,8 @@ public class CdkTestStack extends Stack {
         super(scope, id, props);
 
         Bucket.Builder.create(this, "Bucket")
-                .removalPolicy(RemovalPolicy.DESTROY).build();
+                .removalPolicy(RemovalPolicy.DESTROY)
+                .autoDeleteObjects(true).build();
     }
 }
 ```
@@ -1213,7 +1217,8 @@ using Amazon.CDK.AWS.S3;
 public CdkTestStack(Construct scope, string id, IStackProps props) : base(scope, id, props)
 {
     new Bucket(this, "Bucket", new BucketProps {
-        RemovalPolicy = RemovalPolicy.DESTROY
+        RemovalPolicy = RemovalPolicy.DESTROY,
+        AutoDeleteObjects = true
     });
 }
 ```

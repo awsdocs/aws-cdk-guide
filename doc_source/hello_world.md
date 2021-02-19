@@ -400,7 +400,7 @@ You've deployed your first stack using the AWS CDK—congratulations\! But that'
 
 ## Modifying the app<a name="hello_world_tutorial_modify"></a>
 
-The AWS CDK can update your deployed resources after you modify your app\. Let's make a couple of changes to our bucket\. First, we'll enable public read access, so people out in the world can access the files we store in the bucket\. We also want to be able to delete the bucket automatically when we delete the stack, so we'll change its `RemovalPolicy`\. 
+The AWS CDK can update your deployed resources after you modify your app\. Let's make a couple of changes to our bucket\. First, we'll enable public read access, so people out in the world can access the files we store in the bucket\. We also want to be able to delete the bucket automatically when we delete the stack, so we'll change its `RemovalPolicy`\. Finally, because AWS CloudFormation won't delete Amazon S3 buckets that contain any objects, we'll ask the AWS CDK to delete the objects from our bucket before destroying the bucket\.
 
 ------
 #### [ TypeScript ]
@@ -411,7 +411,8 @@ Update `lib/hello-cdk-stack.ts`\.
 new s3.Bucket(this, 'MyFirstBucket', {
   versioned: true,
   publicReadAccess: true,
-  removalPolicy: cdk.RemovalPolicy.DESTROY
+  removalPolicy: cdk.RemovalPolicy.DESTROY,
+  autoDeleteObjects: true
 });
 ```
 
@@ -424,7 +425,8 @@ Update `lib/hello-cdk-stack.js`\.
 new s3.Bucket(this, 'MyFirstBucket', {
   versioned: true,
   publicReadAccess: true,
-  removalPolicy: cdk.RemovalPolicy.DESTROY
+  removalPolicy: cdk.RemovalPolicy.DESTROY,
+  autoDeleteObjects: true
 });
 ```
 
@@ -438,7 +440,8 @@ bucket = s3.Bucket(self,
     "MyFirstBucket",
     versioned=True,
     public_read_access=True,
-    removal_policy=core.RemovalPolicy.DESTROY)
+    removal_policy=core.RemovalPolicy.DESTROY
+    auto_delete_objects=True)
 ```
 
 ------
@@ -455,6 +458,7 @@ Bucket.Builder.create(this, "MyFirstBucket")
         .versioned(true)
         .publicReadAccess(true)
         .removalPolicy(RemovalPolicy.DESTROY)
+        .autoDeleteObjects(true)
         .build();
 ```
 
@@ -468,7 +472,8 @@ new Bucket(this, "MyFirstBucket", new BucketProps
 {
     Versioned = true,
     PublicReadAccess = true,
-    RemovalPolicy = RemovalPolicy.DESTROY
+    RemovalPolicy = RemovalPolicy.DESTROY,
+    AutoDeleteObjects = true
 });
 ```
 

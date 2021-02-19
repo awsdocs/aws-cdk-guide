@@ -350,7 +350,6 @@ public CdkTestStack(Construct scope, string id, IStackProps props) : base(scope,
 ------
 
 **Note**  
-AWS CloudFormation cannot delete a non\-empty Amazon S3 bucket\. If you set an Amazon S3 bucket's removal policy to `DESTROY`, and it contains data, attempting to destroy the stack will fail because the bucket cannot be deleted\.  
-It is possible to handle the destruction of an Amazon S3 bucket using an AWS CloudFormation [custom resource](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/template-custom-resources.html) that deletes the bucket's contents before attempting to delete the bucket itself\. The third\-party construct [https://github.com/mobileposse/auto-delete-bucket/tree/master/src/lambda](https://github.com/mobileposse/auto-delete-bucket/tree/master/src/lambda), for example, uses such a custom resource\.
+AWS CloudFormation cannot delete a non\-empty Amazon S3 bucket\. If you set an Amazon S3 bucket's removal policy to `DESTROY`, and it contains data, attempting to destroy the stack will fail because the bucket cannot be deleted\. You can have the AWS CDK delete the objects in the bucket before attempting to destroy it by setting the bucket's `autoDeleteObjects` prop to `true`\.
 
 \([back to list](#troubleshooting_top)\)
