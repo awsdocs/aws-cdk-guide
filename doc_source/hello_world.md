@@ -152,7 +152,7 @@ Just to verify everything is working correctly, list the stacks in your app\.
 cdk ls
 ```
 
-If you don't see `hello-cdk` stack, make sure you named your app's directory `hello-cdk`\. If you didn't, go back to [Create the app](#hello_world_tutorial_create_app) and try again\.
+If you don't see `HelloCdkStack`, make sure you named your app's directory `hello-cdk`\. If you didn't, go back to [Create the app](#hello_world_tutorial_create_app) and try again\.
 
 ## Add an Amazon S3 bucket<a name="hello_world_tutorial_add_bucket"></a>
 
