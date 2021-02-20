@@ -16,7 +16,7 @@ Context values are made available to your AWS CDK app in six different ways:
 
 The project file `cdk.context.json` is where the AWS CDK caches context values retrieved from your AWS account\. This practice avoids unexpected changes to your deployments when, for example, a new Amazon Linux AMI is released, changing your Auto Scaling group\. The AWS CDK does not write context data to any of the other files listed\. 
 
-We recommend that your project's context files be placed under version control along with the rest of your application, as the information in them is part of your app's state and is critical to being able to synthesize and deploy consistently\.
+We recommend that your project's context files be placed under version control along with the rest of your application, as the information in them is part of your app's state and is critical to being able to synthesize and deploy consistently\. It is also critical to successful automated deployment of stacks that rely on context values \(for example, using [CDK Pipelines](cdk_pipeline.md)\): since the deployment system won't have access to your AWS account, it will rely on the cached values in the context files\.
 
 Context values are scoped to the construct that created them; they are visible to child constructs, but not to siblings\. Context values set by the AWS CDK Toolkit \(the cdk command\), whether automatically, from a file, or from the \-\-context option, are implicitly set on the `App` construct, and so are visible to every construct in the app\.
 

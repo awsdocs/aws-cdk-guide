@@ -669,7 +669,9 @@ Vpc.FromLookup(this, id = "PublicVpc", new VpcLookupOptions
 
 ------
 
-Note that `Vpc.fromLookup()` works only in stacks that are defined with an explicit **account** and **region** in their `env` property\. If the AWS CDK attempts to look up an Amazon VPC from an [environment\-agnostic stack](stacks.md#stack_api), the CLI does not know which environment to query to find the VPC\.
+`Vpc.fromLookup()` works only in stacks that are defined with an explicit **account** and **region** in their `env` property\. If the AWS CDK attempts to look up an Amazon VPC from an [environment\-agnostic stack](stacks.md#stack_api), the CLI does not know which environment to query to find the VPC\.
+
+Results of `Vpc.fromLookup()` are cached in the project's `cdk.context.json` file\. Commit this file to version control if you will be deploying the stack in an environment that does not have access to the AWS account that defines the VPC, such as [CDK Pipelines](cdk_pipeline.md)\.
 
 Although you can use an imported resource anywhere, you cannot modify the imported resource\. For example, calling `addToResourcePolicy` \(Python: `add_to_resource_policy`\) on an imported `s3.Bucket` does nothing\.
 

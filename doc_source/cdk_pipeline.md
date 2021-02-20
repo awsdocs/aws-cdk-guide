@@ -4,7 +4,7 @@
 
 CDK Pipelines are self\-updating: if you add new application stages or new stacks, the pipeline automatically reconfigures itself to deploy those new stages and/or stacks\.
 
-If you've looked at our [AWS CodePipeline example](codepipeline_example.md), CDK Pipelines can do everything that example does, and more, with less code\. Going forward, we anticipate widespread adoption of CDK Pipelines by AWS CDK users\.
+If you've looked at our [AWS CodePipeline example](codepipeline_example.md), CDK Pipelines can do everything that example does, and more, with less code\. Going forward, we anticipate widespread adoption of CDK Pipelines by AWS CDK developers\.
 
 **Note**  
 CDK Pipelines is currently in developer preview, and its API is subject to change\. Breaking API changes will be announced in the AWS CDK [Release Notes](https://github.com/aws/aws-cdk/releases)\.
@@ -144,6 +144,9 @@ If you are using Visual Studio, open the solution file in the `src` directory\.
 ------
 
 Install the CDK Pipelines module along with others you'll be using\.
+
+**Tip**  
+Be sure to commit your `cdk.json` and `cdk.context.json` files in source control\. The context information \(such as feature flags and cached values retrieved from your AWS account\) are part of your project's state\. In particular, any cached values are critical to successful deployment, since your app won't be able to retrieve such values from your AWS account while running in the CI/CD environment\.
 
 ------
 #### [ TypeScript ]
