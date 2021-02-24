@@ -242,7 +242,7 @@ Tags.of(myConstruct).remove('tagname', {
 #### [ Python ]
 
 ```
-Tags.rof(my_construct).remove("tagname",
+Tags.of(my_construct).remove("tagname",
     include_resource_types=["AWS::Xxx::Yyy"],
     exclude_resource_types=["AWS::Xxx::Zzz"],
     priority=200,)
