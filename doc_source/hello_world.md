@@ -440,7 +440,7 @@ bucket = s3.Bucket(self,
     "MyFirstBucket",
     versioned=True,
     public_read_access=True,
-    removal_policy=core.RemovalPolicy.DESTROY
+    removal_policy=core.RemovalPolicy.DESTROY,
     auto_delete_objects=True)
 ```
 
