@@ -403,15 +403,37 @@ The `cdk diff` command compares the current version of a stack defined in your a
 ```
 Stack HelloCdkStack
 IAM Statement Changes
-┌───┬────────────────────────┬────────┬──────────────┬───────────┬───────────┐
-│   │ Resource               │ Effect │ Action       │ Principal │ Condition │
-├───┼────────────────────────┼────────┼──────────────┼───────────┼───────────┤
-│ + │ ${MyFirstBucket.Arn}/* │ Allow  │ s3:GetObject │ *         │           │
-└───┴────────────────────────┴────────┴──────────────┴───────────┴───────────┘
+┌───┬──────────────────────────────┬────────┬──────────────────────────────┬──────────────────────────────┬───────────┐
+│   │ Resource                     │ Effect │ Action                       │ Principal                    │ Condition │
+├───┼──────────────────────────────┼────────┼──────────────────────────────┼──────────────────────────────┼───────────┤
+│ + │ ${Custom::S3AutoDeleteObject │ Allow  │ sts:AssumeRole               │ Service:lambda.amazonaws.com │           │
+│   │ sCustomResourceProvider/Role │        │                              │                              │           │
+│   │ .Arn}                        │        │                              │                              │           │
+├───┼──────────────────────────────┼────────┼──────────────────────────────┼──────────────────────────────┼───────────┤
+│ + │ ${MyFirstBucket.Arn}         │ Allow  │ s3:DeleteObject*             │ AWS:${Custom::S3AutoDeleteOb │           │
+│   │ ${MyFirstBucket.Arn}/*       │        │ s3:GetBucket*                │ jectsCustomResourceProvider/ │           │
+│   │                              │        │ s3:GetObject*                │ Role.Arn}                    │           │
+│   │                              │        │ s3:List*                     │                              │           │
+└───┴──────────────────────────────┴────────┴──────────────────────────────┴──────────────────────────────┴───────────┘
+IAM Policy Changes
+┌───┬────────────────────────────────────────────────────────┬────────────────────────────────────────────────────────┐
+│   │ Resource                                               │ Managed Policy ARN                                     │
+├───┼────────────────────────────────────────────────────────┼────────────────────────────────────────────────────────┤
+│ + │ ${Custom::S3AutoDeleteObjectsCustomResourceProvider/Ro │ {"Fn::Sub":"arn:${AWS::Partition}:iam::aws:policy/serv │
+│   │ le}                                                    │ ice-role/AWSLambdaBasicExecutionRole"}                 │
+└───┴────────────────────────────────────────────────────────┴────────────────────────────────────────────────────────┘
 (NOTE: There may be security-related changes not in this list. See https://github.com/aws/aws-cdk/issues/1299)
+
+Parameters
+[+] Parameter AssetParameters/4cd61014b71160e8c66fe167e43710d5ba068b80b134e9bd84508cf9238b2392/S3Bucket AssetParameters4cd61014b71160e8c66fe167e43710d5ba068b80b134e9bd84508cf9238b2392S3BucketBF7A7F3F: {"Type":"String","Description":"S3 bucket for asset \"4cd61014b71160e8c66fe167e43710d5ba068b80b134e9bd84508cf9238b2392\""}
+[+] Parameter AssetParameters/4cd61014b71160e8c66fe167e43710d5ba068b80b134e9bd84508cf9238b2392/S3VersionKey AssetParameters4cd61014b71160e8c66fe167e43710d5ba068b80b134e9bd84508cf9238b2392S3VersionKeyFAF93626: {"Type":"String","Description":"S3 key for asset version \"4cd61014b71160e8c66fe167e43710d5ba068b80b134e9bd84508cf9238b2392\""}
+[+] Parameter AssetParameters/4cd61014b71160e8c66fe167e43710d5ba068b80b134e9bd84508cf9238b2392/ArtifactHash AssetParameters4cd61014b71160e8c66fe167e43710d5ba068b80b134e9bd84508cf9238b2392ArtifactHashE56CD69A: {"Type":"String","Description":"Artifact hash for asset \"4cd61014b71160e8c66fe167e43710d5ba068b80b134e9bd84508cf9238b2392\""}
 
 Resources
 [+] AWS::S3::BucketPolicy MyFirstBucket/Policy MyFirstBucketPolicy3243DEFD
+[+] Custom::S3AutoDeleteObjects MyFirstBucket/AutoDeleteObjectsCustomResource MyFirstBucketAutoDeleteObjectsCustomResourceC52FCF6E
+[+] AWS::IAM::Role Custom::S3AutoDeleteObjectsCustomResourceProvider/Role CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092
+[+] AWS::Lambda::Function Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F
 [~] AWS::S3::Bucket MyFirstBucket MyFirstBucketB8884501
  ├─ [~] DeletionPolicy
  │   ├─ [-] Retain

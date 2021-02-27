@@ -89,7 +89,7 @@ To clear all of the stored context values for your app, run cdk context \-\-clea
 cdk context --clear
 ```
 
-Only context values stored in `cdk.context.json` can be reset or cleared\. The AWS CDK does not touch other context files\. To protect a context value from being reset using these commands, then, you might copy the value to `cdk.json`\.
+Only context values stored in `cdk.context.json` can be reset or cleared\. The AWS CDK does not touch other context values\. To protect a context value from being reset using these commands, then, you might copy the value to `cdk.json`\.
 
 ## AWS CDK Toolkit `--context` flag<a name="context_cli"></a>
 

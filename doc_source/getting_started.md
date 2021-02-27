@@ -109,7 +109,7 @@ To help you use the AWS CDK in your favorite language, this Guide includes topic
 + [Working with the AWS CDK in Java](work-with-cdk-java.md)
 + [Working with the AWS CDK in C\#](work-with-cdk-csharp.md)
 
-Furthermore, since TypeScript was the first language supported by the AWS CDK, much AWS CDK example code is written in TypeScript\. For this reason, this Guide also includes a topic specifically to show how to adapt TypeScript AWS CDK code for use with the other supported languages\. See [Translating TypeScript AWS CDK code to other languages](multiple_languages.md)\.
+TypeScript was the first language supported by the AWS CDK, and much AWS CDK example code is written in TypeScript\. This Guide includes a topic specifically to show how to adapt TypeScript AWS CDK code for use with the other supported languages\. See [Translating TypeScript AWS CDK code to other languages](multiple_languages.md)\.
 
 ## Prerequisites<a name="getting_started_prerequisites"></a>
 
@@ -191,6 +191,14 @@ Run the following command to verify correct installation and print the version n
 
 ```
 cdk --version
+```
+
+## Bootstrapping<a name="getting_started_bootstrap"></a>
+
+Many AWS CDK stacks that you write will include [assets](assets.md): external files that are deployed with the stack, such as AWS Lambda functions Docker images\. The AWS CDK uploads these to an Amazon S3 bucket or other container so they are available to AWS CloudFormation during deployment\. Deployment requires that these containers already exist in the account and region you are deploying into\. Creating them is called [bootstrapping](bootstrapping.md)\. To bootstrap, issue:
+
+```
+cdk bootstrap
 ```
 
 ## AWS CDK tools<a name="getting_started_tools"></a>

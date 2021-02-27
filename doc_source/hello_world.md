@@ -1,8 +1,10 @@
 # Your first AWS CDK app<a name="hello_world"></a>
 
-You've read [Getting started with the AWS CDK](getting_started.md)? Great\! Now let's see how it feels to work with the AWS CDK by building the simplest possible AWS CDK app\. In this tutorial you'll learn about the structure of a AWS CDK project, how to work with the AWS Construct Library, and how to use the AWS CDK Toolkit command\-line tool\.
+You've read [Getting started with the AWS CDK](getting_started.md) and set up your development environment for writing AWS CDK apps? Great\! Now let's see how it feels to work with the AWS CDK by building the simplest possible AWS CDK app\. 
 
-The standard AWS CDK development workflow is similar to the workflow you're already familiar with as a developer, just with a few extra steps to synthesize your stack to an AWS CloudFormation template and deploy it\.
+In this tutorial, you'll learn about the structure of a AWS CDK project, how to use the AWS Construct Library to define AWS resources using code, and how to synthesize, diff, and deploy collections of resources using the AWS CDK Toolkit command\-line tool\.
+
+The standard AWS CDK development workflow is similar to the workflow you're already familiar with as a developer, just with a few extra steps\.
 
 1. Create the app from a template provided by the AWS CDK
 
@@ -16,7 +18,7 @@ The standard AWS CDK development workflow is similar to the workflow you're alre
 
 The build step catches syntax and type errors\. The synthesis step catches logical errors in defining your AWS resources\. The deployment may find permission issues\. As always, you go back to the code, find the problem, fix it, then build, synthesize and deploy again\.
 
-**Note**  
+**Tip**  
 Don't forget to keep your AWS CDK code under version control\!
 
 This tutorial walks you through creating and deploying a simple AWS CDK app, from initializing the project to deploying the resulting AWS CloudFormation template\. The app contains one stack, which contains one resource: an Amazon S3 bucket\. 
@@ -27,21 +29,15 @@ We'll also show what happens when you make a change and re\-deploy, and how to c
 
 Each AWS CDK app should be in its own directory, with its own local module dependencies\. Create a new directory for your app\. Starting in your home directory, or another directory if you prefer, issue the following commands\.
 
+**Important**  
+Be sure to name your project directory `hello-cdk`, *exactly as shown here\.* The AWS CDK project template uses the directory name to name things in the generated code, so if you use a different name, the code in this tutorial won't work\.
+
 ```
 mkdir hello-cdk
 cd hello-cdk
 ```
 
-**Important**  
-Be sure to name your project directory `hello-cdk`, *exactly as shown here\.* The AWS CDK project template uses the directory name to name things in the generated code, so if you use a different name, some of the code in this tutorial won't work\.
-
-Now initialize the app using the cdk init command, specifying the desired template \("app"\) and programming language\.
-
-```
-cdk init TEMPLATE --language LANGUAGE
-```
-
-That is:
+Now initialize the app using the cdk init command, specifying the desired template \("app"\) and programming language\. That is:
 
 ------
 #### [ TypeScript ]
@@ -94,7 +90,7 @@ If you are using Visual Studio, open the solution file in the `src` directory\.
 **Tip**  
 If you don't specify a template, the default is "app," which is the one we wanted anyway, so technically you can leave it out and save four keystrokes\.
 
-The cdk init command creates a number of files and folders inside the `hello-cdk` directory to help you organize the source code for your AWS CDK app\. Take a moment to explore\. The structure of a basic app is all there; you'll fill in the details as you progress in this tutorial\.
+The cdk init command creates a number of files and folders inside the `hello-cdk` directory to help you organize the source code for your AWS CDK app\. Take a moment to explore\. The structure of a basic app is all there; you'll fill in the details in this tutorial\.
 
 If you have Git installed, each project you create using cdk init is also initialized as a Git repository\. We'll ignore that for now, but it's there when you need it\.
 
@@ -126,7 +122,6 @@ No build step is necessary\.
 mvn compile -q
 ```
 
-**Note**  
 Or press Control\-B in Eclipse \(other Java IDEs may vary\)
 
 ------
@@ -136,7 +131,6 @@ Or press Control\-B in Eclipse \(other Java IDEs may vary\)
 dotnet build src
 ```
 
-**Note**  
 Or press F6 in Visual Studio
 
 ------
@@ -156,7 +150,7 @@ If you don't see `HelloCdkStack`, make sure you named your app's directory `hell
 
 ## Add an Amazon S3 bucket<a name="hello_world_tutorial_add_bucket"></a>
 
-At this point, your app doesn't do anything useful because the stack doesn't define any resources\. Let's define an Amazon S3 bucket\.
+At this point, your app doesn't do anything because the stack it contains doesn't define any resources\. Let's add an Amazon S3 bucket\.
 
 Install the Amazon S3 package from the AWS Construct Library\.
 
@@ -210,7 +204,7 @@ Or **Tools** > **NuGet Package Manager** > **Manage NuGet Packages for Solution*
 
 ------
 
-Next, define an Amazon S3 bucket in the stack using an L2 construct, the [Bucket](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.Bucket.html) class\.
+Next, define an Amazon S3 bucket in the stack using the [Bucket](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.Bucket.html) construct\.
 
 ------
 #### [ TypeScript ]
@@ -335,10 +329,10 @@ All constructs take these same three arguments, so it's easy to stay oriented as
 **Tip**  
 If all a construct's props are optional, you can omit the third parameter entirely\.
 
-It's interesting to take note of how props are represented in the different supported languages\.
+Props are represented differently in the languages supported by the AWS CDK\.
 + In TypeScript and JavaScript, `props` is a single argument and you pass in an object containing the desired properties\.
-+ In Python, props are represented as keyword arguments\.
-+ In Java, a Builder is provided to pass the props\. \(Two, actually; one for `BucketProps`, and a second for `Bucket` to let you build the construct and its props object in one step\. This code uses the latter\.\)
++ In Python, props are passed as keyword arguments\.
++ In Java, a Builder is provided to pass the props\. Two, actually; one for `BucketProps`, and a second for `Bucket` to let you build the construct and its props object in one step\. This code uses the latter\.
 + In C\#, you instantiate a `BucketProps` object using an object initializer and pass it as the third parameter\.
 
 ## Synthesize an AWS CloudFormation template<a name="hello_world_tutorial_synth"></a>
@@ -349,12 +343,12 @@ Synthesize an AWS CloudFormation template for the app, as follows\.
 cdk synth
 ```
 
-If your app contained more than one stack, you'd need to specify which stack\(s\) to synthesize\. But since it only contains one, the Toolkit knows you must mean that one\.
+If your app contained more than one stack, you'd need to specify which stack\(s\) to synthesize\. But since it only contains one, the CDK Toolkit knows you must mean that one\.
 
 **Tip**  
 If you received an error like `--app is required...`, it's probably because you are running the command from a subdirectory\. Navigate to the main app directory and try again\.
 
-The `cdk synth` command executes your app, which causes the resources defined in it to be translated to an AWS CloudFormation template\. The displayed output of `cdk synth` is a YAML\-format template; our app's output is shown below\. The template is also saved in the `cdk.out` directory in JSON format\.
+The `cdk synth` command executes your app, which causes the resources defined in it to be translated into an AWS CloudFormation template\. The displayed output of `cdk synth` is a YAML\-format template; the beginning of our app's output is shown below\. The template is also saved in the `cdk.out` directory in JSON format\.
 
 ```
 Resources:
@@ -367,18 +361,15 @@ Resources:
     DeletionPolicy: Retain
     Metadata:
       aws:cdk:path: HelloCdkStack/MyFirstBucket/Resource
-  CDKMetadata:
-    Type: AWS::CDK::Metadata
-    Properties:
-      Modules: aws-cdk=1.XX.X,@aws-cdk/aws-events=1.XX.X,@aws-cdk/aws-iam=1.XX.X,@aws-cdk/aws-kms=1.XX.X,@aws-cdk/aws-s3=1.XX.X,@aws-cdk/cdk-assets-schema=1.XX.X,@aws-cdk/cloud-assembly-schema=1.XX.X,@aws-cdk/core=1.XX.X,@aws-cdk/cx-api=1.XX.X,@aws-cdk/region-info=1.XX.X,jsii-runtime=node.js/vXX.XX.X
+  CDKMetadata: ...
 ```
 
-Even if you aren't very familiar with AWS CloudFormation, you should be able to find the definition for an `AWS::S3::Bucket` and see how the versioning configuration was translated\. 
+Even if you aren't very familiar with AWS CloudFormation, you should be able to find the definition for the bucket and see how the `versioned` property was translated\. 
 
 **Note**  
-Every generated template contains a `AWS::CDK::Metadata` resource by default\. The AWS CDK team uses this metadata to gain insight into how the AWS CDK is used, so we can continue to improve it\. For details, including how to opt out of version reporting, see [Version reporting](cli.md#version_reporting)\.
+Every generated template contains a `AWS::CDK::Metadata` resource by default\. \(We haven't shown it here\.\) The AWS CDK team uses this metadata to gain insight into how the AWS CDK is used, so we can continue to improve it\. For details, including how to opt out of version reporting, see [Version reporting](cli.md#version_reporting)\.
 
-The `cdk synth` generates a perfectly valid AWS CloudFormation template\. You could take it and deploy it using the AWS CloudFormation console\. But the AWS CDK Toolkit also has that feature built\-in\.
+The `cdk synth` generates a perfectly valid AWS CloudFormation template\. You could take it and deploy it using the AWS CloudFormation console or another tool\. But the AWS CDK Toolkit can also do that\.
 
 ## Deploying the stack<a name="hello_world_tutorial_deploy"></a>
 
@@ -392,7 +383,7 @@ As with `cdk synth`, you don't need to specify the name of the stack since there
 
 It is optional \(though good practice\) to synthesize before deploying\. The AWS CDK synthesizes your stack before each deployment\.
 
-If your code changes have security implications, you'll see a summary of these, and be asked to confirm them before deployment proceeds\.
+If your code has security implications, you'll see a summary of these and need to confirm them before deployment proceeds\. This isn't the case in our stack\.
 
 `cdk deploy` displays progress information as your stack is deployed\. When it's done, the command prompt reappears\. You can go to the [AWS CloudFormation console](https://console.aws.amazon.com/cloudformation/home) and see that it now lists `HelloCdkStack`\. You'll also find `MyFirstBucket` in the Amazon S3 console\.
 
@@ -400,7 +391,7 @@ You've deployed your first stack using the AWS CDK—congratulations\! But that'
 
 ## Modifying the app<a name="hello_world_tutorial_modify"></a>
 
-The AWS CDK can update your deployed resources after you modify your app\. Let's make a couple of changes to our bucket\. First, we'll enable public read access, so people out in the world can access the files we store in the bucket\. We also want to be able to delete the bucket automatically when we delete the stack, so we'll change its `RemovalPolicy`\. Finally, because AWS CloudFormation won't delete Amazon S3 buckets that contain any objects, we'll ask the AWS CDK to delete the objects from our bucket before destroying the bucket\.
+The AWS CDK can update your deployed resources after you modify your app\. Let's change our bucket so it can be automatically deleted when we delete the stack, which involves changing its `RemovalPolicy`\. Also, because AWS CloudFormation won't delete Amazon S3 buckets that contain any objects, we'll ask the AWS CDK to delete the objects from our bucket before destroying the bucket, via the `autoDeleteObjects` property\.\.
 
 ------
 #### [ TypeScript ]
@@ -410,7 +401,6 @@ Update `lib/hello-cdk-stack.ts`\.
 ```
 new s3.Bucket(this, 'MyFirstBucket', {
   versioned: true,
-  publicReadAccess: true,
   removalPolicy: cdk.RemovalPolicy.DESTROY,
   autoDeleteObjects: true
 });
@@ -424,7 +414,6 @@ Update `lib/hello-cdk-stack.js`\.
 ```
 new s3.Bucket(this, 'MyFirstBucket', {
   versioned: true,
-  publicReadAccess: true,
   removalPolicy: cdk.RemovalPolicy.DESTROY,
   autoDeleteObjects: true
 });
@@ -436,10 +425,8 @@ new s3.Bucket(this, 'MyFirstBucket', {
 Update `hello_cdk/hello_cdk_stack.py`\.
 
 ```
-bucket = s3.Bucket(self, 
-    "MyFirstBucket",
+bucket = s3.Bucket(self, "MyFirstBucket",
     versioned=True,
-    public_read_access=True,
     removal_policy=core.RemovalPolicy.DESTROY,
     auto_delete_objects=True)
 ```
@@ -456,7 +443,6 @@ import software.amazon.awscdk.services.s3.BucketEncryption;
 ```
 Bucket.Builder.create(this, "MyFirstBucket")
         .versioned(true)
-        .publicReadAccess(true)
         .removalPolicy(RemovalPolicy.DESTROY)
         .autoDeleteObjects(true)
         .build();
@@ -471,7 +457,6 @@ Update `HelloCdkStack.cs`\.
 new Bucket(this, "MyFirstBucket", new BucketProps
 {
     Versioned = true,
-    PublicReadAccess = true,
     RemovalPolicy = RemovalPolicy.DESTROY,
     AutoDeleteObjects = true
 });
@@ -479,26 +464,50 @@ new Bucket(this, "MyFirstBucket", new BucketProps
 
 ------
 
-Now we'll use the `cdk diff` command to see the differences between what's already been deployed, and the app as it stands right now\.
+Here, we haven't written any code that, in itself, changes our Amazon S3 bucket\. Instead, our code defines the desired state of the bucket\. The AWS CDK synthesizes that state to a new AWS CloudFormation template and deploys a changeset that makes only the changes necessary to reach that state\.
+
+To see these changes, we'll use the `cdk diff` command \.
 
 ```
 cdk diff
 ```
 
-The AWS CDK Toolkit queries your AWS account for the current AWS CloudFormation template for the `HelloCdkStack` and compares it with the template it just synthesized from your app\. The Resources section of the output should look like the following\.
+The AWS CDK Toolkit queries your AWS account for the last\-deployed AWS CloudFormation template for the `HelloCdkStack` and compares it with the template it just synthesized from your app\. The output should look like the following\.
 
 ```
 Stack HelloCdkStack
 IAM Statement Changes
-┌───┬────────────────────────┬────────┬──────────────┬───────────┬───────────┐
-│   │ Resource               │ Effect │ Action       │ Principal │ Condition │
-├───┼────────────────────────┼────────┼──────────────┼───────────┼───────────┤
-│ + │ ${MyFirstBucket.Arn}/* │ Allow  │ s3:GetObject │ *         │           │
-└───┴────────────────────────┴────────┴──────────────┴───────────┴───────────┘
+┌───┬──────────────────────────────┬────────┬──────────────────────────────┬──────────────────────────────┬───────────┐
+│   │ Resource                     │ Effect │ Action                       │ Principal                    │ Condition │
+├───┼──────────────────────────────┼────────┼──────────────────────────────┼──────────────────────────────┼───────────┤
+│ + │ ${Custom::S3AutoDeleteObject │ Allow  │ sts:AssumeRole               │ Service:lambda.amazonaws.com │           │
+│   │ sCustomResourceProvider/Role │        │                              │                              │           │
+│   │ .Arn}                        │        │                              │                              │           │
+├───┼──────────────────────────────┼────────┼──────────────────────────────┼──────────────────────────────┼───────────┤
+│ + │ ${MyFirstBucket.Arn}         │ Allow  │ s3:DeleteObject*             │ AWS:${Custom::S3AutoDeleteOb │           │
+│   │ ${MyFirstBucket.Arn}/*       │        │ s3:GetBucket*                │ jectsCustomResourceProvider/ │           │
+│   │                              │        │ s3:GetObject*                │ Role.Arn}                    │           │
+│   │                              │        │ s3:List*                     │                              │           │
+└───┴──────────────────────────────┴────────┴──────────────────────────────┴──────────────────────────────┴───────────┘
+IAM Policy Changes
+┌───┬────────────────────────────────────────────────────────┬────────────────────────────────────────────────────────┐
+│   │ Resource                                               │ Managed Policy ARN                                     │
+├───┼────────────────────────────────────────────────────────┼────────────────────────────────────────────────────────┤
+│ + │ ${Custom::S3AutoDeleteObjectsCustomResourceProvider/Ro │ {"Fn::Sub":"arn:${AWS::Partition}:iam::aws:policy/serv │
+│   │ le}                                                    │ ice-role/AWSLambdaBasicExecutionRole"}                 │
+└───┴────────────────────────────────────────────────────────┴────────────────────────────────────────────────────────┘
 (NOTE: There may be security-related changes not in this list. See https://github.com/aws/aws-cdk/issues/1299)
+
+Parameters
+[+] Parameter AssetParameters/4cd61014b71160e8c66fe167e43710d5ba068b80b134e9bd84508cf9238b2392/S3Bucket AssetParameters4cd61014b71160e8c66fe167e43710d5ba068b80b134e9bd84508cf9238b2392S3BucketBF7A7F3F: {"Type":"String","Description":"S3 bucket for asset \"4cd61014b71160e8c66fe167e43710d5ba068b80b134e9bd84508cf9238b2392\""}
+[+] Parameter AssetParameters/4cd61014b71160e8c66fe167e43710d5ba068b80b134e9bd84508cf9238b2392/S3VersionKey AssetParameters4cd61014b71160e8c66fe167e43710d5ba068b80b134e9bd84508cf9238b2392S3VersionKeyFAF93626: {"Type":"String","Description":"S3 key for asset version \"4cd61014b71160e8c66fe167e43710d5ba068b80b134e9bd84508cf9238b2392\""}
+[+] Parameter AssetParameters/4cd61014b71160e8c66fe167e43710d5ba068b80b134e9bd84508cf9238b2392/ArtifactHash AssetParameters4cd61014b71160e8c66fe167e43710d5ba068b80b134e9bd84508cf9238b2392ArtifactHashE56CD69A: {"Type":"String","Description":"Artifact hash for asset \"4cd61014b71160e8c66fe167e43710d5ba068b80b134e9bd84508cf9238b2392\""}
 
 Resources
 [+] AWS::S3::BucketPolicy MyFirstBucket/Policy MyFirstBucketPolicy3243DEFD
+[+] Custom::S3AutoDeleteObjects MyFirstBucket/AutoDeleteObjectsCustomResource MyFirstBucketAutoDeleteObjectsCustomResourceC52FCF6E
+[+] AWS::IAM::Role Custom::S3AutoDeleteObjectsCustomResourceProvider/Role CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092
+[+] AWS::Lambda::Function Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F
 [~] AWS::S3::Bucket MyFirstBucket MyFirstBucketB8884501
  ├─ [~] DeletionPolicy
  │   ├─ [-] Retain
@@ -508,16 +517,21 @@ Resources
      └─ [+] Delete
 ```
 
-The diff indicates two things\. First, that the stack has a new IAM policy statement that grants everyone \(principal `*`\) read access \(`s3:GetObject` action\) to our bucket\. Note that we didn't need to create this statement; the AWS CDK did it for us\. All we needed to do was set the `publicReadAccess` property when instantiating the bucket\.
+This diff has four sections\.
++ **IAM Statement Changes** and **IAM Policy Changes** \- These permission changes are there because we set the `AutoDeleteObjects` property on our Amazon S3 bucket\. The auto\-delete feature uses a custom resource to delete the objects in the bucket before the bucket itself is deleted\. The IAM objects grant the custom resource's code access to the bucket\.
++ **Parameters** \- The AWS CDK uses these entries to locate the Lambda function asset for the custom resource\.
++ **Resources** \- The new and changed resources in this stack\. We can see the aforementioned IAM objects, the custom resource ,and its associated Lambda function being added\. We can also see that the bucket's `DeletionPolicy` and `UpdateReplacePolicy` attributes are being updated\. These allow the bucket to be deleted along with the stack, and to be replaced with a new one\.
 
-**Note**  
-It's informative to look at the output of cdk synth here and see the twenty additional lines of AWS CloudFormation template that the AWS CDK generated for us when we changed one property of our bucket\.
+You may be curious about why we specified `RemovalPolicy` in our AWS CDK app but got a `DeletionPolicy` property in the resulting AWS CloudFormation template\. The AWS CDK uses a different name for the property because the AWS CDK default is to retain the bucket when the stack is deleted, while AWS CloudFormation's default is to delete it\. See [Removal policies](resources.md#resources_removal) for further details\.
 
-Besides the new policy, we can also see the `DeletionPolicy` property is set to `Delete`, enabling the bucket to be deleted when its stack is deleted\. The `UpdateReplacePolicy `is also changed to cause the bucket to be deleted if it were to be replaced with a new one\.
+It's informative to compare the output of cdk synth here with the previous output and see the many additional lines of AWS CloudFormation template that the AWS CDK generated for us based on these relatively small changes\.
 
-Don't be confused by the difference between `RemovalPolicy` in your AWS CDK app and `DeletionPolicy` in the resulting AWS CloudFormation template\. The AWS CDK calls it `RemovalPolicy` because its semantics are slightly different from AWS CloudFormation's `DeletionPolicy`: the AWS CDK default is to retain the bucket when the stack is deleted, while AWS CloudFormation's default is to delete it\. See [Removal policies](resources.md#resources_removal) for further details\.
+**Important**  
+Since the `autoDeleteObjects` property is implemented using a AWS CloudFormation custom resource, which is implemented using an AWS Lambda function, our stack contains an [asset](assets.md)\. This fact requires that our AWS account and region be [bootstrapped](bootstrapping.md) so that there's an Amazon S3 bucket to hold the asset during deployment\. If you haven't already bootstrapped, issue:  
 
-You can also see that the bucket isn't going to be replaced, but will be updated with the new properties\.
+```
+cdk bootstrap
+```
 
 Now let's deploy\.
 
@@ -525,19 +539,34 @@ Now let's deploy\.
 cdk deploy
 ```
 
-The AWS CDK warns you about the security policy change we previously saw in the diff\. Enter y to approve the changes and deploy the updated stack\. The Toolkit updates the bucket configuration as you requested\.
+The AWS CDK warns you about the security policy changes we've already seen in the diff\. Enter y to approve the changes and deploy the updated stack\. The CDK Toolkit updates the bucket configuration as you requested\.
 
 ```
-HelloCdkStack: deploying...
+HHelloCdkStack: deploying...
+[0%] start: Publishing 4cd61014b71160e8c66fe167e43710d5ba068b80b134e9bd84508cf9238b2392:current
+[100%] success: Published 4cd61014b71160e8c66fe167e43710d5ba068b80b134e9bd84508cf9238b2392:current
 HelloCdkStack: creating CloudFormation changeset...
- 1/1 | 8:39:43 AM | UPDATE_COMPLETE      | AWS::S3::Bucket    | MyFirstBucket (MyFirstBucketB8884501)
- 1/1 | 8:39:44 AM | UPDATE_COMPLETE_CLEA | AWS::CloudFormation::Stack | HelloCdkStack
- 2/1 | 8:39:45 AM | UPDATE_COMPLETE      | AWS::CloudFormation::Stack | HelloCdkStack
+ 0/5 | 4:32:31 PM | UPDATE_IN_PROGRESS   | AWS::CloudFormation::Stack  | HelloCdkStack User Initiated
+ 0/5 | 4:32:36 PM | CREATE_IN_PROGRESS   | AWS::IAM::Role              | Custom::S3AutoDeleteObjectsCustomResourceProvider/Role (CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092)
+ 1/5 | 4:32:36 PM | UPDATE_COMPLETE      | AWS::S3::Bucket             | MyFirstBucket (MyFirstBucketB8884501)
+ 1/5 | 4:32:36 PM | CREATE_IN_PROGRESS   | AWS::IAM::Role              | Custom::S3AutoDeleteObjectsCustomResourceProvider/Role (CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092) Resource creation Initiated
+ 3/5 | 4:32:54 PM | CREATE_COMPLETE      | AWS::IAM::Role              | Custom::S3AutoDeleteObjectsCustomResourceProvider/Role (CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092)
+ 3/5 | 4:32:56 PM | CREATE_IN_PROGRESS   | AWS::Lambda::Function       | Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler (CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F)
+ 3/5 | 4:32:56 PM | CREATE_IN_PROGRESS   | AWS::S3::BucketPolicy       | MyFirstBucket/Policy (MyFirstBucketPolicy3243DEFD)
+ 3/5 | 4:32:56 PM | CREATE_IN_PROGRESS   | AWS::Lambda::Function       | Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler (CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F) Resource creation Initiated
+ 3/5 | 4:32:57 PM | CREATE_COMPLETE      | AWS::Lambda::Function       | Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler (CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F)
+ 3/5 | 4:32:57 PM | CREATE_IN_PROGRESS   | AWS::S3::BucketPolicy       | MyFirstBucket/Policy (MyFirstBucketPolicy3243DEFD) Resource creation Initiated
+ 4/5 | 4:32:57 PM | CREATE_COMPLETE      | AWS::S3::BucketPolicy       | MyFirstBucket/Policy (MyFirstBucketPolicy3243DEFD)
+ 4/5 | 4:32:59 PM | CREATE_IN_PROGRESS   | Custom::S3AutoDeleteObjects | MyFirstBucket/AutoDeleteObjectsCustomResource/Default (MyFirstBucketAutoDeleteObjectsCustomResourceC52FCF6E)
+ 5/5 | 4:33:06 PM | CREATE_IN_PROGRESS   | Custom::S3AutoDeleteObjects | MyFirstBucket/AutoDeleteObjectsCustomResource/Default (MyFirstBucketAutoDeleteObjectsCustomResourceC52FCF6E) Resource creation Initiated
+ 5/5 | 4:33:06 PM | CREATE_COMPLETE      | Custom::S3AutoDeleteObjects | MyFirstBucket/AutoDeleteObjectsCustomResource/Default (MyFirstBucketAutoDeleteObjectsCustomResourceC52FCF6E)
+ 5/5 | 4:33:08 PM | UPDATE_COMPLETE_CLEA | AWS::CloudFormation::Stack  | HelloCdkStack
+ 6/5 | 4:33:09 PM | UPDATE_COMPLETE      | AWS::CloudFormation::Stack  | HelloCdkStack
 
  ✅  HelloCdkStack
 
 Stack ARN:
-arn:aws:cloudformation:REGION:ACCOUNT:stack/HelloCdkStack/ID
+arn:aws:cloudformation:REGION:ACCOUNT:stack/HelloCdkStack/UNIQUE-ID
 ```
 
 ## Destroying the app's resources<a name="hello_world_tutorial_destroy"></a>
@@ -551,10 +580,7 @@ cdk destroy
 Enter y to approve the changes and delete any stack resources\.
 
 **Note**  
-This wouldn't have worked if we hadn't changed the bucket's `RemovalPolicy`\! Instead, the stack deletion would complete successfully, and the bucket would become orphaned \(no longer associated with the stack\)\.
-
-**Tip**  
-If the bucket still exists after you delete the stack, it probably means you put something in it\. AWS CloudFormation won't delete buckets with files in them\. Delete the files and try again\.
+If we hadn't changed the bucket's `RemovalPolicy`, the stack deletion would complete successfully, but the bucket would become orphaned \(no longer associated with the stack\)\.
 
 ## Next steps<a name="hello_world_next_steps"></a>
 
