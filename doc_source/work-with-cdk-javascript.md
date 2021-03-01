@@ -102,7 +102,8 @@ However, if `a` could have some other "falsy" value besides `undefined`, it is b
 let c = a == null ? a : a.b;
 ```
 
-A version of the ECMAScript standard currently in development specifies new operators that will simplify the handling of undefined values\. Using them can simplify your code, but you will need a new version of Node\.js to use them\. For more information, see the [optional chaining](https://github.com/tc39/proposal-optional-chaining/blob/master/README.md) and [nullish coalescing](https://github.com/tc39/proposal-nullish-coalescing/blob/master/README.md) proposals\.
+**Tip**  
+Node\.js 14\.0 and later support new operators that can simplify the handling of undefined values\. For more information, see the [optional chaining](https://github.com/tc39/proposal-optional-chaining/blob/master/README.md) and [nullish coalescing](https://github.com/tc39/proposal-nullish-coalescing/blob/master/README.md) proposals\.
 
 ## Synthesizing and deploying<a name="javascript-running"></a>
 
@@ -257,6 +258,6 @@ Many JavaScript developers move to [TypeScript](https://www.typescriptlang.org/)
 
 TypeScript's "shape\-based" interfaces, which define bundles of required and optional properties \(and their types\) within an object, allow common mistakes to be caught while you're writing the code, and make it easier for your IDE to provide robust autocomplete and other real\-time coding advice\.
 
-Coding in TypeScript does involve an additional step: compiling your app with the TypeScript compiler, `tsc`\. This step can happen automatically whenever you save your source code, or before you run your app\. For typical AWS CDK apps, compilation requires a few seconds at most\.
+Coding in TypeScript does involve an additional step: compiling your app with the TypeScript compiler, `tsc`\. For typical AWS CDK apps, compilation requires a few seconds at most\.
 
 The easiest way to migrate an existing JavaScript AWS CDK app to TypeScript is to create a new TypeScript project using `cdk init app --language typescript`, then copy your source files \(and any other necessary files, such as assets like AWS Lambda function source code\) to the new project\. Rename your JavaScript files to end in `.ts` and begin developing in TypeScript\.

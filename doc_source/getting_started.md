@@ -113,14 +113,14 @@ TypeScript was the first language supported by the AWS CDK, and much AWS CDK exa
 
 ## Prerequisites<a name="getting_started_prerequisites"></a>
 
-With the concepts out of the way, here's what you need to have on your workstation before you install the AWS CDK and start developing\.
+Here's what you need install to use the AWS CDK\.
 
-All CDK developers need to [install Node\.js](https://nodejs.org/en/download/) 10\.3\.0 or later, even those working in languages other than TypeScript or JavaScript\. The AWS CDK Toolkit \(cdk command\-line tool\) and the AWS Construct Library run on Node\.js\. The bindings for other supported languages use this back end and tool set\. We suggest the latest LTS version\.
+All AWS CDK developers, even those working in Python, Java, or C\#, need [Node\.js](https://nodejs.org/en/download/) 10\.13\.0 or later\. All supported languages use the same back end, which runs on Node\.js\. We recommend a version in [active long\-term support](https://nodejs.org/en/about/releases/), which, at this writing, is the latest 14\.x release\. Your organization may have a different recommendation\.
 
 **Important**  
-Node\.js versions 13\.0\.0 through 13\.6\.0 are not compatible with the AWS CDK\.
+Node\.js versions 13\.0\.0 through 13\.6\.0 are not compatible with the AWS CDK due to compatibility issues with its dependencies\.
 
-You must provide your credentials and an AWS Region to use AWS CDK, if you have not already done so\. If you have the AWS CLI installed, the easiest way to satisfy this requirement is to install the AWS CLI and issue the following command:
+You must configure your workstation with your credentials and an AWS Region, if you have not already done so\. If you have the AWS CLI installed, the easiest way to satisfy this requirement is issue the following command:
 
 ```
 aws configure
@@ -143,7 +143,7 @@ You may also manually create or edit the `~/.aws/config` and `~/.aws/credentials
   aws_secret_access_key=je7MtGbClwBF/2Zp9Utk/h3yCo8nvbEXAMPLEKEY
   ```
 
-Finally, you can set the environment variables `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_DEFAULT_REGION` to appropriate values\. 
+Alternatively, you can set the environment variables `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_DEFAULT_REGION` to appropriate values\. 
 
 **Important**  
 We strongly recommend against using your AWS root account for day\-to\-day tasks\. Instead, create a user in IAM and use its credentials with the CDK\. Best practices are to change this account's access key regularly and to use a least\-privileges role \(specifying `--role-arn`\) when deploying\.

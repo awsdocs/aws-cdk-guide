@@ -218,7 +218,7 @@ Patterns, which represent a higher level of abstraction, let you define even mor
 Exceeding the AWS CloudFormation resource limit is an error during AWS CloudFormation synthesis\. The AWS CDK issues a warning if your stack exceeds 80% of the limit\. You can use a different limit by setting the `maxResources` property on your stack, or disable validation by setting `maxResources` to 0\.
 
 **Tip**  
-You can get an exact count of the resources in your synthesized output using the following utility script\. \(Since every AWS CDK user has Node\.js installed to run the CDK, the script is written in JavaScript\.\)  
+You can get an exact count of the resources in your synthesized output using the following utility script\. \(Since every AWS CDK developer needs Node\.js, the script is written in JavaScript\.\)  
 
 ```
 // rescount.js - count the resources defined in a stack

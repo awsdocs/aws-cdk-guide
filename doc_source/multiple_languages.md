@@ -66,7 +66,7 @@ bucket = Bucket(...)
 ------
 #### [ Java ]
 
-Java's imports work differently from TypeScript's\. Each import statement imports either a single class name from a given package, or all classes defined in that package \(using `*`\)\. After importing, classes may be accessed using either the class name by itself or \(in case of name conflicts\) the *qualified* class name including its package\.
+Java's imports work differently from TypeScript's\. Each import statement imports either a single class name from a given package, or all classes defined in that package \(using `*`\)\. Classes may be accessed using either the class name by itself if it has been imported, or the *qualified* class name including its package\.
 
 Packages are named like `software.amazon.awscdk.services.xxx` for AWS Construct Library packages \(the core module is `software.amazon.awscdk.core`\)\. The Maven group ID for AWS CDK packages is `software.amazon.awscdk`\.
 
@@ -91,7 +91,7 @@ software.amazon.awscdk.services.s3.Bucket bucket =
 ------
 #### [ C\# ]
 
-In C\#, you import types with the `using` directive\. There are two styles, which give you access either all the types in the specified namespace using their plain names, or to refer to the namespace itself using an alias\.
+In C\#, you import types with the `using` directive\. There are two styles, which give you access either all the types in the specified namespace using their plain names, or let you refer to the namespace itself using an alias\.
 
 Packages are named like `Amazon.CDK.AWS.xxx` for AWS Construct Library packages \(the core module is `Amazon.CDK`\)\.
 
