@@ -1,9 +1,9 @@
 # Creating a serverless application using the AWS CDK<a name="serverless_example"></a>
 
-This example walks you through how to create the resources for a simple widget dispensing service\. \(For the purpose of this example, a widget is just a name or identifier that can be added to, retrieved from, and deleted from a collection\.\) The example includes:
+This example walks you through creating the resources for a simple widget dispensing service\. \(For the purpose of this example, a widget is just a name or identifier that can be added to, retrieved from, and deleted from a collection\.\) The example includes:
 + An AWS Lambda function\.
 + An Amazon API Gateway API to call the Lambda function\.
-+ An Amazon S3 bucket that contains the Lambda function code\.
++ An Amazon S3 bucket that holds the widgets\.
 
 This tutorial contains the following steps\.
 
@@ -21,6 +21,8 @@ This tutorial contains the following steps\.
    + Create a widget with POST /\{name\}
    + Get a widget by name with GET /\{name\}
    + Delete a widget by name with DELETE /\{name\}
+
+1. Tear everything down when you're finished
 
 ## Create a AWS CDK app<a name="serverless_example_create_app"></a>
 
@@ -114,14 +116,14 @@ Run the app and note that it synthesizes an empty stack\.
 cdk synth
 ```
 
-You should see output like the following, where *CDK\-VERSION* is the version of the AWS CDK\.
+You should see output beginning with YAML code like the following\.
 
 ```
 Resources:
   CDKMetadata:
     Type: AWS::CDK::Metadata
     Properties:
-      Modules: "@aws-cdk/cdk=CDK-VERSION,@aws-cdk/cx-api=CDK-VERSION,my_widget_service=0.1.0"
+      Modules: "..."
 ```
 
 ## Create a Lambda function to list all widgets<a name="serverless_example_create_iam_function"></a>
@@ -221,13 +223,27 @@ pip install aws_cdk.aws_apigateway aws_cdk.aws_lambda aws_cdk.aws_s3
 ------
 #### [ Java ]
 
-Using your IDE's Maven integration \(e\.g\., in Eclipse, right\-click your project and choose **Maven** > **Add Dependency**\), install the following artifacts from the group `software.amazon.awscdk`:
+Add the following dependencies in the `dependencies` element of your project's `pom.xml` file\.
 
 ```
-apigateway
-lambda
-s3
+<dependency>
+    <groupId>software.amazon.awscdk</groupId>
+    <artifactId>apigateway</artifactId>
+    <version>${cdk.version}</version>
+</dependency>
+<dependency>
+    <groupId>software.amazon.awscdk</groupId>
+    <artifactId>lambda</artifactId>
+    <version>${cdk.version}</version>
+</dependency>
+<dependency>
+    <groupId>software.amazon.awscdk</groupId>
+    <artifactId>s3</artifactId>
+    <version>${cdk.version}</version>
+</dependency>
 ```
+
+We recommend editing `pom.xml` directory rather than using your IDE's dependency management tools to make sure the versions of all AWS CDK libraries are synchronized using the `$cdk.version` variable\.
 
 ------
 #### [ C\# ]
@@ -478,6 +494,9 @@ namespace MyWidgetService
 ```
 
 ------
+
+**Tip**  
+We're using a `[lambda\.Function](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-lambda.Function.html)` in to deploy this function because it supports a wide variety of programming languages\. For JavaScript and TypeScript specifically, you might consider a `[lambda\-nodejs\.NodejsFunction](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-lambda-nodejs.NodejsFunction.html)`\. The latter uses esbuild to bundle up the script and converts code written in TypeScript automatically\.
 
 Save the app and make sure it still synthesizes an empty stack\.
 
