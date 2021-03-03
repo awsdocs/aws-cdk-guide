@@ -7,17 +7,17 @@ This example walks you through creating the resources for a simple widget dispen
 
 This tutorial contains the following steps\.
 
-1. Creates a AWS CDK app
+1. Create a AWS CDK app
 
-1. Creates a Lambda function that gets a list of widgets with HTTP GET /
+1. Create a Lambda function that gets a list of widgets with HTTP GET /
 
-1. Creates the service that calls the Lambda function
+1. Create the service that calls the Lambda function
 
-1. Adds the service to the AWS CDK app
+1. Add the service to the AWS CDK app
 
-1. Tests the app
+1. Test the app
 
-1. Adds Lambda functions to do the following:
+1. Add Lambda functions to do the following:
    + Create a widget with POST /\{name\}
    + Get a widget by name with GET /\{name\}
    + Delete a widget by name with DELETE /\{name\}
