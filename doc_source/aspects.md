@@ -131,7 +131,7 @@ class BucketVersioningChecker {
 
       // Check for versioning property, exclude the case where the property
       // can be a token (IResolvable).
-      if ( !node.versioningConfiguration 
+      if (!node.versioningConfiguration 
         || !Tokenization.isResolvable(node.versioningConfiguration)
             && node.versioningConfiguration.status !== 'Enabled') {
         Annotations.of(node).addError('Bucket versioning is not enabled');
@@ -157,11 +157,10 @@ class BucketVersioningChecker:
 
       # Check for versioning property, exclude the case where the property
       # can be a token (IResolvable).
-      if (!node.versioning_configuration or
-         !Tokenization.is_resolvable(node.versioning_configuration)
-            and node.versioning_configuration.status != "Enabled"):
-        
-        Annotations.of(node).add_error('Bucket versioning is not enabled')
+      if (not node.versioning_configuration or
+              not Tokenization.is_resolvable(node.versioning_configuration)
+                  and node.versioning_configuration.status != "Enabled"):      
+          Annotations.of(node).add_error('Bucket versioning is not enabled')
 
 # Later, apply to the stack
 Aspects.of(stack).add(BucketVersioningChecker())

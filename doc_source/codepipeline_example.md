@@ -38,7 +38,7 @@ To set up a new AWS CDK project in CodeCommit;
 **Note**  
 During cloning, Git will warn you that you appear to have cloned an empty repository; this is normal and expected\.
 
-1. Change to the pipeline directory and initialize it as a new CDK project, then install the AWS Construct Libraries we'll use in our app\.
+1. Change to the pipeline directory and initialize it as a new CDK project, then install the AWS Construct Libraries we'll use in our app\. Since AWS CodeCommit uses a default branch of "main," we'll also make sure we're working on that branch\.
 
 ------
 #### [ TypeScript ]
@@ -46,6 +46,7 @@ During cloning, Git will warn you that you appear to have cloned an empty reposi
    ```
    cd pipeline
    cdk init --language typescript
+   git checkout main || git branch main
    npm install @aws-cdk/aws-codedeploy @aws-cdk/aws-lambda @aws-cdk/aws-codebuild @aws-cdk/aws-codepipeline
    npm install @aws-cdk/aws-codecommit @aws-cdk/aws-codepipeline-actions
    ```
@@ -56,6 +57,7 @@ During cloning, Git will warn you that you appear to have cloned an empty reposi
    ```
    cd pipeline
    cdk init --language javascript
+   git checkout main || git branch main
    npm install @aws-cdk/aws-codedeploy @aws-cdk/aws-lambda @aws-cdk/aws-codebuild @aws-cdk/aws-codepipeline
    npm install @aws-cdk/aws-codecommit @aws-cdk/aws-codepipeline-actions
    ```
@@ -70,6 +72,7 @@ During cloning, Git will warn you that you appear to have cloned an empty reposi
    ```
    cd pipeline
    cdk init --language python
+   git checkout main || git branch main
    source .venv/bin/activate
    git commit -m "project started"
    pip install -r requirements.txt
@@ -83,6 +86,7 @@ During cloning, Git will warn you that you appear to have cloned an empty reposi
    ```
    cd pipeline
    cdk init --language python
+   git checkout main || git branch main
    .venv\Scripts\activate.bat
    pip install -r requirements.txt
    pip install aws_cdk.aws_codedeploy aws_cdk.aws_lambda aws_cdk.aws_codebuild aws_cdk.aws_codepipeline
@@ -96,6 +100,7 @@ During cloning, Git will warn you that you appear to have cloned an empty reposi
    ```
    cd pipeline
    cdk init --language java
+   git checkout main || git branch main
    ```
 
    You can import the resulting Maven project into your Java IDE\.
@@ -116,6 +121,7 @@ During cloning, Git will warn you that you appear to have cloned an empty reposi
    ```
    cd pipeline
    cdk init --language csharp
+   git checkout main || git branch main
    ```
 
    You can open the file `src/Pipeline.sln` in Visual Studio\.
@@ -154,7 +160,7 @@ During cloning, Git will warn you that you appear to have cloned an empty reposi
 
 ------
 
-1. Stage all the files in the directory, commit them to your local repository, and push to CodeCommit\.
+1. Stage all the files in the directory, commit them to your local repository, and push to CodeCommit\. 
 
    ```
    git add --all

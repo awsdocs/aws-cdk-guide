@@ -235,7 +235,7 @@ Finally, add the `@aws-cdk/core:newStyleStackSynthesis` [feature flag](featurefl
   ...
   "context": {
     ...
-    "@aws-cdk/core:newStyleStackSynthesis": "true"
+    "@aws-cdk/core:newStyleStackSynthesis": true
   }
 }
 ```

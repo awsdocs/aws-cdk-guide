@@ -6,7 +6,7 @@ The AWS CDK uses *feature flags* to enable potentially breaking behaviors in a r
 {
   "app": "npx ts-node bin/tscdk.ts",
   "context": {
-    "@aws-cdk/core:enableStackNameDuplicates": "true"
+    "@aws-cdk/core:enableStackNameDuplicates": true
   }
 }
 ```

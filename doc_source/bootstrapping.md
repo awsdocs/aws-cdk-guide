@@ -130,7 +130,7 @@ The modern template is also selected when you issue cdk bootstrap in an AWS CDK 
 {
   // ...
   "context": {
-    "@aws-cdk/core:newStyleStackSynthesis": "true"
+    "@aws-cdk/core:newStyleStackSynthesis": true
   }
 }
 ```
