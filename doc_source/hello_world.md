@@ -251,13 +251,10 @@ module.exports = { HelloCdkStack }
 ------
 #### [ Python ]
 
-Replace the first import statement in `hello_cdk_stack.py` in the `hello_cdk` directory with the following code\.
+Add the following import statement in `hello_cdk_stack.py` in the `hello_cdk` directory below the existing imports\.
 
 ```
-from aws_cdk import (
-    aws_s3 as s3,
-    core
-)
+from aws_cdk import aws_s3 as s3
 ```
 
 Replace the comment with the following code\.
