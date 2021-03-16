@@ -245,7 +245,7 @@ AWS CloudFormation experts often suggest the use of nested stacks as a solution 
 To get the number of Availability Zones you requested, specify the account and region in the stack's `env` property\. If you do not specify both, the AWS CDK, by default, synthesizes the stack as environment\-agnostic, such that it can be deployed to any region\. You can then deploy the stack to a specific region using AWS CloudFormation\. Because some regions have only two availability zones, an environment\-agnostic template never uses more than two\. 
 
 **Note**  
-At this writing, there is one AWS region that has only one availability zone: ap\-northeast\-3 \(Osaka, Japan\)\. Environment\-agnostic AWS CDK stacks cannot be deployed to this region\.
+Regions may occasionally launch with only one AZ\. Environment\-agnostic AWS CDK stacks cannot be deployed to such regions\.
 
 You can change this behavior by overriding your stack's [https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Stack.html#availabilityzones](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Stack.html#availabilityzones) \(Python: `availability_zones`\) property to explicitly specify the zones you want to use\.
 
