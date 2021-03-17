@@ -7,7 +7,7 @@ For all but the simplest deployments, you will need to [bootstrap](bootstrapping
 
 If you don't specify an environment when you define a stack, the stack is said to be *environment\-agnostic*\. AWS CloudFormation templates synthesized from such a stack will try to use deploy\-time resolution on environment\-related attributes such as `stack.account`, `stack.region`, and `stack.availabilityZones` \(Python: `availability_zones`\)\.
 
-In an environment\-agnostic stack, any constructs that use availability zones will see two of them\. This allows the stack to be deployed to almost any region, since nearly all regions have at least two availability zones\. \(Some regions may launch with only one AZ, but this is rare\.\)
+In an environment\-agnostic stack, any constructs that use availability zones will see two of them, allowing the stack to be deployed to any region\.
 
 When using cdk deploy to deploy environment\-agnostic stacks, the AWS CDK CLI uses the specified AWS CLI profile \(or the default profile, if none is specified\) to determine where to deploy\. The AWS CDK CLI follows a protocol similar to the AWS CLI to determine which AWS credentials to use when performing operations against your AWS account\. See [AWS CDK Toolkit \(`cdk` command\)](cli.md) for details\.
 
