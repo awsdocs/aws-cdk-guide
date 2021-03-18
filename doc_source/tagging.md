@@ -298,7 +298,7 @@ Tags.of(theBestStack).remove('StackType', {
 #### [ JavaScript ]
 
 ```
-const { App , Stack , Tag } = require('@aws-cdk/core');
+const { App , Stack , Tags } = require('@aws-cdk/core');
 
 const app = new App();
 const theBestStack = new Stack(app, 'MarketingSystem');
@@ -316,7 +316,7 @@ Tags.of(theBestStack).remove'StackType', {
 #### [ Python ]
 
 ```
-from aws_cdk.core import App, Stack, Tag
+from aws_cdk.core import App, Stack, Tags
 
 app = App();
 the_best_stack = Stack(app, 'MarketingSystem')
@@ -334,7 +334,7 @@ Tags.of(the_best_stack).remove("StackType",
 
 ```
 import software.amazon.awscdk.core.App;
-import software.amazon.awscdk.core.Tag;
+import software.amazon.awscdk.core.Tags;
 
 // Add a tag to all constructs in the stack
 Tags.of(theBestStack).add("StackType", "TheBest");
