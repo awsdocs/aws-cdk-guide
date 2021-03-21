@@ -260,7 +260,7 @@ As with list tokens, you cannot modify the number value, as doing so is likely t
 
 In addition to representing deploy\-time values, such as AWS CloudFormation [parameters](parameters.md), Tokens are also commonly used to represent synthesis\-time lazy values\. These are values for which the final value will be determined before synthesis has completed, just not at the point where the value is constructed\. Use tokens to pass a literal string or number value to another construct, while the actual value at synthesis time may depend on some calculation that has yet to occur\.
 
-You can construct tokens representing synth\-time lazy values using static methods on the `Lazy` class, such as [Lazy\.stringValue](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Lazy.html#static-string-valueproducer-options) \(Python: `Lazy.string_value`\) and [Lazy\.numberValue](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Lazy.html#static-number-valueproducer) \(Python: `Lazy.number_value`\. These methods accept an object whose `producer` property is a function that accepts a context argument and returns the final value when called\.
+You can construct tokens representing synth\-time lazy values using static methods on the `Lazy` class, such as [Lazy\.stringValue](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Lazy.html#static-string-valueproducer-options) \(Python: `Lazy.string_value`\) and [Lazy\.numberValue](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Lazy.html#static-number-valueproducer) \(Python: `Lazy.number_value`\. These methods accept an object whose `produce` property is a function that accepts a context argument and returns the final value when called\.
 
 The following example creates an Auto Scaling group whose capacity is determined after its creation\.
 
@@ -272,9 +272,9 @@ let actualValue: number;
 
 new AutoScalingGroup(this, 'Group', {
   desiredCapacity: Lazy.numberValue({
-     produce(context) {
-          return actualValue;
-      }
+    produce(context) {
+      return actualValue;
+    }
   })
 });
 
@@ -290,9 +290,9 @@ let actualValue;
 
 new AutoScalingGroup(this, 'Group', {
   desiredCapacity: Lazy.numberValue({
-     produce(context) {
-          return (actualValue);
-      }
+    produce(context) {
+      return (actualValue);
+    }
   })
 });
 
