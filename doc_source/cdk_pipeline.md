@@ -1114,11 +1114,11 @@ You can also add more than one application stage to a pipeline stage\. For examp
 
 ```
 // Add two application stages to the same pipeline stage
-testingStage.addApplication(new MyApplication1(this, 'MyApp1', {
+testingStage.addApplicationStage(new MyApplication1(this, 'MyApp1', {
   env: { account: '111111111111', region: 'eu-west-1' }
 }));
 
-testingStage.addApplication(new MyApplication2(this, 'MyApp2', {
+testingStage.addApplicationStage(new MyApplication2(this, 'MyApp2', {
   env: { account: '111111111111', region: 'eu-west-1' }
 }));
 ```
@@ -1128,11 +1128,11 @@ testingStage.addApplication(new MyApplication2(this, 'MyApp2', {
 
 ```
 // Add two application stages to the same pipeline stage
-testingStage.addApplication(new MyApplication1(this, 'MyApp1', {
+testingStage.addApplicationStage(new MyApplication1(this, 'MyApp1', {
   env: { account: '111111111111', region: 'eu-west-1' }
 }));
 
-testingStage.addApplication(new MyApplication2(this, 'MyApp2', {
+testingStage.addApplicationStage(new MyApplication2(this, 'MyApp2', {
   env: { account: '111111111111', region: 'eu-west-1' }
 }));
 ```
@@ -1154,14 +1154,14 @@ testing_stage.add_application_stage(MyApplication2(this, 'MyApp2',
 
 ```
 // Add two application stages to the same pipeline stage
-testingStage.addApplication(new MyApplication1(this, "MyApp1", new StageProps.Builder()
+testingStage.addApplicationStage(new MyApplication1(this, "MyApp1", new StageProps.Builder()
     .env(new Environment.Builder()
         .account("111111111111")
         .region("eu-west-1")
         .build())
     .build()));
 
-testingStage.addApplication(new MyApplication2(this, "MyApp2", new StageProps.Builder()
+testingStage.addApplicationStage(new MyApplication2(this, "MyApp2", new StageProps.Builder()
     .env(new Environment.Builder()
         .account("111111111111")
         .region("eu-west-1")
@@ -1175,7 +1175,7 @@ testingStage.addApplication(new MyApplication2(this, "MyApp2", new StageProps.Bu
 ```
 // Add two application stages to the same pipeline stage
 
-testingStage.AddApplication(new MyApplication1(this, "MyApp1", new Amazon.CDK.StageProps
+testingStage.AddApplicationStage(new MyApplication1(this, "MyApp1", new Amazon.CDK.StageProps
 {
     Env = new Amazon.CDK.Environment
     {
@@ -1184,7 +1184,7 @@ testingStage.AddApplication(new MyApplication1(this, "MyApp1", new Amazon.CDK.St
     }
 }));
 
-testingStage.AddApplication(new MyApplication2(this, "MyApp1", new Amazon.CDK.StageProps
+testingStage.AddApplicationStage(new MyApplication2(this, "MyApp1", new Amazon.CDK.StageProps
 {
     Env = new Amazon.CDK.Environment
     {
