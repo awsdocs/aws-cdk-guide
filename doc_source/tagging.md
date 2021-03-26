@@ -90,7 +90,7 @@ Tags.Of(myConstruct).Remove("key");
 
 ------
 
-## Tag priorities<a name="w338aac15c23c21"></a>
+## Tag priorities<a name="w344aac15c23c21"></a>
 
 The AWS CDK applies and removes tags recursively\. If there are conflicts, the tagging operation with the highest priority wins\. \(Priorities are set using the optional `priority` property\.\) If the priorities of two operations are the same, the tagging operation closest to the bottom of the construct tree wins\. By default, applying a tag has a priority of 100 \(except for tags added directly to an AWS CloudFormation resource, which has a priority of 50\) and removing a tag has a priority of 200\. 
 

@@ -356,9 +356,7 @@ Resources:
         Status: Enabled
     UpdateReplacePolicy: Retain
     DeletionPolicy: Retain
-    Metadata:
-      aws:cdk:path: HelloCdkStack/MyFirstBucket/Resource
-  CDKMetadata: ...
+    Metadata:...
 ```
 
 Even if you aren't very familiar with AWS CloudFormation, you should be able to find the definition for the bucket and see how the `versioned` property was translated\. 

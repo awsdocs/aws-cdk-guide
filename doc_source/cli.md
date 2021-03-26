@@ -78,9 +78,12 @@ Issue `cdk version` to display the version of the AWS CDK Toolkit\. Provide this
 
 ## Version reporting<a name="version_reporting"></a>
 
-To gain insight into how the AWS CDK is used, the versions of libraries used by AWS CDK applications are collected and reported by using a resource identified as `AWS::CDK::Metadata`\. This resource is added to AWS CloudFormation templates, and can easily be reviewed\. This information can also be used to identify stacks using a package with known serious security or reliability issues, and to contact their users with important information\.
+To gain insight into how the AWS CDK is used, the constructs used by AWS CDK applications are collected and reported by using a resource identified as `AWS::CDK::Metadata`\. This resource is added to AWS CloudFormation templates, and can easily be reviewed\. This information can also be used by AWS to identify stacks using a construct with known security or reliability issues, and to contact their users with important information\.
 
-By default, the AWS CDK reports the name and version of the following NPM modules that are loaded at synthesis time:
+**Note**  
+Prior to version 1\.93\.0, the AWS CDK reported the names and versions of the modules loaded during synthesis, rather than the constructs used in te stack\.
+
+By default, the AWS CDK reports the use of constructs in the following NPM modules that are used in the stack:
 + AWS CDK core module
 + AWS Construct Library modules
 + AWS Solutions Constructs module
@@ -92,8 +95,10 @@ The `AWS::CDK::Metadata` resource looks something like the following\.
 CDKMetadata:
   Type: "AWS::CDK::Metadata"
   Properties:
-    Modules: "@aws-cdk/core=X.YY.Z,@aws-cdk/s3=X.YY.Z,@aws-solutions-constrccts/aws-apigateway-lambda=X.YY.Z,aws-rfdk=X.YY.Z"
+    Analytics: "v2:deflate64:H4sIAND9SGAAAzXKSw5AMBAA0L1b2PdzBYnEAdio3RglglY60zQi7u6TWL/XKmNUlxeQSOKwaPTBqrNhwEWU3hGHiCzK0dWWfAxoL/Fd8mvk+QkS/0X6BdjnCdgmOOQKWz+AqqLDt2Y3YMnLYWwAAAA="
 ```
+
+The `Analytics` property is a gzipped, base64\-encoded, prefix\-encoded list of the constructs present in the stack\.
 
 To opt out of version reporting, use one of the following methods:
 + Use the cdk command with the \-\-no\-version\-reporting argument to opt out for a single command\.
@@ -144,8 +149,8 @@ You may also manually create or edit the `~/.aws/config` and `~/.aws/credentials
 
 Besides specifying AWS credentials and a region under the `[default]` section, you can also put them in a `[profile NAME]` section, where *NAME* is the name of the profile\. You can add any number of named profiles, with or without a `[default]` section\. Be sure to add the same profile sections to both the configuration and credentials files\. 
 
-**Tip**  
-Don't name a profile `default`\. That's just confusing\.
+**Note**  
+Although the AWS CDK uses credentials from the same configuration files as other AWS tools and SDKs, including the [AWS Command Line Interface](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html), it may behave slightly differently from these tools\. In particular, if you use a named profile from the `credentials` file, the `config` must have a profile of the same name specifying the region\. The AWS CDK does not fall back to reading the region from the `[default]` section in `config`\. Also, do not use a profile named "default" \(e\.g\. `[profile default]`\)\. See [Setting credentials](https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/setting-credentials.html) for complete details on setting up credentials for the AWS SDK for JavaScript, which the AWS CDK uses under the hood\.
 
 Use the `--profile` flag to choose a set of credentials and default region from these configuration files for a given command\.
 
@@ -289,7 +294,7 @@ The CDK Toolkit actually runs your app and synthesizes fresh templates before mo
 
 See `cdk synth --help` for all available options\. A few of the most\-frequently\-used options are covered below\.
 
-### Specifying context values<a name="w338aac23b7c31c11"></a>
+### Specifying context values<a name="w344aac23b7c31c11"></a>
 
 Use the `--context` or `-c` option to pass [runtime context](context.md) values to your CDK app\.
 
@@ -308,7 +313,7 @@ When deploying multiple stacks, the specified context values are normally passed
 cdk synth --context Stack1:key=value Stack2:key=value Stack1 Stack2
 ```
 
-### Specifying display format<a name="w338aac23b7c31c13"></a>
+### Specifying display format<a name="w344aac23b7c31c13"></a>
 
 By default, the synthesized template is displayed in YAML format\. Add the `--json` flag to display it in JSON format instead\.
 
@@ -316,7 +321,7 @@ By default, the synthesized template is displayed in YAML format\. Add the `--js
 cdk synth --json MyStack
 ```
 
-### Specifying output directory<a name="w338aac23b7c31c15"></a>
+### Specifying output directory<a name="w344aac23b7c31c15"></a>
 
 Add the `--output` \(`-o`\) option to write the synthesized templates to a directory other than `cdk.out`\.
 
@@ -340,7 +345,7 @@ The CDK Toolkit runs your app and synthesizes fresh AWS CloudFormation templates
 
 See `cdk deploy --help` for all available options\. A few of the most\-frequently\-used options are covered below\.
 
-### Specifying AWS CloudFormation parameters<a name="w338aac23b7c33c11"></a>
+### Specifying AWS CloudFormation parameters<a name="w344aac23b7c33c11"></a>
 
 The AWS CDK Toolkit supports specifying AWS CloudFormation [parameters](parameters.md) at deployment\. You may provide these on the command line following the `--parameters` flag\.
 
@@ -362,7 +367,7 @@ cdk deploy MyStack YourStack --parameters MyStack:uploadBucketName=UploadBucket 
 
 By default, the AWS CDK retains values of parameters from previous deployments and uses them in later deployments if they are not specified explicitly\. Use the `--no-previous-parameters` flag to require all parameters to be specified\.
 
-### Specifying outputs file<a name="w338aac23b7c33c13"></a>
+### Specifying outputs file<a name="w344aac23b7c33c13"></a>
 
 If your stack declares AWS CloudFormation outputs, these are normally displayed on the screen at the conclusion of deployment\. To write them to a file in JSON format, use the `--outputs-file` flag\.
 
@@ -579,7 +584,7 @@ If one of cdk.json or ~/.cdk.json exists, options specified there will be used
 as defaults. Settings in cdk.json take precedence.
 ```
 
-### `cdk list` \(`ls`\)<a name="w338aac23b7c39b7b1"></a>
+### `cdk list` \(`ls`\)<a name="w344aac23b7c39b7b1"></a>
 
 ```
 cdk list [STACKS..]
@@ -592,7 +597,7 @@ Options:
                                                       [boolean] [default: false]
 ```
 
-### `cdk synthesize` \(`synth`\)<a name="w338aac23b7c39b7b3"></a>
+### `cdk synthesize` \(`synth`\)<a name="w344aac23b7c39b7b3"></a>
 
 ```
 cdk synthesize [STACKS..]
@@ -608,7 +613,7 @@ Options:
                                                       [boolean] [default: false]
 ```
 
-### `cdk bootstrap`<a name="w338aac23b7c39b7b5"></a>
+### `cdk bootstrap`<a name="w344aac23b7c39b7b5"></a>
 
 ```
 cdk bootstrap [ENVIRONMENTS..]
@@ -677,7 +682,7 @@ Options:
                                             example)                    [string]
 ```
 
-### `cdk deploy`<a name="w338aac23b7c39b7b7"></a>
+### `cdk deploy`<a name="w344aac23b7c39b7b7"></a>
 
 ```
 cdk deploy [STACKS..]
@@ -727,7 +732,7 @@ Options:
                                              [string] [choices: "bar", "events"]
 ```
 
-### `cdk destroy`<a name="w338aac23b7c39b7b9"></a>
+### `cdk destroy`<a name="w344aac23b7c39b7b9"></a>
 
 ```
 cdk destroy [STACKS..]
@@ -746,7 +751,7 @@ Options:
                             stacks                                     [boolean]
 ```
 
-### `cdk diff`<a name="w338aac23b7c39b7c11"></a>
+### `cdk diff`<a name="w344aac23b7c39b7c11"></a>
 
 ```
 cdk diff [STACKS..]
@@ -766,7 +771,7 @@ Options:
                             with                                        [string]
 ```
 
-### `cdk init`<a name="w338aac23b7c39b7c13"></a>
+### `cdk init`<a name="w344aac23b7c39b7c13"></a>
 
 ```
 cdk init [TEMPLATE]
@@ -788,7 +793,7 @@ Options:
                             project                   [boolean] [default: false]
 ```
 
-### `cdk context`<a name="w338aac23b7c39b7c15"></a>
+### `cdk context`<a name="w344aac23b7c39b7c15"></a>
 
 ```
 cdk context
