@@ -1142,10 +1142,10 @@ testingStage.addApplication(new MyApplication2(this, 'MyApp2', {
 
 ```
 # Add two application stages to the same pipeline stage
-testing_stage.add_application(MyApplication1(this, 'MyApp1',
+testing_stage.add_application_stage(MyApplication1(this, 'MyApp1',
     env=Environment(account="111111111111", region="eu-west-1")))
 
-testing_stage.add_application(MyApplication2(this, 'MyApp2', 
+testing_stage.add_application_stage(MyApplication2(this, 'MyApp2', 
     env=Environment(account="111111111111", region="eu-west-1")))
 ```
 
