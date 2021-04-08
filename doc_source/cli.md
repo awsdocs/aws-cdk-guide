@@ -715,6 +715,9 @@ Options:
       --execute              Whether to execute ChangeSet (--no-execute will NOT
                              execute the ChangeSet)    [boolean] [default: true]
 
+      --change-set-name      Name of the CloudFormation change set to create
+                                                                        [string]
+
   -f, --force                Always deploy stack even if templates are identical
                                                       [boolean] [default: false]
 
@@ -782,7 +785,7 @@ Options:
 
   -l, --language            The language to be used for the new project (default
                             can be configured in ~/.cdk.json)
-          [string] [choices: "csharp", "fsharp", "java", "javascript", "python",
+    [string] [choices: "csharp", "fsharp", "go", "java", "javascript", "python",
                                                                    "typescript"]
 
       --list                List the available templates               [boolean]
