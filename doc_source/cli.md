@@ -124,11 +124,11 @@ The CDK Toolkit needs to know your AWS credentials and the AWS region into which
 **Important**  
 We strongly recommend against using your main AWS account for day\-to\-day tasks\. Instead, create a user in IAM and use its credentials with the CDK\.
 
-Credentials and region may be specified using environment variables or configuration files\. These are the same variables and files used by other AWS tools such as the AWS CLI and the various AWS SDKs\. The CDK Toolkit looks for this information in the following order\.
+Credentials and region may be specified directly in your AWS CDK app, using environment variables, or in configuration files\. These are the same variables and files used by other AWS tools such as the AWS CLI and the various AWS SDKs\. The CDK Toolkit looks for this information in the following order\.
 + The account and region specified on the stack in your AWS CDK app using its `env` property\. This also causes the stack to be synthesized as environment\-specific; see [Environments](environments.md) for further details\.
 + The `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_DEFAULT_REGION` environment variables\. Alawys specify all three variables, not just one or two\.
 + A specific profile defined in the standard AWS `config` and `credentials` files, and specified using the `--profile` option on `cli` commands\.
-+ The `[default]` section of the standard AWS `config` and `credentials` files, if the environment variables are not set and no profile is specified\.
++ The `[default]` section of the standard AWS `config` and `credentials` files\.
 
 **Note**  
 The standard AWS `config` and `credentials` files are located at `~/.aws/config` and `~/.aws/credentials` \(macOS/Linux\) or `%USERPROFILE%\.aws\config` and `%USERPROFILE%\.aws\credentials` \(Windows\)\.
