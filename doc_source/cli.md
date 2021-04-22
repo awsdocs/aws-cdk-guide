@@ -117,22 +117,31 @@ To opt out of version reporting, use one of the following methods:
   }
   ```
 
-## Specifying the environment<a name="cli-environment"></a>
+## Specifying credentials and region<a name="cli-environment"></a>
 
- In AWS CDK terms, the [environment](environments.md) consists of a region and AWS credentials valid in that region\. The CDK Toolkit needs credentials in order to query your AWS account and to deploy CloudFormation templates\. 
+The CDK Toolkit needs to know your AWS credentials and the AWS region into which you are deploying, not only for deployment operations but also to retrieve context values during synthesis\. Together, your account and region make up the *environment*\.
 
 **Important**  
-We strongly recommend against using your AWS root account for day\-to\-day tasks\. Instead, create a user in IAM and use its credentials with the CDK\.
+We strongly recommend against using your main AWS account for day\-to\-day tasks\. Instead, create a user in IAM and use its credentials with the CDK\.
 
-If you have the AWS CLI installed, the easiest way to satisfy this requirement is to install the AWS CLI and issue the following command:
+Credentials and region may be specified using environment variables or configuration files\. These are the same variables and files used by other AWS tools such as the AWS CLI and the various AWS SDKs\. The CDK Toolkit looks for this information in the following order\.
++ The account and region specified on the stack in your AWS CDK app using its `env` property\. This also causes the stack to be synthesized as environment\-specific; see [Environments](environments.md) for further details\.
++ The `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_DEFAULT_REGION` environment variables\. Alawys specify all three variables, not just one or two\.
++ A specific profile defined in the standard AWS `config` and `credentials` files, and specified using the `--profile` option on `cli` commands\.
++ The `[default]` section of the standard AWS `config` and `credentials` files, if the environment variables are not set and no profile is specified\.
+
+**Note**  
+The standard AWS `config` and `credentials` files are located at `~/.aws/config` and `~/.aws/credentials` \(macOS/Linux\) or `%USERPROFILE%\.aws\config` and `%USERPROFILE%\.aws\credentials` \(Windows\)\.
+
+If you have the AWS CLI installed, the easiest way to configure your account credentials and a default region is to issue the following command:
 
 ```
 aws configure
 ```
 
-Provide your AWS access key ID, secret access key, and default region when prompted\.
+Provide your AWS access key ID, secret access key, and default region when prompted\. These values are written to the `[default]` section of the `config` and `credentials` files\.
 
-You may also manually create or edit the `~/.aws/config` and `~/.aws/credentials` \(macOS/Linux\) or `%USERPROFILE%\.aws\config` and `%USERPROFILE%\.aws\credentials` \(Windows\) files to contain credentials and a default region, in the following format\.
+If you don't have the AWS CLI installed, you can manually create or edit the `config` and `credentials` files to contain default credentials and a default region, in the following format\.
 + In `~/.aws/config` or `%USERPROFILE%\.aws\config`
 
   ```
@@ -147,18 +156,35 @@ You may also manually create or edit the `~/.aws/config` and `~/.aws/credentials
   aws_secret_access_key=je7MtGbClwBF/2Zp9Utk/h3yCo8nvbEXAMPLEKEY
   ```
 
-Besides specifying AWS credentials and a region under the `[default]` section, you can also put them in a `[profile NAME]` section, where *NAME* is the name of the profile\. You can add any number of named profiles, with or without a `[default]` section\. Be sure to add the same profile sections to both the configuration and credentials files\. 
+Besides specifying AWS credentials and a region in the `[default]` section, you can also add one or more `[profile NAME]` sections, where *NAME* is the name of the profile\.
++ In `~/.aws/config` or `%USERPROFILE%\.aws\config`
+
+  ```
+  [profile test]
+  region=us-east-1
+  
+  [profile prod]
+  region=us-east-1
+  ```
++ In `~/.aws/credentials` or `%USERPROFILE%\.aws\credentials`
+
+  ```
+  [profile test]
+  aws_access_key_id=AKIAI44QH8DHBEXAMPLE
+  aws_secret_access_key=je7MtGbClwBF/2Zp9Utk/h3yCo8nvbEXAMPLEKEY
+  
+  [profile test]
+  aws_access_key_id=AKIAI44QH8DHBEXAMPLE
+  aws_secret_access_key=je7MtGbClwBF/2Zp9Utk/h3yCo8nvbEXAMPLEKEY
+  ```
+
+Always add named profiles to both the `config` and `credentials` files\. The AWS CDK Toolkit does not fall back to using the region in the `[default]` section when the specified named profile is not found in the `config` file, as some other AWS tools do\.
+
+**Important**  
+Do not name a profile `default`: that is, do not use a `[profile default]` section in either `config` or `credentials`\.
 
 **Note**  
-Although the AWS CDK uses credentials from the same configuration files as other AWS tools and SDKs, including the [AWS Command Line Interface](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html), it may behave slightly differently from these tools\. In particular, if you use a named profile from the `credentials` file, the `config` must have a profile of the same name specifying the region\. The AWS CDK does not fall back to reading the region from the `[default]` section in `config`\. Also, do not use a profile named "default" \(e\.g\. `[profile default]`\)\. See [Setting credentials](https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/setting-credentials.html) for complete details on setting up credentials for the AWS SDK for JavaScript, which the AWS CDK uses under the hood\.
-
-Use the `--profile` flag to choose a set of credentials and default region from these configuration files for a given command\.
-
-```
-cdk deploy --profile test PipelineStack
-```
-
-Instead of using the configuration files, you can set the environment variables `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_DEFAULT_REGION` to appropriate values\. 
+Although the AWS CDK uses credentials from the same sources files as other AWS tools and SDKs, including the [AWS Command Line Interface](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html), it may behave slightly differently from these tools\. See [Setting credentials](https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/setting-credentials.html) for complete details on setting up credentials for the AWS SDK for JavaScript, which the AWS CDK uses under the hood\.
 
 You may optionally use the `--role-arn` \(or `-r`\) option to specify the ARN of an IAM role that should be used for deployment\. This role must be assumable by the AWS account being used\.
 
