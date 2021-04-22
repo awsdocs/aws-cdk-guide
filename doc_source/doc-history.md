@@ -7,6 +7,7 @@ The table below represents significant documentation milestones\. We fix errors 
 
 | Change | Description | Date | 
 | --- |--- |--- |
+| [Go developer preview](#doc-history) | Add information about Go language support \(in developer preview\) including a "Working with the CDK in Go" topic\. | April 19, 2021 | 
 | [Import or migrate AWS CloudFormation template](#doc-history) | Add description of the new `cloudformation-include.CfnInclude` class, a powerful way to import and migrate AWS CloudFormation templates, or to vend them as AWS CDK constructs\. | October 15, 2020 | 
 | [Add construct tree section](#doc-history) | Information about the construct tree and its relation to the constructs you define in your AWS CDK app\. | October 5, 2020 | 
 | [Add Bootstrapping topic](#doc-history) | A complete explanation of why and how to bootstrap AWS environments for the CDK, including a comprehensive discussion of how to customize the process\. | September 8, 2020 | 

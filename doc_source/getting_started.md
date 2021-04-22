@@ -18,6 +18,9 @@ The AWS CDK is designed around a handful of important concepts\. We will introdu
 
 An AWS CDK [app](apps.md) is an application written in TypeScript, JavaScript, Python, Java, or C\# that uses the AWS CDK to define AWS infrastructure\. An app defines one or more [stacks](stacks.md)\. Stacks \(equivalent to AWS CloudFormation stacks\) contain [constructs](constructs.md), each of which defines one or more concrete AWS resources, such as Amazon S3 buckets, Lambda functions, Amazon DynamoDB tables, and so on\.
 
+**Note**  
+The AWS CDK also supports Go in a developer preview\. This Guide does not include instructions or code examples for Go aside from [Working with the AWS CDK in Go](work-with-cdk-go.md)\.
+
 Constructs \(as well as stacks and apps\) are represented as types in your programming language of choice\. You instantiate constructs within a stack to declare them to AWS, and connect them to each other using well\-defined interfaces\.
 
 The AWS CDK includes the AWS CDK Toolkit \(also called the CLI\), a command\-line tool for working with your AWS CDK apps and stacks\. Among other functions, the Toolkit provides the ability to convert one or more AWS CDK stacks to AWS CloudFormation templates and related assets \(a process called *synthesis*\) and to deploy your stacks to an AWS account\.
