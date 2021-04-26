@@ -81,7 +81,7 @@ Issue `cdk version` to display the version of the AWS CDK Toolkit\. Provide this
 To gain insight into how the AWS CDK is used, the constructs used by AWS CDK applications are collected and reported by using a resource identified as `AWS::CDK::Metadata`\. This resource is added to AWS CloudFormation templates, and can easily be reviewed\. This information can also be used by AWS to identify stacks using a construct with known security or reliability issues, and to contact their users with important information\.
 
 **Note**  
-Prior to version 1\.93\.0, the AWS CDK reported the names and versions of the modules loaded during synthesis, rather than the constructs used in te stack\.
+Prior to version 1\.93\.0, the AWS CDK reported the names and versions of the modules loaded during synthesis, rather than the constructs used in the stack\.
 
 By default, the AWS CDK reports the use of constructs in the following NPM modules that are used in the stack:
 + AWS CDK core module
@@ -119,7 +119,7 @@ To opt out of version reporting, use one of the following methods:
 
 ## Specifying credentials and region<a name="cli-environment"></a>
 
-The CDK Toolkit needs to know your AWS credentials and the AWS region into which you are deploying, not only for deployment operations but also to retrieve context values during synthesis\. Together, your account and region make up the *environment*\.
+The CDK Toolkit needs to know your AWS account credentials and the AWS region into which you are deploying, not only for deployment operations but also to retrieve context values during synthesis\. Together, your account and region make up the *environment*\.
 
 **Important**  
 We strongly recommend against using your main AWS account for day\-to\-day tasks\. Instead, create a user in IAM and use its credentials with the CDK\.
@@ -131,6 +131,8 @@ Credentials and region may be specified using environment variables or in config
 
 **Note**  
 The standard AWS `config` and `credentials` files are located at `~/.aws/config` and `~/.aws/credentials` \(macOS/Linux\) or `%USERPROFILE%\.aws\config` and `%USERPROFILE%\.aws\credentials` \(Windows\)\.
+
+The environment specified in your AWS CDK app using the stack's `env` property is used during synthesis to generate an environment\-specific AWS CloudFormation template and during deployment to override the account or region specified by one of the above methods\. For more information, see [Environments](environments.md)\.
 
 If you have the AWS CLI installed, the easiest way to configure your account credentials and a default region is to issue the following command:
 
@@ -186,8 +188,6 @@ Do not name a profile `default`: that is, do not use a `[profile default]` secti
 Although the AWS CDK uses credentials from the same sources files as other AWS tools and SDKs, including the [AWS Command Line Interface](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html), it may behave slightly differently from these tools\. See [Setting credentials](https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/setting-credentials.html) for complete details on setting up credentials for the AWS SDK for JavaScript, which the AWS CDK uses under the hood\.
 
 You may optionally use the `--role-arn` \(or `-r`\) option to specify the ARN of an IAM role that should be used for deployment\. This role must be assumable by the AWS account being used\.
-
-The environment specified in your AWS CDK app using the stack's `env` property is used during synthesis to generate an environment\-specific AWS CloudFormation template\. It does not affect deployment\. For more information, see [Environments](environments.md)\.
 
 ## Specifying the app command<a name="cli-app-command"></a>
 
