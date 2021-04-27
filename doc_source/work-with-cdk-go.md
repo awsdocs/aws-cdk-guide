@@ -93,9 +93,9 @@ If you are simply changing some default values on an existing construct or addin
 
 ## Building, synthesizing, and deploying<a name="go-running"></a>
 
-The AWS CDK automatically compiles your app before running it\. However, it can be useful to build your app manually to check for errors and to run tests\. You can do this in your IDE \(for example, press Control\-B in Eclipse\) or by issuing `mvn compile` at a command prompt while in your project's root directory\.
+The AWS CDK automatically compiles your app before running it\. However, it can be useful to build your app manually to check for errors and to run tests\. You can do this by issuing `go build` at a command prompt while in your project's root directory\.
 
-Run any tests you've written by running `mvn test` at a command prompt\.
+Run any tests you've written by running `go test` at a command prompt\.
 
 The [stacks](stacks.md) defined in your AWS CDK app can be deployed individually or together using the commands below\. Generally, you should be in your project's main directory when you issue them\.
 + `cdk synth`: Synthesizes a AWS CloudFormation template from one or more of the stacks in your AWS CDK app\.
