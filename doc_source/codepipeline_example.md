@@ -490,7 +490,7 @@ export class PipelineStack extends Stack {
         },
       }),
       environment: {
-        buildImage: codebuild.LinuxBuildImage.STANDARD_2_0,
+        buildImage: codebuild.LinuxBuildImage.STANDARD_5_0,
       },
     });
     const lambdaBuild = new codebuild.PipelineProject(this, 'LambdaBuild', {
@@ -530,6 +530,7 @@ export class PipelineStack extends Stack {
           actions: [
             new codepipeline_actions.CodeCommitSourceAction({
               actionName: 'CodeCommit_Source',
+              branch: 'main',
               repository: code,
               output: sourceOutput,
             }),
@@ -640,7 +641,7 @@ class PipelineStack extends Stack {
         }
       }),
       environment: {
-        buildImage: codebuild.LinuxBuildImage.STANDARD_2_0
+        buildImage: codebuild.LinuxBuildImage.STANDARD_5_0
       }
     });
 
@@ -654,6 +655,7 @@ class PipelineStack extends Stack {
           actions: [
             new codepipeline_actions.CodeCommitSourceAction({
               actionName: 'CodeCommit_Source',
+              branch: 'main',
               repository: code,
               output: sourceOutput
             })
@@ -757,7 +759,7 @@ class PipelineStack(core.Stack):
                                     "index.js",
                                     "node_modules/**/*"]},
                             environment=dict(buildImage=
-                                codebuild.LinuxBuildImage.STANDARD_2_0))))
+                                codebuild.LinuxBuildImage.STANDARD_5_0))))
 
         source_output = codepipeline.Artifact()
         cdk_build_output = codepipeline.Artifact("CdkBuildOutput")
@@ -771,6 +773,7 @@ class PipelineStack(core.Stack):
                     actions=[
                         codepipeline_actions.CodeCommitSourceAction(
                             action_name="CodeCommit_Source",
+                            branch="main",
                             repository=code,
                             output=source_output)]),
                 codepipeline.StageProps(stage_name="Build",
@@ -856,7 +859,7 @@ public class PipelineStack extends Stack {
                         }});
                     }}))
                     .environment(BuildEnvironment.builder().buildImage(
-                            LinuxBuildImage.STANDARD_2_0).build())
+                            LinuxBuildImage.STANDARD_5_0).build())
                     .build();
 
         PipelineProject lambdaBuild = PipelineProject.Builder.create(this, "LambdaBuild") 
@@ -891,6 +894,7 @@ public class PipelineStack extends Stack {
                         .actions(Arrays.asList(
                             CodeCommitSourceAction.Builder.create()
                                 .actionName("Source")
+                                .branch('main')
                                 .repository(code)
                                 .output(sourceOutput)
                                 .build()))
@@ -983,7 +987,7 @@ namespace Pipeline
                 }),
                 Environment = new BuildEnvironment
                 {
-                    BuildImage = WindowsBuildImage.WINDOWS_BASE_2_0
+                    BuildImage = LinuxBuildImage.STANDARD_5_0
                 }
             });
 
@@ -1040,6 +1044,7 @@ namespace Pipeline
                             new CodeCommitSourceAction(new CodeCommitSourceActionProps
                             {
                                 ActionName = "Source",
+                                Branch = "main",
                                 Repository = code,
                                 Output = sourceOutput
                             })
