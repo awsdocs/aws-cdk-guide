@@ -741,7 +741,7 @@ task_definition = ecs.FargateTaskDefinition(self, "TaskDef",
     memory_limit_mib=1024, cpu=512)
 
 task_definition.add_container("my-other-container",
-    image=ecs.ContainerImage.fromEcrRepository(
+    image=ecs.ContainerImage.from_ecr_repository(
         asset.repository, asset.image_uri.rpartition(":")[-1]))
 ```
 
