@@ -435,7 +435,7 @@ bucket = s3.Bucket(self, "MyFirstBucket",
 Update `src/main/java/com/myorg/HelloCdkStack.java`, adding the new import and updating the bucket definition in the appropriate places\.
 
 ```
-import software.amazon.awscdk.services.s3.BucketEncryption;
+import software.amazon.awscdk.core.RemovalPolicy;
 ```
 
 ```
