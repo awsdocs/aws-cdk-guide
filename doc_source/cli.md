@@ -222,15 +222,22 @@ cdk synth PipelineStack LambdaStack
 ```
 
 You may also use wildcards to specify IDs that match a pattern\.
-+ ? matches any single character
-+ \* matches any number of characters
++ `?` matches any single character
++ `*` matches any number of characters \(`*` alone matches all stacks\)
++ `**` matches everything in a hierarchy
 
-When using wildcards, enclose the pattern in quotes or escape the wildcards with `\`\. If you don't, your shell may try to expand the pattern to the names of files in the current directory\. At best, this won't do what you expect; at worst, you could deploy stacks you didn't intend to\. This isn't strictly necessary on Windows because `cmd.exe` does not expand wildcards, but is good practice regardless\.
+You may also use the \-\-all option to specify all stacks\.
+
+If your app uses [CDK Pipelines](cdk_pipeline.md), the CDK Toolkit understands your stacks and stages as a hierorchy, and the \-\-all option and the `*` wildcard only match top\-level stacks\. To match all the stacks, use `**`\. Also use `**` to indicate all the stacks under a particular hierarchy\.
+
+When using wildcards, enclose the pattern in quotes, or escape the wildcards with `\`\. If you don't, your shell may try to expand the pattern to the names of files in the current directory\. At best, this won't do what you expect; at worst, you could deploy stacks you didn't intend to\. This isn't strictly necessary on Windows because `cmd.exe` does not expand wildcards, but is good practice nonetheless\.
 
 ```
 cdk synth "*Stack"    # PipelineStack, LambdaStack, etc.
 cdk synth 'Stack?'    # StackA, StackB, Stack1, etc.
-cdk synth \*          # All stacks in the app
+cdk synth \*          # All stacks in the app, or all top-level stacks in a CDK Pipelines app
+cdk synth '**'        # All stacks in a CDK Pipelines app
+cdk synth 'PipelineStack/Prod/**'   # All stacks in Prod stage in a CDK Pipelines app
 ```
 
 **Note**  
@@ -300,6 +307,8 @@ To see a list of the IDs of the stacks in your AWS CDK application, enter one of
 cdk list
 cdk ls
 ```
+
+If your application contains [CDK Pipelines](cdk_pipeline.md) stacks, the CDK Toolkit displays stack names as paths according to their location in the pipeline hierarchy \(e\.g\., `PipelineStack`, `PipelineStack/Prod`, `PipelineStack/Prod/MyService`, etc\)\.
 
 If your app contains many stacks, you can specify full or partial stack IDs of the stacks to be listed; see [Specifying stacks](#cli-stacks)\.
 
