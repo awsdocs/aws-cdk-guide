@@ -272,7 +272,7 @@ export class MultistackStack extends cdk.Stack {
     
     // Add a Boolean property "encryptBucket" to the stack constructor.
     // If true, creates an encrypted bucket. Otherwise, the bucket is unencrypted.
-    // Encrypted bucket uses AWS KMS-managed keys (SSE-KMS).
+    // Encrypted bucket uses KMS-managed keys (SSE-KMS).
     if (props && props.encryptBucket) {
       new s3.Bucket(this, "MyGroovyBucket", {
         encryption: s3.BucketEncryption.KMS_MANAGED, 
@@ -301,7 +301,7 @@ class MultistackStack extends cdk.Stack {
     
     // Add a Boolean property "encryptBucket" to the stack constructor.
     // If true, creates an encrypted bucket. Otherwise, the bucket is unencrypted.
-    // Encrypted bucket uses AWS KMS-managed keys (SSE-KMS).
+    // Encrypted bucket uses KMS-managed keys (SSE-KMS).
     if ( props && props.encryptBucket) {
       new s3.Bucket(this, "MyGroovyBucket", {
         encryption: s3.BucketEncryption.KMS_MANAGED, 
@@ -336,7 +336,7 @@ class MultistackStack(core.Stack):
 
         # Add a Boolean property "encryptBucket" to the stack constructor.
         # If true, creates an encrypted bucket. Otherwise, the bucket is unencrypted.
-        # Encrypted bucket uses AWS KMS-managed keys (SSE-KMS).
+        # Encrypted bucket uses KMS-managed keys (SSE-KMS).
         if encrypt_bucket:
             s3.Bucket(self, "MyGroovyBucket",
                       encryption=s3.BucketEncryption.KMS_MANAGED,
@@ -380,7 +380,7 @@ public class MultistackStack extends Stack {
 
         // Add a Boolean property "encryptBucket" to the stack constructor.
         // If true, creates an encrypted bucket. Otherwise, the bucket is
-        // unencrypted. Encrypted bucket uses AWS KMS-managed keys (SSE-KMS).
+        // unencrypted. Encrypted bucket uses KMS-managed keys (SSE-KMS).
         if (encryptBucket) {
             Bucket.Builder.create(this, "MyGroovyBucket")
                     .encryption(BucketEncryption.KMS_MANAGED)
@@ -416,7 +416,7 @@ namespace Multistack
         {
             // Add a Boolean property "EncryptBucket" to the stack constructor.
             // If true, creates an encrypted bucket. Otherwise, the bucket is unencrypted.
-            // Encrypted bucket uses AWS KMS-managed keys (SSE-KMS).
+            // Encrypted bucket uses KMS-managed keys (SSE-KMS).
             if (props?.EncryptBucket ?? false)
             {
                 new Bucket(this, "MyGroovyBucket", new BucketProps

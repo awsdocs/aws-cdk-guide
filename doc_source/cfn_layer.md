@@ -187,7 +187,7 @@ The basic approach to get access to the CFN Resource class is to use `construct.
 #### [ TypeScript ]
 
 ```
-// Get the AWS CloudFormation resource
+// Get the CloudFormation resource
 const cfnBucket = bucket.node.defaultChild as s3.CfnBucket;
 
 // Change its properties
@@ -203,7 +203,7 @@ cfnBucket.analyticsConfiguration = [
 #### [ JavaScript ]
 
 ```
-// Get the AWS CloudFormation resource
+// Get the CloudFormation resource
 const cfnBucket = bucket.node.defaultChild;
 
 // Change its properties
@@ -219,7 +219,7 @@ cfnBucket.analyticsConfiguration = [
 #### [ Python ]
 
 ```
-# Get the AWS CloudFormation resource
+# Get the CloudFormation resource
 cfn_bucket = bucket.node.default_child
 
 # Change its properties
@@ -235,7 +235,7 @@ cfn_bucket.analytics_configuration = [
 #### [ Java ]
 
 ```
-// Get the AWS CloudFormation resource
+// Get the CloudFormation resource
 CfnBucket cfnBucket = (CfnBucket)bucket.getNode().getDefaultChild();
 
 cfnBucket.setAnalyticsConfigurations(
@@ -249,7 +249,7 @@ cfnBucket.setAnalyticsConfigurations(
 #### [ C\# ]
 
 ```
-// Get the AWS CloudFormation resource
+// Get the CloudFormation resource
 var cfnBucket = (CfnBucket)bucket.Node.DefaultChild;
 
 cfnBucket.AnalyticsConfigurations = new List<object> {
@@ -323,7 +323,7 @@ Use one of the `addOverride` methods \(Python: `add_override`\) methods, as show
 #### [ TypeScript ]
 
 ```
-// Get the AWS CloudFormation resource
+// Get the CloudFormation resource
 const cfnBucket = bucket.node.defaultChild as s3.CfnBucket;
 
 // Use dot notation to address inside the resource template fragment
@@ -345,7 +345,7 @@ cfnBucket.addPropertyDeletionOverride('Tags.0');
 #### [ JavaScript ]
 
 ```
-// Get the AWS CloudFormation resource
+// Get the CloudFormation resource
 const cfnBucket = bucket.node.defaultChild ;
 
 // Use dot notation to address inside the resource template fragment
@@ -367,7 +367,7 @@ cfnBucket.addPropertyDeletionOverride('Tags.0');
 #### [ Python ]
 
 ```
-# Get the AWS CloudFormation resource
+# Get the CloudFormation resource
 cfn_bucket = bucket.node.default_child
 
 # Use dot notation to address inside the resource template fragment
@@ -389,7 +389,7 @@ cfn_bucket.add_property_deletion_override("Tags.0")
 #### [ Java ]
 
 ```
-// Get the AWS CloudFormation resource
+// Get the CloudFormation resource
 CfnBucket cfnBucket = (CfnBucket)bucket.getNode().getDefaultChild();
 
 // Use dot notation to address inside the resource template fragment
@@ -411,7 +411,7 @@ cfnBucket.addPropertyDeletionOverride("Tags.0");
 #### [ C\# ]
 
 ```
-// Get the AWS CloudFormation resource
+// Get the CloudFormation resource
 var cfnBucket = (CfnBucket)bucket.node.defaultChild;
 
 // Use dot notation to address inside the resource template fragment

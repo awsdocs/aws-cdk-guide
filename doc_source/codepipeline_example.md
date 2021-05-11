@@ -24,7 +24,7 @@ Also, make sure you have issued `cdk bootstrap`, as the Amazon S3 bucket in the 
 
 To set up a new AWS CDK project in CodeCommit;
 
-1. [Create a new CodeCommit repository](https://docs.aws.amazon.com/codecommit/latest/userguide/how-to-create-repository.html) named `pipeline` using the CodeCommit console or the AWS CLI\.
+1. [Create a new CodeCommit repository](https://docs.aws.amazon.com/codecommit/latest/userguide/how-to-create-repository.html) named `pipeline` using the CodeCommit console or the CDK Toolkit\.
 
    if you already have a CodeCommit repository named `pipeline`, you can use another name\. Just make sure you clone it to a directory named pipeline on your local system\.
 

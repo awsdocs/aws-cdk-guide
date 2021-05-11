@@ -123,7 +123,7 @@ All AWS CDK developers, even those working in Python, Java, or C\#, need [Node\.
 **Important**  
 Node\.js versions 13\.0\.0 through 13\.6\.0 are not compatible with the AWS CDK due to compatibility issues with its dependencies\.
 
-You must configure your workstation with your credentials and an AWS Region, if you have not already done so\. If you have the AWS CLI installed, the easiest way to satisfy this requirement is issue the following command:
+You must configure your workstation with your credentials and an AWS region, if you have not already done so\. If you have the AWS CLI installed, the easiest way to satisfy this requirement is issue the following command:
 
 ```
 aws configure

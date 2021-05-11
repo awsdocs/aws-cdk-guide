@@ -9,7 +9,7 @@ If you don't specify an environment when you define a stack, the stack is said t
 
 In an environment\-agnostic stack, any constructs that use availability zones will see two of them, allowing the stack to be deployed to any region\.
 
-When using cdk deploy to deploy environment\-agnostic stacks, the AWS CDK CLI uses the specified AWS CLI profile \(or the default profile, if none is specified\) to determine where to deploy\. The AWS CDK CLI follows a protocol similar to the AWS CLI to determine which AWS credentials to use when performing operations against your AWS account\. See [AWS CDK Toolkit \(`cdk` command\)](cli.md) for details\.
+When using cdk deploy to deploy environment\-agnostic stacks, the AWS CDK CLI uses the specified AWS CLI profile \(or the default profile, if none is specified\) to determine where to deploy\. The AWS CDK CLI follows a protocol similar to the AWS CLI to determine which AWS credentials to use when performing operations in your AWS account\. See [AWS CDK Toolkit \(`cdk` command\)](cli.md) for details\.
 
 For production stacks, we recommend that you explicitly specify the environment for each stack in your app using the `env` property\. The following example specifies different environments for its two different stacks\.
 
@@ -310,7 +310,7 @@ if [[ $# -ge 2 ]]; then
     npx cdk deploy "$@"
     exit $?
 else
-    echo 1>&2 "Provide AWS account and region as first two args."
+    echo 1>&2 "Provide account and region as first two args."
     echo 1>&2 "Additional args are passed through to cdk deploy."
     exit 1
 fi
@@ -330,7 +330,7 @@ if ($args.length -ge 2) {
     npx cdk deploy $args
     exit $lastExitCode
 } else {
-    [console]::error.writeline("Provide AWS account and region as first two args.")
+    [console]::error.writeline("Provide account and region as first two args.")
     [console]::error.writeline("Additional args are passed through to cdk deploy.")
     exit 1
 }
