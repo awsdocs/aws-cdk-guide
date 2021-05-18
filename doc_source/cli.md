@@ -268,6 +268,11 @@ You may incur AWS charges for what the AWS CDK stores in the bootstrapped resour
 **Note**  
 Older versions of the modern template created a Customer Master Key by default\. To avoid charges, re\-bootstrap using `--no-bootstrap-customer-key`\. 
 
+The AWS CDK Toolkit supports two bootstrap templates: the modern template and the legacy template\. The legacy template is the default, but the modern template is required by CDK Pipelines\. For more inforamtion, see [Bootstrapping](bootstrapping.md)\.
+
+**Important**  
+The modern bootstrap template grants the bootstrapping account read and write access to any Amazon S3 bucket in the same environment, as well as the ability to read secrets from AWS KMS\. All accounts trusted in the bootstrapped environment can perform the same actions\. If this is not what you want, use a [custom template](bootstrapping.md#bootstrapping-customizing-extended)\. These permissions are only required by [CDK Pipelines](cdk_pipeline.md)\.
+
 ## Creating a new app<a name="cli-init"></a>
 
 To create a new app, create a directory for it, then, inside the directory, issue `cdk init`\.

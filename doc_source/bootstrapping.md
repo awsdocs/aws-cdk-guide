@@ -11,6 +11,9 @@ The required resources are defined in a AWS CloudFormation stack, called the *bo
 
 The AWS CDK supports two bootstrap templates\. At this writing, the AWS CDK is transitioning from one of these templates to the other, but the original template \(dubbed "legacy"\) is still the default\. The newer template \("modern"\) is required by CDK Pipelines today, and will become the default at some point in the future\. For details, see [Bootstrapping templates](#bootstrapping-templates)\.
 
+**Important**  
+The modern bootstrap template grants the bootstrapping account read and write access to any Amazon S3 bucket in the same environment, as well as the ability to read secrets from AWS KMS\. All accounts trusted in the bootstrapped environment can perform the same actions\. If this is not what you want, use a [custom template](#bootstrapping-customizing-extended)\. These permissions are only required by [CDK Pipelines](cdk_pipeline.md)\.
+
 Environments are independent, so if you want to deploy to multiple environments \(different AWS accounts or different regions in the same account\), each environment must be bootstrapped separately\.
 
 **Important**  
@@ -96,13 +99,16 @@ aws cloudformation create-stack ^
 
 At this writing, the AWS CDK is transitioning from one set of bootstrap resources to another\. The original bootstrap template, which shipped with the very first version of the AWS CDK, is called the **legacy** template\. A newer version of the template with additional resources was added in version 1\.25\.0\. This newer template is called the **modern** template\.
 
-The legacy template is fully supported by the AWS CDK and is in fact the template that is selected by default when you issue `cdk bootstrap`\. The modern template is required primarily by the CDK Pipelines module, which can be used to set up a continuous delivery pipeline for your CDK applications\. More precisely, the modern template is used by the `DefaultSynthesizer` \(see [Stack synthesizers](#bootstrapping-synthesizers)\), and CDK Pipelines requires this synthesizer,
+The legacy template is still fully supported by the AWS CDK and is in fact the template that is selected by default when you issue `cdk bootstrap`\. The modern template is required primarily by the CDK Pipelines module, which can be used to set up a continuous delivery pipeline for your CDK applications\. More precisely, the modern template is used by the `DefaultSynthesizer` \(see [Stack synthesizers](#bootstrapping-synthesizers)\), and CDK Pipelines requires this synthesizer,
 
 The main differences between the templates are as follows\.
 
 [\[See the AWS documentation website for more details\]](http://docs.aws.amazon.com/cdk/latest/guide/bootstrapping.html)
 
 \* *We will add additional resources to the modern template as needed\.*
+
+**Important**  
+The modern bootstrap template grants the bootstrapping account read and write access to any Amazon S3 bucket in the same environment, as well as the ability to read secrets from AWS KMS\. All accounts trusted in the bootstrapped environment can perform the same actions\. If this is not what you want, use a [custom template](#bootstrapping-customizing-extended)\. These permissions are only required by [CDK Pipelines](cdk_pipeline.md)\.
 
 At some point in the future, the modern template will become the default bootstrapping template\. Until then, manually select the modern template when bootstrapping by setting the `CDK_NEW_BOOTSTRAP` environment variable\.
 
