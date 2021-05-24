@@ -122,11 +122,13 @@ In Python, `lambda` is a language keyword, so you cannot use it as a name for th
 
 By convention, the second argument to AWS CDK constructs is named `id`\. When writing your own stacks and constructs, calling a parameter `id` "shadows" the Python built\-in function `id()`, which returns an object's unique identifier\. This function isn't used very often, but if you should happen to need it in your construct, rename the argument, for example `id_`, or else call the built\-in function as `__builtins__.id()`\.
 
-### Props<a name="python-props"></a>
+### Arguments and properties<a name="python-props"></a>
 
 All AWS Construct Library classes are instantiated using three arguments: the *scope* in which the construct is being defined \(its parent in the construct tree\), an *id*, and *props*, a bundle of key/value pairs that the construct uses to configure the resources it creates\. Other classes and methods also use the "bundle of attributes" pattern for arguments\.
 
-In Python, props are expressed as keyword arguments\. If an argument contains nested data structures, these are expressed using a class which takes its own keyword arguments at instantiation\. The same pattern is applied to other method calls that take a single structured argument\.
+*scope* and *id* should always be passed as positional arguments, not keyword arguments, because their names change if the construct accepts a property named *scope* or *id*\.
+
+In Python, props are expressed as keyword arguments\. If an argument contains nested data structures, these are expressed using a class which takes its own keyword arguments at instantiation\. The same pattern is applied to other method calls that take a structured argument\.
 
 For example, in a Amazon S3 bucket's `add_lifecycle_rule` method, the `transitions` property is a list of `Transition` instances\.
 
