@@ -4,6 +4,8 @@ The Go language binding for the AWS CDK is now available as a Developer Preview\
 
 Unlike the other languages the CDK supports, Go is not a traditional object\-oriented programming language\. Go uses composition where other languages often leverage inheritance\. We have tried to employ idiomatic Go approaches as much as possible, but there are places where the CDK charts its own path\. 
 
+This topic explains the ins and outs of working with the AWS CDK in Go\. See the [announcement blog post](https://aws.amazon.com/blogs/developer/getting-started-with-the-aws-cloud-development-kit-and-go/) for a walkthrough of a simple Go project for the AWS CDK\.
+
 ## Prerequisites<a name="go-prerequisites"></a>
 
 To work with the AWS CDK, you must have an AWS account and credentials and have installed Node\.js and the AWS CDK Toolkit\. See [AWS CDK Prerequisites](work-with.md#work-with-prerequisites)\.
