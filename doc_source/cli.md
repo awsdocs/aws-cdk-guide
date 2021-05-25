@@ -125,7 +125,7 @@ The CDK Toolkit needs to know your AWS account credentials and the AWS region in
 We strongly recommend against using your main AWS account for day\-to\-day tasks\. Instead, create a user in IAM and use its credentials with the CDK\.
 
 Credentials and region may be specified using environment variables or in configuration files\. These are the same variables and files used by other AWS tools such as the AWS CLI and the various AWS SDKs\. The CDK Toolkit looks for this information in the following order\.
-+ The `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_DEFAULT_REGION` environment variables\. Alawys specify all three variables, not just one or two\.
++ The `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_DEFAULT_REGION` environment variables\. Always specify all three variables, not just one or two\.
 + A specific profile defined in the standard AWS `config` and `credentials` files, and specified using the `--profile` option on `cdk` commands\.
 + The `[default]` section of the standard AWS `config` and `credentials` files\.
 
