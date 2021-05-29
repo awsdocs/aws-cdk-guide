@@ -94,7 +94,7 @@ public class SecretsManagerStack : Stack
     public SecretsManagerStack(App scope, string id, StackProps props) : base(scope, id, props) {
 
         var secret = Secret.FromSecretAttributes(this, "ImportedSecret", new SecretAttributes {
-            SecretArn = "arn:aws:secretsmanager:<region>:<account-id-number>:secret:<secret-name>-<random-6-characters>"
+            SecretCompleteArn = "arn:aws:secretsmanager:<region>:<account-id-number>:secret:<secret-name>-<random-6-characters>"
             // If the secret is encrypted using a KMS-hosted CMK, either import or reference that key:
             // encryptionKey = ...,
         });
