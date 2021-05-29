@@ -13,7 +13,7 @@ export class SecretsManagerStack extends core.Stack {
     super(scope, id, props);
 
     const secret = sm.Secret.fromSecretAttributes(this, "ImportedSecret", {
-      secretArn:
+      secretCompleteArn:
         "arn:aws:secretsmanager:<region>:<account-id-number>:secret:<secret-name>-<random-6-characters>"
       // If the secret is encrypted using a KMS-hosted CMK, either import or reference that key:
       // encryptionKey: ...
@@ -31,7 +31,7 @@ class SecretsManagerStack extends core.Stack {
     super(scope, id, props);
 
     const secret = sm.Secret.fromSecretAttributes(this, "ImportedSecret", {
-      secretArn:
+      secretCompleteArn:
         "arn:aws:secretsmanager:<region>:<account-id-number>:secret:<secret-name>-<random-6-characters>"
       // If the secret is encrypted using a KMS-hosted CMK, either import or reference that key:
       // encryptionKey: ...
@@ -53,7 +53,7 @@ class SecretsManagerStack(core.Stack):
       super().__init__(scope, name, **kwargs)
 
       secret = sm.Secret.from_secret_attributes(self, "ImportedSecret",
-          secret_arn="arn:aws:secretsmanager:<region>:<account-id-number>:secret:<secret-name>-<random-6-characters>",
+          secret_complete_arn="arn:aws:secretsmanager:<region>:<account-id-number>:secret:<secret-name>-<random-6-characters>",
           # If the secret is encrypted using a KMS-hosted CMK, either import or reference that key:
           # encryption_key=....
       )
@@ -75,10 +75,10 @@ public class SecretsManagerStack extends Stack {
         super(scope, id, props);
         
         Secret secret = (Secret)Secret.fromSecretAttributes(this, "ImportedSecret", SecretAttributes.builder()
-        .secretArn("arn:aws:secretsmanager:<region>:<account-id-number>:secret:<secret-name>-<random-6-characters>")
-        // If the secret is encrypted using a KMS-hosted CMK, either import or reference that key:
-        // .encryptionKey(...)
-        .build());
+            .secretCompleteArn("arn:aws:secretsmanager:<region>:<account-id-number>:secret:<secret-name>-<random-6-characters>")
+             // If the secret is encrypted using a KMS-hosted CMK, either import or reference that key:
+             // .encryptionKey(...)
+             .build());
     }
 }
 ```
