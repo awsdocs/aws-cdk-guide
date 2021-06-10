@@ -43,6 +43,7 @@ Amazon's trademarks and trade dress may not be used in
    + [Aspects](aspects.md)
    + [Escape hatches](cfn_layer.md)
    + [Bootstrapping](bootstrapping.md)
++ [Best practices for developing and deploying cloud infrastructure with the AWS CDK](best-practices.md)
 + [API reference](reference.md)
 + [Examples](examples.md)
    + [Creating a serverless application using the AWS CDK](serverless_example.md)

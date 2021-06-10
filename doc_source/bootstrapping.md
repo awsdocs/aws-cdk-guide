@@ -12,7 +12,7 @@ The required resources are defined in a AWS CloudFormation stack, called the *bo
 The AWS CDK supports two bootstrap templates\. At this writing, the AWS CDK is transitioning from one of these templates to the other, but the original template \(dubbed "legacy"\) is still the default\. The newer template \("modern"\) is required by CDK Pipelines today, and will become the default at some point in the future\. For details, see [Bootstrapping templates](#bootstrapping-templates)\.
 
 **Important**  
-The modern bootstrap template grants the bootstrapping account read and write access to any Amazon S3 bucket in the same environment, as well as the ability to read secrets from AWS KMS\. All accounts trusted in the bootstrapped environment can perform the same actions\. If this is not what you want, use a [custom template](#bootstrapping-customizing-extended)\. These permissions are only required by [CDK Pipelines](cdk_pipeline.md)\.
+The modern bootstrap template grants the bootstrapped account read and write access to any Amazon S3 bucket in the same environment, as well as the ability to read secrets from AWS KMS\. All accounts trusted in the bootstrapped environment can perform the same actions\. If this is not what you want, use a [custom template](#bootstrapping-customizing-extended)\. These permissions are only required by [CDK Pipelines](cdk_pipeline.md)\.
 
 Environments are independent, so if you want to deploy to multiple environments \(different AWS accounts or different regions in the same account\), each environment must be bootstrapped separately\.
 
@@ -108,7 +108,7 @@ The main differences between the templates are as follows\.
 \* *We will add additional resources to the modern template as needed\.*
 
 **Important**  
-The modern bootstrap template grants the bootstrapping account read and write access to any Amazon S3 bucket in the same environment, as well as the ability to read secrets from AWS KMS\. All accounts trusted in the bootstrapped environment can perform the same actions\. If this is not what you want, use a [custom template](#bootstrapping-customizing-extended)\. These permissions are only required by [CDK Pipelines](cdk_pipeline.md)\.
+The modern bootstrap template grants the bootstrapped account read and write access to any Amazon S3 bucket in the same environment, as well as the ability to read secrets from AWS KMS\. All accounts trusted in the bootstrapped environment can perform the same actions\. If this is not what you want, use a [custom template](#bootstrapping-customizing-extended)\. These permissions are only required by [CDK Pipelines](cdk_pipeline.md)\.
 
 At some point in the future, the modern template will become the default bootstrapping template\. Until then, manually select the modern template when bootstrapping by setting the `CDK_NEW_BOOTSTRAP` environment variable\.
 

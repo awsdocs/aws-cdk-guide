@@ -15,7 +15,7 @@ The main changes in CDK v2 are:
 + CDK v2 requires that the environments you deploy into be boostrapped using the modern bootstrap stack; the legacy stack is no longer supported\. CDK v2 furthermore requires a new version of the modern stack\. Simply re\-bootstrap the affected environments to upgrade them\. It is not necessary to set any feature flags or environment variables to specify the modern bootstrap stack\.
 
 **Important**  
-The modern bootstrap template grants the bootstrapping account read and write access to any Amazon S3 bucket in the same environment, as well as the ability to read secrets from AWS KMS\. All accounts trusted in the bootstrapped environment can perform the same actions\. If this is not what you want, use a [custom template](bootstrapping.md#bootstrapping-customizing-extended)\. These permissions are only required by [CDK Pipelines](cdk_pipeline.md)\.
+The modern bootstrap template grants the bootstrapped account read and write access to any Amazon S3 bucket in the same environment, as well as the ability to read secrets from AWS KMS\. All accounts trusted in the bootstrapped environment can perform the same actions\. If this is not what you want, use a [custom template](bootstrapping.md#bootstrapping-customizing-extended)\. These permissions are only required by [CDK Pipelines](cdk_pipeline.md)\.
 
 Aside from this topic, the AWS CDK Developer Guide describes CDK v1\.x\. Most of the information in the Guide still applies in CDK v2, or can be adapted with only minor changes\. A v2 Developer Guide will be available at General Availability \(GA\) of CDK v2\. A version of the [AWS CDK API Reference](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-construct-library.html) is available for CDK v2\.
 
@@ -29,7 +29,7 @@ Most requirements for AWS CDK v2 are the same as for AWS CDK v1\.x\. See [Prereq
 
 To migrate your app to AWS CDK v2, first update the feature flags in `cdk.json`\. Then update your app's dependencies and imports as necessary for the programming language it is written in\.
 
-### Updating `cdk.json`<a name="w289aac13c11b5"></a>
+### Updating `cdk.json`<a name="w297aac13c11b5"></a>
 
 Remove all feature flags from `cdk.json`\. You can add one or more of the three flags listed below, set to `false`, if your app relies on these specific AWS CDK v1\.x behaviors\. Use the `cdk diff` command to inspect the changes to your synthesized template to see if any of these are needed\. 
 

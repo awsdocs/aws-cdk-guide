@@ -271,7 +271,7 @@ Older versions of the modern template created a Customer Master Key by default\.
 The AWS CDK Toolkit supports two bootstrap templates: the modern template and the legacy template\. The legacy template is the default, but the modern template is required by CDK Pipelines\. For more inforamtion, see [Bootstrapping](bootstrapping.md)\.
 
 **Important**  
-The modern bootstrap template grants the bootstrapping account read and write access to any Amazon S3 bucket in the same environment, as well as the ability to read secrets from AWS KMS\. All accounts trusted in the bootstrapped environment can perform the same actions\. If this is not what you want, use a [custom template](bootstrapping.md#bootstrapping-customizing-extended)\. These permissions are only required by [CDK Pipelines](cdk_pipeline.md)\.
+The modern bootstrap template grants the bootstrapped account read and write access to any Amazon S3 bucket in the same environment, as well as the ability to read secrets from AWS KMS\. All accounts trusted in the bootstrapped environment can perform the same actions\. If this is not what you want, use a [custom template](bootstrapping.md#bootstrapping-customizing-extended)\. These permissions are only required by [CDK Pipelines](cdk_pipeline.md)\.
 
 ## Creating a new app<a name="cli-init"></a>
 
@@ -335,7 +335,7 @@ The CDK Toolkit actually runs your app and synthesizes fresh templates before mo
 
 See `cdk synth --help` for all available options\. A few of the most\-frequently\-used options are covered below\.
 
-### Specifying context values<a name="w289aac25b7c31c11"></a>
+### Specifying context values<a name="w297aac27b7c31c11"></a>
 
 Use the `--context` or `-c` option to pass [runtime context](context.md) values to your CDK app\.
 
@@ -354,7 +354,7 @@ When deploying multiple stacks, the specified context values are normally passed
 cdk synth --context Stack1:key=value Stack2:key=value Stack1 Stack2
 ```
 
-### Specifying display format<a name="w289aac25b7c31c13"></a>
+### Specifying display format<a name="w297aac27b7c31c13"></a>
 
 By default, the synthesized template is displayed in YAML format\. Add the `--json` flag to display it in JSON format instead\.
 
@@ -362,7 +362,7 @@ By default, the synthesized template is displayed in YAML format\. Add the `--js
 cdk synth --json MyStack
 ```
 
-### Specifying output directory<a name="w289aac25b7c31c15"></a>
+### Specifying output directory<a name="w297aac27b7c31c15"></a>
 
 Add the `--output` \(`-o`\) option to write the synthesized templates to a directory other than `cdk.out`\.
 
@@ -386,7 +386,7 @@ The CDK Toolkit runs your app and synthesizes fresh AWS CloudFormation templates
 
 See `cdk deploy --help` for all available options\. A few of the most\-frequently\-used options are covered below\.
 
-### Specifying AWS CloudFormation parameters<a name="w289aac25b7c33c11"></a>
+### Specifying AWS CloudFormation parameters<a name="w297aac27b7c33c11"></a>
 
 The AWS CDK Toolkit supports specifying AWS CloudFormation [parameters](parameters.md) at deployment\. You may provide these on the command line following the `--parameters` flag\.
 
@@ -408,7 +408,7 @@ cdk deploy MyStack YourStack --parameters MyStack:uploadBucketName=UploadBucket 
 
 By default, the AWS CDK retains values of parameters from previous deployments and uses them in later deployments if they are not specified explicitly\. Use the `--no-previous-parameters` flag to require all parameters to be specified\.
 
-### Specifying outputs file<a name="w289aac25b7c33c13"></a>
+### Specifying outputs file<a name="w297aac27b7c33c13"></a>
 
 If your stack declares AWS CloudFormation outputs, these are normally displayed on the screen at the conclusion of deployment\. To write them to a file in JSON format, use the `--outputs-file` flag\.
 
@@ -625,7 +625,7 @@ If one of cdk.json or ~/.cdk.json exists, options specified there will be used
 as defaults. Settings in cdk.json take precedence.
 ```
 
-### `cdk list` \(`ls`\)<a name="w289aac25b7c39b7b1"></a>
+### `cdk list` \(`ls`\)<a name="w297aac27b7c39b7b1"></a>
 
 ```
 cdk list [STACKS..]
@@ -638,7 +638,7 @@ Options:
                                                       [boolean] [default: false]
 ```
 
-### `cdk synthesize` \(`synth`\)<a name="w289aac25b7c39b7b3"></a>
+### `cdk synthesize` \(`synth`\)<a name="w297aac27b7c39b7b3"></a>
 
 ```
 cdk synthesize [STACKS..]
@@ -654,7 +654,7 @@ Options:
                                                       [boolean] [default: false]
 ```
 
-### `cdk bootstrap`<a name="w289aac25b7c39b7b5"></a>
+### `cdk bootstrap`<a name="w297aac27b7c39b7b5"></a>
 
 ```
 cdk bootstrap [ENVIRONMENTS..]
@@ -723,7 +723,7 @@ Options:
                                             example)                    [string]
 ```
 
-### `cdk deploy`<a name="w289aac25b7c39b7b7"></a>
+### `cdk deploy`<a name="w297aac27b7c39b7b7"></a>
 
 ```
 cdk deploy [STACKS..]
@@ -776,7 +776,7 @@ Options:
                                              [string] [choices: "bar", "events"]
 ```
 
-### `cdk destroy`<a name="w289aac25b7c39b7b9"></a>
+### `cdk destroy`<a name="w297aac27b7c39b7b9"></a>
 
 ```
 cdk destroy [STACKS..]
@@ -795,7 +795,7 @@ Options:
                             stacks                                     [boolean]
 ```
 
-### `cdk diff`<a name="w289aac25b7c39b7c11"></a>
+### `cdk diff`<a name="w297aac27b7c39b7c11"></a>
 
 ```
 cdk diff [STACKS..]
@@ -815,7 +815,7 @@ Options:
                             with                                        [string]
 ```
 
-### `cdk init`<a name="w289aac25b7c39b7c13"></a>
+### `cdk init`<a name="w297aac27b7c39b7c13"></a>
 
 ```
 cdk init [TEMPLATE]
@@ -837,7 +837,7 @@ Options:
                             project                   [boolean] [default: false]
 ```
 
-### `cdk context`<a name="w289aac25b7c39b7c15"></a>
+### `cdk context`<a name="w297aac27b7c39b7c15"></a>
 
 ```
 cdk context
