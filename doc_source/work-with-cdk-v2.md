@@ -135,7 +135,7 @@ install_requires=[
      "aws-cdk-lib>=2.0.0rc1",
      "constructs>=10.0.0",
      # ...
-]
+],
 ```
 
 Install the new dependencies with `pip install -r requirements.txt`\.
