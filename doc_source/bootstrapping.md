@@ -67,9 +67,21 @@ cdk bootstrap --profile prod
 
 AWS CDK bootstrapping is performed by an AWS CloudFormation template\. To get a copy of this template in the file `bootstrap-template.yaml`, run the following command\.
 
+------
+#### [ macOS/Linux ]
+
 ```
 cdk bootstrap --show-template > bootstrap-template.yaml
 ```
+
+------
+#### [ Windows ]
+
+```
+cdk bootstrap --show-template | Out-File -encoding utf8 bootstrap-template.yaml
+```
+
+------
 
 The template is also available in the [AWS CDK GitHub repository](https://github.com/aws/aws-cdk/blob/master/packages/aws-cdk/lib/api/bootstrap/bootstrap-template.yaml)\.
 
