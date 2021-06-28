@@ -78,7 +78,7 @@ cdk bootstrap --show-template > bootstrap-template.yaml
 #### [ Windows ]
 
 ```
-cdk bootstrap --show-template | Out-File -encoding utf8 bootstrap-template.yaml
+powershell "cdk bootstrap --show-template | Out-File -encoding utf8 bootstrap-template.yaml"
 ```
 
 ------
