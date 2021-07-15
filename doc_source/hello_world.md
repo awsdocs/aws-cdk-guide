@@ -528,7 +528,7 @@ It's informative to compare the output of cdk synth here with the previous outpu
 Since the `autoDeleteObjects` property is implemented using a AWS CloudFormation custom resource, which is implemented using an AWS Lambda function, our stack contains an [asset](assets.md)\. This fact requires that our AWS account and region be [bootstrapped](bootstrapping.md) so that there's an Amazon S3 bucket to hold the asset during deployment\. If you haven't already bootstrapped, issue:  
 
 ```
-cdk bootstrap
+cdk bootstrap aws://ACCOUNT-NUMBER/REGION
 ```
 
 Now let's deploy\.

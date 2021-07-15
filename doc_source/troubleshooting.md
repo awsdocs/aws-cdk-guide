@@ -158,15 +158,15 @@ alias cdk=npx cdk
 Your AWS environment does not have a staging bucket, which the AWS CDK uses to hold resources during deployment\. Stacks require this bucket if they contain [Assets](assets.md) or synthesize to AWS CloudFormation templates larger than 50 kilobytes\. You can create the staging bucket with the following command:
 
 ```
-cdk bootstrap
+cdk bootstrap aws://ACCOUNT-NUMBER/REGION
 ```
 
 To avoid generating unexpected AWS charges, the AWS CDK does not automatically create a staging bucket\. You must bootstrap your environment explicitly\.
 
-By default, the staging bucket is created in the region specified by the default AWS profile \(set by `aws configure`\), using that profile's account\. You can specify a different account and region on the command line as follows\.
+By default, the staging bucket is created in the region\(s\) used by stacks in the current AWS CDK application, or the region specified in your local AWS profile \(set by `aws configure`\), using that profile's account\. You can specify a different account and region on the command line as follows\. \(You must specify the account and region if you are not in an app's directory\.\)
 
 ```
-cdk bootstrap aws://123456789/us-east-1
+cdk bootstrap aws://ACCOUNT-NUMBER/REGION
 ```
 
 You must bootstrap in every region where you will deploy stacks that require a staging bucket\.

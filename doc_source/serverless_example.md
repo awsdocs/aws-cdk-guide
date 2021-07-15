@@ -594,7 +594,7 @@ cdk synth
 Before you can deploy your first AWS CDK app containing a lambda function, you must bootstrap your AWS environment\. This creates a staging bucket that the AWS CDK uses to deploy stacks containing assets\. For details, see [Bootstrapping your AWS environment](cli.md#cli-bootstrap)\. If you've already bootstrapped, you'll get a warning and nothing will change\.
 
 ```
-cdk bootstrap
+cdk bootstrap aws://ACCOUNT-NUMBER/REGION
 ```
 
 Now we're ready to deploy the app as follows\.

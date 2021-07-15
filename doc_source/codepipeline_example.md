@@ -18,7 +18,7 @@ Beyond having the AWS CDK set up and configured, your workstation needs to be ab
 
 You can also use the `git-remote-codecommit` Git add\-on or other methods of connecting and authenticating [supported by CodeCommit](https://docs.aws.amazon.com/codecommit/latest/userguide/setting-up.html)\.
 
-Also, make sure you have issued `cdk bootstrap`, as the Amazon S3 bucket in the bootstrap stack is required to deploy a Lambda function with the AWS CDK\.
+Also, make sure you have issued `cdk bootstrap aws://ACCOUNT-NUMBER/REGION`, as the Amazon S3 bucket in the bootstrap stack is required to deploy a Lambda function with the AWS CDK\.
 
 ## Setting up the project<a name="codepipeline_example.setup"></a>
 

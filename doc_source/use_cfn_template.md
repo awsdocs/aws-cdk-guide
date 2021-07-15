@@ -4,7 +4,7 @@ The [https://docs.aws.amazon.com/cdk/api/latest/docs/cloudformation-include-read
 
 This construct essentially adds an AWS CDK API wrapper to any resource in the template\. You can use this capability to migrate your existing AWS CloudFormation templates to the AWS CDK a piece at a time in order to take advantage of the AWS CDK's convenient higher\-level abstractions, or just to vend your AWS CloudFormation templates to AWS CDK developers by providing an AWS CDK construct API\.\.
 
-## Importing an AWS CloudFormation template<a name="w297aac25b9b7"></a>
+## Importing an AWS CloudFormation template<a name="w302aac25b9b7"></a>
 
  Here is a simple AWS CloudFormation template we'll use for the examples in this topic\. Save it as `my-template.json`\. After you've tried these examples with the provided template, you might explore further using a template for an actual stack you've already deployed, which you can obtain from the AWS CloudFormation console\.
 

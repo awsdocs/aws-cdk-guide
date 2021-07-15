@@ -31,7 +31,7 @@ You may omit the \-\-profile option if your default AWS profile contains the nec
 
 ```
 export CDK_NEW_BOOTSTRAP=1 
-npx cdk bootstrap --profile ADMIN-PROFILE \
+npx cdk bootstrap aws://ACCOUNT-NUMBER/REGION --profile ADMIN-PROFILE \
     --cloudformation-execution-policies arn:aws:iam::aws:policy/AdministratorAccess \
     aws://ACCOUNT-ID/REGION
 ```
@@ -41,7 +41,7 @@ npx cdk bootstrap --profile ADMIN-PROFILE \
 
 ```
 set CDK_NEW_BOOTSTRAP=1 
-npx cdk bootstrap --profile ADMIN-PROFILE ^
+npx cdk bootstrap aws://ACCOUNT-NUMBER/REGION --profile ADMIN-PROFILE ^
     --cloudformation-execution-policies arn:aws:iam::aws:policy/AdministratorAccess ^
     aws://ACCOUNT-ID/REGION
 ```
@@ -57,7 +57,7 @@ Again, you may omit the \-\-profile option if your default AWS profile contains 
 
 ```
 export CDK_NEW_BOOTSTRAP=1 
-npx cdk bootstrap --profile ADMIN-PROFILE \
+npx cdk bootstrap aws://ACCOUNT-NUMBER/REGION --profile ADMIN-PROFILE \
     --cloudformation-execution-policies arn:aws:iam::aws:policy/AdministratorAccess \
     --trust PIPELINE-ACCOUNT-ID \
     aws://ACCOUNT-ID/REGION
@@ -68,7 +68,7 @@ npx cdk bootstrap --profile ADMIN-PROFILE \
 
 ```
 set CDK_NEW_BOOTSTRAP=1 
-npx cdk bootstrap --profile ADMIN-PROFILE ^
+npx cdk bootstrap aws://ACCOUNT-NUMBER/REGION --profile ADMIN-PROFILE ^
     --cloudformation-execution-policies arn:aws:iam::aws:policy/AdministratorAccess ^
     --trust PIPELINE-ACCOUNT-ID ^
     aws://ACCOUNT-ID/REGION

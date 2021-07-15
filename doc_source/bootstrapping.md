@@ -117,7 +117,7 @@ At some point in the future, the modern template will become the default bootstr
 
 ```
 export CDK_NEW_BOOTSTRAP=1
-cdk bootstrap
+cdk bootstrap aws://ACCOUNT-NUMBER/REGION
 ```
 
 ------
@@ -125,7 +125,7 @@ cdk bootstrap
 
 ```
 set CDK_NEW_BOOTSTRAP=1
-cdk bootstrap
+cdk bootstrap aws://ACCOUNT-NUMBER/REGION
 ```
 
 ------
@@ -144,7 +144,7 @@ The modern template is also selected when you issue cdk bootstrap in an AWS CDK 
 **Tip**  
 We recommend always setting `CDK_NEW_BOOTSTRAP` when you want to bootstrap using the modern template\. The context key is supported to make sure you bootstrap correctly if your app uses the `DefaultStackSynthesizer`, but relies on you being in an app's directory when bootstrapping\.
 
-These two ways to specify the modern template also apply to `cdk bootstrap --show-template`, which will display the modern template if one or the other of these flags is present\.
+These two ways to specify the modern template also apply to `cdk bootstrap --show-template`, which will display the modern template if either of these flags is present\.
 
 If the environment you are bootstrapping with the modern template has already been bootstrapped with the legacy template, the environment is upgraded to the modern template\. The Amazon S3 bucket from the legacy stack is orphaned in the process\. Re\-deploy all AWS CDK applications in the environment at least once before deleting the legacy bucket\.
 
@@ -154,7 +154,7 @@ There are two ways to customize the bootstrapping resources\.
 + Use command\-line parameters with the `cdk bootstrap` command\. This lets you modify a few aspects of the template\.
 + Modify the default bootstrap template and deploy it yourself\. This gives you unlimited control over the bootstrap resources\.
 
-The following command\-line options, when used with CDK Toolkit's cdk bootstrap, provide commonly\-needed adjustments to the bootstrapping template\.\.
+The following command\-line options, when used with CDK Toolkit's cdk bootstrap, provide commonly\-needed adjustments to the bootstrapping template\.
 +  \-\-bootstrap\-bucket\-name overrides the name of the Amazon S3 bucket\. May require changes to your CDK app \(see [Stack synthesizers](#bootstrapping-synthesizers)\)\.
 + \-\-bootstrap\-kms\-key\-id overrides the AWS KMS key used to encrypt the S3 bucket\.
 + \-\-tags adds one or more AWS CloudFormation tags to the bootstrap stack\.

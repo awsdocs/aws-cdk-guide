@@ -204,7 +204,25 @@ cdk --version
 Many AWS CDK stacks that you write will include [assets](assets.md): external files that are deployed with the stack, such as AWS Lambda functions Docker images\. The AWS CDK uploads these to an Amazon S3 bucket or other container so they are available to AWS CloudFormation during deployment\. Deployment requires that these containers already exist in the account and region you are deploying into\. Creating them is called [bootstrapping](bootstrapping.md)\. To bootstrap, issue:
 
 ```
-cdk bootstrap
+cdk bootstrap aws://ACCOUNT-NUMBER/REGION
+```
+
+**Tip**  
+If you don't have your AWS account number handy, you can get it from the AWS Management Console\. Or, if you have the AWS CLI installed, the following command displays your default account information, including the account number\.  
+
+```
+aws sts get-caller-identity
+```
+If you have created named profiles in your local AWS configuration, you can use the `--profile` option to display the account information for a specific profile's account, such as the *prod* profile as shown here\.  
+
+```
+aws sts get-caller-identity --profile prod
+```
+To display the default region, use `aws configure get`\.  
+
+```
+aws configure get region
+aws configure get region --profile prod
 ```
 
 ## AWS CDK tools<a name="getting_started_tools"></a>

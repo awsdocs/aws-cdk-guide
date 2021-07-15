@@ -21,7 +21,7 @@ All CDK Toolkit commands start with `cdk`, which is followed by a subcommand \(`
 | --- | --- | 
 | `cdk list` \(`ls`\) | Lists the stacks in the app | 
 | `cdk synthesize` \(`synth`\) | Synthesizes and prints the CloudFormation template for the specified stack\(s\) | 
-| `cdk bootstrap` | Deploys the CDK Toolkit stack; see [Bootstrapping](bootstrapping.md) | 
+| `cdk bootstrap` | Deploys the CDK Toolkit staging stack; see [Bootstrapping](bootstrapping.md) | 
 | `cdk deploy` | Deploys the specified stack\(s\) | 
 | `cdk destroy` | Destroys the specified stack\(s\) | 
 | `cdk diff` | Compares the specified stack with the deployed stack or a local CloudFormation template | 
@@ -228,7 +228,7 @@ You may also use wildcards to specify IDs that match a pattern\.
 
 You may also use the \-\-all option to specify all stacks\.
 
-If your app uses [CDK Pipelines](cdk_pipeline.md), the CDK Toolkit understands your stacks and stages as a hierorchy, and the \-\-all option and the `*` wildcard only match top\-level stacks\. To match all the stacks, use `**`\. Also use `**` to indicate all the stacks under a particular hierarchy\.
+If your app uses [CDK Pipelines](cdk_pipeline.md), the CDK Toolkit understands your stacks and stages as a hierarchy, and the \-\-all option and the `*` wildcard only match top\-level stacks\. To match all the stacks, use `**`\. Also use `**` to indicate all the stacks under a particular hierarchy\.
 
 When using wildcards, enclose the pattern in quotes, or escape the wildcards with `\`\. If you don't, your shell may try to expand the pattern to the names of files in the current directory\. At best, this won't do what you expect; at worst, you could deploy stacks you didn't intend to\. This isn't strictly necessary on Windows because `cmd.exe` does not expand wildcards, but is good practice nonetheless\.
 
@@ -248,11 +248,12 @@ The order in which you specify the stacks is not necessarily the order in which 
 Deploying stacks that contain [assets](assets.md), synthesize to large templates, or use [CDK Pipelines](cdk_pipeline.md) require special dedicated AWS CDK resources to be provisioned\. The `cdk bootstrap` command creates the necessary resources for you\. You only need to bootstrap if you are deploying a stack that requires these dedicated resources\. See [Bootstrapping](bootstrapping.md) for details\.
 
 ```
-cdk bootstrap                  # bootstraps default account/region
-cdk bootstrap --profile test   # bootstraps test environment
+cdk bootstrap
 ```
 
-You may also bootstrap a specific environment\. Credentials must be configured \(e\.g\. in `~/.aws/credentials`\) for the specified account and region\. You may specify a profile that contains the required credentials\.
+If issued with no arguments, as shown here, the `cdk bootstrap` command synthesizes the current app and bootstraps the environments its stacks will be deployed to\. If the app contains environment\-agnostic stacks, which do not explicitly specify an environment so they can be deployed anywhere, the default account and region are bootstrapped, or the environment specified using `--profile`\.
+
+Outside of an app, you must explicitly specify the environment to be bootstrapped\. You may also do so to bootstrap an environment that's not specified in your app or local AWS profile\. Credentials must be configured \(e\.g\. in `~/.aws/credentials`\) for the specified account and region\. You may specify a profile that contains the required credentials\.
 
 ```
 cdk bootstrap ACCOUNT-NUMBER/REGION # e.g.
@@ -268,7 +269,7 @@ You may incur AWS charges for what the AWS CDK stores in the bootstrapped resour
 **Note**  
 Older versions of the modern template created a Customer Master Key by default\. To avoid charges, re\-bootstrap using `--no-bootstrap-customer-key`\. 
 
-The AWS CDK Toolkit supports two bootstrap templates: the modern template and the legacy template\. The legacy template is the default, but the modern template is required by CDK Pipelines\. For more inforamtion, see [Bootstrapping](bootstrapping.md)\.
+The AWS CDK Toolkit supports two bootstrap templates: the modern template and the legacy template\. The legacy template is the default, but the modern template is required by CDK Pipelines\. For more information, see [Bootstrapping](bootstrapping.md)\.
 
 **Important**  
 The modern bootstrap template grants the bootstrapped account read and write access to any Amazon S3 bucket in the same environment, as well as the ability to read secrets from AWS KMS\. All accounts trusted in the bootstrapped environment can perform the same actions\. If this is not what you want, use a [custom template](bootstrapping.md#bootstrapping-customizing-extended)\. These permissions are only required by [CDK Pipelines](cdk_pipeline.md)\.
@@ -335,7 +336,7 @@ The CDK Toolkit actually runs your app and synthesizes fresh templates before mo
 
 See `cdk synth --help` for all available options\. A few of the most\-frequently\-used options are covered below\.
 
-### Specifying context values<a name="w297aac27b7c31c11"></a>
+### Specifying context values<a name="w302aac27b7c31c11"></a>
 
 Use the `--context` or `-c` option to pass [runtime context](context.md) values to your CDK app\.
 
@@ -354,7 +355,7 @@ When deploying multiple stacks, the specified context values are normally passed
 cdk synth --context Stack1:key=value Stack2:key=value Stack1 Stack2
 ```
 
-### Specifying display format<a name="w297aac27b7c31c13"></a>
+### Specifying display format<a name="w302aac27b7c31c13"></a>
 
 By default, the synthesized template is displayed in YAML format\. Add the `--json` flag to display it in JSON format instead\.
 
@@ -362,7 +363,7 @@ By default, the synthesized template is displayed in YAML format\. Add the `--js
 cdk synth --json MyStack
 ```
 
-### Specifying output directory<a name="w297aac27b7c31c15"></a>
+### Specifying output directory<a name="w302aac27b7c31c15"></a>
 
 Add the `--output` \(`-o`\) option to write the synthesized templates to a directory other than `cdk.out`\.
 
@@ -386,7 +387,7 @@ The CDK Toolkit runs your app and synthesizes fresh AWS CloudFormation templates
 
 See `cdk deploy --help` for all available options\. A few of the most\-frequently\-used options are covered below\.
 
-### Specifying AWS CloudFormation parameters<a name="w297aac27b7c33c11"></a>
+### Specifying AWS CloudFormation parameters<a name="w302aac27b7c33c11"></a>
 
 The AWS CDK Toolkit supports specifying AWS CloudFormation [parameters](parameters.md) at deployment\. You may provide these on the command line following the `--parameters` flag\.
 
@@ -408,7 +409,7 @@ cdk deploy MyStack YourStack --parameters MyStack:uploadBucketName=UploadBucket 
 
 By default, the AWS CDK retains values of parameters from previous deployments and uses them in later deployments if they are not specified explicitly\. Use the `--no-previous-parameters` flag to require all parameters to be specified\.
 
-### Specifying outputs file<a name="w297aac27b7c33c13"></a>
+### Specifying outputs file<a name="w302aac27b7c33c13"></a>
 
 If your stack declares AWS CloudFormation outputs, these are normally displayed on the screen at the conclusion of deployment\. To write them to a file in JSON format, use the `--outputs-file` flag\.
 
@@ -593,7 +594,7 @@ Options:
                                                        [boolean] [default: true]
 
       --asset-metadata      Include "aws:asset:*" CloudFormation metadata for
-                            resources that user assets (enabled by default)
+                            resources that uses assets (enabled by default)
                                                        [boolean] [default: true]
 
   -r, --role-arn            ARN of Role to use when invoking CloudFormation
@@ -625,7 +626,7 @@ If one of cdk.json or ~/.cdk.json exists, options specified there will be used
 as defaults. Settings in cdk.json take precedence.
 ```
 
-### `cdk list` \(`ls`\)<a name="w297aac27b7c39b7b1"></a>
+### `cdk list` \(`ls`\)<a name="w302aac27b7c39b7b1"></a>
 
 ```
 cdk list [STACKS..]
@@ -638,7 +639,7 @@ Options:
                                                       [boolean] [default: false]
 ```
 
-### `cdk synthesize` \(`synth`\)<a name="w297aac27b7c39b7b3"></a>
+### `cdk synthesize` \(`synth`\)<a name="w302aac27b7c39b7b3"></a>
 
 ```
 cdk synthesize [STACKS..]
@@ -650,11 +651,16 @@ Options:
   -e, --exclusively         Only synthesize requested stacks, don't include
                             dependencies                               [boolean]
 
+      --validation          After synthesis, validate stacks with the
+                            "validateOnSynth" attribute set (can also be
+                            controlled with CDK_VALIDATION)
+                                                       [boolean] [default: true]
+
   -q, --quiet               Do not output CloudFormation Template to stdout
                                                       [boolean] [default: false]
 ```
 
-### `cdk bootstrap`<a name="w297aac27b7c39b7b5"></a>
+### `cdk bootstrap`<a name="w302aac27b7c39b7b5"></a>
 
 ```
 cdk bootstrap [ENVIRONMENTS..]
@@ -696,6 +702,12 @@ Options:
                                             modern bootstrapping only)
                                                            [array] [default: []]
 
+      --trust-for-lookup                    The AWS account IDs that should be
+                                            trusted to look up values in this
+                                            environment (may be repeated, modern
+                                            bootstrapping only)
+                                                           [array] [default: []]
+
       --cloudformation-execution-policies   The Managed Policy ARNs that should
                                             be attached to the role performing
                                             deployments into this environment
@@ -723,7 +735,7 @@ Options:
                                             example)                    [string]
 ```
 
-### `cdk deploy`<a name="w297aac27b7c39b7b7"></a>
+### `cdk deploy`<a name="w302aac27b7c39b7b7"></a>
 
 ```
 cdk deploy [STACKS..]
@@ -776,7 +788,7 @@ Options:
                                              [string] [choices: "bar", "events"]
 ```
 
-### `cdk destroy`<a name="w297aac27b7c39b7b9"></a>
+### `cdk destroy`<a name="w302aac27b7c39b7b9"></a>
 
 ```
 cdk destroy [STACKS..]
@@ -795,7 +807,7 @@ Options:
                             stacks                                     [boolean]
 ```
 
-### `cdk diff`<a name="w297aac27b7c39b7c11"></a>
+### `cdk diff`<a name="w302aac27b7c39b7c11"></a>
 
 ```
 cdk diff [STACKS..]
@@ -813,9 +825,12 @@ Options:
 
       --template            The path to the CloudFormation template to compare
                             with                                        [string]
+
+      --security-only       Only diff for broadened security changes
+                                                      [boolean] [default: false]
 ```
 
-### `cdk init`<a name="w297aac27b7c39b7c13"></a>
+### `cdk init`<a name="w302aac27b7c39b7c13"></a>
 
 ```
 cdk init [TEMPLATE]
@@ -837,7 +852,7 @@ Options:
                             project                   [boolean] [default: false]
 ```
 
-### `cdk context`<a name="w297aac27b7c39b7c15"></a>
+### `cdk context`<a name="w302aac27b7c39b7c15"></a>
 
 ```
 cdk context
