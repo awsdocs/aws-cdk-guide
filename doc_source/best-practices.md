@@ -88,7 +88,7 @@ Many enterprise customers are writing their own wrappers for L2 constructs \(the
 
 Instead, use AWS features such as [service control policies](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_scps.html) and [permission boundaries](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_boundaries.html) to enforce your security guardrails at the organization level\. Use [Aspects](aspects.md) or tools like [CloudFormation Guard](https://github.com/aws-cloudformation/cloudformation-guard) to make assertions about the security properties of infrastructure elements before deployment\. Use AWS CDK for what it does best\.
 
-Finally, keep in mind that writing your own "L2\+" constructs like these may prevent your developers from taking advantage of the growing ecosystems of AWS CDK packages, such as [AWS Solutions Constructs](https://docs.aws.amazon.com/https://docs.aws.amazon.com/solutions/latest/constructs/welcome.html), as these are typically based on standard AWS CDK constructs and won't be able to use your custom versions\.
+Finally, keep in mind that writing your own "L2\+" constructs like these may prevent your developers from taking advantage of the growing ecosystems of AWS CDK packages, such as [AWS Solutions Constructs](https://docs.aws.amazon.com/solutions/latest/constructs/welcome.html), as these are typically based on standard AWS CDK constructs and won't be able to use your custom versions\.
 
 ## Application best practices<a name="best-practices-apps"></a>
 
