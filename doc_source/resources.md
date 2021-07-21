@@ -531,7 +531,7 @@ ec2.Vpc.fromVpcAttributes(this, 'MyVpc', {
 
 ```
 # Construct a resource (bucket) just by its name (must be same account)
-s3.Bucket.from__bucket_name(self, "MyBucket", "my-bucket-name")
+s3.Bucket.from_bucket_name(self, "MyBucket", "my-bucket-name")
 
 # Construct a resource (bucket) by its full ARN (can be cross account)
 s3.Bucket.from_arn(self, "MyBucket", "arn:aws:s3:::my-bucket-name")

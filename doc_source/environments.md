@@ -5,7 +5,15 @@ Each `Stack` instance in your AWS CDK app is explicitly or implicitly associated
 **Note**  
 For all but the simplest deployments, you will need to [bootstrap](bootstrapping.md) each environment you will deploy into\. Deployment requires certain AWS resources to be available, and these resources are provisioned by bootstrapping\.
 
-If you don't specify an environment when you define a stack, the stack is said to be *environment\-agnostic*\. AWS CloudFormation templates synthesized from such a stack will try to use deploy\-time resolution on environment\-related attributes such as `stack.account`, `stack.region`, and `stack.availabilityZones` \(Python: `availability_zones`\)\.
+If you don't specify an environment when you instantiate a stack, the stack is said to be *environment\-agnostic*\. AWS CloudFormation templates synthesized from such a stack will try to use deploy\-time resolution on environment\-related attributes such as `stack.account`, `stack.region`, and `stack.availabilityZones` \(Python: `availability_zones`\)\.
+
+**Tip**  
+If you're using the standard AWS CDK development template, your stacks are instantiated in the same file where you instantiate the `App` object\.  
+The file named after your project \(for example, `hello-cdk.ts`\) in your project's `bin` folder\.
+The file named after your project \(for example, `hello-cdk.js`\) in your project's `bin` folder\.
+The file `app.py` in your project's main directory\.
+The file named `ProjectNameApp.java`, for example `HelloCdkApp.java`, nested deep under the `src/main` directory\.
+The file named `Program.cs` under `src\ProjectName`, for example `src\HelloCdk\Program.cs`\.
 
 In an environment\-agnostic stack, any constructs that use availability zones will see two of them, allowing the stack to be deployed to any region\.
 
