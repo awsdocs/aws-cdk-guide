@@ -1,14 +1,16 @@
 # Best practices for developing and deploying cloud infrastructure with the AWS CDK<a name="best-practices"></a>
 
-The AWS CDK allows developers or administrators to define their cloud infrastructure using a supported programming language\. CDK applications are organized into stages, stacks, and constructs, providing modular design capabilities in both runtime components \(such as AWS Lambda code or containerized services\) and infrastructure components\. For a more detailed introduction to the concepts behind the CDK, see [Getting started with the AWS CDK](getting_started.md)\.
+The AWS CDK allows developers or administrators to define their cloud infrastructure using a supported programming language\. CDK applications should be organized into logical units, such as API, database, and monitoring resources, and optionally have a pipeline for automated deployments\. The logical units should be implemented as constructs including the infrastructure \(e\.g\. Amazon S3 buckets, Amazon RDS databases, Amazon VPC network\), runtime code \(e\.g\. AWS Lambda functions\), and configuration code\. Stacks define the deployment model of these logical units\. For a more detailed introduction to the concepts behind the CDK, see [Getting started with the AWS CDK](getting_started.md)\.
 
 The AWS CDK reflects careful consideration of the needs of our customers and internal teams and of the failure patterns that often arise during the deployment and ongoing maintenance of complex cloud applications\. We discovered that failures are often related to "out\-of\-band" changes to an application, such as configuration changes, that were not fully tested\. Therefore, we developed the AWS CDK around a model in which your entire application, not just business logic but also infrastructure and configuration, is defined in code\. That way, proposed changes can be carefully reviewed, comprehensively tested in environments resembling production to varying degrees, and fully rolled back if something goes wrong\.
 
+In addition to the guidance in this document, you should also consider [best practices for AWS CloudFormation](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/best-practices.html) as well as for the individual AWS services you use, where they are obviously applicable to CDK\-defined infrastructure\.
+
 ![\[Image NOT FOUND\]](http://docs.aws.amazon.com/cdk/latest/guide/images/all-in-one.jpg)
 
-At deployment time, the AWS CDK synthesizes a cloud assembly that contains not only AWS CloudFormation templates describing your infrastructure in all target environments, but file assets containing your code and their supporting files\. With the CDK, every commit in your application's main version control branch can represent a complete, consistent, deployable version of your application\. Your application can then be deployed automatically whenever a change is made\.
+At deployment time, the AWS CDK synthesizes a cloud assembly that contains not only AWS CloudFormation templates describing your infrastructure in all target environments, but file assets containing your runtime code and their supporting files\. With the CDK, every commit in your application's main version control branch can represent a complete, consistent, deployable version of your application\. Your application can then be deployed automatically whenever a change is made\.
 
-The philosophy behind the AWS CDK leads to our recommended best practices, which we have divided into broad categories\.
+The philosophy behind the AWS CDK leads to our recommended best practices, which we have divided into four broad categories\.
 + [Organization best practices](#best-practices-organization)
 + [Coding best practices](#best-practices-code)
 + [Construct best practices](#best-practices-constructs)
@@ -18,9 +20,11 @@ The philosophy behind the AWS CDK leads to our recommended best practices, which
 
 In the beginning stages of AWS CDK adoption, it's important to consider how to set up your organization for success\. It's a best practice to have a team of experts responsible for training and guiding the rest of the company as they adopt the CDK The size of this team may vary, from one or two people at a small company to a full\-fledged Cloud Center of Excellence \(CCoE\) at a larger company\. This team is responsible for setting standards and policies for how cloud infrastructure will be done at your company, as well as for training and mentoring developers\.
 
+The CCoE may provide guidance on what programming languages should be used for cloud infrastructure\. The details will vary from one organization to the next, but a good policy helps make sure developers can easily understand and maintain all cloud infrastructure throughout the company\.
+
 The CCoE also creates a "landing zone" that defines your organizational units within AWS\. A landing zone is a pre\-configured, secure, scalable, multi\-account AWS environment based on best practice blueprints\. You can tie together the services that make up your landing zone with [AWS Control Tower](https://aws.amazon.com/controltower/), a high\-level service configures and manages your entire multi\-account system from a single user interface\.
 
-Development teams should be able use their own accounts for testing and have the ability to deploy new resources in these accounts as needed\. Individual developers can treat these resources as extensions of their own development workstation\. Using [CDK Pipelines](cdk_pipeline.md), the AWS CDK applications can then be deployed via a shared services account to testing, integration, and production environments \(each isolated in its own AWS region and/or account\) by merging the developers' code into your organization's canonical repository\.
+Development teams should be able use their own accounts for testing and have the ability to deploy new resources in these accounts as needed\. Individual developers can treat these resources as extensions of their own development workstation\. Using [CDK Pipelines](cdk_pipeline.md), the AWS CDK applications can then be deployed via a CI/CD account to testing, integration, and production environments \(each isolated in its own AWS region and/or account\) by merging the developers' code into your organization's canonical repository\.
 
 ![\[Image NOT FOUND\]](http://docs.aws.amazon.com/cdk/latest/guide/images/best-practice-deploy-to-multiple-accounts.jpg)
 
@@ -34,9 +38,17 @@ Development teams should be able use their own accounts for testing and have the
 
 The guiding principle for most of our best practices is to keep things simple as possible—but no simpler\. Add complexity only when your requirements dictate a more complicated solution\. With the AWS CDK, you can always refactor your code as necessary to support new requirements, so it doesn't make sense to architect for all possible scenarios up front\.
 
+### Align with the AWS Well Architected Framework<a name="best-practices-code-well-aarchitected"></a>
+
+The [AWS Well\-Architected](http://aws.amazon.com/https://aws.amazon.com/architecture/well-architected/) framework defines a *component* as the code, configuration, and AWS resources that together deliver against a requirement\. A component is often the unit of technical ownership, and is decoupled from other components\. The term *workload* is used to identify a set of components that together deliver business value\. A workload is usually the level of detail that business and technology leaders communicate about\.
+
+An AWS CDK application maps to a component as defined by the AWS Well\-Architected Framework\. AWS CDK apps are a mechanism to codify and deliver Well\-Architected cloud application best practices\. You can also create and share components as reusable code libraries through artifact repositories, such as AWS CodeArtifact\.
+
 ### Every application starts with a single package in a single repository<a name="best-practices-code-package"></a>
 
- The entry point of your AWS CDK app should be a single package where you define the different components of your application \(infrastructure, code, and configuration\), as well as the CI/CD pipeline to deploy the application\. Use additional packages for constructs that you use in more than one application\. \(Shared constructs should also have their own lifecycle and testing strategy\.\) Dependencies between packages in the same repository are managed by your repo's build tooling\. 
+A single package is the entry point of your AWS CDK app\. This is where you define how and where the different logical units of your application are deployed, as well as the CI/CD pipeline to deploy the application\. The app's constructs define the logical units of your solution\.
+
+Use additional packages for constructs that you use in more than one application\. \(Shared constructs should also have their own lifecycle and testing strategy\.\) Dependencies between packages in the same repository are managed by your repo's build tooling\. 
 
 Though it is possible, it is not recommended to put multiple applications in the same repository, especially when using automated deployment pipelines, because this increases the "blast radius" of changes during deployment\. With multiple applications in a repository, not only do changes to one application trigger deployment of the others \(even if they have not changed\), but a break in one application prevents the other applications from being deployed\.
 
@@ -54,9 +66,9 @@ Shared packages need a different testing strategy: although for a single applica
 
 Keep in mind that a construct can be arbitrary simple or complex\. A `Bucket` is a construct, but `CameraShopWebsite` could be a construct, too\.
 
-### Infrastructure and application code live in the same package<a name="best-practices-code-all"></a>
+### Infrastructure and runtime code live in the same package<a name="best-practices-code-all"></a>
 
-The AWS CDK not only generates AWS CloudFormation templates for deploying infrastructure, it also bundles assets like Lambda functions and Docker images and deploys them alongside your infrastructure\. So it's not only possible to combine the code that defines your infrastructure and the code that implements your business logic into a single construct— it's a best practice\. These two kinds of code don't need to live in separate repositories or even in separate packages\.
+The AWS CDK not only generates AWS CloudFormation templates for deploying infrastructure, it also bundles runtime assets like Lambda functions and Docker images and deploys them alongside your infrastructure\. So it's not only possible to combine the code that defines your infrastructure and the code that implements your runtime logic into a single construct— it's a best practice\. These two kinds of code don't need to live in separate repositories or even in separate packages\.
 
 A construct that is self\-contained, in other words that completely describes a piece of functionality including its infrastructure and logic, makes it easy to evolve the two kinds of code together, test them in isolation, share and reuse the code across projects, and version all the code in sync\.
 
@@ -66,11 +78,11 @@ A construct that is self\-contained, in other words that completely describes a 
 
 ### Model your app through constructs, not stacks<a name="best-practices-constructs-model"></a>
 
-When breaking down your application into units, represent each unit as a descendant of [https://docs.aws.amazon.com/cdk/api/latest/docs/constructs.Construct.html](https://docs.aws.amazon.com/cdk/api/latest/docs/constructs.Construct.html) and not of [https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Stack.html](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Stack.html)\. Stacks are a unit of deployment, and so tend to be oriented to specific applications\. By using constructs instead of stacks, you give yourself and your users the flexibility to build stacks in the way that makes the most sense for each deployment scenario\. For example, you could compose multiple constructs into a `DevStack` with some configuration for development environments and then have a different composition for production\.
+When breaking down your application into logical units, represent each unit as a descendant of [https://docs.aws.amazon.com/cdk/api/latest/docs/constructs.Construct.html](https://docs.aws.amazon.com/cdk/api/latest/docs/constructs.Construct.html) and not of [https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Stack.html](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Stack.html)\. Stacks are a unit of deployment, and so tend to be oriented to specific applications\. By using constructs instead of stacks, you give yourself and your users the flexibility to build stacks in the way that makes the most sense for each deployment scenario\. For example, you could compose multiple constructs into a `DevStack` with some configuration for development environments and then have a different composition for your `ProdStack`\.
 
 ### Configure with properties and methods, not environment variables<a name="best-practices-constructs-config"></a>
 
- Environment variable lookups inside constructs and stacks are a common anti\-pattern\. Both constructs and stacks should accept a properties object to allow for full configurability completely in code\. To do otherwise is to introduce a dependency on the machine that the code will run on, which becomes another bit of configuration information you have to keep track of and manage\.
+Environment variable lookups inside constructs and stacks are a common anti\-pattern\. Both constructs and stacks should accept a properties object to allow for full configurability completely in code\. To do otherwise is to introduce a dependency on the machine that the code will run on, which becomes another bit of configuration information you have to keep track of and manage\.
 
 In general, environment variable lookups should be limited to the top level of an AWS CDK app, and should be used to pass in information needed for running in a development environment; see [Environments](environments.md)\.
 
@@ -109,6 +121,12 @@ Names are a precious resource\. Every name can only be used once, so if you hard
 What's worse, you can't make changes to the resource that require it to be replaced\. If a property can only be set at resource creation, for example the `KeySchema` of an Amazon DynamoDB table, that property is immutable, and changing it requires a new resource\. But the new resource must have the same name in order to be a true replacement, and it can't, because the existing resource is still using that name\. 
 
 A better approach is to specify as few names as possible\. If you leave out resource names, the AWS CDK will generate them for you, and it'll do so in a way that won't cause these problems\. You then, for example, pass the generated table name \(which you can reference as `table.tableName` in your AWS CDK application\) as an environment variable into your AWS Lambda function, or you generate a configuration file on your Amazon EC2 instance on startup, or you write the actual table name to AWS Systems Manager Parameter Store and your application reads it from there\. It's like dependency injection, but for resources\.
+
+### Define removal policies and log retention<a name="best-practices-apps-removal-logs"></a>
+
+The AWS CDK does its best to keep you from losing data by defaulting to policies that retain everything you create\. For example, the default removal policy on resources that contain data \(such as Amazon S3 buckets and database tables\) is to never delete the resource when it is removed from the stack, but rather orphan the resource from the stack\. Similarly, the CDK's default is to retain all logs forever\. In production environments, these defaults can quickly result in the storage of large amounts of data you don't actually need, and a corresponding AWS bill\.
+
+Consider carefully what you want these policies to actually be for each production resource and specify them accordingly\. Use an [Aspects](aspects.md) to validate the removal and logging policies in your stack\.
 
 ### Separate your application into multiple stacks as dictated by deployment requirements<a name="best-practices-apps-separate"></a>
 
