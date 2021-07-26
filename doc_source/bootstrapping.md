@@ -11,9 +11,6 @@ The required resources are defined in a AWS CloudFormation stack, called the *bo
 
 The AWS CDK supports two bootstrap templates\. At this writing, the AWS CDK is transitioning from one of these templates to the other, but the original template \(dubbed "legacy"\) is still the default\. The newer template \("modern"\) is required by CDK Pipelines today, and will become the default at some point in the future\. For details, see [Bootstrapping templates](#bootstrapping-templates)\.
 
-**Important**  
-The modern bootstrap template grants the bootstrapped account read and write access to any Amazon S3 bucket in the same environment, as well as the ability to read secrets from AWS KMS\. All accounts trusted in the bootstrapped environment can perform the same actions\. If this is not what you want, use a [custom template](#bootstrapping-customizing-extended)\. These permissions are only required by [CDK Pipelines](cdk_pipeline.md)\.
-
 Environments are independent, so if you want to deploy to multiple environments \(different AWS accounts or different regions in the same account\), each environment must be bootstrapped separately\.
 
 **Important**  
@@ -31,6 +28,9 @@ Policy contains a statement with one or more invalid principals
 ```
 
 This error message means that the appropriate IAM roles do not exist in the other environment, which is most likely caused by a lack of bootstrapping\.
+
+**Note**  
+Do not delete and recreate an account's bootstrap stack if you are using CDK Pipelines to deploy into that account\. The pipeline will stop working\. To update the bootstrap stack to a new version, instead re\-run `cdk bootstrap` to update the bootstrap stack in place\.
 
 ## How to bootstrap<a name="bootstrapping-howto"></a>
 
@@ -121,10 +121,7 @@ The main differences between the templates are as follows\.
 
 \* *We will add additional resources to the modern template as needed\.*
 
-**Important**  
-The modern bootstrap template grants the bootstrapped account read and write access to any Amazon S3 bucket in the same environment, as well as the ability to read secrets from AWS KMS\. All accounts trusted in the bootstrapped environment can perform the same actions\. If this is not what you want, use a [custom template](#bootstrapping-customizing-extended)\. These permissions are only required by [CDK Pipelines](cdk_pipeline.md)\.
-
-At some point in the future, the modern template will become the default bootstrapping template\. Until then, manually select the modern template when bootstrapping by setting the `CDK_NEW_BOOTSTRAP` environment variable\.
+In AWS CDK version 2, the modern template will be the default bootstrapping template\. In version 1, manually select the modern template when bootstrapping by setting the `CDK_NEW_BOOTSTRAP` environment variable\.
 
 ------
 #### [ macOS/Linux ]
@@ -177,7 +174,11 @@ The following command\-line options, when used with CDK Toolkit's cdk bootstrap,
 The following additional switches are available only with the modern bootstrapping template\.
 + \-\-cloudformation\-execution\-policies specifies the ARNs of managed policies that should be attached to the deployment role assumed by AWS CloudFormation during deployment of your stacks\. At least one policy is required; otherwise, AWS CloudFormation will attempt to deploy without permissions and deployments will fail\.
 + \-\-trust lists the AWS accounts that may deploy into the environment being bootstrapped\. Use this flag when bootstrapping an environment that a CDK Pipeline in another environment will deploy into\. The account doing the bootstrapping is always trusted\.
++ \-\-trust\-for\-lookup lists the AWS accounts that may look up context information from the environment being bootstrapped\. Use this flag to give accounts permission to synthesize stacks that will be deployed into the environment, without actually giving them permission to deploy those stacks directly\. Accounts specified under \-\-trust are always trusted for context lookup\.
 + \-\-qualifier a string that is added to the names of all resources in the bootstrap stack\. A qualifier lets you avoid name clashes when you provision two bootstrap stacks in the same environment\. The default is `hnb659fds` \(this value has no significance\)\. Changing the qualifier will require changes to your AWS CDK app \(see [Stack synthesizers](#bootstrapping-synthesizers)\)\. 
+
+**Important**  
+The modern bootstrap template effectively grants the permissions implied by the `--cloudformation-execution-policies` to any AWS account in the `--trust` list, which by default will extend permissions to read and write to any resource in the bootstrapped account\. Make sure to [configure the bootstrapping stack](#bootstrapping-customizing) with policies and trusted accounts you are comfortable with\.
 
 ### Customizing the template<a name="bootstrapping-customizing-extended"></a>
 
@@ -196,7 +197,7 @@ cdk bootstrap --show-template
 
 ```
 set CDK_NEW_BOOTSTRAP=1
-cdk bootstrap --show-template
+powershell "cdk bootstrap --show-template | Out-File -encoding utf8 bootstrap-template.yaml"
 ```
 
 ------
@@ -247,7 +248,7 @@ new MyStack(this, 'MyStack', {
 #### [ Python ]
 
 ```
-MyStack(self, "MyStack", 
+MyStack(self, "MyStack",
     # stack properties
     synthesizer=DefaultStackSynthesizer(
         # synthesizer properties
@@ -337,7 +338,7 @@ new MyStack(this, 'MyStack', {
 #### [ Python ]
 
 ```
-MyStack(self, "MyStack", 
+MyStack(self, "MyStack",
     synthesizer=DefaultStackSynthesizer(
         qualifier="MYQUALIFIER"
 ))
@@ -395,23 +396,31 @@ The following example shows all the available properties for `DefaultStackSynthe
 new DefaultStackSynthesizer({
   // Name of the S3 bucket for file assets
   fileAssetsBucketName: 'cdk-${Qualifier}-assets-${AWS::AccountId}-${AWS::Region}',
-  
+  bucketPrefix: '',
+
   // Name of the ECR repository for Docker image assets
   imageAssetsRepositoryName: 'cdk-${Qualifier}-container-assets-${AWS::AccountId}-${AWS::Region}',
 
   // ARN of the role assumed by the CLI and Pipeline to deploy here
-  deployRoleArn: 'arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-${Qualifier}-deploy-role-${AWS::AccountId}-${AWS::Region}',  
-  
+  deployRoleArn: 'arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-${Qualifier}-deploy-role-${AWS::AccountId}-${AWS::Region}',
+  deployRoleExternalId: '',
+
   // ARN of the role used for file asset publishing (assumed from the deploy role)
   fileAssetPublishingRoleArn: 'arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-${Qualifier}-file-publishing-role-${AWS::AccountId}-${AWS::Region}',
   fileAssetPublishingExternalId: '',
-  
+
   // ARN of the role used for Docker asset publishing (assumed from the deploy role)
   imageAssetPublishingRoleArn: 'arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-${Qualifier}-image-publishing-role-${AWS::AccountId}-${AWS::Region}',
   imageAssetPublishingExternalId: '',
- 
+
   // ARN of the role passed to CloudFormation to execute the deployments
   cloudFormationExecutionRole: 'arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-${Qualifier}-cfn-exec-role-${AWS::AccountId}-${AWS::Region}',
+
+  // Name of the SSM parameter which describes the bootstrap stack version number
+  bootstrapStackVersionSsmParameter: '/cdk-bootstrap/${Qualifier}/version',
+
+  // Add a rule to every template which verifies the required bootstrap stack version
+  generateBootstrapVersionRule: true,
 })
 ```
 
@@ -422,23 +431,31 @@ new DefaultStackSynthesizer({
 new DefaultStackSynthesizer({
   // Name of the S3 bucket for file assets
   fileAssetsBucketName: 'cdk-${Qualifier}-assets-${AWS::AccountId}-${AWS::Region}',
-  
+  bucketPrefix: '',
+
   // Name of the ECR repository for Docker image assets
   imageAssetsRepositoryName: 'cdk-${Qualifier}-container-assets-${AWS::AccountId}-${AWS::Region}',
 
   // ARN of the role assumed by the CLI and Pipeline to deploy here
-  deployRoleArn: 'arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-${Qualifier}-deploy-role-${AWS::AccountId}-${AWS::Region}',  
-  
+  deployRoleArn: 'arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-${Qualifier}-deploy-role-${AWS::AccountId}-${AWS::Region}',
+  deployRoleExternalId: '',
+
   // ARN of the role used for file asset publishing (assumed from the deploy role)
   fileAssetPublishingRoleArn: 'arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-${Qualifier}-file-publishing-role-${AWS::AccountId}-${AWS::Region}',
   fileAssetPublishingExternalId: '',
-  
+
   // ARN of the role used for Docker asset publishing (assumed from the deploy role)
   imageAssetPublishingRoleArn: 'arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-${Qualifier}-image-publishing-role-${AWS::AccountId}-${AWS::Region}',
   imageAssetPublishingExternalId: '',
- 
+
   // ARN of the role passed to CloudFormation to execute the deployments
   cloudFormationExecutionRole: 'arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-${Qualifier}-cfn-exec-role-${AWS::AccountId}-${AWS::Region}',
+
+  // Name of the SSM parameter which describes the bootstrap stack version number
+  bootstrapStackVersionSsmParameter: '/cdk-bootstrap/${Qualifier}/version',
+
+  // Add a rule to every template which verifies the required bootstrap stack version
+  generateBootstrapVersionRule: true,
 })
 ```
 
@@ -449,23 +466,31 @@ new DefaultStackSynthesizer({
 DefaultStackSynthesizer(
   # Name of the S3 bucket for file assets
   file_assets_bucket_name="cdk-${Qualifier}-assets-${AWS::AccountId}-${AWS::Region}",
-  
+  bucket_prefix="",
+
   # Name of the ECR repository for Docker image assets
   image_assets_repository_name="cdk-${Qualifier}-container-assets-${AWS::AccountId}-${AWS::Region}",
 
   # ARN of the role assumed by the CLI and Pipeline to deploy here
-  deploy_role_arn="arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-${Qualifier}-deploy-role-${AWS::AccountId}-${AWS::Region}",  
-  
+  deploy_role_arn="arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-${Qualifier}-deploy-role-${AWS::AccountId}-${AWS::Region}",
+  deploy_role_external_id="",
+
   # ARN of the role used for file asset publishing (assumed from the deploy role)
   file_sset_publishing_role_arn="arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-${Qualifier}-file-publishing-role-${AWS::AccountId}-${AWS::Region}",
   file_asset_publishing_external_id="",
-  
+
   # ARN of the role used for Docker asset publishing (assumed from the deploy role)
   image_asset_publishing_role_arn="arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-${Qualifier}-image-publishing-role-${AWS::AccountId}-${AWS::Region}",
   image_asset_publishing_external_id="",
- 
+
   # ARN of the role passed to CloudFormation to execute the deployments
   cloud_formation_execution_role="arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-${Qualifier}-cfn-exec-role-${AWS::AccountId}-${AWS::Region}"
+
+  // Name of the SSM parameter which describes the bootstrap stack version number
+  bootstrap_stack_version_ssm_parameter="/cdk-bootstrap/${Qualifier}/version",
+
+  // Add a rule to every template which verifies the required bootstrap stack version
+  generate_bootstrap_version_rule=True,
 )
 ```
 
@@ -476,23 +501,31 @@ DefaultStackSynthesizer(
 DefaultStackSynthesizer.Builder.create()
     // Name of the S3 bucket for file assets
     .fileAssetsBucketName("cdk-${Qualifier}-assets-${AWS::AccountId}-${AWS::Region}")
-  
+    .bucketPrefix('')
+
     // Name of the ECR repository for Docker image assets
     .imageAssetsRepositoryName("cdk-${Qualifier}-container-assets-${AWS::AccountId}-${AWS::Region}")
 
     // ARN of the role assumed by the CLI and Pipeline to deploy here
     .deployRoleArn("arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-${Qualifier}-deploy-role-${AWS::AccountId}-${AWS::Region}")
-  
+    .deployRoleExternalId("")
+
     // ARN of the role used for file asset publishing (assumed from the deploy role)
     .fileAssetPublishingRoleArn("arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-${Qualifier}-file-publishing-role-${AWS::AccountId}-${AWS::Region}")
     .fileAssetPublishingExternalId("")
-  
+
     // ARN of the role used for Docker asset publishing (assumed from the deploy role)
-    .imageAssetPublishingRoleArn: "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-${Qualifier}-image-publishing-role-${AWS::AccountId}-${AWS::Region}",
-    .imageAssetPublishingExternalId: "",
- 
+    .imageAssetPublishingRoleArn("arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-${Qualifier}-image-publishing-role-${AWS::AccountId}-${AWS::Region}")
+    .imageAssetPublishingExternalId("")
+
     // ARN of the role passed to CloudFormation to execute the deployments
     .cloudFormationExecutionRole("arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-${Qualifier}-cfn-exec-role-${AWS::AccountId}-${AWS::Region}")
+
+    // Name of the SSM parameter which describes the bootstrap stack version number
+    .bootstrapStackVersionSsmParameter("/cdk-bootstrap/${Qualifier}/version")
+
+    // Add a rule to every template which verifies the required bootstrap stack version
+    .generateBootstrapVersionRule(true)
 .build()
 ```
 
@@ -504,23 +537,31 @@ new DefaultStackSynthesizer(new DefaultStackSynthesizerProps
 {
     // Name of the S3 bucket for file assets
     FileAssetsBucketName = "cdk-${Qualifier}-assets-${AWS::AccountId}-${AWS::Region}",
-  
+    BucketPrefix = "",
+
     // Name of the ECR repository for Docker image assets
     ImageAssetsRepositoryName = "cdk-${Qualifier}-container-assets-${AWS::AccountId}-${AWS::Region}",
 
     // ARN of the role assumed by the CLI and Pipeline to deploy here
-    DeployRoleArn = "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-${Qualifier}-deploy-role-${AWS::AccountId}-${AWS::Region}",  
-  
+    DeployRoleArn = "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-${Qualifier}-deploy-role-${AWS::AccountId}-${AWS::Region}",
+    DeployRoleExternalId = "",
+
     // ARN of the role used for file asset publishing (assumed from the deploy role)
     FileAssetPublishingRoleArn = "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-${Qualifier}-file-publishing-role-${AWS::AccountId}-${AWS::Region}",
     FileAssetPublishingExternalId = "",
-  
+
     // ARN of the role used for Docker asset publishing (assumed from the deploy role)
     ImageAssetPublishingRoleArn = "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-${Qualifier}-image-publishing-role-${AWS::AccountId}-${AWS::Region}",
     ImageAssetPublishingExternalId = "",
- 
+
     // ARN of the role passed to CloudFormation to execute the deployments
     CloudFormationExecutionRole = "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-${Qualifier}-cfn-exec-role-${AWS::AccountId}-${AWS::Region}"
+
+    // Name of the SSM parameter which describes the bootstrap stack version number
+    BootstrapStackVersionSsmParameter = "/cdk-bootstrap/${Qualifier}/version",
+
+    // Add a rule to every template which verifies the required bootstrap stack version
+    GenerateBootstrapVersionRule = true,
 })
 ```
 
@@ -551,8 +592,9 @@ Outputs:
 
 ### Roles<a name="bootstrapping-contract-roles"></a>
 
-The `DefaultStackSynthesizer` requires four IAM roles for four different purposes\. If you are not using the default roles, the synthesizer needs to be told the ARNs for the roles you want to use\. The roles are:
+The `DefaultStackSynthesizer` requires five IAM roles for five different purposes\. If you are not using the default roles, the synthesizer needs to be told the ARNs for the roles you want to use\. The roles are:
 + The *deployment role* is assumed by the AWS CDK Toolkit and by AWS CodePipeline to deploy into an environment\. Its `AssumeRolePolicy` controls who can deploy into the environment\. The permissions this role needs can be seen in the template\.
++ The *lookup role* is assumed by the AWS CDK Toolkit to perform context lookups in an environment\. Its `AssumeRolePolicy` controls who can deploy into the environment\. The permissions this role needs can be seen in the template\.
 + The *file publishing role* and the *image publishing role* are assumed by the AWS CDK Toolkit and by AWS CodeBuild projects to publish assets into an environment: that is, to write to the S3 bucket and the ECR repository, respectively\. These roles require write access to these resources\.
 + *The AWS CloudFormation execution role* is passed to AWS CloudFormation to perform the actual deployment\. Its permissions are the permissions that the deployment will execute under\. The permissions are passed to the stack as a parameter that lists managed policy ARNs\.
 
@@ -562,3 +604,20 @@ The AWS CDK Toolkit requires that the following CloudFormation outputs exist on 
 + `BucketName`: the name of the file asset bucket
 + `BucketDomainName`: the file asset bucket in domain name format
 + `BootstrapVersion`: the current version of the bootstrap stack
+
+### Template history<a name="bootstrap-template-history"></a>
+
+The bootstrap template is versioned and evolves over time with the AWS CDK itself\. If you provide your own bootstrap template, keep it up\-to\-date with the canonical default template to ensure that yours continues to work with all CDK features\. This section contains a list of the changes made in each version\.
+
+
+| Template version | AWS CDK version | Changes | 
+| --- | --- | --- | 
+| 1 | 1\.40\.0 | Initial version of template with Bucket, Key, Repository and Roles\. | 
+| 2 | 1\.45\.0 | Split asset publishing role into separate file and image publishing roles\. | 
+| 3 | 1\.46\.0 | Add FileAssetKeyArn export to be able to add decrypt permissions to asset consumers\. | 
+| 4 | 1\.61\.0 | KMS permissions are now implicit via S3 and no longer require FileAsetKeyArn, Add CdkBootstrapVersion SSM parameter so the bootstrap stack version can be verified without knowing the stack name\. | 
+| 5 | 1\.87\.0 | Deployment role can read SSM parameter\. | 
+| 6 | 1\.108\.0 | Add lookup role separate from deployment role\. | 
+| 6 | 1\.109\.0 | Attach aws\-cdk:bootstrap\-role tag to deployment, file publishing, and image publishing roles\.  | 
+| 7 | 1\.110\.0 | Deployment role can no longer read Buckets in the target account directly \(however, this role is effectively an administrator, and could always use its AWS CloudFormation permissions to make the bucket readable anyway\)\. | 
+| 8 | 1\.114\.0 | The lookup role has full read\-only permissions to the target environment, and has a aws\-cdk:bootstrap\-role tag as well\. | 

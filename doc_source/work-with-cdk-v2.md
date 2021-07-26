@@ -15,7 +15,7 @@ The main changes in CDK v2 are:
 + CDK v2 requires that the environments you deploy into be boostrapped using the modern bootstrap stack; the legacy stack is no longer supported\. CDK v2 furthermore requires a new version of the modern stack\. Simply re\-bootstrap the affected environments to upgrade them\. It is not necessary to set any feature flags or environment variables to specify the modern bootstrap stack\.
 
 **Important**  
-The modern bootstrap template grants the bootstrapped account read and write access to any Amazon S3 bucket in the same environment, as well as the ability to read secrets from AWS KMS\. All accounts trusted in the bootstrapped environment can perform the same actions\. If this is not what you want, use a [custom template](bootstrapping.md#bootstrapping-customizing-extended)\. These permissions are only required by [CDK Pipelines](cdk_pipeline.md)\.
+The modern bootstrap template effectively grants the permissions implied by the `--cloudformation-execution-policies` to any AWS account in the `--trust` list, which by default will extend permissions to read and write to any resource in the bootstrapped account\. Make sure to [configure the bootstrapping stack](bootstrapping.md#bootstrapping-customizing) with policies and trusted accounts you are comfortable with\.
 
 Aside from this topic, the AWS CDK Developer Guide describes CDK v1\.x\. Most of the information in the Guide still applies in CDK v2, or can be adapted with only minor changes\. A v2 Developer Guide will be available at General Availability \(GA\) of CDK v2\. A version of the [AWS CDK API Reference](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-construct-library.html) is available for CDK v2\.
 
