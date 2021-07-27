@@ -26,7 +26,7 @@ The CCoE also creates a "landing zone" that defines your organizational units wi
 
 Development teams should be able use their own accounts for testing and have the ability to deploy new resources in these accounts as needed\. Individual developers can treat these resources as extensions of their own development workstation\. Using [CDK Pipelines](cdk_pipeline.md), the AWS CDK applications can then be deployed via a CI/CD account to testing, integration, and production environments \(each isolated in its own AWS region and/or account\) by merging the developers' code into your organization's canonical repository\.
 
-![\[Image NOT FOUND\]](http://docs.aws.amazon.com/cdk/latest/guide/images/best-practice-deploy-to-multiple-accounts.jpg)
+![\[Image NOT FOUND\]](http://docs.aws.amazon.com/cdk/latest/guide/images/best-practice-deploy-to-multiple-accounts.png)
 
 ## Coding best practices<a name="best-practices-code"></a>
 
@@ -38,7 +38,7 @@ Development teams should be able use their own accounts for testing and have the
 
 The guiding principle for most of our best practices is to keep things simple as possible—but no simpler\. Add complexity only when your requirements dictate a more complicated solution\. With the AWS CDK, you can always refactor your code as necessary to support new requirements, so it doesn't make sense to architect for all possible scenarios up front\.
 
-### Align with the AWS Well Architected Framework<a name="best-practices-code-well-aarchitected"></a>
+### Align with the AWS Well\-Architected framework<a name="best-practices-code-well-architected"></a>
 
 The [AWS Well\-Architected](http://aws.amazon.com/https://aws.amazon.com/architecture/well-architected/) framework defines a *component* as the code, configuration, and AWS resources that together deliver against a requirement\. A component is often the unit of technical ownership, and is decoupled from other components\. The term *workload* is used to identify a set of components that together deliver business value\. A workload is usually the level of detail that business and technology leaders communicate about\.
 
