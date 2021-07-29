@@ -2,12 +2,10 @@
 
 [CDK Pipelines](https://docs.aws.amazon.com/cdk/api/latest/docs/pipelines-readme.html) is a construct library module for painless continuous delivery of AWS CDK applications\. Whenever you check your AWS CDK app's source code in to AWS CodeCommit, GitHub, or BitBucket, CDK Pipelines can automatically build, test, and deploy your new version\.
 
-CDK Pipelines are self\-updating: if you add new application stages or new stacks, the pipeline automatically reconfigures itself to deploy those new stages and/or stacks\.
-
-If you've looked at our [AWS CodePipeline example](codepipeline_example.md), CDK Pipelines can do everything that example does, and more, with less code\. Going forward, we anticipate widespread adoption of CDK Pipelines by AWS CDK developers\.
+CDK Pipelines are self\-updating: if you add application stages or stacks, the pipeline automatically reconfigures itself to deploy those new stages and/or stacks\.
 
 **Note**  
-CDK Pipelines is currently in developer preview, and its API is subject to change\. Breaking API changes will be announced in the AWS CDK [Release Notes](https://github.com/aws/aws-cdk/releases)\.
+CDK Pipelines supports two APIs: the original API that was made available in the Developer Preview release, and a modern one that incorporates feedback from CDK customers received during the preview phase\. The examples in this topic use the original API; we are preparing examples that use the modern API\. For more details on the differences between the two supported APIs, see [CDK Pipelines original API](https://github.com/aws/aws-cdk/blob/master/packages/@aws-cdk/pipelines/ORIGINAL_API.md)\.
 
 ## Bootstrap your AWS environments<a name="cdk_pipeline_bootstrap"></a>
 
@@ -604,7 +602,7 @@ Now that you've done the initial deployment, you no longer need AWS administrati
 
 ## Sources and synth actions<a name="cdk_pipeline_building"></a>
 
-As we've seen in the preceding example, the basic pieces of CDK pipelines are *sources* and *synth actions*\.
+As we've seen in the preceding example, the basic pieces of CDK Pipelines are *sources* and *synth actions*\.
 
 Sources are places where your code lives\. Any source from the [codepipeline\-actions](https://docs.aws.amazon.com/cdk/api/latest/docs/aws-codepipeline-actions-readme.html) module can be used\.
 
@@ -1735,7 +1733,7 @@ In particular, keep in mind the following\.
 + Use dependency locking to prevent accidental upgrades\. The default `CdkSynth` that come with CDK Pipelines respect `package-lock.json` and `yarn.lock` to ensure your dependencies are the ones you expect\.
 + Credentials for production environments should be short\-lived\. After bootstrapping and initial provisioning, there is no need for developers to have account credentials; all changes can be deployed through the pipeline\. Eliminate the possibility of credentials leaking by not needing them in the first place\!
 
-## Troubleshooting tips<a name="cdk_pipeline_troubleshooting"></a>
+## Troubleshooting<a name="cdk_pipeline_troubleshooting"></a>
 
 The following issues are commonly encountered while getting started with CDK Pipelines\.
 
@@ -1763,13 +1761,3 @@ AmazonCloudFormation; Status Code: 400; Error Code: ValidationError; Request
 ID: ...)
 ```
 The stack failed its previous deployment and is in a non\-retryable state\. Delete the stack from the AWS CloudFormation console and retry the deployment\. 
-
-## Known issues and limitations<a name="cdk_pipeline_issues"></a>
-
-We're currently aware of the following issues with CDK Pipelines\.
-+ Context queries are not supported; `Vpc.fromLookup()` and similar functions do not work\.
-+ Console links to other accounts will not work\. The AWS CodePipeline console assumes links are relative to the current account\. You cannot click through to a AWS CloudFormation stack in a different account\.
-+ If a changeset failed to apply, the pipeline is not retried\. The pipeline must be restarted manually from the top by clicking **Release Change**\.
-+ A stack that failed to deploy must be deleted manually using the CloudFormation console before starting the pipeline again by clicking **Release Change**\.
-
-Please [report any other issues](https://github.com/aws/aws-cdk/issues/new/choose) you encounter\.
