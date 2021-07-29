@@ -40,7 +40,7 @@ The guiding principle for most of our best practices is to keep things simple as
 
 ### Align with the AWS Well\-Architected framework<a name="best-practices-code-well-architected"></a>
 
-The [AWS Well\-Architected](http://aws.amazon.com/https://aws.amazon.com/architecture/well-architected/) framework defines a *component* as the code, configuration, and AWS resources that together deliver against a requirement\. A component is often the unit of technical ownership, and is decoupled from other components\. The term *workload* is used to identify a set of components that together deliver business value\. A workload is usually the level of detail that business and technology leaders communicate about\.
+The [AWS Well\-Architected](http://aws.amazon.com/architecture/well-architected/) framework defines a *component* as the code, configuration, and AWS resources that together deliver against a requirement\. A component is often the unit of technical ownership, and is decoupled from other components\. The term *workload* is used to identify a set of components that together deliver business value\. A workload is usually the level of detail that business and technology leaders communicate about\.
 
 An AWS CDK application maps to a component as defined by the AWS Well\-Architected Framework\. AWS CDK apps are a mechanism to codify and deliver Well\-Architected cloud application best practices\. You can also create and share components as reusable code libraries through artifact repositories, such as AWS CodeArtifact\.
 
