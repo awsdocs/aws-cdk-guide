@@ -116,7 +116,7 @@ TypeScript was the first language supported by the AWS CDK, and much AWS CDK exa
 
 ## Prerequisites<a name="getting_started_prerequisites"></a>
 
-Here's what you need install to use the AWS CDK\.
+Here's what you need to install to use the AWS CDK\.
 
 All AWS CDK developers, even those working in Python, Java, or C\#, need [Node\.js](https://nodejs.org/en/download/) 10\.13\.0 or later\. All supported languages use the same back end, which runs on Node\.js\. We recommend a version in [active long\-term support](https://nodejs.org/en/about/releases/), which, at this writing, is the latest 14\.x release\. Your organization may have a different recommendation\.
 
@@ -201,7 +201,7 @@ cdk --version
 
 ## Bootstrapping<a name="getting_started_bootstrap"></a>
 
-Many AWS CDK stacks that you write will include [assets](assets.md): external files that are deployed with the stack, such as AWS Lambda functions Docker images\. The AWS CDK uploads these to an Amazon S3 bucket or other container so they are available to AWS CloudFormation during deployment\. Deployment requires that these containers already exist in the account and region you are deploying into\. Creating them is called [bootstrapping](bootstrapping.md)\. To bootstrap, issue:
+Many AWS CDK stacks that you write will include [assets](assets.md): external files that are deployed with the stack, such as AWS Lambda functions or Docker images\. The AWS CDK uploads these to an Amazon S3 bucket or other container so they are available to AWS CloudFormation during deployment\. Deployment requires that these containers already exist in the account and region you are deploying into\. Creating them is called [bootstrapping](bootstrapping.md)\. To bootstrap, issue:
 
 ```
 cdk bootstrap aws://ACCOUNT-NUMBER/REGION
