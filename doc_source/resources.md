@@ -502,7 +502,7 @@ The following example shows how to define a bucket based on an existing bucket w
 s3.Bucket.fromBucketName(this, 'MyBucket', 'my-bucket-name');
 
 // Construct a resource (bucket) by its full ARN (can be cross account)
-s3.Bucket.fromArn(this, 'MyBucket', 'arn:aws:s3:::my-bucket-name');
+s3.Bucket.fromBucketArn(this, 'MyBucket', 'arn:aws:s3:::my-bucket-name');
 
 // Construct a resource by giving attribute(s) (complex resources)
 ec2.Vpc.fromVpcAttributes(this, 'MyVpc', {
@@ -518,7 +518,7 @@ ec2.Vpc.fromVpcAttributes(this, 'MyVpc', {
 s3.Bucket.fromBucketName(this, 'MyBucket', 'my-bucket-name');
 
 // Construct a resource (bucket) by its full ARN (can be cross account)
-s3.Bucket.fromArn(this, 'MyBucket', 'arn:aws:s3:::my-bucket-name');
+s3.Bucket.fromBucketArn(this, 'MyBucket', 'arn:aws:s3:::my-bucket-name');
 
 // Construct a resource by giving attribute(s) (complex resources)
 ec2.Vpc.fromVpcAttributes(this, 'MyVpc', {
@@ -534,7 +534,7 @@ ec2.Vpc.fromVpcAttributes(this, 'MyVpc', {
 s3.Bucket.from_bucket_name(self, "MyBucket", "my-bucket-name")
 
 # Construct a resource (bucket) by its full ARN (can be cross account)
-s3.Bucket.from_arn(self, "MyBucket", "arn:aws:s3:::my-bucket-name")
+s3.Bucket.from_bucket_arn(self, "MyBucket", "arn:aws:s3:::my-bucket-name")
 
 # Construct a resource by giving attribute(s) (complex resources)
 ec2.Vpc.from_vpc_attributes(self, "MyVpc", vpc_id="vpc-1234567890abcdef")
