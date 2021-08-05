@@ -144,7 +144,7 @@ Choose **Tools** > **NuGet Package Manager** > **Manage NuGet Packages for Solut
 ```
 Amazon.CDK.AWS.EC2
 Amazon.CDK.AWS.ECS
-AMazon.CDK.AWS.ECS.Patterns
+Amazon.CDK.AWS.ECS.Patterns
 ```
 
 **Tip**  
