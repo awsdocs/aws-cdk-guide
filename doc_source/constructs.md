@@ -741,7 +741,7 @@ public class NotifyingBucket : Construct
 
 ------
 
-The `NotifyingBucket` constructor has a signature compatible with the base `Construct` class: `scope`, `id`, and `props`\. The last argument, `props`, is optional \(gets the default value `{}`\) because all props are optional\. This means that you could define an instance of this construct in your app without `props`, for example: 
+The `NotifyingBucket` constructor has a typical construct signature: `scope`, `id`, and `props`\. The last argument, `props`, is optional \(gets the default value `{}`\) because all props are optional\. \(The base `Construct` class does not take a `props`argument\.\) You could define an instance of this construct in your app without `props`, for example: 
 
 ------
 #### [ TypeScript ]
@@ -892,7 +892,7 @@ public class NotifyingBucket extends Bucket {
     }
 
     public NotifyingBucket(final Construct scope, final String id, final BucketProps props, final String prefix) {
-        super(scope, id, props);
+        super(scope, id);
 
         Bucket bucket = new Bucket(this, "bucket");
         topic = new Topic(this, "topic");
@@ -911,7 +911,7 @@ public class NotifyingBucket : Construct
 {
     public readonly Topic topic;
 
-    public NotifyingBucket(Construct scope, string id, NotifyingBucketProps props = null) : base(scope, id, props)
+    public NotifyingBucket(Construct scope, string id, NotifyingBucketProps props = null) : base(scope, id)
     {
         var bucket = new Bucket(this, "bucket");
         topic = new Topic(this, "topic");
