@@ -8,7 +8,7 @@ The AWS Cloud Development Kit \(AWS CDK\) lets you define your cloud infrastruct
 
 Ideally, you already have experience with popular AWS services, particularly [AWS Identity and Access Management](https://aws.amazon.com/iam/) \(IAM\)\. You might already have AWS credentials on your workstation for use with an AWS SDK or the AWS CLI and experience working with AWS resources programmatically\.
 
-Familiarity with [AWS CloudFormation](https://aws.amazon.com/cloudformation/) is also useful, as the output of an AWS CDK program is a AWS CloudFormation template\.
+Familiarity with [AWS CloudFormation](https://aws.amazon.com/cloudformation/) is also useful, as the output of an AWS CDK program is an AWS CloudFormation template\.
 
 Finally, you should be proficient in the programming language you intend to use with the AWS CDK\. 
 
