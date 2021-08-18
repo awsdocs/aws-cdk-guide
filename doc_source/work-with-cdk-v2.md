@@ -29,7 +29,7 @@ Most requirements for AWS CDK v2 are the same as for AWS CDK v1\.x\. See [Prereq
 
 To migrate your app to AWS CDK v2, first update the feature flags in `cdk.json`\. Then update your app's dependencies and imports as necessary for the programming language it is written in\.
 
-### Updating `cdk.json`<a name="w301aac13c11b5"></a>
+### Updating `cdk.json`<a name="w297aac13c11b5"></a>
 
 Remove all feature flags from `cdk.json`\. You can add one or more of the three flags listed below, set to `false`, if your app relies on these specific AWS CDK v1\.x behaviors\. Use the `cdk diff` command to inspect the changes to your synthesized template to see if any of these are needed\. 
 

@@ -63,7 +63,7 @@ cdk init app --language javascript
 cdk init app --language python
 ```
 
-After the app has been created, also enter the following two commands to activate the app's Python virtual environment and install its dependencies\.
+After the app has been created, also enter the following two commands to activate the app's Python virtual environment and install the AWS CDK core dependencies\.
 
 ```
 source .venv/bin/activate
