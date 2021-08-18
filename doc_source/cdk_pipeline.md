@@ -1,11 +1,11 @@
 # Continuous integration and delivery \(CI/CD\) using CDK Pipelines<a name="cdk_pipeline"></a>
 
-[CDK Pipelines](https://docs.aws.amazon.com/cdk/api/latest/docs/pipelines-readme.html) is a construct library module for painless continuous delivery of AWS CDK applications\. Whenever you check your AWS CDK app's source code in to AWS CodeCommit, GitHub, or BitBucket, CDK Pipelines can automatically build, test, and deploy your new version\.
+[CDK Pipelines](https://docs.aws.amazon.com/cdk/api/latest/docs/pipelines-readme.html) is a construct library module for painless continuous delivery of AWS CDK applications\. Whenever you check your AWS CDK app's source code in to AWS CodeCommit, GitHub, or CodeStar, CDK Pipelines can automatically build, test, and deploy your new version\.
 
 CDK Pipelines are self\-updating: if you add application stages or stacks, the pipeline automatically reconfigures itself to deploy those new stages and/or stacks\.
 
 **Note**  
-CDK Pipelines supports two APIs: the original API that was made available in the Developer Preview release, and a modern one that incorporates feedback from CDK customers received during the preview phase\. The examples in this topic use the original API; we are preparing examples that use the modern API\. For more details on the differences between the two supported APIs, see [CDK Pipelines original API](https://github.com/aws/aws-cdk/blob/master/packages/@aws-cdk/pipelines/ORIGINAL_API.md)\.
+CDK Pipelines supports two APIs: the original API that was made available in the Developer Preview release, and a modern one that incorporates feedback from CDK customers received during the preview phase\. The examples in this topic use the modern API\. For details on the differences between the two supported APIs, see [CDK Pipelines original API](https://github.com/aws/aws-cdk/blob/master/packages/@aws-cdk/pipelines/ORIGINAL_API.md)\.
 
 ## Bootstrap your AWS environments<a name="cdk_pipeline_bootstrap"></a>
 
@@ -46,7 +46,7 @@ npx cdk bootstrap aws://ACCOUNT-NUMBER/REGION --profile ADMIN-PROFILE ^
 
 ------
 
-To bootstrap additional environments into which AWS CDK applications will be deployed by the pipeline, use the commands below instead\. The `--trust` option indicates which other account should have permissions to deploy AWS CDK applications into this environment; specify the pipeline's AWS account ID\.
+To bootstrap additional environments into which AWS CDK applications will be deployed by the pipeline, use the commands below instead\. The \-\-trust option indicates which other account should have permissions to deploy AWS CDK applications into this environment; specify the pipeline's AWS account ID\.
 
 Again, you may omit the \-\-profile option if your default AWS profile contains the necessary credentials or if you are using the `AWS_*` environment variables to provide your AWS account credentials\.
 
@@ -75,13 +75,13 @@ npx cdk bootstrap aws://ACCOUNT-NUMBER/REGION --profile ADMIN-PROFILE ^
 ------
 
 **Tip**  
-Use administrative credentials only to bootstrap and to provision the initial pipeline\. Drop administrative credentials as soon as possible\.
+Use administrative credentials only to bootstrap and to provision the initial pipeline\. Afterward, use the pipeline itself, not your local machine, to deploy changes\.
 
-If you are upgrading an existing bootstrapped environment, the old Amazon S3 bucket is orphaned when the new bucket is created\. Delete it manually using the Amazon S3 console\.
+If you are upgrading a legacy\-bootstrapped environment, the old Amazon S3 bucket is orphaned when the new bucket is created\. Delete it manually using the Amazon S3 console\.
 
 ## Initialize project<a name="cdk_pipeline_init"></a>
 
-Create a new, empty GitHub project and clone it to your workstation in the `my-pipeline` directory\. \(Our code examples in this topic use GitHub; you can also use BitBucket or AWS CodeCommit\.\)
+Create a new, empty GitHub project and clone it to your workstation in the `my-pipeline` directory\. \(Our code examples in this topic use GitHub; you can also use CodeStar or AWS CodeCommit\.\)
 
 ```
 git clone GITHUB-CLONE-URL my-pipeline
@@ -114,7 +114,7 @@ cdk init app --language javascript
 cdk init app --language python
 ```
 
-After the app has been created, also enter the following two commands to activate the app's Python virtual environment and install its dependencies\.
+After the app has been created, also enter the following two commands to activate the app's Python virtual environment and install the AWS CDK core dependencies\.
 
 ```
 source .venv/bin/activate
@@ -141,36 +141,33 @@ If you are using Visual Studio, open the solution file in the `src` directory\.
 
 ------
 
-Install the CDK Pipelines module along with others you'll be using\.
+Install the CDK Pipelines module along with any others you'll be using\.
 
 **Tip**  
-Be sure to commit your `cdk.json` and `cdk.context.json` files in source control\. The context information \(such as feature flags and cached values retrieved from your AWS account\) are part of your project's state\. In particular, any cached values are critical to successful deployment, since your app won't be able to retrieve such values from your AWS account while running in the CI/CD environment\.
+Be sure to commit your `cdk.json` and `cdk.context.json` files in source control\. The context information \(such as feature flags and cached values retrieved from your AWS account\) are part of your project's state\. By design, cached values cannot be retrieved in a CI/CD environment, so having them in `cdk.context.json` is critical to successful deployment\.
 
 ------
 #### [ TypeScript ]
 
 ```
-npm install @aws-cdk/pipelines @aws-cdk/aws-codebuild 
-npm install @aws-cdk/aws-codepipeline @aws-cdk/aws-codepipeline-actions
+npm install @aws-cdk/pipelines @aws-cdk/aws-lambda
 ```
 
 ------
 #### [ JavaScript ]
 
 ```
-npm install @aws-cdk/pipelines @aws-cdk/aws-codebuild 
-npm install @aws-cdk/aws-codepipeline @aws-cdk/aws-codepipeline-actions
+npm install @aws-cdk/pipelines @aws-cdk/aws-lambda
 ```
 
 ------
 #### [ Python ]
 
 ```
-python -m pip install aws_cdk.pipelines aws_cdk.aws_codebuild
-python -m pip install aws_cdk.aws_codepipeline aws_cdk.aws_codepipeline_actions
+python -m pip install aws_cdk.pipelines aws_cdk.aws_lambda
 ```
 
-Freeze your dependencies in `requirements.txt`\.
+Add the project's dependencies to `requirements.txt` so they can be installed in the CI/CD environment\. It is convenient to use `pip freeze` for this\.
 
 **macOS/Linux**  
 
@@ -187,7 +184,7 @@ python -m pip freeze | findstr /R /B /V "[-#]" > requirements.txt
 ------
 #### [ Java ]
 
-Edit your project's `pom.xml` and add a `<dependency>` element for the `pipeline` module and a few others you'll need\. Follow the template below for each module, placing each inside the existing `<dependencies>` container\.
+Edit your project's `pom.xml` and add a `<dependency>` element for the `pipeline` module and the others you'll need\. Follow the template below for each module, placing each inside the existing `<dependencies>` container\.
 
 ```
 <dependency>
@@ -197,36 +194,26 @@ Edit your project's `pom.xml` and add a `<dependency>` element for the `pipeline
 </dependency>
 <dependency>
     <groupId>software.amazon.awscdk</groupId>
-    <artifactId>codebuild</artifactId>
-    <version>${cdk.version}</version>
-</dependency>
-<dependency>
-    <groupId>software.amazon.awscdk</groupId>
-    <artifactId>codepipeline</artifactId>
-    <version>${cdk.version}</version>
-</dependency>
-<dependency>
-    <groupId>software.amazon.awscdk</groupId>
-    <artifactId>codepipeline-actions</artifactId>
+    <artifactId>lambda</artifactId>
     <version>${cdk.version}</version>
 </dependency>
 ```
+
+After updating `pom.xml`, issue `mvn package` to install the new modules\.
 
 ------
 #### [ C\# ]
 
-In Visual Studio, choose **Tools** > **NuGet Package Manager** > **Manage NuGet Packages for Solution** in Visual Studio and add the following packages\. Make sure the **Include prerelease** checkbox is marked, since the CDK Pipelines module is in developer preview\.
+In Visual Studio, choose **Tools** > **NuGet Package Manager** > **Manage NuGet Packages for Solution** in Visual Studio and add the following packages\.
 
 ```
 Amazon.CDK.Pipelines
-Amazon.CDK.AWS.CodeBuild
-Amazon.CDK.AWS.CodePipeline
-Amazon.CDK.AWS.CodePipeline.Actions
+Amazon.CDK.AWS.Lambda
 ```
 
 ------
 
-Finally, add the `@aws-cdk/core:newStyleStackSynthesis` [feature flag](featureflags.md) to the new project's `cdk.json` file\. The file will already contain some context values; add this new one inside the `context` object\.
+Finally, add the `@aws-cdk/core:newStyleStackSynthesis` [feature flag](featureflags.md) to the new project's `cdk.json` file\. The file will already contain some context values; add this new one inside the `context` object if it's not already there\.
 
 ```
 {
@@ -240,9 +227,16 @@ Finally, add the `@aws-cdk/core:newStyleStackSynthesis` [feature flag](featurefl
 
 In a future release of the AWS CDK, "new style" stack synthesis will become the default, but for now we need to opt in using the feature flag\.
 
-## Define pipelines<a name="cdk_pipeline_define"></a>
+## Define a pipeline<a name="cdk_pipeline_define"></a>
 
-The construct [https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_pipelines.CdkPipeline.html](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_pipelines.CdkPipeline.html) is the construct that represents a CDK Pipeline\. When you instantiate `CdkPipeline` in a stack, you define the source location for the pipeline as well as the build commands\. For example, the following defines a pipeline whose source is stored in a GitHub repository, and includes a build step for a TypeScript application\. The Pipeline will be provisioned in account `111111111111` and region `eu-west-1`\.
+Your CDK Pipelines application will include at least two stacks: one that represents the pipeline itself, and one or more stacks that represent the application deployed through it\. Stacks can also be grouped into *stages*, which you can use to deploy copies of infrastructure stacks to different environments\. For now, we'll consider the pipeline, and later delve into the application it will deploy\.
+
+The construct [https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_pipelines.CodePipeline.html](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_pipelines.CodePipeline.html) is the construct that represents a CDK Pipeline that uses AWS CodePipeline as its deployment engine\. When you instantiate `CodePipeline` in a stack, you define the source location for the pipeline \(e\.g\. a GitHub repository\) and the commands to build the app\. For example, the following defines a pipeline whose source is stored in a GitHub repository, and includes a build step for a TypeScript CDK application\. Fill in the information about your GitHub repo where indicated\.
+
+**Note**  
+By default, the pipeline authenticates to GitHub using a personal access token stored in Secrets Manager under the name `github-token`\.
+
+You'll also need to update the instantiation of the pipeline stack to specify the AWS account and region\.
 
 ------
 #### [ TypeScript ]
@@ -250,41 +244,19 @@ The construct [https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_pipeline
 In `lib/my-pipeline-stack.ts` \(may vary if your project folder isn't named `my-pipeline`\):
 
 ```
-import { Stack, StackProps, Construct, SecretValue } from '@aws-cdk/core';
-import { CdkPipeline, SimpleSynthAction } from '@aws-cdk/pipelines';
+import * as cdk from '@aws-cdk/core';
+import { CodePipeline, CodePipelineSource, ShellStep } from '@aws-cdk/pipelines';
 
-import * as codepipeline from '@aws-cdk/aws-codepipeline';
-import * as codepipeline_actions from '@aws-cdk/aws-codepipeline-actions';
-
-export class MyPipelineStack extends Stack {
-  constructor(scope: Construct, id: string, props?: StackProps) {
+export class MyPipelineStack extends cdk.Stack {
+  constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    const sourceArtifact = new codepipeline.Artifact();
-    const cloudAssemblyArtifact = new codepipeline.Artifact();
-
-    const pipeline = new CdkPipeline(this, 'Pipeline', {
-      pipelineName: 'MyAppPipeline',
-      cloudAssemblyArtifact,
-
-      sourceAction: new codepipeline_actions.GitHubSourceAction({
-        actionName: 'GitHub',
-        output: sourceArtifact,
-        oauthToken: SecretValue.secretsManager('GITHUB_TOKEN_NAME'),
-        trigger: codepipeline_actions.GitHubTrigger.POLL,
-        // Replace these with your actual GitHub project info
-        owner: 'GITHUB-OWNER',
-        repo: 'GITHUB-REPO',
-      }),
-
-      synthAction: SimpleSynthAction.standardNpmSynth({
-        sourceArtifact,
-        cloudAssemblyArtifact,
-
-        // Use this if you need a build step (if you're not using ts-node
-        // or if you have TypeScript Lambdas that need to be compiled).
-        buildCommand: 'npm run build',
-      }),
+    const pipeline = new CodePipeline(this, 'Pipeline', {
+      pipelineName: 'MyPipeline',
+      synth: new ShellStep('Synth', {
+        input: CodePipelineSource.gitHub('OWNER/REPO', 'main'),
+        commands: ['npm ci', 'npm run build', 'npx cdk synth']
+      })
     });
   }
 }
@@ -299,7 +271,7 @@ import * as cdk from '@aws-cdk/core';
 import { MyPipelineStack } from '../lib/my-pipeline-stack';
 
 const app = new cdk.App();
-new MyPipelineStack(app, 'PipelineStack', {
+new MyPipelineStack(app, 'MyPipelineStack', {
   env: {
     account: '111111111111',
     region: 'eu-west-1',
@@ -315,40 +287,18 @@ app.synth();
 In `lib/my-pipeline-stack.js` \(may vary if your project folder isn't named `my-pipeline`\):
 
 ```
-const { Stack, SecretValue } = require('@aws-cdk/core');
-const { CdkPipeline, SimpleSynthAction } = require('@aws-cdk/pipelines');
+const cdk = require('@aws-cdk/core');
+const { CodePipeline, CodePipelineSource, ShellStep } = require('@aws-cdk/pipelines');
 
-const codepipeline = require('@aws-cdk/aws-codepipeline');
-const codepipeline_actions = require('@aws-cdk/aws-codepipeline-actions');
-
-class MyPipelineStack extends Stack {
+ class MyPipelineStack extends cdk.Stack {
   constructor(scope, id, props) {
     super(scope, id, props);
 
-    const sourceArtifact = new codepipeline.Artifact();
-    const cloudAssemblyArtifact = new codepipeline.Artifact();
-
-    const pipeline = new CdkPipeline(this, 'Pipeline', {
-      pipelineName: 'MyAppPipeline',
-      cloudAssemblyArtifact,
-
-      sourceAction: new codepipeline_actions.GitHubSourceAction({
-        actionName: 'GitHub',
-        output: sourceArtifact,
-        oauthToken: SecretValue.secretsManager('GITHUB_TOKEN_NAME'),
-        trigger: codepipeline_actions.GitHubTrigger.POLL,
-        // Replace these with your actual GitHub project info
-        owner: 'GITHUB-OWNER',
-        repo: 'GITHUB-REPO'
-      }),
-
-      synthAction: SimpleSynthAction.standardNpmSynth({
-        sourceArtifact,
-        cloudAssemblyArtifact,
-
-        // Use this if you need a build step (if you're not using ts-node
-        // or if you have TypeScript Lambdas that need to be compiled).
-        buildCommand: 'npm run build'
+    const pipeline = new CodePipeline(this, 'Pipeline', {
+      pipelineName: 'MyPipeline',
+      synth: new ShellStep('Synth', {
+        input: CodePipelineSource.gitHub('OWNER/REPO', 'main'),
+        commands: ['npm ci', 'npm run build', 'npx cdk synth']
       })
     });
   }
@@ -366,10 +316,10 @@ const cdk = require('@aws-cdk/core');
 const { MyPipelineStack } = require('../lib/my-pipeline-stack');
 
 const app = new cdk.App();
-new MyPipelineStack(app, 'PipelineStack', {
+new MyPipelineStack(app, 'MyPipelineStack', {
   env: {
     account: '111111111111',
-    region: 'eu-west-1'
+    region: 'eu-west-1',
   }
 });
 
@@ -382,52 +332,35 @@ app.synth();
 In `my-pipeline/my-pipeline-stack.py` \(may vary if your project folder isn't named `my-pipeline`\): 
 
 ```
-from aws_cdk.core import Stack, StackProps, Construct, SecretValue
-from aws_cdk.pipelines import CdkPipeline, SimpleSynthAction
+from aws_cdk import core as cdk
+from aws_cdk.pipelines import CodePipeline, CodePipelineSource, ShellStep
 
-import aws_cdk.aws_codepipeline as codepipeline
-import aws_cdk.aws_codepipeline_actions as codepipeline_actions
+class MyPipelineStack(cdk.Stack):
 
-class MyPipelineStack(Stack):
+    def __init__(self, scope: cdk.Construct, construct_id: str, **kwargs) -> None:
+        super().__init__(scope, construct_id, **kwargs)
 
-    def __init__(self, scope: Construct, id: str, **kwargs) -> None:
-        super().__init__(scope, id, **kwargs)
-
-        source_artifact = codepipeline.Artifact()
-        cloud_assembly_artifact = codepipeline.Artifact()
-
-        pipeline = CdkPipeline(self, "Pipeline",
-            pipeline_name="MyAppPipeline",
-            cloud_assembly_artifact=cloud_assembly_artifact,
-            source_action=codepipeline_actions.GitHubSourceAction(
-                action_name="GitHub",
-                output=source_artifact,
-                oauth_token=SecretValue.secrets_manager("GITHUB_TOKEN_NAME"),
-                trigger=codepipeline_actions.GitHubTrigger.POLL,
-                # Replace these with your actual GitHub project info
-                owner="GITHUB-OWNER",
-                repo="GITHUB-REPO"),
-            synth_action=SimpleSynthAction.standard_npm_synth(
-                source_artifact=source_artifact,
-                cloud_assembly_artifact=cloud_assembly_artifact,
-                # Use this if you need a build step (if you're not using ts-node
-                # or if you have TypeScript Lambdas that need to be compiled).
-                build_command="npm run build"
-            )
-        )
+        pipeline =  CodePipeline(self, "Pipeline", 
+                        pipeline_name="MyPipeline",
+                        synth=ShellStep("Synth", 
+                            input=CodePipelineSource.git_hub("OWNER/REPO", "main"),
+                            commands=["npm ci", "npm run build", "npx cdk synth"]
+                        )
+                    )
 ```
 
 In `app.py`:
 
 ```
 #!/usr/bin/env python3
-
-from aws_cdk import core
+from aws_cdk import core as cdk
 from my_pipeline.my_pipeline_stack import MyPipelineStack
 
-app = core.App()
-MyPipelineStack(app, "my-pipeline",
-    env=core.Environment(account="111111111111", region="eu-west-1"))
+app = cdk.App()
+MyPipelineStack(app, "MyPipelineStack", 
+    env=cdk.Environment(account="111111111111", region="eu-west-1")
+)
+
 app.synth()
 ```
 
@@ -439,16 +372,13 @@ In `src/main/java/com/myorg/MyPipelineStack.java` \(may vary if your project fol
 ```
 package com.myorg;
 
+import java.util.Arrays;
 import software.amazon.awscdk.core.Construct;
-import software.amazon.awscdk.core.SecretValue;
 import software.amazon.awscdk.core.Stack;
 import software.amazon.awscdk.core.StackProps;
-import software.amazon.awscdk.pipelines.CdkPipeline;
-import software.amazon.awscdk.pipelines.SimpleSynthAction;
-import software.amazon.awscdk.pipelines.StandardNpmSynthOptions;
-import software.amazon.awscdk.services.codepipeline.Artifact;
-import software.amazon.awscdk.services.codepipeline.actions.GitHubSourceAction;
-import software.amazon.awscdk.services.codepipeline.actions.GitHubTrigger;
+import software.amazon.awscdk.pipelines.CodePipeline;
+import software.amazon.awscdk.pipelines.CodePipelineSource;
+import software.amazon.awscdk.pipelines.ShellStep;
 
 public class MyPipelineStack extends Stack {
     public MyPipelineStack(final Construct scope, final String id) {
@@ -458,27 +388,13 @@ public class MyPipelineStack extends Stack {
     public MyPipelineStack(final Construct scope, final String id, final StackProps props) {
         super(scope, id, props);
 
-        final Artifact sourceArtifact = new Artifact();
-        final Artifact cloudAssemblyArtifact = new Artifact();
-        
-        final CdkPipeline pipeline = CdkPipeline.Builder.create(this, "Pipeline")
-                .pipelineName("MyAppPipeline")
-                .cloudAssemblyArtifact(cloudAssemblyArtifact)
-                .sourceAction(GitHubSourceAction.Builder.create()
-                        .actionName("GitHub")
-                        .output(sourceArtifact)
-                        .oauthToken(SecretValue.secretsManager("GITHUB_TOKEN_NAME"))
-                        .trigger(GitHubTrigger.POLL)
-                        .owner("GITHUB-OWNER")
-                        .repo("GITHUB-REPO")
-                        .build())
-                .synthAction(SimpleSynthAction.standardNpmSynth(
-                        StandardNpmSynthOptions.builder()
-                            .sourceArtifact(sourceArtifact)
-                            .cloudAssemblyArtifact(cloudAssemblyArtifact)
-                            .buildCommand("npm run build")
-                            .build()))
-                .build();
+        CodePipeline pipeline = CodePipeline.Builder.create(this, "pipeline")
+             .pipelineName("MyPipeline")
+             .synth(ShellStep.Builder.create("Synth")
+                .input(CodePipelineSource.gitHub("OWNER/REPO", "main"))
+                .commands(Arrays.asList)"npm ci", "npm run build", "npx cdk synth"))
+                .build())
+             .build();
     }
 }
 ```
@@ -490,17 +406,18 @@ package com.myorg;
 
 import software.amazon.awscdk.core.App;
 import software.amazon.awscdk.core.Environment;
+import software.amazon.awscdk.core.StackProps;
 
 public class MyPipelineApp {
     public static void main(final String[] args) {
         App app = new App();
 
-        MyPipelineStack.Builder.create(app, "PipelineStack")
+        new MyPipelineStack(app, "PipelineStack", StackProps.builder()
             .env(new Environment.Builder()
                 .account("111111111111")
                 .region("eu-west-1")
                 .build())
-            .build();
+            .build());
 
         app.synth();
     }
@@ -515,36 +432,20 @@ In `src/MyPipeline/MyPipelineStack.cs` \(may vary if your project folder isn't n
 ```
 using Amazon.CDK;
 using Amazon.CDK.Pipelines;
-using Amazon.CDK.AWS.CodePipeline;
-using Amazon.CDK.AWS.CodePipeline.Actions;
 
 namespace MyPipeline
 {
     public class MyPipelineStack : Stack
     {
-        internal MyPipelineStack(Construct scope, string id, IStackProps props=null) : base(scope, id, props)
+        internal MyPipelineStack(Construct scope, string id, IStackProps props = null) : base(scope, id, props)
         {
-            var sourceArtifact = new Artifact_();
-            var cloudAssemblyArtifact = new Artifact_();
-
-            var pipeline = new CdkPipeline(this, "Pipeline", new CdkPipelineProps
+            var pipeline = new CodePipeline(this, "pipeline", new CodePipelineProps
             {
-                PipelineName = "MyAppPipeline",
-                CloudAssemblyArtifact = cloudAssemblyArtifact,
-                SourceAction = new GitHubSourceAction(new GitHubSourceActionProps
+                PipelineName = "MyPipeline",
+                Synth = new ShellStep("Synth", new ShellStepProps
                 {
-                    ActionName = "GitHub",
-                    Output = sourceArtifact,
-                    OauthToken = SecretValue.SecretsManager("GITHUB TOKEN_NAME"),
-                    Trigger = GitHubTrigger.POLL,
-                    Owner = "GITHUB-OWNER",
-                    Repo = "GITHUB-REPO"
-                }),
-                SynthAction = SimpleSynthAction.StandardNpmSynth(new StandardNpmSynthOptions
-                {
-                    SourceArtifact = sourceArtifact,
-                    CloudAssemblyArtifact = cloudAssemblyArtifact,
-                    BuildCommand = "npm run build"
+                    Input = CodePipelineSource.GitHub("OWNER/REPO", "main"),
+                    Commands = new string[] { "npm ci", "npm run build", "npx cdk synth" }
                 })
             });
         }
@@ -556,9 +457,6 @@ In `src/MyPipeline/Program.cs` \(may vary if your project folder isn't named `my
 
 ```
 using Amazon.CDK;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MyPipeline
 {
@@ -569,12 +467,10 @@ namespace MyPipeline
             var app = new App();
             new MyPipelineStack(app, "MyPipelineStack", new StackProps
             {
-                Env = new Amazon.CDK.Environment
-                {
-                    Account = "111111111111",
-                    Region = "eu-west-1"
-                } 
+                Env = new Amazon.CDK.Environment { 
+                    Account = "111111111111", Region = "eu-west-1" }
             });
+
             app.Synth();
         }
     }
@@ -583,12 +479,7 @@ namespace MyPipeline
 
 ------
 
-Note the following in this example:
-+ The source code is stored in a GitHub repository\.
-+ The GitHub access token needed to access the repo is retrieved from AWS Secrets Manager\. Provide the name of the secret where indicated\.
-+ Specify the owner of the repository and the repo name where indicated\.
-
-You must deploy a CDK Pipeline manually once\. After that, the pipeline will keep itself up to date from the source code repository\. To perform the initial deployment:
+You must deploy a pipeline manually once\. After that, the pipeline will keep itself up to date from the source code repository, so make sure the code in the repo is the code you want deployed\. Check in your changes and push to GitHub, then deploy:
 
 ```
 git add --all
@@ -598,109 +489,7 @@ cdk deploy
 ```
 
 **Tip**  
-Now that you've done the initial deployment, you no longer need AWS administrative access\.
-
-## Sources and synth actions<a name="cdk_pipeline_building"></a>
-
-As we've seen in the preceding example, the basic pieces of CDK Pipelines are *sources* and *synth actions*\.
-
-Sources are places where your code lives\. Any source from the [codepipeline\-actions](https://docs.aws.amazon.com/cdk/api/latest/docs/aws-codepipeline-actions-readme.html) module can be used\.
-
-Synth actions \(`synthAction`\) define how to build and synth the project\. A synth action can be any AWS CodePipeline action that produces an artifact containing an AWS CDK Cloud Assembly \(the `cdk.out` directory created by `cdk synth`\)\. Pass the output artifact of the synth operation in the Pipeline's `cloudAssemblyArtifact` property\.
-
-`SimpleSynthAction` is available for synths that can be performed by running a couple of simple shell commands \(install, build, and synth\) using AWS CodeBuild\. When using these, the source repository does not require a `buildspec.yml`\. Here's an example of using `[SimpleSynthAction](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_pipelines.SimpleSynthAction.html)` to run a Maven \(Java\) build followed by a `cdk synth`:
-
-------
-#### [ TypeScript ]
-
-```
-const pipeline = new CdkPipeline(this, 'Pipeline', {
-  // ...
-  synthAction: new SimpleSynthAction({
-    sourceArtifact,
-    cloudAssemblyArtifact,
-    installCommand: 'npm install -g aws-cdk',
-    buildCommand: 'mvn package',
-    synthCommand: 'cdk synth',
-  })
-});
-```
-
-------
-#### [ JavaScript ]
-
-```
-const pipeline = new CdkPipeline(this, 'Pipeline', {
-  // ...
-  synthAction: new SimpleSynthAction({
-    sourceArtifact,
-    cloudAssemblyArtifact,
-    installCommand: 'npm install -g aws-cdk',
-    buildCommand: 'mvn package',
-    synthCommand: 'cdk synth'
-  })
-});
-```
-
-------
-#### [ Python ]
-
-```
-class MyPipeline(Stack):
-    def __init__(self, scope: Construct, id: str, **kwargs) -> None:
-        super().__init__(scope, id, **kwargs)
-
-        pipeline = CdkPipeline(self, "Pipeline",
-            # ...
-            synth_action=SimpleSynthAction(
-                source_artifact=source_artifact,
-                cloud_assembly_artifact=cloud_assembly_artifact,
-                install_command="npm install -g aws-cdk",
-                build_command="mvn package",
-                synth_command="cdk synth"
-            ))
-```
-
-------
-#### [ Java ]
-
-```
-final CdkPipeline pipeline = CdkPipeline.Builder.create(this, "Pipeline")
-        // ...
-        .synthAction(SimpleSynthAction.Builder.create()
-                .sourceArtifact(sourceArtifact)
-                .cloudAssemblyArtifact(cloudAssemblyArtifact)
-                .installCommand("npm install -g aws-cdk")
-                .buildCommand("mvn package")
-                .synthCommand("cdk synth")
-                .build())
-        .build();
-```
-
-------
-#### [ C\# ]
-
-```
-var pipeline = new CdkPipeline(this, "Pipeline", new CdkPipelineProps
-{
-    SynthAction = new SimpleSynthAction(new SimpleSynthActionProps
-    {
-        SourceArtifact = sourceArtifact,
-        CloudAssemblyArtifact = cloudAssemblyArtifact,
-        InstallCommand = "npm install -g aws-cdk",
-        BuildCommand = "mvn package",
-        SynthCommand = "cdk synth"
-    })
-});
-```
-
-------
-
-A couple of convention\-based synth operations for TypeScript or JavaScript projects are available as class methods of `SimpleSynthAction`:
-+ `[standardNpmSynth](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_pipelines.SimpleSynthAction.html#static-standard-wbr-npm-wbr-synthoptions-span-class-api-icon-api-icon-experimental-title-this-api-element-is-experimental-it-may-change-without-notice-span)()` builds using NPM conventions\. Expects a `package-lock.json`, a `cdk.json`, and expects the CDK Toolkit to be a versioned dependency in `package.json`\. Does not perform a build step by default\.
-+ `[standardYarnSynth](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_pipelines.SimpleSynthAction.html#static-standard-wbr-yarn-wbr-synthoptions-span-class-api-icon-api-icon-experimental-title-this-api-element-is-experimental-it-may-change-without-notice-span)()` builds using Yarn conventions\. Expects a `yarn.lock`, a `cdk.json`, and expects the CDK Toolkit to be a versioned dependency in `package.json`\. Does not perform a build step by default\.
-
-If your needs are not covered by `SimpleSynthAction`, you can add a custom build/synth step by creating a custom AWS CodeBuild project and passing a corresponding `CodeBuildAction` to the pipeline\.
+Now that you've done the initial deployment, your local AWS account no longer needs administrative access, because all changes to your app will be deployed via the pipeline\. All you need to be able to do is push to GitHub\.
 
 ## Application stages<a name="cdk_pipeline_stages"></a>
 
@@ -708,60 +497,71 @@ To define a multi\-stack AWS application that can be added to the pipeline all a
 
 The stage contains the stacks that make up your application\. If there are dependencies between the stacks, the stacks are automatically added to the pipeline in the right order\. Stacks that don't depend on each other are deployed in parallel\. You can add a dependency relationship between stacks by calling `stack1.addDependency(stack2)`\.
 
-Stages accept a default `env` argument, which the `Stack`s inside the `Stage` will use if no environment is specified for them\.
+Stages accept a default `env` argument, which becomes the default environment for the stacks inside it\. \(Stacks can still have their own environment specified\.\)\.
 
-An application is added to the pipeline by calling `[addApplicationStage](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_pipelines.CdkPipeline.html#add-wbr-application-wbr-stageappstage-options-span-class-api-icon-api-icon-experimental-title-this-api-element-is-experimental-it-may-change-without-notice-span)()` with instances of the Stage\. A stage can be instantiated and added to the pipeline multiple times to define different stages of your DTAP or multi\-region application pipeline:
+An application is added to the pipeline by calling `[addStage](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_pipelines.CodePipeline.html#addwbrstagestage-options)()` with instances of `Stage`\. A stage can be instantiated and added to the pipeline multiple times to define different stages of your DTAP or multi\-region application pipeline:
+
+We will create a stack containing a simple Lambda function and place that stack in a stage\. Then we will add the stage to the pipeline so it can be deployed\.
 
 ------
 #### [ TypeScript ]
 
+Create the new file `lib/my-pipeline-lambda-stack.ts` to hold our application stack containing a Lambda function\.
+
 ```
-import { Construct, Stack, StackProps, Stage, StageProps } from '@aws-cdk/core';
-import * as codepipeline from '@aws-cdk/aws-codepipeline';
-import { CdkPipeline } from '@aws-cdk/pipelines';
+import * as cdk from '@aws-cdk/core';
+import { Function, InlineCode, Runtime } from '@aws-cdk/aws-lambda';
 
-export class DatabaseStack extends Stack {
-  // ...
+export class MyLambdaStack extends cdk.Stack {
+    constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
+      super(scope, id, props);
+  
+      new Function(this, 'LambdaFunction', {
+        runtime: Runtime.NODEJS_12_X,
+        handler: 'index.handler',
+        code: new InlineCode('exports.handler = _ => "Hello, CDK";')
+      });
+    }
 }
+```
 
-export class ComputeStack extends Stack {
-  // ...
+Create the new file `lib/my-pipeline-app-stage.ts` to hold our stage\.
+
+```
+import * as cdk from '@aws-cdk/core';
+import { MyLambdaStack } from './my-pipeline-lambda-stack';
+
+export class MyPipelineAppStage extends cdk.Stage {
+    
+    constructor(scope: cdk.Construct, id: string, props?: cdk.StageProps) {
+      super(scope, id, props);
+  
+      const lambdaStack = new MyLambdaStack(this, 'LambdaStack');      
+    }
 }
+```
 
-// Your application
-// May consist of one or more Stacks
-//
-export class MyApplication extends Stage {
-  constructor(scope: Construct, id: string, props?: StageProps) {
+Edit `lib/my-pipeline-stack.ts` to add the stage to our pipeline\.
+
+```
+import * as cdk from '@aws-cdk/core';
+import { CodePipeline, CodePipelineSource, ShellStep } from '@aws-cdk/pipelines';
+import { MyPipelineAppStage } from './my-pipeline-app-stage';
+
+export class MyPipelineStack extends cdk.Stack {
+  constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    const dbStack = new DatabaseStack(this, 'Database');
-    new ComputeStack(this, 'Compute', {
-      table: dbStack.table,
-    });
-  }
-}
-
-// Stack to hold the pipeline
-//
-export class MyPipelineStack extends Stack {
-  constructor(scope: Construct, id: string, props?: StackProps) {
-    super(scope, id, props);
-
-    const sourceArtifact = new codepipeline.Artifact();
-    const cloudAssemblyArtifact = new codepipeline.Artifact();
-
-    const pipeline = new CdkPipeline(this, 'Pipeline', {
-      // ...source and build information here
+    const pipeline = new CodePipeline(this, 'Pipeline', {
+      pipelineName: 'MyPipeline',
+      synth: new ShellStep('Synth', {
+        input: CodePipelineSource.gitHub('OWNER/REPO', 'main'),
+        commands: ['npm ci', 'npm run build', 'npx cdk synth']
+      })
     });
 
-    // Do this as many times as necessary with any account and region
-    // Account and region may be different from the pipeline's.
-    pipeline.addApplicationStage(new MyApplication(this, 'Prod', {
-      env: {
-        account: '123456789012',
-        region: 'eu-west-1',
-      }
+    pipeline.addStage(new MyPipelineAppStage(this, "test", {
+      env: { account: "111111111111", region: "eu-west-1" }
     }));
   }
 }
@@ -770,142 +570,203 @@ export class MyPipelineStack extends Stack {
 ------
 #### [ JavaScript ]
 
+Create the new file `lib/my-pipeline-lambda-stack.js` to hold our application stack containing a Lambda function\.
+
 ```
-const { Stack, Stage } = require('@aws-cdk/core');
-const codepipeline = require('@aws-cdk/aws-codepipeline');
-const { CdkPipeline } = require('@aws-cdk/pipelines');
+const cdk = require('@aws-cdk/core');
+const { Function, InlineCode, Runtime } = require('@aws-cdk/aws-lambda');
 
-class DatabaseStack extends Stack {
-  // ...
+class MyLambdaStack extends cdk.Stack {
+    constructor(scope, id, props) {
+      super(scope, id, props);
+  
+      new Function(this, 'LambdaFunction', {
+        runtime: Runtime.NODEJS_12_X,
+        handler: 'index.handler',
+        code: new InlineCode('exports.handler = _ => "Hello, CDK";')
+      });
+    }
 }
 
-class ComputeStack extends Stack {
-  // ...
+module.exports = { MyLambdaStack }
+```
+
+Create the new file `lib/my-pipeline-app-stage.js` to hold our stage\.
+
+```
+const cdk = require('@aws-cdk/core');
+const { MyLambdaStack } = require('./my-pipeline-lambda-stack');
+
+class MyPipelineAppStage extends cdk.Stage {
+    
+    constructor(scope, id, props) {
+      super(scope, id, props);
+  
+      const lambdaStack = new MyLambdaStack(this, 'LambdaStack');      
+    }
 }
 
-// Your application
-// May consist of one or more Stacks
-//
-class MyApplication extends Stage {
+module.exports = { MyPipelineAppStage };
+```
+
+Edit `lib/my-pipeline-stack.ts` to add the stage to our pipeline\.
+
+```
+const cdk = require('@aws-cdk/core');
+const { CodePipeline, CodePipelineSource, ShellStep } = require('@aws-cdk/pipelines');
+const { MyPipelineAppStage } = require('./my-pipeline-app-stage');
+
+ class MyPipelineStack extends cdk.Stack {
   constructor(scope, id, props) {
     super(scope, id, props);
 
-    const dbStack = new DatabaseStack(this, 'Database');
-    new ComputeStack(this, 'Compute', {
-      table: dbStack.table
-    });
-  }
-}
-
-// Stack to hold the pipeline
-//
-class MyPipelineStack extends Stack {
-  constructor(scope, id, props) {
-    super(scope, id, props);
-
-    const sourceArtifact = new codepipeline.Artifact();
-    const cloudAssemblyArtifact = new codepipeline.Artifact();
-
-    const pipeline = new CdkPipeline(this, 'Pipeline', {
-      // ...source and build information here
+    const pipeline = new CodePipeline(this, 'Pipeline', {
+      pipelineName: 'MyPipeline',
+      synth: new ShellStep('Synth', {
+        input: CodePipelineSource.gitHub('OWNER/REPO', 'main'),
+        commands: ['npm ci', 'npm run build', 'npx cdk synth']
+      })
     });
 
-    // Do this as many times as necessary with any account and region
-    // Account and region may be different from the pipeline's.
-    pipeline.addApplicationStage(new MyApplication(this, 'Prod', {
-      env: {
-        account: '123456789012',
-        region: 'eu-west-1'
-      }
+    pipeline.addStage(new MyPipelineAppStage(this, "test", {
+      env: { account: "111111111111", region: "eu-west-1" }
     }));
+
   }
 }
 
-module.exports = { MyApplication, MyPipelineStack, ComputeStack, DatabaseStack }
+module.exports = { MyPipelineStack }
 ```
 
 ------
 #### [ Python ]
 
+Create the new file `my_pipeline/my_pipeline_lambda_stack.py` to hold our application stack containing a Lambda function\. 
+
 ```
-from my_pipeline.my_pipeline_stack import source_artifact
-from aws_cdk.core import Construct, Stack, Stage, Environment
-from aws_cdk.pipelines import CdkPipeline
-import aws_cdk.aws_codepipeline as code_pipeline
+from aws_cdk import core as cdk
+from aws_cdk.aws_lambda import Function, InlieCode, Runtime
 
-class DatabaseStack(Stack):
-    pass    # ...
+class MyLambdaStack(cdk.Stack):
+    def __init__(self, scope: cdk.Construct, construct_id: str, **kwargs) -> None:
+        super().__init__(scope, construct_id, **kwargs)
 
-class ComputeStack(Stack):
-    pass    # ...
-
-# Your application
-# May consist of one or more Stacks
-#
-class MyApplication(Stage):
-    def __init__(self, scope: Construct, id: str, **kwargs):
-        super().__init__(scope, id, **kwargs)
-
-        db_stack = DatabaseStack(self, "Database")
-        ComputeStack(self, "Compute", table=db_stack.table)
-
-# Stack to hold the pipeline
-#
-class MyPipelineStack(Stack):
-    def __init__(self, scope: Construct, id: str, **kwargs):
-        super().__init__(scope, id, **kwargs)
-
-        source_artifact = code_pipeline.Artifact()
-        cloud_assembly_artifact = code_pipeline.Artifact()
-
-        pipeline = CdkPipeline(self, "Pipeline",
-            # ...source and build information here
+        Function(self, "LambdaFunction", 
+            runtime=Runtime.NODEJS_12_X,
+            handler="index.handler",
+            code=InlineCode("exports.handler = _ => 'Hello, CDK';")
         )
+```
 
-        # Do this as many times as necessary with any account and region
-        # Account and region may be different from the pipeline's.
-        pipeline.add_application_stage(MyApplication(self, 'Prod',
-            env=Environment(account="123456789012", region="eu-west-1")))
+Create the new file `my_pipeline/my_pipeline_app_stage.py` to hold our stage\.
+
+```
+from aws_cdk import core as cdk
+from my_pipeline.my_pipeline_lambda_stack import MyLambdaStack
+
+class MyPipelineAppStage(cdk.Stage):
+    def __init__(self, scope: cdk.Construct, construct_id: str, **kwargs) -> None:
+        super().__init__(scope, construct_id, **kwargs)
+
+        lambdaStack = MyLambdaStack(self, "LambdaStack")
+```
+
+Edit `my_pipeline/my_pipeline_stack.py` to add the stage to our pipeline\.
+
+```
+from aws_cdk import core as cdk
+from aws_cdk.pipelines import CodePipeline, CodePipelineSource, ShellStep
+from my_pipeline.my_pipeline_app_stage import MyPipelineAppStage
+
+class MyPipelineStack(cdk.Stack):
+
+    def __init__(self, scope: cdk.Construct, construct_id: str, **kwargs) -> None:
+        super().__init__(scope, construct_id, **kwargs)
+
+        pipeline =  CodePipeline(self, "Pipeline", 
+                        pipeline_name="MyPipeline",
+                        synth=ShellStep("Synth", 
+                            input=CodePipelineSource.git_hub("OWNER/REPO", "main"),
+                            commands=["npm ci", "npm run build", "npx cdk synth"]))
+
+        pipeline.add_stage(MyPipelineAppStage(self, "test",
+            env=cdk.Environment(account="111111111111", region="eu-west-1")))
 ```
 
 ------
 #### [ Java ]
 
+Create the new file `src/main/java/com.myorg/MyPipelineLambdaStack.java` to hold our application stack containing a Lambda function\.
+
 ```
-class DatabaseStack extends Stack {
-    Table table;
-    
-    public DatabaseStack(Construct scope, String id) {
-        super(scope, id);
-        // ...
-    }
-    
-    public Table getTable() {
-        return table;
-    }
-}
+package com.myorg;
 
-class ComputeStack extends Stack {
-    public ComputeStack(Construct scope, String id, Table table) {
-        // ...        
-    }
-}
+import software.amazon.awscdk.core.Construct;
+import software.amazon.awscdk.core.Stack;
+import software.amazon.awscdk.core.StackProps;
 
-// Your application
-// May consist of one or more Stacks
-//
-class MyApplication extends Stage {
-    public MyApplication(Construct scope, String id, StageProps props) {
+import software.amazon.awscdk.services.lambda.Function;
+import software.amazon.awscdk.services.lambda.Runtime;
+import software.amazon.awscdk.services.lambda.InlineCode;
+
+public class MyPipelineLambdaStack extends Stack {
+    public MyPipelineLambdaStack(final Construct scope, final String id) {
+        this(scope, id, null);
+    }
+
+    public MyPipelineLambdaStack(final Construct scope, final String id, final StackProps props) {
+        super(scope, id, props);
+
+        Function.Builder.create(this, "LambdaFunction")
+          .runtime(Runtime.NODEJS_12_X)
+          .handler("index.handler")
+          .code(new InlineCode("exports.handler = _ => 'Hello, CDK';"))
+          .build();
+
+    }
+
+}
+```
+
+Create the new file `src/main/java/com.myorg/MyPipelineAppStage.java` to hold our stage\.
+
+```
+package com.myorg;
+
+import software.amazon.awscdk.core.Construct;
+import software.amazon.awscdk.core.Stack;
+import software.amazon.awscdk.core.Stage;
+import software.amazon.awscdk.core.StageProps;
+
+public class MyPipelineAppStage extends Stage {
+    public MyPipelineAppStage(final Construct scope, final String id) {
+        this(scope, id, null);
+    }
+
+    public MyPipelineAppStage(final Construct scope, final String id, final StageProps props) {
         super(scope, id, props);
         
-        DatabaseStack dbStack = new DatabaseStack(this, "Database");
-        new ComputeStack(this, "Compute", dbStack.getTable());
+        Stack lambdaStack = new MyPipelineLambdaStack(this, "LambdaStack");
     }
-    
-}
 
-// Stack to hold the pipeline
-//
+}
+```
+
+Edit `src/main/java/com.myorg/MyPipelineStack.java` to add the stage to our pipeline\.
+
+```
+package com.myorg;
+
+import java.util.Arrays;
+import software.amazon.awscdk.core.Construct;
+import software.amazon.awscdk.core.Environment;
+import software.amazon.awscdk.core.Stack;
+import software.amazon.awscdk.core.StackProps;
+import software.amazon.awscdk.core.StageProps;
+import software.amazon.awscdk.pipelines.CodePipeline;
+import software.amazon.awscdk.pipelines.CodePipelineSource;
+import software.amazon.awscdk.pipelines.ShellStep;
+
 public class MyPipelineStack extends Stack {
     public MyPipelineStack(final Construct scope, final String id) {
         this(scope, id, null);
@@ -914,18 +775,17 @@ public class MyPipelineStack extends Stack {
     public MyPipelineStack(final Construct scope, final String id, final StackProps props) {
         super(scope, id, props);
 
-        final Artifact sourceArtifact = new Artifact();
-        final Artifact cloudAssemblyArtifact = new Artifact();
-                        
-        final CdkPipeline pipeline = CdkPipeline.Builder.create(this, "Pipeline")
-                // ...source and build information here
-                .build();
-
-        // Do this as many times as necessary with any account and region
-        // Account and region may be different from the pipeline's.
-        pipeline.addApplicationStage(new MyApplication(this, "Prod", new StackProps.Builder()
-            .env(new Environment.Builder()
-                .account("123456789012")
+        final CodePipeline pipeline = CodePipeline.Builder.create(this, "pipeline")
+            .pipelineName("MyPipeline")
+            .synth(ShellStep.Builder.create("Synth")
+                .input(CodePipelineSource.gitHub("OWNER/REPO", "main"))
+                .commands(Arrays.asList("npm ci", "npm run build", "npx cdk synth"))
+                .build())
+            .build();
+        
+        pipeline.addStage(new MyPipelineAppStage(this, "test", StageProps.builder()
+            .env(Environment.builder()
+                .account("111111111111")
                 .region("eu-west-1")
                 .build())
             .build()));
@@ -936,89 +796,169 @@ public class MyPipelineStack extends Stack {
 ------
 #### [ C\# ]
 
+Create the new file `src/MyPipeline/MyPipelineLambdaStack.cs` to hold our application stack containing a Lambda function\.
+
 ```
-public class DatabaseStack : Stack
+using Amazon.CDK;
+using Amazon.CDK.AWS.Lambda;
+
+namespace MyPipeline
 {
-    public Table Table { get; set; }
-
-    public DatabaseStack(Construct scope, string id) : base(scope, id)
+    class MyPipelineLambdaStack : Stack
     {
-        // ...
-    }
-
-}
-
-public class ComputeStack : Stack
-{
-    public ComputeStack(Construct scope, string id, Table table) : base(scope, id)
-    {
-        // ...        
-    }
-}
-
-// Your application
-// May consist of one or more Stacks
-//
-public class MyApplication : Stage
-{
-    public MyApplication(Construct scope, string id, Amazon.CDK.StageProps props) : base(scope, id, props)
-    {
-        var dbStack = new DatabaseStack(this, "Database");
-        new ComputeStack(this, "Compute", dbStack.Table);
-    }
-    
-}
-
-// Stack to hold the pipeline
-//
-public class MyPipelineStack : Stack
-{
-    public MyPipelineStack(Construct scope, string id, StackProps props) : base(scope, id, props)
-    {
-        var sourceArtifact = new Artifact_();
-        var cloudAssemblyArtifact = new Artifact_();
-
-        var pipeline = new CdkPipeline(this, "Pipeline", new CdkPipelineProps
+        public MyPipelineLambdaStack(Construct scope, string id, StackProps props=null) : base(scope, id, props)
         {
-            // ... source and build information here
-        });
-
-        // Do this as many times as necessary with any account and region
-        // Account and region may be different from the pipeline's.
-        pipeline.AddApplicationStage(new MyApplication(this, "Prod", new Amazon.CDK.StageProps
-        {
-            Env = new Amazon.CDK.Environment
+            new Function(this, "LambdaFunction", new FunctionProps
             {
-                Account = "123456789012",
-                Region = "eu-west-1"
-            }
-        }));
+                Runtime = Runtime.NODEJS_12_X,
+                Handler = "index.handler",
+                Code = new InlineCode("exports.handler = _ => 'Hello, CDK';")
+            });
+        }
+    }
+}
+```
+
+Create the new file `src/MyPipeline/MyPipelineAppStage.cs` to hold our stage\.
+
+```
+using Amazon.CDK;
+
+namespace MyPipeline
+{
+    class MyPipelineAppStage : Stage
+    {
+        public MyPipelineAppStage(Construct scope, string id, StageProps props=null) : base(scope, id, props)
+        {
+            Stack lambdaStack = new MyPipelineLambdaStack(this, "LambdaStack");
+        }
+    }
+}
+```
+
+Edit `src/MyPipeline/MyPipelineStack.cs` to add the stage to our pipeline\. 
+
+```
+using Amazon.CDK;
+using Amazon.CDK.Pipelines;
+
+namespace MyPipeline
+{
+    public class MyPipelineStack : Stack
+    {
+        internal MyPipelineStack(Construct scope, string id, IStackProps props = null) : base(scope, id, props)
+        {
+            var pipeline = new CodePipeline(this, "pipeline", new CodePipelineProps
+            {
+                PipelineName = "MyPipeline",
+                Synth = new ShellStep("Synth", new ShellStepProps
+                {
+                    Input = CodePipelineSource.GitHub("OWNER/REPO", "main"),
+                    Commands = new string[] { "npm ci", "npm run build", "npx cdk synth" }
+                })
+            });
+
+            pipeline.AddStage(new MyPipelineAppStage(this, "test", new StageProps
+            {
+                Env = new Environment
+                {
+                    Account = "111111111111", Region = "eu-west-1"
+                }
+            }));
+        }
     }
 }
 ```
 
 ------
 
-Every application stage added by `addApplicationStage()` leads to the addition of an individual pipeline stage, which is returned by the `addApplicationStage()` call\. This stage is represented by the [CdkStage](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_pipelines.CdkStage.html) construct\. You can add more actions to the stage by calling its `[addActions](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_pipelines.CdkStage.html#add-wbr-actionsactions-span-class-api-icon-api-icon-experimental-title-this-api-element-is-experimental-it-may-change-without-notice-span)()` method\. For example:
-
-**Note**  
-`core.Stage` is a stage in an AWS CDK app containing stacks\. `pipelines.CdkStage` is a stage in a CDK pipeline\.
+Every application stage added by `addStage()` results in the addition of a corresponding pipeline stage, represented by a [StageDeployment](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_pipelines.StageDeployment.html) instance returned by the `addStage()` call\. You can add pre\-deployment or post\-deployment actions to the stage by calling its `addPre()` or `addPost()` method\.
 
 ------
 #### [ TypeScript ]
 
 ```
-// import { ManualApprovalAction } from '@aws-cdk/aws-codepipeline-actions';
+// import { ManualApprovalStep } from '@aws-cdk/pipelines';
 
-const testingStage = pipeline.addApplicationStage(new MyApplication(this, 'Testing', {
+const testingStage = pipeline.addStage(new MyPipelineAppStage(this, 'testing', {
   env: { account: '111111111111', region: 'eu-west-1' }
 }));
 
-// Add an action -- in this case, a Manual Approval action
-// (testingStage.addManualApprovalAction() is an equivalent convenience method)
-testingStage.addActions(new ManualApprovalAction({
-  actionName: 'ManualApproval',
-  runOrder: testingStage.nextSequentialRunOrder(),
+    testingStage.addPost(new ManualApprovalStep('approval'));
+```
+
+------
+#### [ JavaScript ]
+
+```
+// const { ManualApprovalStep } = require('@aws-cdk/pipelines');
+
+const testingStage = pipeline.addStage(new MyPipelineAppStage(this, 'testing', {
+  env: { account: '111111111111', region: 'eu-west-1' }
+}));
+
+testingStage.addPost(new ManualApprovalStep('approval'));
+```
+
+------
+#### [ Python ]
+
+```
+# from aws_cdk.pipelines import ManualApprovalStep
+
+testing_stage = pipeline.add_stage(MyPipelineAppStage(self, "testing",
+    env=cdk.Environment(account="111111111111", region="eu-west-1")))
+
+testing_stage.add_post(ManualApprovalStep('approval'))
+```
+
+------
+#### [ Java ]
+
+```
+// import software.amazon.awscdk.pipelines.StageDeployment;
+// import software.amazon.awscdk.pipelines.ManualApprovalStep;
+
+StageDeployment testingStage = 
+        pipeline.addStage(new MyPipelineAppStage(this, "test", StageProps.builder()
+                .env(Environment.builder()
+                        .account("111111111111")
+                        .region("eu-west-1")
+                        .build())
+                .build()));
+
+testingStage.addPost(new ManualApprovalStep("approval"));
+```
+
+------
+#### [ C\# ]
+
+```
+var testingStage = pipeline.AddStage(new MyPipelineAppStage(this, "test", new StageProps
+{
+    Env = new Environment
+    {
+        Account = "111111111111", Region = "eu-west-1"
+    }
+}));
+
+testingStage.AddPost(new ManualApprovalStep("approval"));
+```
+
+------
+
+You can add stages to a [Wave](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_pipelines.Wave.html) to deploy them in parallel, for example when deploying a stage to multiple accounts or regions\.
+
+------
+#### [ TypeScript ]
+
+```
+const wave = pipeline.addWave('wave');
+wave.addStage(new MyApplicationStage(this, 'MyAppEU', {
+  env: { account: '111111111111', region: 'eu-west-1' }
+}));
+wave.addStage(new MyApplicationStage(this, 'MyAppUS', {
+  env: { account: '111111111111', region: 'us-west-1' }
 }));
 ```
 
@@ -1026,17 +966,12 @@ testingStage.addActions(new ManualApprovalAction({
 #### [ JavaScript ]
 
 ```
-// const { ManualApprovalAction } = require('@aws-cdk/aws-codepipeline-actions');
-
-const testingStage = pipeline.addApplicationStage(new MyApplication(this, 'Testing', {
+const wave = pipeline.addWave('wave');
+wave.addStage(new MyApplicationStage(this, 'MyAppEU', {
   env: { account: '111111111111', region: 'eu-west-1' }
 }));
-
-// Add an action -- in this case, a Manual Approval action
-// (testingStage.addManualApprovalAction() is an equivalent convenience method)
-testingStage.addActions(new ManualApprovalAction({
-  actionName: 'ManualApproval',
-  runOrder: testingStage.nextSequentialRunOrder()
+wave.addStage(new MyApplicationStage(this, 'MyAppUS', {
+  env: { account: '111111111111', region: 'us-west-1' }
 }));
 ```
 
@@ -1044,150 +979,50 @@ testingStage.addActions(new ManualApprovalAction({
 #### [ Python ]
 
 ```
-# from aws_cdk.aws_codepipeline_actions import ManualApprovalAction
-
-testing_stage = pipeline.add_application_stage(MyApplication(self, "Testing",
-                    env=Environment(account="111111111111", region="eu-west-1")))
-
-# Add an action -- in this case, a Manual Approval action
-# (testingStage.addManualApprovalAction() is an equivalent convenience method)
-testing_stage.add_actions(ManualApprovalAction(
-    action_name="ManualApproval",
-    run_order=testing_stage.next_sequential_run_order()
-))
+wave = pipeline.add_wave("wave")
+wave.add_stage(MyApplicationStage(self, "MyAppEU", 
+    env=cdk.Environment(account="111111111111", region="eu-west-1")))
+wave.add_stage(MyApplicationStage(self, "MyAppUS", 
+    env=cdk.Environment(account="111111111111", region="us-west-1")))
 ```
 
 ------
 #### [ Java ]
 
 ```
-// import software.amazon.awscdk.services.codepipeline.actions.ManualApprovalAction;
-
-final CdkStage testingStage = pipeline.addApplicationStage(new MyApplication(this, "Testing",
-     new StageProps.Builder()
-         .env(new Environment.Builder()
-             .account("111111111111")
-             .region("eu-west-1")
-             .build())
-         .build()));
-
-// Add an action -- in this case, a Manual Approval action
-// (testingStage.addManualApprovalAction() is an equivalent convenience method)
-testingStage.addActions(ManualApprovalAction.Builder.create()
-        .actionName("ManualApproval")
-        .runOrder(testingStage.nextSequentialRunOrder())
-        .build());
+// import software.amazon.awscdk.pipelines.Wave;
+final Wave wave = pipeline.addWave("wave");
+wave.addStage(new MyPipelineAppStage(this, "MyAppEU", StageProps.builder()
+        .env(Environment.builder()
+                .account("111111111111")
+                .region("eu-west-1")
+                .build())
+        .build()));
+wave.addStage(new MyPipelineAppStage(this, "MyAppUS", StageProps.builder()
+        .env(Environment.builder()
+                .account("111111111111")
+                .region("us-west-1")
+                .build())
+        .build()));
 ```
 
 ------
 #### [ C\# ]
 
 ```
-// using Amazon.CDK.AWS.CodePipeline.Actions;
-
-var testingStage = pipeline.AddApplicationStage(new MyApplication(this, "Testing",
-        new Amazon.CDK.StageProps
-        {
-            Env = new Amazon.CDK.Environment
-            {
-                Account = "111111111111",
-                Region = "eu-west-1"
-            }
-        }));
-
-// Add an action -- in this case, a Manual Approval action
-// (testingStage.AddManualApprovalAction() is an equivalent convenience method)
-testingStage.AddActions(new ManualApprovalAction(new ManualApprovalActionProps {
-    ActionName = "ManualApproval",
-    RunOrder = testingStage.NextSequentialRunOrder()
-}));
-```
-
-------
-
-You can also add more than one application stage to a pipeline stage\. For example:
-
-------
-#### [ TypeScript ]
-
-```
-// Add two application stages to the same pipeline stage
-testingStage.addApplicationStage(new MyApplication1(this, 'MyApp1', {
-  env: { account: '111111111111', region: 'eu-west-1' }
-}));
-
-testingStage.addApplicationStage(new MyApplication2(this, 'MyApp2', {
-  env: { account: '111111111111', region: 'eu-west-1' }
-}));
-```
-
-------
-#### [ JavaScript ]
-
-```
-// Add two application stages to the same pipeline stage
-testingStage.addApplicationStage(new MyApplication1(this, 'MyApp1', {
-  env: { account: '111111111111', region: 'eu-west-1' }
-}));
-
-testingStage.addApplicationStage(new MyApplication2(this, 'MyApp2', {
-  env: { account: '111111111111', region: 'eu-west-1' }
-}));
-```
-
-------
-#### [ Python ]
-
-```
-# Add two application stages to the same pipeline stage
-testing_stage.add_application_stage(MyApplication1(this, 'MyApp1',
-    env=Environment(account="111111111111", region="eu-west-1")))
-
-testing_stage.add_application_stage(MyApplication2(this, 'MyApp2', 
-    env=Environment(account="111111111111", region="eu-west-1")))
-```
-
-------
-#### [ Java ]
-
-```
-// Add two application stages to the same pipeline stage
-testingStage.addApplicationStage(new MyApplication1(this, "MyApp1", new StageProps.Builder()
-    .env(new Environment.Builder()
-        .account("111111111111")
-        .region("eu-west-1")
-        .build())
-    .build()));
-
-testingStage.addApplicationStage(new MyApplication2(this, "MyApp2", new StageProps.Builder()
-    .env(new Environment.Builder()
-        .account("111111111111")
-        .region("eu-west-1")
-        .build())
-    .build()));
-```
-
-------
-#### [ C\# ]
-
-```
-// Add two application stages to the same pipeline stage
-
-testingStage.AddApplicationStage(new MyApplication1(this, "MyApp1", new Amazon.CDK.StageProps
+var wave = pipeline.AddWave("wave");
+wave.AddStage(new MyPipelineAppStage(this, "MyAppEU", new StageProps
 {
-    Env = new Amazon.CDK.Environment
+    Env = new Environment
     {
-        Account = "111111111111",
-        Region = "eu-west-1"
+        Account = "111111111111", Region = "eu-west-1"
     }
 }));
-
-testingStage.AddApplicationStage(new MyApplication2(this, "MyApp1", new Amazon.CDK.StageProps
+wave.AddStage(new MyPipelineAppStage(this, "MyAppUS", new StageProps
 {
-    Env = new Amazon.CDK.Environment
+    Env = new Environment
     {
-        Account = "111111111111",
-        Region = "eu-west-1"
+        Account = "111111111111", Region = "us-west-1"
     }
 }));
 ```
@@ -1196,7 +1031,7 @@ testingStage.AddApplicationStage(new MyApplication2(this, "MyApp1", new Amazon.C
 
 ## Testing deployments<a name="cdk_pipeline_validation"></a>
 
-You can add any type of AWS CodePipeline action to a CDK Pipeline to validate the deployments you are performing\. Using the CDK Pipeline library's `[ShellScriptAction](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_pipelines.ShellScriptAction.html)`, you can try to access a just\-deployed Amazon API Gateway backed by a Lambda function, for example, or issue an AWS CLI command to check some setting of a deployed resource\.
+You can add steps to a CDK Pipeline to validate the deployments you are performing\. Using the CDK Pipeline library's `[ShellStep](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_pipelines.ShellStep.html)`, you can try to access a just\-deployed Amazon API Gateway backed by a Lambda function, for example, or issue an AWS CLI command to check some setting of a deployed resource\.
 
 In its simplest form, adding validation actions looks like this:
 
@@ -1204,12 +1039,10 @@ In its simplest form, adding validation actions looks like this:
 #### [ TypeScript ]
 
 ```
-// stage is a CdkStage returned by pipeline.addApplicationStage
+// stage was returned by pipeline.addStage
 
-stage.addActions(new ShellScriptAction({
-  name: 'MyValidation',
+stage.addPost(new ShellStep("validate", {
   commands: ['curl -Ssf https://my.webservice.com/'],
-  // ... more configuration ...
 }));
 ```
 
@@ -1217,12 +1050,10 @@ stage.addActions(new ShellScriptAction({
 #### [ JavaScript ]
 
 ```
-// stage is a CdkStage returned by pipeline.addApplicationStage
+// stage was returned by pipeline.addStage
 
-stage.addActions(new ShellScriptAction({
-  name: 'MyValidation',
-  commands: ['curl -Ssf https://my.webservice.com/']
-  // ... more configuration ...
+stage.addPost(new ShellStep("validate", {
+  commands: ['curl -Ssf https://my.webservice.com/'],
 }));
 ```
 
@@ -1230,11 +1061,10 @@ stage.addActions(new ShellScriptAction({
 #### [ Python ]
 
 ```
-# stage is a CdkStage returned by pipeline.addApplicationStage
+# stage was returned by pipeline.add_stage
 
-stage.add_actions(ShellScriptAction(name="MyValidation",
-  commands=['curl -Ssf https://my.webservice.com/'],
-  # ... more configuration ...
+stage.add_post(ShellStep("validate",
+  commands=['curl -Ssf https://my.webservice.com/']
 ))
 ```
 
@@ -1242,12 +1072,10 @@ stage.add_actions(ShellScriptAction(name="MyValidation",
 #### [ Java ]
 
 ```
-// stage is a CdkStage returned by pipeline.addApplicationStage
+// stage was returned by pipeline.addStage
 
-stage.addActions(ShellScriptAction.Builder.create()
-        .actionName("MyValidation")
+stage.addPost(ShellStep.Builder.create("validate")
         .commands(Arrays.asList("curl -Ssf https://my.webservice.com/"))
-        // ... more configuration ...
         .build());
 ```
 
@@ -1255,15 +1083,11 @@ stage.addActions(ShellScriptAction.Builder.create()
 #### [ C\# ]
 
 ```
-// stage is a CdkStage returned by pipeline.addApplicationStage
-stage.AddActions(new ShellScriptAction(new ShellScriptActionProps
+// stage was returned by pipeline.addStage
+
+stage.AddPost(new ShellStep("validate", new ShellStepProps
 {
-    ActionName = "MyValidation",
-    Commands = new string[]
-    {
-        "curl -Ssf https://my.webservice.com/"
-        // ... more configuration ...
-    }
+    Commands = new string[] { "curl -Ssf https://my.webservice.com/" }
 }));
 ```
 
@@ -1271,39 +1095,21 @@ stage.AddActions(new ShellScriptAction(new ShellScriptActionProps
 
 Because many AWS CloudFormation deployments result in the generation of resources with unpredictable names, CDK Pipelines provide a way to read AWS CloudFormation outputs after a deployment\. This makes it possible to pass \(for example\) the generated URL of a load balancer to a test action\.
 
-To use outputs, expose the `CfnOutput` object you're interested in and pass it `pipeline.stackOutput()`\.
+To use outputs, expose the `CfnOutput` object you're interested in and pass it in a step's `envFromCfnOutputs` property to make it available as an environment variable within that step\.
 
 ------
 #### [ TypeScript ]
 
 ```
-export class MyLbApplication extends Stage {
-  public readonly loadBalancerAddress: CfnOutput;
-  
-  constructor(scope: Construct, id: string, props?: StageProps) {
-    super(scope, id, props);
-  
-    const lbStack = new LoadBalancerStack(this, 'Stack');
-  
-    // Or create this in `LoadBalancerStack` directly
-    this.loadBalancerAddress = new CfnOutput(lbStack, 'LbAddress', {
-      value: `https://${lbStack.loadBalancer.loadBalancerDnsName}/`
-    });
-  }
-}
-
-const lbApp = new MyLbApplication(this, 'MyApp', {
-  env: { /* ... */ }
+// given a stack lbStack that exposes a load balancer construct as loadBalancer
+this.loadBalancerAddress = new cdk.CfnOutput(lbStack, 'LbAddress', {
+  value: `https://${lbStack.loadBalancer.loadBalancerDnsName}/`
 });
 
-const stage = pipeline.addApplicationStage(lbApp);
-stage.addActions(new ShellScriptAction({
-  // ...
-  useOutputs: {
-    // When the test is executed, this will make $URL contain the
-    // load balancer address.
-    URL: pipeline.stackOutput(lbApp.loadBalancerAddress),
-  }
+// pass the load balancer address to a shell step
+stage.addPost(new ShellStep("lbaddr", {
+  envFromCfnOutputs: {lb_addr: lbStack.loadBalancerAddress},
+  commands: ['echo $lb_addr']
 }));
 ```
 
@@ -1311,32 +1117,15 @@ stage.addActions(new ShellScriptAction({
 #### [ JavaScript ]
 
 ```
-class MyLbApplication extends Stage {
-
-  constructor(scope, id, props) {
-    super(scope, id, props);
-
-    const lbStack = new LoadBalancerStack(this, 'Stack');
-
-    // Or create this in `LoadBalancerStack` directly
-    this.loadBalancerAddress = new CfnOutput(lbStack, 'LbAddress', {
-      value: `https://${lbStack.loadBalancer.loadBalancerDnsName}/`
-    });
-  }
-}
-
-const lbApp = new MyLbApplication(this, 'MyApp', {
-  env: { /* ... */ }
+// given a stack lbStack that exposes a load balancer construct as loadBalancer
+this.loadBalancerAddress = new cdk.CfnOutput(lbStack, 'LbAddress', {
+  value: `https://${lbStack.loadBalancer.loadBalancerDnsName}/`
 });
 
-const stage = pipeline.addApplicationStage(lbApp);
-stage.addActions(new ShellScriptAction({
-  // ...
-  useOutputs: {
-    // When the test is executed, this will make $URL contain the
-    // load balancer address.
-    URL: pipeline.stackOutput(lbApp.loadBalancerAddress)
-  }
+// pass the load balancer address to a shell step
+stage.addPost(new ShellStep("lbaddr", {
+  envFromCfnOutputs: {lb_addr: lbStack.loadBalancerAddress},
+  commands: ['echo $lb_addr']
 }));
 ```
 
@@ -1344,28 +1133,124 @@ stage.addActions(new ShellScriptAction({
 #### [ Python ]
 
 ```
-class MyLbApplication(Stage):
-    load_balancer_address: CfnOutput = None
+# given a stack lb_stack that exposes a load balancer construct as load_balancer
+self.load_balancer_address = cdk.CfnOutput(lb_stack, "LbAddress", 
+    value=f"https://{lb_stack.load_balancer.load_balancer_dns_name}/")
 
-    def __init__(self, scope: Construct, id: str, **kwargs):
-        super().__init__(scope, str, **kwargs)
+# pass the load balancer address to a shell step
+stage.add_post(ShellStep("lbaddr", 
+    env_from_cfn_outputs={"lb_addr": lb_stack.load_balancer_address}
+    commands=["echo $lb_addr"]))
+```
 
-        lb_stack = LoadBalancerStack(self, "Stack")
+------
+#### [ Java ]
 
-        # Or create this in `LoadBalancerStack` directly
-        self.load_balancer_address = CfnOutput(lb_stack, "LbAddress",
-            value=f"https://{lb_stack.load_balancer_dns_name}")
+```
+// given a stack lbStack that exposes a load balancer construct as loadBalancer
+loadBalancerAddress = CfnOutput.Builder.create(lbStack, "LbAddress")
+                            .value(String.format("https://%s/", 
+                                    lbStack.loadBalancer.loadBalancerDnsName))
+                            .build();
 
-lb_app = MyLbApplication(self, "Myapp",
-    env=Environment(...))
+stage.addPost(ShellStep.Builder.create("lbaddr")
+    .envFromCfnOutputs(new HashMap<String, CfnOutput>() {{
+         put("lbAddr", loadBalancerAddress); }})
+    .commands(Arrays.asList("echo $lbAddr"))
+    .build());
+```
 
-stage = pipeline.add_application_stage(lb_app)
-stage.add_actions(ShellScriptAction(
-    # ...
-    use_outputs=pipeline.stack_output(
-        # When the test is executed, this will make $URL contain the
-        # load balancer address.
-        URL=lb_app.load_balancer_address)
+------
+#### [ C\# ]
+
+```
+// given a stack lbStack that exposes a load balancer construct as loadBalancer
+loadBalancerAddress = new CfnOutput(lbStack, "LbAddress", new CfnOutputProps
+{
+    Value = string.Format("https://{0}/", lbStack.loadBalancer.LoadBalancerDnsName)
+});
+
+stage.AddPost(new ShellStep("lbaddr", new ShellStepProps
+{
+    EnvFromCfnOutputs = new Dictionary<string, CfnOutput>
+    {
+        {  "lbAddr", loadBalancerAddress }
+    },
+    Commands = new string[] { "echo $lbAddr" }
+}));
+```
+
+------
+
+You can write simple validation tests right in the `ShellStep`, but this approach becomes unwieldy when the test is more than a few lines\. For more complex tests, you can bring additional files \(such as complete shell scripts, or programs in other languages\) into the `ShellStep` via the `inputs` property\. The inputs can be any step that has an output, including a source \(such as a GitHub repo\) or another `ShellStep`\.
+
+Bringing in files from the source repository is appropriate if the files are directly usable in the test \(for example, if they are themselves executable\)\. In this example, we declare our GitHub repo as `source` \(rather than instantiating it inline as part of the `CodePipeline`\), then pass this fileset to both the pipeline and the validation test\.
+
+------
+#### [ TypeScript ]
+
+```
+const source = CodePipelineSource.gitHub('OWNER/REPO', 'main');
+
+const pipeline = new CodePipeline(this, 'Pipeline', {
+  pipelineName: 'MyPipeline',
+  synth: new ShellStep('Synth', {
+    input: source,
+    commands: ['npm ci', 'npm run build', 'npx cdk synth']
+  })
+});
+
+const stage = pipeline.addStage(new MyPipelineAppStage(this, 'test', {
+  env: { account: '111111111111', region: 'eu-west-1' }
+}));
+
+stage.addPost(new ShellStep('validate', {
+  input: source,
+  commands: ['sh ./tests/validate.sh']
+}));
+```
+
+------
+#### [ JavaScript ]
+
+```
+const source = CodePipelineSource.gitHub('OWNER/REPO', 'main');
+
+const pipeline = new CodePipeline(this, 'Pipeline', {
+  pipelineName: 'MyPipeline',
+  synth: new ShellStep('Synth', {
+    input: source,
+    commands: ['npm ci', 'npm run build', 'npx cdk synth']
+  })
+});
+
+const stage = pipeline.addStage(new MyPipelineAppStage(this, 'test', {
+  env: { account: '111111111111', region: 'eu-west-1' }
+}));
+
+stage.addPost(new ShellStep('validate', {
+  input: source,
+  commands: ['sh ./tests/validate.sh']
+}));
+```
+
+------
+#### [ Python ]
+
+```
+source   = CodePipelineSource.git_hub("OWNER/REPO", "main")
+
+pipeline =  CodePipeline(self, "Pipeline", 
+                pipeline_name="MyPipeline",
+                synth=ShellStep("Synth", 
+                    input=source,
+                    commands=["npm ci", "npm run build", "npx cdk synth"]))
+
+stage = pipeline.add_stage(MyApplicationStage(self, "test",
+            env=cdk.Environment(account="111111111111", region="eu-west-1")))
+
+stage.add_post(ShellStep("validate", input=source,
+    commands=["curl -Ssf https://my.webservice.com/"],
 ))
 ```
 
@@ -1373,353 +1258,194 @@ stage.add_actions(ShellScriptAction(
 #### [ Java ]
 
 ```
-class MyLbApplication extends Stage {
-    CfnOutput loadBalancerAddress;
-    
-    public MyLbApplication(Construct scope, String id, StageProps props) {
-        super(scope, id, props);
+final CodePipelineSource source = CodePipelineSource.gitHub("OWNER/REPO", "main");
 
-        LoadBalancerStack lbStack = new LoadBalancerStack(this, "Stack");
+final CodePipeline pipeline = CodePipeline.Builder.create(this, "pipeline")
+        .pipelineName("MyPipeline")
+        .synth(ShellStep.Builder.create("Synth")
+                .input(source)
+                .commands(Arrays.asList("npm ci", "npm run build", "npx cdk synth"))
+                .build())
+        .build();
 
-        // Or create this in `LoadBalancerStack` directly
-        loadBalancerAddress = CfnOutput.Builder.create(lbStack, "LbAddress")
-                .value(String.format("https://%s/", lbStack.getLoadBalancer().getDnsName()))
-                .build();
-    }
+final StageDeployment stage = 
+        pipeline.addStage(new MyPipelineAppStage(this, "test", StageProps.builder()
+                .env(Environment.builder()
+                        .account("111111111111")
+                        .region("eu-west-1")
+                        .build())
+                .build()));
 
-    public CfnOutput getLoadBalancerAddress() {
-        return loadBalancerAddress;
-    }
-}
-
-// some time later...
-public class MyPipelineStack extends Stack {
-    public MyPipelineStack(final Construct scope, final String id) {
-        super(scope, id, null);
-    }
-
-    @SuppressWarnings("serial")
-    public MyPipelineStack(final Construct scope, final String id, final StackProps props) {
-        super(scope, id, props);
-
-        final CdkPipeline pipeline = CdkPipeline.Builder.create(this, "Pipeline")
-                // ...source and build information here
-                .build();
-
-        final MyLbApplication lbApp = // ...
-
-        final CdkStage stage = pipeline.addApplicationStage(lbApp);
-        stage.addActions(ShellScriptAction.Builder.create()
-                // ...
-                .useOutputs(new HashMap<String, StackOutput>() {{
-                    put("URL", pipeline.stackOutput(lbApp.getLoadBalancerAddress()));
-                }})
-                .build());
-    }
-}
+stage.addPost(ShellStep.Builder.create("validate")
+        .input(source)
+        .commands(Arrays.asList("sh ./tests/validate.sh"))
+        .build());
 ```
 
 ------
 #### [ C\# ]
 
 ```
-public class MyLbApplication : Stage
+var source = CodePipelineSource.GitHub("OWNER/REPO", "main");
+
+var pipeline = new CodePipeline(this, "pipeline", new CodePipelineProps
 {
-    public CfnOutput LoadBalancerAddress { get; set; }
-
-    public MyLbApplication(Construct scope, string id, Amazon.CDK.StageProps props) :
-        base(scope, id, props)
+    PipelineName = "MyPipeline",
+    Synth = new ShellStep("Synth", new ShellStepProps
     {
+        Input = source,
+        Commands = new string[] { "npm ci", "npm run build", "npx cdk synth" }
+    })
+});
 
-        LoadBalancerStack LbStack = new LoadBalancerStack(this, "Stack");
-
-        // Or create this in `LoadBalancerStack` directly
-        var loadBalancerAddress = new CfnOutput(LbStack, "LbAddress", new CfnOutputProps
-        {
-            Value = $"https://{LbStack.LoadBalancer}/"
-        });
-    }
-}
-
-public class MyPipelineStack : Stack
+var stage = pipeline.AddStage(new MyPipelineAppStage(this, "test", new StageProps
 {
-    public MyPipelineStack(Construct scope, string id, StackProps props = null) : base(scope, id)
+    Env = new Environment
     {
-        var pipeline = new CdkPipeline(this, "Pipeline", new CdkPipelineProps
-        {
-            // ... source and build information here
-        });
-
-        MyLbApplication LbApp = new MyLbApplication(this, "App", new Amazon.CDK.StageProps
-        {
-            // set up your application stage
-        });
-
-        CdkStage stage = pipeline.AddApplicationStage(LbApp);
-        stage.AddActions(new ShellScriptAction(new ShellScriptActionProps
-        {
-            // ...
-            UseOutputs = new Dictionary<string, StackOutput>
-            {
-                ["URL"] = pipeline.StackOutput(LbApp.LoadBalancerAddress)
-            }
-        }));
+        Account = "111111111111", Region = "eu-west-1"
     }
-}
+}));
+
+stage.AddPost(new ShellStep("validate", new ShellStepProps
+{
+    Input = source,
+    Commands = new string[] { "sh ./tests/validate.sh" }
+}));
 ```
 
 ------
 
-The `ShellScriptAction` limits you to rather small validation tests—basically whatever you can write in a few lines of shell script\. You can bring additional files \(such as complete shell scripts, or scripts in other languages\) into the test via the `additionalArtifacts` property\.
-
-Bringing in files from the source repository is appropriate if the files are directly usable in the test \(for example, if they are themselves executable\)\. Pass the `sourceArtifact`:
+Getting the additional files from the synth step is appropriate if your tests need to be compiled, which is done as part of synthesis\.
 
 ------
 #### [ TypeScript ]
 
 ```
-const sourceArtifact = new codepipeline.Artifact();
-
-const pipeline = new CdkPipeline(this, 'Pipeline', {
-  // ...
+const synthStep = new ShellStep('Synth', {
+  input: CodePipelineSource.gitHub('OWNER/REPO', 'main'),
+  commands: ['npm ci', 'npm run build', 'npx cdk synth'],
 });
 
-const validationAction = new ShellScriptAction({
-  name: 'TestUsingSourceArtifact',
-  additionalArtifacts: [sourceArtifact],
-
-  // 'test.sh' comes from the source repository
-  commands: ['./test.sh'],
+const pipeline = new CodePipeline(this, 'Pipeline', {
+  pipelineName: 'MyPipeline',
+  synth: synthStep
 });
+
+const stage = pipeline.addStage(new MyPipelineAppStage(this, 'test', {
+  env: { account: '111111111111', region: 'eu-west-1' }
+}));
+
+// run a script that was transpiled from TypeScript during synthesis
+stage.addPost(new ShellStep('validate', {
+  input: synthStep,
+  commands: ['node tests/validate.js']
+}));
 ```
 
 ------
 #### [ JavaScript ]
 
 ```
-const sourceArtifact = new codepipeline.Artifact();
-
-const pipeline = new CdkPipeline(this, 'Pipeline', {
-  // ...
+const synthStep = new ShellStep('Synth', {
+  input: CodePipelineSource.gitHub('OWNER/REPO', 'main'),
+  commands: ['npm ci', 'npm run build', 'npx cdk synth'],
 });
 
-const validationAction = new ShellScriptAction({
-  name: 'TestUsingSourceArtifact',
-  additionalArtifacts: [sourceArtifact],
-
-  // 'test.sh' comes from the source repository
-  commands: ['./test.sh']
+const pipeline = new CodePipeline(this, 'Pipeline', {
+  pipelineName: 'MyPipeline',
+  synth: synthStep
 });
+
+const stage = pipeline.addStage(new MyPipelineAppStage(this, "test", {
+  env: { account: "111111111111", region: "eu-west-1" }
+}));
+
+// run a script that was transpiled from TypeScript during synthesis
+stage.addPost(new ShellStep('validate', {
+  input: synthStep,
+  commands: ['node tests/validate.js']
+}));
 ```
 
 ------
 #### [ Python ]
 
 ```
-source_artifact = code_pipeline.Artifact()
+synth_step = ShellStep("Synth", 
+                input=CodePipelineSource.git_hub("OWNER/REPO", "main"),
+                commands=["npm ci", "npm run build", "npx cdk synth"])
 
-pipeline = CdkPipeline(self, "Pipeline", ...)
+pipeline   = CodePipeline(self, "Pipeline", 
+                pipeline_name="MyPipeline",
+                synth=synth_step)
 
-validation_action = ShellScriptAction(
-    name="TestUsingSourceArtifact",
-    additional_artifacts=[source_artifact],
-    # 'test.sh' comes from the source repository
-    commands=["./test'sh"]
-)
+stage = pipeline.add_stage(MyApplicationStage(self, "test",
+            env=cdk.Environment(account="111111111111", region="eu-west-1")))
+
+# run a script that was compiled during synthesis
+stage.add_post(ShellStep("validate",
+    input=synth_step,
+    commands=["node test/validate.js"],
+))
 ```
 
 ------
 #### [ Java ]
 
 ```
-final Artifact sourceArtifact = new Artifact();
-                
-final CdkPipeline pipeline = CdkPipeline.Builder.create(this, "Pipeline")
-        // ...source and build information here
+final ShellStep synth = ShellStep.Builder.create("Synth")
+                            .input(CodePipelineSource.gitHub("OWNER/REPO", "main"))
+                            .commands(Arrays.asList("npm ci", "npm run build", "npx cdk synth"))
+                            .build();   
+        
+final CodePipeline pipeline = CodePipeline.Builder.create(this, "pipeline")
+        .pipelineName("MyPipeline")
+        .synth(synth)
         .build();
 
-ShellScriptAction validationAction = ShellScriptAction.Builder.create()
-        .actionName("TestUsingSourceArtifact")
-        .additionalArtifacts(Arrays.asList(sourceArtifact))
-        // 'test.sh' comes from the source repository
-        .commands(Arrays.asList("./test.sh"))
-        .build();
+final StageDeployment stage = 
+        pipeline.addStage(new MyPipelineAppStage(this, "test", StageProps.builder()
+                .env(Environment.builder()
+                        .account("111111111111")
+                        .region("eu-west-1")
+                        .build())
+                .build()));
+
+stage.addPost(ShellStep.Builder.create("validate")
+        .input(synth)
+        .commands(Arrays.asList("node ./tests/validate.js"))
+        .build());
 ```
 
 ------
 #### [ C\# ]
 
 ```
-Artifact_ sourceArtifact = new Artifact_();
-
-var pipeline = new CdkPipeline(this, "Pipeline", new CdkPipelineProps
+var synth = new ShellStep("Synth", new ShellStepProps
 {
-    // define your pipeline
+    Input = CodePipelineSource.GitHub("OWNER/REPO", "main"),
+    Commands = new string[] { "npm ci", "npm run build", "npx cdk synth" }
 });
 
-var validationAction = new ShellScriptAction(new ShellScriptActionProps {
-    ActionName = "TestUsingSourceArtifact",
-    AdditionalArtifacts = new Artifact_[] { sourceArtifact },
-    Commands = new string[] { "./test.sh" }
-});
-```
-
-------
-
-Getting the additional files from the synth step is appropriate if your tests need the compilation step that is done as part of synthesis\. On the synthesis step, specify `additionalArtifacts` to package additional subdirectories into artifacts, and use the same artifact in the `ShellScriptAction`'s `additionalArtifacts`:
-
-------
-#### [ TypeScript ]
-
-```
-// If you are using additional output artifacts from the synth step,
-// they must be named.
-const cloudAssemblyArtifact = new codepipeline.Artifact('CloudAsm');
-const integTestsArtifact = new codepipeline.Artifact('IntegTests');
-
-const pipeline = new CdkPipeline(this, 'Pipeline', {
-  synthAction: SimpleSynthAction.standardNpmSynth({
-    sourceArtifact,
-    cloudAssemblyArtifact,
-    buildCommand: 'npm run build',
-    additionalArtifacts: [
-      {
-        directory: 'test',
-        artifact: integTestsArtifact,
-      }
-    ],
-  }),
-  // ...
-});
-
-const validationAction = new ShellScriptAction({
-  actionName: 'TestUsingBuildArtifact',
-  additionalArtifacts: [integTestsArtifact],
-  // 'test.js' was produced from 'test/test.ts' during the synth step
-  commands: ['node ./test.js'],
-});
-```
-
-------
-#### [ JavaScript ]
-
-```
-// If you are using additional output artifacts from the synth step,
-// they must be named.
-const cloudAssemblyArtifact = new codepipeline.Artifact('CloudAsm');
-const integTestsArtifact = new codepipeline.Artifact('IntegTests');
-
-const pipeline = new CdkPipeline(this, 'Pipeline', {
-  synthAction: SimpleSynthAction.standardNpmSynth({
-    sourceArtifact,
-    cloudAssemblyArtifact,
-    buildCommand: 'npm run build',
-    additionalArtifacts: [
-      {
-        directory: 'test',
-        artifact: integTestsArtifact
-      }
-    ]
-  })
-  // ...
-});
-
-const validationAction = new ShellScriptAction({
-  actionName: 'TestUsingBuildArtifact',
-  additionalArtifacts: [integTestsArtifact],
-  // 'test.js' was produced from 'test/test.ts' during the synth step
-  commands: ['node ./test.js']
-});
-```
-
-------
-#### [ Python ]
-
-```
-# If you are using additional output artifacts from the synth step,
-# they must be named.
-cloud_assembly_artifact = code_pipeline.Artifact("CloudAsm")
-integ_tests_artifact = code_pipeline.Artifact("IntegTests")
-
-pipeline = CdkPipeline(self, "Pipeline",
-    synth_action=SimpleSynthAction.standard_npm_synth(
-        source_artifact=source_artifact,
-        cloud_assembly_artifact=cloud_assembly_artifact,
-        build_command="tsc",
-        additional_artifacts=[dict(directory='test', 
-            artifact=integ_tests_artifact)]
-    # ...
-  ))
-
-validation_action = ShellScriptAction(
-    action_name="TestUsingBuildArtifact",
-    additional_artifacts=[integ_tests_artifact],
-    # 'test.js' was produced from "test/test.ts" during the synth step
-    commands=["node ./test.js"]
-)
-```
-
-------
-#### [ Java ]
-
-```
-// If you are using additional output artifacts from the synth step,
-// they must be named.
-final Artifact cloudAssemblyArtifact = new Artifact("IntegTests");
-final Artifact integTestsArtifact = new Artifact("IntegTests");
-                
-final CdkPipeline pipeline = CdkPipeline.Builder.create(this, "Pipeline")
-        .synthAction(SimpleSynthAction.standardNpmSynth(new StandardNpmSynthOptions.Builder()
-            .sourceArtifact(sourceArtifact)
-            .cloudAssemblyArtifact(cloudAssemblyArtifact)
-            .buildCommand("npm run build")
-            .additionalArtifacts(Arrays.asList(new AdditionalArtifact.Builder()
-                .directory("test").artifact(integTestsArtifact).build()))
-                .build()))
-            .build();
-
-final ShellScriptAction validationAction = ShellScriptAction.Builder.create()
-    .actionName("TestUsingBuildArtifact")
-    .additionalArtifacts(Arrays.asList(integTestsArtifact))
-    // 'test.js' was produced from 'test/test.ts' during the synth step
-    .commands(Arrays.asList("node ./test.js"))
-    .build();
-```
-
-------
-#### [ C\# ]
-
-```
-// If you are using additional output artifacts from the synth step,
-// they must be named.
-var sourceArtifact = new Artifact_("Source");
-var cloudAssemblyArtifact = new Artifact_("CloudAssembly");
-var integTestsArtifact = new Artifact_("IntegTests");
-
-var pipeline = new CdkPipeline(this, "Pipeline", new CdkPipelineProps
+var pipeline = new CodePipeline(this, "pipeline", new CodePipelineProps
 {
-    SynthAction = SimpleSynthAction.StandardNpmSynth(new StandardNpmSynthOptions
+    PipelineName = "MyPipeline",
+    Synth = synth
+});
+
+var stage = pipeline.AddStage(new MyPipelineAppStage(this, "test", new StageProps
+{
+    Env = new Environment
     {
-        SourceArtifact = sourceArtifact,
-        CloudAssemblyArtifact = cloudAssemblyArtifact,
-        BuildCommand = "npm run build",
-        AdditionalArtifacts = new AdditionalArtifact[]
-        {
-            new AdditionalArtifact
-            {
-                Directory = "test",
-                Artifact = integTestsArtifact
-            }
-        }
-    }),
-});
+        Account = "111111111111", Region = "eu-west-1"
+    }
+}));
 
-var validationAction = new ShellScriptAction(new ShellScriptActionProps
+stage.AddPost(new ShellStep("validate", new ShellStepProps
 {
-    ActionName = "TestUsingBuildArtifact",
-    AdditionalArtifacts = new Artifact_[] { integTestsArtifact },
-    Commands = new string[] { "node./test.js" }
-});
+    Input = synth,
+    Commands = new string[] { "node ./tests/validate.js" }
+}));
 ```
 
 ------
@@ -1729,9 +1455,9 @@ var validationAction = new ShellScriptAction(new ShellScriptActionProps
 Any form of continuous delivery has inherent security risks\. Under the AWS [Shared Responsibility Model](https://aws.amazon.com/compliance/shared-responsibility-model/), you are responsible for the security of your information in the AWS cloud\. The CDK Pipelines library gives you a head start by incorporating secure defaults and modeling best practices, but by its very nature a library that needs a high level of access to fulfill its intended purpose cannot assure complete security\. There are many attack vectors outside of AWS and your organization\.
 
 In particular, keep in mind the following\.
-+ Be mindful of the software you depend on\. Vet all third\-party software you run on your build machine, as it has the ability to change the infrastructure that gets deployed\. 
-+ Use dependency locking to prevent accidental upgrades\. The default `CdkSynth` that come with CDK Pipelines respect `package-lock.json` and `yarn.lock` to ensure your dependencies are the ones you expect\.
-+ Credentials for production environments should be short\-lived\. After bootstrapping and initial provisioning, there is no need for developers to have account credentials; all changes can be deployed through the pipeline\. Eliminate the possibility of credentials leaking by not needing them in the first place\!
++ Be mindful of the software you depend on\. Vet all third\-party software you run in your pipeline, as it has the ability to change the infrastructure that gets deployed\. 
++ Use dependency locking to prevent accidental upgrades\. CDK Pipelines respects `package-lock.json` and `yarn.lock` to ensure your dependencies are the ones you expect\.
++ Credentials for production environments should be short\-lived\. After bootstrapping and initial provisioning, there is no need for developers to have account credentials at all; changes can be deployed through the pipeline\. Eliminate the possibility of credentials leaking by not needing them in the first place\!
 
 ## Troubleshooting<a name="cdk_pipeline_troubleshooting"></a>
 
