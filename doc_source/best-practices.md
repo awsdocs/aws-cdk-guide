@@ -100,7 +100,7 @@ Many enterprise customers are writing their own wrappers for L2 constructs \(the
 
 Instead, use AWS features such as [service control policies](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_scps.html) and [permission boundaries](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_boundaries.html) to enforce your security guardrails at the organization level\. Use [Aspects](aspects.md) or tools like [CloudFormation Guard](https://github.com/aws-cloudformation/cloudformation-guard) to make assertions about the security properties of infrastructure elements before deployment\. Use AWS CDK for what it does best\.
 
-Finally, keep in mind that writing your own "L2\+" constructs like these may prevent your developers from taking advantage of the growing ecosystems of AWS CDK packages, such as [AWS Solutions Constructs](https://docs.aws.amazon.com/solutions/latest/constructs/welcome.html), as these are typically based on standard AWS CDK constructs and won't be able to use your custom versions\.
+Finally, keep in mind that writing your own "L2\+" constructs like these may prevent your developers from taking advantage of the growing ecosystems of AWS CDK packages, such as [AWS Solutions Constructs](https://docs.aws.amazon.com/solutions/latest/constructs/welcome.html), as these are typically built upon standard AWS CDK constructs and won't be able to use your custom versions\.
 
 ## Application best practices<a name="best-practices-apps"></a>
 
@@ -108,7 +108,7 @@ In this section we discuss how best to write your AWS CDK applications, combinin
 
 ### Make decisions at synthesis time<a name="best-practices-apps-synth"></a>
 
-Although AWS CloudFormation lets you make decisions at deployment time \(using `Conditions`, `{ Fn::If }`, and `Parameters`\), and the AWS CDK gives you some access to these mechanisms, we recommend against using them\. The types of values you can use, and the types of operations you can perform on them, are quite limited\.
+Although AWS CloudFormation lets you make decisions at deployment time \(using `Conditions`, `{ Fn::If }`, and `Parameters`\), and the AWS CDK gives you some access to these mechanisms, we recommend against using them\. The types of values you can use, and the types of operations you can perform on them, are quite limited compared to those available in a general\-purpose programming language\.
 
 Instead, try to make all decisions, such as which construct to instantiate, in your AWS CDK application, using your programming language's `if` statements and other features\. For example, a common CDK idiom, iterating over a list and instantiating a construct with values from each item in the list, simply isn't possible using AWS CloudFormation expressions\.
 
@@ -135,15 +135,23 @@ There is no hard and fast rule to how many stacks your application needs\. You'l
 + Consider keeping stateful resources \(like databases\) in a separate stack from stateless resources\. You can then turn on termination protection on the stateful stack, and can freely destroy or create multiple copies of the stateless stack without risk of data loss\.
 + Stateful resources are more sensitive to construct renaming—renaming leads to resource replacement—so it makes sense not to nest them inside constructs that are likely to be moved around or renamed \(unless the state can be rebuilt if lost, like a cache\)\. This is another good reason to put stateful resources in their own stack\.
 
-### Keep synthesis deterministic and commit `cdk.context.json`<a name="best-practices-apps-context"></a>
+### Commit `cdk.context.json` to avoid non\-deterministic behavior<a name="best-practices-apps-context"></a>
 
-In general, don't put network access code, or any other code that is sensitive to the synthesis environment, in your AWS CDK app\. Apart from the possibility of that call failing at an inopportune time, what's worse is that it's non\-deterministic—it may return a different answer every time\. This means your stack could be different every time you synthesize it, which makes it harder to test your code and to roll your infrastructure back to a previous state\.
+Determinism is key to successful AWS CDK deployments\. A AWS CDK app should have essentially the same result whenever it is deployed \(notwithstanding necessary differences based on the environment where it's deployed\)\.
 
-The AWS CDK includes features that use network access to look up information during synthesis\. The AWS CDK caches the results of these lookups in the file `cdk.context.json`, which you should commit to version control along with the rest of your app\. The result of that lookup is thereby "locked in" until you explicitly change it, allowing you to get exactly the same result each time you synthesize\. \(See [Runtime context](context.md)\.\) A couple of examples of where this happens \(and the possible consequences of not committing the cache\) are:
-+ If you provision an Amazon VPC to all available Availability Zones in a specified region, which is two on deployment day, your IP space gets split in two\. If AWS launches a new Availability Zone the next day, the next deployment tries to split your IP space in three, requiring all subnets to be recreated; this probably won't be possible because instances are still running, and you'll have to clean up manually\.
-+ If you query for the latest Amazon Linux machine image and deploy an Amazon EC2 instance, and the next day a new image is released, the deployment the day after picks up the new AMI and replaces all your instances\. This may not be what you expected to happen\.
+Since your AWS CDK app is written in a a general\-purpose programming language, it can execute arbitrary code, use arbitrary libraries, and make arbitrary network calls\. For example, you could use an AWS SDK to retrieve some information from your AWS account while synthesizing your app\. Recognize that doing so will result in additional credential setup requirements, increased latency, and a chance, however small, of failure every time you run `cdk synth`\.
 
- Use the same approach if you must use information from outside your app\. For example, write an external script to gather the information and write it to a file, execute the script once, and commit the resulting file \(and the script that created it\)\. Then read that file in your AWS CDK app\. When you want to update this information, do so explicitly by running the script again\. 
+You should never modify your AWS account or resources during synthesis; synthesizing an app should not have side effects\. Changes to your infrastructure should happen only in the deployment phase, after the AWS CloudFormation template has been generated\. This way, if there's a problem, AWS CloudFormation will automatically roll back the change\. To make changes that can't be easily made within the AWS CDK framework, use [custom resources](https://docs.aws.amazon.com/https://docs.aws.amazon.com/cdk/api/latest/docs/custom-resources-readme.html) to execute arbitrary code at deployment time\.
+
+But even strictly read\-only calls are not necessarily safe\. Consider what happens if the value returned by a network call changes\. What part of your infrastructure will that impact? What will happen to already\-deployed resources? Here are just two of the situations in which a sudden change in values might cause a problem\.
++ If you provision an Amazon VPC to all available Availability Zones in a specified region, and the number of AZs is two on deployment day, your IP space gets split in half\. If AWS launches a new Availability Zone the next day, the next deployment after that tries to split your IP space into thirds, requiring all subnets to be recreated\. This probably won't be possible because your Amazon EC2 instances are still running, and you'll have to clean this up manually\.
++ If you query for the latest Amazon Linux machine image and deploy an Amazon EC2 instance, and the next day a new image is released, a subsequent deployment picks up the new AMI and replaces all your instances\. This may not be what you expected to happen\.
+
+These situations can be particularly pernicious because the AWS\-side change may occur after months or years of successful deployments\. Suddenly your deployments are failing "for no reason" and you have long ago forgotten what you originally did and why\.
+
+Fortunately, the AWS CDK includes a mechanism called *context providers* to record a snapshot of non\-deterministic values, allowing future synthesis operations produce the same template\. The only changes in the synthesized template are the changes *you* made in your code\. When you use a construct's `.fromLookup()` method, the result of the call is cached in `cdk.context.json`, which you should commit to version control along with the rest of your code to ensure future executions of your CDK app use the same value\. The AWS CDK Toolkit includes commands to manage the context cache, so you can refresh specific entries when you need to\. For more information, see [Runtime context](context.md)
+
+If you need some value \(from AWS or elsewhere\) for which there is no native CDK context provider, we recommend writing a separate script to retrieve the value and write it to a file, then consume that file in your CDK app\. Do not run the script as part of your regular build process, but only when you want to refresh the stored value\.
 
 ### Let the AWS CDK manage roles and security groups<a name="best-practices-apps-roles"></a>
 
