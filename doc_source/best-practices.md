@@ -4,13 +4,14 @@ The AWS CDK allows developers or administrators to define their cloud infrastruc
 
 The AWS CDK reflects careful consideration of the needs of our customers and internal teams and of the failure patterns that often arise during the deployment and ongoing maintenance of complex cloud applications\. We discovered that failures are often related to "out\-of\-band" changes to an application, such as configuration changes, that were not fully tested\. Therefore, we developed the AWS CDK around a model in which your entire application, not just business logic but also infrastructure and configuration, is defined in code\. That way, proposed changes can be carefully reviewed, comprehensively tested in environments resembling production to varying degrees, and fully rolled back if something goes wrong\.
 
-In addition to the guidance in this document, you should also consider [best practices for AWS CloudFormation](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/best-practices.html) as well as for the individual AWS services you use, where they are obviously applicable to CDK\-defined infrastructure\.
-
 ![\[Image NOT FOUND\]](http://docs.aws.amazon.com/cdk/latest/guide/images/all-in-one.jpg)
 
 At deployment time, the AWS CDK synthesizes a cloud assembly that contains not only AWS CloudFormation templates describing your infrastructure in all target environments, but file assets containing your runtime code and their supporting files\. With the CDK, every commit in your application's main version control branch can represent a complete, consistent, deployable version of your application\. Your application can then be deployed automatically whenever a change is made\.
 
 The philosophy behind the AWS CDK leads to our recommended best practices, which we have divided into four broad categories\.
+
+**Tip**  
+In addition to the guidance in this document, you should also consider [best practices for AWS CloudFormation](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/best-practices.html) as well as for the individual AWS services you use, where they are obviously applicable to CDK\-defined infrastructure\.
 + [Organization best practices](#best-practices-organization)
 + [Coding best practices](#best-practices-code)
 + [Construct best practices](#best-practices-constructs)

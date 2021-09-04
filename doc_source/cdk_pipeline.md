@@ -5,7 +5,7 @@
 CDK Pipelines are self\-updating: if you add application stages or stacks, the pipeline automatically reconfigures itself to deploy those new stages and/or stacks\.
 
 **Note**  
-CDK Pipelines supports two APIs: the original API that was made available in the Developer Preview release, and a modern one that incorporates feedback from CDK customers received during the preview phase\. The examples in this topic use the modern API\. For details on the differences between the two supported APIs, see [CDK Pipelines original API](https://github.com/aws/aws-cdk/blob/master/packages/@aws-cdk/pipelines/ORIGINAL_API.md)\.
+CDK Pipelines supports two APIs: the original API that was made available in the Developer Preview, and a modern one that incorporates feedback from CDK customers received during the preview phase\. The examples in this topic use the modern API\. For details on the differences between the two supported APIs, see [CDK Pipelines original API](https://github.com/aws/aws-cdk/blob/master/packages/@aws-cdk/pipelines/ORIGINAL_API.md)\.
 
 ## Bootstrap your AWS environments<a name="cdk_pipeline_bootstrap"></a>
 

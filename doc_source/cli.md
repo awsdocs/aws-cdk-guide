@@ -613,9 +613,6 @@ Options:
       --no-color            Removes colors and other style from console output
                                                       [boolean] [default: false]
 
-      --fail                Fail with exit code 1 in case of diff
-                                                      [boolean] [default: false]
-
       --version             Show version number                        [boolean]
 
   -h, --help                Show help                                  [boolean]
@@ -786,6 +783,10 @@ Options:
 
       --progress             Display mode for stack activity events
                                              [string] [choices: "bar", "events"]
+
+      --rollback             Rollback stack to stable state on failure (iterate
+                             more rapidly with --no-rollback or -R)
+                                                       [boolean] [default: true]
 ```
 
 ### `cdk destroy`<a name="w298aac27b7c39b7b9"></a>
@@ -827,6 +828,9 @@ Options:
                             with                                        [string]
 
       --security-only       Only diff for broadened security changes
+                                                      [boolean] [default: false]
+
+      --fail                Fail with exit code 1 in case of diff
                                                       [boolean] [default: false]
 ```
 
