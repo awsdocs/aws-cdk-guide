@@ -392,7 +392,7 @@ public class MyPipelineStack extends Stack {
              .pipelineName("MyPipeline")
              .synth(ShellStep.Builder.create("Synth")
                 .input(CodePipelineSource.gitHub("OWNER/REPO", "main"))
-                .commands(Arrays.asList)"npm ci", "npm run build", "npx cdk synth"))
+                .commands(Arrays.asList("npm install -g aws-cdk", "cdk synth"))
                 .build())
              .build();
     }
