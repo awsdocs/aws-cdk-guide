@@ -584,7 +584,7 @@ The template should contain a resource to create an SSM parameter with a well\-k
 
 ```
 Resources:
-  CdkBootstrapVersion:`
+  CdkBootstrapVersion:
     Type: AWS::SSM::Parameter
     Properties:
       Type: String
