@@ -269,7 +269,7 @@ You may incur AWS charges for what the AWS CDK stores in the bootstrapped resour
 **Note**  
 Older versions of the modern template created a Customer Master Key by default\. To avoid charges, re\-bootstrap using `--no-bootstrap-customer-key`\. 
 
-The AWS CDK Toolkit supports two bootstrap templates: the modern template and the legacy template\. The legacy template is the default, but the modern template is required by CDK Pipelines\. For more information, see [Bootstrapping](bootstrapping.md)\.
+The CDK Toolkit supports two bootstrap templates: the modern template and the legacy template\. The legacy template is the default, but the modern template is required by CDK Pipelines\. For more information, see [Bootstrapping](bootstrapping.md)\.
 
 **Important**  
 The modern bootstrap template effectively grants the permissions implied by the `--cloudformation-execution-policies` to any AWS account in the `--trust` list, which by default will extend permissions to read and write to any resource in the bootstrapped account\. Make sure to [configure the bootstrapping stack](bootstrapping.md#bootstrapping-customizing) with policies and trusted accounts you are comfortable with\.
