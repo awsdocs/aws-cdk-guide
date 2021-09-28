@@ -24,9 +24,37 @@ Creating a project also installs the [https://docs.aws.amazon.com/cdk/api/latest
 
 `cdk init` uses the name of the project folder to name various elements of the project, including classes, subfolders, and files\. 
 
+## Using local `cdk`<a name="typescript-local"></a>
+
+For the most part, this guide assumes you install the CDK Toolkit globally \(`npm install -g aws-cdk`\), and the provided command examples \(such as `cdk synth`\) follow this assumption\. This approach makes it easy to keep the CDK Toolkit up to date, and since the CDK takes a strict approach to backward compatibility, there is generally little risk in always using the latest version\.
+
+Some teams prefer to specify all dependencies within each project, including tools like the CDK Toolkit\. This practice lets you pin such components to specific versions and ensure that all developers on your team \(and your CI/CD environment\) use exactly those versions\. This eliminates a possible source of change, helping to make builds and deployments more consistent nand repeatable\.
+
+The CDK includes a dependency for the CDK Toolkit in the JavaScript project template's `package.json`, so if you want to use this approach, you don't need to make any changes to your project\. All you need to do is use slightly different commands for building your app and for issunig `cdk` commands\. 
+
+| Operation | Use global CDK Toolkit | Use local CDK Toolkit | 
+| --- |--- |--- |
+| Initialize project | `cdk init --language javascript` | `npx aws-cdk init --language javascript` | 
+| --- |--- |--- |
+| Run CDK Toolkit command | `cdk ...` | `npm run cdk ...` or `npx aws-cdk ...` | 
+| --- |--- |--- |
+
+`npx aws-cdk` runs the version of the CDK Toolkit installed locally in the current project, if one exists, falling back to the global installation, if any\. If no global installation exists, `npx` downloads a temporary copy of the CDK Toolkit and runs that\. You may specify an arbitrary version of the CDK Toolkit using the `@` syntax: `npx aws-cdk@1.120 --version` prints `1.120.0`\. 
+
+**Tip**  
+Set up an alias so you can use the `cdk` command with a local CDK Toolkit installation\.  
+
+```
+alias cdk=npx aws-cdk
+```
+
+```
+doskey cdk=npx aws-cdk
+```
+
 ## Managing AWS Construct Library modules<a name="javascript-managemodules"></a>
 
-Use the Node Package Manager \(`npm`\), included with Node\.js, to install and update AWS Construct Library modules for use by your apps, as well as other packages you need\. \(You may use `yarn` instead of `npm` if you prefer\.\) `npm` also installs the dependencies for those modules automatically\.
+Use the Node Package Manager \(`npm`\) to install and update AWS Construct Library modules for use by your apps, as well as other packages you need\. \(You may use `yarn` instead of `npm` if you prefer\.\) `npm` also installs the dependencies for those modules automatically\.
 
 The AWS CDK core module is named `@aws-cdk/core`\. AWS Construct Library modules are named like `@aws-cdk/SERVICE-NAME`\. The service name has an *aws\-* prefix\. If you're unsure of a module's name, [search for it on NPM](https://www.npmjs.com/search?q=%40aws-cdk)\.
 
