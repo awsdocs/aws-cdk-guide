@@ -344,7 +344,7 @@ class MyPipelineStack(cdk.Stack):
                         pipeline_name="MyPipeline",
                         synth=ShellStep("Synth", 
                             input=CodePipelineSource.git_hub("OWNER/REPO", "main"),
-                            commands=["npm ci", "npm run build", "npx cdk synth"]
+                            commands=["npm install -g aws-cdk", "cdk synth"]
                         )
                     )
 ```
@@ -392,7 +392,7 @@ public class MyPipelineStack extends Stack {
              .pipelineName("MyPipeline")
              .synth(ShellStep.Builder.create("Synth")
                 .input(CodePipelineSource.gitHub("OWNER/REPO", "main"))
-                .commands(Arrays.asList)"npm ci", "npm run build", "npx cdk synth"))
+                .commands(Arrays.asList)"npm install -g aws-cdk", "cdk synth"))
                 .build())
              .build();
     }
@@ -445,7 +445,7 @@ namespace MyPipeline
                 Synth = new ShellStep("Synth", new ShellStepProps
                 {
                     Input = CodePipelineSource.GitHub("OWNER/REPO", "main"),
-                    Commands = new string[] { "npm ci", "npm run build", "npx cdk synth" }
+                    Commands = new string[] { "npm install -g aws-cdk", "cdk synth" }
                 })
             });
         }
@@ -687,7 +687,7 @@ class MyPipelineStack(cdk.Stack):
                         pipeline_name="MyPipeline",
                         synth=ShellStep("Synth", 
                             input=CodePipelineSource.git_hub("OWNER/REPO", "main"),
-                            commands=["npm ci", "npm run build", "npx cdk synth"]))
+                            commands=["npm install -g aws-cdk", "cdk synth"]))
 
         pipeline.add_stage(MyPipelineAppStage(self, "test",
             env=cdk.Environment(account="111111111111", region="eu-west-1")))
@@ -779,7 +779,7 @@ public class MyPipelineStack extends Stack {
             .pipelineName("MyPipeline")
             .synth(ShellStep.Builder.create("Synth")
                 .input(CodePipelineSource.gitHub("OWNER/REPO", "main"))
-                .commands(Arrays.asList("npm ci", "npm run build", "npx cdk synth"))
+                .commands(Arrays.asList("npm install -g aws-cdk", "cdk synth"))
                 .build())
             .build();
         
@@ -854,7 +854,7 @@ namespace MyPipeline
                 Synth = new ShellStep("Synth", new ShellStepProps
                 {
                     Input = CodePipelineSource.GitHub("OWNER/REPO", "main"),
-                    Commands = new string[] { "npm ci", "npm run build", "npx cdk synth" }
+                    Commands = new string[] { "npm install -g aws-cdk", "cdk synth" }
                 })
             });
 
@@ -1244,7 +1244,7 @@ pipeline =  CodePipeline(self, "Pipeline",
                 pipeline_name="MyPipeline",
                 synth=ShellStep("Synth", 
                     input=source,
-                    commands=["npm ci", "npm run build", "npx cdk synth"]))
+                    commands=["npm install -g aws-cdk", "cdk synth"]))
 
 stage = pipeline.add_stage(MyApplicationStage(self, "test",
             env=cdk.Environment(account="111111111111", region="eu-west-1")))
@@ -1264,7 +1264,7 @@ final CodePipeline pipeline = CodePipeline.Builder.create(this, "pipeline")
         .pipelineName("MyPipeline")
         .synth(ShellStep.Builder.create("Synth")
                 .input(source)
-                .commands(Arrays.asList("npm ci", "npm run build", "npx cdk synth"))
+                .commands(Arrays.asList("npm install -g aws-cdk", "cdk synth"))
                 .build())
         .build();
 
@@ -1294,7 +1294,7 @@ var pipeline = new CodePipeline(this, "pipeline", new CodePipelineProps
     Synth = new ShellStep("Synth", new ShellStepProps
     {
         Input = source,
-        Commands = new string[] { "npm ci", "npm run build", "npx cdk synth" }
+        Commands = new string[] { "npm install -g aws-cdk", "cdk synth" }
     })
 });
 
@@ -1373,7 +1373,7 @@ stage.addPost(new ShellStep('validate', {
 ```
 synth_step = ShellStep("Synth", 
                 input=CodePipelineSource.git_hub("OWNER/REPO", "main"),
-                commands=["npm ci", "npm run build", "npx cdk synth"])
+                commands=["npm install -g aws-cdk", "cdk synth"])
 
 pipeline   = CodePipeline(self, "Pipeline", 
                 pipeline_name="MyPipeline",
@@ -1395,7 +1395,7 @@ stage.add_post(ShellStep("validate",
 ```
 final ShellStep synth = ShellStep.Builder.create("Synth")
                             .input(CodePipelineSource.gitHub("OWNER/REPO", "main"))
-                            .commands(Arrays.asList("npm ci", "npm run build", "npx cdk synth"))
+                            .commands(Arrays.asList("npm install -g aws-cdk", "cdk synth"))
                             .build();   
         
 final CodePipeline pipeline = CodePipeline.Builder.create(this, "pipeline")
@@ -1424,7 +1424,7 @@ stage.addPost(ShellStep.Builder.create("validate")
 var synth = new ShellStep("Synth", new ShellStepProps
 {
     Input = CodePipelineSource.GitHub("OWNER/REPO", "main"),
-    Commands = new string[] { "npm ci", "npm run build", "npx cdk synth" }
+    Commands = new string[] { "npm install -g aws-cdk", "cdk synth" }
 });
 
 var pipeline = new CodePipeline(this, "pipeline", new CodePipelineProps
