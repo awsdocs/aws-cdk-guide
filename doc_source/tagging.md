@@ -307,7 +307,7 @@ const theBestStack = new Stack(app, 'MarketingSystem');
 Tags.of(theBestStack).add('StackType', 'TheBest');
 
 // Remove the tag from all resources except subnet resources
-Tags.of(theBestStack).remove'StackType', {
+Tags.of(theBestStack).remove('StackType', {
   excludeResourceTypes: ['AWS::EC2::Subnet']
 });
 ```
