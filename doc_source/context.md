@@ -4,6 +4,9 @@ Context values are key\-value pairs that can be associated with a stack or const
 
 Context keys are strings, and values may be any type supported by JSON: numbers, strings, arrays, or objects\.
 
+**Important**  
+Context values are managed by the AWS CDK and its constructs, including constructs you may write\. You should not attempt to add context values manually\. It is useful to review `cdk.context.json` to see what values are being cached; by convention, the keys start with the name of the CDK package that set them\. You sholud follow this convention when setting your own values\.
+
 ## Construct context<a name="context_construct"></a>
 
 Context values can be provided to your AWS CDK app in six different ways:
@@ -43,9 +46,7 @@ Gets the existing Amazon Virtual Private Clouds in your accounts\.
 [LookupMachineImage](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-ec2.LookupMachineImage.html)  
 Looks up a machine image for use with a NAT instance in an Amazon Virtual Private Cloud\.
 
-If a given context information isn't available, the AWS CDK app notifies the AWS CDK CLI that the context information is missing\. The CLI then queries the current AWS account for the information, stores the resulting context information in the `cdk.context.json` file, and executes the AWS CDK app again with the context values\.
-
-Don't forget to add the `cdk.context.json` file to your source control repository to ensure that subsequent synth commands will return the same result, and that your AWS account won't be needed when synthesizing from your build system\.
+If a required context value isn't available, the AWS CDK app notifies the AWS CDK CLI that the context information is missing\. The CLI then queries the current AWS account for the information, stores the resulting context information in the `cdk.context.json` file, and executes the AWS CDK app again with the context values\.
 
 ## Viewing and managing context<a name="context_viewing"></a>
 

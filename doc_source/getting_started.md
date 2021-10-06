@@ -53,7 +53,7 @@ We have taken pains to make AWS CDK app development in each language follow that
 const bucket = new s3.Bucket(this, 'MyBucket', {
   bucketName: 'my-bucket',
   versioned: true,
-  websiteRedirect: {host: 'aws.amazon.com'}});
+  websiteRedirect: {hostName: 'aws.amazon.com'}});
 ```
 
 ------
@@ -63,7 +63,7 @@ const bucket = new s3.Bucket(this, 'MyBucket', {
 const bucket = new s3.Bucket(this, 'MyBucket', {
   bucketName: 'my-bucket',
   versioned: true,
-  websiteRedirect: {host: 'aws.amazon.com'}});
+  websiteRedirect: {hostName: 'aws.amazon.com'}});
 ```
 
 ------

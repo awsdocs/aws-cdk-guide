@@ -144,7 +144,7 @@ If you are using Visual Studio, open the solution file in the `src` directory\.
 Install the CDK Pipelines module along with any others you'll be using\.
 
 **Tip**  
-Be sure to commit your `cdk.json` and `cdk.context.json` files in source control\. The context information \(such as feature flags and cached values retrieved from your AWS account\) are part of your project's state\. By design, cached values cannot be retrieved in a CI/CD environment, so having them in `cdk.context.json` is critical to successful deployment\.
+Be sure to commit your `cdk.json` and `cdk.context.json` files in source control\. The context information \(such as feature flags and cached values retrieved from your AWS account\) are part of your project's state\. The values may be different in another environment, which can cause instability \(unexpected changes\) in your results\.
 
 ------
 #### [ TypeScript ]
@@ -344,7 +344,9 @@ class MyPipelineStack(cdk.Stack):
                         pipeline_name="MyPipeline",
                         synth=ShellStep("Synth", 
                             input=CodePipelineSource.git_hub("OWNER/REPO", "main"),
-                            commands=["npm install -g aws-cdk", "cdk synth"]
+                            commands=["npm install -g aws-cdk", 
+                                "python -m pip install -r requirements.txt", 
+                                "cdk synth"]
                         )
                     )
 ```
@@ -413,7 +415,7 @@ public class MyPipelineApp {
         App app = new App();
 
         new MyPipelineStack(app, "PipelineStack", StackProps.builder()
-            .env(new Environment.Builder()
+            .env(new Environment.builder()
                 .account("111111111111")
                 .region("eu-west-1")
                 .build())
@@ -687,7 +689,9 @@ class MyPipelineStack(cdk.Stack):
                         pipeline_name="MyPipeline",
                         synth=ShellStep("Synth", 
                             input=CodePipelineSource.git_hub("OWNER/REPO", "main"),
-                            commands=["npm install -g aws-cdk", "cdk synth"]))
+                            commands=["npm install -g aws-cdk",
+                                "python -m pip install -r requirements.txt",
+                                "cdk synth"]))
 
         pipeline.add_stage(MyPipelineAppStage(self, "test",
             env=cdk.Environment(account="111111111111", region="eu-west-1")))
@@ -1244,7 +1248,9 @@ pipeline =  CodePipeline(self, "Pipeline",
                 pipeline_name="MyPipeline",
                 synth=ShellStep("Synth", 
                     input=source,
-                    commands=["npm install -g aws-cdk", "cdk synth"]))
+                    commands=["npm install -g aws-cdk",
+                        "python -m pip install -r requirements.txt",
+                        "cdk synth"]))
 
 stage = pipeline.add_stage(MyApplicationStage(self, "test",
             env=cdk.Environment(account="111111111111", region="eu-west-1")))
@@ -1373,7 +1379,9 @@ stage.addPost(new ShellStep('validate', {
 ```
 synth_step = ShellStep("Synth", 
                 input=CodePipelineSource.git_hub("OWNER/REPO", "main"),
-                commands=["npm install -g aws-cdk", "cdk synth"])
+                commands=["npm install -g aws-cdk",
+                  "python -m pip install -r requirements.txt",
+                  "cdk synth"])
 
 pipeline   = CodePipeline(self, "Pipeline", 
                 pipeline_name="MyPipeline",

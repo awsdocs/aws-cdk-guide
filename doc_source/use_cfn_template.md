@@ -2,9 +2,61 @@
 
 The [https://docs.aws.amazon.com/cdk/api/latest/docs/cloudformation-include-readme.html](https://docs.aws.amazon.com/cdk/api/latest/docs/cloudformation-include-readme.html) construct converts the resources in an imported AWS CloudFormation template to AWS CDK L1 constructs\. You can work with these in your app just as if they were defined in AWS CDK code, even using them within higher\-level AWS CDK constructs, letting you use \(for example\) the L2 permission grant methods with the resources they define\. 
 
-This construct essentially adds an AWS CDK API wrapper to any resource in the template\. You can use this capability to migrate your existing AWS CloudFormation templates to the AWS CDK a piece at a time in order to take advantage of the AWS CDK's convenient higher\-level abstractions, or just to vend your AWS CloudFormation templates to AWS CDK developers by providing an AWS CDK construct API\.\.
+This construct essentially adds an AWS CDK API wrapper to any resource in the template\. You can use this capability to migrate your existing AWS CloudFormation templates to the AWS CDK a piece at a time in order to take advantage of the AWS CDK's convenient higher\-level abstractions, or just to vend your AWS CloudFormation templates to AWS CDK developers by providing an AWS CDK construct API\.
 
-## Importing an AWS CloudFormation template<a name="w298aac25b9b7"></a>
+**Note**  
+The AWS CDK also includes [https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.CfnInclude.html](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.CfnInclude.html), which was previously used for the same general purpose\. However, `core.CfnInclude` lacks much of the functionality of `cloudformation-include.CfnInclude`\. `core.CfnInclude` has been deprecated and will not be available in CDK 2\.0\.
+
+## Install the `cloudformation-include` module<a name="use_cfn_template_install"></a>
+
+Follow these instructions to install the `cloudformation-include` module\.
+
+------
+#### [ TypeScript ]
+
+```
+npm install @aws-cdk/cloudformation-include
+```
+
+------
+#### [ JavaScript ]
+
+```
+npm install @aws-cdk/cloudformation-include
+```
+
+------
+#### [ Python ]
+
+```
+python -m pip install aws-cdk.cloudformation-include
+```
+
+------
+#### [ Java ]
+
+Add the following to the `<dependencies>` container of `pom.xml`\.
+
+```
+<dependency>
+    <groupId>software.amazon.awscdk</groupId>
+    <artifactId>cdk-cloudformation-include</artifactId>
+    <version>${cdk.version}</version>
+</dependency>
+```
+
+------
+#### [ C\# ]
+
+Right\-click the project in Visual Studio's Solution Explorer and choose **Manage NuGet Packages**\. Search for and install the package `Amazon.CDK.CloudFormation.Include`\. Or change to your project's directory and issue:
+
+```
+dotnet add package Amazon.CDK.CloudFormation.Include
+```
+
+------
+
+## Importing an AWS CloudFormation template<a name="w302aac25b9c11"></a>
 
  Here is a simple AWS CloudFormation template we'll use for the examples in this topic\. Save it as `my-template.json`\. After you've tried these examples with the provided template, you might explore further using a template for an actual stack you've already deployed, which you can obtain from the AWS CloudFormation console\.
 
@@ -46,11 +98,11 @@ export class MyStack extends cdk.Stack {
 #### [ JavaScript ]
 
 ```
-cost cdk = require('@aws-cdk/core');
+const cdk = require('@aws-cdk/core');
 const cfninc = require('@aws-cdk/cloudformation-include');
 
 class MyStack extends cdk.Stack {
-  constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
+  constructor(scope, id, props) {
     super(scope, id, props);
 
     const template = new cfninc.CfnInclude(this, 'Template', { 

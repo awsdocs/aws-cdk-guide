@@ -320,14 +320,14 @@ namespace HelloCdk
 ------
 
 `Bucket` is the first construct we've seen, so let's take a closer look\. Like all constructs, the `Bucket` class takes three parameters\.
-+ **scope:** Tells the bucket that the stack is its parent: it is defined within the scope of the stack\. You can define constructs inside of constructs, creating a hierarchy \(tree\)\.
-+ **Id:** The logical ID of the Bucket within your AWS CDK app\. This \(plus a hash based on the bucket's location within the stack\) uniquely identifies the bucket across deployments so the AWS CDK can update it if you change how it's defined in your app\. Buckets can also have a name, which is separate from this ID \(it's the `bucketName` property\)\.
++ **scope:** Tells the bucket that the stack is its parent: it is defined within the scope of the stack\. You can define constructs inside of constructs, creating a hierarchy \(tree\)\. Here, and in most cases, the scope is `this` \(`self` in Python\), meaning the construct that contains the bucket: the stack\.
++ **Id:** The logical ID of the Bucket within your AWS CDK app\. This \(plus a hash based on the bucket's location within the stack\) uniquely identifies the bucket across deployments so the AWS CDK can update it if you change how it's defined in your app\. Here it is "MyFirstBucket\." Buckets can also have a name, which is separate from this ID \(it's the `bucketName` property\)\.
 + **props:** A bundle of values that define properties of the bucket\. Here we've defined only one property: `versioned`, which enables versioning for the files in the bucket\.
 
 All constructs take these same three arguments, so it's easy to stay oriented as you learn about new ones\. And as you might expect, you can subclass any construct to extend it to suit your needs, or just to change its defaults\.
 
 **Tip**  
-If all a construct's props are optional, you can omit the third parameter entirely\.
+If a construct's props are all optional, you can omit the `props` parameter entirely\.
 
 Props are represented differently in the languages supported by the AWS CDK\.
 + In TypeScript and JavaScript, `props` is a single argument and you pass in an object containing the desired properties\.

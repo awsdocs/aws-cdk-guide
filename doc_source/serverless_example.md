@@ -81,6 +81,9 @@ You may now open `src/MyWidgetService.sln` in Visual Studio\.
 
 ------
 
+**Note**  
+The CDK names source files and classes based on the name of the project directory\. If you don't use the name `MyWidgetService` as shown above, you'll have trouble following the rest of the steps because some of the files the instructions tell you to modify aren't there \(they'll have different names\)\.
+
 The important files in the blank project are as follows\. \(We will also be adding a couple of new files\.\)
 
 ------

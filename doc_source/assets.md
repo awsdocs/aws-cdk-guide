@@ -274,7 +274,7 @@ The `Function` method uses assets to bundle the contents of the directory and us
 
 Amazon S3 asset types also expose [deploy\-time attributes](resources.md#resources_attributes) that can be referenced in AWS CDK libraries and apps\. The AWS CDK CLI command cdk synth displays asset properties as AWS CloudFormation parameters\.
 
-The following example uses deploy\-time attributes to pass the location of an image asset into a Lambda function as environment variables\.
+The following example uses deploy\-time attributes to pass the location of an image asset into a Lambda function as environment variables\. \(The kind of file doesn't matter; the PNG image used here is just an example\.\)
 
 ------
 #### [ TypeScript ]

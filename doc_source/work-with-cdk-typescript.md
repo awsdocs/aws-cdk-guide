@@ -37,7 +37,7 @@ Creating a project also installs the [https://docs.aws.amazon.com/cdk/api/latest
 
 For the most part, this guide assumes you install TypeScript and the CDK Toolkit globally \(`npm install -g typescript aws-cdk`\), and the provided command examples \(such as `cdk synth`\) follow this assumption\. This approach makes it easy to keep both components up to date, and since both take a strict approach to backward compatibility, there is generally little risk in always using the latest versions\.
 
-Some teams prefer to specify all dependencies within each project, including tools like the TypeScript compiler and the CDK Toolkit\. This practice lets you pin these components to specific versions and ensure that all developers on your team \(and your CI/CD environment\) use exactly those versions\. This eliminates a possible source of change, helping to make builds and deployments more consistent nand repeatable\.
+Some teams prefer to specify all dependencies within each project, including tools like the TypeScript compiler and the CDK Toolkit\. This practice lets you pin these components to specific versions and ensure that all developers on your team \(and your CI/CD environment\) use exactly those versions\. This eliminates a possible source of change, helping to make builds and deployments more consistent and repeatable\.
 
 The CDK includes dependencies for both TypeScript and the CDK Toolkit in the TypeScript project template's `package.json`, so if you want to use this approach, you don't need to make any changes to your project\. All you need to do is use slightly different commands for building your app and for issunig `cdk` commands\. 
 
@@ -60,7 +60,7 @@ alias cdk=npx aws-cdk
 ```
 
 ```
-doskey cdk=npx aws-cdk
+doskey cdk=npx aws-cdk $*
 ```
 
 ## Managing AWS Construct Library modules<a name="typescript-managemodules"></a>

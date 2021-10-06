@@ -247,6 +247,12 @@ In addition to this guide, the following are other resources available to AWS CD
 + [AWS CloudFormation Concepts](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-whatis-concepts.html)
 + [AWS Glossary](https://docs.aws.amazon.com/general/latest/gr/glos-chap.html)
 
+### Resources for serverless apps with CDK<a name="additional_serverless"></a>
+
+These tools can work with the AWS CDK to simplify serverless application development and deployment\.
++ [AWS Serverless Application Model](http://aws.amazon.com/serverless/sam/)
++ [AWS Chalice](https://github.com/aws/chalice), a Python serverless microframework
+
 ## About Amazon Web Services<a name="about_aws"></a>
 
 Amazon Web Services \(AWS\) is a collection of digital infrastructure services that developers can use when developing their applications\. The services include computing, storage, database, and application synchronization \(messaging and queueing\)\.

@@ -28,7 +28,9 @@ npm install -g aws-cdk
 **Note**  
 If you get a permission error, and have administrator access on your system, try `sudo npm install -g aws-cdk`\.
 
-Test the installation by issuing `cdk --version`\.
+Test the installation by issuing `cdk --version`\. 
+
+If you get an error message at this point, try uninstalling \(`npm uninstall -g aws-cdk`\) and reinstalling\. As a last resort, delete the `node-modules` folder from the current project as well as the global `node-modules` folder\. To figure out where this folder is, issue `npm config get prefix`\.
 
 The specific language you work in also has its own prerequisites, described in the corresponding topic listed here\.
 
