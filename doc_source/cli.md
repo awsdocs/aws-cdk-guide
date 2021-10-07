@@ -387,7 +387,21 @@ The CDK Toolkit runs your app and synthesizes fresh AWS CloudFormation templates
 
 See `cdk deploy --help` for all available options\. A few of the most\-frequently\-used options are covered below\.
 
-### Specifying AWS CloudFormation parameters<a name="w302aac27b7c33c11"></a>
+### Disabling rollback<a name="w302aac27b7c33c11"></a>
+
+One of AWS CloudFormation's marquee features is its ability to roll back changes so that deployments are atomic—they either succeed or fail as a whole\. The AWS CDK inherits this capability because it synthesizes and deploys AWS CloudFormation templates\. 
+
+Rollback makes sure your resources are in a consistent state at all times, which is vital for production stacks\. However, while you're still developing your infrastructure, some failures are inevitable, and rolling back failed deployments just slows you down\.
+
+For this reason, the CDK Toolkit; allows you to disable rollback by adding ``--no-rollback` to your `cdk deploy` command\. With this flag, failed deployments are not rolled back\. Instead, resources deployed before the failed resource remain in place, and the next deployment starts with the failed resource\. You'll spend a lot less time waiting for deployments and a lot more time developing your infrastructure\.
+
+### Hot swapping<a name="w302aac27b7c33c13"></a>
+
+Use the `--hotswap` flag with `cdk deploy` to attempt to update your AWS resources directly instead of generating a AWS CloudFormation changeset and deploying it\. Deployment falls back to AWS CloudFormation deployment if hot swapping is not possible\.
+
+Hot swapping is intended primarily for updating Lambda functions to increase development velocity\. It is not recommended for production environments\. 
+
+### Specifying AWS CloudFormation parameters<a name="w302aac27b7c33c15"></a>
 
 The AWS CDK Toolkit supports specifying AWS CloudFormation [parameters](parameters.md) at deployment\. You may provide these on the command line following the `--parameters` flag\.
 
@@ -409,7 +423,7 @@ cdk deploy MyStack YourStack --parameters MyStack:uploadBucketName=UploadBucket 
 
 By default, the AWS CDK retains values of parameters from previous deployments and uses them in later deployments if they are not specified explicitly\. Use the `--no-previous-parameters` flag to require all parameters to be specified\.
 
-### Specifying outputs file<a name="w302aac27b7c33c13"></a>
+### Specifying outputs file<a name="w302aac27b7c33c17"></a>
 
 If your stack declares AWS CloudFormation outputs, these are normally displayed on the screen at the conclusion of deployment\. To write them to a file in JSON format, use the `--outputs-file` flag\.
 
@@ -417,7 +431,7 @@ If your stack declares AWS CloudFormation outputs, these are normally displayed 
 cdk deploy --outputs-file outputs.json MyStack
 ```
 
-## Security\-related changes<a name="cli-security"></a>
+### Security\-related changes<a name="cli-security"></a>
 
 To protect you against unintended changes that affect your security posture, the AWS CDK Toolkit prompts you to approve security\-related changes before deploying them\. You can specify the level of change that requires approval:
 
@@ -623,7 +637,7 @@ If one of cdk.json or ~/.cdk.json exists, options specified there will be used
 as defaults. Settings in cdk.json take precedence.
 ```
 
-### `cdk list` \(`ls`\)<a name="w302aac27b7c39b7b1"></a>
+### `cdk list` \(`ls`\)<a name="w302aac27b7c37b7b1"></a>
 
 ```
 cdk list [STACKS..]
@@ -636,7 +650,7 @@ Options:
                                                       [boolean] [default: false]
 ```
 
-### `cdk synthesize` \(`synth`\)<a name="w302aac27b7c39b7b3"></a>
+### `cdk synthesize` \(`synth`\)<a name="w302aac27b7c37b7b3"></a>
 
 ```
 cdk synthesize [STACKS..]
@@ -657,7 +671,7 @@ Options:
                                                       [boolean] [default: false]
 ```
 
-### `cdk bootstrap`<a name="w302aac27b7c39b7b5"></a>
+### `cdk bootstrap`<a name="w302aac27b7c37b7b5"></a>
 
 ```
 cdk bootstrap [ENVIRONMENTS..]
@@ -732,7 +746,7 @@ Options:
                                             example)                    [string]
 ```
 
-### `cdk deploy`<a name="w302aac27b7c39b7b7"></a>
+### `cdk deploy`<a name="w302aac27b7c37b7b7"></a>
 
 ```
 cdk deploy [STACKS..]
@@ -789,7 +803,7 @@ Options:
                                                        [boolean] [default: true]
 ```
 
-### `cdk destroy`<a name="w302aac27b7c39b7b9"></a>
+### `cdk destroy`<a name="w302aac27b7c37b7b9"></a>
 
 ```
 cdk destroy [STACKS..]
@@ -808,7 +822,7 @@ Options:
                             stacks                                     [boolean]
 ```
 
-### `cdk diff`<a name="w302aac27b7c39b7c11"></a>
+### `cdk diff`<a name="w302aac27b7c37b7c11"></a>
 
 ```
 cdk diff [STACKS..]
@@ -834,7 +848,7 @@ Options:
                                                       [boolean] [default: false]
 ```
 
-### `cdk init`<a name="w302aac27b7c39b7c13"></a>
+### `cdk init`<a name="w302aac27b7c37b7c13"></a>
 
 ```
 cdk init [TEMPLATE]
@@ -856,7 +870,7 @@ Options:
                             project                   [boolean] [default: false]
 ```
 
-### `cdk context`<a name="w302aac27b7c39b7c15"></a>
+### `cdk context`<a name="w302aac27b7c37b7c15"></a>
 
 ```
 cdk context
