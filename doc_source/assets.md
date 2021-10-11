@@ -461,7 +461,7 @@ dirname = os.path.dirname(__file__)
             path=os.path.join(dirname, "my-image.png"))
 
         group = iam.Group(self, "MyUserGroup")
-        asset.grantRead(group)
+        asset.grant_read(group)
 ```
 
 ------
