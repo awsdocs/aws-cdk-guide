@@ -109,7 +109,7 @@ To read a value from the Systems Manager parameter store at synthesis time, use 
 Only plain Systems Manager strings may be retrieved, not secure strings\. It is not possible to request a specific version; the latest version is always returned\.
 
 **Important**  
-The retrieved value will end up in your synthenized AWS CloudFormation template, which may be a security risk depending on who has access to your your AWS CloudFormation templates and what kind of value it is\. Generally, don't use this feature for passwords, keys, or other values you want to keep private\.
+The retrieved value will end up in your synthesized AWS CloudFormation template, which may be a security risk depending on who has access to your AWS CloudFormation templates and what kind of value it is\. Generally, don't use this feature for passwords, keys, or other values you want to keep private\.
 
 ------
 #### [ TypeScript ]
