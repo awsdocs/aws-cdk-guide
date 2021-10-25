@@ -254,7 +254,7 @@ module.exports = { HelloCdkStack }
 ------
 #### [ Python ]
 
-Add the following import statement in `hello_cdk_stack.py` in the `hello_cdk` directory below the existing imports\.
+Add the following import statement in `hello_cdk/hello_cdk_stack.py` in the `hello_cdk` directory below the existing imports\.
 
 ```
 from aws_cdk import aws_s3 as s3
@@ -296,7 +296,7 @@ public class HelloCdkStack extends Stack {
 ------
 #### [ C\# ]
 
-In `HelloCdkStack.cs`:
+In `src/HelloCdk/HelloCdkStack.cs`:
 
 ```
 using Amazon.CDK;
@@ -449,7 +449,7 @@ Bucket.Builder.create(this, "MyFirstBucket")
 ------
 #### [ C\# ]
 
-Update `HelloCdkStack.cs`\.
+Update `src/HelloCdk/HelloCdkStack.cs`\.
 
 ```
 new Bucket(this, "MyFirstBucket", new BucketProps

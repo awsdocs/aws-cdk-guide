@@ -59,7 +59,7 @@ Each module's reference material is broken into the following sections\.
 
 ### Interfaces vs\. construct classes<a name="work-with-library-interfaces"></a>
 
-Interfaces are used in a specific way the AWS CDK that might not be obvious even if you are familiar with interfaces as a programming concept\.
+The AWS CDK uses interfaces in a specific way that might not be obvious even if you are familiar with interfaces as a programming concept\.
 
 The AWS CDK supports importing resources defined outside CDK applications using methods such as `Bucket.fromBucketArn()`\. Imported resources cannot be modified and may not have all the functionality available with resources defined in your CDK app using e\.g\. the `Bucket` class\. Interfaces, then, represent the bare minimum functionality available in the CDK for a given AWS resource type, *including imported resources\.*
 

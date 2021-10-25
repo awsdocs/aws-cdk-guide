@@ -43,24 +43,24 @@ The CDK includes dependencies for both TypeScript and the CDK Toolkit in the Typ
 
 | Operation | Use global tools | Use local tools | 
 | --- |--- |--- |
-| Initialize project | `cdk init --language typescript` | `npx aws-cdk init --language typescript` | 
+| Initialize project | `cdk init --language typescript` | `npx cdk init --language typescript` | 
 | --- |--- |--- |
 | Build | `tsc` | `npm run build` | 
 | --- |--- |--- |
-| Run CDK Toolkit command | `cdk ...` | `npm run cdk ...` or `npx aws-cdk ...` | 
+| Run CDK Toolkit command | `cdk ...` | `npm run cdk ...` or `npx cdk ...` | 
 | --- |--- |--- |
 
-`npx aws-cdk` runs the version of the CDK Toolkit installed locally in the current project, if one exists, falling back to the global installation, if any\. If no global installation exists, `npx` downloads a temporary copy of the CDK Toolkit and runs that\. You may specify an arbitrary version of the CDK Toolkit using the `@` syntax: `npx aws-cdk@1.120 --version` prints `1.120.0`\. 
+`npx cdk` runs the version of the CDK Toolkit installed locally in the current project, if one exists, falling back to the global installation, if any\. If no global installation exists, `npx` downloads a temporary copy of the CDK Toolkit and runs that\. You may specify an arbitrary version of the CDK Toolkit using the `@` syntax: `npx aws-cdk@1.120 --version` prints `1.120.0`\. 
 
 **Tip**  
 Set up an alias so you can use the `cdk` command with a local CDK Toolkit installation\.  
 
 ```
-alias cdk=npx aws-cdk
+alias cdk=npx cdk
 ```
 
 ```
-doskey cdk=npx aws-cdk $*
+doskey cdk=npx cdk $*
 ```
 
 ## Managing AWS Construct Library modules<a name="typescript-managemodules"></a>

@@ -5,7 +5,7 @@ Context values are key\-value pairs that can be associated with a stack or const
 Context keys are strings, and values may be any type supported by JSON: numbers, strings, arrays, or objects\.
 
 **Important**  
-Context values are managed by the AWS CDK and its constructs, including constructs you may write\. You should not attempt to add context values manually\. It is useful to review `cdk.context.json` to see what values are being cached; by convention, the keys start with the name of the CDK package that set them\. You sholud follow this convention when setting your own values\.
+Context values are managed by the AWS CDK and its constructs, including constructs you may write\. You should not attempt to add context values manually\. It is useful to review `cdk.context.json` to see what values are being cached; by convention, the keys start with the name of the CDK package that set them\. You should follow this convention when setting your own values\.
 
 ## Construct context<a name="context_construct"></a>
 
