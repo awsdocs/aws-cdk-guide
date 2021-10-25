@@ -76,7 +76,7 @@ public class MyFirstStack : Stack
 
 ## The app construct<a name="apps_construct"></a>
 
-To define the previous stack within the scope of an application, use the [App](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/core/app.html) construct\. The following example app instantiates a `MyFirstStack` and produces the AWS CloudFormation template that the stack defined\.
+To define the previous stack within the scope of an application, use the [App](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.App.html) construct\. The following example app instantiates a `MyFirstStack` and produces the AWS CloudFormation template that the stack defined\.
 
 ------
 #### [ TypeScript ]
