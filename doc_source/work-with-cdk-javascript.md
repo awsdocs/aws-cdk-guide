@@ -30,7 +30,7 @@ For the most part, this guide assumes you install the CDK Toolkit globally \(`np
 
 Some teams prefer to specify all dependencies within each project, including tools like the CDK Toolkit\. This practice lets you pin such components to specific versions and ensure that all developers on your team \(and your CI/CD environment\) use exactly those versions\. This eliminates a possible source of change, helping to make builds and deployments more consistent nand repeatable\.
 
-The CDK includes a dependency for the CDK Toolkit in the JavaScript project template's `package.json`, so if you want to use this approach, you don't need to make any changes to your project\. All you need to do is use slightly different commands for building your app and for issunig `cdk` commands\. 
+The CDK includes a dependency for the CDK Toolkit in the JavaScript project template's `package.json`, so if you want to use this approach, you don't need to make any changes to your project\. All you need to do is use slightly different commands for building your app and for issuing `cdk` commands\. 
 
 | Operation | Use global CDK Toolkit | Use local CDK Toolkit | 
 | --- |--- |--- |
