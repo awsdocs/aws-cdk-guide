@@ -58,7 +58,11 @@ Some options are flags \(Booleans\)\. You may specify `true` or `false` as their
 --staging false
 ```
 
-A few flags, namely `--context`, `--parameters`, `--plugin`, `--tags`, and `--trust`, may be specified more than once to specify multiple values\. These are noted as having `[array]` type in the CDK Toolkit help\.
+A few flags, namely `--context`, `--parameters`, `--plugin`, `--tags`, and `--trust`, may be specified more than once to specify multiple values\. These are noted as having `[array]` type in the CDK Toolkit help\. For example:
+
+```
+cdk bootstrap --tags costCenter=0123 --tags responsibleParty=jdoe
+```
 
 ## Built\-in help<a name="cli-help"></a>
 
