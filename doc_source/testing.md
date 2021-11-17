@@ -1,27 +1,1322 @@
 # Testing constructs<a name="testing"></a>
 
-With the AWS CDK, your infrastructure can be as testable as any other code you write\. This article illustrates one approach to testing AWS CDK apps written in TypeScript using the [Jest](https://jestjs.io/) test framework\. Currently, TypeScript is the only supported language for testing AWS CDK infrastructure, though we intend to eventually make this capability available in all languages supported by the AWS CDK\.
+With the AWS CDK, your infrastructure can be as testable as any other code you write\. This article illustrates the standard approach to testing AWS CDK apps using the AWS CDK's [assertions](https://docs.aws.amazon.com/cdk/api/latest/docs/assertions-readme.html) module and popular test frameworks such as [Jest](https://jestjs.io/) for TypeScript and JavaScript or [Pytest](https://docs.pytest.org/en/6.2.x/) for Python\.
 
-There are three categories of tests you can write for AWS CDK apps\.
-+  **Snapshot tests** test the synthesized AWS CloudFormation template against a previously\-stored baseline template\. This way, when you're refactoring your app, you can be sure that the refactored code works exactly the same way as the original\. If the changes were intentional, you can accept a new baseline for future tests\.
-+  **Fine\-grained assertions** test specific aspects of the generated AWS CloudFormation template, such as "this resource has this property with this value\." These tests help when you're developing new features, since any code you add will cause your snapshot test to fail even if existing features still work\. When this happens, your fine\-grained tests will reassure you that the existing functionality is unaffected\. 
-+  **Validation tests** help you "fail fast" by making sure your AWS CDK constructs raise errors when you pass them invalid data\. The ability to do this type of testing is a big advantage of developing your infrastructure in a general\-purpose programming language\. 
+There are two categories of tests you can write for AWS CDK apps\.
++  **Fine\-grained assertions** test specific aspects of the generated AWS CloudFormation template, such as "this resource has this property with this value\." These tests can detect regressions, and are also useful when you're developing new features using test\-driven development \(write a test first, then make it pass by writing a correct implementation\)\. Fine\-grained assertions are the tests you'll write the most of\.
++  **Snapshot tests** test the synthesized AWS CloudFormation template against a previously\-stored baseline template or "master\." Snapshot tests let you refactor freely, since you can be sure that the refactored code works exactly the same way as the original\. If the changes were intentional, you can accept a new baseline for future tests\. However, CDK upgrades can also cause synthesized templates to change, so you can't rely only on snapshots to make sure your implementation is correct\.
+
+**Note**  
+Complete versions of the TypeScript, Python, and Java apps used as examples in this topic are [available on GitHub](https://github.com/cdklabs/aws-cdk-testing-examples/)\.
 
 ## Getting started<a name="testing_getting_started"></a>
 
-As an example, we'll create a [dead letter queue](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-dead-letter-queues.html) construct\. A dead letter queue holds messages from another queue that have failed delivery for some time\. This usually indicates failure of the message processor, which we want to know about, so our dead letter queue has an alarm that fires when a message arrives\. The user of the construct can hook up actions such as notifying an Amazon SNS topic to this alarm\. 
+To illustrate how to write these tests, we'll create a stack that contains an AWS Step Functions state machine and a AWS Lambda function\. The Lambda function is subscribed to an Amazon SNS topic and simply forwards the message to the state machine\.
 
-### Creating the construct<a name="testing_creating_construct"></a>
+First, create an empty CDK application project using the CDK Toolkit and installing the construct libraries we'll need\. \(We'll also use the Amazon SNS module and the core AWS CDK library; there's no need to install these separately because they're dependencies of the ones we installed explicitly\.\) Don't forget to add your testing framework and the `assertions` module\!
 
- Start by creating an empty construct library project using the AWS CDK Toolkit and installing the construct libraries we'll need: 
+------
+#### [ TypeScript ]
 
 ```
-mkdir dead-letter-queue && cd dead-letter-queue
-cdk init --language=typescript lib
-npm install @aws-cdk/aws-sqs @aws-cdk/aws-cloudwatch
+mkdir state-machine && cd state-machine
+cdk init --language=typescript
+npm install @aws-cdk/aws-lambda @aws-cdk/aws-sns-subscriptions @aws-cdk/aws-stepfunctions
+npm install --save-dev jest @types/jest @aws-cdk/assertions
 ```
 
- Place the following code in `lib/index.ts`: 
+Create a directory for your tests\.
+
+```
+mkdir test
+```
+
+Edit the project's `package.json` to tell NPM how to run Jest, and to tell Jest what kinds of files to collect\. The necessary changes are as follows\. 
++ Add a new `test` key to the `scripts` section
++ Add Jest and its types to the `devDependencies` section
++ Add a new `jest` top\-level key with a `moduleFileExtensions` declaration
+
+These changes are shown in outline below\. Place the new text where indicated in `package.json`\. The "\.\.\." placeholders indicate existing parts of the file that should not be changed\. 
+
+```
+{
+  ...
+  "scripts": {
+    ...
+    "test": "jest"
+  },
+  "devDependencies": {
+    ...
+    "@types/jest": "^24.0.18",
+    "jest": "^24.9.0"
+  },
+  "jest": {
+    "moduleFileExtensions": ["js"]
+  }
+}
+```
+
+------
+#### [ JavaScript ]
+
+```
+mkdir state-machine && cd state-machine
+cdk init --language=javascript
+npm install @aws-cdk/aws-lambda @aws-cdk/aws-sns-subscriptions @aws-cdk/aws-stepfunctions
+npm install --save-dev jest @aws-cdk/assertions
+```
+
+Create a directory for your tests\.
+
+```
+mkdir test
+```
+
+Edit the project's `package.json` to tell NPM how to run Jest, and to tell Jest what kinds of files to collect\. The necessary changes are as follows\. 
++ Add a new `test` key to the `scripts` section
++ Add Jest to the `devDependencies` section
++ Add a new `jest` top\-level key with a `moduleFileExtensions` declaration
+
+These changes are shown in outline below\. Place the new text where indicated in `package.json`\. The "\.\.\." placeholders indicate existing parts of the file that should not be changed\. 
+
+```
+{
+  ...
+  "scripts": {
+    ...
+    "test": "jest"
+  },
+  "devDependencies": {
+    ...
+    "jest": "^24.9.0"
+  },
+  "jest": {
+    "moduleFileExtensions": ["js"]
+  }
+}
+```
+
+------
+#### [ Python ]
+
+```
+mkdir state-machine && cd state-machine
+cdk init --language=python
+python -m pip install aws_cdk.aws_lambda aws_cdk.aws_sns_subscriptions aws_cdk.aws_stepfunctions
+python -m pip install pytest aws_cdk.assertions
+```
+
+------
+#### [ Java ]
+
+```
+mkdir state-machine && cd-state-machine
+cdk init --language=java
+```
+
+Open the project in your preferred Java IDE\. \(In Eclipse, use **File** > **Import** > Existing Maven Projects\.\)
+
+Edit `pom.xml` to include the following dependencies\.
+
+```
+        <dependency>
+            <groupId>software.amazon.awscdk</groupId>
+            <artifactId>assertions</artifactId>
+            <version>${cdk.version}</version>
+          </dependency>
+            <dependency>
+              <groupId>software.amazon.awscdk</groupId>
+              <artifactId>cloudwatch</artifactId>
+              <version>${cdk.version}</version>
+            </dependency>
+            <dependency>
+              <groupId>software.amazon.awscdk</groupId>
+              <artifactId>lambda</artifactId>
+              <version>${cdk.version}</version>
+            </dependency>
+            <dependency>
+              <groupId>software.amazon.awscdk</groupId>
+              <artifactId>sns</artifactId>
+              <version>${cdk.version}</version>
+            </dependency>
+            <dependency>
+              <groupId>software.amazon.awscdk</groupId>
+              <artifactId>sns-subscriptions</artifactId>
+              <version>${cdk.version}</version>
+            </dependency>
+            <dependency>
+              <groupId>software.amazon.awscdk</groupId>
+              <artifactId>sqs</artifactId>
+              <version>${cdk.version}</version>
+            </dependency>
+            <dependency>
+              <groupId>software.amazon.awscdk</groupId>
+              <artifactId>stepfunctions</artifactId>
+              <version>${cdk.version}</version>
+            </dependency>
+```
+
+Also add the following JUnit dependencies\.
+
+```
+><dependency>
+          <groupId>org.junit.jupiter</groupId>
+          <artifactId>junit-jupiter-api</artifactId>
+          <version>${junit.version}</version>
+          <scope>test</scope>
+        </dependency>
+        <dependency>
+          <groupId>org.junit.jupiter</groupId>
+          <artifactId>junit-jupiter-engine</artifactId>
+          <version>${junit.version}</version>
+          <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>3.21.0</version>
+            <scope>test</scope>
+        </dependency>
+```
+
+------
+#### [ C\# ]
+
+```
+mkdir state-machine && cd-state-machine
+cdk init --language=csharp
+```
+
+Open `src\StateMachine.sln` in Visual Studio\.
+
+Right\-click the solution in Solution Explorer and choose **Add** > **New Project**\. Search for MSTest C\# and add an **MSTest Test Project** for C\#\. \(The default name `TestProject1`is fine\.\)
+
+Right\-click `TestProject1` and choose **Add** > **Project Reference**, and add the `StateMachine` project as a reference\.
+
+Choose **Tools** > **NuGet Package Manager** > **Manage NuGet Packages for Solution** and add the following packages to both projects in the solution:
++ `AWS.CDK.Assertions`
++ `AWS.CDK.AWS.Lambda`
++ `AWS.CDK.AWS.SQL`
++ `AWS.CDK.AWS.SNS`
++ `AWS.CDK.AWS.SNS.Subscriptions`
++ `AWS.CDK.AWS.StepFunctions`
+
+------
+
+## The example stack<a name="testing_app"></a>
+
+Here's the stack we'll be testing in this topic\. As we've previously described, it contains a Lambda function and a Step Functions state machine, and accepts one or more Amazon SNS topics\. The Lambda function is subscribed to the Amazon SNS topics and forwards them to the state machine\. 
+
+You don't have to do anything special to make the app testable\. In fact, this CDK stack is not different in any important way from the other example stacks in this Guide\.
+
+------
+#### [ TypeScript ]
+
+Place the following code in `lib/state-machine-stack.ts`: 
+
+```
+import * as cdk from "@aws-cdk/core";
+import * as sns from "@aws-cdk/aws-sns";
+import * as sns_subscriptions from "@aws-cdk/aws-sns-subscriptions";
+import * as lambda from "@aws-cdk/aws-lambda";
+import * as sfn from "@aws-cdk/aws-stepfunctions";
+
+export interface ProcessorStackProps extends cdk.StackProps {
+  readonly topics: sns.Topic[];
+}
+
+export class ProcessorStack extends cdk.Stack {
+  constructor(scope: cdk.Construct, id: string, props: ProcessorStackProps) {
+    super(scope, id, props);
+
+    // In the future this state machine will do some work...
+    const stateMachine = new sfn.StateMachine(this, "StateMachine", {
+      definition: new sfn.Pass(this, "StartState"),
+    });
+
+    // This Lambda function starts the state machine.
+    const func = new lambda.Function(this, "LambdaFunction", {
+      runtime: lambda.Runtime.NODEJS_14_X,
+      handler: "handler",
+      code: lambda.Code.fromAsset("./start-state-machine"),
+      environment: {
+        STATE_MACHINE_ARN: stateMachine.stateMachineArn,
+      },
+    });
+    stateMachine.grantStartExecution(func);
+
+    const subscription = new sns_subscriptions.LambdaSubscription(func);
+    for (const topic of props.topics) {
+      topic.addSubscription(subscription);
+    }
+  }
+}
+```
+
+------
+#### [ JavaScript ]
+
+Place the following code in `lib/state-machine-stack.js`: 
+
+```
+const cdk = require("@aws-cdk/core");
+const sns = require("@aws-cdk/aws-sns");
+const sns_subscriptions = require("@aws-cdk/aws-sns-subscriptions");
+const lambda = require("@aws-cdk/aws-lambda");
+const sfn = require("@aws-cdk/aws-stepfunctions");
+
+class ProcessorStack extends cdk.Stack {
+  constructor(scope, id, props) {
+    super(scope, id, props);
+
+    // In the future this state machine will do some work...
+    const stateMachine = new sfn.StateMachine(this, "StateMachine", {
+      definition: new sfn.Pass(this, "StartState"),
+    });
+
+    // This Lambda function starts the state machine.
+    const func = new lambda.Function(this, "LambdaFunction", {
+      runtime: lambda.Runtime.NODEJS_14_X,
+      handler: "handler",
+      code: lambda.Code.fromAsset("./start-state-machine"),
+      environment: {
+        STATE_MACHINE_ARN: stateMachine.stateMachineArn,
+      },
+    });
+    stateMachine.grantStartExecution(func);
+
+    const subscription = new sns_subscriptions.LambdaSubscription(func);
+    for (const topic of props.topics) {
+      topic.addSubscription(subscription);
+    }
+  }
+}
+
+module.exports = { ProcessorStack }
+```
+
+------
+#### [ Python ]
+
+Place the following code in `state_machine/state_machine_stack.py`:
+
+```
+from typing import List
+
+from aws_cdk import aws_lambda as lambda_
+from aws_cdk import aws_sns as sns
+from aws_cdk import aws_sns_subscriptions as sns_subscriptions
+from aws_cdk import aws_stepfunctions as sfn
+from aws_cdk import core as cdk
+
+class ProcessorStack(cdk.Stack):
+    def __init__(
+        self,
+        scope: cdk.Construct,
+        construct_id: str,
+        *,
+        topics: List[sns.Topic],
+        **kwargs
+    ) -> None:
+        super().__init__(scope, construct_id, **kwargs)
+
+        # In the future this state machine will do some work...
+        state_machine = sfn.StateMachine(
+            self, "StateMachine", definition=sfn.Pass(self, "StartState")
+        )
+
+        # This Lambda function starts the state machine.
+        func = lambda_.Function(
+            self,
+            "LambdaFunction",
+            runtime=lambda_.Runtime.NODEJS_14_X,
+            handler="handler",
+            code=lambda_.Code.from_asset("./start-state-machine"),
+            environment={
+                "STATE_MACHINE_ARN": state_machine.state_machine_arn,
+            },
+        )
+        state_machine.grant_start_execution(func)
+
+        subscription = sns_subscriptions.LambdaSubscription(func)
+        for topic in topics:
+            topic.add_subscription(subscription)
+```
+
+------
+#### [ Java ]
+
+```
+package software.amazon.samples.awscdkassertionssamples;
+
+import software.amazon.awscdk.core.Construct;
+import software.amazon.awscdk.core.Stack;
+import software.amazon.awscdk.core.StackProps;
+import software.amazon.awscdk.services.lambda.Code;
+import software.amazon.awscdk.services.lambda.Function;
+import software.amazon.awscdk.services.lambda.Runtime;
+import software.amazon.awscdk.services.sns.ITopicSubscription;
+import software.amazon.awscdk.services.sns.Topic;
+import software.amazon.awscdk.services.sns.subscriptions.LambdaSubscription;
+import software.amazon.awscdk.services.stepfunctions.Pass;
+import software.amazon.awscdk.services.stepfunctions.StateMachine;
+
+import java.util.Collections;
+import java.util.List;
+
+public class ProcessorStack extends Stack {
+    public ProcessorStack(final Construct scope, final String id, final List<Topic> topics) {
+        this(scope, id, null, topics);
+    }
+
+    public ProcessorStack(final Construct scope, final String id, final StackProps props, final List<Topic> topics) {
+        super(scope, id, props);
+
+        // In the future this state machine will do some work...
+        final StateMachine stateMachine = StateMachine.Builder.create(this, "StateMachine")
+                .definition(new Pass(this, "StartState"))
+                .build();
+
+        // This Lambda function starts the state machine.
+        final Function func = Function.Builder.create(this, "LambdaFunction")
+                .runtime(Runtime.NODEJS_14_X)
+                .handler("handler")
+                .code(Code.fromAsset("./start-state-machine"))
+                .environment(Collections.singletonMap("STATE_MACHINE_ARN", stateMachine.getStateMachineArn()))
+                .build();
+        stateMachine.grantStartExecution(func);
+
+        final ITopicSubscription subscription = new LambdaSubscription(func);
+        for (final Topic topic : topics) {
+            topic.addSubscription(subscription);
+        }
+    }
+}
+```
+
+------
+#### [ C\# ]
+
+```
+using Amazon.CDK;
+using Amazon.CDK.AWS.Lambda;
+using Amazon.CDK.AWS.StepFunctions;
+using Amazon.CDK.AWS.SNS;
+using Amazon.CDK.AWS.SNS.Subscriptions;
+
+using System.Collections.Generic;
+
+namespace AwsCdkAssertionSamples
+{
+    public class StateMachineStackProps : StackProps
+    {
+        public Topic[] Topics;
+    }
+
+    public class StateMachineStack : Stack
+    {
+
+        internal StateMachineStack(Construct scope, string id, StateMachineStackProps props = null) : base(scope, id, props)
+        {
+            // In the future this state machine will do some work...
+            var stateMachine = new StateMachine(this, "StateMachine", new StateMachineProps
+            {
+                Definition = new Pass(this, "StartState")
+            });
+
+            // This Lambda function starts the state machine.
+            var func = new Function(this, "LambdaFunction", new FunctionProps
+            {
+                Runtime = Runtime.NODEJS_14_X,
+                Handler = "handler",
+                Code = Code.FromAsset("./start-state-machine"),
+                Environment = new Dictionary<string, string>
+                {
+                    { "STATE_MACHINE_ARN", stateMachine.StateMachineArn }
+                }
+            });
+            stateMachine.GrantStartExecution(func);
+           
+            foreach (Topic topic in props?.Topics ?? new Topic[0])
+            {
+                var subscription = new LambdaSubscription(func);
+            }
+
+        }
+    }
+}
+```
+
+------
+
+We'll modify the app's main entry point to not actually instantiate our stack, since we don't want to accidentally deploy it\. Our tests will create an app and an instance of the stack for testing\. This is a useful tactic when combined with test\-driven development: make sure the stack passes all tests before you enable deployment\.
+
+------
+#### [ TypeScript ]
+
+In `bin/state-machine.ts`:
+
+```
+#!/usr/bin/env node
+import * as cdk from "@aws-cdk/core";
+
+const app = new cdk.App();
+
+// Stacks are intentionally not created here -- this application isn't meant to
+// be deployed.
+```
+
+------
+#### [ JavaScript ]
+
+In `bin/state-machine.js`:
+
+```
+#!/usr/bin/env node
+const cdk = require("@aws-cdk/core");
+
+const app = new cdk.App();
+
+// Stacks are intentionally not created here -- this application isn't meant to
+// be deployed.
+```
+
+------
+#### [ Python ]
+
+In `app.py`:
+
+```
+#!/usr/bin/env python3
+import os
+
+from aws_cdk import core as cdk
+
+app = cdk.App()
+
+# Stacks are intentionally not created here -- this application isn't meant to
+# be deployed.
+
+app.synth()
+```
+
+------
+#### [ Java ]
+
+```
+package software.amazon.samples.awscdkassertionssamples;
+
+import software.amazon.awscdk.core.App;
+
+
+public class SampleApp {
+    public static void main(final String[] args) {
+        App app = new App();
+
+        // Stacks are intentionally not created here -- this application isn't meant to be deployed.
+
+        app.synth();
+    }
+}
+```
+
+------
+#### [ C\# ]
+
+```
+using Amazon.CDK;
+
+namespace AwsCdkAssertionSamples
+{
+    sealed class Program
+    {
+        public static void Main(string[] args)
+        {
+            var app = new App();
+
+            // Stacks are intentionally not created here -- this application isn't meant to be deployed.
+
+            app.Synth();
+        }
+    }
+}
+```
+
+------
+
+## Running tests<a name="testing_running_tests"></a>
+
+For reference, here are the commands you use to run tests in your AWS CDK app\. These are the same commands you'd use to run the tests in any project using the same testig framework\. For languages that require a build step, include that to make sure your tests have been compiled\.
+
+------
+#### [ TypeScript ]
+
+```
+tsc && npm test
+```
+
+------
+#### [ JavaScript ]
+
+```
+npm test
+```
+
+------
+#### [ Python ]
+
+```
+python -m pytest
+```
+
+------
+#### [ Java ]
+
+```
+mvn compile && mvn test
+```
+
+------
+#### [ C\# ]
+
+Build your solution \(F6\) to discover the tests, then run the tests \(**Test** > **Run All Tests**\)\. To choose which tests to run, open Test Explorer \(**Test** > **Test Explorer**\)\.
+
+Or:
+
+```
+dotnet test src
+```
+
+------
+
+## Fine\-grained assertions<a name="testing_fine_grained"></a>
+
+The first step for testing a stack with fine\-grained assertions is to synthesize the stack, because we're writing assertions against the generated AWS CloudFormation template\.
+
+Our `ProcessorStack` requires that we pass it the Amazon SNS topic to be forwarded to the state machine\. So in our test, we'll create a separate stack to contain the topic\.
+
+Ordinarily, if you were writing a CDK app, you'd subclass `Stack` and instantiate the Amazon SNS topic in the stack's constructor\. In our test, we instantiate `Stack` directly, then pass this stack as the `Topic`'s scope, attaching it to the stack\. This is functionally equivalent, less verbose, and helps make stacks used only in tests "look different" from stacks you intend to deploy\.
+
+------
+#### [ TypeScript ]
+
+```
+import { Capture, Match, Template } from "@aws-cdk/assertions";
+import * as cdk from "@aws-cdk/core";
+import * as sns from "@aws-cdk/aws-sns";
+import { ProcessorStack } from "../lib/processor-stack";
+
+describe("ProcessorStack", () => {
+  test("synthesizes the way we expect", () => {
+    const app = new cdk.App();
+
+    // Since the ProcessorStack consumes resources from a separate stack
+    // (cross-stack references), we create a stack for our SNS topics to live
+    // in here. These topics can then be passed to the ProcessorStack later,
+    // creating a cross-stack reference.
+    const topicsStack = new cdk.Stack(app, "TopicsStack");
+
+    // Create the topic the stack we're testing will reference.
+    const topics = [new sns.Topic(topicsStack, "Topic1", {})];
+
+    // Create the ProcessorStack.
+    const processorStack = new ProcessorStack(app, "ProcessorStack", {
+      topics: topics, // Cross-stack reference
+    });
+
+    // Prepare the stack for assertions.
+    const template = Template.fromStack(processorStack);
+
+
+}
+```
+
+------
+#### [ JavaScript ]
+
+```
+const { Capture, Match, Template } = require("@aws-cdk/assertions");
+const cdk = require("@aws-cdk/core");
+const sns = require("@aws-cdk/aws-sns");
+const { ProcessorStack } = require("../lib/processor-stack");
+
+describe("ProcessorStack", () => {
+  test("synthesizes the way we expect", () => {
+    const app = new cdk.App();
+
+    // Since the ProcessorStack consumes resources from a separate stack
+    // (cross-stack references), we create a stack for our SNS topics to live
+    // in here. These topics can then be passed to the ProcessorStack later,
+    // creating a cross-stack reference.
+    const topicsStack = new cdk.Stack(app, "TopicsStack");
+
+    // Create the topic the stack we're testing will reference.
+    const topics = [new sns.Topic(topicsStack, "Topic1", {})];
+
+    // Create the ProcessorStack.
+    const processorStack = new ProcessorStack(app, "ProcessorStack", {
+      topics: topics, // Cross-stack reference
+    });
+
+    // Prepare the stack for assertions.
+    const template = Template.fromStack(processorStack);
+```
+
+------
+#### [ Python ]
+
+```
+from aws_cdk import aws_sns as sns
+from aws_cdk import core as cdk
+from aws_cdk.assertions import Template
+
+from app.processor_stack import ProcessorStack
+
+def test_synthesizes_properly():
+    app = cdk.App()
+
+    # Since the ProcessorStack consumes resources from a separate stack
+    # (cross-stack references), we create a stack for our SNS topics to live
+    # in here. These topics can then be passed to the ProcessorStack later,
+    # creating a cross-stack reference.
+    topics_stack = cdk.Stack(app, "TopicsStack")
+
+    # Create the topic the stack we're testing will reference.
+    topics = [sns.Topic(topics_stack, "Topic1")]
+
+    # Create the ProcessorStack.
+    processor_stack = ProcessorStack(
+        app, "ProcessorStack", topics=topics  # Cross-stack reference
+    )
+
+    # Prepare the stack for assertions.
+    template = Template.from_stack(processor_stack)
+```
+
+------
+#### [ Java ]
+
+```
+package software.amazon.samples.awscdkassertionssamples;
+
+import org.junit.jupiter.api.Test;
+import software.amazon.awscdk.assertions.Capture;
+import software.amazon.awscdk.assertions.Match;
+import software.amazon.awscdk.assertions.Template;
+import software.amazon.awscdk.core.App;
+import software.amazon.awscdk.core.Stack;
+import software.amazon.awscdk.services.sns.Topic;
+
+import java.util.*;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+public class ProcessorStackTest {
+    @Test
+    public void testSynthesizesProperly() {
+        final App app = new App();
+
+        // Since the ProcessorStack consumes resources from a separate stack (cross-stack references), we create a stack
+        // for our SNS topics to live in here. These topics can then be passed to the ProcessorStack later, creating a
+        // cross-stack reference.
+        final Stack topicsStack = new Stack(app, "TopicsStack");
+
+        // Create the topic the stack we're testing will reference.
+        final List<Topic> topics = Collections.singletonList(Topic.Builder.create(topicsStack, "Topic1").build());
+
+        // Create the ProcessorStack.
+        final ProcessorStack processorStack = new ProcessorStack(
+                app,
+                "ProcessorStack",
+                topics // Cross-stack reference
+        );
+
+        // Prepare the stack for assertions.
+        final Template template = Template.fromStack(processorStack)
+```
+
+------
+#### [ C\# ]
+
+```
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+using Amazon.CDK;
+using Amazon.CDK.AWS.SNS;
+using Amazon.CDK.Assertions;
+using AwsCdkAssertionSamples;
+
+using ObjectDict = System.Collections.Generic.Dictionary<string, object>;
+using StringDict = System.Collections.Generic.Dictionary<string, string>;
+
+namespace TestProject1
+{
+    [TestClass]
+    public class ProcessorStackTest
+    {
+        [TestMethod]
+        public void TestMethod1()
+        {
+            var app = new App();
+
+            // Since the ProcessorStack consumes resources from a separate stack (cross-stack references), we create a stack
+            // for our SNS topics to live in here. These topics can then be passed to the ProcessorStack later, creating a
+            // cross-stack reference.
+            var topicsStack = new Stack(app, "TopicsStack");
+
+            // Create the topic the stack we're testing will reference.
+            var topics = new Topic[] { new Topic(topicsStack, "Topic1") };
+
+            // Create the ProcessorStack.
+            var processorStack = new StateMachineStack(app, "ProcessorStack", new StateMachineStackProps
+            {
+                Topics = topics
+            });
+
+            // Prepare the stack for assertions.
+            var template = Template.FromStack(processorStack);
+            
+            // test will go here
+        }
+    }
+}
+```
+
+------
+
+Now we can assert that the Lambda function and the Amazon SNS subscription were created\.
+
+------
+#### [ TypeScript ]
+
+```
+    // Assert it creates the function with the correct properties...
+    template.hasResourceProperties("AWS::Lambda::Function", {
+      Handler: "handler",
+      Runtime: "nodejs14.x",
+    });
+
+    // Creates the subscription...
+    template.resourceCountIs("AWS::SNS::Subscription", 1);
+```
+
+------
+#### [ JavaScript ]
+
+```
+    // Assert it creates the function with the correct properties...
+    template.hasResourceProperties("AWS::Lambda::Function", {
+      Handler: "handler",
+      Runtime: "nodejs14.x",
+    });
+
+    // Creates the subscription...
+    template.resourceCountIs("AWS::SNS::Subscription", 1);
+```
+
+------
+#### [ Python ]
+
+```
+# Assert that we have created the function with the correct properties
+    template.has_resource_properties(
+        "AWS::Lambda::Function",
+        {
+            "Handler": "handler",
+            "Runtime": "nodejs14.x",
+        },
+    )
+
+    # Assert that we have created a subscription
+    template.resource_count_is("AWS::SNS::Subscription", 1)
+```
+
+------
+#### [ Java ]
+
+```
+        // Assert it creates the function with the correct properties...
+        template.hasResourceProperties("AWS::Lambda::Function", Map.of(
+                "Handler", "handler",
+                "Runtime", "nodejs14.x"
+        ));
+          
+         // Creates the subscription...
+        template.resourceCountIs("AWS::SNS::Subscription", 1);
+```
+
+------
+#### [ C\# ]
+
+```
+            // Prepare the stack for assertions.
+            var template = Template.FromStack(processorStack);
+
+            // Assert it creates the function with the correct properties...
+            template.HasResourceProperties("AWS::Lambda::Function", new StringDict {
+                { "Handler", "handler"},
+                { "Runtime", "nodejs14x" }
+            });
+
+            // Creates the subscription...
+            template.ResourceCountIs("AWS::SNS::Subscription", 1);
+```
+
+------
+
+Our Lambda function test asserts that two particular properties of the function resource have specific values\. By default, the `hasResourceProperties` method performs a partial match on the resource's properties as given in the synthesized CloudFormation template\. This test requires that the provided properties exist and have the specified values, but the resource can also have other properties, and these are not tested\.
+
+Our Amazon SNS assertion asserts that the synthesized template contains a subscription, but nothing about the subscription itself\. We included this assertion mainly to illustrate how to assert on resource counts\. The `Template` class offers more specific methods to write assertions against the `Resources`, `Outputs`, and `Mapping` sections of the CloudFormation template\. 
+
+### Matchers<a name="testing_fine_grained_matchers"></a>
+
+The default partial matching behavior of `hasResourceProperties` can be changed using *matchers* from the [https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_assertions.Match.html#methods](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_assertions.Match.html#methods) class\. 
+
+Matchers range from the very lenient \(`Match.anyValue`\) to the quite strict \(`Match.objectEquals`\), and can be nested to apply different matching methods to different parts of the resource properties\. Using `Match.objectEquals` and `Match.anyValue` together, for example, we can test the state machine's IAM role more fully, while not requiring specific values for properties that may change\.
+
+------
+#### [ TypeScript ]
+
+```
+    // Fully assert on the state machine's IAM role with matchers.
+    template.hasResourceProperties(
+      "AWS::IAM::Role",
+      Match.objectEquals({
+        AssumeRolePolicyDocument: {
+          Version: "2012-10-17",
+          Statement: [
+            {
+              Action: "sts:AssumeRole",
+              Effect: "Allow",
+              Principal: {
+                Service: {
+                  "Fn::Join": [
+                    "",
+                    ["states.", Match.anyValue(), ".amazonaws.com"],
+                  ],
+                },
+              },
+            },
+          ],
+        },
+      })
+    );
+```
+
+------
+#### [ JavaScript ]
+
+```
+    // Fully assert on the state machine's IAM role with matchers.
+    template.hasResourceProperties(
+      "AWS::IAM::Role",
+      Match.objectEquals({
+        AssumeRolePolicyDocument: {
+          Version: "2012-10-17",
+          Statement: [
+            {
+              Action: "sts:AssumeRole",
+              Effect: "Allow",
+              Principal: {
+                Service: {
+                  "Fn::Join": [
+                    "",
+                    ["states.", Match.anyValue(), ".amazonaws.com"],
+                  ],
+                },
+              },
+            },
+          ],
+        },
+      })
+    );
+```
+
+------
+#### [ Python ]
+
+```
+from aws_cdk.assertions import Match
+
+    # Fully assert on the state machine's IAM role with matchers.
+    template.has_resource_properties(
+        "AWS::IAM::Role",
+        Match.object_equals(
+            {
+                "AssumeRolePolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Action": "sts:AssumeRole",
+                            "Effect": "Allow",
+                            "Principal": {
+                                "Service": {
+                                    "Fn::Join": [
+                                        "",
+                                        [
+                                            "states.",
+                                            Match.any_value(),
+                                            ".amazonaws.com",
+                                        ],
+                                    ],
+                                },
+                            },
+                        },
+                    ],
+                },
+            }
+        ),
+    )
+```
+
+------
+#### [ Java ]
+
+```
+        // Fully assert on the state machine's IAM role with matchers.
+        template.hasResourceProperties("AWS::IAM::Role", Match.objectEquals(
+                Collections.singletonMap("AssumeRolePolicyDocument", Map.of(
+                        "Version", "2012-10-17",
+                        "Statement", Collections.singletonList(Map.of(
+                                "Action", "sts:AssumeRole",
+                                "Effect", "Allow",
+                                "Principal", Collections.singletonMap(
+                                        "Service", Collections.singletonMap(
+                                                "Fn::Join", Arrays.asList(
+                                                        "",
+                                                        Arrays.asList("states.", Match.anyValue(), ".amazonaws.com")
+                                                )
+                                        )
+                                )
+                        ))
+                ))
+        ));
+```
+
+------
+#### [ C\# ]
+
+```
+            // Fully assert on the state machine's IAM role with matchers.
+            template.HasResource("AWS::IAM::Role", Match.ObjectEquals(new ObjectDict
+            {
+                { "AssumeRolePolicyDocument", new ObjectDict
+                    {
+                        { "Version", "2012-10-17" },
+                        { "Action", "sts:AssumeRole" },
+                        { "Principal", new ObjectDict
+                            {
+                                { "Version", "2012-10-17" },
+                                { "Statement", new object[]
+                                    {
+                                        new ObjectDict {
+                                            { "Action", "sts:AssumeRole" },
+                                            { "Effect", "Allow" },
+                                            { "Principal", new ObjectDict
+                                                {
+                                                    { "Service", new ObjectDict
+                                                        {
+                                                            { "", new object[]
+                                                                { "states", Match.AnyValue(), ".amazonaws.com" }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }));
+```
+
+------
+
+Many CloudFormation resources include serialized JSON objects represented as strings\. The `Match.serializedJson()` matcher can be used to match properties inside this JSON\. For example, Step Functions state machines are defined using a string in the JSON\-based [Amazon States Language](https://docs.aws.amazon.com/step-functions/latest/dg/concepts-amazon-states-language.html)\. We'll use `Match.serializedJson()` to make sure our initial state is the only step, again using nested matchers to apply different kinds of matching to different parts of the object\. 
+
+------
+#### [ TypeScript ]
+
+```
+    // Assert on the state machine's definition with the Match.serializedJson()
+    // matcher.
+    template.hasResourceProperties("AWS::StepFunctions::StateMachine", {
+      DefinitionString: Match.serializedJson(
+        // Match.objectEquals() is used implicitly, but we use it explicitly
+        // here for extra clarity.
+        Match.objectEquals({
+          StartAt: "StartState",
+          States: {
+            StartState: {
+              Type: "Pass",
+              End: true,
+              // Make sure this state doesn't provide a next state -- we can't
+              // provide both Next and set End to true.
+              Next: Match.absent(),
+            },
+          },
+        })
+      ),
+    });
+```
+
+------
+#### [ JavaScript ]
+
+```
+    // Assert on the state machine's definition with the Match.serializedJson()
+    // matcher.
+    template.hasResourceProperties("AWS::StepFunctions::StateMachine", {
+      DefinitionString: Match.serializedJson(
+        // Match.objectEquals() is used implicitly, but we use it explicitly
+        // here for extra clarity.
+        Match.objectEquals({
+          StartAt: "StartState",
+          States: {
+            StartState: {
+              Type: "Pass",
+              End: true,
+              // Make sure this state doesn't provide a next state -- we can't
+              // provide both Next and set End to true.
+              Next: Match.absent(),
+            },
+          },
+        })
+      ),
+    });
+```
+
+------
+#### [ Python ]
+
+```
+    # Assert on the state machine's definition with the serialized_json matcher.
+    template.has_resource_properties(
+        "AWS::StepFunctions::StateMachine",
+        {
+            "DefinitionString": Match.serialized_json(
+                # Match.object_equals() is the default, but specify it here for clarity
+                Match.object_equals(
+                    {
+                        "StartAt": "StartState",
+                        "States": {
+                            "StartState": {
+                                "Type": "Pass",
+                                "End": True,
+                                # Make sure this state doesn't provide a next state --
+                                # we can't provide both Next and set End to true.
+                                "Next": Match.absent(),
+                            },
+                        },
+                    }
+                )
+            ),
+        },
+    )
+```
+
+------
+#### [ Java ]
+
+```
+        // Assert on the state machine's definition with the Match.serializedJson() matcher.
+        template.hasResourceProperties("AWS::StepFunctions::StateMachine", Collections.singletonMap(
+                "DefinitionString", Match.serializedJson(
+                        // Match.objectEquals() is used implicitly, but we use it explicitly here for extra clarity.
+                        Match.objectEquals(Map.of(
+                                "StartAt", "StartState",
+                                "States", Collections.singletonMap(
+                                        "StartState", Map.of(
+                                                "Type", "Pass",
+                                                "End", true,
+                                                // Make sure this state doesn't provide a next state -- we can't provide
+                                                // both Next and set End to true.
+                                                "Next", Match.absent()
+                                        )
+                                )
+                        ))
+                )
+        ));
+```
+
+------
+#### [ C\# ]
+
+```
+            // Assert on the state machine's definition with the Match.serializedJson() matcher
+            template.HasResourceProperties("AWS::StepFunctions::StateMachine", new ObjectDict
+            {
+                { "DefinitionString", Match.SerializedJson(
+                    // Match.objectEquals() is used implicitly, but we use it explicitly here for extra clarity.
+                    Match.ObjectEquals(new ObjectDict {
+                        { "StartAt", "StartState" },
+                        { "States", new ObjectDict
+                        {
+                            { "StartState", new ObjectDict {
+                                { "Type", "Pass" },
+                                { "End", "True" },
+                                // Make sure this state doesn't provide a next state -- we can't provide
+                                // both Next and set End to true.
+                                { "Next", Match.Absent() }
+                            }}
+                        }}
+                    })    
+                )}});
+```
+
+------
+
+### Capturing<a name="testing_fine_grained_capture"></a>
+
+It's often useful to test properties to make sure they follow specific formats, or have the same value as another property, without needing to know their exact values ahead of time\. The `assertions` module provides this capability in its [https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_assertions.Capture.html](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_assertions.Capture.html) class\.
+
+By specifying a `Capture` instance in place of a value in `hasResourceProperties`, that value is retained in the `Capture` object\. The actual captured value can be retrieved using the object's `as` methods, including `asNumber()`, `asString()`, and `asObject`, and subjected to test\. Use `Capture` with a matcher to specify the exact location of the value to be captured within the resource's properties, including serialized JSON properties\.
+
+For example, this example tests to make sure that the starting state of our state machine has a name beginning with `Start` and also that this state is actually present within the list of states in the machine\.
+
+------
+#### [ TypeScript ]
+
+```
+    // Capture some data from the state machine's definition.
+    const startAtCapture = new Capture();
+    const statesCapture = new Capture();
+    template.hasResourceProperties("AWS::StepFunctions::StateMachine", {
+      DefinitionString: Match.serializedJson(
+        Match.objectLike({
+          StartAt: startAtCapture,
+          States: statesCapture,
+        })
+      ),
+    });
+
+    // Assert that the start state starts with "Start".
+    expect(startAtCapture.asString()).toEqual(expect.stringMatching(/^Start/));
+
+    // Assert that the start state actually exists in the states object of the
+    // state machine definition.
+    expect(statesCapture.asObject()).toHaveProperty(startAtCapture.asString());
+```
+
+------
+#### [ JavaScript ]
+
+```
+    // Capture some data from the state machine's definition.
+    const startAtCapture = new Capture();
+    const statesCapture = new Capture();
+    template.hasResourceProperties("AWS::StepFunctions::StateMachine", {
+      DefinitionString: Match.serializedJson(
+        Match.objectLike({
+          StartAt: startAtCapture,
+          States: statesCapture,
+        })
+      ),
+    });
+
+    // Assert that the start state starts with "Start".
+    expect(startAtCapture.asString()).toEqual(expect.stringMatching(/^Start/));
+
+    // Assert that the start state actually exists in the states object of the
+    // state machine definition.
+    expect(statesCapture.asObject()).toHaveProperty(startAtCapture.asString());
+```
+
+------
+#### [ Python ]
+
+```
+import re
+
+    from aws_cdk.assertions import Capture
+
+    # ...
+
+    # Capture some data from the state machine's definition.
+    start_at_capture = Capture()
+    states_capture = Capture()
+    template.has_resource_properties(
+        "AWS::StepFunctions::StateMachine",
+        {
+            "DefinitionString": Match.serialized_json(
+                Match.object_like(
+                    {
+                        "StartAt": start_at_capture,
+                        "States": states_capture,
+                    }
+                )
+            ),
+        },
+    )
+
+    # Assert that the start state starts with "Start".
+    assert re.match("^Start", start_at_capture.as_string())
+
+    # Assert that the start state actually exists in the states object of the
+    # state machine definition.
+    assert start_at_capture.as_string() in states_capture.as_object()
+```
+
+------
+#### [ Java ]
+
+```
+        // Capture some data from the state machine's definition.
+        final Capture startAtCapture = new Capture();
+        final Capture statesCapture = new Capture();
+        template.hasResourceProperties("AWS::StepFunctions::StateMachine", Collections.singletonMap(
+                "DefinitionString", Match.serializedJson(
+                        Match.objectLike(Map.of(
+                                "StartAt", startAtCapture,
+                                "States", statesCapture
+                        ))
+                )
+        ));
+
+        // Assert that the start state starts with "Start".
+        assertThat(startAtCapture.asString()).matches("^Start.+");
+
+        // Assert that the start state actually exists in the states object of the state machine definition.
+        assertThat(statesCapture.asObject()).containsKey(startAtCapture.asString());
+```
+
+------
+#### [ C\# ]
+
+```
+            // Capture some data from the state machine's definition.
+            var startAtCapture = new Capture();
+            var statesCapture = new Capture();
+            template.HasResourceProperties("AWS::StepFunctions::StateMachine", new ObjectDict
+            {
+                { "DefinitionString", Match.SerializedJson(
+                    new ObjectDict
+                    {
+                        { "StartAt", startAtCapture },
+                        { "States", statesCapture }
+                    }
+                )}
+            });
+
+            Assert.IsTrue(startAtCapture.ToString().StartsWith("Start"));
+            Assert.IsTrue(statesCapture.AsObject().ContainsKey(startAtCapture.ToString()));
+```
+
+------
+
+## Snapshot tests<a name="testing_snapshot"></a>
+
+In *snapshot testing*, you compare the entire synthesized CloudFormation template against a previously\-stored master\. This isn't useful in catching regressions, as fine\-grained assertions are, because it applies to the entire template, and things besides code changes can cause small \(or not\-so\-small\) differences in synthesis results\. For example, we may update a CDK construct to incorporate a new best pracice, which can cause changes to the synthesized resources or how they're organized, or we might update the CDK Toolkit to report additional metadata\. Changes to context values can also affect the synthesized template\. 
+
+Snapshot tests can be of great help in refactoring, though, as long as you hold constant all other factors that might affect the synthesized template\. You will know immediately if a change you made has unintentionally changed the template\. If the change is intentional, simply accept a new master and proceed\.
+
+For example, if we have this `DeadLetterQueue` construct:
+
+------
+#### [ TypeScript ]
 
 ```
 import * as cloudwatch from '@aws-cdk/aws-cloudwatch';
@@ -45,308 +1340,283 @@ export class DeadLetterQueue extends sqs.Queue {
 }
 ```
 
-### Installing the testing framework<a name="testing_installing"></a>
-
-Since we're using the Jest framework, our next setup step is to install Jest\. We'll also need the AWS CDK assert module, which includes helpers for writing tests for CDK libraries, including `assert` and `expect`\.
-
-```
-npm install --save-dev jest @types/jest @aws-cdk/assert
-```
-
-### Updating `package.json`<a name="testing_project"></a>
-
-Finally, edit the project's `package.json` to tell NPM how to run Jest, and to tell Jest what kinds of files to collect\. The necessary changes are as follows\. 
-+ Add a new `test` key to the `scripts` section
-+ Add Jest and its types to the `devDependencies` section
-+ Add a new `jest` top\-level key with a `moduleFileExtensions` declaration
-
-These changes are shown in outline below\. Place the new text where indicated in `package.json`\. The "\.\.\." placeholders indicate existing parts of the file that should not be changed\. 
+------
+#### [ JavaScript ]
 
 ```
-{
-  ...
- "scripts": {
-    ...
-    "test": "jest"
-  },
-  "devDependencies": {
-    ...
-    "@types/jest": "^24.0.18",
-    "jest": "^24.9.0",
-  },
-  "jest": {
-    "moduleFileExtensions": ["js"]
+const cloudwatch = require('@aws-cdk/aws-cloudwatch');
+const sqs = require('@aws-cdk/aws-sqs');
+const { Construct, Duration } = require('@aws-cdk/core');
+
+class DeadLetterQueue extends sqs.Queue {
+  
+  constructor(scope, id) {
+    super(scope, id);
+
+    // Add the alarm
+    this.messagesInQueueAlarm = new cloudwatch.Alarm(this, 'Alarm', {
+      alarmDescription: 'There are messages in the Dead Letter Queue',
+      evaluationPeriods: 1,
+      threshold: 1,
+      metric: this.metricApproximateNumberOfMessagesVisible(),
+    });
   }
 }
+
+module.exports = { DeadLetterQueue }
 ```
 
-## Snapshot tests<a name="testing_snapshot"></a>
-
-Add a snapshot test by placing the following code in `test/dead-letter-queue.test.ts`\.
-
-```
-import { SynthUtils } from '@aws-cdk/assert';
-import { Stack } from '@aws-cdk/core';
-
-import * as dlq from '../lib/index';
-
-test('dlq creates an alarm', () => {
-  const stack = new Stack();
-  new dlq.DeadLetterQueue(stack, 'DLQ');
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
-});
-```
-
-To build the project and run the test, issue these commands\.
+------
+#### [ Python ]
 
 ```
-npm run build && npm test
+class DeadLetterQueue(sqs.Queue):
+    def __init__(self, scope: cdk.Construct, id: str):
+        super().__init__(scope, id)
+
+        self.messages_in_queue_alarm = cloudwatch.Alarm(
+            self,
+            "Alarm",
+            alarm_description="There are messages in the Dead Letter Queue.",
+            evaluation_periods=1,
+            threshold=1,
+            metric=self.metric_approximate_number_of_messages_visible(),
+        )
 ```
 
-The output from Jest indicates that it has run the test and recorded a snapshot\.
+------
+#### [ Java ]
 
 ```
-PASS  test/dead-letter-queue.test.js
- ✓ dlq creates an alarm (55ms)
- › 1 snapshot written.
-Snapshot Summary
-› 1 snapshot written
-```
+package software.amazon.samples.awscdkassertionssamples;
 
-Jest stores the snapshots in a directory named `__snapshots__` inside the project\. In this directory is a copy of the AWS CloudFormation template generated by the dead letter queue construct\. The beginning looks something like this\.
+import org.jetbrains.annotations.NotNull;
+import software.amazon.awscdk.services.cloudwatch.Alarm;
+import software.amazon.awscdk.services.cloudwatch.IAlarm;
+import software.amazon.awscdk.services.sqs.Queue;
+import software.constructs.Construct;
 
-```
-exports[`dlq creates an alarm 1`] = `
-Object {
-  "Resources": Object {
-    "DLQ581697C4": Object {
-      "Type": "AWS::SQS::Queue",
-    },
-    "DLQAlarm008FBE3A": Object {
-     "Properties": Object {
-        "AlarmDescription": "There are messages in the Dead Letter Queue",
-        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
-...
-```
+public class DeadLetterQueue extends Queue {
+    private final IAlarm messagesInQueueAlarm;
 
-### Testing the test<a name="testing_testing_test"></a>
+    public DeadLetterQueue(@NotNull Construct scope, @NotNull String id) {
+        super(scope, id);
 
-To make sure the test works, change the construct so that it generates different AWS CloudFormation output, then build and test again\. For example, add a `period` property of 1 minute to override the default of 5 minutes\. 
-
-```
-    this.messagesInQueueAlarm = new cloudwatch.Alarm(this, 'Alarm', {
-    alarmDescription: 'There are messages in the Dead Letter Queue',
-    evaluationPeriods: 1,
-    threshold: 1,
-    metric: this.metricApproximateNumberOfMessagesVisible(),
-    period: Duration.minutes(1),
-});
-```
-
-Build the project and run the tests again\.
-
-```
-npm run build && npm test
-```
-
-```
-FAIL test/dead-letter-queue.test.js
-✕ dlq creates an alarm (58ms)
-
-● dlq creates an alarm
-
-expect(received).toMatchSnapshot()
-
-Snapshot name: `dlq creates an alarm 1`
-
-- Snapshot
-+ Received
-
-@@ -19,11 +19,11 @@
-               },
-             ],
-             "EvaluationPeriods": 1,
-             "MetricName": "ApproximateNumberOfMessagesVisible",
-             "Namespace": "AWS/SQS",
-     -       "Period": 300,
-     +       "Period": 60,
-             "Statistic": "Maximum",
-             "Threshold": 1,
-           },
-           "Type": "AWS::CloudWatch::Alarm",
-         },
-
- › 1 snapshot failed.
-Snapshot Summary
- › 1 snapshot failed from 1 test suite. Inspect your code changes or run `npm test -- -u` to update them.
-```
-
-### Accepting the new snapshot<a name="testing_accepting"></a>
-
-Jest has told us that the `Period` attribute of the synthesized AWS CloudFormation template has changed from 300 to 60\. To accept the new snapshot, issue:
-
-```
-npm test -- -u
-```
-
-Now we can run the test again and see that it passes\.
-
-### Limitations<a name="testing_limitations"></a>
-
-Snapshot tests are easy to create and are a powerful backstop when refactoring\. They can serve as an early warning sign that more testing is needed\. Snapshot tests can even be useful for test\-driven development: modify the snapshot to reflect the result you're aiming for, and adjust the code until the test passes\.
-
-The chief limitation of snapshot tests is that they test the *entire* template\. Consider that our dead letter queue uses the default retention period\. To give ourselves as much time as possible to recover the undelivered messages, for example, we might set the queue's retention time to the maximum—14 days—by changing the code as follows\.
-
-```
-export class DeadLetterQueue extends sqs.Queue {
-  public readonly messagesInQueueAlarm: cloudwatch.IAlarm;
-
-  constructor(scope: Construct, id: string) {
-    super(scope, id, {
-      // Maximum retention period
-      retentionPeriod: Duration.days(14)
-    });
-```
-
-When we run the test again, it breaks\. The name we've given the test hints that we are interested mainly in testing whether the alarm is created, but the snapshot test also tests whether the queue is created with default options—along with literally everything else about the synthesized template\. This problem is magnified when a project contains many constructs, each with a snapshot test\.
-
-## Fine\-grained assertions<a name="testing_fine_grained"></a>
-
-To avoid needing to review every snapshot whenever you make a change, use the custom assertions in the `@aws-cdk/assert/jest` module to write fine\-grained tests that verify only part of the construct's behavior\. For example, the test we called "dlq creates an alarm" in our example really should assert only that an alarm is created with the appropriate metric\.
-
-The [AWS::CloudWatch::Alarm](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-cw-alarm.html) resource specification reveals that we're interested in the properties Namespace, MetricName and Dimensions\. We'll use the `expect(stack).toHaveResource(...)` assertion, which is in the `@aws-cdk/assert/jest` module, to make sure these properties have the appropriate values\. 
-
-Replace the code in `test/dead-letter-queue.test.ts` with the following\.
-
-```
-import { Stack } from '@aws-cdk/core';
-import '@aws-cdk/assert/jest';
-
-import * as dlq from '../lib/index';
-
-test('dlq creates an alarm', () => {
-  const stack = new Stack();
-
-  new dlq.DeadLetterQueue(stack, 'DLQ');
-
-  expect(stack).toHaveResource('AWS::CloudWatch::Alarm', {
-    MetricName: "ApproximateNumberOfMessagesVisible",
-    Namespace: "AWS/SQS",
-    Dimensions: [
-      {
-        Name: "QueueName",
-        Value: { "Fn::GetAtt": [ "DLQ581697C4", "QueueName" ] }
-      }
-    ],
-  });
-});
-
-test('dlq has maximum retention period', () => {
-  const stack = new Stack();
-
-  new dlq.DeadLetterQueue(stack, 'DLQ');
-
-  expect(stack).toHaveResource('AWS::SQS::Queue', {
-    MessageRetentionPeriod: 1209600
-  });
-});
-```
-
-There are now two tests\. The first checks that the dead letter queue creates an alarm on its `ApproximateNumberOfMessagesVisible` metric\. The second verifies the message retention period\.
-
-Again, build the project and run the tests\.
-
-```
-npm run build && npm test
-```
-
-**Note**  
-Since we've replaced the snapshot test, the first time we run the new tests, Jest reminds us that we have a snapshot that is not used by any test\. Issue `npm test -- -u` to tell Jest to clean it up\.
-
-## Validation tests<a name="testing_validation"></a>
-
-Suppose we want to make the dead letter queue's retention period configurable\. Of course, we also want to make sure that the value provided by the user of the construct is within an allowable range\. We can write a test to make sure that the validation logic works: pass in invalid values and see what happens\.
-
-First, create a `props` interface for the construct\. 
-
-```
-export interface DeadLetterQueueProps {
-    /**
-     * The amount of days messages will live in the dead letter queue
-     *
-     * Cannot exceed 14 days.
-     *
-     * @default 14
-     */
-    retentionDays?: number;
-}
-
-export class DeadLetterQueue extends sqs.Queue {
-  public readonly messagesInQueueAlarm: cloudwatch.IAlarm;
-
-  constructor(scope: Construct, id: string, props: DeadLetterQueueProps = {}) {
-    if (props.retentionDays !== undefined && props.retentionDays > 14) {
-      throw new Error('retentionDays may not exceed 14 days');
+        this.messagesInQueueAlarm = Alarm.Builder.create(this, "Alarm")
+                .alarmDescription("There are messages in the Dead Letter Queue.")
+                .evaluationPeriods(1)
+                .threshold(1)
+                .metric(this.metricApproximateNumberOfMessagesVisible())
+                .build();
     }
 
-    super(scope, id, {
-        // Given retention period or maximum
-        retentionPeriod: Duration.days(props.retentionDays || 14)
-    });
-    // ...
-  }
+    public IAlarm getMessagesInQueueAlarm() {
+        return messagesInQueueAlarm;
+    }
 }
 ```
 
-To test that the new feature actually does what we expect, we write two tests:
-+ One that makes sure the configured value ends up in the template
-+ One that supplies an incorrect value to the construct and checks it raises the expected error
-
-Add the following to `test/dead-letter-queue.test.ts`\.
+------
+#### [ C\# ]
 
 ```
-test('retention period can be configured', () => {
-  const stack = new Stack();
+using Amazon.CDK;
+using Amazon.CDK.AWS.SQS;
+using Amazon.CDK.AWS.CloudWatch;
 
-  new dlq.DeadLetterQueue(stack, 'DLQ', {
-    retentionDays: 7
-  });
+namespace AwsCdkAssertionSamples
+{
+    public class DeadLetterQueue : Queue
+    {
+        public IAlarm messagesInQueueAlarm;
 
-  expect(stack).toHaveResource('AWS::SQS::Queue', {
-    MessageRetentionPeriod: 604800
-  });
-});
+        public DeadLetterQueue(Construct scope, string id) : base(scope, id)
+        {
+            messagesInQueueAlarm = new Alarm(this, "Alarm", new AlarmProps
+            { 
+                AlarmDescription = "There are messages in the Dead Letter Queue.",
+                EvaluationPeriods = 1,
+                Threshold = 1,
+                Metric = this.MetricApproximateNumberOfMessagesVisible()
+            });
+        }
+    }
+}
+```
 
-test('configurable retention period cannot exceed 14 days', () => {
-  const stack = new Stack();
+------
 
-  expect(() => {
-    new dlq.DeadLetterQueue(stack, 'DLQ', {
-      retentionDays: 15
+We can test it like this:
+
+------
+#### [ TypeScript ]
+
+```
+import { Match, Template } from "@aws-cdk/assertions";
+import * as cdk from "@aws-cdk/core";
+import { DeadLetterQueue } from "../lib/dead-letter-queue";
+
+describe("DeadLetterQueue", () => {
+  test("creates an alarm", () => {
+    const stack = new cdk.Stack();
+    new DeadLetterQueue(stack, "DeadLetterQueue");
+
+    const template = Template.fromStack(stack);
+    template.hasResourceProperties("AWS::CloudWatch::Alarm", {
+      Namespace: "AWS/SQS",
+      MetricName: "ApproximateNumberOfMessagesVisible",
+      Dimensions: [
+        {
+          Name: "QueueName",
+          Value: Match.anyValue(),
+        },
+      ],
     });
-  }).toThrowError(/retentionDays may not exceed 14 days/);
+  });
 });
 ```
 
-Run the tests to confirm the construct behaves as expected\.
+------
+#### [ JavaScript ]
 
 ```
-npm run build && npm test
+const { Match, Template } = require("@aws-cdk/assertions");
+const cdk = require("@aws-cdk/core");
+const { DeadLetterQueue } = require("../lib/dead-letter-queue");
+
+describe("DeadLetterQueue", () => {
+  test("creates an alarm", () => {
+    const stack = new cdk.Stack();
+    new DeadLetterQueue(stack, "DeadLetterQueue");
+
+    const template = Template.fromStack(stack);
+    template.hasResourceProperties("AWS::CloudWatch::Alarm", {
+      Namespace: "AWS/SQS",
+      MetricName: "ApproximateNumberOfMessagesVisible",
+      Dimensions: [
+        {
+          Name: "QueueName",
+          Value: Match.anyValue(),
+        },
+      ],
+    });
+  });
+});
 ```
 
-```
-PASS  test/dead-letter-queue.test.js
-  ✓ dlq creates an alarm (62ms)
-  ✓ dlq has maximum retention period (14ms)
-  ✓ retention period can be configured (18ms)
-  ✓ configurable retention period cannot exceed 14 days (1ms)
+------
+#### [ Python ]
 
-Test Suites: 1 passed, 1 total
-Tests:       4 passed, 4 total
 ```
+from aws_cdk import core as cdk
+from aws_cdk.assertions import Match, Template
+
+from app.dead_letter_queue import DeadLetterQueue
+
+def test_creates_alarm():
+    stack = cdk.Stack()
+    DeadLetterQueue(stack, "DeadLetterQueue")
+
+    template = Template.from_stack(stack)
+    template.has_resource_properties(
+        "AWS::CloudWatch::Alarm",
+        {
+            "Namespace": "AWS/SQS",
+            "MetricName": "ApproximateNumberOfMessagesVisible",
+            "Dimensions": [
+                {
+                    "Name": "QueueName",
+                    "Value": Match.any_value(),
+                },
+            ],
+        },
+    )
+```
+
+------
+#### [ Java ]
+
+```
+package software.amazon.samples.awscdkassertionssamples;
+
+import org.junit.jupiter.api.Test;
+import software.amazon.awscdk.assertions.Match;
+import software.amazon.awscdk.assertions.Template;
+import software.amazon.awscdk.core.Stack;
+
+import java.util.Collections;
+import java.util.Map;
+
+public class DeadLetterQueueTest {
+    @Test
+    public void testCreatesAlarm() {
+        final Stack stack = new Stack();
+        new DeadLetterQueue(stack, "DeadLetterQueue");
+
+        final Template template = Template.fromStack(stack);
+        template.hasResourceProperties("AWS::CloudWatch::Alarm", Map.of(
+                "Namespace", "AWS/SQS",
+                "MetricName", "ApproximateNumberOfMessagesVisible",
+                "Dimensions", Collections.singletonList(Map.of(
+                        "Name", "QueueName",
+                        "Value", Match.anyValue()
+                ))
+        ));
+    }
+}
+```
+
+------
+#### [ C\# ]
+
+```
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+using Amazon.CDK;
+using Amazon.CDK.Assertions;
+using AwsCdkAssertionSamples;
+
+using ObjectDict = System.Collections.Generic.Dictionary<string, object>;
+using StringDict = System.Collections.Generic.Dictionary<string, string>;
+
+namespace TestProject1
+{
+    [TestClass]
+    public class ProcessorStackTest
+
+    [TestClass]
+    public class DeadLetterQueueTest
+    {
+    [TestMethod]
+        public void TestCreatesAlarm()
+        {
+            var stack = new Stack();
+            new DeadLetterQueue(stack, "DeadLetterQueue");
+
+            var template = Template.FromStack(stack);
+            template.HasResourceProperties("AWS::CloudWatch::Alarm", new ObjectDict
+            {
+                { "Namespace", "AWS/SQS" },
+                { "MetricName", "ApproximateNumberOfMessagesVisible" },
+                { "Dimensions", new object[]
+                    {
+                        new ObjectDict
+                        {
+                            { "Name", "QueueName" },
+                            { "Value", Match.AnyValue() }
+                        }
+                    }
+                }
+            });
+        }
+    }
+}
+```
+
+------
 
 ## Tips for tests<a name="testing_tips"></a>
 
-Remember, your tests will live just as long as the code they test, and be read and modified just as often, so it pays to take a moment to consider how best to write them\. Don't copy and paste setup lines or common assertions, for example; refactor this logic into helper functions\. Use good names that reflect what each test actually tests\.
+Remember, your tests will live just as long as the code they test, and be read and modified just as often, so it pays to take a moment to consider how best to write them\. Don't copy and paste setup lines or common assertions, for example; refactor this logic into fixtures or helper functions\. Use good names that reflect what each test actually tests\.
 
-Don't assert too much in one test\. Preferably, a test should test one and only one behavior\. If you accidentally break that behavior, exactly one test should fail, and the name of the test should tell you exactly what failed\. This is more an ideal to be striven for, however; sometimes you will unavoidably \(or inadvertently\) write tests that test more than one behavior\. Snapshot tests are, for reasons we've already described, especially prone to this problem, so use them sparingly\.
+Don't try to do too much in one test\. Preferably, a test should test one and only one behavior\. If you accidentally break that behavior, exactly one test should fail, and the name of the test should tell you exactly what failed\. This is more an ideal to be striven for, however; sometimes you will unavoidably \(or inadvertently\) write tests that test more than one behavior\. Snapshot tests are, for reasons we've already described, especially prone to this problem, so use them sparingly\.
