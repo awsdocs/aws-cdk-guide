@@ -391,7 +391,7 @@ The CDK Toolkit runs your app and synthesizes fresh AWS CloudFormation templates
 
 See `cdk deploy --help` for all available options\. A few of the most\-frequently\-used options are covered below\.
 
-### Disabling rollback<a name="w363aac27b7c33c11"></a>
+### Disabling rollback<a name="cli-deploy-norollback"></a>
 
 One of AWS CloudFormation's marquee features is its ability to roll back changes so that deployments are atomic—they either succeed or fail as a whole\. The AWS CDK inherits this capability because it synthesizes and deploys AWS CloudFormation templates\. 
 
@@ -399,16 +399,33 @@ Rollback makes sure your resources are in a consistent state at all times, which
 
 For this reason, the CDK Toolkit; allows you to disable rollback by adding `--no-rollback` to your `cdk deploy` command\. With this flag, failed deployments are not rolled back\. Instead, resources deployed before the failed resource remain in place, and the next deployment starts with the failed resource\. You'll spend a lot less time waiting for deployments and a lot more time developing your infrastructure\.
 
-### Hot swapping<a name="w363aac27b7c33c13"></a>
+### Hot swapping<a name="cli-deploy-hotswap"></a>
 
 Use the `--hotswap` flag with `cdk deploy` to attempt to update your AWS resources directly instead of generating a AWS CloudFormation changeset and deploying it\. Deployment falls back to AWS CloudFormation deployment if hot swapping is not possible\.
 
 Currently hot swapping supports only Lambda functions\. The `--hotswap` flag also disables rollback \(i\.e\., implies `--no-rollback`\)\.
 
 **Important**  
-Hot swapping is not recommended for production environments\.
+Hot\-swapping is not recommended for production deployments\.
 
-### Specifying AWS CloudFormation parameters<a name="w363aac27b7c33c15"></a>
+### Watch mode<a name="cli-deploy-watch"></a>
+
+The CDK Toolkit's watch mode \(`cdk watch`\) continuously monitors your CDK app's source files and assets for changes and immediately performs a deployment of the specified stacks when a change is detected\.
+
+By default, these deployments use the `--hotswap` flag, which fast\-tracks deployment of changes to Lambda functions, and falls back to deploying through AWS CloudFormation if you have changed infrastructure configuration\. To have `cdk watch` always perform full AWS CloudFormation deployments, add the `--no-hotswap` flag to `cdk watch`\.
+
+Any changes made while `cdk watch` is already performing a deployment will be combined into a single deployment, which will begin as soon as the in\-progress deployment is complete\.
+
+Watch mode uses the `"watch"` key in the project's `cdk.json` to determine which files to monitor\. By default, these files are your application files and assets, but this can be changed by modifying the `"include"` and `"exclude"` entries in the `"watch"` key\.
+
+`cdk watch` executes the `"build"` command from `cdk.json` to build your app before synthesis\. If your deployment requires any commands to build or package your Lambda code \(or anything else that's not in your CDK app proper\), add it here\.
+
+Wildcards, both `*` and `**`, can be used in the `"watch"` and `"build"` keys\. Each path is interpreted relative to the parent directory of `cdk.json`\.
+
+**Important**  
+Watch mode is not recommended for production deployments\.
+
+### Specifying AWS CloudFormation parameters<a name="w363aac27b7c33c17"></a>
 
 The AWS CDK Toolkit supports specifying AWS CloudFormation [parameters](parameters.md) at deployment\. You may provide these on the command line following the `--parameters` flag\.
 
@@ -430,7 +447,7 @@ cdk deploy MyStack YourStack --parameters MyStack:uploadBucketName=UploadBucket 
 
 By default, the AWS CDK retains values of parameters from previous deployments and uses them in later deployments if they are not specified explicitly\. Use the `--no-previous-parameters` flag to require all parameters to be specified\.
 
-### Specifying outputs file<a name="w363aac27b7c33c17"></a>
+### Specifying outputs file<a name="w363aac27b7c33c19"></a>
 
 If your stack declares AWS CloudFormation outputs, these are normally displayed on the screen at the conclusion of deployment\. To write them to a file in JSON format, use the `--outputs-file` flag\.
 
@@ -542,6 +559,8 @@ Commands:
 
   cdk deploy [STACKS..]           Deploys the stack(s) named STACKS into your
                                   AWS account
+
+  cdk watch [STACKS..]            Shortcut for 'deploy --watch'
 
   cdk destroy [STACKS..]          Destroy the stack(s) named STACKS
 
@@ -805,9 +824,21 @@ Options:
       --progress             Display mode for stack activity events
                                              [string] [choices: "bar", "events"]
 
-      --rollback             Rollback stack to stable state on failure (iterate
-                             more rapidly with --no-rollback or -R)
-                                                       [boolean] [default: true]
+      --rollback             Rollback stack to stable state on failure. Defaults
+                             to 'true', iterate more rapidly with --no-rollback
+                             or -R. Note: do **not** disable this flag for
+                             deployments with resource replacements, as that
+                             will always fail                          [boolean]
+
+      --hotswap              Attempts to perform a 'hotswap' deployment, which
+                             skips CloudFormation and updates the resources
+                             directly, and falls back to a full deployment if
+                             that is not possible. Do not use this in production
+                             environments                              [boolean]
+
+      --watch                Continuously observe the project files, and deploy
+                             the given stack(s) automatically when changes are
+                             detected. Implies --hotswap by default    [boolean]
 ```
 
 ### `cdk destroy`<a name="w363aac27b7c37b7b9"></a>
