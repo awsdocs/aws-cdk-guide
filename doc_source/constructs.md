@@ -555,7 +555,7 @@ Another common pattern is for AWS constructs to set one of the resource's attrib
 ```
 const jobsQueue = new sqs.Queue(this, 'jobs');
 const createJobLambda = new lambda.Function(this, 'create-job', {
-  runtime: lambda.Runtime.NODEJS_10_X,
+  runtime: lambda.Runtime.NODEJS_14_X,
   handler: 'index.handler',
   code: lambda.Code.fromAsset('./create-job-lambda-code'),
   environment: {
@@ -570,7 +570,7 @@ const createJobLambda = new lambda.Function(this, 'create-job', {
 ```
 const jobsQueue = new sqs.Queue(this, 'jobs');
 const createJobLambda = new lambda.Function(this, 'create-job', {
-  runtime: lambda.Runtime.NODEJS_10_X,
+  runtime: lambda.Runtime.NODEJS_14_X,
   handler: 'index.handler',
   code: lambda.Code.fromAsset('./create-job-lambda-code'),
   environment: {
@@ -585,7 +585,7 @@ const createJobLambda = new lambda.Function(this, 'create-job', {
 ```
 jobs_queue = sqs.Queue(self, "jobs")
 create_job_lambda = lambda_.Function(self, "create-job",
-    runtime=lambda_.Runtime.NODEJS_10_X,
+    runtime=lambda_.Runtime.NODEJS_14_X,
     handler="index.handler",
     code=lambda_.Code.from_asset("./create-job-lambda-code"),
     environment=dict(
@@ -614,7 +614,7 @@ Function createJobLambda = Function.Builder.create(this, "create-job")
 var jobsQueue = new Queue(this, "jobs");
 var createJobLambda = new Function(this, "create-job", new FunctionProps
 {
-    Runtime = Runtime.NODEJS_10_X,
+    Runtime = Runtime.NODEJS_14_X,
     Handler = "index.handler",
     Code = Code.FromAsset(@".\create-job-lambda-code"),
     Environment = new Dictionary<string, string>

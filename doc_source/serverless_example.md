@@ -285,7 +285,7 @@ export class WidgetService extends core.Construct {
     const bucket = new s3.Bucket(this, "WidgetStore");
 
     const handler = new lambda.Function(this, "WidgetHandler", {
-      runtime: lambda.Runtime.NODEJS_10_X, // So we can use async in widget.js
+      runtime: lambda.Runtime.NODEJS_14_X, // So we can use async in widget.js
       code: lambda.Code.fromAsset("resources"),
       handler: "widgets.main",
       environment: {
@@ -327,7 +327,7 @@ class WidgetService extends core.Construct {
     const bucket = new s3.Bucket(this, "WidgetStore");
 
     const handler = new lambda.Function(this, "WidgetHandler", {
-      runtime: lambda.Runtime.NODEJS_10_X, // So we can use async in widget.js
+      runtime: lambda.Runtime.NODEJS_14_X, // So we can use async in widget.js
       code: lambda.Code.fromAsset("resources"),
       handler: "widgets.main",
       environment: {
@@ -371,7 +371,7 @@ class WidgetService(core.Construct):
         bucket = s3.Bucket(self, "WidgetStore")
 
         handler = lambda_.Function(self, "WidgetHandler",
-                    runtime=lambda_.Runtime.NODEJS_10_X,
+                    runtime=lambda_.Runtime.NODEJS_14_X,
                     code=lambda_.Code.from_asset("resources"),
                     handler="widgets.main",
                     environment=dict(
@@ -418,7 +418,7 @@ public class WidgetService extends Construct {
         Bucket bucket = new Bucket(this, "WidgetStore");
 
         Function handler = Function.Builder.create(this, "WidgetHandler")
-            .runtime(Runtime.NODEJS_10_X)
+            .runtime(Runtime.NODEJS_14_X)
             .code(Code.fromAsset("resources"))
             .handler("widgets.main")
             .environment(new HashMap<String, String>() {{
@@ -464,7 +464,7 @@ namespace MyWidgetService
 
             var handler = new Function(this, "WidgetHandler", new FunctionProps
             {
-                Runtime = Runtime.NODEJS_10_X,
+                Runtime = Runtime.NODEJS_14_X,
                 Code = Code.FromAsset("resources"),
                 Handler = "widgets.main",
                 Environment = new Dictionary<string, string>

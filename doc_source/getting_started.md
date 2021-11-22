@@ -118,7 +118,7 @@ TypeScript was the first language supported by the AWS CDK, and much AWS CDK exa
 
 Here's what you need to install to use the AWS CDK\.
 
-All AWS CDK developers, even those working in Python, Java, or C\#, need [Node\.js](https://nodejs.org/en/download/) 10\.13\.0 or later\. All supported languages use the same back end, which runs on Node\.js\. We recommend a version in [active long\-term support](https://nodejs.org/en/about/releases/), which, at this writing, is the latest 14\.x release\. Your organization may have a different recommendation\.
+All AWS CDK developers, even those working in Python, Java, or C\#, need [Node\.js](https://nodejs.org/en/download/) 10\.13\.0 or later\. All supported languages use the same back end, which runs on Node\.js\. We recommend a version in [active long\-term support](https://nodejs.org/en/about/releases/), which, at this writing, is the latest 16\.x release\. Your organization may have a different recommendation\.
 
 **Important**  
 Node\.js versions 13\.0\.0 through 13\.6\.0 are not compatible with the AWS CDK due to compatibility issues with its dependencies\.
