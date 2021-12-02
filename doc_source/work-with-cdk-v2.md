@@ -4,7 +4,7 @@ Version 2 of the AWS CDK, now Generally Available, provides an improved developm
 
 CDK v1 will continue to be fully supported until June 2, 2022, at which time it will enter maintenance\. During the maintenance phase, CDK v1 will receive critical bug fixes and security patches only\. New features will be developed exclusively for CDK v2 during the v1 maintenance phase\. On June 2, 2023, support will end entirely for AWS CDK v1\. For more details, see [AWS CDK Maintenance Policy](https://github.com/aws/aws-cdk-rfcs/blob/master/text/0079-cdk-2.0.md#aws-cdk-maintenance-policy)\.
 
-For information on migrating your apps to AWS CDK v2, see [Migrating to AWS CDK v2](../../v2/migrating_v2.html)\. 
+For information on migrating your apps to AWS CDK v2, see [Migrating to AWS CDK v2](../../v2/guide/migrating-v2.html)\.
 
 ## CDK Toolkit v2 compatibility<a name="work-with-cdk-v2-cli"></a>
 
