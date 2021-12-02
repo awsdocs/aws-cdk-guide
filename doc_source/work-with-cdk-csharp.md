@@ -12,7 +12,7 @@ To work with the AWS CDK, you must have an AWS account and credentials and have 
 
 C\# AWS CDK applications require \.NET Core v3\.1 or later, [available here](https://dotnet.microsoft.com/download/dotnet-core/3.1)\.
 
-The \.NET Standard toolchain includes `dotnet`, a command\-line tool for building and running \.NET applications and managing NuGet packages\. Even if you work mainly in Visual Studio, this command can be useful for batch operations and for installing AWS Construct Library packages\.
+The \.NET toolchain includes `dotnet`, a command\-line tool for building and running \.NET applications and managing NuGet packages\. Even if you work mainly in Visual Studio, this command can be useful for batch operations and for installing AWS Construct Library packages\.
 
 ## Creating a project<a name="csharp-newproject"></a>
 
@@ -156,7 +156,7 @@ string MimeType = props?.MimeType ?? "text/plain";
 
 The AWS CDK automatically compiles your app before running it\. However, it can be useful to build your app manually to check for errors and run tests\. You can do this by pressing F6 in Visual Studio or by issuing `dotnet build src` from the command line, where `src` is the directory in your project directory that contains the Visual Studio Solution \(`.sln`\) file\.
 
-The [stacks](stacks.md) defined in your AWS CDK app can be deployed individually or together using the commands below\. Generally, you should be in your project's main directory when you issue them\.
+The [stacks](stacks.md) defined in your AWS CDK app can be synthesized and deployed individually or together using the commands below\. Generally, you should be in your project's main directory when you issue them\.
 + `cdk synth`: Synthesizes a AWS CloudFormation template from one or more of the stacks in your AWS CDK app\.
 + `cdk deploy`: Deploys the resources defined by one or more of the stacks in your AWS CDK app to AWS\.
 

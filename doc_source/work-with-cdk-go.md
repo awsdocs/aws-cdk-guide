@@ -2,7 +2,7 @@
 
 The Go language binding for the AWS CDK is now available as a Developer Preview\. It is not suitable for production use and may undergo significant changes before being designated stable\. To follow development, see the [Project Board](https://github.com/aws/jsii/projects/3) on GitHub\. Please [report any issues](https://github.com/aws/aws-cdk/issues/new/choose) you encounter\.
 
-Unlike the other languages the CDK supports, Go is not a traditional object\-oriented programming language\. Go uses composition where other languages often leverage inheritance\. We have tried to employ idiomatic Go approaches as much as possible, but there are places where the CDK charts its own path\. 
+Unlike the other languages the CDK supports, Go is not a traditional object\-oriented programming language\. Go uses composition where other languages often leverage inheritance\. We have tried to employ idiomatic Go approaches as much as possible, but there are places where the CDK charts its own course\. 
 
 This topic explains the ins and outs of working with the AWS CDK in Go\. See the [announcement blog post](https://aws.amazon.com/blogs/developer/getting-started-with-the-aws-cloud-development-kit-and-go/) for a walkthrough of a simple Go project for the AWS CDK\.
 
@@ -99,7 +99,7 @@ The AWS CDK automatically compiles your app before running it\. However, it can 
 
 Run any tests you've written by running `go test` at a command prompt\.
 
-The [stacks](stacks.md) defined in your AWS CDK app can be deployed individually or together using the commands below\. Generally, you should be in your project's main directory when you issue them\.
+The [stacks](stacks.md) defined in your AWS CDK app can be synthesized and deployed individually or together using the commands below\. Generally, you should be in your project's main directory when you issue them\.
 + `cdk synth`: Synthesizes a AWS CloudFormation template from one or more of the stacks in your AWS CDK app\.
 + `cdk deploy`: Deploys the resources defined by one or more of the stacks in your AWS CDK app to AWS\.
 

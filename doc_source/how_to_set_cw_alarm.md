@@ -111,7 +111,7 @@ var metric = new Metric(this, "Metric", new MetricProps
 
 ## Creating the alarm<a name="how_to_set_cw_alarm_create"></a>
 
-Once you have a metric, either an existing one or one you defined, you can create an alarm\. In this example, the alarm is raised when there are more than 100 of your metric in two of the last three seconds\. You can use comparisons such as less\-than in your alarms via the `comparisonOperator` property; greater\-than\-or\-equal\-to is the AWS CDK default, so we don't need to psecify it\.
+Once you have a metric, either an existing one or one you defined, you can create an alarm\. In this example, the alarm is raised when there are more than 100 of your metric in two of the last three seconds\. You can use comparisons such as less\-than in your alarms via the `comparisonOperator` property; greater\-than\-or\-equal\-to is the AWS CDK default, so we don't need to specify it\.
 
 Assuming the metric is the **ApproximateNumberOfMessagesVisible** metric from an Amazon SQS queue, it would raise when 100 messages are visible in the queue in two of the last three seconds\.
 

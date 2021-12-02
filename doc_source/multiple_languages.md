@@ -14,14 +14,14 @@ For more details on working with the AWS CDK in its supported programming langua
 ------
 #### [ TypeScript/JavaScript ]
 
-TypeScript supports importing either an entire module, or individual objects from a module\. 
+TypeScript supports importing either an entire namespace, or individual objects from a namespace\. Each namespace includes constructs and other classes for use with a given AWS service\.
 
 ```
-// Import entire module as s3 into current namespace
-import * as s3 from '@aws-cdk/aws-s3';
+// Import namespace as s3 into current namespace
+import * as s3 from '@aws-cdk-lib/aws-s3';
 
-// Import an entire module using Node.js require() (import * as s3 generally preferred)
-const s3 = require('@aws-cdk/aws-s3');
+// Import namespace using Node.js require() (import * as s3 generally preferred)
+const s3 = require('@aws-cdk-lib/aws-s3');
 
 // TypeScript version of require() (again, import * as s3 generally preferred)
 import s3 = require('@aws-cdk/aws-s3');

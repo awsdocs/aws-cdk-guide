@@ -7,6 +7,15 @@ The table below represents significant documentation milestones\. We fix errors 
 
 | Change | Description | Date | 
 | --- |--- |--- |
+| [AWS CDK v2 release](#doc-history) | Improvements to CDK v1 Developer Guide to coincide with the release of CDK v2 and its documentation\. | December 4, 2021 | 
+| [`cdk watch`](#doc-history) | Add description of `cdk watch` command for incremental deployments\. | November 19, 2021 | 
+| [Testing with `assertions`](#doc-history) | Revise testing topic to use new `assertions` library\. | November 17, 2021 | 
+| [Experimental modules](#doc-history) | Explain how experimental modules work with CDK v2\. | October 28, 2021 | 
+| [Faster local development](#doc-history) | Add information on `--no-rollback` and `--hotswap` options for accelerated local development\. | October 7, 2021 | 
+| [Add local tooling information](#doc-history) | Update TypeScript and JavaScript topics with information on using locally\-installed tools \(`cdk`, `tsc`\)\. | September 28, 2021 | 
+| [Update CDK Pipelines API](#doc-history) | Update CDK Pipelines topic to use new API\. | August 24, 2021 | 
+| [CloudFormation Public Registry](#doc-history) | Add topic about using resource definitions from the CloudFormation Public Registry with the AWS CDK\. | June 24, 2021 | 
+| [Best Practices topic](#doc-history) | Add topic about best practices for developing CDK apps\. | June 10, 2021 | 
 | [Go developer preview](#doc-history) | Add information about Go language support \(in developer preview\) including a "Working with the CDK in Go" topic\. | April 19, 2021 | 
 | [Import or migrate AWS CloudFormation template](#doc-history) | Add description of the new `cloudformation-include.CfnInclude` class, a powerful way to import and migrate AWS CloudFormation templates, or to vend them as AWS CDK constructs\. | October 15, 2020 | 
 | [Add construct tree section](#doc-history) | Information about the construct tree and its relation to the constructs you define in your AWS CDK app\. | October 5, 2020 | 

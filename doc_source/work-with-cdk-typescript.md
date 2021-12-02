@@ -8,7 +8,7 @@ You can use any editor or IDE; many AWS CDK developers use [Visual Studio Code](
 
 To work with the AWS CDK, you must have an AWS account and credentials and have installed Node\.js and the AWS CDK Toolkit\. See [AWS CDK Prerequisites](work-with.md#work-with-prerequisites)\.
 
-You also need TypeScript itself\. If you don't already have it, you can install it using `npm`\.
+You also need TypeScript itself \(version 2\.7 or later\)\. If you don't already have it, you can install it using `npm`\.
 
 ```
 npm install -g typescript
@@ -43,24 +43,24 @@ The CDK includes dependencies for both TypeScript and the CDK Toolkit in the Typ
 
 | Operation | Use global tools | Use local tools | 
 | --- |--- |--- |
-| Initialize project | `cdk init --language typescript` | `npx cdk init --language typescript` | 
+| Initialize project | `cdk init --language typescript` | `npx aws-cdk init --language typescript` | 
 | --- |--- |--- |
 | Build | `tsc` | `npm run build` | 
 | --- |--- |--- |
-| Run CDK Toolkit command | `cdk ...` | `npm run cdk ...` or `npx cdk ...` | 
+| Run CDK Toolkit command | `cdk ...` | `npm run cdk ...` or `npx aws-cdk ...` | 
 | --- |--- |--- |
 
-`npx cdk` runs the version of the CDK Toolkit installed locally in the current project, if one exists, falling back to the global installation, if any\. If no global installation exists, `npx` downloads a temporary copy of the CDK Toolkit and runs that\. You may specify an arbitrary version of the CDK Toolkit using the `@` syntax: `npx aws-cdk@1.120 --version` prints `1.120.0`\. 
+`npx aws-cdk` runs the version of the CDK Toolkit installed locally in the current project, if one exists, falling back to the global installation, if any\. If no global installation exists, `npx` downloads a temporary copy of the CDK Toolkit and runs that\. You may specify an arbitrary version of the CDK Toolkit using the `@` syntax: `npx aws-cdk@1.120 --version` prints `1.120.0`\. 
 
 **Tip**  
 Set up an alias so you can use the `cdk` command with a local CDK Toolkit installation\.  
 
 ```
-alias cdk=npx cdk
+alias cdk=npx aws-cdk
 ```
 
 ```
-doskey cdk=npx cdk $*
+doskey cdk=npx aws-cdk $*
 ```
 
 ## Managing AWS Construct Library modules<a name="typescript-managemodules"></a>
@@ -139,7 +139,7 @@ Node\.js cannot run TypeScript directly; instead, your application is converted 
 
 The AWS CDK automatically does this whenever it needs to run your app\. However, it can be useful to compile manually to check for errors and to run tests\. To compile your TypeScript app manually, issue `npm run build`\. You may also issue `npm run watch` to enter watch mode, in which the TypeScript compiler automatically rebuilds your app whenever you save changes to a source file\.
 
-The [stacks](stacks.md) defined in your AWS CDK app can be deployed individually or together using the commands below\. Generally, you should be in your project's main directory when you issue them\.
+The [stacks](stacks.md) defined in your AWS CDK app can be synthesized and deployed individually or together using the commands below\. Generally, you should be in your project's main directory when you issue them\.
 + `cdk synth`: Synthesizes a AWS CloudFormation template from one or more of the stacks in your AWS CDK app\.
 + `cdk deploy`: Deploys the resources defined by one or more of the stacks in your AWS CDK app to AWS\.
 

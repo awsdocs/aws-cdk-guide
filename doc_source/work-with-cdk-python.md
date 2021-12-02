@@ -70,6 +70,9 @@ python -m pip install aws-cdk.aws-s3 aws-cdk.aws-lambda
 
 Some services' Construct Library support is in more than one module\. For example, besides the `aws-cdk.aws-route53` module, there are three additional Amazon Route 53 modules, named `aws-route53-targets`, `aws-route53-patterns`, and `aws-route53resolver`\.
 
+**Note**  
+The [Python edition of the CDK API Reference](https://docs.aws.amazon.com/cdk/api/latest/python/index.html) also shows the package names\.
+
 The names used for importing AWS Construct Library modules into your Python code are similar to their package names\. Simply replace the hyphens with underscores\.
 
 ```
@@ -120,7 +123,7 @@ All AWS Construct Library modules used in your project must be the same version\
 
 In Python, `lambda` is a language keyword, so you cannot use it as a name for the AWS Lambda construct library module or Lambda functions\. The Python convention for such conflicts is to use a trailing underscore, as in `lambda_`, in the variable name\.
 
-By convention, the second argument to AWS CDK constructs is named `id`\. When writing your own stacks and constructs, calling a parameter `id` "shadows" the Python built\-in function `id()`, which returns an object's unique identifier\. This function isn't used very often, but if you should happen to need it in your construct, rename the argument, for example `id_`, or else call the built\-in function as `__builtins__.id()`\.
+By convention, the second argument to AWS CDK constructs is named `id`\. When writing your own stacks and constructs, calling a parameter `id` "shadows" the Python built\-in function `id()`, which returns an object's unique identifier\. This function isn't used very often, but if you should happen to need it in your construct, rename the argument, for example `construct_id`\.
 
 ### Arguments and properties<a name="python-props"></a>
 
@@ -183,17 +186,17 @@ class MyAspect():
 
 ### Type pitfalls<a name="python-type-pitfalls"></a>
 
-Python uses dynamic typing, where variables may refer to a value of any type\. Parameters and return values may be annotated with types, but these are "hints" and are not enforced\. This means that in Python, it is easy to pass the incorrect type of value to a AWS CDK construct\. Instead of getting a type error during build, as you would from a statically\-typed language, you may instead get a runtime error when the JSII layer \(which translates between Python and the AWS CDK's TypeScript core\) is unable to deal with the unexpected type\.
+Python uses dynamic typing, where all variables may refer to a value of any type\. Parameters and return values may be annotated with types, but these are "hints" and are not enforced\. This means that in Python, it is easy to pass the incorrect type of value to a AWS CDK construct\. Instead of getting a type error during build, as you would from a statically\-typed language, you may instead get a runtime error when the JSII layer \(which translates between Python and the AWS CDK's TypeScript core\) is unable to deal with the unexpected type\.
 
 In our experience, the type errors Python programmers make tend to fall into these categories\.
 + Passing a single value where a construct expects a container \(Python list or dictionary\) or vice versa\.
-+ Passing a value of a type associated with a Level 1 \(`CfnXxxxxx`\) construct to a higher\-level construct, or vice versa\.
++ Passing a value of a type associated with a layer 1 \(`CfnXxxxxx`\) construct to an L2 or L3 construct, or vice versa\.
 
-The AWS CDK Python modules do include type annotations, so you can use tools that support them to help with types\. If you are not using an IDE that supports these, such as [PyCharm](https://www.jetbrains.com/pycharm/), you might want to call the [MyPy](http://mypy-lang.org/) type validator as a step in your build process\. There are also runtime type checkers that can improve error messages for type\-related errors\.
+The AWS CDK Python modules include type annotations, so you can use tools that support them to help with types\. If you are not using an IDE that supports these, such as [PyCharm](https://www.jetbrains.com/pycharm/), you might want to call the [MyPy](http://mypy-lang.org/) type validator as a step in your build process\. There are also runtime type checkers that can improve error messages for type\-related errors\.
 
 ## Synthesizing and deploying<a name="python-running"></a>
 
-The [stacks](stacks.md) defined in your AWS CDK app can be deployed individually or together using the commands below\. Generally, you should be in your project's main directory when you issue them\.
+The [stacks](stacks.md) defined in your AWS CDK app can be synthesized and deployed individually or together using the commands below\. Generally, you should be in your project's main directory when you issue them\.
 + `cdk synth`: Synthesizes a AWS CloudFormation template from one or more of the stacks in your AWS CDK app\.
 + `cdk deploy`: Deploys the resources defined by one or more of the stacks in your AWS CDK app to AWS\.
 

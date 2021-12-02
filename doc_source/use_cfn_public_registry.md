@@ -42,7 +42,7 @@ To activate an extension through CloudFormation or the CDK, deploy a resource of
 + `ExecutionRoleArn` \- The ARN of the IAM role under which this extension will run\.
 + `LoggingConfig` \- The logging configuration for the extension\.
 
-The `TypeActivation` resource can be deployed by the CDK using the [https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.CfnResource.html](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.CfnResource.html) construct, as shown below for the actual etxensions\.
+The `TypeActivation` resource can be deployed by the CDK using the [https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.CfnResource.html](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.CfnResource.html) construct, as shown below for the actual extensions\.
 
 ## Adding a resource from the AWS CloudFormation Public Registry to your CDK app<a name="use_cfn_public_registry_add"></a>
 

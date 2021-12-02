@@ -1,8 +1,10 @@
 # API reference<a name="reference"></a>
 
-The [API Reference](https://docs.aws.amazon.com/cdk/api/latest) contains information about the AWS CDK libraries\.
+The [API Reference](https://docs.aws.amazon.com/cdk/api/latest) contains information about the AWS Construct Library and other APIs provided by the AWS CDK\. It is organized by module\.
 
-Each library contains information about how to use the library\. For example, the [S3](https://docs.aws.amazon.com/cdk/api/latest/docs/aws-s3-readme.html) library demonstrates how to set default encryption on an Amazon S3 bucket\.
+Each module has an overview that includes information about how to use its APIs\. For example, the [S3](https://docs.aws.amazon.com/cdk/api/latest/docs/aws-s3-readme.html) overview demonstrates how to set default encryption on an Amazon S3 bucket\.
+
+Separate versions of the API Reference are provided for TypeScript/JavaScript, Python, Java, and C\#/\.NET\.
 
 ## Versioning<a name="versioning"></a>
 
@@ -56,7 +58,7 @@ For more information about these maturity stages, see [AWS Construct Library Mod
 
 ### Language binding stability<a name="aws_construct_lib_versioning_binding"></a>
 
-From time to time, we may add support to the AWS CDK for additional programming languages\. Although the API described in all the languages is the same, the way that API is expressed varies by language and may change as the language support evolves\. For this reason, language bindings are deemed experimental for a time until they are considered ready for production use\. Currently, all supported languages are considered stable\.
+From time to time, we may add support to the AWS CDK for additional programming languages\. Although the API described in all the languages is the same, the way that API is expressed varies by language and may change as the language support evolves\. For this reason, language bindings are deemed experimental for a time until they are considered ready for production use\.
 
 
 | Language | Stability | 

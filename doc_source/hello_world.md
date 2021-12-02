@@ -389,7 +389,7 @@ You've deployed your first stack using the AWS CDK—congratulations\! But that'
 
 ## Modifying the app<a name="hello_world_tutorial_modify"></a>
 
-The AWS CDK can update your deployed resources after you modify your app\. Let's change our bucket so it can be automatically deleted when we delete the stack, which involves changing its `RemovalPolicy`\. Also, because AWS CloudFormation won't delete Amazon S3 buckets that contain any objects, we'll ask the AWS CDK to delete the objects from our bucket before destroying the bucket, via the `autoDeleteObjects` property\.\.
+The AWS CDK can update your deployed resources after you modify your app\. Let's change our bucket so it can be automatically deleted when we delete the stack, which involves changing its `RemovalPolicy`\. Also, because AWS CloudFormation won't delete Amazon S3 buckets that contain any objects, we'll ask the AWS CDK to delete the objects from our bucket before destroying the bucket, via the `autoDeleteObjects` property\.
 
 ------
 #### [ TypeScript ]
@@ -540,7 +540,7 @@ cdk deploy
 The AWS CDK warns you about the security policy changes we've already seen in the diff\. Enter y to approve the changes and deploy the updated stack\. The CDK Toolkit updates the bucket configuration as you requested\.
 
 ```
-HHelloCdkStack: deploying...
+HelloCdkStack: deploying...
 [0%] start: Publishing 4cd61014b71160e8c66fe167e43710d5ba068b80b134e9bd84508cf9238b2392:current
 [100%] success: Published 4cd61014b71160e8c66fe167e43710d5ba068b80b134e9bd84508cf9238b2392:current
 HelloCdkStack: creating CloudFormation changeset...
@@ -584,8 +584,9 @@ If we hadn't changed the bucket's `RemovalPolicy`, the stack deletion would comp
 
 Where do you go now that you've dipped your toes in the AWS CDK?
 + Try the [CDK Workshop](https://cdkworkshop.com/) for a more in\-depth tour involving a more complex project\.
-+ See the [API reference](https://docs.aws.amazon.com/cdk/api/latest/docs/aws-construct-library.html) to begin exploring the CDK constructs available for your favorite AWS services\.
 + Dig deeper into concepts like [Environments](environments.md), [Assets](assets.md), [Permissions](permissions.md), [Runtime context](context.md), [Parameters](parameters.md), and [Escape hatches](cfn_layer.md)\.
-+ Explore [Examples](https://github.com/aws-samples/aws-cdk-examples) of using the AWS CDK\.
++ See the [API reference](https://docs.aws.amazon.com/cdk/api/latest/docs/aws-construct-library.html) to begin exploring the CDK constructs available for your favorite AWS services\.
++  Visit [Construct Hub](https://constructs.dev/search?q=&cdk=aws-cdk&cdkver=1&sort=downloadsDesc&offset=0) to discover constructs created by AWS and others\. 
++ Explore [Examples](https://github.com/aws-samples/aws-cdk-examples/tree/CDKv1) of using the AWS CDK\.
 
 The AWS CDK is an open\-source project\. Want to [contribute](https://github.com/aws/aws-cdk)?

@@ -89,7 +89,7 @@ const url = queue.queueUrl; // => A string representing a deploy-time value
 #### [ Python ]
 
 ```
-from aws_cdk.aws_sqs as sqs
+import aws_cdk.aws_sqs as sqs
 
 queue = sqs.Queue(self, "MyQueue")
 url = queue.queue_url # => A string representing a deploy-time value
@@ -265,7 +265,7 @@ If the AWS CDK determines that the resource is in the same account and Region, b
 
 Referencing a resource from one stack in a different stack creates a dependency between the two stacks\. Once this dependency is established, removing the use of the shared resource from the consuming stack can cause an unexpected deployment failure if the AWS CDK Toolkit deploys the producing stack before the consuming stack\. This happens if there is another dependency between the two stacks, but it can also happen that the producing stack is chosen by the AWS CDK Toolkit to be deployed first\. The AWS CloudFormation export is removed from the producing stack because it is no longer needed, but the exported resource is still being used in the consuming stack because its update has not yet been deployed, so deploying the producer stack fails\.
 
-To break this deadlock, remove the use of the shared resource from the consuming stack \(which will remove the automatic export from the producing stack\), then manually add the same export to the producing stack using exactly the same logical ID as the automatically\-generated export\. Remove the use of the shared resource in the consuming stack and deploy both stacks\. Then remove the manual export \(and the shared resource if it is no longer nededed\), and deploy both stacks again\. The stack's `[exportValue\(\)](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Stack.html#exportwbrvalueexportedvalue-options)` method is a convenient way to create the manual export for this purpose \(see the example in the linked method reference\)\.
+To break this deadlock, remove the use of the shared resource from the consuming stack \(which will remove the automatic export from the producing stack\), then manually add the same export to the producing stack using exactly the same logical ID as the automatically\-generated export\. Remove the use of the shared resource in the consuming stack and deploy both stacks\. Then remove the manual export \(and the shared resource if it is no longer needed\), and deploy both stacks again\. The stack's `[exportValue\(\)](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Stack.html#exportwbrvalueexportedvalue-options)` method is a convenient way to create the manual export for this purpose \(see the example in the linked method reference\)\.
 
 ## Physical names<a name="resources_physical_names"></a>
 
@@ -317,7 +317,7 @@ var bucket = new Bucket(this, "MyBucket", new BucketProps { BucketName = "my-buc
 
 ------
 
-Assigning physical names to resources has some disadvantages in AWS CloudFormation\. Most importantly, any changes to deployed resources that require a resource replacement, such as changes to a resource's properties that are immutable after creation, will fail if a resource has a physical name assigned\. If you end up in a state like that, the only solution is to delete the AWS CloudFormation stack, then deploy the AWS CDK app again\. See the [AWS CloudFormation documentation](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-name.html) for details\.
+Assigning physical names to resources has some disadvantages in AWS CloudFormation\. Most importantly, any changes to deployed resources that require a resource replacement, such as changes to a resource's properties that are immutable after creation, will fail if a resource has a physical name assigned\. If you end up in that state, the only solution is to delete the AWS CloudFormation stack, then deploy the AWS CDK app again\. See the [AWS CloudFormation documentation](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-name.html) for details\.
 
 In some cases, such as when creating an AWS CDK app with cross\-environment references, physical names are required for the AWS CDK to function correctly\. In those cases, if you don't want to bother with coming up with a physical name yourself, you can let the AWS CDK name it for you by using the special value `PhysicalName.GENERATE_IF_NEEDED`, as follows\.
 

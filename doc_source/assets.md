@@ -2,7 +2,7 @@
 
 Assets are local files, directories, or Docker images that can be bundled into AWS CDK libraries and apps; for example, a directory that contains the handler code for an AWS Lambda function\. Assets can represent any artifact that the app needs to operate\.
 
-You typically reference assets through APIs that are exposed by specific AWS constructs\. For example, when you define a [lambda\.Function](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-lambda.Function.html) construct, the [code](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-lambda.Function.html#code) property lets you pass an [asset](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-lambda.Code.html#static-assetpath) \(directory\)\. `Function` uses assets to bundle the contents of the directory and use it for the function's code\. Similarly, [ecs\.ContainerImage\.fromAsset](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-ecs.ContainerImage.html#static-from-assetdirectory-props) uses a Docker image built from a local directory when defining an Amazon ECS task definition\.
+You add assets through APIs that are exposed by specific AWS constructs\. For example, when you define a [lambda\.Function](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-lambda.Function.html) construct, the [code](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-lambda.Function.html#code) property lets you pass an [asset](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-lambda.Code.html#static-fromassetpath) \(directory\)\. `Function` uses assets to bundle the contents of the directory and use it for the function's code\. Similarly, [ecs\.ContainerImage\.fromAsset](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-ecs.ContainerImage.html#static-from-assetdirectory-props) uses a Docker image built from a local directory when defining an Amazon ECS task definition\.
 
 ## Assets in detail<a name="assets_details"></a>
 
@@ -132,7 +132,7 @@ var fileAsset = new Asset(this, "SampleSingleFileAsset", new AssetProps
 
 ------
 
-In most cases, you don't need to directly use the APIs in the `aws-s3-assets` module\. Modules that support assets, such as `aws-lambda`, have convenience methods that enable you to use assets\. For Lambda functions, the [asset](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-lambda.Code.html#static-assetpath) property enables you to specify a directory or a \.zip file in the local file system\.
+In most cases, you don't need to directly use the APIs in the `aws-s3-assets` module\. Modules that support assets, such as `aws-lambda`, have convenience methods that enable you to use assets\. For Lambda functions, the [fromAsset\(\)](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-lambda.Code.html#static-assetpath) static method enables you to specify a directory or a \.zip file in the local file system\.
 
 #### Lambda function example<a name="assets_types_s3_lambda"></a>
 
@@ -566,7 +566,7 @@ DockerImageAsset asset = DockerImageAsset.Builder.create(this, "MyBuildImage")
 
 ```
 using System.IO;
-using Amazon.CDK.AWS.Ecr.Assets;
+using Amazon.CDK.AWS.ECR.Assets;
 
 var asset = new DockerImageAsset(this, "MyBuildImage", new DockerImageAssetProps
 {
@@ -780,7 +780,7 @@ taskDefinition.addContainer("my-other-container",
 ```
 using System.IO;
 using Amazon.CDK.AWS.ECS;
-using Amazon.CDK.AWS.Ecr.Assets;
+using Amazon.CDK.AWS.ECR.Assets;
 
 var asset = new DockerImageAsset(this, "my-image", new DockerImageAssetProps {
     Directory = Path.Combine(Directory.GetCurrentDirectory(), "demo-image")

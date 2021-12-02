@@ -5,12 +5,18 @@ The AWS CDK Toolkit, the CLI command `cdk`, is the primary tool for interacting 
 The AWS CDK Toolkit is installed with the Node Package Manager\. In most cases, we recommend installing it globally\.
 
 ```
-npm install -g aws-cdk             # install latest version
+npm install -g aws-cdk@1.x         # install latest 1.x version
 npm install -g aws-cdk@X.YY.Z      # install specific version
 ```
 
+You may also use CDK Toolkit v2\.x with CDK v1\.x projects\. An exception is that CDK Toolkit v2 creates CDK v2 projects\. To create CDK v1 projects while CDK Toolkit v2\.x is installed globally, use npx to run the latest 1\.x release of the CDK Toolkit\.
+
+```
+cdk init app --language typescript
+```
+
 **Tip**  
-If you regularly work with multiple versions of the AWS CDK, you may want to install a matching version of the AWS CDK Toolkit in individual CDK projects\. To do this, omit `-g` from the `npm install` command\. Then use `npx cdk` to invoke it; this will run the local version if one exists, falling back to a global version if not\.
+If you regularly work with multiple versions of the AWS CDK, you may want to install a matching version of the AWS CDK Toolkit in individual CDK projects\. TypeScript and JavaScript projects have a local copy of the CDK Toolkit already\. For other languages, omit `-g` from the `npm install` command\. Then use `npx aws-cdk` to invoke cdk; this will run the local version if one exists, falling back to a global version if not\.
 
 ## Toolkit commands<a name="cli-commands"></a>
 
@@ -245,7 +251,7 @@ cdk synth 'PipelineStack/Prod/**'   # All stacks in Prod stage in a CDK Pipeline
 ```
 
 **Note**  
-The order in which you specify the stacks is not necessarily the order in which they will be processed\. The AWS CDK Toolkit takes into account dependencies between stacks when deciding the order in which to process them\. For example, if one stack uses a value produced by another \(such as the ARN of a resource defined in the second stack\), the second stack is synthesized before the first one because of this dependency\. You can add dependencies between stacks manually using the stack's [https://docs.aws.amazon.com/cdk/api/latest/typescript/api/core/stack.html#core_Stack_addDependency](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/core/stack.html#core_Stack_addDependency) method\.
+The order in which you specify the stacks is not necessarily the order in which they will be processed\. The AWS CDK Toolkit takes into account dependencies between stacks when deciding the order in which to process them\. For example, if one stack uses a value produced by another \(such as the ARN of a resource defined in the second stack\), the second stack is synthesized before the first one because of this dependency\. You can add dependencies between stacks manually using the stack's [https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Stack.html#addwbrdependencytarget-reason](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Stack.html#addwbrdependencytarget-reason) method\.
 
 ## Bootstrapping your AWS environment<a name="cli-bootstrap"></a>
 
@@ -287,6 +293,9 @@ mkdir my-cdk-app
 cd my-cdk-app
 cdk init TEMPLATE --language LANGUAGE
 ```
+
+**Tip**  
+If you have installed CDK Toolkit v2 globally, cdk init creates CDK v2 projects\. To avoid this, see [CDK Toolkit v2 compatibility](work-with-cdk-v2.md#work-with-cdk-v2-cli)\.
 
 The supported languages \(*LANGUAGE*\) are:
 
@@ -340,7 +349,7 @@ The CDK Toolkit actually runs your app and synthesizes fresh templates before mo
 
 See `cdk synth --help` for all available options\. A few of the most\-frequently\-used options are covered below\.
 
-### Specifying context values<a name="w363aac29b7c31c11"></a>
+### Specifying context values<a name="w363aac29b7c35c11"></a>
 
 Use the `--context` or `-c` option to pass [runtime context](context.md) values to your CDK app\.
 
@@ -359,7 +368,7 @@ When deploying multiple stacks, the specified context values are normally passed
 cdk synth --context Stack1:key=value Stack2:key=value Stack1 Stack2
 ```
 
-### Specifying display format<a name="w363aac29b7c31c13"></a>
+### Specifying display format<a name="w363aac29b7c35c13"></a>
 
 By default, the synthesized template is displayed in YAML format\. Add the `--json` flag to display it in JSON format instead\.
 
@@ -367,7 +376,7 @@ By default, the synthesized template is displayed in YAML format\. Add the `--js
 cdk synth --json MyStack
 ```
 
-### Specifying output directory<a name="w363aac29b7c31c15"></a>
+### Specifying output directory<a name="w363aac29b7c35c15"></a>
 
 Add the `--output` \(`-o`\) option to write the synthesized templates to a directory other than `cdk.out`\.
 
@@ -410,7 +419,7 @@ Hot\-swapping is not recommended for production deployments\.
 
 ### Watch mode<a name="cli-deploy-watch"></a>
 
-The CDK Toolkit's watch mode \(`cdk watch`\) continuously monitors your CDK app's source files and assets for changes and immediately performs a deployment of the specified stacks when a change is detected\.
+The CDK Toolkit's watch mode \( cdk deploy \-\-watch, or cdk watch for short\) continuously monitors your CDK app's source files and assets for changes and immediately performs a deployment of the specified stacks when a change is detected\.
 
 By default, these deployments use the `--hotswap` flag, which fast\-tracks deployment of changes to Lambda functions, and falls back to deploying through AWS CloudFormation if you have changed infrastructure configuration\. To have `cdk watch` always perform full AWS CloudFormation deployments, add the `--no-hotswap` flag to `cdk watch`\.
 
@@ -425,7 +434,7 @@ Wildcards, both `*` and `**`, can be used in the `"watch"` and `"build"` keys\. 
 **Important**  
 Watch mode is not recommended for production deployments\.
 
-### Specifying AWS CloudFormation parameters<a name="w363aac29b7c33c17"></a>
+### Specifying AWS CloudFormation parameters<a name="w363aac29b7c37c17"></a>
 
 The AWS CDK Toolkit supports specifying AWS CloudFormation [parameters](parameters.md) at deployment\. You may provide these on the command line following the `--parameters` flag\.
 
@@ -447,7 +456,7 @@ cdk deploy MyStack YourStack --parameters MyStack:uploadBucketName=UploadBucket 
 
 By default, the AWS CDK retains values of parameters from previous deployments and uses them in later deployments if they are not specified explicitly\. Use the `--no-previous-parameters` flag to require all parameters to be specified\.
 
-### Specifying outputs file<a name="w363aac29b7c33c19"></a>
+### Specifying outputs file<a name="w363aac29b7c37c19"></a>
 
 If your stack declares AWS CloudFormation outputs, these are normally displayed on the screen at the conclusion of deployment\. To write them to a file in JSON format, use the `--outputs-file` flag\.
 
@@ -663,7 +672,7 @@ If one of cdk.json or ~/.cdk.json exists, options specified there will be used
 as defaults. Settings in cdk.json take precedence.
 ```
 
-### `cdk list` \(`ls`\)<a name="w363aac29b7c37b7b1"></a>
+### `cdk list` \(`ls`\)<a name="w363aac29b7c41b7b1"></a>
 
 ```
 cdk list [STACKS..]
@@ -676,7 +685,7 @@ Options:
                                                       [boolean] [default: false]
 ```
 
-### `cdk synthesize` \(`synth`\)<a name="w363aac29b7c37b7b3"></a>
+### `cdk synthesize` \(`synth`\)<a name="w363aac29b7c41b7b3"></a>
 
 ```
 cdk synthesize [STACKS..]
@@ -697,7 +706,7 @@ Options:
                                                       [boolean] [default: false]
 ```
 
-### `cdk bootstrap`<a name="w363aac29b7c37b7b5"></a>
+### `cdk bootstrap`<a name="w363aac29b7c41b7b5"></a>
 
 ```
 cdk bootstrap [ENVIRONMENTS..]
@@ -772,7 +781,7 @@ Options:
                                             example)                    [string]
 ```
 
-### `cdk deploy`<a name="w363aac29b7c37b7b7"></a>
+### `cdk deploy`<a name="w363aac29b7c41b7b7"></a>
 
 ```
 cdk deploy [STACKS..]
@@ -841,7 +850,7 @@ Options:
                              detected. Implies --hotswap by default    [boolean]
 ```
 
-### `cdk destroy`<a name="w363aac29b7c37b7b9"></a>
+### `cdk destroy`<a name="w363aac29b7c41b7b9"></a>
 
 ```
 cdk destroy [STACKS..]
@@ -860,7 +869,7 @@ Options:
                             stacks                                     [boolean]
 ```
 
-### `cdk diff`<a name="w363aac29b7c37b7c11"></a>
+### `cdk diff`<a name="w363aac29b7c41b7c11"></a>
 
 ```
 cdk diff [STACKS..]
@@ -886,7 +895,7 @@ Options:
                                                       [boolean] [default: false]
 ```
 
-### `cdk init`<a name="w363aac29b7c37b7c13"></a>
+### `cdk init`<a name="w363aac29b7c41b7c13"></a>
 
 ```
 cdk init [TEMPLATE]
@@ -908,7 +917,7 @@ Options:
                             project                   [boolean] [default: false]
 ```
 
-### `cdk context`<a name="w363aac29b7c37b7c15"></a>
+### `cdk context`<a name="w363aac29b7c41b7c15"></a>
 
 ```
 cdk context

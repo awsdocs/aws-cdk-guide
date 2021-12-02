@@ -19,7 +19,7 @@ The modules that make up the AWS Construct Library are a matched set\. They are 
 
 We also update the libraries that are used by the AWS Construct Library from time to time, and different versions of the library modules may have incompatible dependencies\. Synchronizing the versions of the library modules will also address this issue\.
 
-[JSII](https://github.com/aws/jsii) is an important AWS CDK dependency, especially if you are using the AWS CDK in a language other than TypeScript or JavaScript\. You do not ordinarily have to concern yourself with the JSII versions, since it is a declared dependency of all AWS CDK modules\. If a compatible version is not installed, however, you can see unexpected type\-relatd errors, such as `'undefined' is not a valid TargetType`\. Making sure all AWS CDK modules are the same version will resolve JSII compatibility issues, since they will all depend on the same JSII version\.
+[JSII](https://github.com/aws/jsii) is an important AWS CDK dependency, especially if you are using the AWS CDK in a language other than TypeScript or JavaScript\. You do not ordinarily have to concern yourself with the JSII versions, since it is a declared dependency of all AWS CDK modules\. If a compatible version is not installed, however, you can see unexpected type\-related errors, such as `'undefined' is not a valid TargetType`\. Making sure all AWS CDK modules are the same version will resolve JSII compatibility issues, since they will all depend on the same JSII version\.
 
 Below, you'll find details on managing the versions of your installed AWS Construct Library modules in TypeScript, JavaScript, Python, Java, and C\#\.
 
@@ -140,16 +140,16 @@ If you are using a language other than TypeScript or JavaScript, first create a 
 npm install aws-cdk@1.50.0
 ```
 
-To run a locally\-installed AWS CDK Toolkit, use the command `npx cdk` rather than just `cdk`\. For example:
+To run a locally\-installed AWS CDK Toolkit, use the command `npx aws-cdk` rather than just `cdk`\. For example:
 
 ```
-npx cdk deploy MyStack
+npx aws-cdk deploy MyStack
 ```
 
-`npx cdk` runs the local version of the AWS CDK Toolkit if one exists, and falls back to the global version when a project doesn't have a local installation\. You may find it convenient to set up a shell alias or batch file to make sure `cdk` is always invoked this way\. For example, Linux users might add the following statement to their `.bash_profile` file\.
+`npx aws-cdk` runs the local version of the AWS CDK Toolkit if one exists, and falls back to the global version when a project doesn't have a local installation\. You may find it convenient to set up a shell alias or batch file to make sure `cdk` is always invoked this way\. For example, Linux users might add the following statement to their `.bash_profile` file\.
 
 ```
-alias cdk=npx cdk
+alias cdk=npx aws-cdk
 ```
 
 \([back to list](#troubleshooting_top)\)<a name="troubleshooting_nobucket"></a>

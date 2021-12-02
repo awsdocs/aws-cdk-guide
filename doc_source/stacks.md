@@ -347,7 +347,7 @@ new MyStack(this, "not:a:stack:name", new StackProps
 
 ## Stack API<a name="stack_api"></a>
 
-The [Stack](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/core/stack.html) object provides a rich API, including the following:
+The [Stack](https://docs.aws.amazon.com/cdk/api/latest/docs/core/stack.html) object provides a rich API, including the following:
 + `Stack.of(construct)` – A static method that returns the **Stack** in which a construct is defined\. This is useful if you need to interact with a stack from within a reusable construct\. The call fails if a stack cannot be found in scope\.
 + `stack.stackName` \(Python: `stack_name`\) – Returns the physical name of the stack\. As mentioned previously, all AWS CDK stacks have a physical name that the AWS CDK can resolve during synthesis\.
 + `stack.region` and `stack.account` – Return the AWS Region and account, respectively, into which this stack will be deployed\. These properties return either the account or Region explicitly specified when the stack was defined, or a string\-encoded token that resolves to the AWS CloudFormation pseudo\-parameters for account and Region to indicate that this stack is environment agnostic\. See [Environments](environments.md) for information about how environments are determined for stacks\.

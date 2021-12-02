@@ -7,7 +7,7 @@ This example walks you through creating the resources for a simple widget dispen
 
 This tutorial contains the following steps\.
 
-1. Create a AWS CDK app
+1. Create an AWS CDK app
 
 1. Create a Lambda function that gets a list of widgets with HTTP GET /
 
@@ -24,7 +24,7 @@ This tutorial contains the following steps\.
 
 1. Tear everything down when you're finished
 
-## Create a AWS CDK app<a name="serverless_example_create_app"></a>
+## Create an AWS CDK app<a name="serverless_example_create_app"></a>
 
 Create the app **MyWidgetService** in the current folder\.
 

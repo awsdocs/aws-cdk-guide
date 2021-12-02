@@ -439,5 +439,5 @@ Building a custom resource involves writing a Lambda function that responds to a
 
 The subject is too broad to completely cover here, but the following links should get you started:
 + [Custom Resources](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/template-custom-resources.html)
-+ [Custom\-Resource Example](https://github.com/aws-samples/aws-cdk-examples/tree/master/typescript/custom-resource/)
++ [Custom\-Resource Example](https://github.com/aws-samples/aws-cdk-examples/tree/CDKv1/typescript/custom-resource/)
 + For a more fully fledged example, see the [DnsValidatedCertificate](https://github.com/awslabs/aws-cdk/blob/master/packages/@aws-cdk/aws-certificatemanager/lib/dns-validated-certificate.ts) class in the CDK standard library\. This is implemented as a custom resource\.

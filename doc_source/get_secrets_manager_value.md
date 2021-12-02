@@ -1,6 +1,6 @@
 # Get a value from AWS Secrets Manager<a name="get_secrets_manager_value"></a>
 
-To use values from AWS Secrets Manager in your AWS CDK app, use the [fromSecretAttributes](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/aws-secretsmanager/secret.html#aws_secretsmanager_Secret_fromSecretAttributes) method\. It represents a value that is retrieved from Secrets Manager and used at AWS CloudFormation deployment time\.
+To use values from AWS Secrets Manager in your AWS CDK app, use the [fromSecretAttributes](https://docs.aws.amazon.com/cdk/api/latest/docs/aws-secretsmanager/secret.html#aws_secretsmanager_Secret_fromSecretAttributes) method\. It represents a value that is retrieved from Secrets Manager and used at AWS CloudFormation deployment time\.
 
 ------
 #### [ TypeScript ]

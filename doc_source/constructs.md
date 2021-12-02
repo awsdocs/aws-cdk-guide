@@ -2,7 +2,12 @@
 
 Constructs are the basic building blocks of AWS CDK apps\. A construct represents a "cloud component" and encapsulates everything AWS CloudFormation needs to create the component\. 
 
+**Note**  
+Constructs are part of the Construct Programming Model \(CPM\) and are also used by other tools such as CDK for Terraform \(CDKtf\), CDK for Kubernetes \(CDK8s\), and Projen\.
+
 A construct can represent a single AWS resource, such as an Amazon Simple Storage Service \(Amazon S3\) bucket, or it can be a higher\-level abstraction consisting of multiple AWS related resources\. Examples of such components include a worker queue with its associated compute capacity, or a scheduled job with monitoring resources and a dashboard\.
+
+The AWS CDK includes a collection of constructs called the AWS Construct Library, containing constructs for every AWS service\. [Construct Hub](https://constructs.dev/search?q=&cdk=aws-cdk&cdkver=1&sort=downloadsDesc&offset=0) is a resource to help you discover additional constructs from AWS, third parties, and the open\-source CDK community\.
 
 ## AWS Construct library<a name="constructs_lib"></a>
 
@@ -10,7 +15,7 @@ The AWS CDK includes the [AWS Construct Library](https://docs.aws.amazon.com/cdk
 
 This library includes constructs that represent all the resources available on AWS\. For example, the `[s3\.Bucket](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.Bucket.html)` class represents an Amazon S3 bucket, and the `[dynamodb\.Table](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-dynamodb.Table.html)` class represents an Amazon DynamoDB table\.
 
-There are three different levels of constructs in this library, beginning with low\-level constructs, which we call *CFN Resources* \(or L1, short for "level 1"\) or Cfn \(short for CloudFormation\) resources\. These constructs directly represent all resources available in AWS CloudFormation\. CFN Resources are periodically generated from the [AWS CloudFormation Resource Specification](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-resource-specification.html)\. They are named **Cfn***Xyz*, where *Xyz* is name of the resource\. For example, [CfnBucket](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.CfnBucket.html) represents the [AWS::S3::Bucket](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-s3-bucket.html) AWS CloudFormation resource\. When you use Cfn resources, you must explicitly configure all resource properties, which requires a complete understanding of the details of the underlying AWS CloudFormation resource model\.
+There are three different levels of constructs in this library, beginning with low\-level constructs, which we call *CFN Resources* \(or L1, short for "layer 1"\) or Cfn \(short for CloudFormation\) resources\. These constructs directly represent all resources available in AWS CloudFormation\. CFN Resources are periodically generated from the [AWS CloudFormation Resource Specification](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-resource-specification.html)\. They are named **Cfn***Xyz*, where *Xyz* is name of the resource\. For example, [CfnBucket](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.CfnBucket.html) represents the [AWS::S3::Bucket](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-s3-bucket.html) AWS CloudFormation resource\. When you use Cfn resources, you must explicitly configure all resource properties, which requires a complete understanding of the details of the underlying AWS CloudFormation resource model\.
 
 The next level of constructs, L2, also represent AWS resources, but with a higher\-level, intent\-based API\. They provide similar functionality, but provide the defaults, boilerplate, and glue logic you'd be writing yourself with a CFN Resource construct\. AWS constructs offer convenient defaults and reduce the need to know all the details about the AWS resources they represent, while providing convenience methods that make it simpler to work with the resource\. For example, the [s3\.Bucket](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.Bucket.html) class represents an Amazon S3 bucket with additional properties and methods, such as [bucket\.addLifeCycleRule\(\)](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-s3.Bucket.html#add-wbr-lifecycle-wbr-rulerule), which adds a lifecycle rule to the bucket\.
 
@@ -149,7 +154,7 @@ namespace HelloCdkApp
 
 ------
 
-As you can see, you need a scope within which to define your bucket\. Since resources eventually need to be deployed as part of a AWS CloudFormation stack into an *AWS [environment](environments.md)*, which covers a specific AWS account and AWS region\. AWS constructs, such as `s3.Bucket`, must be defined within the scope of a [Stack](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/core/stack.html)\.
+As you can see, you need a scope within which to define your bucket\. Since resources eventually need to be deployed as part of a AWS CloudFormation stack into an *AWS [environment](environments.md)*, which covers a specific AWS account and AWS region\. AWS constructs, such as `s3.Bucket`, must be defined within the scope of a [Stack](https://docs.aws.amazon.com/cdk/api/latest/docs/core/stack.html)\.
 
 Stacks in AWS CDK apps extend the **Stack** base class, as shown in the previous example\. This is a common pattern when creating a stack within your AWS CDK app: extend the **Stack** class, define a constructor that accepts **scope**, **id**, and **props**, and invoke the base class constructor via `super` with the received **scope**, **id**, and **props**, as shown in the following example\.
 

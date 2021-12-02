@@ -5,7 +5,7 @@ The [https://docs.aws.amazon.com/cdk/api/latest/docs/cloudformation-include-read
 This construct essentially adds an AWS CDK API wrapper to any resource in the template\. You can use this capability to migrate your existing AWS CloudFormation templates to the AWS CDK a piece at a time in order to take advantage of the AWS CDK's convenient higher\-level abstractions, or just to vend your AWS CloudFormation templates to AWS CDK developers by providing an AWS CDK construct API\.
 
 **Note**  
-The AWS CDK also includes [https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.CfnInclude.html](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.CfnInclude.html), which was previously used for the same general purpose\. However, `core.CfnInclude` lacks much of the functionality of `cloudformation-include.CfnInclude`\. `core.CfnInclude` has been deprecated and will not be available in CDK 2\.0\.
+The AWS CDK also includes [https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.CfnInclude.html](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.CfnInclude.html), which was previously used for the same general purpose\. However, it lacks much of the functionality of `cloudformation-include.CfnInclude`\.
 
 ## Install the `cloudformation-include` module<a name="use_cfn_template_install"></a>
 

@@ -102,6 +102,9 @@ These changes are shown in outline below\. Place the new text where indicated in
 ```
 mkdir state-machine && cd state-machine
 cdk init --language=python
+source .venv/bin/activate
+python -m pip install -r requirements.txt
+python -m pip install -r requirements-dev.txt
 python -m pip install aws_cdk.aws_lambda aws_cdk.aws_sns_subscriptions aws_cdk.aws_stepfunctions
 python -m pip install pytest aws_cdk.assertions
 ```
@@ -546,7 +549,7 @@ namespace AwsCdkAssertionSamples
 
 ## Running tests<a name="testing_running_tests"></a>
 
-For reference, here are the commands you use to run tests in your AWS CDK app\. These are the same commands you'd use to run the tests in any project using the same testig framework\. For languages that require a build step, include that to make sure your tests have been compiled\.
+For reference, here are the commands you use to run tests in your AWS CDK app\. These are the same commands you'd use to run the tests in any project using the same testing framework\. For languages that require a build step, include that to make sure your tests have been compiled\.
 
 ------
 #### [ TypeScript ]
@@ -1309,7 +1312,7 @@ import re
 
 ## Snapshot tests<a name="testing_snapshot"></a>
 
-In *snapshot testing*, you compare the entire synthesized CloudFormation template against a previously\-stored master\. This isn't useful in catching regressions, as fine\-grained assertions are, because it applies to the entire template, and things besides code changes can cause small \(or not\-so\-small\) differences in synthesis results\. For example, we may update a CDK construct to incorporate a new best pracice, which can cause changes to the synthesized resources or how they're organized, or we might update the CDK Toolkit to report additional metadata\. Changes to context values can also affect the synthesized template\. 
+In *snapshot testing*, you compare the entire synthesized CloudFormation template against a previously\-stored master\. This isn't useful in catching regressions, as fine\-grained assertions are, because it applies to the entire template, and things besides code changes can cause small \(or not\-so\-small\) differences in synthesis results\. For example, we may update a CDK construct to incorporate a new best practice, which can cause changes to the synthesized resources or how they're organized, or we might update the CDK Toolkit to report additional metadata\. Changes to context values can also affect the synthesized template\. 
 
 Snapshot tests can be of great help in refactoring, though, as long as you hold constant all other factors that might affect the synthesized template\. You will know immediately if a change you made has unintentionally changed the template\. If the change is intentional, simply accept a new master and proceed\.
 

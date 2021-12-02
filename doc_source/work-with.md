@@ -18,7 +18,7 @@ If you have the [AWS CLI](https://aws.amazon.com/cli/) installed, the simplest w
 aws configure
 ```
 
-All AWS CDK applications require Node\.js 10\.13 or later, even if you work in Python, Java, or C\#\. You may download a compatible version at [nodejs\.org](https://nodejs.org/)\. We recommend the [active LTS version](https://nodejs.org/en/about/releases/) \(at this writing, the latest 14\.x release\)\. Node\.js versions 13\.0\.0 through 13\.6\.0 are not compatible with the AWS CDK due to compatibility issues with its dependencies\.
+All AWS CDK applications require Node\.js 10\.13 or later, even if you work in Python, Java, or C\#\. You may download a compatible version at [nodejs\.org](https://nodejs.org/)\. We recommend the [active LTS version](https://nodejs.org/en/about/releases/) \(at this writing, the latest 16\.x release\)\. Node\.js versions 13\.0\.0 through 13\.6\.0 are not compatible with the AWS CDK due to compatibility issues with its dependencies\.
 
 After installing Node\.js, install the AWS CDK Toolkit \(the `cdk` command\):
 
@@ -45,16 +45,16 @@ The specific language you work in also has its own prerequisites, described in t
 
 ## AWS Construct Library<a name="work-with-library"></a>
 
-The AWS CDK includes the AWS Construct Library, a collection of construct modules organized by AWS service\. The [AWS CDK API Reference](https://docs.aws.amazon.com/cdk/api/latest/docs/aws-construct-library.html) provides detailed documentation of the constructs \(and other components\) in the library\. A version of the API Reference is provided for each supported programming language, along with a generic version\.
+The AWS CDK includes the AWS Construct Library, a collection of construct modules organized by AWS service\. The [AWS CDK API Reference](https://docs.aws.amazon.com/cdk/api/latest/docs/aws-construct-library.html) provides detailed documentation of the constructs \(and other components\) in the library\. A version of the API Reference is provided for each supported programming language\.
 
 Each module's reference material is broken into the following sections\. 
 + *Overview*: Introductory material you'll need to know to work with the service in the AWS CDK, including concepts and examples\.
 + *Constructs*: Library classes that represent one or more concrete AWS resources\. These are the "curated" \(L2\) resources or patterns \(L3 resources\) that provide a high\-level interface with sane defaults\.
-+ *Classes*: Non\-construct library classes that provide functionality used by constructs in the module\.
++ *Classes*: Non\-construct classes that provide functionality used by constructs in the module\.
 + *Structs*: Data structures \(attribute bundles\) that define the structure of composite values such as properties \(the `props` argument of constructs\) and options\.
 + *Interfaces*: Interfaces, whose names all begin with "I", define the absolute minimum functionality for the corresponding construct or other class\. The CDK uses construct interfaces to represent AWS resources that are defined outside your AWS CDK app and imported by methods such as `Bucket.fromBucketArn()`\. 
 + *Enums*: Collections of named values for use in specifying \*certain construct parameters\. Using an enumerated value allows the CDK to check these values for validity during synthesis\.
-+ *CloudFormation Resources*: These L1 constructs, whose names begin with "Cfn", represent exactly the resources defined in the CloudFormation specification\. They are automatically generated from that specification with each CDK release\. Each L2 or L3 construct encapsulates one or more CloudFormation resource\.
++ *CloudFormation Resources*: These L1 constructs, whose names begin with "Cfn", represent exactly the resources defined in the CloudFormation specification\. They are automatically generated from that specification with each CDK release\. Each L2 or L3 construct encapsulates one or more CloudFormation resources\.
 + *CloudFormation Property Types*: The collection of named values that define the properties for each CloudFormation Resource\.
 
 ### Interfaces vs\. construct classes<a name="work-with-library-interfaces"></a>

@@ -28,28 +28,28 @@ Creating a project also installs the [https://docs.aws.amazon.com/cdk/api/latest
 
 For the most part, this guide assumes you install the CDK Toolkit globally \(`npm install -g aws-cdk`\), and the provided command examples \(such as `cdk synth`\) follow this assumption\. This approach makes it easy to keep the CDK Toolkit up to date, and since the CDK takes a strict approach to backward compatibility, there is generally little risk in always using the latest version\.
 
-Some teams prefer to specify all dependencies within each project, including tools like the CDK Toolkit\. This practice lets you pin such components to specific versions and ensure that all developers on your team \(and your CI/CD environment\) use exactly those versions\. This eliminates a possible source of change, helping to make builds and deployments more consistent nand repeatable\.
+Some teams prefer to specify all dependencies within each project, including tools like the CDK Toolkit\. This practice lets you pin such components to specific versions and ensure that all developers on your team \(and your CI/CD environment\) use exactly those versions\. This eliminates a possible source of change, helping to make builds and deployments more consistent and repeatable\.
 
 The CDK includes a dependency for the CDK Toolkit in the JavaScript project template's `package.json`, so if you want to use this approach, you don't need to make any changes to your project\. All you need to do is use slightly different commands for building your app and for issuing `cdk` commands\. 
 
 | Operation | Use global CDK Toolkit | Use local CDK Toolkit | 
 | --- |--- |--- |
-| Initialize project | `cdk init --language javascript` | `npx cdk init --language javascript` | 
+| Initialize project | `cdk init --language javascript` | `npx aws-cdk init --language javascript` | 
 | --- |--- |--- |
-| Run CDK Toolkit command | `cdk ...` | `npm run cdk ...` or `npx cdk ...` | 
+| Run CDK Toolkit command | `cdk ...` | `npm run cdk ...` or `npx aws-cdk ...` | 
 | --- |--- |--- |
 
-`npx cdk` runs the version of the CDK Toolkit installed locally in the current project, if one exists, falling back to the global installation, if any\. If no global installation exists, `npx` downloads a temporary copy of the CDK Toolkit and runs that\. You may specify an arbitrary version of the CDK Toolkit using the `@` syntax: `npx aws-cdk@1.120 --version` prints `1.120.0`\. 
+`npx aws-cdk` runs the version of the CDK Toolkit installed locally in the current project, if one exists, falling back to the global installation, if any\. If no global installation exists, `npx` downloads a temporary copy of the CDK Toolkit and runs that\. You may specify an arbitrary version of the CDK Toolkit using the `@` syntax: `npx aws-cdk@1.120 --version` prints `1.120.0`\. 
 
 **Tip**  
 Set up an alias so you can use the `cdk` command with a local CDK Toolkit installation\.  
 
 ```
-alias cdk=npx cdk
+alias cdk=npx aws-cdk
 ```
 
 ```
-doskey cdk=npx acdk $*
+doskey cdk=npx aws-cdk $*
 ```
 
 ## Managing AWS Construct Library modules<a name="javascript-managemodules"></a>
@@ -76,7 +76,7 @@ npm update
 ```
 
 In JavaScript, you import modules into your code under the same name you use to install them using NPM\. We recommend the following practices when importing AWS CDK classes and AWS Construct Library modules in your applications\. Following these guidelines will help make your code consistent with other AWS CDK applications as well as easier to understand\.
-+ Use `require()`, not ES6\-style `import` directives\. Most of the versions of Node\.js that the AWS CDK runs on do not support ES6 imports, so using the older syntax is more widely compatible\. \(If you really want to use ES6 imports, use [esm](https://www.npmjs.com/package/esm) to ensure your project is compatible with all supported versions of Node\.js\.\)
++ Use `require()`, not ES6\-style `import` directives\. Older versions of Node\.js do not support ES6 imports, so using the older syntax is more widely compatible\. \(If you really want to use ES6 imports, use [esm](https://www.npmjs.com/package/esm) to ensure your project is compatible with all supported versions of Node\.js\.\)
 + Generally, import individual classes from `@aws-cdk/core`\.
 
   ```
@@ -135,7 +135,7 @@ Node\.js 14\.0 and later support new operators that can simplify the handling of
 
 ## Synthesizing and deploying<a name="javascript-running"></a>
 
-The [stacks](stacks.md) defined in your AWS CDK app can be deployed individually or together using the commands below\. Generally, you should be in your project's main directory when you issue them\.
+The [stacks](stacks.md) defined in your AWS CDK app can be synthesized and deployed individually or together using the commands below\. Generally, you should be in your project's main directory when you issue them\.
 + `cdk synth`: Synthesizes a AWS CloudFormation template from one or more of the stacks in your AWS CDK app\.
 + `cdk deploy`: Deploys the resources defined by one or more of the stacks in your AWS CDK app to AWS\.
 
@@ -278,7 +278,7 @@ When a function or method returns a general\-purpose type \(such as `object`\), 
 
 Finally, TypeScript supports the access modifiers `public`, `protected`, and `private` for members of classes\. All class members in JavaScript are public\. Simply remove these modifiers wherever you see them\.
 
-Knowing how to identify and remove these TypeScript features goes a long way toward adapting short TypeScript snippets to JavaScript\. But it may be impractical to convert longer TypeScript examples in this fashion, since they are more likely to use other TypeScript features\. For these situations, we recommend [Babel](https://babeljs.io/) with the [TypeScript plug\-in](https://babeljs.io/docs/en/babel-plugin-transform-typescript)\. Babel won't complain if code uses an undefined variable, for example, as `tsc` would\. If it is syntactically valid, then with few exceptions, Babel can translate it to JavaScript\. This makes Babel particularly valuable for converting snippets that may not be runnable on their own\.
+Knowing how to identify and remove these TypeScript features goes a long way toward adapting short TypeScript snippets to JavaScript\. But it may be impractical to convert longer TypeScript examples in this fashion, since they are more likely to use other TypeScript features\. For these situations, we recommend [Sucrase](https://github.com/alangpierce/sucrase)\. Sucrase won't complain if code uses an undefined variable, for example, as `tsc` would\. If it is syntactically valid, then with few exceptions, Sucrase can translate it to JavaScript\. This makes it particularly valuable for converting snippets that may not be runnable on their own\.
 
 ## Migrating to TypeScript<a name="javascript-to-typescript"></a>
 

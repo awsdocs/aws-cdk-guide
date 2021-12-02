@@ -6,8 +6,8 @@ Tags are informational key\-value elements that you can add to constructs in you
 For more information about how you can use tags with your AWS resources, see the white paper [Tagging Best Practices](https://d1.awsstatic.com/whitepapers/aws-tagging-best-practices.pdf)\.
 
 The [https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Tags.html](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Tags.html) class includes the static method `of()`, through which you can add tags to, or remove tags from, the specified construct\. 
-+  [https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Tags.html#removekey-props](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Tags.html#removekey-props) applies a new tag to the given construct and all of its children\. 
-+  [https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Tags.html#static-removescope-key-props](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Tags.html#static-removescope-key-props) removes a tag from the given construct and any of its children, including tags a child construct may have applied to itself\. 
++  [https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Tags.html#addkey-value-props](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Tags.html#addkey-value-props) applies a new tag to the given construct and all of its children\. 
++  [https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Tags.html#removekey-props](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_core.Tags.html#removekey-props) removes a tag from the given construct and any of its children, including tags a child construct may have applied to itself\. 
 
 **Note**  
 Tagging is implemented using [Aspects](aspects.md)\. Aspects are a way to apply an operation \(such as tagging\) to all constructs in a given scope\.
