@@ -111,8 +111,8 @@ CDK v2 requires v2 or later of the CDK Toolkit\. This version is backward\-compa
 If you need to create both v1 and v2 CDK projects, **do not install CDK Toolkit v2 globally\.** \(Remove it if you already have it installed: `npm remove -g aws-cdk`\.\) To invoke the CDK Toolkit, use npx to run v1 or v2 of the CDK Toolkit as desired\.
 
 ```
-npx aws-cdk init@1.x app --language typescript
-npx aws-cdk init@2.x app --language typescript
+npx aws-cdk@1.x init app --language typescript
+npx aws-cdk@2.x init app --language typescript
 ```
 
 **Tip**  
