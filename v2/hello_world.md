@@ -184,7 +184,7 @@ In `lib/hello-cdk-stack.js`:
 
 ```
 const cdk = require('aws-cdk-lib');
-const { aws_s3 as s3 } = require('aws-cdk-lib');
+const s3 = require('aws-cdk-lib/aws-s3');
 
 class HelloCdkStack extends cdk.Stack {
   constructor(scope, id, props) {
