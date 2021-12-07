@@ -21,8 +21,8 @@ npx cdk@2.x init app --language typescript
 Set up command line aliases so you can use cdk and cdk2 commands to invoke the desired version of the CDK Toolkit\.  
 
 ```
-alias cdk=npx aws-cdk@1.x
-alias cdk2=npx aws-cdk@2.x
+alias cdk="npx aws-cdk@1.x"
+alias cdk2="npx aws-cdk@2.x"
 ```
 
 ```
