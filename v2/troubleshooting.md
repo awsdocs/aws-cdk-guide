@@ -38,7 +38,7 @@ npx aws-cdk deploy MyStack
 #### [ macOS/Linux ]
 
 ```
-alias cdk=npx aws-cdk
+alias cdk="npx aws-cdk"
 ```
 
 ------

@@ -3,7 +3,7 @@
 This topic describes how to use the AWS SAM CLI with the AWS CDK to test a Lambda function locally\. For further information, see [Invoking Functions Locally](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-using-invoke.html)\. To install the SAM CLI, see [Installing the AWS SAM CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html)\.
 
 **Note**  
-Full AWS CDK integration with the AWS SAM CLI is currently in public preview\. This integration allows you to locally test and build serverless application defined using the CDK\. For more information, see [AWS Cloud Development Kit \(AWS CDK\)](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-cdk.html) in the AWS SAM Developer Guide\.  
+Full AWS CDK integration with the AWS SAM CLI is currently in public preview\. This integration allows you to locally test and build serverless application defined using the CDK\. For more information, see [AWS Cloud Development Kit \(CDK\)](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-cdk.html) in the AWS SAM Developer Guide\.  
 The instructions here apply to the current \(non\-preview\) version of the AWS SAM CLI\.
 
 1. The first step is to create a AWS CDK application and add the Lambda package\.

@@ -45,7 +45,7 @@ The CDK includes a dependency for the CDK Toolkit in the JavaScript project temp
 Set up an alias so you can use the `cdk` command with a local CDK Toolkit installation\.  
 
 ```
-alias cdk=npx aws-cdk
+alias cdk="npx aws-cdk"
 ```
 
 ```

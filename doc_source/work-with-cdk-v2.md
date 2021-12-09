@@ -1,10 +1,10 @@
 # Migrating to AWS CDK v2<a name="work-with-cdk-v2"></a>
 
-Version 2 of the AWS CDK, now Generally Available, provides an improved development experience that aims to make Infrastructure as Code \(IAC\) even simpler\. See [Migrating to AWS CDK v2](../../v2/guide/migrating-v2.html) in the CDK v1 Developer Guide to learn how to migrate to CDK v2\.
+Version 2 of the AWS CDK, now Generally Available, provides an improved development experience that aims to make Infrastructure as Code \(IAC\) even simpler\.
 
-CDK v1 will continue to be fully supported until June 2, 2022, at which time it will enter maintenance\. During the maintenance phase, CDK v1 will receive critical bug fixes and security patches only\. New features will be developed exclusively for CDK v2 during the v1 maintenance phase\. On June 2, 2023, support will end entirely for AWS CDK v1\. For more details, see [AWS CDK Maintenance Policy](https://github.com/aws/aws-cdk-rfcs/blob/master/text/0079-cdk-2.0.md#aws-cdk-maintenance-policy)\.
+CDK v1 will continue to be fully supported until June 1, 2022, at which time it will enter maintenance\. During the maintenance phase, CDK v1 will receive critical bug fixes and security patches only\. New features will be developed exclusively for CDK v2 during the v1 maintenance phase\. On June 1, 2023, support will end entirely for AWS CDK v1\. For more details, see [AWS CDK Maintenance Policy](https://github.com/aws/aws-cdk-rfcs/blob/master/text/0079-cdk-2.0.md#aws-cdk-maintenance-policy)\.
 
-For information on migrating your apps to AWS CDK v2, see [Migrating to AWS CDK v2](../../v2/guide/migrating-v2.html)\.
+For information on migrating your apps to AWS CDK v2, see [Migrating to AWS CDK v2](../../v2/guide/migrating-v2.html) in the AWS CDK v2 Developer Guide\. 
 
 ## CDK Toolkit v2 compatibility<a name="work-with-cdk-v2-cli"></a>
 
@@ -13,8 +13,8 @@ CDK v2 requires v2 or later of the CDK Toolkit\. This version is backward\-compa
 If you need to create both v1 and v2 CDK projects, **do not install CDK Toolkit v2 globally\.** \(Remove it if you already have it installed: `npm remove -g aws-cdk`\.\) To invoke the CDK Toolkit, use npx to run v1 or v2 of the CDK Toolkit as desired\.
 
 ```
-npx cdk@1.x init app --language typescript
-npx cdk@2.x init app --language typescript
+npx aws-cdk@1.x init app --language typescript
+npx aws-cdk@2.x init app --language typescript
 ```
 
 **Tip**  

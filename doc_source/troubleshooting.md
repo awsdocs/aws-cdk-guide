@@ -149,7 +149,7 @@ npx aws-cdk deploy MyStack
 `npx aws-cdk` runs the local version of the AWS CDK Toolkit if one exists, and falls back to the global version when a project doesn't have a local installation\. You may find it convenient to set up a shell alias or batch file to make sure `cdk` is always invoked this way\. For example, Linux users might add the following statement to their `.bash_profile` file\.
 
 ```
-alias cdk=npx aws-cdk
+alias cdk="npx aws-cdk"
 ```
 
 \([back to list](#troubleshooting_top)\)<a name="troubleshooting_nobucket"></a>

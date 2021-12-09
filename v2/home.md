@@ -1,6 +1,6 @@
 # What is the AWS CDK?<a name="home"></a>
 
-Welcome to the *AWS Cloud Development Kit \(AWS CDK\) Developer Guide*\. This document provides information about the AWS CDK, a framework for defining cloud infrastructure in code and provisioning it through AWS CloudFormation\.
+Welcome to the *AWS Cloud Development Kit \(CDK\) Developer Guide*\. This document provides information about the AWS CDK, a framework for defining cloud infrastructure in code and provisioning it through AWS CloudFormation\.
 
 **Note**  
 The CDK has been released in two major versions, v1 and v2\. This is the Developer Guide for AWS CDK v2\.
@@ -197,7 +197,7 @@ This class produces an AWS CloudFormation [template of more than 500 lines](http
 +  [AWS::IAM::Role](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-iam-role.html) 
 +  [AWS::Logs::LogGroup](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-logs-loggroup.html) 
 
-And lest we forget\.\.\. code completion within your IDE or editor\!
+And let's not forget\.\.\. code completion within your IDE or editor\!
 
 ![\[Image NOT FOUND\]](http://docs.aws.amazon.com/cdk/v2/guide/images/CodeCompletion.png)
 

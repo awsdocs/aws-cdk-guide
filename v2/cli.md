@@ -404,7 +404,7 @@ For this reason, the CDK Toolkit; allows you to disable rollback by adding `--no
 
 Use the `--hotswap` flag with `cdk deploy` to attempt to update your AWS resources directly instead of generating a AWS CloudFormation changeset and deploying it\. Deployment falls back to AWS CloudFormation deployment if hot swapping is not possible\.
 
-Currently hot swapping supports only Lambda functions\. The `--hotswap` flag also disables rollback \(i\.e\., implies `--no-rollback`\)\.
+Currently hot swapping supports Lambda functions, Step Functions state machines, and Amazon ECS container images\. The `--hotswap` flag also disables rollback \(i\.e\., implies `--no-rollback`\)\.
 
 **Important**  
 Hot\-swapping is not recommended for production deployments\.

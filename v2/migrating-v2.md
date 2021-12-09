@@ -1,12 +1,12 @@
 # Migrating to AWS CDK v2<a name="migrating-v2"></a>
 
-Version 2 of the AWS Cloud Development Kit \(AWS CDK\) is designed to make writing infrastructure as code in your preferred programming language even easier\.
+Version 2 of the AWS Cloud Development Kit \(CDK\) is designed to make writing infrastructure as code in your preferred programming language even easier\.
 
 The main changes from AWS CDK v1 to CDK v2 are as follows\.
 + AWS CDK v2 consolidates the stable parts of the AWS Construct Library, including the core library, into a single package, `aws-cdk-lib`\. Developers no longer need to install additional packages for the individual AWS services they use\. This single\-package approach also eliminates the need to synchronize the versions of the various CDK library packages\.
 
   L1 \(CfnXXXX\) constructs, which represent the exact resources available in AWS CloudFormation, are always considered stable and so are included in `aws-cdk-lib`\.
-+ Experimental modules, where we're still working with the community to develop new L2 or L3 constructs, are not included in `aws-cdk-lib`; they are instead distributed as individual packages\. Experimental packages are named with an `alpha` suffix and a semantic version number that matches the first version of the AWS Construct Library with which they are compatible, also with an `alpha` suffix\. Constructs move into `aws-cdk-lib` after being designated stable, permitting the main Construct Library to adhere to strict semantic versioning\. 
++ Experimental modules, where we're still working with the community to develop new [L2 or L3 constructs](constructs.md#constructs_lib), are not included in `aws-cdk-lib`; they are instead distributed as individual packages\. Experimental packages are named with an `alpha` suffix and a semantic version number that matches the first version of the AWS Construct Library with which they are compatible, also with an `alpha` suffix\. Constructs move into `aws-cdk-lib` after being designated stable, permitting the main Construct Library to adhere to strict semantic versioning\. 
 
   Stability is specified at the service level\. For example, if we begin creating one or more L2 constructs for Amazon AppFlow, which at this writing has only L1 constructs, they would first appear in a module named `@aws-cdk/aws-appflow-alpha`, then move to `aws-cdk-lib` when we feel the new constructs meet the fundamental needs of customers\.
 
@@ -99,7 +99,7 @@ The syntax for reverting these flags in `cdk.json` is shown here\.
     "@aws-cdk/aws-apigateway:usagePlanKeyOrderInsensitiveId": false,
     "@aws-cdk/aws-cloudfront:defaultSecurityPolicyTLSv1.2_2021": false,
     "@aws-cdk/aws-rds:lowercaseDbIdentifier": false,
-    "@aws-cdk/core:stackRelativeExports": false,
+    "@aws-cdk/core:stackRelativeExports": false
   }
 }
 ```
@@ -119,8 +119,8 @@ npx aws-cdk@2.x init app --language typescript
 Set up command line aliases so you can use the cdk and cdk1 commands to invoke the desired version of the CDK Toolkit\.  
 
 ```
-alias cdk1=npx aws-cdk@1.x
-alias cdk=npx aws-cdk@2.x
+alias cdk1="npx aws-cdk@1.x"
+alias cdk="npx aws-cdk@2.x"
 ```
 
 ```
@@ -136,7 +136,7 @@ Update your app's dependencies, then install the new packages\. Finally, update 
 #### [ TypeScript ]
 
 **Applications**  
-For CDK apps, `package.json` as follows\. Remove dependencies on v1\-style individual stable modules and establish the lowest version of `aws-cdk-lib` you require for your application \(2\.0\.0 here\)\.
+For CDK apps, update `package.json` as follows\. Remove dependencies on v1\-style individual stable modules and establish the lowest version of `aws-cdk-lib` you require for your application \(2\.0\.0 here\)\.
 
 Experimental constructs are provided in separate, independently\-versioned packages with names that end in `alpha` and an alpha version number that corresponds to the first release of `aws-cdk-lib` with which they are compatible\. Here we have pinned `aws-codestar` to v2\.0\.0\-alpha\.1\.
 
@@ -171,7 +171,7 @@ Note that `aws-cdk-lib` appears both as a peer dependency and a dev dependency\.
 
 **Note**  
 You should perform a major version bump on your library's version number when releasing a v2\-compatible library, as this will be a breaking change for consumers of the library\. It is not possible to support both CDK v1 and v2 with a single library\. To continue to support customers who are still using v1, you could maintain the older release in parallel, or create a new package for v2\.  
-It's up to you how long you want to continue supporting AWS CDK v1 customers, but you could take your cue from the lifecycle of CDK v1 itself, and continue supporting v1 until AWS CDK v1 enters maintenance \(June 2, 2022\) or end\-of\-life \(June 2, 2023\)\. For full details, see [AWS CDK Maintenance Policy](https://github.com/aws/aws-cdk-rfcs/blob/master/text/0079-cdk-2.0.md#aws-cdk-maintenance-policy)
+It's up to you how long you want to continue supporting AWS CDK v1 customers, but you could take your cue from the lifecycle of CDK v1 itself, and continue supporting v1 until AWS CDK v1 enters maintenance \(June 1, 2022\) or end\-of\-life \(June 1, 2023\)\. For full details, see [AWS CDK Maintenance Policy](https://github.com/aws/aws-cdk-rfcs/blob/master/text/0079-cdk-2.0.md#aws-cdk-maintenance-policy)
 
 **Both libraries and apps**  
 Install the new dependencies by running `npm install` or `yarn install`\.

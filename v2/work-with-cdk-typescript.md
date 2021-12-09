@@ -56,7 +56,7 @@ The CDK includes dependencies for both TypeScript and the CDK Toolkit in the Typ
 Set up an alias so you can use the `cdk` command with a local CDK Toolkit installation\.  
 
 ```
-alias cdk=npx aws-cdk
+alias cdk="npx aws-cdk"
 ```
 
 ```

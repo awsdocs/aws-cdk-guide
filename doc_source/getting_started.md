@@ -4,7 +4,7 @@ This topic introduces you to important AWS CDK concepts and describes how to ins
 
 ## Your background<a name="getting_started_background"></a>
 
-The AWS Cloud Development Kit \(AWS CDK\) lets you define your cloud infrastructure as code in one of its supported programming languages\. It is intended for moderately to highly experienced AWS users\.
+The AWS Cloud Development Kit \(CDK\) lets you define your cloud infrastructure as code in one of its supported programming languages\. It is intended for moderately to highly experienced AWS users\.
 
 Ideally, you already have experience with popular AWS services, particularly [AWS Identity and Access Management](https://aws.amazon.com/iam/) \(IAM\)\. You might already have AWS credentials on your workstation for use with an AWS SDK or the AWS CLI and experience working with AWS resources programmatically\.
 
