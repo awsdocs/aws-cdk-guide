@@ -92,7 +92,7 @@ Numerous third parties have also published constructs compatible with the AWS CD
 
 ## Supported programming languages<a name="getting_started_languages"></a>
 
-The AWS CDK has first\-class support for TypeScript, JavaScript, Python, Java, and C\#\. \(Other JVM and \.NET CLR languages may also be used, at least in theory, but we are unable to offer support for them at this time\.\) Go support is available as a Develper Preview\.
+The AWS CDK has first\-class support for TypeScript, JavaScript, Python, Java, and C\#\. \(Other JVM and \.NET CLR languages may also be used, at least in theory, but we are unable to offer support for them at this time\.\) Go support is available as a Developer Preview\.
 
 To facilitate supporting so many languages, the AWS CDK is developed in one language \(TypeScript\) and language bindings are generated for the other languages through the use of a tool called [JSII](https://github.com/aws/jsii)\.
 
