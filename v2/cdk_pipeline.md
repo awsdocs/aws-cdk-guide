@@ -449,7 +449,7 @@ Create the new file `lib/my-pipeline-app-stage.ts` to hold our stage\.
 
 ```
 import * as cdk from 'aws-cdk-lib';
-import Construct from constructs;
+import { Construct } from "constructs";
 import { MyLambdaStack } from './my-pipeline-lambda-stack';
 
 export class MyPipelineAppStage extends cdk.Stage {
