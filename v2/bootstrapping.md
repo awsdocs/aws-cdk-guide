@@ -410,7 +410,7 @@ DefaultStackSynthesizer(
   deploy_role_external_id="",
 
   # ARN of the role used for file asset publishing (assumed from the deploy role)
-  file_sset_publishing_role_arn="arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-${Qualifier}-file-publishing-role-${AWS::AccountId}-${AWS::Region}",
+  file_asset_publishing_role_arn="arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-${Qualifier}-file-publishing-role-${AWS::AccountId}-${AWS::Region}",
   file_asset_publishing_external_id="",
 
   # ARN of the role used for Docker asset publishing (assumed from the deploy role)
