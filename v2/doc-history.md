@@ -7,4 +7,4 @@ The table below represents significant documentation milestones\. We fix errors 
 
 | Change | Description | Date | 
 | --- |--- |--- |
-| [AWS CDK v2 release](#doc-history) | Version 2 of the AWS CDK Developer Guide is released\. [Document history](../../latest/guide/doc-history.html) for CDK v1\. | December 4, 2021 | 
+| [AWS CDK v2 release](#doc-history) | Version 2 of the AWS CDK Developer Guide is released\. [Document history](../../v1/guide/doc-history.html) for CDK v1\. | December 4, 2021 | 

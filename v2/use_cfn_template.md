@@ -5,7 +5,7 @@ The [https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.cloudformation_incl
 This construct essentially adds an AWS CDK API wrapper to any resource in the template\. You can use this capability to migrate your existing AWS CloudFormation templates to the AWS CDK a piece at a time in order to take advantage of the AWS CDK's convenient higher\-level abstractions, or just to vend your AWS CloudFormation templates to AWS CDK developers by providing an AWS CDK construct API\.
 
 **Note**  
-The AWS CDK also includes [https://docs.aws.amazon.com/cdk/api/latest/docs/aws-cdk-lib.CfnInclude.html](https://docs.aws.amazon.com/cdk/api/latest/docs/aws-cdk-lib.CfnInclude.html), which was previously used for the same general purpose\. However, it lacks much of the functionality of `cloudformation-include.CfnInclude`\.
+AWS CDK v1 also included [https://docs.aws.amazon.com/cdk/api/latest/docs/aws-cdk-lib.CfnInclude.html](https://docs.aws.amazon.com/cdk/api/latest/docs/aws-cdk-lib.CfnInclude.html), which was previously used for the same general purpose\. However, it lacks much of the functionality of `cloudformation-include.CfnInclude`\.
 
 ## Importing an AWS CloudFormation template<a name="w366aac27b9b9"></a>
 
