@@ -419,11 +419,11 @@ DefaultStackSynthesizer(
 
   # ARN of the role passed to CloudFormation to execute the deployments
   cloud_formation_execution_role="arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-${Qualifier}-cfn-exec-role-${AWS::AccountId}-${AWS::Region}"
-
-  // Name of the SSM parameter which describes the bootstrap stack version number
+ 
+  # Name of the SSM parameter which describes the bootstrap stack version number
   bootstrap_stack_version_ssm_parameter="/cdk-bootstrap/${Qualifier}/version",
 
-  // Add a rule to every template which verifies the required bootstrap stack version
+  # Add a rule to every template which verifies the required bootstrap stack version
   generate_bootstrap_version_rule=True,
 )
 ```
