@@ -22,7 +22,7 @@ There are three different levels of constructs in this library, beginning with l
 
 The next level of constructs, L2, also represent AWS resources, but with a higher\-level, intent\-based API\. They provide similar functionality, but provide the defaults, boilerplate, and glue logic you'd be writing yourself with a CFN Resource construct\. AWS constructs offer convenient defaults and reduce the need to know all the details about the AWS resources they represent, while providing convenience methods that make it simpler to work with the resource\. For example, the [s3\.Bucket](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.Bucket.html) class represents an Amazon S3 bucket with additional properties and methods, such as [bucket\.addLifeCycleRule\(\)](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.Bucket.html#addwbrlifecyclewbrrulerule), which adds a lifecycle rule to the bucket\.
 
-Finally, the AWS Construct Library includes even higher\-level constructs, which we call *patterns* or L3\. These constructs are designed to help you complete common tasks in AWS, often involving multiple kinds of resources\. For example, the [aws\-ecs\-patterns\.ApplicationLoadBalancedFargateService](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ecs_patterns.ApplicationLoadBalancedFargateService.html) construct represents an architecture that includes an AWS Fargate container cluster employing an Application Load Balancer \(ALB\)\. The [aws\-apigateway\.LambdaRestApi](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_apigateway.LambdaRestApi.html) construct represents an Amazon API Gateway API that's backed by an AWS Lambda function\.
+Finally, the AWS Construct Library includes L3 constructs, which we call *patterns*\. These constructs are designed to help you complete common tasks in AWS, often involving multiple kinds of resources\. For example, the [aws\-ecs\-patterns\.ApplicationLoadBalancedFargateService](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ecs_patterns.ApplicationLoadBalancedFargateService.html) construct represents an architecture that includes an AWS Fargate container cluster employing an Application Load Balancer \(ALB\)\. The [aws\-apigateway\.LambdaRestApi](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_apigateway.LambdaRestApi.html) construct represents an Amazon API Gateway API that's backed by an AWS Lambda function\.
 
 For more information about how to navigate the library and discover constructs that can help you build your apps, see the [API Reference](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-construct-library.html)\.
 
@@ -750,6 +750,9 @@ public class NotifyingBucket : Construct
 
 ------
 
+**Note**  
+Our `NotifyingBucket` construct inherits not from `Bucket` but rather from `Construct`\. We are using composition, not inheritance, to bundle an Amazon S3 bucket and an Amazon SNS topic together\. In general, composition is preferred over inheritance when developing AWS CDK constructs\.
+
 The `NotifyingBucket` constructor has a typical construct signature: `scope`, `id`, and `props`\. The last argument, `props`, is optional \(gets the default value `{}`\) because all props are optional\. \(The base `Construct` class does not take a `props`argument\.\) You could define an instance of this construct in your app without `props`, for example: 
 
 ------
@@ -884,7 +887,7 @@ class NotifyingBucket(Construct):
 #### [ Java ]
 
 ```
-public class NotifyingBucket extends Bucket {
+public class NotifyingBucket extends Construct {
 
     public Topic topic = null;
     

@@ -31,7 +31,7 @@ Development teams should be able use their own accounts for testing and have the
 
 ## Coding best practices<a name="best-practices-code"></a>
 
- This section presents best practices for organizing your AWS CDK code\. The diagram below shows the relationship between a team and that team's code repositories, packages, applications, and construct libraries\. 
+This section presents best practices for organizing your AWS CDK code\. The diagram below shows the relationship between a team and that team's code repositories, packages, applications, and construct libraries\. 
 
 ![\[Image NOT FOUND\]](http://docs.aws.amazon.com/cdk/v1/guide/images/code-organization.jpg)
 
@@ -75,11 +75,15 @@ A construct that is self\-contained, in other words that completely describes a 
 
 ## Construct best practices<a name="best-practices-constructs"></a>
 
- This section contains best practices for developing constructs\. Constructs are reusable, composable modules that encapsulate resources, and the building blocks of AWS CDK apps\.
+This section contains best practices for developing constructs\. Constructs are reusable, composable modules that encapsulate resources, and the building blocks of AWS CDK apps\.
 
-### Model your app through constructs, not stacks<a name="best-practices-constructs-model"></a>
+### Model with constructs, deploy with stacks<a name="best-practices-constructs-model"></a>
 
-When breaking down your application into logical units, represent each unit as a descendant of [https://docs.aws.amazon.com/cdk/api/v1/docs/constructs.Construct.html](https://docs.aws.amazon.com/cdk/api/v1/docs/constructs.Construct.html) and not of [https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_core.Stack.html](https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_core.Stack.html)\. Stacks are a unit of deployment, and so tend to be oriented to specific applications\. By using constructs instead of stacks, you give yourself and your users the flexibility to build stacks in the way that makes the most sense for each deployment scenario\. For example, you could compose multiple constructs into a `DevStack` with some configuration for development environments and then have a different composition for your `ProdStack`\.
+Stacks are the unit of deployment: everything in a stack is deployed together\. So when building your application's higher\-level logical units from multiple AWS resources, represent each logical unit as a [https://docs.aws.amazon.com/cdk/api/v1/docs/constructs.Construct.html](https://docs.aws.amazon.com/cdk/api/v1/docs/constructs.Construct.html), not as a [https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_core.Stack.html](https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_core.Stack.html)\. Use stacks only to describe how your constructs should be composed and connected for your various deployment scenarios\.
+
+If one of your logical units is a Web site, for example, the constructs that make it up \(Amazon S3 bucket, API Gateway, Lambda functions, Amazon RDS tables, etc\.\) should be composed into a single high\-level construct, and then that construct should be instantiated in one or more stacks for deployment\.
+
+By using constructs for building and stacks for deploying, you improve reuse potential of your infrastructure and give yourself more flexibility in how it is deployed\.
 
 ### Configure with properties and methods, not environment variables<a name="best-practices-constructs-config"></a>
 
@@ -172,9 +176,9 @@ If you require developers to always use predefined roles that were created by a 
 
 ### Model all production stages in code<a name="best-practices-apps-stages"></a>
 
- In traditional AWS CloudFormation scenarios, your goal is to produce a single artifact that is parameterized so that it can be deployed to various target environments after applying configuration values specific to those environments\. In the CDK, you can, and should, build that configuration right into your source code\. Create a stack for your production environment, and a separate one for each of your other stages, and put the configuration values for each right there in the code\. Use services like [Secrets Manager](https://aws.amazon.com/secrets-manager/) and [Systems Manager](https://aws.amazon.com/systems-manager/) Parameter Store for sensitive values that you don't want to check in to source control, using the names or ARNs of those resources\.
+In traditional AWS CloudFormation scenarios, your goal is to produce a single artifact that is parameterized so that it can be deployed to various target environments after applying configuration values specific to those environments\. In the CDK, you can, and should, build that configuration right into your source code\. Create a stack for your production environment, and a separate one for each of your other stages, and put the configuration values for each right there in the code\. Use services like [Secrets Manager](https://aws.amazon.com/secrets-manager/) and [Systems Manager](https://aws.amazon.com/systems-manager/) Parameter Store for sensitive values that you don't want to check in to source control, using the names or ARNs of those resources\.
 
- When you synthesize your application, the cloud assembly created in the `cdk.out` folder contains a separate template for each environment\. Your entire build is deterministic: there are no out\-of\-band changes to your application, and any given commit always yields the exact same AWS CloudFormation template and accompanying assets, which makes unit testing much more reliable\. 
+When you synthesize your application, the cloud assembly created in the `cdk.out` folder contains a separate template for each environment\. Your entire build is deterministic: there are no out\-of\-band changes to your application, and any given commit always yields the exact same AWS CloudFormation template and accompanying assets, which makes unit testing much more reliable\. 
 
 ### Measure everything<a name="best-practices-apps-measure"></a>
 

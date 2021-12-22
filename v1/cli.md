@@ -728,8 +728,10 @@ Options:
                                             permissions, modern bootstrapping
                                             only)                      [boolean]
 
-      --qualifier                           Unique string to distinguish
-                                            multiple bootstrap stacks   [string]
+      --qualifier                           String which must be unique for each
+                                            bootstrap stack. You must configure
+                                            it on your CDK app if you change
+                                            this from the default.      [string]
 
       --public-access-block-configuration   Block public access configuration
                                             on CDK toolkit bucket (enabled by

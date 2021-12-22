@@ -30,7 +30,7 @@ If you are using an IDE, you can now open or import the project\. In Eclipse, fo
 
 ## Managing AWS Construct Library modules<a name="java-managemodules"></a>
 
-Use Maven to install AWS Construct Library packages, which are in the group `software.amazon.awscdk`\. Most constructs are in the artifact `aws-cdk-lib`\. Modules for services whose higher\-level CDK support is still being developed are in separate "experimental" packages, named with a short version \(no AWS or Amazon prefix\) of their service's name\. [Search the Maven Central Repository](https://search.maven.org/search?q=sg:oftware.amazon.awscdk) to find the names of all AWS CDK and AWS Construct Module libraries\.
+Use Maven to install AWS Construct Library packages, which are in the group `software.amazon.awscdk`\. Most constructs are in the artifact `aws-cdk-lib`\. Modules for services whose higher\-level CDK support is still being developed are in separate "experimental" packages, named with a short version \(no AWS or Amazon prefix\) of their service's name\. [Search the Maven Central Repository](https://search.maven.org/search?q=software.amazon.awscdk) to find the names of all AWS CDK and AWS Construct Module libraries\.
 
 **Note**  
 The [Java edition of the CDK API Reference](https://docs.aws.amazon.com/cdk/api/v2/java/index.html) also shows the package names\.
