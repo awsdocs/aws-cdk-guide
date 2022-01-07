@@ -124,7 +124,7 @@ alias cdk="npx aws-cdk@2.x"
 ```
 
 ```
-doskey cdk=npx1 aws-cdk@1.x $*
+doskey cdk1=npx aws-cdk@1.x $*
 doskey cdk=npx aws-cdk@2.x $*
 ```
 
