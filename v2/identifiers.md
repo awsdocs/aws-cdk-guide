@@ -281,3 +281,104 @@ Think of construct IDs as part of your construct's public contract\. If you chan
 ### Logical ID stability<a name="identifiers_logical_id_stability"></a>
 
 Avoid changing the logical ID of a resource between deployments\. Since AWS CloudFormation identifies resources by their logical ID, if you change the logical ID of a resource, AWS CloudFormation deletes the existing resource, and then creates a new resource with the new logical ID\.
+
+## The "Default" Construct ID<a name="default_construct_id"></a>
+
+Using "Default" as a construct ID has special behavior in the CDK. Unlike other
+IDs you may use, "Default" will:
+
+1. Not affect the hash suffix of the construct's logical ID.
+2. Not include the construct ID ("Default") in the human-readable portion of the logical ID.
+3. Allow the `construct.node.defaultChild` API to return the "Default" construct.
+
+Using "Default" as a construct ID for is a good choice when implementing a
+construct that wraps one primary, child construct. For instance, an author
+writing a construct named `ReplicatedBucket` that wraps a single `s3.Bucket`
+could choose to give the `s3.Bucket` the logical ID "Bucket". When a user
+instantiates a `ReplicatedBucket` and provides "ReplicatedBucket" as the ID, the
+logical ID of the s3 bucket would be "ReplicatedBucketBucket\<hash\>". If the
+construct author instead chose to use "Default" for the `s3.Bucket` construct
+ID, the logical ID would be "ReplicatedBucket\<hash\>", eliminating the
+additional "Bucket" name for the `s3.Bucket`.
+
+Using "Default" as a construct ID can also help in cases where you would like to
+refactor your code to extract a new construct class. Consider an example where
+you have deployed a CDK app and would like to move an S3 bucket to a new
+construct called "MyBucket".
+
+```ts
+export class MyStack extends Stack {
+  constructor(scope: Construct, id: string, props?: StackProps) {
+    super(scope, id, props);
+
+    // Path: MyStack/Bucket/Resource 
+    // Logical ID: Bucket83908E77
+    // Bucket Name: mystack-bucket83908e77-1mwpz4z08f2eq
+    new s3.Bucket(this, "Bucket");
+  }
+}
+```
+
+The logical ID for the s3 Bucket in this case is "Bucket83908E77". Notice that
+the special name "Resource" from the path is omitted from the logical ID and the
+generated bucket name.
+
+Now let's extract this Bucket to a new class called `MyBucket` where we plan to
+add other, related constructs.
+
+```ts
+export class MyBucket extends Construct {
+  constructor(scope: Construct, id: string, props?: MyBucketProps) {
+    super(scope, id);
+    
+    new s3.Bucket(this, "Bucket");
+  }
+}
+```
+
+When we replace the `s3.Bucket` with our new `MyBucket` construct, the unique
+ID, path and bucket name will change.
+
+```ts
+export class MyStack extends Stack {
+  constructor(scope: Construct, id: string, props?: StackProps) {
+    super(scope, id, props);
+
+    // Path: MyStack/Bucket/Bucket/Resource 
+    // Logical ID: BucketD7FEB781
+    // Bucket Name: mystack-bucketd7feb781-1nnqpcke5tgoj
+    new MyBucket(this, "Bucket");
+  }
+}
+```
+
+This change will orphan the existing bucket and create a new one during
+deployment.  However, the human-readable portion of the logical ID (Bucket) and
+bucket name (my-stack-bucket) did not change.  CDK removes repeated construct
+IDs from the path when building the logical ID to avoid adding noise to logical
+IDs like `BucketBucketD7FEB781`.
+
+If we instead update our extracted `MyBucket` construct to use "Default" as the
+logical ID instead of "Bucket", we'll see no change in our synthesized output.
+
+```ts
+export class MyBucket extends Construct {
+  constructor(scope: Construct, id: string, props?: MyBucketProps) {
+    super(scope, id);
+    
+    new s3.Bucket(this, "Default");
+  }
+}
+```
+
+When we `synth` our app this time, the logical ID matches the original before
+the refactoring (Bucket83908E77) and the path reflects the new nesting
+(MyStack/Bucket/Default/Resource). This code change won't affect our deployed
+infrastructure. 
+
+A limitation to this approach is that, like any Construct ID, "Default" can't be
+repeated in the current construct's scope. So if you want to extract two s3
+Buckets into a new construct, only one could keep its existing logical ID and
+use "Default" as its new construct ID. To keep existing logical IDs from
+changing during refactoring also consider using the [`Stack.renameLogicalId()
+API`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.Stack.html#renamewbrlogicalwbridoldid-newid).
