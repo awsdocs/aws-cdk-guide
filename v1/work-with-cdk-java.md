@@ -2,9 +2,14 @@
 
 Java is a fully\-supported client platform for the AWS CDK and is considered stable\. You can develop AWS CDK applications in Java using familiar tools, including the JDK \(Oracle's, or an OpenJDK distribution such as Amazon Corretto\) and Apache Maven\. The modules comprising the AWS Construct Library are distributed via the [Maven Central Repository](https://search.maven.org/search?q=g:software.amazon.awscdk)\.
 
-You can use any text editor, or a Java IDE that can read Maven projects, to work on your AWS CDK apps\. We provide [Eclipse](https://www.eclipse.org/downloads/) hints in this Guide, but IntelliJ IDEA, NetBeans, and other IDEs can import Maven projects and will work fine for developing AWS CDK applications in Java\.
+The AWS CDK supports Java 8 and later\. We recommend using the latest version you can, however, because later versions of the language include improvements that are particularly convenient for developing AWS CDK applications\. For example, Java 9 introduces the `Map.of()` method \(a convenient way to declare hashmaps that would be written as object literals in TypeScript\)\. Java 10 introduces local type inference using the `var` keyword\.
 
-It is possible to write AWS CDK applications in JVM\-hosted languages other than Java \(for example, Kotlin, Groovy, Clojure, or Scala\), but we are unable to provide support for these languages\.
+**Note**  
+Most code examples in this Developer Guide work with Java 8\. A few examples use `Map.of()`; these examples include comments noting that they require Java 9\.
+
+You can use any text editor, or a Java IDE that can read Maven projects, to work on your AWS CDK apps\. We provide [Eclipse](https://www.eclipse.org/downloads/) hints in this Guide, but IntelliJ IDEA, NetBeans, and other IDEs can import Maven projects and can be used for developing AWS CDK applications in Java\.
+
+It is possible to write AWS CDK applications in JVM\-hosted languages other than Java \(for example, Kotlin, Groovy, Clojure, or Scala\), but the experience may not be particularly idiomatic, and we are unable to provide any support for these languages\.
 
 ## Prerequisites<a name="java-prerequisites"></a>
 
@@ -95,17 +100,20 @@ When deriving your own construct from an existing construct, you may want to acc
 
 ### Generic structures<a name="java-generic-structures"></a>
 
-In some places, the AWS CDK uses JavaScript arrays or untyped objects as input to a method\. \(See, for example, AWS CodeBuild's [https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-codebuild.BuildSpec.html#to-wbr-build-wbr-spec](https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-codebuild.BuildSpec.html#to-wbr-build-wbr-spec) method\.\) In Java, these objects are represented as `java.util.Map<String, Object>`\. In cases where the values are all strings, you can use `Map<String, String>`\. It is convenient to use double braces to define `HashMap`s\. 
+In some APIs, the AWS CDK uses JavaScript arrays or untyped objects as input to a method\. \(See, for example, AWS CodeBuild's [https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-codebuild.BuildSpec.html#to-wbr-build-wbr-spec](https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-codebuild.BuildSpec.html#to-wbr-build-wbr-spec) method\.\) In Java, these objects are represented as `java.util.Map<String, Object>`\. In cases where the values are all strings, you can use `Map<String, String>`\.
+
+Java does not provide a way to write literals for such containers like some other languages do\. In Java 9 and later, you can use [https://docs.oracle.com/javase/9/docs/api/java/util/Map.html#ofEntries-java.util.Map.Entry...-](https://docs.oracle.com/javase/9/docs/api/java/util/Map.html#ofEntries-java.util.Map.Entry...-) to conveniently define maps of up to ten entries inline with one of these calls\.
 
 ```
-new HashMap<String, String>() {{
-    put("base-directory", "dist");
-    put("files", "LambdaStack.template.json");
-}};
+java.util.Map.of(
+    "base-directory", "dist",
+    "files", "LambdaStack.template.json"
+ )
 ```
 
-**Note**  
-The double\-brace notation \(which technically declares an anonymous inner class\) is sometimes considered an anti\-pattern\. However, its disadvantages are not very relevant to using it in CDK apps\. It is a reasonable substitute for what would be object or dictionary literals in other languages\.
+To create maps with more than ten entries, use [https://docs.oracle.com/javase/9/docs/api/java/util/Map.html#ofEntries-java.util.Map.Entry...-](https://docs.oracle.com/javase/9/docs/api/java/util/Map.html#ofEntries-java.util.Map.Entry...-)\.
+
+If you are using Java 8, you could provide your own methods similar to to these\.
 
 JavaScript arrays are represented as `List<Object>` or `List<String>` in Java\. The method `java.util.Arrays.asList` is convenient for defining short `ArrayList`s\.
 

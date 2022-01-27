@@ -749,7 +749,7 @@ public class NotifyingBucket : Construct
 **Note**  
 Our `NotifyingBucket` construct inherits not from `Bucket` but rather from `Construct`\. We are using composition, not inheritance, to bundle an Amazon S3 bucket and an Amazon SNS topic together\. In general, composition is preferred over inheritance when developing AWS CDK constructs\.
 
-The `NotifyingBucket` constructor has a typical construct signature: `scope`, `id`, and `props`\. The last argument, `props`, is optional \(gets the default value `{}`\) because all props are optional\. \(The base `Construct` class does not take a `props`argument\.\) You could define an instance of this construct in your app without `props`, for example: 
+The `NotifyingBucket` constructor has a typical construct signature: `scope`, `id`, and `props`\. The last argument, `props`, is optional \(gets the default value `{}`\) because all props are optional\. \(The base `Construct` class does not take a `props` argument\.\) You could define an instance of this construct in your app without `props`, for example: 
 
 ------
 #### [ TypeScript ]

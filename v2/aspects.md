@@ -92,6 +92,8 @@ During the [prepare phase](apps.md#lifecycle), the AWS CDK calls the `visit` met
 
 The `visit` method is free to change anything in the construct\. In strongly\-typed languages, cast the received construct to a more specific type before accessing construct\-specific properties or methods\.
 
+Aspects don't propagate across `Stage` construct boundaries, because `Stages` are self\-contained and immutable after definition\. Apply aspects on the `Stage` construct itself \(or lower\) if you want them to visit constructs inside the `Stage`\.
+
 ## Example<a name="aspects_example"></a>
 
 The following example validates that all buckets created in the stack have versioning enabled\. The aspect adds an error annotation to the constructs that fail the validation, which results in the synth operation failing and prevents deploying the resulting cloud assembly\.
@@ -107,7 +109,7 @@ class BucketVersioningChecker implements IAspect {
 
       // Check for versioning property, exclude the case where the property
       // can be a token (IResolvable).
-      if (!node.versioningConfiguration 
+      if (!node.versioningConfiguration
         || (!Tokenization.isResolvable(node.versioningConfiguration)
             && node.versioningConfiguration.status !== 'Enabled')) {
         Annotations.of(node).addError('Bucket versioning is not enabled');
@@ -131,7 +133,7 @@ class BucketVersioningChecker {
 
       // Check for versioning property, exclude the case where the property
       // can be a token (IResolvable).
-      if (!node.versioningConfiguration 
+      if (!node.versioningConfiguration
         || !Tokenization.isResolvable(node.versioningConfiguration)
             && node.versioningConfiguration.status !== 'Enabled') {
         Annotations.of(node).addError('Bucket versioning is not enabled');
@@ -150,7 +152,7 @@ Aspects.of(stack).add(new BucketVersioningChecker());
 ```
 @jsii.implements(cdk.IAspect)
 class BucketVersioningChecker:
-    
+
   def visit(self, node):
     # See that we're dealing with a CfnBucket
     if isinstance(node, s3.CfnBucket):
@@ -159,7 +161,7 @@ class BucketVersioningChecker:
       # can be a token (IResolvable).
       if (not node.versioning_configuration or
               not Tokenization.is_resolvable(node.versioning_configuration)
-                  and node.versioning_configuration.status != "Enabled"):      
+                  and node.versioning_configuration.status != "Enabled"):
           Annotations.of(node).add_error('Bucket versioning is not enabled')
 
 # Later, apply to the stack

@@ -90,7 +90,9 @@ Tags.Of(myConstruct).Remove("key");
 
 ------
 
-## Tag priorities<a name="w363aac19c23c21"></a>
+If you are using `Stage` constructs, apply the tag at the `Stage` level or below\. Tags are not applied across `Stage` boundaries\.
+
+## Tag priorities<a name="w363aac19c23c23"></a>
 
 The AWS CDK applies and removes tags recursively\. If there are conflicts, the tagging operation with the highest priority wins\. \(Priorities are set using the optional `priority` property\.\) If the priorities of two operations are the same, the tagging operation closest to the bottom of the construct tree wins\. By default, applying a tag has a priority of 100 \(except for tags added directly to an AWS CloudFormation resource, which has a priority of 50\) and removing a tag has a priority of 200\. 
 
@@ -325,7 +327,7 @@ the_best_stack = Stack(app, 'MarketingSystem')
 Tags.of(the_best_stack).add("StackType", "TheBest")
 
 # Remove the tag from all resources except subnet resources
-Tags.of(the_best_stack).remove("StackType", 
+Tags.of(the_best_stack).remove("StackType",
     exclude_resource_types=["AWS::EC2::Subnet"])
 ```
 
@@ -358,7 +360,7 @@ var theBestStack = new Stack(app, 'MarketingSystem');
 Tags.Of(theBestStack).Add("StackType", "TheBest");
 
 // Remove the tag from all resources except subnet resources
-Tags.Of(theBestStack).Remove("StackType", new TagProps 
+Tags.Of(theBestStack).Remove("StackType", new TagProps
 {
     ExcludeResourceTypes = ["AWS::EC2::Subnet"]
 });
@@ -372,7 +374,7 @@ The following code achieves the same result\. Consider which approach \(inclusio
 #### [ TypeScript ]
 
 ```
-Tags.of(theBestStack).add('StackType', 'TheBest', 
+Tags.of(theBestStack).add('StackType', 'TheBest',
   { includeResourceTypes: ['AWS::EC2::Subnet']});
 ```
 
@@ -380,7 +382,7 @@ Tags.of(theBestStack).add('StackType', 'TheBest',
 #### [ JavaScript ]
 
 ```
-Tags.of(theBestStack).add('StackType', 'TheBest', 
+Tags.of(theBestStack).add('StackType', 'TheBest',
   { includeResourceTypes: ['AWS::EC2::Subnet']});
 ```
 
@@ -388,7 +390,7 @@ Tags.of(theBestStack).add('StackType', 'TheBest',
 #### [ Python ]
 
 ```
-Tags.of(the_best_stack).add("StackType", "TheBest", 
+Tags.of(the_best_stack).add("StackType", "TheBest",
     include_resource_types=["AWS::EC2::Subnet"])
 ```
 
