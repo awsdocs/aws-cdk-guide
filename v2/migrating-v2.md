@@ -195,7 +195,7 @@ Experimental constructs are provided in separate, independently\-versioned packa
 ```
 {
   "dependencies": {
-    "aws-cdk-lib": "^2.0.0-rc.1",
+    "aws-cdk-lib": "^2.0.0",
     "@aws-cdk/aws-codestar-alpha": "2.0.0-alpha.1",
     "constructs": "^10.0.0"
   }
@@ -222,7 +222,7 @@ Experimental constructs are provided in separate, independently\-versioned packa
 
 ```
 install_requires=[
-     "aws-cdk-lib>=2.0.0rc1",
+     "aws-cdk-lib>=2.0.0",
      "constructs>=10.0.0",
      "aws-cdk.aws-codestar-alpha>=2.0.0alpha1",
      # ...
