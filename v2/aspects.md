@@ -199,7 +199,7 @@ Aspects.of(stack).add(new BucketVersioningChecker());
 #### [ C\# ]
 
 ```
-class BucketVersioningChecker : Amazon.Jsii.Runtime.DeputyBase, IAspect
+class BucketVersioningChecker : Amazon.Jsii.Runtime.Deputy.DeputyBase, IAspect
 {
     public void Visit(IConstruct node)
     {
@@ -209,7 +209,7 @@ class BucketVersioningChecker : Amazon.Jsii.Runtime.DeputyBase, IAspect
             var bucket = (CfnBucket)node;
             if (bucket.VersioningConfiguration is null ||
                     !Tokenization.IsResolvable(bucket.VersioningConfiguration) &&
-                    !bucket.VersioningConfiguration.ToString().Contains("Enabled")
+                    !bucket.VersioningConfiguration.ToString().Contains("Enabled"))
                 Annotations.Of(bucket.Node).AddError("Bucket versioning is not enabled");
         }
     }
