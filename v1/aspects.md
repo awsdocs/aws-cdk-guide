@@ -111,7 +111,7 @@ class BucketVersioningChecker implements IAspect {
       // can be a token (IResolvable).
       if (!node.versioningConfiguration
         || (!Tokenization.isResolvable(node.versioningConfiguration)
-            && node.versioningConfiguration.status !== 'Enabled')) {
+            && node.versioningConfiguration.status !== 'Enabled') {
         Annotations.of(node).addError('Bucket versioning is not enabled');
       }
     }
@@ -184,7 +184,7 @@ public class BucketVersioningChecker implements IAspect
             Object versioningConfiguration = bucket.getVersioningConfiguration();
             if (versioningConfiguration == null ||
                     !Tokenization.isResolvable(versioningConfiguration.toString()) &&
-                    !versioningConfiguration.toString().contains("Enabled")
+                    !versioningConfiguration.toString().contains("Enabled"))
                 Annotations.of(bucket.getNode()).addError("Bucket versioning is not enabled");
         }
     }
@@ -199,7 +199,7 @@ Aspects.of(stack).add(new BucketVersioningChecker());
 #### [ C\# ]
 
 ```
-class BucketVersioningChecker : Amazon.Jsii.Runtime.DeputyBase, IAspect
+class BucketVersioningChecker : Amazon.Jsii.Runtime.Deputy.DeputyBase, IAspect
 {
     public void Visit(IConstruct node)
     {
@@ -209,7 +209,7 @@ class BucketVersioningChecker : Amazon.Jsii.Runtime.DeputyBase, IAspect
             var bucket = (CfnBucket)node;
             if (bucket.VersioningConfiguration is null ||
                     !Tokenization.IsResolvable(bucket.VersioningConfiguration) &&
-                    !bucket.VersioningConfiguration.ToString().Contains("Enabled")
+                    !bucket.VersioningConfiguration.ToString().Contains("Enabled"))
                 Annotations.Of(bucket.Node).AddError("Bucket versioning is not enabled");
         }
     }

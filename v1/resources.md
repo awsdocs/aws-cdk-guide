@@ -575,7 +575,7 @@ Vpc.FromVpcAttributes(this, "MyVpc", new VpcAttributes
 
 ------
 
-Because the `ec2.Vpc` construct is complex, composed of many AWS resources, such as the VPC itself, subnets, security groups, and routing tables\), it can be difficult to import those resources using attributes\. To address this, the VPC construct contains a `fromLookup` method \(Python: `from_lookup`\) that uses a [context method](context.md#context_methods) to resolve all the required attributes at synthesis time, and cache the values for future use in `cdk.context.json`\. 
+Because the `ec2.Vpc` construct is complex, composed of many AWS resources, such as the VPC itself, subnets, security groups, and routing tables, it can be difficult to import those resources using attributes\. To address this, the VPC construct contains a `fromLookup` method \(Python: `from_lookup`\) that uses a [context method](context.md#context_methods) to resolve all the required attributes at synthesis time, and cache the values for future use in `cdk.context.json`\. 
 
 You must provide attributes sufficient to uniquely identify a VPC in your AWS account\. For example, there can only ever be one default VPC, so specifying that you want to import the VPC marked as the default is sufficient\.
 
@@ -1129,7 +1129,7 @@ Resources besides those that store data persistently may also have a `removalPol
 
 AWS CloudFormation does not remove Amazon S3 buckets that contain files even if their removal policy is set to `DESTROY`\. Attempting to do so is a AWS CloudFormation error\. To have the AWS CDK delete all files from the bucket before destroying it, set the bucket's `autoDeleteObjects` property to `true`\.
 
-Following is an example of creating an Amazon S3 bucket with `RemovalPolicy` of `DESTROY` and `autoDeleteOjbects` set to `true`\. \.
+Following is an example of creating an Amazon S3 bucket with `RemovalPolicy` of `DESTROY` and `autoDeleteOjbects` set to `true`\.
 
 ------
 #### [ TypeScript ]

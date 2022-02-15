@@ -27,7 +27,7 @@ The instructions here apply to the current \(non\-preview\) version of the AWS S
    new lambda.Function(this, 'MyFunction', {
      runtime: lambda.Runtime.PYTHON_3_7,
      handler: 'app.lambda_handler',
-     code:    lambda.Code.asset('./my_function'),
+     code:    lambda.Code.fromAsset('./my_function'),
    });
    ```
 

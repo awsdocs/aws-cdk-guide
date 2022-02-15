@@ -41,7 +41,7 @@ The AWS CDK's main module, which you'll need in most AWS CDK apps, is imported i
 
 We recommend writing C\# `using` directives for the CDK core constructs and for each AWS service you use in each of your C\# source files\. You may find it convenient to use an alias for a namespace or type to help resolve name conflicts\. You can always use a type's fully\-qualfiied name \(including its namespace\) without a `using` statement\.
 
-NuGet has four standard, mostly\-equivalent interfaces; you can use the one that suits your needs and working style\. You can also use compatible tools, such as [Paket](https://fsprojects.github.io/Paket/) or [MyGet](https://fsprojects.github.io/Paket/)\.
+NuGet has four standard, mostly\-equivalent interfaces; you can use the one that suits your needs and working style\. You can also use compatible tools, such as [Paket](https://fsprojects.github.io/Paket/) or [MyGet](https://www.myget.org/)\.
 
 ### The Visual Studio NuGet GUI<a name="csharp-vs-nuget-gui"></a>
 

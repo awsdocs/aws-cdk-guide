@@ -358,7 +358,7 @@ cdk deploy
 
 AWS CloudFormation displays information about the dozens of steps that it takes as it deploys your app\.
 
-That's how easy it is to create a Fargate service to run a Docker image\.
+That's how easy it is to create a Fargate\-powered Amazon ECS service to run a Docker image\.
 
 ## Clean up<a name="ecs_example_destroy"></a>
 

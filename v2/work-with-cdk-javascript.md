@@ -20,7 +20,7 @@ cd my-project
 cdk init app --language javascript
 ```
 
-Creating a project also installs the [ `aws-cdk-lib`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib-readme.html) module and its dependencies\.
+Creating a project also installs the [https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib-readme.html](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib-readme.html) module and its dependencies\.
 
 `cdk init` uses the name of the project folder to name various elements of the project, including classes, subfolders, and files\. 
 

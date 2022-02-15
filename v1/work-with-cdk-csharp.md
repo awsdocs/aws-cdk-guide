@@ -44,7 +44,7 @@ We recommend writing a single C\# `using` directive for each AWS Construct Libra
 **Important**  
 All AWS Construct Library modules used in your project must be the same version\.
 
-NuGet has four standard, mostly\-equivalent interfaces; you can use the one that suits your needs and working style\. You can also use compatible tools, such as [Paket](https://fsprojects.github.io/Paket/) or [MyGet](https://fsprojects.github.io/Paket/)\.
+NuGet has four standard, mostly\-equivalent interfaces; you can use the one that suits your needs and working style\. You can also use compatible tools, such as [Paket](https://fsprojects.github.io/Paket/) or [MyGet](https://www.myget.org/)\.
 
 ### The Visual Studio NuGet GUI<a name="csharp-vs-nuget-gui"></a>
 

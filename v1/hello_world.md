@@ -518,7 +518,7 @@ Resources
 This diff has four sections\.
 + **IAM Statement Changes** and **IAM Policy Changes** \- These permission changes are there because we set the `AutoDeleteObjects` property on our Amazon S3 bucket\. The auto\-delete feature uses a custom resource to delete the objects in the bucket before the bucket itself is deleted\. The IAM objects grant the custom resource's code access to the bucket\.
 + **Parameters** \- The AWS CDK uses these entries to locate the Lambda function asset for the custom resource\.
-+ **Resources** \- The new and changed resources in this stack\. We can see the aforementioned IAM objects, the custom resource ,and its associated Lambda function being added\. We can also see that the bucket's `DeletionPolicy` and `UpdateReplacePolicy` attributes are being updated\. These allow the bucket to be deleted along with the stack, and to be replaced with a new one\.
++ **Resources** \- The new and changed resources in this stack\. We can see the aforementioned IAM objects, the custom resource, and its associated Lambda function being added\. We can also see that the bucket's `DeletionPolicy` and `UpdateReplacePolicy` attributes are being updated\. These allow the bucket to be deleted along with the stack, and to be replaced with a new one\.
 
 You may be curious about why we specified `RemovalPolicy` in our AWS CDK app but got a `DeletionPolicy` property in the resulting AWS CloudFormation template\. The AWS CDK uses a different name for the property because the AWS CDK default is to retain the bucket when the stack is deleted, while AWS CloudFormation's default is to delete it\. See [Removal policies](resources.md#resources_removal) for further details\.
 

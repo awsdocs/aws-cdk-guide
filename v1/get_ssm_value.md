@@ -13,8 +13,7 @@ To read values from the Systems Manager Parameter Store, use the [valueForString
 
 A [limited number of AWS services](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/dynamic-references.html#template-parameters-dynamic-patterns-resources) currently support this feature\.
 
----
-
+------
 #### [ TypeScript ]
 
 ```
@@ -31,8 +30,7 @@ const secureStringToken = ssm.StringParameter.valueForSecureStringParameter(
     this, 'my-secure-parameter-name', 1);   // must specify version
 ```
 
----
-
+------
 #### [ JavaScript ]
 
 ```
@@ -49,13 +47,12 @@ const secureStringToken = ssm.StringParameter.valueForSecureStringParameter(
     this, 'my-secure-parameter-name', 1);   // must specify version
 ```
 
----
-
+------
 #### [ Python ]
 
 ```
 import aws_cdk.aws_ssm as ssm
-
+          
 # Get latest version or specified version of plain string attribute
 latest_string_token = ssm.StringParameter.value_for_string_parameter(
     self, "my-plain-parameter-name")
@@ -67,8 +64,7 @@ secure_string_token = ssm.StringParameter.value_for_secure_string_parameter(
     self, "my-secure-parameter-name", 1)   # must specify version
 ```
 
----
-
+------
 #### [ Java ]
 
 ```
@@ -85,8 +81,7 @@ String secureStringToken = StringParameter.valueForSecureStringParameter(
             this, "my-secure-parameter-name", 1);   // must specify version
 ```
 
----
-
+------
 #### [ C\# ]
 
 ```
@@ -103,21 +98,20 @@ var secureStringToken = StringParameter.ValueForSecureStringParameter(
     this, 'my-secure-parameter-name', 1);   // must specify version
 ```
 
----
+------
 
 ## Reading Systems Manager values at synthesis time<a name="ssm_read_at_synth"></a>
 
 It is sometimes useful to "bake in" a parameter at synthesis time, so that the resulting AWS CloudFormation template always uses the same value, rather than resolving the value during deployment\.
 
-To read a value from the Systems Manager parameter store at synthesis time, use the [valueFromLookup](https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-ssm.StringParameter.html#static-value-wbr-from-wbr-lookupscope-parametername) method \(Python: `value_from_lookup`\)\. This method returns the actual value of the parameter as a [Runtime context](context.md) value\. If the value is not already cached in `cdk.json` or passed on the command line, it will be retrieved from the current AWS account\. For this reason, the stack _must_ be synthesized with explicit account and region information\.
+To read a value from the Systems Manager parameter store at synthesis time, use the [valueFromLookup](https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-ssm.StringParameter.html#static-value-wbr-from-wbr-lookupscope-parametername) method \(Python: `value_from_lookup`\)\. This method returns the actual value of the parameter as a [Runtime context](context.md) value\. If the value is not already cached in `cdk.json` or passed on the command line, it will be retrieved from the current AWS account\. For this reason, the stack *must* be synthesized with explicit account and region information\.
 
 Only plain Systems Manager strings may be retrieved, not secure strings\. It is not possible to request a specific version; the latest version is always returned\.
 
 **Important**  
 The retrieved value will end up in your synthesized AWS CloudFormation template, which may be a security risk depending on who has access to your AWS CloudFormation templates and what kind of value it is\. Generally, don't use this feature for passwords, keys, or other values you want to keep private\.
 
----
-
+------
 #### [ TypeScript ]
 
 ```
@@ -126,8 +120,7 @@ import * as ssm from '@aws-cdk/aws-ssm';
 const stringValue = ssm.StringParameter.valueFromLookup(this, 'my-plain-parameter-name');
 ```
 
----
-
+------
 #### [ JavaScript ]
 
 ```
@@ -136,8 +129,7 @@ const ssm = require('@aws-cdk/aws-ssm');
 const stringValue = ssm.StringParameter.valueFromLookup(this, 'my-plain-parameter-name');
 ```
 
----
-
+------
 #### [ Python ]
 
 ```
@@ -146,8 +138,7 @@ import aws_cdk.aws_ssm as ssm
 string_value = ssm.StringParameter.value_from_lookup(self, "my-plain-parameter-name")
 ```
 
----
-
+------
 #### [ Java ]
 
 ```
@@ -156,8 +147,7 @@ import software.amazon.awscdk.services.ssm.StringParameter;
 String stringValue = StringParameter.valueFromLookup(this, "my-plain-parameter-name");
 ```
 
----
-
+------
 #### [ C\# ]
 
 ```
@@ -166,7 +156,7 @@ using Amazon.CDK.AWS.SSM;
 var stringValue = StringParameter.ValueFromLookup(this, "my-plain-parameter-name");
 ```
 
----
+------
 
 ## Writing values to Systems Manager<a name="ssm_write"></a>
 

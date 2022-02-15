@@ -111,7 +111,7 @@ class BucketVersioningChecker implements IAspect {
       // can be a token (IResolvable).
       if (!node.versioningConfiguration
         || (!Tokenization.isResolvable(node.versioningConfiguration)
-            && node.versioningConfiguration.status !== 'Enabled')) {
+            && node.versioningConfiguration.status !== 'Enabled') {
         Annotations.of(node).addError('Bucket versioning is not enabled');
       }
     }
@@ -184,7 +184,7 @@ public class BucketVersioningChecker implements IAspect
             Object versioningConfiguration = bucket.getVersioningConfiguration();
             if (versioningConfiguration == null ||
                     !Tokenization.isResolvable(versioningConfiguration.toString()) &&
-                    !versioningConfiguration.toString().contains("Enabled")
+                    !versioningConfiguration.toString().contains("Enabled"))
                 Annotations.of(bucket.getNode()).addError("Bucket versioning is not enabled");
         }
     }
