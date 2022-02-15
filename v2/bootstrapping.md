@@ -555,3 +555,4 @@ The bootstrap template is versioned and evolves over time with the AWS CDK itsel
 | 6 | 1\.109\.0 | Attach aws\-cdk:bootstrap\-role tag to deployment, file publishing, and image publishing roles\.  | 
 | 7 | 1\.110\.0 | Deployment role can no longer read Buckets in the target account directly \(however, this role is effectively an administrator, and could always use its AWS CloudFormation permissions to make the bucket readable anyway\)\. | 
 | 8 | 1\.114\.0 | The lookup role has full read\-only permissions to the target environment, and has a aws\-cdk:bootstrap\-role tag as well\. | 
+| 9 | 1\.135\.0 | Fixes S3 asset uploads from being rejected by commonly referenced encryption SCP\. | 
