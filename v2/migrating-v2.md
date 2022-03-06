@@ -297,7 +297,7 @@ Experimental constructs are provided in separate, independently\-versioned packa
 
 ```
 <PackageReference Include="Amazon.CDK.Lib" Version="2.0.0" />
-<PackageReference include="Amazon.CDK.AWS.Codestar.Alpha" Version="2.0.0-alpha.1" />
+<PackageReference Include="Amazon.CDK.AWS.Codestar.Alpha" Version="2.0.0-alpha.1" />
 <PackageReference Include="Constructs" Version="10.0.0" />
 ```
 
