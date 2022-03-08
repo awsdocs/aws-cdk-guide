@@ -272,8 +272,6 @@ Unique IDs serve as the *logical identifiers*, which are sometimes called *logic
 
 For example, the Amazon S3 bucket in the previous example that is created within `Stack2` results in an `AWS::S3::Bucket` resource with the logical ID `Stack2MyBucket4DD88B4F` in the resulting AWS CloudFormation template\.
 
-Think of construct IDs as part of your construct's public contract\. If you change the ID of a construct in your construct tree, AWS CloudFormation will replace the deployed resource instances of that construct, potentially causing service interruption or data loss\.
-
 ### Logical ID stability<a name="identifiers_logical_id_stability"></a>
 
-Avoid changing the logical ID of a resource between deployments\. Since AWS CloudFormation identifies resources by their logical ID, if you change the logical ID of a resource, AWS CloudFormation deletes the existing resource, and then creates a new resource with the new logical ID\.
+Avoid changing the logical ID of a resource after it has been created\. Since AWS CloudFormation identifies resources by their logical ID, if you change the logical ID of a resource, AWS CloudFormation deletes the existing resource, and then creates a new resource with the new logical ID, which may cause service interruption or data loss\.

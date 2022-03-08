@@ -1,6 +1,6 @@
 # Working with the AWS CDK in Java<a name="work-with-cdk-java"></a>
 
-Java is a fully\-supported client platform for the AWS CDK and is considered stable\. You can develop AWS CDK applications in Java using familiar tools, including the JDK \(Oracle's, or an OpenJDK distribution such as Amazon Corretto\) and Apache Maven\. The modules comprising the AWS Construct Library are distributed via the [Maven Central Repository](https://search.maven.org/search?q=g:software.amazon.awscdk)\.
+Java is a fully\-supported client language for the AWS CDK and is considered stable\. You can develop AWS CDK applications in Java using familiar tools, including the JDK \(Oracle's, or an OpenJDK distribution such as Amazon Corretto\) and Apache Maven\.
 
 The AWS CDK supports Java 8 and later\. We recommend using the latest version you can, however, because later versions of the language include improvements that are particularly convenient for developing AWS CDK applications\. For example, Java 9 introduces the `Map.of()` method \(a convenient way to declare hashmaps that would be written as object literals in TypeScript\)\. Java 10 introduces local type inference using the `var` keyword\.
 
@@ -35,7 +35,7 @@ If you are using an IDE, you can now open or import the project\. In Eclipse, fo
 
 ## Managing AWS Construct Library modules<a name="java-managemodules"></a>
 
-Use Maven to install AWS Construct Library packages, which are in the group `software.amazon.awscdk`\. Most constructs are in the artifact `aws-cdk-lib`\. Modules for services whose higher\-level CDK support is still being developed are in separate "experimental" packages, named with a short version \(no AWS or Amazon prefix\) of their service's name\. [Search the Maven Central Repository](https://search.maven.org/search?q=software.amazon.awscdk) to find the names of all AWS CDK and AWS Construct Module libraries\.
+Use Maven to install AWS Construct Library packages, which are in the group `software.amazon.awscdk`\. Most constructs are in the artifact `aws-cdk-lib`, which is added to new Java projects by default\. Modules for services whose higher\-level CDK support is still being developed are in separate "experimental" packages, named with a short version \(no AWS or Amazon prefix\) of their service's name\. [Search the Maven Central Repository](https://search.maven.org/search?q=software.amazon.awscdk) to find the names of all AWS CDK and AWS Construct Module libraries\.
 
 **Note**  
 The [Java edition of the CDK API Reference](https://docs.aws.amazon.com/cdk/api/v2/java/index.html) also shows the package names\.

@@ -1,6 +1,6 @@
 # Working with the AWS CDK in C\#<a name="work-with-cdk-csharp"></a>
 
-\.NET is a fully\-supported client platform for the AWS CDK and is considered stable\. C\# is the main \.NET language for which we provide examples and support\. You can choose to write AWS CDK applications in other \.NET languages, such as Visual Basic or F\#, but AWS offers limited support for using these languages with the CDK\.
+\.NET is a fully\-supported client language for the AWS CDK and is considered stable\. C\# is the main \.NET language for which we provide examples and support\. You can choose to write AWS CDK applications in other \.NET languages, such as Visual Basic or F\#, but AWS offers limited support for using these languages with the CDK\.
 
 You can develop AWS CDK applications in C\# using familiar tools including Visual Studio, Visual Studio Code, the `dotnet` command, and the NuGet package manager\. The modules comprising the AWS Construct Library are distributed via [nuget\.org](https://www.nuget.org/packages?q=amazon.cdk.aws)\.
 

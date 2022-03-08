@@ -1,6 +1,6 @@
 # Working with the AWS CDK in Java<a name="work-with-cdk-java"></a>
 
-Java is a fully\-supported client platform for the AWS CDK and is considered stable\. You can develop AWS CDK applications in Java using familiar tools, including the JDK \(Oracle's, or an OpenJDK distribution such as Amazon Corretto\) and Apache Maven\. The modules comprising the AWS Construct Library are distributed via the [Maven Central Repository](https://search.maven.org/search?q=g:software.amazon.awscdk)\.
+Java is a fully\-supported client language for the AWS CDK and is considered stable\. You can develop AWS CDK applications in Java using familiar tools, including the JDK \(Oracle's, or an OpenJDK distribution such as Amazon Corretto\) and Apache Maven\. The modules comprising the AWS Construct Library are distributed via the [Maven Central Repository](https://search.maven.org/search?q=g:software.amazon.awscdk)\.
 
 The AWS CDK supports Java 8 and later\. We recommend using the latest version you can, however, because later versions of the language include improvements that are particularly convenient for developing AWS CDK applications\. For example, Java 9 introduces the `Map.of()` method \(a convenient way to declare hashmaps that would be written as object literals in TypeScript\)\. Java 10 introduces local type inference using the `var` keyword\.
 
