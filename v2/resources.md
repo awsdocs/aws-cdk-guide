@@ -470,9 +470,9 @@ lambda.Function(self, "MyLambda", environment=dict(BUCKET_NAME=bucket.bucket_nam
 final Bucket bucket = new Bucket(this, "Bucket");
 
 Function.Builder.create(this, "MyLambda")
-        .environment(new HashMap<String, String>() {{
-                put("BUCKET_NAME", bucket.getBucketName());
-            }}).build();
+        .environment(java.util.Map.of(    // Java 9 or later
+                "BUCKET_NAME", bucket.getBucketName()))
+        .build();
 ```
 
 ------
@@ -659,7 +659,7 @@ ec2.Vpc.from_lookup(self, "PublicVpc",
 
 ```
 Vpc.fromLookup(this, "PublicVpc", VpcLookupOptions.builder()
-        .tags(new HashMap<String, String> {{ put("aws-cdk:subnet-type", "Public"); }})
+        .tags(java.util.Map.of("aws-cdk:subnet-type", "Public"))  // Java 9 or later
         .build());
 ```
 
