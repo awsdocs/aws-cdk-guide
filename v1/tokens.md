@@ -55,9 +55,9 @@ fn = lambda_.Function(stack, "MyLambda",
 final Bucket bucket = new Bucket(this, "MyBucket");
 
 Function fn = Function.Builder.create(this, "MyLambda")
-        .environment(new HashMap<String, String>() {{
-            put("BUCKET_NAME", bucket.getBucketName());
-        }}).build();
+        .environment(java.util.Map.of(    // Map.of requires Java 9+
+            "BUCKET_NAME", bucket.getBucketName()))
+        .build();
 ```
 
 ------
@@ -408,9 +408,8 @@ string = stack.to_json_string(dict(value=bucket.bucket_name))
 
 ```
 Stack stack = Stack.of(this);
-String stringVal = stack.toJsonString(new HashMap<String, String>() {{
-        put("value", bucket.getBucketName());
-}});
+String stringVal = stack.toJsonString(java.util.Map.of(    // Map.of requires Java 9+
+        "value", bucket.getBucketName()));
 ```
 
 ------

@@ -482,9 +482,8 @@ template = cfn_inc.CfnInclude(self, "Template",
 ```
 CfnInclude template = CfnInclude.Builder.create(this, "Template")
 	.templateFile("my-template.json")
-	.parameters(new HashMap<String, String>() {{
-			put("UploadBucket", bucket.getBucketArn());
-	}})
+	.parameters(java.util.Map.of(    // Map.of requires Java 9+
+			"UploadBucket", bucket.getBucketArn()))
 	.build();
 ```
 
@@ -634,10 +633,9 @@ nested_template = main_template.load_nested_stack("NestedStack",
 ```
 CfnInclude mainTemplate = CfnInclude.Builder.create(this, "MainStack")
 	.templateFile("main-template.json")
-	.loadNestedStacks(new HashMap<String, CfnIncludeProps>() {{
-		put("NestedStack", CfnIncludeProps.builder()
-				.templateFile("nested-template.json").build());
-	}})
+	.loadNestedStacks(java.util.Map.of(    // Map.of requires Java 9+
+	   "NestedStack", CfnIncludeProps.builder()
+				.templateFile("nested-template.json").build()))
 	.build();
 
 // or add it some time after importing the main stack

@@ -373,11 +373,11 @@ public class FunctionStack extends Stack {
                 .code(Code.fromAsset(new File(startDir, "handler").toString()))
                 .runtime(Runtime.PYTHON_3_6)
                 .handler("index.lambda_handler")
-                .environment(new HashMap<String, String>() {{
-                    put("S3_BUCKET_NAME", imageAsset.getS3BucketName());
-                    put("S3_OBJECT_KEY", imageAsset.getS3ObjectKey());
-                    put("S3_URL", imageAsset.getS3Url());
-                }}).build();
+                .environment(java.util.Map.of(    // Java 9 or later
+                    "S3_BUCKET_NAME", imageAsset.getS3BucketName(),
+                    "S3_OBJECT_KEY", imageAsset.getS3ObjectKey(),
+                    "S3_URL", imageAsset.getS3Url()))
+                .build();
     }
 }
 ```
@@ -845,9 +845,9 @@ asset = DockerImageAsset(self, "MyBulidImage",
 ```
 DockerImageAsset asset = DockerImageAsset.Builder.create(this, "my-image"),
             .directory(new File(startDir, "my-image").toString())
-            .buildArgs(new HashMap<String, String>() {{
-                put("HTTP_PROXY", "http://10.20.30.2:1234");
-            }}).build();
+            .buildArgs(java.util.Map.of(    // Java 9 or later
+                "HTTP_PROXY", "http://10.20.30.2:1234"))
+            .build();
 ```
 
 ------

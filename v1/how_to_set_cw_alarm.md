@@ -87,9 +87,9 @@ metric = cloudwatch.Metric(
 Metric metric = Metric.Builder.create()
         .namespace("MyNamespace")
         .metricName("MyMetric")
-        .dimensions(new HashMap<String, Object>() {{
-            put("MyDimension", "MyDimensionValue");
-        }}).build();
+        .dimensions(java.util.Map.of(    // Java 9 or later
+            "MyDimension", "MyDimensionValue"))
+        .build();
 ```
 
 ------

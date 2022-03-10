@@ -90,9 +90,9 @@ ubucket = CfnResource(self, "MyUltimateBucket",
 ```
 CfnResource.Builder.create(this, "MyUltimateBucket")
 	.type("MY::S5::UltimateBucket::MODULE")
-	.properties(new HashMap<String, String>() {{
-	    put("BucketName", "UltimateBucket");
-	}});
+	.properties(java.util.Map.of(    // Map.of requires Java 9+
+	    "BucketName", "UltimateBucket"))
+	.build();;
 ```
 
 ------

@@ -59,10 +59,9 @@ s3.CfnBucket(self, "MyBucket",
 
 ```
 CfnBucket.Builder.create(this, "MyBucket")
-    .analyticsConfigurations(Arrays.asList(new HashMap<String, String>() {{
-        put("id", "Config");
-        // ...
-    }})).build();
+    .analyticsConfigurations(Arrays.asList(java.util.Map.of(    // Java 9 or later
+        "id", "Config", // ...
+    ))).build();
 ```
 
 ------
@@ -142,14 +141,12 @@ cdk.CfnResource(self, 'MyBucket',
 ```
 CfnResource.Builder.create(this, "MyBucket")
         .type("AWS::S3::Bucket")
-        .properties(new HashMap<String, Object>() {{
+        .properties(java.util.Map.of(    // Map.of requires Java 9 or later
             // Note the PascalCase here! These are CloudFormation identifiers
-            put("AnalyticsConfigurations", Arrays.asList(
-                    new HashMap<String, String>() {{
-                        put("Id", "Config");
-                        // ...
-                    }}));
-        }}).build();
+            "AnalyticsConfigurations", Arrays.asList(
+                    java.util.Map.of("Id", "Config", // ...
+                    ))))
+        .build();
 ```
 
 ------
@@ -239,10 +236,9 @@ cfn_bucket.analytics_configuration = [
 CfnBucket cfnBucket = (CfnBucket)bucket.getNode().getDefaultChild();
 
 cfnBucket.setAnalyticsConfigurations(
-        Arrays.asList(new HashMap<String, String>() {{
-            put("Id", "Config");
-            // ...
-        }}));
+        Arrays.asList(java.util.Map.of(    // Java 9 or later
+            "Id", "Config", // ...
+        ));
 ```
 
 ------
@@ -296,9 +292,8 @@ cfn_bucket.cfn_options.metadata = {
 #### [ Java ]
 
 ```
-cfnBucket.getCfnOptions().setMetadata(new HashMap<String, Object>() {{
-    put("MetadataKey", "Metadatavalue");
-}});
+cfnBucket.getCfnOptions().setMetadata(java.util.Map.of(    // Java 9+
+    "MetadataKey", "Metadatavalue"));
 ```
 
 ------

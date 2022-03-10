@@ -611,9 +611,9 @@ final Queue jobsQueue = new Queue(this, "jobs");
 Function createJobLambda = Function.Builder.create(this, "create-job")
                 .handler("index.handler")
                 .code(Code.fromAsset("./create-job-lambda-code"))
-                .environment(new HashMap<String, String>() {{
-                        put("QUEUE_URL", jobsQueue.getQueueUrl());
-                }}).build();
+                .environment(java.util.Map.of(   // Map.of is Java 9 or later
+                    "QUEUE_URL", jobsQueue.getQueueUrl())
+                .build();
 ```
 
 ------

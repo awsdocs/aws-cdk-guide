@@ -232,11 +232,10 @@ role.addToPolicy(PolicyStatement.Builder.create()
         .effect(Effect.DENY)
         .resources(Arrays.asList(bucket.getBucketArn(), otherRole.getRoleArn()))
         .actions(Arrays.asList("ec2:SomeAction", "s3:AnotherAction"))
-        .conditions(new HashMap<String, Object>() {{
-            put("StringEquals", new HashMap<String, String>() {{
-                put("ec2:AuthorizedService", "codebuild.amazonaws.com");                 
-            }});
-        }}).build());
+        .conditions(java.util.Map.of(    // Map.of requires Java 9 or later
+            "StringEquals", java.util.Map.of(
+                "ec2:AuthorizedService", "codebuild.amazonaws.com")))
+        .build());
 ```
 
 ------

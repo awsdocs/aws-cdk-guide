@@ -1158,8 +1158,8 @@ loadBalancerAddress = CfnOutput.Builder.create(lbStack, "LbAddress")
                             .build();
 
 stage.addPost(ShellStep.Builder.create("lbaddr")
-    .envFromCfnOutputs(new HashMap<String, CfnOutput>() {{
-         put("lbAddr", loadBalancerAddress); }})
+    .envFromCfnOutputs(     // Map.of requires Java 9 or later
+        java.util.Map.of("lbAddr", loadBalancerAddress))
     .commands(Arrays.asList("echo $lbAddr"))
     .build());
 ```

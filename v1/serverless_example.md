@@ -421,9 +421,9 @@ public class WidgetService extends Construct {
             .runtime(Runtime.NODEJS_14_X)
             .code(Code.fromAsset("resources"))
             .handler("widgets.main")
-            .environment(new HashMap<String, String>() {{
-               put("BUCKET", bucket.getBucketName()); 
-            }}).build();
+            .environment(java.util.Map.of   // Java 9 or later
+               "BUCKET", bucket.getBucketName()) 
+            .build();
 
         bucket.grantReadWrite(handler);
         
@@ -432,9 +432,9 @@ public class WidgetService extends Construct {
                 .build();
 
         LambdaIntegration getWidgetsIntegration = LambdaIntegration.Builder.create(handler) 
-                .requestTemplates(new HashMap<String, String>() {{
-                    put("application/json", "{ \"statusCode\": \"200\" }");
-                }}).build();
+                .requestTemplates(java.util.Map.of(   // Map.of is Java 9 or later
+                    "application/json", "{ \"statusCode\": \"200\" }"))
+                .build();
 
         api.getRoot().addMethod("GET", getWidgetsIntegration);    
     }
