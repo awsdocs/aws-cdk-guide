@@ -80,12 +80,18 @@ import software.amazon.awscdk.services.s3.EventType;
 
 // An imported class may now be accessed using the simple class name (assuming that name
 // does not conflict with another class)
-Bucket bucket = new Bucket(...);
+Bucket bucket = Bucket.Builder.create(...).build();
 
 // We can always use the qualified name of a class (including its package) even without an
 // import directive
 software.amazon.awscdk.services.s3.Bucket bucket = 
-     new software.amazon.awscdk.services.s3.Bucket(...);
+    software.amazon.awscdk.services.s3.Bucket.Builder.create(...)
+        .build();
+          
+// Java 10 or later can use var keyword to avoid typing the type twice
+var bucket = 
+    software.amazon.awscdk.services.s3.Bucket.Builder.create(...)
+        .build();
 ```
 
 ------
