@@ -136,7 +136,7 @@ The policies must be passed as a single string argument, with the policy ARNs se
   --cloudformation-execution-policies "arn:aws:iam::aws:policy/AWSLambda_FullAccess,arn:aws:iam::aws:policy/AWSCodeDeployFullAccess".
   ```
 **Important**  
-At least one policy should be specified; otherwise, AWS CloudFormation will deploy with `FullAdmin` permissions\.
+At least one policy should be specified; otherwise, AWS CloudFormation will deploy with full admin permissions from the `AdministratorAccess` policy\.
 + \-\-qualifier a string that is added to the names of all resources in the bootstrap stack\. A qualifier lets you avoid name clashes when you provision two bootstrap stacks in the same environment\. The default is `hnb659fds` \(this value has no significance\)\. Changing the qualifier will require changes to your AWS CDK app \(see [Stack synthesizers](#bootstrapping-synthesizers)\)\. 
 + \-\-tags adds one or more AWS CloudFormation tags to the bootstrap stack\.
 + \-\-trust lists the AWS accounts that may deploy into the environment being bootstrapped\. Use this flag when bootstrapping an environment that a CDK Pipeline in another environment will deploy into\. The account doing the bootstrapping is always trusted\.
