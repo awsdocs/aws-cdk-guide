@@ -129,14 +129,14 @@ The following command\-line options, when used with CDK Toolkit's cdk bootstrap,
 +  \-\-bootstrap\-bucket\-name overrides the name of the Amazon S3 bucket\. May require changes to your CDK app \(see [Stack synthesizers](#bootstrapping-synthesizers)\)\.
 + \-\-bootstrap\-kms\-key\-id overrides the AWS KMS key used to encrypt the S3 bucket\.
 + \-\-cloudformation\-execution\-policies specifies the ARNs of managed policies that should be attached to the deployment role assumed by AWS CloudFormation during deployment of your stacks\.
-**Tip**  
-The policies must be passed as a single string argument, with the policy ARNs separated by commas, like this:  
+  **Tip**  
+  The policies must be passed as a single string argument, with the policy ARNs separated by commas, like this:  
 
-  ```
-  --cloudformation-execution-policies "arn:aws:iam::aws:policy/AWSLambda_FullAccess,arn:aws:iam::aws:policy/AWSCodeDeployFullAccess".
-  ```
-**Important**  
-At least one policy should be specified; otherwise, AWS CloudFormation will deploy with full admin permissions from the `AdministratorAccess` policy\.
+    ```
+    --cloudformation-execution-policies "arn:aws:iam::aws:policy/AWSLambda_FullAccess,arn:aws:iam::aws:policy/AWSCodeDeployFullAccess".
+    ```
+  **Important**  
+  At least one policy should be specified; otherwise, AWS CloudFormation will deploy with full admin permissions from the `AdministratorAccess` policy\.
 + \-\-qualifier a string that is added to the names of all resources in the bootstrap stack\. A qualifier lets you avoid name clashes when you provision two bootstrap stacks in the same environment\. The default is `hnb659fds` \(this value has no significance\)\. Changing the qualifier will require changes to your AWS CDK app \(see [Stack synthesizers](#bootstrapping-synthesizers)\)\. 
 + \-\-tags adds one or more AWS CloudFormation tags to the bootstrap stack\.
 + \-\-trust lists the AWS accounts that may deploy into the environment being bootstrapped\. Use this flag when bootstrapping an environment that a CDK Pipeline in another environment will deploy into\. The account doing the bootstrapping is always trusted\.
