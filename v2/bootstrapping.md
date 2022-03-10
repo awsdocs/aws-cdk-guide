@@ -55,7 +55,7 @@ cdk bootstrap aws://123456789012/us-east-1
 cdk bootstrap 123456789012/us-east-1 123456789012/us-west-1
 ```
 
-The AWS CDK Toolkit always synthesizes the AWS CDK app in the current directory, and if you do not specify at least one environment in the cdk bootstrap command it will bootstrap all the environments referenced in the app\. If a stack is environment\-agnostic \(that is, it does not have an `env` property\), the CDK's environment \(for example, the one specified using \-\-profile, or the default AWS environment otherwise\) is applied to make the stack environment\-specific, and that environment is then bootstrapped\.
+The AWS CDK Toolkit always synthesizes the AWS CDK app in the current directory, and if you do not specify at least one environment in the `cdk bootstrap` command it will bootstrap all the environments referenced in the app\. If a stack is environment\-agnostic \(that is, it does not have an `env` property\), the CDK's environment \(for example, the one specified using \-\-profile, or the default AWS environment otherwise\) is applied to make the stack environment\-specific, and that environment is then bootstrapped\.
 
 For example, the following command synthesizes the current AWS CDK app using the `prod` AWS profile, then bootstraps its environments\.
 
