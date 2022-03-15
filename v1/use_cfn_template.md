@@ -65,10 +65,12 @@ You can use either a JSON or YAML template\. We recommend JSON if available, sin
 
 ```
 {
-  "MyBucket": {
-    "Type": "AWS::S3::Bucket",
-    "Properties": {
-      "BucketName": "MyBucket",
+  "Resources": {
+    "MyBucket": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "BucketName": "MyBucket",
+      }
     }
   }
 }
@@ -328,7 +330,7 @@ const cfnBucket = template.getResource('MyBucket') as s3.CfnBucket;
 #### [ JavaScript ]
 
 ```
-const cfnBucket = template.getResource('MyBucket') as s3.CfnBucket;
+const cfnBucket = template.getResource('MyBucket');
 ```
 
 ------
