@@ -89,13 +89,13 @@ using Amazon.CDK.AWS.SSM;
 
 // Get latest version or specified version of plain string attribute
 var latestStringToken = StringParameter.ValueForStringParameter(
-    this, 'my-plain-parameter-name');      // latest version
+    this, "my-plain-parameter-name");      // latest version
 var versionOfStringToken = StringParameter.ValueForStringParameter(
-    this, 'my-plain-parameter-name', 1);   // version 1
+    this, "my-plain-parameter-name", 1);   // version 1
 
 // Get specified version of secure string attribute
 var secureStringToken = StringParameter.ValueForSecureStringParameter(
-    this, 'my-secure-parameter-name', 1);   // must specify version
+    this, "my-secure-parameter-name", 1);   // must specify version
 ```
 
 ------

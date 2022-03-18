@@ -293,7 +293,7 @@ import software.amazon.awscdk.services.codestar.alpha.GitHubRepository;
 
 The most straightforward way to upgrade the dependencies of a C\# CDK application is to edit the `.csproj` file manually\. Remove all stable `Amazon.CDK.*` package references and replace them with references to the `Amazon.CDK.Lib` and `Constructs` packages\.
 
-Experimental constructs are provided in separate, independently\-versioned packages with names that end in `alpha` and an alpha version number that corresponds to the first release of `aws-cdk-lib` wit which they are compatible\. Here we have pinned `aws-codestar` to v2\.0\.0\-alpha\.1\.
+Experimental constructs are provided in separate, independently\-versioned packages with names that end in `alpha` and an alpha version number that corresponds to the first release of `aws-cdk-lib` with which they are compatible\. Here we have pinned `aws-codestar` to v2\.0\.0\-alpha\.1\.
 
 ```
 <PackageReference Include="Amazon.CDK.Lib" Version="2.0.0" />

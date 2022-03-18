@@ -55,7 +55,7 @@ cdk bootstrap aws://123456789012/us-east-1
 cdk bootstrap 123456789012/us-east-1 123456789012/us-west-1
 ```
 
-If you do not specify at least one environment in the `cdk bootstrap` command, the AWS CDK Toolkit synthesizes the AWS CDK app in the current directory and bootstraps all the environments referenced in the app\. If a stack is environment\-agnostic \(that is, it does not have an `env` property\), the CDK's environment \(for example, the one specified using \-\-profile, or the default AWS environment otherwise\) is applied to make the stack environment\-specific, and that environment is then bootstrapped\.
+The CDK Toolkit always synthesizes the AWS CDK app in the current directory\. If you do not specify at least one environment in the `cdk bootstrap` command, it bootstraps all the environments referenced in the app\. If a stack is environment\-agnostic \(that is, it does not have an `env` property\), the CDK's environment \(for example, the one specified using \-\-profile, or the default AWS environment otherwise\) is applied to make the stack environment\-specific, and that environment is then bootstrapped\.
 
 For example, the following command synthesizes the current AWS CDK app using the `prod` AWS profile, then bootstraps its environments\.
 
@@ -174,11 +174,13 @@ The following command\-line options, when used with CDK Toolkit's cdk bootstrap,
 The following additional switches are available only with the modern bootstrapping template\.
 + \-\-cloudformation\-execution\-policies specifies the ARNs of managed policies that should be attached to the deployment role assumed by AWS CloudFormation during deployment of your stacks\. At least one policy is required; otherwise, AWS CloudFormation will attempt to deploy without permissions and deployments will fail\.
 **Tip**  
- The policies must be passed as a single string argument, with the policy ARNs separated by commas, like this:  
+The policies must be passed as a single string argument, with the policy ARNs separated by commas, like this:  
 
   ```
   --cloudformation-execution-policies "arn:aws:iam::aws:policy/AWSLambda_FullAccess,arn:aws:iam::aws:policy/AWSCodeDeployFullAccess".
   ```
+**Important**  
+At least one policy should be specified; otherwise, AWS CloudFormation will deploy using full administrator permissions from the `AdministratorAccess` policy\.
 + \-\-trust lists the AWS accounts that may deploy into the environment being bootstrapped\. Use this flag when bootstrapping an environment that a CDK Pipeline in another environment will deploy into\. The account doing the bootstrapping is always trusted\.
 + \-\-trust\-for\-lookup lists the AWS accounts that may look up context information from the environment being bootstrapped\. Use this flag to give accounts permission to synthesize stacks that will be deployed into the environment, without actually giving them permission to deploy those stacks directly\. Accounts specified under \-\-trust are always trusted for context lookup\.
 + \-\-qualifier a string that is added to the names of all resources in the bootstrap stack\. A qualifier lets you avoid name clashes when you provision two bootstrap stacks in the same environment\. The default is `hnb659fds` \(this value has no significance\)\. Changing the qualifier will require changes to your AWS CDK app \(see [Stack synthesizers](#bootstrapping-synthesizers)\)\. 
@@ -628,4 +630,4 @@ The bootstrap template is versioned and evolves over time with the AWS CDK itsel
 | 7 | 1\.110\.0 | Deployment role can no longer read Buckets in the target account directly \(however, this role is effectively an administrator, and could always use its AWS CloudFormation permissions to make the bucket readable anyway\)\. | 
 | 8 | 1\.114\.0 | The lookup role has full read\-only permissions to the target environment, and has a aws\-cdk:bootstrap\-role tag as well\. | 
 | 9 | 1\.135\.0 | Fixes S3 asset uploads from being rejected by commonly referenced encryption SCP\. | 
-| 10 | 1\.139\.0 | ECR ScanOnPush is now enabled by default. | 
+| 10 | 1\.139\.0 | ECR ScanOnPush is now enabled by default\. | 
