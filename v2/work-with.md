@@ -100,7 +100,7 @@ Each module's reference material is broken into the following sections\.
 + *Classes*: Non\-construct classes that provide functionality used by constructs in the module\.
 + *Structs*: Data structures \(attribute bundles\) that define the structure of composite values such as properties \(the `props` argument of constructs\) and options\.
 + *Interfaces*: Interfaces, whose names all begin with "I", define the absolute minimum functionality for the corresponding construct or other class\. The CDK uses construct interfaces to represent AWS resources that are defined outside your AWS CDK app and imported by methods such as `Bucket.fromBucketArn()`\. 
-+ *Enums*: Collections of named values for use in specifying \*certain construct parameters\. Using an enumerated value allows the CDK to check these values for validity during synthesis\.
++ *Enums*: Collections of named values for use in specifying *certain construct parameters*. Using an enumerated value allows the CDK to check these values for validity during synthesis\.
 + *CloudFormation Resources*: These L1 constructs, whose names begin with "Cfn", represent exactly the resources defined in the CloudFormation specification\. They are automatically generated from that specification with each CDK release\. Each L2 or L3 construct encapsulates one or more CloudFormation resources\.
 + *CloudFormation Property Types*: The collection of named values that define the properties for each CloudFormation Resource\.
 
