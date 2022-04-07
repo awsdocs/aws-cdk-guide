@@ -24,6 +24,7 @@ Amazon's trademarks and trade dress may not be used in
    + [Working with the AWS CDK in Java](work-with-cdk-java.md)
    + [Working with the AWS CDK in C#](work-with-cdk-csharp.md)
    + [Working with the AWS CDK in Go](work-with-cdk-go.md)
++ [Managing dependencies](manage-dependencies.md)
 + [Migrating to AWS CDK v2](migrating-v2.md)
 + [Translating TypeScript AWS CDK code to other languages](multiple_languages.md)
 + [Concepts](core_concepts.md)

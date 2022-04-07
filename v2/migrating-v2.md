@@ -30,7 +30,7 @@ The modern bootstrap template effectively grants the permissions implied by the 
 
 Most requirements for AWS CDK v2 are the same as for AWS CDK v1\.x\. Additional requirements are listed here\.
 + For TypeScript developers, TypeScript 3\.8 or later is required\.
-+ A new version of the CDK Toolkit is required for use with CDK v2\. Now that CDK is Generally Available, it is the default version when installing\. It is backward\-compatible with CDK v1 projects, so you do not need to keep the old version installed unless you want to create CDK v1 projects\. To upgrade, issue `npm install -g aws-cdk`\.
++ A new version of the CDK Toolkit is required for use with CDK v2\. Now that CDK v2 is Generally Available, v2 is the default version when installing the CDK Toolkit\. It is backward\-compatible with CDK v1 projects, so you do not need to keep the old version installed unless you want to create CDK v1 projects\. To upgrade, issue `npm install -g aws-cdk`\.
 
 ## Upgrading from AWS CDK v2 Developer Preview<a name="migrating-v2-dp-upgrade"></a>
 
