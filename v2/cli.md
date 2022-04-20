@@ -207,7 +207,7 @@ First, and most commonly, it can be specified using the `app` key inside the fil
 
 The CDK Toolkit looks for `cdk.json` in the current working directory when attempting to run your app, so you might keep a shell open in your project's main directory for issuing CDK Toolkit commands\.
 
-The CDK Toolkit also looks for the app key in `~/.cdk.json` \(that is, in your home directory\) if it can't find it in `./cdk.json`\. Adding the app command here can be useful if you usually work with CDK code in the same language, as it does not require you to be in the app's main directory when you run a `cdk` command\.
+The CDK Toolkit also looks for the app key in `~/.cdk.json` \(that is, in your home directory\) if it can't find it in `./cdk.json`\. Adding the app command here can be useful if you usually work with CDK code in the same language\.
 
 If you are in some other directory, or if you want to run your app via a command other than the one in `cdk.json`, you can use the `--app` \(or `-a`\) option to specify it\.
 
@@ -417,11 +417,21 @@ By default, these deployments use the `--hotswap` flag, which fast\-tracks deplo
 
 Any changes made while `cdk watch` is already performing a deployment will be combined into a single deployment, which will begin as soon as the in\-progress deployment is complete\.
 
-Watch mode uses the `"watch"` key in the project's `cdk.json` to determine which files to monitor\. By default, these files are your application files and assets, but this can be changed by modifying the `"include"` and `"exclude"` entries in the `"watch"` key\.
+Watch mode uses the `"watch"` key in the project's `cdk.json` to determine which files to monitor\. By default, these files are your application files and assets, but this can be changed by modifying the `"include"` and `"exclude"` entries in the `"watch"` key\. The following `cdk.json` file shows an example of these entries\.
+
+```
+{
+  "app": "mvn -e -q compile exec:java",
+  "watch": {
+    "include": "src/main/**",
+    "exclude": "target/*"
+  }
+}
+```
 
 `cdk watch` executes the `"build"` command from `cdk.json` to build your app before synthesis\. If your deployment requires any commands to build or package your Lambda code \(or anything else that's not in your CDK app proper\), add it here\.
 
-Wildcards, both `*` and `**`, can be used in the `"watch"` and `"build"` keys\. Each path is interpreted relative to the parent directory of `cdk.json`\.
+Git\-style wildcards, both `*` and `**`, can be used in the `"watch"` and `"build"` keys\. Each path is interpreted relative to the parent directory of `cdk.json`\. The default value of `include` is `**/*`, meaning all files and directories in the project root directory\. `exclude` is optional\.
 
 **Important**  
 Watch mode is not recommended for production deployments\.
@@ -540,6 +550,38 @@ To compare your app's stack\(s\) with a saved CloudFormation template:
 ```
 cdk diff --template ~/stacks/MyStack.old MyStack
 ```
+
+## Configuration \(`cdk.json`\)<a name="cli-config"></a>
+
+Default values for many CDK Toolkit command\-line flags may be stored in a project's `cdk.json` file or in the `.cdk.json` file in your user directory\. Below is an alphabetical reference to the supported configuration settings\.
+
+
+| Key | Notes | CDK Toolkit option | 
+| --- | --- | --- | 
+| app | The command that executes the CDK application\. | \-\-app | 
+| assetMetadata | Set to false to disable addition of CDK metadata to resources that use assets\. | \-\-no\-asset\-metadata | 
+| bootstrapKmsKeyId | Overrides the AWS KMS key used to encrypt the Amazon S3 deployment bucket\. | \-\-bootstrap\-kms\-key\-id | 
+| build | The command that compiles or builds the CDK application before synthesis\. Not permitted in \~/\.cdk\.json\. | \-\-build | 
+| browser | The command line for launching a Web browser for the cdk docs subcommand\. | \-\-browser | 
+| context | See [Runtime context](context.md)\. Context values in a configuration file will not be erased by cdk context \-\-clear\. \(The CDK Toolkit places cached context values in cdk\.context\.json\.\) | \-\-context | 
+| debug | If true, CDK Toolkit emits more detailed information useful for debugging\. | \-\-debug | 
+| language | Default language to be used for initializing new projects\. | \-\-language | 
+| lookups | Set to false to disallow context lookups\. Synthesis will fail if any context lookups need to be performed\. | \-\-no\-lookups | 
+| notices | If false, suppresses the display of messages about security vulnerabilities, regressions, and unsupported versions\. | \-\-no\-notices | 
+| output | Specifies the name of the directory into which the synthesized cloud assembly will be emitted \(default "cdk\.out"\)\. | \-\-outputs\-file | 
+| outputsFile | Specifies the file to which AWS CloudFormation outputs from deployed stacks will be written\. | \-\-outputs\-file | 
+| pathMetadata | Set to false to disable addition of CDK path metadata to synthesized templates\. | \-\-no\-path\-metadata | 
+| plugin | JSON array specifying the package names or local paths of packages that extends the CDK | \-\-plugin | 
+| profile | Name of the default AWS profile used for specifying region and account credentials\. | \-\-profile | 
+| progress | If set to "events", the CDK Toolkit displays all AWS CloudFormation events during deployment, rather than a progress bar\. | \-\-progress | 
+| requireApproval | Default value of approval level for security changes\. See [Security\-related changes](#cli-security) | \-\-require\-approval | 
+| rollback | Set to false to disable rollback of failed deployments\. | \-\-no\-rollback | 
+| staging | Set to false to avoid copying assets to the output directory for local debugging of the source files with AWS SAM\. | \-\-no\-staging | 
+| tags | JSON object containing key\-value pairs specifying tags for the stack\. | \-\-tags | 
+| toolkitBucketName | Sets the name of the Amazon S3 bucket used for deploying assets such as Lambda functions and container images \(see [Bootstrapping your AWS environment](#cli-bootstrap)\. | \-\-toolkit\-bucket\-name | 
+| toolkitStackName | Sets the name of the bootstrap stack \(see [Bootstrapping your AWS environment](#cli-bootstrap)\. | \-\-toolkit\-stack\-name | 
+| versionReporting | If false, opts out of version reporting\. | \-\-no\-version\-reporting | 
+| watch | JSON object containing "include" and "exclude" keys that indicate which files should \(or should not\) trigger a rebuild of the project when changed\. See [Watch mode](#cli-deploy-watch)\. See [Watch mode](#cli-deploy-watch) | \-\-watch | 
 
 ## Toolkit reference<a name="cli-ref"></a>
 
@@ -664,7 +706,7 @@ If one of cdk.json or ~/.cdk.json exists, options specified there will be used
 as defaults. Settings in cdk.json take precedence.
 ```
 
-### `cdk list` \(`ls`\)<a name="w306aac31b7c37b7b1"></a>
+### `cdk list` \(`ls`\)<a name="w306aac31b7c39b7b1"></a>
 
 ```
 cdk list [STACKS..]
@@ -677,7 +719,7 @@ Options:
                                                       [boolean] [default: false]
 ```
 
-### `cdk synthesize` \(`synth`\)<a name="w306aac31b7c37b7b3"></a>
+### `cdk synthesize` \(`synth`\)<a name="w306aac31b7c39b7b3"></a>
 
 ```
 cdk synthesize [STACKS..]
@@ -698,7 +740,7 @@ Options:
                                                       [boolean] [default: false]
 ```
 
-### `cdk bootstrap`<a name="w306aac31b7c37b7b5"></a>
+### `cdk bootstrap`<a name="w306aac31b7c39b7b5"></a>
 
 ```
 cdk bootstrap [ENVIRONMENTS..]
@@ -775,7 +817,7 @@ Options:
                                             example)                    [string]
 ```
 
-### `cdk deploy`<a name="w306aac31b7c37b7b7"></a>
+### `cdk deploy`<a name="w306aac31b7c39b7b7"></a>
 
 ```
 cdk deploy [STACKS..]
@@ -844,7 +886,7 @@ Options:
                              detected. Implies --hotswap by default    [boolean]
 ```
 
-### `cdk destroy`<a name="w306aac31b7c37b7b9"></a>
+### `cdk destroy`<a name="w306aac31b7c39b7b9"></a>
 
 ```
 cdk destroy [STACKS..]
@@ -863,7 +905,7 @@ Options:
                             stacks                                     [boolean]
 ```
 
-### `cdk diff`<a name="w306aac31b7c37b7c11"></a>
+### `cdk diff`<a name="w306aac31b7c39b7c11"></a>
 
 ```
 cdk diff [STACKS..]
@@ -889,7 +931,7 @@ Options:
                                                       [boolean] [default: false]
 ```
 
-### `cdk init`<a name="w306aac31b7c37b7c13"></a>
+### `cdk init`<a name="w306aac31b7c39b7c13"></a>
 
 ```
 cdk init [TEMPLATE]
@@ -911,7 +953,7 @@ Options:
                             project                   [boolean] [default: false]
 ```
 
-### `cdk context`<a name="w306aac31b7c37b7c15"></a>
+### `cdk context`<a name="w306aac31b7c39b7c15"></a>
 
 ```
 cdk context
