@@ -559,29 +559,29 @@ Default values for many CDK Toolkit command\-line flags may be stored in a proje
 | Key | Notes | CDK Toolkit option | 
 | --- | --- | --- | 
 | app | The command that executes the CDK application\. | \-\-app | 
-| assetMetadata | Set to false to disable addition of CDK metadata to resources that use assets\. | \-\-no\-asset\-metadata | 
-| bootstrapKmsKeyId | Overrides the AWS KMS key used to encrypt the Amazon S3 deployment bucket\. | \-\-bootstrap\-kms\-key\-id | 
+| assetMetadata | If false, CDK does not add metadata to resources that use assets\. | \-\-no\-asset\-metadata | 
+| bootstrapKmsKeyId | Overrides the ID of the AWS KMS key used to encrypt the Amazon S3 deployment bucket\. | \-\-bootstrap\-kms\-key\-id | 
 | build | The command that compiles or builds the CDK application before synthesis\. Not permitted in \~/\.cdk\.json\. | \-\-build | 
-| browser | The command line for launching a Web browser for the cdk docs subcommand\. | \-\-browser | 
+| browser | The command for launching a Web browser for the cdk docs subcommand\. | \-\-browser | 
 | context | See [Runtime context](context.md)\. Context values in a configuration file will not be erased by cdk context \-\-clear\. \(The CDK Toolkit places cached context values in cdk\.context\.json\.\) | \-\-context | 
 | debug | If true, CDK Toolkit emits more detailed information useful for debugging\. | \-\-debug | 
-| language | Default language to be used for initializing new projects\. | \-\-language | 
-| lookups | Set to false to disallow context lookups\. Synthesis will fail if any context lookups need to be performed\. | \-\-no\-lookups | 
+| language | The language to be used for initializing new projects\. | \-\-language | 
+| lookups | If false, no context lookups are permitted\. Synthesis will fail if any context lookups need to be performed\. | \-\-no\-lookups | 
 | notices | If false, suppresses the display of messages about security vulnerabilities, regressions, and unsupported versions\. | \-\-no\-notices | 
-| output | Specifies the name of the directory into which the synthesized cloud assembly will be emitted \(default "cdk\.out"\)\. | \-\-outputs\-file | 
-| outputsFile | Specifies the file to which AWS CloudFormation outputs from deployed stacks will be written\. | \-\-outputs\-file | 
-| pathMetadata | Set to false to disable addition of CDK path metadata to synthesized templates\. | \-\-no\-path\-metadata | 
-| plugin | JSON array specifying the package names or local paths of packages that extends the CDK | \-\-plugin | 
+| output | The name of the directory into which the synthesized cloud assembly will be emitted \(default "cdk\.out"\)\. | \-\-outputs\-file | 
+| outputsFile | The file to which AWS CloudFormation outputs from deployed stacks will be written \(in JSON format\)\. | \-\-outputs\-file | 
+| pathMetadata | If false, CDK path metadata is not added to synthesized templates\. | \-\-no\-path\-metadata | 
+| plugin | JSON array specifying the package names or local paths of packages that extend the CDK | \-\-plugin | 
 | profile | Name of the default AWS profile used for specifying region and account credentials\. | \-\-profile | 
 | progress | If set to "events", the CDK Toolkit displays all AWS CloudFormation events during deployment, rather than a progress bar\. | \-\-progress | 
-| requireApproval | Default value of approval level for security changes\. See [Security\-related changes](#cli-security) | \-\-require\-approval | 
-| rollback | Set to false to disable rollback of failed deployments\. | \-\-no\-rollback | 
-| staging | Set to false to avoid copying assets to the output directory for local debugging of the source files with AWS SAM\. | \-\-no\-staging | 
-| tags | JSON object containing key\-value pairs specifying tags for the stack\. | \-\-tags | 
-| toolkitBucketName | Sets the name of the Amazon S3 bucket used for deploying assets such as Lambda functions and container images \(see [Bootstrapping your AWS environment](#cli-bootstrap)\. | \-\-toolkit\-bucket\-name | 
-| toolkitStackName | Sets the name of the bootstrap stack \(see [Bootstrapping your AWS environment](#cli-bootstrap)\. | \-\-toolkit\-stack\-name | 
+| requireApproval | Default approval level for security changes\. See [Security\-related changes](#cli-security) | \-\-require\-approval | 
+| rollback | If false, failed deployments are not rolled back\. | \-\-no\-rollback | 
+| staging | If false, assets are not copied to the output directory \(use for local debugging of the source files with AWS SAM\)\. | \-\-no\-staging | 
+| tags | JSON object containing tags \(key\-value pairs\) for the stack\. | \-\-tags | 
+| toolkitBucketName | The name of the Amazon S3 bucket used for deploying assets such as Lambda functions and container images \(see [Bootstrapping your AWS environment](#cli-bootstrap)\. | \-\-toolkit\-bucket\-name | 
+| toolkitStackName | The name of the bootstrap stack \(see [Bootstrapping your AWS environment](#cli-bootstrap)\. | \-\-toolkit\-stack\-name | 
 | versionReporting | If false, opts out of version reporting\. | \-\-no\-version\-reporting | 
-| watch | JSON object containing "include" and "exclude" keys that indicate which files should \(or should not\) trigger a rebuild of the project when changed\. See [Watch mode](#cli-deploy-watch)\. See [Watch mode](#cli-deploy-watch) | \-\-watch | 
+| watch | JSON object containing "include" and "exclude" keys that indicate which files should \(or should not\) trigger a rebuild of the project when changed\. See [Watch mode](#cli-deploy-watch)\. | \-\-watch | 
 
 ## Toolkit reference<a name="cli-ref"></a>
 
