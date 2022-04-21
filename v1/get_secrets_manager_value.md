@@ -103,10 +103,12 @@ public class SecretsManagerStack : Stack
 
 ------
 
-Use the [create\-secret](https://docs.aws.amazon.com/cli/latest/reference/secretsmanager/create-secret.html) CLI command to create a secret from the command\-line, such as when testing:
+**Tip**  
+Use the [create\-secret](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_secretsmanager.Secret.html) CLI command to create a secret from the command\-line, such as when testing:  
 
 ```
 aws secretsmanager create-secret --name ImportedSecret --secret-string mygroovybucket
 ```
+The command returns an ARN you can use with the above example\.
 
-The command returns an ARN you can use for the example\.
+Once you have created a `Secret` instance, you can get the secret's value from the instance's `secretValue` attribute\. The value is represented by a `[SecretValue](https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_core.SecretValue.html)` instance, a special type of [Tokens](tokens.md)\. As it is a token, it has meaning only after resolution; your CDK app does not need to access its actual value, but can instead pass the `SecretValue` instance \(or its string or numeric representation\) to whatever CDK method needs the value\.
