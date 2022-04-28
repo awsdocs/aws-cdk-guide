@@ -87,7 +87,7 @@ powershell "cdk bootstrap --show-template | Out-File -encoding utf8 bootstrap-te
 
 The template is also available in the [AWS CDK GitHub repository](https://github.com/aws/aws-cdk/blob/master/packages/aws-cdk/lib/api/bootstrap/bootstrap-template.yaml)\.
 
-Deploy this template using your preferred deployment mechanism for AWS CloudFormation templates\. For example, the following command deploys the template using the AWS CLI:
+Deploy this template using cdk bootstrap \-\-template *TEMPLATE\_FILENAME* or your preferred deployment mechanism for AWS CloudFormation templates\. For example, the following command deploys the template using the AWS CLI:
 
 ------
 #### [ macOS/Linux ]
