@@ -52,7 +52,7 @@ Amazon's trademarks and trade dress may not be used in
    + [AWS CDK examples](about_examples.md)
 + [AWS CDK how-tos](how_tos.md)
    + [Get a value from an environment variable](get_env_var.md)
-   + [Use an AWS CloudFormation parameter](get_cfn_param.md)
+   + [Use an AWS CloudFormation value](get_cfn_param.md)
    + [Import or migrate an existing AWS CloudFormation template](use_cfn_template.md)
    + [Using resources from the AWS CloudFormation Public Registry](use_cfn_public_registry.md)
    + [Get a value from the Systems Manager Parameter Store](get_ssm_value.md)
