@@ -473,6 +473,20 @@ namespace AwsCdkAssertionSamples
 
 ------
 
+## The Lambda function<a name="testing_lambda"></a>
+
+Our example stack includes a Lambda function that starts our state machine\. We must provide the source code for this function so the CDK can bundle it up and deploy it as part of creating the Lambda function resource\.
++ Create the folder `start-state-machine` in the app's main directory\.
++ In this folder, create at least one file\. For example, you can save the code below in `start-state-machines/index.js`\.
+
+  ```
+  exports.handler = async function (event, context) {
+  	return 'hello world';
+  };
+  ```
+
+  However, any file will work, since we won't actually be deploying the stack\.
+
 ## Running tests<a name="testing_running_tests"></a>
 
 For reference, here are the commands you use to run tests in your AWS CDK app\. These are the same commands you'd use to run the tests in any project using the same testing framework\. For languages that require a build step, include that to make sure your tests have been compiled\.
