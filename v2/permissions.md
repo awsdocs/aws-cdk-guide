@@ -487,3 +487,20 @@ bucket.AddToResourcePolicy(new PolicyStatement(new PolicyStatementProps
 ```
 
 ------
+
+## Using external IAM objects<a name="permissions_existing"></a>
+
+If you have defined an IAM user, principal, group, or role outside your AWS CDK app, you can use that IAM object in your AWS CDK app by creating a reference to it using its ARN or \(for users, groups, and roles\) its name\. The returned reference can then be used to grant permissions or to construct policy statements as explained above\.
++ For users, call `[User\.fromUserArn\(\)](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.User.html#static-fromwbruserwbrarnscope-id-userarn)` or `[User\.fromUserName\(\)](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.User.html#static-fromwbruserwbrnamescope-id-username)`\. `User.fromUserAttributes()` is also available, but currently provides the same functionality as `User.fromUserArn()`\.
++ For principals, instantiate an `[ArnPrincipal](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.ArnPrincipal.html)` object\.
++ For groups, call `[Group\.fromGroupArn\(\)](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.Group.html#static-fromwbrgroupwbrarnscope-id-grouparn)` or `[Group\.fromGroupName\(\)](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.Group.html#static-fromwbrgroupwbrnamescope-id-groupname)`\.
++ For roles, call `[Role\.fromRoleArn\(\)](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.Role.html#static-fromwbrrolewbrarnscope-id-rolearn-options)` or `[Role\.fromRoleName\(\)](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.Role.html#static-fromwbrrolewbrnamescope-id-rolename)`\.
+
+Policies \(including managed policies\) can be imported in similar fashion using the methods listed below\. You can use references to these objects anywhere an IAM policy is required\.
++ `[Policy\.fromPolicyName](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.Policy.html#static-fromwbrpolicywbrnamescope-id-policyname)`
++ `[ManagedPolicy\.fromManagedPolicyArn](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.ManagedPolicy.html#static-fromwbrmanagedwbrpolicywbrarnscope-id-managedpolicyarn)`
++ `[ManagedPolicy\.fromManagedPolicyName](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.ManagedPolicy.html#static-fromwbrmanagedwbrpolicywbrnamescope-id-managedpolicyname)`
++ `[ManagedPolicy\.fromAwsManagedPolicyName](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.ManagedPolicy.html#static-fromwbrawswbrmanagedwbrpolicywbrnamemanagedpolicyname)`
+
+**Note**  
+As with all references to external AWS resources, you cannot modify imported IAM objects in your CDK app\.
