@@ -232,11 +232,11 @@ Place the following code in `state_machine/state_machine_stack.py`:
 ```
 from typing import List
 
-import aws-cdk.aws_lambda as lambda_
-import aws-cdk.aws_sns as sns
-import aws-cdk.aws_sns_subscriptions as sns_subscriptions
-import aws-cdk.aws_stepfunctions as sfn
-import aws-cdk as cdk
+import aws_cdk.aws_lambda as lambda_
+import aws_cdk.aws_sns as sns
+import aws_cdk.aws_sns_subscriptions as sns_subscriptions
+import aws_cdk.aws_stepfunctions as sfn
+import aws_cdk as cdk
 
 class ProcessorStack(cdk.Stack):
     def __init__(
