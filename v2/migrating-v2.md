@@ -8,7 +8,7 @@ The main changes from AWS CDK v1 to CDK v2 are as follows\.
   L1 \(CfnXXXX\) constructs, which represent the exact resources available in AWS CloudFormation, are always considered stable and so are included in `aws-cdk-lib`\.
 + Experimental modules, where we're still working with the community to develop new [L2 or L3 constructs](constructs.md#constructs_lib), are not included in `aws-cdk-lib`; they are instead distributed as individual packages\. Experimental packages are named with an `alpha` suffix and a semantic version number that matches the first version of the AWS Construct Library with which they are compatible, also with an `alpha` suffix\. Constructs move into `aws-cdk-lib` after being designated stable, permitting the main Construct Library to adhere to strict semantic versioning\. 
 
-  Stability is specified at the service level\. For example, if we begin creating one or more L2 constructs for Amazon AppFlow, which at this writing has only L1 constructs, they would first appear in a module named `@aws-cdk/aws-appflow-alpha`, then move to `aws-cdk-lib` when we feel the new constructs meet the fundamental needs of customers\.
+  Stability is specified at the service level\. For example, if we begin creating one or more [L2 constructs](constructs.md#constructs_lib) for Amazon AppFlow, which at this writing has only L1 constructs, they would first appear in a module named `@aws-cdk/aws-appflow-alpha`, then move to `aws-cdk-lib` when we feel the new constructs meet the fundamental needs of customers\.
 
   Once a module has been designated stable and incorporated into `aws-cdk-lib`, new APIs are added using the "BetaN" convention described in the next bullet\. 
 
