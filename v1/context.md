@@ -116,11 +116,7 @@ To specify multiple context values, repeat the \-\-context option any number of 
 cdk synth --context key1=value1 --context key2=value2 MyStack
 ```
 
-When deploying multiple stacks, the specified context values are normally passed to all of them\. If you wish, you may specify different values for each stack by prefixing the stack name to the context value\.
-
-```
-cdk synth --context Stack1:key=value --context Stack2:key=value Stack1 Stack2
-```
+When synthesizing multiple stacks, the specified context values are passed to all stacks\. To provide different context values to individual stacks, either use different keys for the values, or use multiple cdk synth or cdk deploy commands\.
 
 ## Example<a name="context_example"></a>
 
