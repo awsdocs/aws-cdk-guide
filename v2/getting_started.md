@@ -34,7 +34,7 @@ The actual package name of the main CDK package varies by language\.
 
 | Install | `npm install aws-cdk-lib` | 
 | --- |--- |
-| Import | `const cdk = require('aws-cdk-lib');` | 
+| Import | `import 'aws-cdk-lib' as cdk;` | 
 | --- |--- |
 
 ------
