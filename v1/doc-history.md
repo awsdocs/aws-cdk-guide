@@ -7,6 +7,9 @@ The table below represents significant documentation milestones\. We fix errors 
 
 | Change | Description | Date | 
 | --- |--- |--- |
+| [Document `cdk.json`](#doc-history) | Add documentation of `cdk.json` configuration values\. | April 20, 2022 | 
+| [Dependency management](#doc-history) | Add topic on managing dependencies with the AWS CDK\. | April 7, 2022 | 
+| [Remove double\-braces from Java examples](#doc-history) | Replace this anti\-pattern throughout with Java 9 `Map.of` throughout\. | March 9, 2022 | 
 | [AWS CDK v2 release](#doc-history) | Improvements to CDK v1 Developer Guide to coincide with the release of CDK v2 and its documentation\. | December 4, 2021 | 
 | [`cdk watch`](#doc-history) | Add description of `cdk watch` command for incremental deployments\. | November 19, 2021 | 
 | [Testing with `assertions`](#doc-history) | Revise testing topic to use new `assertions` library\. | November 17, 2021 | 
