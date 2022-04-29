@@ -395,7 +395,7 @@ All the other `DefaultStackSynthesizer` properties relate to the names of the re
 
 All properties accept the special placeholders `${Qualifier}`, `${AWS::Partition}`, `${AWS::AccountId}`, and `${AWS::Region}`\. These placeholders are replaced with the values of the `qualifier` parameter and with the values of the AWS partition, account ID, and region for the stack's environment, respectively\.
 
-The following example shows all the available properties for `DefaultStackSynthesizer` along with their default values, as if you were instantiating the synthesizer\.
+The following example shows the most commonly\-used properties for `DefaultStackSynthesizer` along with their default values, as if you were instantiating the synthesizer\. For a complete list, see [DefaultStackSynthesizerProps](https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_core.DefaultStackSynthesizerProps.html#properties)\.
 
 ------
 #### [ TypeScript ]
@@ -424,11 +424,16 @@ new DefaultStackSynthesizer({
   // ARN of the role passed to CloudFormation to execute the deployments
   cloudFormationExecutionRole: 'arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-${Qualifier}-cfn-exec-role-${AWS::AccountId}-${AWS::Region}',
 
+  // ARN of the role used to look up context information in an environment
+  lookupRoleArn: 'arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-${Qualifier}-lookup-role-${AWS::AccountId}-${AWS::Region}',
+  lookupRoleExternalId: '',
+
   // Name of the SSM parameter which describes the bootstrap stack version number
   bootstrapStackVersionSsmParameter: '/cdk-bootstrap/${Qualifier}/version',
 
   // Add a rule to every template which verifies the required bootstrap stack version
   generateBootstrapVersionRule: true,
+
 })
 ```
 
@@ -458,6 +463,10 @@ new DefaultStackSynthesizer({
 
   // ARN of the role passed to CloudFormation to execute the deployments
   cloudFormationExecutionRole: 'arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-${Qualifier}-cfn-exec-role-${AWS::AccountId}-${AWS::Region}',
+
+  // ARN of the role used to look up context information in an environment
+  lookupRoleArn: 'arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-${Qualifier}-lookup-role-${AWS::AccountId}-${AWS::Region}',
+  lookupRoleExternalId: '',
 
   // Name of the SSM parameter which describes the bootstrap stack version number
   bootstrapStackVersionSsmParameter: '/cdk-bootstrap/${Qualifier}/version',
@@ -492,8 +501,12 @@ DefaultStackSynthesizer(
   image_asset_publishing_external_id="",
 
   # ARN of the role passed to CloudFormation to execute the deployments
-  cloud_formation_execution_role="arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-${Qualifier}-cfn-exec-role-${AWS::AccountId}-${AWS::Region}"
+  cloud_formation_execution_role="arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-${Qualifier}-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
 
+  # ARN of the role used to look up context information in an environment
+  lookup_role_arn="arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-${Qualifier}-lookup-role-${AWS::AccountId}-${AWS::Region}",
+  lookup_role_external_id="",
+  
   # Name of the SSM parameter which describes the bootstrap stack version number
   bootstrap_stack_version_ssm_parameter="/cdk-bootstrap/${Qualifier}/version",
 
@@ -529,6 +542,9 @@ DefaultStackSynthesizer.Builder.create()
     // ARN of the role passed to CloudFormation to execute the deployments
     .cloudFormationExecutionRole("arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-${Qualifier}-cfn-exec-role-${AWS::AccountId}-${AWS::Region}")
 
+    .lookupRoleArn("arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-${Qualifier}-lookup-role-${AWS::AccountId}-${AWS::Region}")
+    .lookupRoleExternalId("")
+
     // Name of the SSM parameter which describes the bootstrap stack version number
     .bootstrapStackVersionSsmParameter("/cdk-bootstrap/${Qualifier}/version")
 
@@ -563,8 +579,11 @@ new DefaultStackSynthesizer(new DefaultStackSynthesizerProps
     ImageAssetPublishingExternalId = "",
 
     // ARN of the role passed to CloudFormation to execute the deployments
-    CloudFormationExecutionRole = "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-${Qualifier}-cfn-exec-role-${AWS::AccountId}-${AWS::Region}"
+    CloudFormationExecutionRole = "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-${Qualifier}-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
 
+    LookupRoleArn = "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-${Qualifier}-lookup-role-${AWS::AccountId}-${AWS::Region}",
+    LookupRoleExternalId = "",
+    
     // Name of the SSM parameter which describes the bootstrap stack version number
     BootstrapStackVersionSsmParameter = "/cdk-bootstrap/${Qualifier}/version",
 
