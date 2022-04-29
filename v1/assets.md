@@ -872,7 +872,7 @@ In most cases, you should use [asset\.repository\.grantPull](https://docs.aws.am
 ## AWS CloudFormation resource metadata<a name="assets_cfn"></a>
 
 **Note**  
-This section is relevant only for construct authors\. In certain situations, tools need to know that a certain CFN resource is using a local asset\. For example, you can use the AWS SAM CLI to invoke Lambda functions locally for debugging purposes\. See [SAM CLI](sam.md) for details\.
+This section is relevant only for construct authors\. In certain situations, tools need to know that a certain CFN resource is using a local asset\. For example, you can use the AWS SAM CLI to invoke Lambda functions locally for debugging purposes\. See [AWS SAM integration](sam.md) for details\.
 
 To enable such use cases, external tools consult a set of metadata entries on AWS CloudFormation resources:
 + `aws:asset:path` – Points to the local path of the asset\.

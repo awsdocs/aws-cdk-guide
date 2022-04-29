@@ -64,7 +64,7 @@ Amazon's trademarks and trade dress may not be used in
 + [AWS CDK tools](tools.md)
    + [AWS CDK Toolkit (cdk command)](cli.md)
    + [AWS Toolkit for Visual Studio Code](vscode.md)
-   + [SAM CLI](sam.md)
+   + [AWS SAM integration](sam.md)
 + [Testing constructs](testing.md)
 + [Security for the AWS Cloud Development Kit (AWS CDK)](security.md)
    + [Identity and access management for the AWS Cloud Development Kit (AWS CDK)](security-iam.md)
