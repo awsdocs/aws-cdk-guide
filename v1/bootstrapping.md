@@ -650,3 +650,5 @@ The bootstrap template is versioned and evolves over time with the AWS CDK itsel
 | 8 | 1\.114\.0 | The lookup role has full read\-only permissions to the target environment, and has a aws\-cdk:bootstrap\-role tag as well\. | 
 | 9 | 1\.135\.0 | Fixes S3 asset uploads from being rejected by commonly referenced encryption SCP\. | 
 | 10 | 1\.139\.0 | ECR ScanOnPush is now enabled by default\. | 
+| 11 | 1\.150\.0 | Adds policy allowing Lambda to pull from Amazon ECR repos so it survives rebootstrapping\. | 
+| 12 | 1\.152\.0 | Adds support for experimental cdk import\. | 
