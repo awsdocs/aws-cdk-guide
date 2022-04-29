@@ -314,6 +314,23 @@ using Amazon.CDK.Codestar.Alpha;    // for experimental constructs
 
 ------
 
+## Testing your migrated app before deploying<a name="migrating-v2-diff.title"></a>
+
+Before deploying your stacks, use `cdk diff` to check for unexpected changes to the resources\. Changes to logical IDs \(causing replacement of resources\) are **not** expected\.
+
+Expected changes include but are not limited to:
++ Changes to the `CDKMetadata` resource
++ Updated asset hashes
++ Changes related to the new\-style stack synthesis, if your app used the legacy stack synthesizer in v1 \(CDK v2 does not support the legacy stack synthesizer\)
++ The addition of a `CheckBootstrapVersion` rule
+
+Unexpected changes are typically not caused by upgrading to AWS CDK v2 in itself, but are usually the result of deprecated behavior that was previously changed by feature flags\. This is a symptom of upgrading from a version of CDK older than about 1\.85\.x; you'd see the same changes upgrading to the latest v1\.x release\. You can usually resolve this by upgrading your app to the latest v1\.x release, removing feature flags, revising your code as necessary, deploying, and then upgrading to v2\.
+
+**Note**  
+If your upgraded app ends up undeployable after the two\-stage upgrade, please [report the issue](https://github.com/aws/aws-cdk/issues/new/choose)\.
+
+When you are ready to deploy the stacks in your app, consider deploying a copy first so you can test it\. The easiest way to do this is to deploy it into a different region\. However, you can also simply change the IDs of your stack\(s\)\. After testing, be sure to destroy the testing copy with cdk destroy\.
+
 ## Troubleshooting<a name="migrating-v2-trouble.title"></a>
 
 **Typescript `'from' expected` or `';' expected` error in imports**  
@@ -330,16 +347,3 @@ MyStack: SSM parameter /cdk-bootstrap/hnb659fds/version not found. Has the envir
 ```
 
 AWS CDK v2 requires a new bootstrap stack, so you must re\-bootstrap your deployment environment\(s\)\. See [Bootstrapping](bootstrapping.md) for complete details\.
-
-**Unexpected infrastructure changes**  
-Before deploying your app, use `cdk diff` to check for unexpected changes to its resources\. Changes to logical IDs \(causing replacement of resources\) are **not** expected\.
-
-Expected changes include but are not limited to:
-+ Changes to the `CDKMetadata` resource
-+ Updated asset hashes
-+ Changes related to the new\-style stack synthesis, if your app used the legacy stack synthesizer in v1 \(CDK v2 does not support the legacy stack synthesizer\)
-+ The addition of a `CheckBootstrapVersion` rule
-
-Unexpected changes are typically not caused by upgrading to AWS CDK v2 in itself, but are usually the result of deprecated behavior that was previously changed by feature flags\. This is a symptom of upgrading from a version of CDK older than about 1\.85\.x; you'd see the same changes upgrading to the latest v1\.x release\. You can usually resolve this by upgrading your app to the latest v1\.x release, removing feature flags, revising your code as necessary, deploying, and then upgrading to v2\.
-
-If your upgraded app ends up undeployable after the two\-stage upgrade, please [report the issue](https://github.com/aws/aws-cdk/issues/new/choose)\.
