@@ -27,6 +27,9 @@ The Amazon ECS construct used in this tutorial helps you use AWS services by pro
 
 See [ECS](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ecs-readme.html) for details\.
 
+**Important**  
+The `ApplicationLoadBalancedFargateService` constructs we'll be using includes numerous AWS components, some of which can cost non\-trivial amounts of money if left provisioned in your AWS account, even if you don't use them\. Be sure to clean up \(cdk destroy\) after completing this example\.
+
 ## Creating the directory and initializing the AWS CDK<a name="ecs_example_initialize"></a>
 
 Let's start by creating a directory to hold the AWS CDK code, and then creating a AWS CDK app in that directory\.
