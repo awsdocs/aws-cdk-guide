@@ -272,6 +272,9 @@ public class HelloAssetStack : Stack
 
 The `Function` method uses assets to bundle the contents of the directory and use it for the function's code\.
 
+**Tip**  
+Java `.jor` files are ZIP files with a different extension\. These will be uploaded as\-is to Amazon S3, but when they are deployed as a Lambda function, the files they contain will be extracted, which probably isn't what you want\. To avoid this, place the `.jar` file in a directory and specify that directory as the asset\.
+
 #### Deploy\-time attributes example<a name="assets_types_s3_deploy"></a>
 
 Amazon S3 asset types also expose [deploy\-time attributes](resources.md#resources_attributes) that can be referenced in AWS CDK libraries and apps\. The AWS CDK CLI command cdk synth displays asset properties as AWS CloudFormation parameters\.
