@@ -172,15 +172,15 @@ The following command\-line options, when used with CDK Toolkit's cdk bootstrap,
 + \-\-termination\-protection prevents the bootstrap stack from being deleted \(see [Protecting a stack from being deleted](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-protect-stacks.html) in the AWS CloudFormation User Guide\)
 
 The following additional switches are available only with the modern bootstrapping template\.
-+ \-\-cloudformation\-execution\-policies specifies the ARNs of managed policies that should be attached to the deployment role assumed by AWS CloudFormation during deployment of your stacks\. At least one policy is required; otherwise, AWS CloudFormation will attempt to deploy without permissions and deployments will fail\.
-**Tip**  
-The policies must be passed as a single string argument, with the policy ARNs separated by commas, like this:  
++ \-\-cloudformation\-execution\-policies specifies the ARNs of managed policies that should be attached to the deployment role assumed by AWS CloudFormation during deployment of your stacks\. By default, stacks are deployed with full administrator privileges using the `AdministratorAccess` policy\.
+
+  The policy ARNs must be passed as a single string argument, with the individual ARNs separated by commas\. For example:
 
   ```
   --cloudformation-execution-policies "arn:aws:iam::aws:policy/AWSLambda_FullAccess,arn:aws:iam::aws:policy/AWSCodeDeployFullAccess".
   ```
 **Important**  
-At least one policy should be specified; otherwise, AWS CloudFormation will deploy using full administrator permissions from the `AdministratorAccess` policy\.
+To avoid deployment failures, be sure the policies you specify are sufficient for any deployments you will perform in the environment being bootstrapped\.
 + \-\-trust lists the AWS accounts that may deploy into the environment being bootstrapped\. Use this flag when bootstrapping an environment that a CDK Pipeline in another environment will deploy into\. The account doing the bootstrapping is always trusted\.
 + \-\-trust\-for\-lookup lists the AWS accounts that may look up context information from the environment being bootstrapped\. Use this flag to give accounts permission to synthesize stacks that will be deployed into the environment, without actually giving them permission to deploy those stacks directly\. Accounts specified under \-\-trust are always trusted for context lookup\.
 + \-\-qualifier a string that is added to the names of all resources in the bootstrap stack\. A qualifier lets you avoid name clashes when you provision two bootstrap stacks in the same environment\. The default is `hnb659fds` \(this value has no significance\)\. Changing the qualifier will require changes to your AWS CDK app \(see [Stack synthesizers](#bootstrapping-synthesizers)\)\. 
