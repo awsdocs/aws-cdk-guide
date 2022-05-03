@@ -9,5 +9,5 @@ The table below represents significant documentation milestones\. We fix errors 
 | --- |--- |--- |
 | [Document `cdk.json`](#doc-history) | Add documentation of `cdk.json` configuration values\. | April 20, 2022 | 
 | [Dependency management](#doc-history) | Add topic on managing dependencies with the AWS CDK\. | April 7, 2022 | 
-| [Remove double\-braces from Java examples](#doc-history) | Replace this anti\-pattern throughout with Java 9 `Map.of` throughout\. | March 9, 2022 | 
+| [Remove double\-braces from Java examples](#doc-history) | Replace this anti\-pattern with Java 9 `Map.of` throughout\. | March 9, 2022 | 
 | [AWS CDK v2 release](#doc-history) | Version 2 of the AWS CDK Developer Guide is released\. [Document history](../../v1/guide/doc-history.html) for CDK v1\. | December 4, 2021 | 
