@@ -118,6 +118,8 @@ cdk synth --context key1=value1 --context key2=value2 MyStack
 
 When synthesizing multiple stacks, the specified context values are passed to all stacks\. To provide different context values to individual stacks, either use different keys for the values, or use multiple cdk synth or cdk deploy commands\.
 
+Context values passed from the command line are always strings\. If a value is usually of some other type, your code must be prepared to convert or parse the value\. To allow non\-string context values provided in other ways \(for example, in `cdk.context.json`\) to work as expected, make sure the value is a string before converting it\.
+
 ## Example<a name="context_example"></a>
 
 Below is an example of importing an existing Amazon VPC using AWS CDK context\.
