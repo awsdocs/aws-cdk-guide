@@ -635,7 +635,7 @@ For information about the most common API patterns in the AWS Construct Library,
 
 ## Writing your own constructs<a name="constructs_author"></a>
 
-In addition to using existing constructs like `s3.Bucket`, you can also write your own constructs, and then anyone can use them in their apps\. All constructs are equal in the AWS CDK\. An AWS CDK construct such as `s3.Bucket` or `sns.Topic` behaves the same as a construct imported from a third\-party library that someone published via NPM or Maven or PyPI—or to your company's internal package repository\.
+In addition to using existing constructs like `s3.Bucket`, you can also write your own constructs, and then anyone can use them in their apps\. All constructs are equal in the AWS CDK\. An AWS CDK construct such as `s3.Bucket` or `sns.Topic` behaves the same as a construct from a third\-party library that someone published via NPM or Maven or PyPI—or to your company's internal package repository\.
 
 To declare a new construct, create a class that extends the [Construct](https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_core.Construct.html) base class, then follow the pattern for initializer arguments\.
 

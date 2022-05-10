@@ -132,7 +132,7 @@ Context values passed from the command line are always strings\. If a value is u
 
 ## Example<a name="context_example"></a>
 
-Below is an example of importing an existing Amazon VPC using AWS CDK context\.
+Below is an example of using an existing Amazon VPC using AWS CDK context\.
 
 ------
 #### [ TypeScript ]

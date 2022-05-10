@@ -350,7 +350,7 @@ var project = new Project(this, "Project", new ProjectProps
 
 ------
 
-Once the object is created, the role \(whether the role passed in or the default one created by the construct\) is available as the property `role`\. This property is not available on imported resources, however, so such constructs have an `addToRolePolicy` \(Python: `add_to_role_policy`\) method that does nothing if the construct is an imported resource, and calls the `addToPolicy` \(Python: `add_to_policy`\) method of the `role` property otherwise, saving you the trouble of handling the undefined case explicitly\. The following example demonstrates:
+Once the object is created, the role \(whether the role passed in or the default one created by the construct\) is available as the property `role`\. This property is not available on external resources, however, so such constructs have an `addToRolePolicy` \(Python: `add_to_role_policy`\) method that does nothing if the construct is an external resource, and calls the `addToPolicy` \(Python: `add_to_policy`\) method of the `role` property otherwise, saving you the trouble of handling the undefined case explicitly\. The following example demonstrates:
 
 ------
 #### [ TypeScript ]
@@ -496,11 +496,11 @@ If you have defined an IAM user, principal, group, or role outside your AWS CDK 
 + For groups, call `[Group\.fromGroupArn\(\)](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.Group.html#static-fromwbrgroupwbrarnscope-id-grouparn)` or `[Group\.fromGroupName\(\)](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.Group.html#static-fromwbrgroupwbrnamescope-id-groupname)`\.
 + For roles, call `[Role\.fromRoleArn\(\)](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.Role.html#static-fromwbrrolewbrarnscope-id-rolearn-options)` or `[Role\.fromRoleName\(\)](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.Role.html#static-fromwbrrolewbrnamescope-id-rolename)`\.
 
-Policies \(including managed policies\) can be imported in similar fashion using the methods listed below\. You can use references to these objects anywhere an IAM policy is required\.
+Policies \(including managed policies\) can be used in similar fashion using the methods listed below\. You can use references to these objects anywhere an IAM policy is required\.
 + `[Policy\.fromPolicyName](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.Policy.html#static-fromwbrpolicywbrnamescope-id-policyname)`
 + `[ManagedPolicy\.fromManagedPolicyArn](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.ManagedPolicy.html#static-fromwbrmanagedwbrpolicywbrarnscope-id-managedpolicyarn)`
 + `[ManagedPolicy\.fromManagedPolicyName](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.ManagedPolicy.html#static-fromwbrmanagedwbrpolicywbrnamescope-id-managedpolicyname)`
 + `[ManagedPolicy\.fromAwsManagedPolicyName](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.ManagedPolicy.html#static-fromwbrawswbrmanagedwbrpolicywbrnamemanagedpolicyname)`
 
 **Note**  
-As with all references to external AWS resources, you cannot modify imported IAM objects in your CDK app\.
+As with all references to external AWS resources, you cannot modify external IAM objects in your CDK app\.

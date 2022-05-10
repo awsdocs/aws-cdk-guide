@@ -579,9 +579,9 @@ Vpc.FromVpcAttributes(this, "MyVpc", new VpcAttributes
 
 ------
 
-Because the `ec2.Vpc` construct is complex, composed of many AWS resources, such as the VPC itself, subnets, security groups, and routing tables, it can be difficult to import those resources using attributes\. To address this, the VPC construct contains a `fromLookup` method \(Python: `from_lookup`\) that uses a [context method](context.md#context_methods) to resolve all the required attributes at synthesis time, and cache the values for future use in `cdk.context.json`\. 
+Because the `ec2.Vpc` construct is complex, composed of many AWS resources, such as the VPC itself, subnets, security groups, and routing tables, it can be difficult to specify those resources using attributes\. To address this, the VPC construct contains a `fromLookup` method \(Python: `from_lookup`\) that uses a [context method](context.md#context_methods) to resolve all the required attributes at synthesis time, and cache the values for future use in `cdk.context.json`\. 
 
-You must provide attributes sufficient to uniquely identify a VPC in your AWS account\. For example, there can only ever be one default VPC, so specifying that you want to import the VPC marked as the default is sufficient\.
+You must provide attributes sufficient to uniquely identify a VPC in your AWS account\. For example, there can only ever be one default VPC, so specifying that you want the VPC marked as the default is sufficient\.
 
 ------
 #### [ TypeScript ]
@@ -677,7 +677,7 @@ Vpc.FromLookup(this, id = "PublicVpc", new VpcLookupOptions
 
 Results of `Vpc.fromLookup()` are cached in the project's `cdk.context.json` file\. Commit this file to version control if you will be deploying the stack in an environment that does not have access to the AWS account that defines the VPC, such as [CDK Pipelines](cdk_pipeline.md)\.
 
-Although you can use an imported resource anywhere, you cannot modify the imported resource\. For example, calling `addToResourcePolicy` \(Python: `add_to_resource_policy`\) on an imported `s3.Bucket` does nothing\.
+Although you can use an external resource anywhere you'd use a similar resource defined in your app, you cannot modify the external resource\. For example, calling `addToResourcePolicy` \(Python: `add_to_resource_policy`\) on an external `s3.Bucket` does nothing\.
 
 ## Permission grants<a name="resources_grants"></a>
 
@@ -732,7 +732,7 @@ if (bucket.GrantReadWrite(func).Success)
 
 ------
 
-The grant methods return an `iam.Grant` object\. Use the `success` attribute of the `Grant` object to determine whether the grant was effectively applied \(for example, it may not have been applied on [imported resources](#resources_referencing)\)\. You can also use the `assertSuccess` \(Python: `assert_success`\) method of the `Grant` object to enforce that the grant was successfully applied\.
+The grant methods return an `iam.Grant` object\. Use the `success` attribute of the `Grant` object to determine whether the grant was effectively applied \(for example, it may not have been applied on [external resources](#resources_referencing)\)\. You can also use the `assertSuccess` \(Python: `assert_success`\) method of the `Grant` object to enforce that the grant was successfully applied\.
 
 If a specific grant method isn't available for the particular use case, you can use a generic grant method to define a new grant with a specified list of actions\. 
 
