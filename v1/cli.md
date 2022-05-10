@@ -221,6 +221,8 @@ If you are in some other directory, or if you want to run your app via a command
 cdk --app "npx ts-node bin/hello-cdk.ts" ls
 ```
 
+When deploying, you may also specify a directory containing synthesized cloud assemblies, such as `cdk.out`, as the value of \-\-app\. The specified stacks are deployed from this directory; the app is not synthesized\.
+
 ## Specifying stacks<a name="cli-stacks"></a>
 
 Many CDK Toolkit commands \(for example, `cdk deploy`\) work on stacks defined in your app\. If your app contains only one stack, the CDK Toolkit assumes you mean that one if you don't specify a stack explicitly\.
@@ -398,7 +400,15 @@ cdk deploy "*"    # all stacks in app
 **Note**  
 The CDK Toolkit runs your app and synthesizes fresh AWS CloudFormation templates before deploying anything\. Therefore, most command line options you can use with `cdk synth` \(for example, `--context`\) can also be used with `cdk deploy`\.
 
-See `cdk deploy --help` for all available options\. A few of the most\-frequently\-used options are covered below\.
+See `cdk deploy --help` for all available options\. A few of the most useful options are covered below\.
+
+### Skipping synthesis<a name="cli-deploy-nosynth"></a>
+
+The cdk deploy command normally synthesizes your app's stacks before deploying to make sure the deployment reflects the latest version of your app\. If you know that you haven't made any changes to your code since your last cdk synth, you may suppress the redundant synthesis step when deploying\. Simply specify your project's `cdk.out` directory in the \-\-app option\.
+
+```
+cdk deploy --app cdk.out StackOne StackTwo
+```
 
 ### Disabling rollback<a name="cli-deploy-norollback"></a>
 
@@ -444,7 +454,7 @@ Git\-style wildcards, both `*` and `**`, can be used in the `"watch"` and `"buil
 **Important**  
 Watch mode is not recommended for production deployments\.
 
-### Specifying AWS CloudFormation parameters<a name="w314aac31b7c37c17"></a>
+### Specifying AWS CloudFormation parameters<a name="w314aac31b7c37c19"></a>
 
 The AWS CDK Toolkit supports specifying AWS CloudFormation [parameters](parameters.md) at deployment\. You may provide these on the command line following the `--parameters` flag\.
 
@@ -466,7 +476,7 @@ cdk deploy MyStack YourStack --parameters MyStack:uploadBucketName=UploadBucket 
 
 By default, the AWS CDK retains values of parameters from previous deployments and uses them in later deployments if they are not specified explicitly\. Use the `--no-previous-parameters` flag to require all parameters to be specified\.
 
-### Specifying outputs file<a name="w314aac31b7c37c19"></a>
+### Specifying outputs file<a name="w314aac31b7c37c21"></a>
 
 If your stack declares AWS CloudFormation outputs, these are normally displayed on the screen at the conclusion of deployment\. To write them to a file in JSON format, use the `--outputs-file` flag\.
 
