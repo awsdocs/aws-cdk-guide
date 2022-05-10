@@ -328,7 +328,7 @@ public class MyPipelineApp {
         App app = new App();
 
         new MyPipelineStack(app, "PipelineStack", StackProps.builder()
-            .env(new Environment.builder()
+            .env(Environment.builder()
                 .account("111111111111")
                 .region("eu-west-1")
                 .build())
