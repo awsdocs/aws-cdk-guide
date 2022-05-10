@@ -1,12 +1,21 @@
 # Runtime context<a name="context"></a>
 
-Context values are key\-value pairs that can be associated with an app, stack, or construct\. The AWS CDK uses context to cache information from your AWS account, such as the Availability Zones in your account or the Amazon Machine Image \(AMI\) IDs used to start your instances\. [Feature flags](featureflags.md) are also context values\. You can create your own context values for use by your apps or constructs\.
+Context values are key\-value pairs that can be associated with an app, stack, or construct\. They may be supplied to your app from a file \(usually either `cdk.json` or `cdk.context.json` in your project directory\) or on the command line\.
 
-Context keys are strings, and values may be any type supported by JSON: numbers, strings, arrays, or objects\.
+The CDK Toolkit uses context to cache values retrieved from your AWS account during synthesis, such as the Availability Zones in your account or the Amazon Machine Image \(AMI\) IDs currently available for Amazon EC2 instances\. Because these values are provided by your AWS account, they can change between runs of your CDK application, which makes them a potential source of unintended change\. The CDK Toolkit's caching behavior "freezes" these values for your CDK app until you decide to accept the new values\.
 
-If your constructs create their own context values, incorporate your library's package name in its keys so they won't conflict with other package's context values\.
+Without context caching, if you had specified "latest Amazon Linux" as the AMI for your Amazon EC2 instances, and a new version of this AMI were released, then the next time you deployed your CDK stack, your already\-deployed instances would be using the outdated \("wrong"\) AMI and would therefore need to be upgraded\. Upgrading would result in replacing all your existing instances with new ones, which would probably be unexpected and undesired\.
 
-Since most context values are associated with a particular AWS environment, and a given CDK app can be deployed in more than one environment, it is important to be able to set context values for each environment\. This is achieved by including the AWS account and region in the context key, so that values from different environments do not conflict\.
+Instead, the CDK records your account's available AMIs in your project's `cdk.context.json` file, and uses the stored value for future synthesis operations\. This way, the list of AMIs is no longer a potential source of change, and you can be sure that your stacks will always synthesize to the same AWS CloudFormation templates\.
+
+Not all context values are cached values from your AWS environment\. [Feature flags](featureflags.md) are also context values\. You can also create your own context values for use by your apps or constructs\.
+
+Context keys are strings\. Values may be any type supported by JSON: numbers, strings, arrays, or objects\.
+
+**Tip**  
+If your constructs create their own context values, incorporate your library's package name in its keys so they won't conflict with other packages' context values\.
+
+Many context values are associated with a particular AWS environment, and a given CDK app can be deployed in more than one environment\. The key for such values includes the AWS account and region so that values from different environments do not conflict\.
 
 The context key below illustrates the format used by the AWS CDK, including the account and region\.
 
@@ -15,9 +24,9 @@ availability-zones:account=123456789012:region=eu-central-1
 ```
 
 **Important**  
-Context values are managed by the AWS CDK and its constructs, including constructs you may write\. In general, you should not add or change context values by manually editing files\. It can be useful to review `cdk.context.json` to see what values are being cached\.
+Cached context values are managed by the AWS CDK and its constructs, including constructs you may write\. Do not add or change cached context values by manually editing files\. It can be useful, however, to review `cdk.context.json` occasionally to see what values are being cached\. Context values that do not represent cached values should be stored under the `context` key of `cdk.json` so they won't be cleared when cached values are cleared\.
 
-## Construct context<a name="context_construct"></a>
+## Sources of context values<a name="context_construct"></a>
 
 Context values can be provided to your AWS CDK app in six different ways:
 + Automatically from the current AWS account\.
@@ -27,17 +36,18 @@ Context values can be provided to your AWS CDK app in six different ways:
 + In the `context` key of your `~/.cdk.json` file\.
 + In your AWS CDK app using the `construct.node.setContext()` method\.
 
-The project file `cdk.context.json` is where the AWS CDK caches context values retrieved from your AWS account\. This practice avoids unexpected changes to your deployments when, for example, a new Amazon Linux AMI is released, changing your Auto Scaling group\. The AWS CDK does not write context data to any of the other files listed\. 
+The project file `cdk.context.json` is where the AWS CDK caches context values retrieved from your AWS account\. This practice avoids unexpected changes to your deployments when, for example, a new Availability Zone is introduced\. The AWS CDK does not write context data to any of the other files listed\. 
 
-We recommend that `cdk.context.json` be placed under version control along with the rest of your application, as the information in them is part of your app's state and is critical to being able to synthesize and deploy consistently\. It is also critical to successful automated deployment of stacks that rely on context values \(for example, using [CDK Pipelines](cdk_pipeline.md)\)\.
+**Important**  
+Because they are part of your application's state, `cdk.json` and `cdk.context.json` must be committed to source control along with the rest of your app's source code\. Otherwise, deployments in other environments \(for example, a CI pipeline\) may produce inconsistent results\.
 
-Context values are scoped to the construct that created them; they are visible to child constructs, but not to siblings\. Context values set by the AWS CDK Toolkit \(the cdk command\), whether automatically, from a file, or from the \-\-context option, are implicitly set on the `App` construct, and so are visible to every construct in the app\.
+Context values are scoped to the construct that created them; they are visible to child constructs, but not to parents or siblings\. Context values set by the AWS CDK Toolkit \(the cdk command\), whether automatically, from a file, or from the \-\-context option, are implicitly set on the `App` construct, and so are visible to every construct in every stack in the app\.
 
-You can get a context value using the `construct.node.tryGetContext` method\. If the requested entry is not found on the current construct or any of its parents, the result is `undefined` \(or your language's equivalent, such as `None` in Python\)\.
+Your app can read a context value using the `construct.node.tryGetContext` method\. If the requested entry is not found on the current construct or any of its parents, the result is `undefined` \(or your language's equivalent, such as `None` in Python\)\.
 
 ## Context methods<a name="context_methods"></a>
 
-The AWS CDK supports several context methods that enable AWS CDK apps to get contextual information\. For example, you can get a list of Availability Zones that are available in a given AWS account and region, using the [stack\.availabilityZones](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.Stack.html#availabilityzones) method\.
+The AWS CDK supports several context methods that enable AWS CDK apps to obtain contextual information from the AWS environment\. For example, you can get a list of Availability Zones that are available in a given AWS account and region, using the [stack\.availabilityZones](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.Stack.html#availabilityzones) method\.
 
 The following are the context methods:
 
@@ -56,7 +66,7 @@ Gets the existing Amazon Virtual Private Clouds in your accounts\.
 [LookupMachineImage](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ec2.LookupMachineImage.html)  
 Looks up a machine image for use with a NAT instance in an Amazon Virtual Private Cloud\.
 
-If a required context value isn't available, the AWS CDK app notifies the AWS CDK CLI that the context information is missing\. The CLI then queries the current AWS account for the information, stores the resulting context information in the `cdk.context.json` file, and executes the AWS CDK app again with the context values\.
+If a required context value isn't available, the AWS CDK app notifies the CDK Toolkit that the context information is missing\. The CLI then queries the current AWS account for the information, stores the resulting context information in the `cdk.context.json` file, and executes the AWS CDK app again with the context values\.
 
 ## Viewing and managing context<a name="context_viewing"></a>
 
