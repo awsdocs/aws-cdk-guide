@@ -158,7 +158,7 @@ new CfnResource(this, "MyBucket", new CfnResourceProps
     Type = "AWS::S3::Bucket",
     Properties = new Dictionary<string, object>
     {   // Note the PascalCase here! These are CloudFormation identifiers
-        ["AnalyticsConfigurations"] = new List<Dictionary<string, string>>
+        ["AnalyticsConfigurations"] = new Dictionary<string, string>[]
         {
             new Dictionary<string, string> {
                 ["Id"] = "Config"
