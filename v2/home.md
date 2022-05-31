@@ -15,7 +15,7 @@ The AWS CDK lets you build reliable, scalable, cost\-effective applications in t
 + Use the power of AWS CloudFormation to perform infrastructure deployments predictably and repeatedly, with rollback on error\.
 + Easily share infrastructure design patterns among teams within your organization or even with the public\.
 
-The AWS CDK supports TypeScript, JavaScript, Python, Java, C\#/\.Net, and \(in developer preview\) Go\. Developers can use one of these supported programming languages to define reusable cloud components known as [Constructs](constructs.md)\. You compose these together into [Stacks](stacks.md) and [Apps](apps.md)\.
+The AWS CDK supports TypeScript, JavaScript, Python, Java, C\#/\.Net, and Go\. Developers can use one of these supported programming languages to define reusable cloud components known as [Constructs](constructs.md)\. You compose these together into [Stacks](stacks.md) and [Apps](apps.md)\.
 
 ![\[Image NOT FOUND\]](http://docs.aws.amazon.com/cdk/v2/guide/images/AppStacks.png)
 

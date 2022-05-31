@@ -1,9 +1,9 @@
 # Working with the AWS CDK<a name="work-with"></a>
 
-The AWS Cloud Development Kit \(CDK\) lets you define your AWS cloud infrastructure in a general\-purpose programming language\. Currently, the AWS CDK supports TypeScript, JavaScript, Python, Java, C\#, and \(in developer preview\) Go\. It is also possible to use other JVM and \.NET languages, though we are unable to provide support for every such language\.
+The AWS Cloud Development Kit \(CDK\) lets you define your AWS cloud infrastructure in a general\-purpose programming language\. Currently, the AWS CDK supports TypeScript, JavaScript, Python, Java, C\#, and Go\. It is also possible to use other JVM and \.NET languages, though we are unable to provide support for every such language\.
 
 **Note**  
-This Guide does not currently include instructions or code examples for Go aside from [Working with the AWS CDK in Go](work-with-cdk-go.md)\. Go support is currently in developer preview\.
+This Guide does not currently include instructions or code examples for Go aside from [Working with the AWS CDK in Go](work-with-cdk-go.md)\.
 
 We develop the AWS CDK in TypeScript and use [JSII](https://github.com/aws/jsii) to provide a "native" experience in other supported languages\. For example, we distribute AWS Construct Library modules using your preferred language's standard repository, and you install them using the language's standard package manager\. Methods and properties are even named using your language's recommended naming patterns\.
 
@@ -18,7 +18,7 @@ If you have the [AWS CLI](https://aws.amazon.com/cli/) installed, the simplest w
 aws configure
 ```
 
-All AWS CDK applications require Node\.js 10\.13 or later, even if you work in Python, Java, or C\#\. You may download a compatible version at [nodejs\.org](https://nodejs.org/)\. We recommend the [active LTS version](https://nodejs.org/en/about/releases/) \(at this writing, the latest 16\.x release\)\. Node\.js versions 13\.0\.0 through 13\.6\.0 are not compatible with the AWS CDK due to compatibility issues with its dependencies\.
+All AWS CDK applications require Node\.js 10\.13 or later, even if you work in Python, Java, C\#, or Go\. You may download a compatible version at [nodejs\.org](https://nodejs.org/)\. We recommend the [active LTS version](https://nodejs.org/en/about/releases/) \(at this writing, the latest 16\.x release\)\. Node\.js versions 13\.0\.0 through 13\.6\.0 are not compatible with the AWS CDK due to compatibility issues with its dependencies\.
 
 After installing Node\.js, install the AWS CDK Toolkit \(the `cdk` command\):
 

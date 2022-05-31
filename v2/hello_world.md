@@ -2,9 +2,6 @@
 
 You've read [Getting started with the AWS CDK](getting_started.md) and set up your development environment for writing AWS CDK apps? Great\! Now let's see how it feels to work with the AWS CDK by building the simplest possible AWS CDK app\. 
 
-**Note**  
-The AWS CDK supports Go in a developer preview\. This tutorial does not include instructions or code examples for Go\.
-
 In this tutorial, you'll learn about the structure of a AWS CDK project, how to use the AWS Construct Library to define AWS resources using code, and how to synthesize, diff, and deploy collections of resources using the AWS CDK Toolkit command\-line tool\.
 
 The standard AWS CDK development workflow is similar to the workflow you're already familiar with as a developer, just with a few extra steps\.

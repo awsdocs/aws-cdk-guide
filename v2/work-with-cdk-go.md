@@ -1,6 +1,6 @@
 # Working with the AWS CDK in Go<a name="work-with-cdk-go"></a>
 
-The Go language binding for the AWS CDK is now available as a Developer Preview\. It is not suitable for production use and may undergo significant changes before being designated stable\. To follow development, see the [Project Board](https://github.com/aws/jsii/projects/3) on GitHub\. Please [report any issues](https://github.com/aws/aws-cdk/issues/new/choose) you encounter\.
+Go is a fully\-supported client language for the AWS CDK and is considered stable\. Working with the AWS CDK in Go uses familiar tools\. The Go version of the AWS CDK even uses Go\-style identifiers\.
 
 Unlike the other languages the CDK supports, Go is not a traditional object\-oriented programming language\. Go uses composition where other languages often leverage inheritance\. We have tried to employ idiomatic Go approaches as much as possible, but there are places where the CDK charts its own course\.
 

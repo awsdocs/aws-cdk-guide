@@ -16,10 +16,7 @@ Finally, you should be proficient in the programming language you intend to use 
 
 The AWS CDK is designed around a handful of important concepts\. We will introduce a few of these here briefly\. Follow the links to learn more, or see the Concepts topics in this guide's Table of Contents\.
 
-An AWS CDK [app](apps.md) is an application written in TypeScript, JavaScript, Python, Java, or C\# that uses the AWS CDK to define AWS infrastructure\. An app defines one or more [stacks](stacks.md)\. Stacks \(equivalent to AWS CloudFormation stacks\) contain [constructs](constructs.md), each of which defines one or more concrete AWS resources, such as Amazon S3 buckets, Lambda functions, Amazon DynamoDB tables, and so on\.
-
-**Note**  
-The AWS CDK also supports Go in a developer preview\. This Guide does not include instructions or code examples for Go aside from [Working with the AWS CDK in Go](work-with-cdk-go.md)\.
+An AWS CDK [app](apps.md) is an application written in TypeScript, JavaScript, Python, Java, C\#, or Go that uses the AWS CDK to define AWS infrastructure\. An app defines one or more [stacks](stacks.md)\. Stacks \(equivalent to AWS CloudFormation stacks\) contain [constructs](constructs.md), each of which defines one or more concrete AWS resources, such as Amazon S3 buckets, Lambda functions, Amazon DynamoDB tables, and so on\.
 
 Constructs \(as well as stacks and apps\) are represented as classes \(types\) in your programming language of choice\. You instantiate constructs within a stack to declare them to AWS, and connect them to each other using well\-defined interfaces\.
 
@@ -42,7 +39,7 @@ Numerous third parties have also published constructs compatible with the AWS CD
 
 ## Supported programming languages<a name="getting_started_languages"></a>
 
-The AWS CDK has first\-class support for TypeScript, JavaScript, Python, Java, and C\#\. \(Other JVM and \.NET CLR languages may also be used, at least in theory, but we are unable to offer support for them at this time\.\) Go support is available as a Developer Preview\.
+The AWS CDK has first\-class support for TypeScript, JavaScript, Python, Java, C\#, and Go\. Other JVM and \.NET CLR languages may also be used, at least in theory, but we are unable to offer support for them at this time\.
 
 To facilitate supporting so many languages, the AWS CDK is developed in one language \(TypeScript\) and language bindings are generated for the other languages through the use of a tool called [JSII](https://github.com/aws/jsii)\.
 
@@ -120,7 +117,7 @@ TypeScript was the first language supported by the AWS CDK, and much AWS CDK exa
 
 Here's what you need to install to use the AWS CDK\.
 
-All AWS CDK developers, even those working in Python, Java, or C\#, need [Node\.js](https://nodejs.org/en/download/) 10\.13\.0 or later\. All supported languages use the same back end, which runs on Node\.js\. We recommend a version in [active long\-term support](https://nodejs.org/en/about/releases/), which, at this writing, is the latest 16\.x release\. Your organization may have a different recommendation\.
+All AWS CDK developers, even those working in Python, Java, C\#, or Go, need [Node\.js](https://nodejs.org/en/download/) 10\.13\.0 or later\. All supported languages use the same back end, which runs on Node\.js\. We recommend a version in [active long\-term support](https://nodejs.org/en/about/releases/), which, at this writing, is the latest 16\.x release\. Your organization may have a different recommendation\.
 
 **Important**  
 Node\.js versions 13\.0\.0 through 13\.6\.0 are not compatible with the AWS CDK due to compatibility issues with its dependencies\.

@@ -4,7 +4,7 @@ The [API Reference](https://docs.aws.amazon.com/cdk/api/v1) contains information
 
 Each module has an overview that includes information about how to use its APIs\. For example, the [S3](https://docs.aws.amazon.com/cdk/api/v1/docs/aws-s3-readme.html) overview demonstrates how to set default encryption on an Amazon S3 bucket\.
 
-Separate versions of the API Reference are provided for TypeScript/JavaScript, Python, Java, and C\#/\.NET\.
+Separate versions of the API Reference are provided for TypeScript/JavaScript, Python, Java, C\#/\.NET\., and Go\.
 
 ## Versioning<a name="versioning"></a>
 
