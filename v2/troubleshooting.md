@@ -59,9 +59,9 @@ Your AWS environment has not been bootstrapped, and so does not have an Amazon S
 cdk bootstrap aws://ACCOUNT-NUMBER/REGION
 ```
 
-To avoid generating unexpected AWS charges, the AWS CDK does not automatically boostrap any environment\. You must bootstrap each environment into which you will deploy explicitly\.
+To avoid generating unexpected AWS charges, the AWS CDK does not automatically bootstrap any environment\. You must bootstrap each environment into which you will deploy explicitly\.
 
-By default, the boostrap resources are created in the region\(s\) used by stacks in the current AWS CDK application, or the region specified in your local AWS profile \(set by `aws configure`\), using that profile's account\. You can specify a different account and region on the command line as follows\. \(You must specify the account and region if you are not in an app's directory\.\)
+By default, the bootstrap resources are created in the region\(s\) used by stacks in the current AWS CDK application, or the region specified in your local AWS profile \(set by `aws configure`\), using that profile's account\. You can specify a different account and region on the command line as follows\. \(You must specify the account and region if you are not in an app's directory\.\)
 
 ```
 cdk bootstrap aws://ACCOUNT-NUMBER/REGION
@@ -72,7 +72,7 @@ For more information, see [Bootstrapping](bootstrapping.md)
 \([back to list](#troubleshooting_top)\)<a name="troubleshooting_forbidden_null"></a>
 
 **When deploying my AWS CDK stack, I receive a `forbidden: null` message**  
-You are deploying a stack that requires boostrap resources, but are using an IAM role or account that lacks permission to write to it\. \(The staging bucket is used when deploying stacks that contain assets or that synthesize an AWS CloudFormation template larger than 50K\.\) Use an account or role that has permission to perform the action `s3:*` against the bucket mentioned in the error message\.
+You are deploying a stack that requires bootstrap resources, but are using an IAM role or account that lacks permission to write to it\. \(The staging bucket is used when deploying stacks that contain assets or that synthesize an AWS CloudFormation template larger than 50K\.\) Use an account or role that has permission to perform the action `s3:*` against the bucket mentioned in the error message\.
 
 \([back to list](#troubleshooting_top)\)<a name="troubleshooting_app_required"></a>
 
