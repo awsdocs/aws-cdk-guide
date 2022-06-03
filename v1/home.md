@@ -4,7 +4,7 @@ Welcome to the *AWS Cloud Development Kit \(CDK\) Developer Guide*\. This docume
 
 **Important**  
 The CDK has been released in two major versions, v1 and v2\. This is the Developer Guide for AWS CDK v1\.  
-CDK v1 will continue to be fully supported until June 1, 2022, at which time it will enter maintenance\. During the maintenance phase, CDK v1 will receive critical bug fixes and security patches only\. New features will be developed exclusively for CDK v2 during the v1 maintenance phase\. On June 1, 2023, support will end for AWS CDK v1\. For more details, see [AWS CDK Maintenance Policy](https://github.com/aws/aws-cdk-rfcs/blob/master/text/0079-cdk-2.0.md#aws-cdk-maintenance-policy)\.
+CDK v1 entered maintenance on June 1, 2022\. During the maintenance phase, CDK v1 will receive critical bug fixes and security patches only\. New features will be developed exclusively for CDK v2 during the v1 maintenance phase\. On June 1, 2023, support will end for AWS CDK v1\. For more details, see [AWS CDK Maintenance Policy](https://github.com/aws/aws-cdk-rfcs/blob/master/text/0079-cdk-2.0.md#aws-cdk-maintenance-policy)\.
 
 The AWS CDK lets you build reliable, scalable, cost\-effective applications in the cloud with the considerable expressive power of a programming language\. This approach yields many benefits, including:
 + Build with high\-level constructs that automatically provide sensible, secure defaults for your AWS resources, defining more infrastructure with less code\.

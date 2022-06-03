@@ -171,7 +171,7 @@ Note that `aws-cdk-lib` appears both as a peer dependency and a dev dependency\.
 
 **Note**  
 You should perform a major version bump on your library's version number when releasing a v2\-compatible library, as this will be a breaking change for consumers of the library\. It is not possible to support both CDK v1 and v2 with a single library\. To continue to support customers who are still using v1, you could maintain the older release in parallel, or create a new package for v2\.  
-It's up to you how long you want to continue supporting AWS CDK v1 customers, but you could take your cue from the lifecycle of CDK v1 itself, and continue supporting v1 until AWS CDK v1 enters maintenance \(June 1, 2022\) or end\-of\-life \(June 1, 2023\)\. For full details, see [AWS CDK Maintenance Policy](https://github.com/aws/aws-cdk-rfcs/blob/master/text/0079-cdk-2.0.md#aws-cdk-maintenance-policy)
+It's up to you how long you want to continue supporting AWS CDK v1 customers, but you could take your cue from the lifecycle of CDK v1 itself, which entered maintenance on June 1, 2022 and will reach end\-of\-life on June 1, 2023\. For full details, see [AWS CDK Maintenance Policy](https://github.com/aws/aws-cdk-rfcs/blob/master/text/0079-cdk-2.0.md#aws-cdk-maintenance-policy)
 
 **Both libraries and apps**  
 Install the new dependencies by running `npm install` or `yarn install`\.
