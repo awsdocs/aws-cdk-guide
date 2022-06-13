@@ -53,7 +53,7 @@ cdk init --language javascript
 mkdir MyWidgetService
 cd MyWidgetService
 cdk init --language python
-source .venv/bin/activate
+source .env/bin/activate
 pip install -r requirements.txt
 ```
 
