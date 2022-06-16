@@ -347,3 +347,13 @@ MyStack: SSM parameter /cdk-bootstrap/hnb659fds/version not found. Has the envir
 ```
 
 AWS CDK v2 requires a new bootstrap stack, so you must re\-bootstrap your deployment environment\(s\)\. See [Bootstrapping](bootstrapping.md) for complete details\.
+
+## Finding v1 stacks<a name="finding-v1-stacks.title"></a>
+
+When working on migrating your CDK application from v1 to v2, you might want to identify the deployed AWS CloudFormation stacks that were created using v1\. To do this, run the following command: 
+
+```
+npx awscdk-v1-stack-finder
+```
+
+See the awscdk\-v1\-stack\-finder [README](https://github.com/cdklabs/awscdk-v1-stack-finder/blob/main/README.md) for usage details\.
