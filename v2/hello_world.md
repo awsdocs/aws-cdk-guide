@@ -466,7 +466,7 @@ You may be curious about why we specified `RemovalPolicy` in our AWS CDK app but
 It's informative to compare the output of cdk synth here with the previous output and see the many additional lines of AWS CloudFormation template that the AWS CDK generated for us based on these relatively small changes\.
 
 **Important**  
-Since the `autoDeleteObjects` property is implemented using a AWS CloudFormation custom resource, which is implemented using an AWS Lambda function, our stack contains an [asset](assets.md)\. This fact requires that our AWS account and region be [bootstrapped](bootstrapping.md) so that there's an Amazon S3 bucket to hold the asset during deployment\. If you haven't already bootstrapped, issue:  
+All AWS CDK v2 deployments use dedicated AWS resources to hold data during deployment, so your AWS account and region must be [bootstrapped](bootstrapping.md) to create these resources before you can deploy\. If you haven't already bootstrapped, issue:  
 
 ```
 cdk bootstrap aws://ACCOUNT-NUMBER/REGION

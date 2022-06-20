@@ -53,7 +53,7 @@ doskey cdk=npx aws-cdk $*
 \([back to list](#troubleshooting_top)\)<a name="troubleshooting_nobucket"></a>
 
 **When deploying my AWS CDK stack, I receive a `NoSuchBucket` error**  
-Your AWS environment has not been bootstrapped, and so does not have an Amazon S3 bucket to hold resources during deployment\. Stacks require this bucket if they contain [Assets](assets.md) or synthesize to AWS CloudFormation templates larger than 50 kilobytes or if they contain assets such as Lambda function code or container images\. You can create the staging bucket with the following command:
+Your AWS environment has not been bootstrapped, and so does not have an Amazon S3 bucket to hold resources during deployment\. You can create the staging bucket and other required resources with the following command:
 
 ```
 cdk bootstrap aws://ACCOUNT-NUMBER/REGION

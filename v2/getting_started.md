@@ -254,7 +254,7 @@ CDK Toolkit; v2 works with your existing CDK v1 projects\. However, it can't ini
 
 ## Bootstrapping<a name="getting_started_bootstrap"></a>
 
-Many AWS CDK stacks that you write will include [assets](assets.md): external files that are deployed with the stack, such as AWS Lambda functions or Docker images\. The AWS CDK uploads these to an Amazon S3 bucket or other container so they are available to AWS CloudFormation during deployment\. Deployment requires that these containers already exist in the account and region you are deploying into\. Creating them is called [bootstrapping](bootstrapping.md)\. To bootstrap, issue:
+Deploying stacks with the AWS CDK requires dedicated Amazon S3 buckets and other containers to be available to AWS CloudFormation during deployment\. Creating these is called [bootstrapping](bootstrapping.md)\. To bootstrap, issue:
 
 ```
 cdk bootstrap aws://ACCOUNT-NUMBER/REGION

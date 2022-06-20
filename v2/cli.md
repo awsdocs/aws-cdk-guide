@@ -251,7 +251,7 @@ The order in which you specify the stacks is not necessarily the order in which 
 
 ## Bootstrapping your AWS environment<a name="cli-bootstrap"></a>
 
-Deploying stacks that contain [assets](assets.md), synthesize to large templates, or use [CDK Pipelines](cdk_pipeline.md) require special dedicated AWS CDK resources to be provisioned\. The `cdk bootstrap` command creates the necessary resources for you\. You only need to bootstrap if you are deploying a stack that requires these dedicated resources\. See [Bootstrapping](bootstrapping.md) for details\.
+Deploying stacks with the CDK requires special dedicated AWS CDK resources to be provisioned\. The `cdk bootstrap` command creates the necessary resources for you\. You only need to bootstrap if you are deploying a stack that requires these dedicated resources\. See [Bootstrapping](bootstrapping.md) for details\.
 
 ```
 cdk bootstrap
@@ -276,7 +276,7 @@ You may incur AWS charges for what the AWS CDK stores in the bootstrapped resour
 Older versions of the bootstrap template created a Customer Master Key by default\. To avoid charges, re\-bootstrap using `--no-bootstrap-customer-key`\. 
 
 **Note**  
-CDK Toolkit v2 does not support the original bootstrap template, dubbed the legacy template, used with CDK v1\.
+CDK Toolkit v2 does not support the original bootstrap template, dubbed the legacy template, used by default with CDK v1\.
 
 **Important**  
 The modern bootstrap template effectively grants the permissions implied by the `--cloudformation-execution-policies` to any AWS account in the `--trust` list, which by default will extend permissions to read and write to any resource in the bootstrapped account\. Make sure to [configure the bootstrapping stack](bootstrapping.md#bootstrapping-customizing) with policies and trusted accounts you are comfortable with\.

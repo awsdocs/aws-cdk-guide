@@ -533,7 +533,7 @@ cdk synth
 
 ## Deploy and test the app<a name="serverless_example_deploy_and_test"></a>
 
-Before you can deploy your first AWS CDK app containing a lambda function, you must bootstrap your AWS environment\. This creates a staging bucket that the AWS CDK uses to deploy stacks containing assets\. For details, see [Bootstrapping your AWS environment](cli.md#cli-bootstrap)\. If you've already bootstrapped, you'll get a warning and nothing will change\.
+Before you can deploy your first AWS CDK app, you must bootstrap your AWS environment\. This creates \(among other resources\) a staging bucket that the AWS CDK uses to deploy stacks containing assets\. For details, see [Bootstrapping your AWS environment](cli.md#cli-bootstrap)\. If you've already bootstrapped, you'll get a warning and nothing will change\.
 
 ```
 cdk bootstrap aws://ACCOUNT-NUMBER/REGION

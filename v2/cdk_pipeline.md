@@ -14,9 +14,9 @@ Before you can use CDK Pipelines, you must bootstrap the AWS environment\(s\) to
 **Note**  
 See [Bootstrapping](bootstrapping.md) for more information on the kinds of resources created by bootstrapping and how to customize the bootstrap stack\.
 
-You may have already bootstrapped one or more environments so you can deploy assets and Lambda functions using the AWS CDK\. Continuous deployment with CDK Pipelines requires that the CDK Toolkit stack include additional resources, so the bootstrap stack has been extended to include an additional Amazon S3 bucket, an Amazon ECR repository, and IAM roles to give the various parts of a pipeline the permissions they need\. This new style of CDK Toolkit stack will eventually become the default, but at this writing, you must opt in\. The AWS CDK Toolkit will upgrade your existing bootstrap stack or create a new one, as necessary\.
+Continuous deployment with CDK Pipelines requires that the CDK Toolkit stack include an Amazon S3 bucket, an Amazon ECR repository, and IAM roles to give the various parts of a pipeline the permissions they need\. The CDK Toolkitwill upgrade your existing bootstrap stack or create a new one, as necessary\.
 
-To bootstrap an environment that can provision an AWS CDK pipeline, set the environment variable `CDK_NEW_BOOTSTRAP` before invoking `cdk bootstrap`, as shown below\. Invoking the AWS CDK Toolkit via the `npx` command installs it if necessary, and will use the version of the Toolkit installed in the current project if one exists\. 
+To bootstrap an environment that can provision an AWS CDK pipeline, invoke `cdk bootstrap` as shown below\. Invoking the AWS CDK Toolkit via the `npx` command temporarily installs it if necessary, and will use the version of the Toolkit installed in the current project if one exists\. 
 
 \-\-cloudformation\-execution\-policies specifies the ARN of a policy under which future CDK Pipelines deployments will execute\. The default `AdministratorAccess` policy ensures that your pipeline can deploy every type of AWS resource\. If you use this policy, make sure you trust all the code and dependencies that make up your AWS CDK app\.
 
@@ -28,7 +28,6 @@ You may omit the \-\-profile option if your default AWS profile contains the nec
 #### [ macOS/Linux ]
 
 ```
-export CDK_NEW_BOOTSTRAP=1 
 npx cdk bootstrap aws://ACCOUNT-NUMBER/REGION --profile ADMIN-PROFILE \
     --cloudformation-execution-policies arn:aws:iam::aws:policy/AdministratorAccess
 ```
@@ -37,7 +36,6 @@ npx cdk bootstrap aws://ACCOUNT-NUMBER/REGION --profile ADMIN-PROFILE \
 #### [ Windows ]
 
 ```
-set CDK_NEW_BOOTSTRAP=1 
 npx cdk bootstrap aws://ACCOUNT-NUMBER/REGION --profile ADMIN-PROFILE ^
     --cloudformation-execution-policies arn:aws:iam::aws:policy/AdministratorAccess
 ```
@@ -52,7 +50,6 @@ Again, you may omit the \-\-profile option if your default AWS profile contains 
 #### [ macOS/Linux ]
 
 ```
-export CDK_NEW_BOOTSTRAP=1 
 npx cdk bootstrap aws://ACCOUNT-NUMBER/REGION --profile ADMIN-PROFILE \
     --cloudformation-execution-policies arn:aws:iam::aws:policy/AdministratorAccess \
     --trust PIPELINE-ACCOUNT-NUMBER
@@ -62,7 +59,6 @@ npx cdk bootstrap aws://ACCOUNT-NUMBER/REGION --profile ADMIN-PROFILE \
 #### [ Windows ]
 
 ```
-set CDK_NEW_BOOTSTRAP=1 
 npx cdk bootstrap aws://ACCOUNT-NUMBER/REGION --profile ADMIN-PROFILE ^
     --cloudformation-execution-policies arn:aws:iam::aws:policy/AdministratorAccess ^
     --trust PIPELINE-ACCOUNT-NUMBER
