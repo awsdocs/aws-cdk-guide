@@ -32,6 +32,24 @@ Most requirements for AWS CDK v2 are the same as for AWS CDK v1\.x\. Additional 
 + For TypeScript developers, TypeScript 3\.8 or later is required\.
 + A new version of the CDK Toolkit is required for use with CDK v2\. Now that CDK v2 is Generally Available, v2 is the default version when installing the CDK Toolkit\. It is backward\-compatible with CDK v1 projects, so you do not need to keep the old version installed unless you want to create CDK v1 projects\. To upgrade, issue `npm install -g aws-cdk`\.
 
+### Permissions<a name="migrating-v2-prerequisites-permissions"></a>
+
+CDK v2 provides new IAM roles that are used by CDK during `cdk diff` and `cdk deploy` actions\.
+
+For more details on how to use them, see [CDK deployment minimum privileges](security-iam.md#security-iam-privileges)
+
+You can still use the deployment roles you were using for CDK v1\.x\., but you need to consider the changes explained below\.
+
+If your deployment roles are restricting access to S3 assets bucket or to the assets ECR repository by name, you need to be aware that both S3 assets bucket and ECR repository have a different name for CDK v2, so review the roles policies to allow CDK access to both assets resources with the new name\.
+
+The naming patterns of the assets resources changes as follows:
++ For the S3 assets bucket: from `cdktoolkit-assetsbucket-*` to `cdk-*-assets-*-*`\.
++ For the ECR assets repository: from `aws-cdk/assets` to `cdk-*-container-assets-*-*`\.
+
+If you are using the `--role-arn` option for `cdk diff` or `cdk deploy`, the role that you are passing may also need access to the previously mentioned assets resources depending on the content of your CDK stacks\. For example, if you are using `BucketDeployment` or `DockerImageAsset` constructs\.
+
+CDK v2 bootstrapping template also includes a new SSM parameter containing the bootstrap version that is also retrieved by CDK during deployments, so as well as with the mentioned assets resources naming changes, you also need to consider to grant extra new permissions for the actions `ssm:GetParameter` and `ssm:GetParameters` to your deployment roles\. The name pattern of that SSM parameter is like this: `/cdk-bootstrap/*/version`\.
+
 ## Upgrading from AWS CDK v2 Developer Preview<a name="migrating-v2-dp-upgrade"></a>
 
 If you have been using the CDK v2 Developer Preview, you have dependencies in your project on a Release Candidate version of the AWS CDK, such as `2.0.0-rc1`\. Update these to `2.0.0`, then update the modules installed in your project\.
