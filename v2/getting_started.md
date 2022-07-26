@@ -197,7 +197,7 @@ You may also manually create or edit the `~/.aws/config` and `~/.aws/credentials
 
 **Note**  
 Although the AWS CDK uses credentials from the same configuration files as other AWS tools and SDKs, including the [AWS Command Line Interface](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html), it may behave slightly differently from these tools\. In particular, if you use a named profile from the `credentials` file, the `config` must have a profile of the same name specifying the region\. The AWS CDK does not fall back to reading the region from the `[default]` section in `config`\. Also, do not use a profile named "default" \(e\.g\. `[profile default]`\)\. See [Setting credentials](https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/setting-credentials.html) for complete details on setting up credentials for the AWS SDK for JavaScript, which the AWS CDK uses under the hood\.  
-AWS CDK does not natively support AWS Single Sign\-On\. To use AWS SSO with the CDK, use a tool such as [yawsso](https://github.com/victorskl/yawsso)\.
+AWS CDK does not natively support AWS IAM Identity Center \(successor to AWS Single Sign\-On\)\. To use IAM Identity Center with the CDK, use a tool such as [yawsso](https://github.com/victorskl/yawsso)\.
 
 Alternatively, you can set the environment variables `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_DEFAULT_REGION` to appropriate values\. 
 
