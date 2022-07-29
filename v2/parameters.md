@@ -205,4 +205,4 @@ If you are deploying multiple stacks, you can specify a different value of each 
 cdk deploy MyStack YourStack --parameters MyStack:uploadBucketName=UploadBucket --parameters YourStack:uploadBucketName=UpBucket
 ```
 
-By default, the AWS CDK retains values of parameters from previous deployments and uses them in subsequent deployments if they are not specified explicitly\. Use the `--no-previous-parameters flag` to require all parameters to be specified\.
+By default, the AWS CDK retains values of parameters from previous deployments and uses them in subsequent deployments if they are not specified explicitly\. Use the `--no-previous-parameters` flag to require all parameters to be specified\.
