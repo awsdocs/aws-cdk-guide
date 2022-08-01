@@ -575,3 +575,4 @@ The bootstrap template is versioned and evolves over time with the AWS CDK itsel
 | 10 | 2\.4\.0 | ECR ScanOnPush is now enabled by default\. | 
 | 11 | 2\.18\.0 | Adds policy allowing Lambda to pull from Amazon ECR repos so it survives rebootstrapping\. | 
 | 12 | 2\.20\.0 | Adds support for experimental cdk import\. | 
+| 13 | 2\.25\.0 | Makes container images in bootstrap\-created Amazon ECR repositories immutable\. | 

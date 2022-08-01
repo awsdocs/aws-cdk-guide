@@ -1,4 +1,4 @@
-# AWS Cloud Development Kit (CDK) v2 Developer Guide
+# AWS Cloud Development Kit (AWS CDK) v2 Developer Guide
 
 -----
 *****Copyright &copy; Amazon Web Services, Inc. and/or its affiliates. All rights reserved.*****

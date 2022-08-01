@@ -1,6 +1,6 @@
 # Migrating to AWS CDK v2<a name="migrating-v2"></a>
 
-Version 2 of the AWS Cloud Development Kit \(CDK\) is designed to make writing infrastructure as code in your preferred programming language even easier\.
+Version 2 of the AWS Cloud Development Kit \(AWS CDK\) is designed to make writing infrastructure as code in your preferred programming language even easier\.
 
 The main changes from AWS CDK v1 to CDK v2 are as follows\.
 + AWS CDK v2 consolidates the stable parts of the AWS Construct Library, including the core library, into a single package, `aws-cdk-lib`\. Developers no longer need to install additional packages for the individual AWS services they use\. This single\-package approach also eliminates the need to synchronize the versions of the various CDK library packages\.
