@@ -241,7 +241,7 @@ In addition to this guide, the following other resources are available to AWS CD
   + [License](https://github.com/awslabs/aws-cdk/blob/master/LICENSE)
   + [Releases](https://github.com/awslabs/aws-cdk/releases)
     + [AWS CDK OpenPGP key](pgp-keys.md#cdk_pgp_key)
-    + [JSII OpenPGP key](pgp-keys.md#jsii_pgp_key)
+    + [jsii OpenPGP key](pgp-keys.md#jsii_pgp_key)
 + [AWS CDK Sample for Cloud9](https://docs.aws.amazon.com/cloud9/latest/user-guide/sample-cdk.html)
 + [AWS CloudFormation Concepts](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-whatis-concepts.html)
 + [AWS Glossary](https://docs.aws.amazon.com/general/latest/gr/glos-chap.html)
