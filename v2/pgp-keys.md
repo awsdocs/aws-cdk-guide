@@ -104,7 +104,7 @@ QWnL/+shuRtMH2geTjkev198Jgb5HyXFm4SyYtZferQROyliEhik
 These keys may be used to validate releases of the AWS CDK and jsii before 2022\-07\-05\.
 
 **Important**  
-New keys are created before the previous one has expired\. As a result, at any given moment in time, more than one key may be valid\. Keys are used to sign artifacts starting the day they are created, so use the more recently\-issued key where keys' validity overlaps\.
+New keys are created before the previous ones expire\. As a result, at any given moment in time, more than one key may be valid\. Keys are used to sign artifacts starting the day they are created, so use the more recently\-issued key where keys' validity overlaps\.
 
 ### AWS CDK OpenPGP key \(2022\-04\-07\)<a name="cdk_pgp_key-2022-04-07-"></a>
 
