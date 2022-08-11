@@ -73,5 +73,5 @@ Amazon's trademarks and trade dress may not be used in
    + [Infrastructure security for the AWS Cloud Development Kit (AWS CDK)](infrastructure-security.md)
 + [Troubleshooting common AWS CDK issues](troubleshooting.md)
 + [Videos](videos.md)
-+ [OpenPGP keys for the AWS CDK and JSII](pgp-keys.md)
++ [OpenPGP keys for the AWS CDK and jsii](pgp-keys.md)
 + [AWS CDK Developer Guide history](doc-history.md)
