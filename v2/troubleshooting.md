@@ -198,7 +198,7 @@ module.exports = { CdkTestStack }
 
 ```
 import aws_cdk as cdk
-from constructs import Constroct
+from constructs import Construct
 import aws_cdk.aws_s3 as s3
 
 class CdkTestStack(cdk.stack):

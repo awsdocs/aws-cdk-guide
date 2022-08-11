@@ -118,8 +118,8 @@ class MimeBucket : Bucket {
      }
 }
 
-// instantiate our MyBucket class 
-var bucket = new MyBucket(this, "MyBucket", new MimeBucketProps {
+// instantiate our MimeBucket class 
+var bucket = new MimeBucket(this, "MyBucket", new MimeBucketProps {
     Versioned = true,
     MimeType = "image/jpeg"
 });
