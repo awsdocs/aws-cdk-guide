@@ -134,11 +134,11 @@ A future release of the AWS CDK could coincidentally add a new property with a n
 In some APIs, the AWS CDK uses JavaScript arrays or untyped objects as input to a method\. \(See, for example, AWS CodeBuild's [https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_codebuild.BuildSpec.html](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_codebuild.BuildSpec.html) method\.\) In C\#, these objects are represented as `System.Collections.Generic.Dictionary<String, Object>`\. In cases where the values are all strings, you can use `Dictionary<String, String>`\. JavaScript arrays are represented as `object[]` or `string[]` array types in C\#\.
 
 **Tip**  
-You might define short aliases to make it easier to work with these sepecific dictionary types\.  
+You might define short aliases to make it easier to work with these specific dictionary types\.  
 
 ```
-using StringDict = System.Collections.Dictionary<String, String>;
-using ObjectDict = System.Collections.Dictionary<String, Object>;
+using StringDict = System.Collections.Generic.Dictionary<string, string>;
+using ObjectDict = System.Collections.Generic.Dictionary<string, object>;
 ```
 
 ### Missing values<a name="csharp-missing-values"></a>
