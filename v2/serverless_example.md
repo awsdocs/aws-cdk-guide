@@ -655,7 +655,7 @@ exports.main = async function(event, context) {
       return {
         statusCode: 200,
         headers: {},
-        body: JSON.stringify(event.widgets)
+        body: data
       };
     }
 
