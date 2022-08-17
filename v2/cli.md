@@ -408,7 +408,7 @@ One of AWS CloudFormation's marquee features is its ability to roll back changes
 
 Rollback makes sure your resources are in a consistent state at all times, which is vital for production stacks\. However, while you're still developing your infrastructure, some failures are inevitable, and rolling back failed deployments just slows you down\.
 
-For this reason, the CDK Toolkit; allows you to disable rollback by adding `--no-rollback` to your `cdk deploy` command\. With this flag, failed deployments are not rolled back\. Instead, resources deployed before the failed resource remain in place, and the next deployment starts with the failed resource\. You'll spend a lot less time waiting for deployments and a lot more time developing your infrastructure\.
+For this reason, the CDK Toolkit allows you to disable rollback by adding `--no-rollback` to your `cdk deploy` command\. With this flag, failed deployments are not rolled back\. Instead, resources deployed before the failed resource remain in place, and the next deployment starts with the failed resource\. You'll spend a lot less time waiting for deployments and a lot more time developing your infrastructure\.
 
 ### Hot swapping<a name="cli-deploy-hotswap"></a>
 

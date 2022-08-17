@@ -92,7 +92,7 @@ CfnResource.Builder.create(this, "MyUltimateBucket")
 	.type("MY::S5::UltimateBucket::MODULE")
 	.properties(java.util.Map.of(    // Map.of requires Java 9+
 	    "BucketName", "UltimateBucket"))
-	.build();;
+	.build();
 ```
 
 ------

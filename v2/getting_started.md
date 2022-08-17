@@ -250,7 +250,7 @@ cdk --version
 ```
 
 **Note**  
-CDK Toolkit; v2 works with your existing CDK v1 projects\. However, it can't initialize new CDK; v1 projects\. See [New prerequisites](migrating-v2.md#migrating-v2-prerequisites) if you need to be able to do that\.
+CDK Toolkit v2 works with your existing CDK v1 projects\. However, it can't initialize new CDK v1 projects\. See [New prerequisites](migrating-v2.md#migrating-v2-prerequisites) if you need to be able to do that\.
 
 ## Bootstrapping<a name="getting_started_bootstrap"></a>
 
