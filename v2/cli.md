@@ -24,7 +24,7 @@ All CDK Toolkit commands start with `cdk`, which is followed by a subcommand \(`
 | `cdk bootstrap` | Deploys the CDK Toolkit staging stack; see [Bootstrapping](bootstrapping.md) | 
 | `cdk deploy` | Deploys the specified stack\(s\) | 
 | `cdk destroy` | Destroys the specified stack\(s\) | 
-| `cdk diff` | Compares the specified stack with the deployed stack or a local CloudFormation template | 
+| `cdk diff` | Compares the specified stack and its dependencies with the deployed stack(s) or a local CloudFormation template | 
 | `cdk metadata` | Displays metadata about the specified stack | 
 | `cdk init` | Creates a new CDK project in the current directory from a specified template | 
 | `cdk context` | Manages cached context values | 
@@ -504,7 +504,7 @@ The setting can also be configured in the `cdk.json` file\.
 
 ## Comparing stacks<a name="cli-diff"></a>
 
-The `cdk diff` command compares the current version of a stack defined in your app with the already\-deployed version, or with a saved AWS CloudFormation template, and displays a list of changes \.
+The `cdk diff` command compares the current version of a stack defined in your app (and its dependencies) with the already\-deployed version(s), or with a saved AWS CloudFormation template, and displays a list of changes\.
 
 ```
 Stack HelloCdkStack
@@ -620,9 +620,10 @@ Commands:
 
   cdk destroy [STACKS..]          Destroy the stack(s) named STACKS
 
-  cdk diff [STACKS..]             Compares the specified stack with the deployed
-                                  stack or a local template file, and returns
-                                  with status 1 if any difference is found
+  cdk diff [STACKS..]             Compares the specified stack and its
+                                  dependencies with the deployed stack(s) or a
+                                  local template file, and returns with status 1
+                                  if any difference is found
 
   cdk metadata [STACK]            Returns all metadata associated with this
                                   stack
@@ -946,7 +947,7 @@ and returns with status 1 if any difference is found
 
 Options:
 
-  -e, --exclusively        Only diff requested stacks, don't include
+  -e, --exclusively        Only diff requested stack(s), don't include
                            dependencies                                [boolean]
 
       --context-lines      Number of context lines to include in arbitrary JSON
