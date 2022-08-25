@@ -1,9 +1,23 @@
-# Escape hatches<a name="cfn_layer"></a>
+# Abstractions and escape hatches<a name="cfn_layer"></a>
 
-It's possible that neither the high\-level constructs nor the low\-level CFN Resource constructs have a specific feature you are looking for\. There are three possible reasons for this lack of functionality:
-+ The AWS service feature is available through AWS CloudFormation, but there are no Construct classes for the service\.
-+ The AWS service feature is available through AWS CloudFormation, and there are Construct classes for the service, but the Construct classes don't yet expose the feature\.
-+ The feature is not yet available through AWS CloudFormation\.
+The AWS CDK lets you describe AWS resources using constructs that operate at varying levels of abstraction\.
++ *Layer 1 \(L1\)* constructs directly represent AWS CloudFormation resources as defined by the CloudFormation specification\. These constructs can be identified via a name beginning with "Cfn," so they are also referred to as "Cfn constructs\." If a resource exists in AWS CloudFormation, it exists in the CDK as a L1 construct\.
++ *Layer 2 \(L2\)* or "curated" constructs are thoughtfully developed to provide a more ergonomic developer experience compared to the L1 construct they're built upon\. In a typical CDK app, L2 constructs are usually the most widely used type\. Often, L2 constructs define additional supporting resources, such as IAM policies, Amazon SNS topics, or AWS KMS keys\. L1 constructs sensible defaults, best\-practice security policies, and\.
++ *Layer 3 \(L3\)* constructs or *patterns* define entire collections of AWS resources for specific use cases, making it easy to stand up a build pipeline, an Amazon ECS application, or one of many other types of common deployment scenarios\. Because they can constitute complete system designs, or substantial parts of a larger system, L3 constructs are often "opinionated"—they are built around a very particular approach toward solving the problem at hand, and things work out best when you follow their lead\.
+
+**Tip**  
+For more details on AWS CDK constructs, see [Constructs](constructs.md)\.
+
+At the highest level, your AWS CDK application and the stacks in it are themselves abstractions of your entire cloud infrastructure, or significant chunks of it, and may be parameterized to deploy them in different environments or for different needs\.
+
+Abstractions are powerful tools for designing and implementing cloud applications\. The AWS CDK gives you the power not only to build with its abstractions, but also to create new abstractions\. Using the existing open\-source L2 and L3 constructs as guidance, you can build your own L2 and L3 constructs to reflect your own organization's best practices and opinions\.
+
+No abstraction is perfect, and even good abstractions cannot cover every possible use case\. While the value of the AWS CDK's model is plain, sometimes you'll come upon a construct that's perfect for your needs—if only you could make a small \(or large\) tweak\. For this reason, the AWS CDK provides ways to "break out" of the construct model, moving to a lower level of abstraction or to a different model entirely\. As their name implies, the CDK's *escape hatches* let you "escape" the AWS CDK paradigm and extend it in ways the AWS CDK designers never anticipated\. Then you can wrap all that in a new construct to hide the underlying complexity and provide a clean API for developers\.
+
+Some situations in which you'll reach for escape hatches include:
++ An AWS service feature is available through AWS CloudFormation, but there are no Construct constructs for it\.
++ An AWS service feature is available through AWS CloudFormation, and there are Construct constructs for the service, but these don't yet expose the feature\. Because Construct constructs are developed "by hand," they may sometimes lag behind the CFN Resource constructs\.
++ The feature is not yet available through AWS CloudFormation at all\.
 
 To determine whether a feature is available through AWS CloudFormation, see [AWS Resource and Property Types Reference](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-template-resource-type-ref.html)\.
 
@@ -434,5 +448,5 @@ Building a custom resource involves writing a Lambda function that responds to a
 
 The subject is too broad to completely cover here, but the following links should get you started:
 + [Custom Resources](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/template-custom-resources.html)
-+ [Custom\-Resource Example](https://github.com/aws-samples/aws-cdk-examples/tree/CDKv1/typescript/custom-resource/)
++ [Custom\-Resource Example](https://github.com/aws-samples/aws-cdk-examples/tree/master/typescript/custom-resource/)
 + For a more fully fledged example, see the [DnsValidatedCertificate](https://github.com/awslabs/aws-cdk/blob/master/packages/@aws-cdk/aws-certificatemanager/lib/dns-validated-certificate.ts) class in the CDK standard library\. This is implemented as a custom resource\.

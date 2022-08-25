@@ -56,7 +56,7 @@ dotnet add package Amazon.CDK.CloudFormation.Include
 
 ------
 
-## Importing an AWS CloudFormation template<a name="w315aac29b9c11"></a>
+## Importing an AWS CloudFormation template<a name="w315aac31b9c11"></a>
 
  Here is a simple AWS CloudFormation template we'll use for the examples in this topic\. Save it as `my-template.json`\. After you've tried these examples with the provided template, you might explore further using a template for an actual stack you've already deployed, which you can obtain from the AWS CloudFormation console\.
 
