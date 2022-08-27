@@ -370,7 +370,7 @@ Update `hello_cdk/hello_cdk_stack.py`\.
 ```
 bucket = s3.Bucket(self, "MyFirstBucket",
     versioned=True,
-    removal_policy=cdk.RemovalPolicy.DESTROY,
+    removal_policy=s3.RemovalPolicy.DESTROY,
     auto_delete_objects=True)
 ```
 
