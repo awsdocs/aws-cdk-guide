@@ -12,6 +12,9 @@ To work with the AWS CDK, you must have an AWS account and credentials and have 
 
 The Go bindings for the AWS CDK use the standard [Go toolchain](https://golang.org/dl/), v1\.16 or later\. You can use the editor of your choice\.
 
+**Note**  
+Third\-party Language Deprecation: language version is only supported until its EOL \(End Of Life\) shared by the vendor or community and is subject to change with prior notice\.
+
 ## Creating a project<a name="go-newproject"></a>
 
 You create a new AWS CDK project by invoking `cdk init` in an empty directory\.

@@ -235,6 +235,9 @@ Visual Studio 2019 \(any edition\) or Visual Studio Code recommended\.
 
 ------
 
+**Note**  
+Third\-party Language Deprecation: language version is only supported until its EOL \(End Of Life\) shared by the vendor or community and is subject to change with prior notice\.
+
 ## Install the AWS CDK<a name="getting_started_install"></a>
 
 Install the AWS CDK Toolkit globally using the following Node Package Manager command\.

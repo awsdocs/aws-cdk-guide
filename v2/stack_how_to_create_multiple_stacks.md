@@ -121,7 +121,7 @@ Python does not have an interface feature, so we'll extend our stack to accept t
 
 ```
 import aws_cdk as cdk
-import Construct from constructs
+from constructs import Construct
 
 class MultistackStack(cdk.Stack):
 

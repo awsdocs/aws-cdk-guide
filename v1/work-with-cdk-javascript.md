@@ -10,6 +10,9 @@ To work with the AWS CDK, you must have an AWS account and credentials and have 
 
 JavaScript AWS CDK applications require no additional prerequisites beyond these\.
 
+**Note**  
+Third\-party Language Deprecation: language version is only supported until its EOL \(End Of Life\) shared by the vendor or community and is subject to change with prior notice\.
+
 ## Creating a project<a name="javascript-newproject"></a>
 
 You create a new AWS CDK project by invoking `cdk init` in an empty directory\.

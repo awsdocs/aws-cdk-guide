@@ -43,6 +43,9 @@ The specific language you work in also has its own prerequisites, described in t
 + [Working with the AWS CDK in C\#](work-with-cdk-csharp.md)
 + [Working with the AWS CDK in Go](work-with-cdk-go.md)
 
+**Note**  
+Third\-party Language Deprecation: language version is only supported until its EOL \(End Of Life\) shared by the vendor or community and is subject to change with prior notice\.
+
 ## AWS Construct Library<a name="work-with-library"></a>
 
 The AWS CDK includes the AWS Construct Library, a collection of constructs organized by AWS service\. The library's constructs are mainly in a single module, colloquially called `aws-cdk-lib` because that's its name in TypeScript\. The actual package name of the main CDK package varies by language\.

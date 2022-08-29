@@ -19,6 +19,9 @@ If you get a permission error, and have administrator access on your system, try
 
 Keep TypeScript up to date with a regular `npm update -g typescript`\.
 
+**Note**  
+Third\-party Language Deprecation: language version is only supported until its EOL \(End Of Life\) shared by the vendor or community and is subject to change with prior notice\.
+
 ## Creating a project<a name="typescript-newproject"></a>
 
 You create a new AWS CDK project by invoking `cdk init` in an empty directory\.

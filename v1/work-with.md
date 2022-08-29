@@ -43,6 +43,9 @@ The specific language you work in also has its own prerequisites, described in t
 + [Working with the AWS CDK in C\#](work-with-cdk-csharp.md)
 + [Working with the AWS CDK in Go](work-with-cdk-go.md)
 
+**Note**  
+Third\-party Language Deprecation: language version is only supported until its EOL \(End Of Life\) shared by the vendor or community and is subject to change with prior notice\.
+
 ## AWS Construct Library<a name="work-with-library"></a>
 
 The AWS CDK includes the AWS Construct Library, a collection of construct modules organized by AWS service\. The [AWS CDK API Reference](https://docs.aws.amazon.com/cdk/api/v1/docs/aws-construct-library.html) provides detailed documentation of the constructs \(and other components\) in the library\. A version of the API Reference is provided for each supported programming language\.

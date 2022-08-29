@@ -6,6 +6,9 @@ CDK v1 entered maintenance on June 1, 2022\. During the maintenance phase, CDK v
 
 For information on migrating your apps to AWS CDK v2, see [Migrating to AWS CDK v2](../../v2/guide/migrating-v2.html) in the AWS CDK v2 Developer Guide\. 
 
+**Tip**  
+To identify stacks deployed with AWS CDK v1, use the [awscdk\-v1\-stack\-finder](https://www.npmjs.com/package/awscdk-v1-stack-finder) utility\.
+
 ## CDK Toolkit v2 compatibility<a name="work-with-cdk-v2-cli"></a>
 
 CDK v2 requires v2 or later of the CDK Toolkit\. This version is backward\-compatible with CDK v1 apps, so you can use a single globally\-installed version of CDK Toolkit with all your AWS CDK projects, whether they use v1 or v2\. An exception is that CDK Toolkit v2 creates CDK v2 projects\.
