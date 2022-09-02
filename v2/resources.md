@@ -173,7 +173,11 @@ var service = new Ec2Service(this, "Service", new Ec2ServiceProps { Cluster = cl
 
 ## Referencing resources in a different stack<a name="resource_stack"></a>
 
-You can directly reference resources in a different stack, as long as they are defined in the same app and are in the same AWS account and region\. The following example defines the stack `stack1`, which defines an Amazon S3 bucket\. Then it defines a second stack, `stack2`, which takes the bucket from `stack1` as a constructor property\.
+You can refer to resources in a different stack as long as they are defined in the same app and are in the same AWS account and region\. The pattern generally used is:
++ Store a reference to the construct as an attribute of the stack that produces the resource\. \(To get a reference to the current construct's stack, use `Stack.of(this)`\.\)
++ Pass this reference to the constructor of the stack that consumes the resource as a parameter or a property\. The consuming stack then passes it as a property to any construct that needs it\.
+
+The following example defines a stack `stack1`\. This stack defines an Amazon S3 bucket and stores a reference to the bucket construct as an attribute of the stack\. Then the app defines a second stack, `stack2`, which accepts a bucket at instantiation\. `stack2` might, for example, define an AWS Glue Table that uses the bucket for data storage\.
 
 ------
 #### [ TypeScript ]
@@ -236,7 +240,7 @@ StackThatProvidesABucket stack1 = new StackThatProvidesABucket(app, "Stack1",
 
 // stack2 will take an argument "bucket"
 StackThatExpectsABucket stack2 = new StackThatExpectsABucket(app, "Stack,",
-        StackProps.builder().env(prod).build(), stack1.getBucket());
+        StackProps.builder().env(prod).build(), stack1.bucket);
 ```
 
 ------
@@ -252,7 +256,7 @@ var prod = makeEnv(account: "123456789012", region: "us-east-1");
 
 var stack1 = new StackThatProvidesABucket(app, "Stack1", new StackProps { Env = prod });
 
-// stack2 will take an argument "bucket"
+// stack2 will take a property "bucket"
 var stack2 = new StackThatExpectsABucket(app, "Stack2", new StackProps { Env = prod,
     bucket = stack1.Bucket});
 ```
@@ -679,7 +683,7 @@ new Function(this, "MyLambda", new FunctionProps
 
 ------
 
-## Permission grants<a name="resources_grants"></a>
+## Granting permissions<a name="resources_grants"></a>
 
 AWS constructs make least\-privilege permissions easy to achieve by offering simple, intent\-based APIs to express permission requirements\. Many AWS constructs offer grant methods that enable you to easily grant an entity, such as an IAM role or a user, permission to work with the resource without having to manually craft one or more IAM permission statements\.
 
