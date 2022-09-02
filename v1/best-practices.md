@@ -19,7 +19,7 @@ In addition to the guidance in this document, you should also consider [best pra
 
 ## Organization best practices<a name="best-practices-organization"></a>
 
-In the beginning stages of AWS CDK adoption, it's important to consider how to set up your organization for success\. It's a best practice to have a team of experts responsible for training and guiding the rest of the company as they adopt the CDK The size of this team may vary, from one or two people at a small company to a full\-fledged Cloud Center of Excellence \(CCoE\) at a larger company\. This team is responsible for setting standards and policies for how cloud infrastructure will be done at your company, as well as for training and mentoring developers\.
+In the beginning stages of AWS CDK adoption, it's important to consider how to set up your organization for success\. It's a best practice to have a team of experts responsible for training and guiding the rest of the company as they adopt the CDK\. The size of this team may vary, from one or two people at a small company to a full\-fledged Cloud Center of Excellence \(CCoE\) at a larger company\. This team is responsible for setting standards and policies for how cloud infrastructure will be done at your company, as well as for training and mentoring developers\.
 
 The CCoE may provide guidance on what programming languages should be used for cloud infrastructure\. The details will vary from one organization to the next, but a good policy helps make sure developers can easily understand and maintain all cloud infrastructure throughout the company\.
 

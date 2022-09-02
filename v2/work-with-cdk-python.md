@@ -26,6 +26,10 @@ If you encounter a permission error, run the above commands with the `--user` fl
 **Note**  
 It is common for Linux distros to use the executable name `python3` for Python 3\.x, and have `python` refer to a Python 2\.x installation\. Some distros have an optional package you can install that makes the `python` command refer to Python 3\. Failing that, you can adjust the command used to run your application by editing `cdk.json` in the project's main directory\.
 
+**Note**  
+On Windows, you may want to invoke Python \(and pip\) using the py executable, the [>Python launcher for Windows](https://docs.python.org/3/using/windows.html#launcher)\. Among other things, the launcher allows you to easily specify which installed version of Python you want to use\.  
+If typing python at the command line results in a message about installing Python from the Windows Store, even after installing a Windows version of Python, open Windows' Manage App Execution Aliases settings panel and turn off the two App Installer entries for Python\.
+
 ## Creating a project<a name="python-newproject"></a>
 
 You create a new AWS CDK project by invoking `cdk init` in an empty directory\.
