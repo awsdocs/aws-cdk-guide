@@ -4,8 +4,7 @@ The AWS CDK uses *feature flags* to enable potentially breaking behaviors in a r
 
 Feature flags are disabled by default, so existing projects that do not specify the flag will continue to work as expected with later AWS CDK releases\. New projects created using cdk init include flags enabling all features available in the release that created the project\. Edit `cdk.json` to disable any flags for which you prefer the old behavior, or to add flags to enable new behaviors after upgrading the AWS CDK\.
 
-**Note**  
-Currently, CDK v2 does not have any feature flags to enable new behaviors\.
+See the `CHANGELOG` for a given release for a description of any new feature flags added in that release\. The AWS CDK source file [https://github.com/aws/aws-cdk/blob/main/packages/@aws-cdk/cx-api/lib/features.ts](https://github.com/aws/aws-cdk/blob/main/packages/@aws-cdk/cx-api/lib/features.ts) provides a complete list of all current feature flags\. 
 
 In CDK v2, feature flags are also used to revert certain behaviors to their v1 defaults\. The flags listed below, set to `false`, revert to specific v1 AWS CDK v1 behaviors\. Use the `cdk diff` command to inspect the changes to your synthesized template to see if any of these flags are needed\.
 
@@ -33,3 +32,4 @@ The syntax for reverting these flags in `cdk.json` is shown here\.
   }
 }
 ```
+
