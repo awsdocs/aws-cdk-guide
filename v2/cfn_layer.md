@@ -374,7 +374,7 @@ var v2 = Bucket.FromCfnBucket(b1);
 
 L2 constructs created from L1 constructs are proxy objects that refer to the L1 resource, similar to those created from resource names, ARNs, or lookups\. Modifications to these constructs do not affect the final synthesized AWS CloudFormation template \(since you have the L1 resource, however, you can modify that instead\)\. For more information on proxy objects, see [Referencing resources in your AWS account](resources.md#resources_external)\.
 
-To avoid confusion, do not create multiple L2 constructs that refer to the same L1 construct\. For example, if you extract the `CfnBucket` from a `Bucket` using the technique in the [previous section](#cfn_layer_resource), you shouldn't create a second `Bucket` instance by calling `Bucket.fromCfnBucket()` with that `CfnBucket`\. It actually works as you'd expect \(only one `AWS::S3::Bucket` is synthesized\) but it makes your code more difficult to maintain\.\.
+To avoid confusion, do not create multiple L2 constructs that refer to the same L1 construct\. For example, if you extract the `CfnBucket` from a `Bucket` using the technique in the [previous section](#cfn_layer_resource), you shouldn't create a second `Bucket` instance by calling `Bucket.fromCfnBucket()` with that `CfnBucket`\. It actually works as you'd expect \(only one `AWS::S3::Bucket` is synthesized\) but it makes your code more difficult to maintain\.
 
 ## Raw overrides<a name="cfn_layer_raw"></a>
 
