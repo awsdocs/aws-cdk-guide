@@ -15,7 +15,7 @@ The file `app.py` in your project's main directory\.
 The file named `ProjectNameApp.java`, for example `HelloCdkApp.java`, nested deep under the `src/main` directory\.
 The file named `Program.cs` under `src\ProjectName`, for example `src\HelloCdk\Program.cs`\.
 
-In an environment\-agnostic stack, any constructs that use availability zones will see two of them, allowing the stack to be deployed to any region\.
+In an environment\-agnostic stack, any constructs that use availability zones will see two AZs, allowing the stack to be deployed to any region\.
 
 When using cdk deploy to deploy environment\-agnostic stacks, the AWS CDK CLI uses the specified AWS CLI profile \(or the default profile, if none is specified\) to determine where to deploy\. The AWS CDK CLI follows a protocol similar to the AWS CLI to determine which AWS credentials to use when performing operations in your AWS account\. See [AWS CDK Toolkit \(`cdk` command\)](cli.md) for details\.
 
