@@ -180,7 +180,7 @@ Replace the comment at the end of the constructor with the following code\.
       desiredCount: 6, // Default is 1
       taskImageOptions: { image: ecs.ContainerImage.fromRegistry("amazon/amazon-ecs-sample") },
       memoryLimitMiB: 2048, // Default is 512
-      publicLoadBalancer: true // Default is false
+      publicLoadBalancer: true // Default is true
     });
 ```
 
@@ -203,7 +203,7 @@ Replace the comment at the end of the constructor with the following code\.
       desiredCount: 6, // Default is 1
       taskImageOptions: { image: ecs.ContainerImage.fromRegistry("amazon/amazon-ecs-sample") },
       memoryLimitMiB: 2048, // Default is 512
-      publicLoadBalancer: true // Default is false
+      publicLoadBalancer: true // Default is true
     });
 ```
 
@@ -222,7 +222,7 @@ Replace the comment at the end of the constructor with the following code\.
             task_image_options=ecs_patterns.ApplicationLoadBalancedTaskImageOptions(
                 image=ecs.ContainerImage.from_registry("amazon/amazon-ecs-sample")),
             memory_limit_mib=2048,      # Default is 512
-            public_load_balancer=True)  # Default is False
+            public_load_balancer=True)  # Default is True
 ```
 
 ------
@@ -246,7 +246,7 @@ Replace the comment at the end of the constructor with the following code\.
                                      .image(ContainerImage.fromRegistry("amazon/amazon-ecs-sample"))
                                      .build())
                      .memoryLimitMiB(2048)       // Default is 512
-                     .publicLoadBalancer(true)   // Default is false
+                     .publicLoadBalancer(true)   // Default is true
                      .build();
 ```
 
@@ -275,7 +275,7 @@ Replace the comment at the end of the constructor with the following code\.
                         Image = ContainerImage.FromRegistry("amazon/amazon-ecs-sample")
                     },
                     MemoryLimitMiB = 2048,      // Default is 256
-                    PublicLoadBalancer = true    // Default is false
+                    PublicLoadBalancer = true   // Default is true
                 }
             );
 ```

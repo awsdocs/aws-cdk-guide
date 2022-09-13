@@ -228,6 +228,26 @@ Replace the comment at the end of the constructor with the following code\.
 #### [ TypeScript ]
 
 ```
+// Copyright 2010-2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+//
+// This file is licensed under the Apache License, Version 2.0 (the "License").
+// You may not use this file except in compliance with the License. A copy of the
+// License is located at
+//
+// http://aws.amazon.com/apache2.0/
+//
+// This file is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS
+// OF ANY KIND, either express or implied. See the License for the specific
+// language governing permissions and limitations under the License.
+import * as core from "@aws-cdk/core";
+import * as ec2 from "@aws-cdk/aws-ec2";
+import * as ecs from "@aws-cdk/aws-ecs";
+import * as ecs_patterns from "@aws-cdk/aws-ecs-patterns";
+
+export class MyEcsConstructStack extends core.Stack {
+  constructor(scope: core.App, id: string, props?: core.StackProps) {
+    super(scope, id, props);
+
     const vpc = new ec2.Vpc(this, "MyVpc", {
       maxAzs: 3 // Default is all AZs in region
     });
@@ -243,14 +263,36 @@ Replace the comment at the end of the constructor with the following code\.
       desiredCount: 6, // Default is 1
       taskImageOptions: { image: ecs.ContainerImage.fromRegistry("amazon/amazon-ecs-sample") },
       memoryLimitMiB: 2048, // Default is 512
-      publicLoadBalancer: true // Default is false
+      publicLoadBalancer: true // Default is true
     });
+  }
+}
 ```
 
 ------
 #### [ JavaScript ]
 
 ```
+// Copyright 2010-2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+//
+// This file is licensed under the Apache License, Version 2.0 (the "License").
+// You may not use this file except in compliance with the License. A copy of the
+// License is located at
+//
+// http://aws.amazon.com/apache2.0/
+//
+// This file is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS
+// OF ANY KIND, either express or implied. See the License for the specific
+// language governing permissions and limitations under the License.
+import * as core from "@aws-cdk/core";
+import * as ec2 from "@aws-cdk/aws-ec2";
+import * as ecs from "@aws-cdk/aws-ecs";
+import * as ecs_patterns from "@aws-cdk/aws-ecs-patterns";
+
+export class MyEcsConstructStack extends core.Stack {
+  constructor(scope: core.App, id: string, props?: core.StackProps) {
+    super(scope, id, props);
+
     const vpc = new ec2.Vpc(this, "MyVpc", {
       maxAzs: 3 // Default is all AZs in region
     });
@@ -266,8 +308,10 @@ Replace the comment at the end of the constructor with the following code\.
       desiredCount: 6, // Default is 1
       taskImageOptions: { image: ecs.ContainerImage.fromRegistry("amazon/amazon-ecs-sample") },
       memoryLimitMiB: 2048, // Default is 512
-      publicLoadBalancer: true // Default is false
+      publicLoadBalancer: true // Default is true
     });
+  }
+}
 ```
 
 ------
@@ -285,7 +329,7 @@ Replace the comment at the end of the constructor with the following code\.
             task_image_options=ecs_patterns.ApplicationLoadBalancedTaskImageOptions(
                 image=ecs.ContainerImage.from_registry("amazon/amazon-ecs-sample")),
             memory_limit_mib=2048,      # Default is 512
-            public_load_balancer=True)  # Default is False
+            public_load_balancer=True)  # Default is True
 ```
 
 ------
@@ -309,7 +353,7 @@ Replace the comment at the end of the constructor with the following code\.
                                      .image(ContainerImage.fromRegistry("amazon/amazon-ecs-sample"))
                                      .build())
                      .memoryLimitMiB(2048)       // Default is 512
-                     .publicLoadBalancer(true)   // Default is false
+                     .publicLoadBalancer(true)   // Default is true
                      .build();
 ```
 
@@ -338,7 +382,7 @@ Replace the comment at the end of the constructor with the following code\.
                         Image = ContainerImage.FromRegistry("amazon/amazon-ecs-sample")
                     },
                     MemoryLimitMiB = 2048,      // Default is 256
-                    PublicLoadBalancer = true    // Default is false
+                    PublicLoadBalancer = true    // Default is true
                 }
             );
 ```
