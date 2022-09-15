@@ -413,3 +413,128 @@ Tags.Of(theBestStack).Add("StackType", "TheBest", new TagProps {
 ```
 
 ------
+
+## Tagging single constructs<a name="tagging_single"></a>
+
+`Tags.of(scope).add(key, value)` is the standard way to add tags to constructs in the AWS CDK\. Its tree\-walking behavior, which recursively tags all taggable resources under the given scope, is almost always what you want\. Sometimes, however, you may want to tag only some constructs, even just one\.
+
+One such case involves applying tags whose value is derived from some property of the construct being tagged\. The standard tagging approach recursively applies the same key and value to all matching resources in the scope, but here, the value could be different for each tagged construct\.
+
+Tags are implemented using [aspects](aspects.md), and the CDK calls the tag's `visit()` method for each construct under the scope you specified using `Tags.of(scope)`\. We can call `visit()` directly to apply the tag to a single construct\.
+
+------
+#### [ TypeScript ]
+
+```
+new cdk.Tag(key, value).visit(scope);
+```
+
+------
+#### [ JavaScript ]
+
+```
+new cdk.Tag(key, value).visit(scope);
+```
+
+------
+#### [ Python ]
+
+```
+cdk.Tag(key, value).visit(scope)
+```
+
+------
+#### [ Java ]
+
+```
+Tag.Builder.create(key, value).build().visit(scope);
+```
+
+------
+#### [ C\# ]
+
+```
+new Tag(key, value).Visit(scope);
+```
+
+------
+
+To tag all constructs under a scope but allow the values of the tags to be derived from properties of each construct, write an aspect, apply the tag in the aspect's `visit()` method as shown above, and add the aspect to the desired scope using `Aspects.of(scope).add(aspect)`\.
+
+The example below applies a tag to each resource in a stack containing the resource's path\.
+
+------
+#### [ TypeScript ]
+
+```
+class PathTagger implements cdk.IAspect {
+  visit(node: IConstruct) {
+    new cdk.Tag("aws-cdk-path", node.node.path).visit(scope);
+  }
+}
+ 
+stack = new MyStack(app);
+cdk.Aspects.of(stack).add(new PathTagger())
+```
+
+------
+#### [ JavaScript ]
+
+```
+class PathTagger {
+  visit(node) {
+    new cdk.Tag("aws-cdk-path", node.node.path).visit(scope);
+  }
+}
+
+stack = new MyStack(app);
+cdk.Aspects.of(stack).add(new PathTagger())
+```
+
+------
+#### [ Python ]
+
+```
+@jsii.implements(cdk.IAspect)
+class PathTagger:
+    def visit(self, node: IConstruct):
+        cdk.Tag("aws-cdk-path", node.node.path).visit(scope)
+
+stack = MyStack(app) 
+cdk.Aspects.of(stack).add(PathTagger())
+```
+
+------
+#### [ Java ]
+
+```
+final class PathTagger implements IAspect {
+	public void visit(IConstruct node) {
+		Tag.Builder.create("aws-cdk-path", node.getNode().getPath()).build().visit(node);
+	}
+}
+
+stack stack = new MyStack(app);
+Aspects.of(stack).add(new PathTagger());
+```
+
+------
+#### [ C\# ]
+
+```
+public class PathTagger : IAspect
+{
+    public void Visit(IConstruct node)
+    {
+        new Tag("aws-cdk-path", node.Node.Path).Visit(node);
+    }
+}
+
+var stack = new MyStack(app);
+Aspects.Of(stack).Add(new PathTagger);
+```
+
+------
+
+**Tip**  
+The logic of what constructs should be tagged, including priorities, resource types, and so on, are built into the `Tag` class, so you don't need to test whether a construct is taggable before applying a tag\.
