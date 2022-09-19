@@ -576,3 +576,4 @@ The bootstrap template is versioned and evolves over time with the AWS CDK itsel
 | 11 | 2\.18\.0 | Adds policy allowing Lambda to pull from Amazon ECR repos so it survives rebootstrapping\. | 
 | 12 | 2\.20\.0 | Adds support for experimental cdk import\. | 
 | 13 | 2\.25\.0 | Makes container images in bootstrap\-created Amazon ECR repositories immutable\. | 
+| 14 | 2\.34\.0 | Turns off Amazon ECR image scanning at the repository level by default to allow bootstrapping regions that do not support image scanning\. | 
