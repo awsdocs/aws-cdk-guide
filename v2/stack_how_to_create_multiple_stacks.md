@@ -420,6 +420,8 @@ new MultistackStack(app, "MyEastCdkStack", {
     env: {region: "us-east-1"},
     encryptBucket: true
 });
+          
+app.synth();
 ```
 
 ------
@@ -443,6 +445,8 @@ new MultistackStack(app, "MyEastCdkStack", {
     env: {region: "us-east-1"},
     encryptBucket: true
 });
+          
+app.synth();
 ```
 
 ------
@@ -465,6 +469,8 @@ MultistackStack(app, "MyWestCdkStack",
 MultistackStack(app, "MyEastCdkStack",
                 env=cdk.Environment(region="us-east-1"),
                 encrypt_bucket=True)
+            
+app.synth()
 ```
 
 ------
