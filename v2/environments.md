@@ -1,6 +1,6 @@
 # Environments<a name="environments"></a>
 
-Each `Stack` instance in your AWS CDK app is explicitly or implicitly associated with an environment \(`env`\)\. An environment is the target AWS account and region into which the stack is intended to be deployed\.
+Each `Stack` instance in your AWS CDK app is explicitly or implicitly associated with an environment \(`env`\)\. An environment is the target AWS account and region into which the stack is intended to be deployed\. The region is specified using a region code; see [Regional endpoints](https://docs.aws.amazon.com/general/latest/gr/rande.html#regional-endpoints) for a list\.
 
 **Note**  
 You must [bootstrap](bootstrapping.md) each environment you will deploy CDK stacks into\. Bootstrapping provisions certain AWS resources that are used during deployment\.
