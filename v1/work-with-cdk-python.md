@@ -40,7 +40,7 @@ cd my-project
 cdk init app --language python
 ```
 
-`cdk init` uses the name of the project folder to name various elements of the project, including classes, subfolders, and files\. 
+`cdk init` uses the name of the project folder to name various elements of the project, including classes, subfolders, and files\. Hyphens in the folder name are converted to underscores\. However, the name should otherwise follow the form of a Python identifier; for example, it should not start with a number or contain spaces\. 
 
 After initializing the project, activate the project's virtual environment\. This allows the project's dependencies to be installed locally in the project folder, instead of globally\.
 
