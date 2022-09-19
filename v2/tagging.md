@@ -3,7 +3,7 @@
 Tags are informational key\-value elements that you can add to constructs in your AWS CDK app\. A tag applied to a given construct also applies to all of its taggable children\. Tags are included in the AWS CloudFormation template synthesized from your app and are applied to the AWS resources it deploys\. You can use tags to identify and categorize resources to simplify management, in cost allocation, and for access control, as well as for any other purposes you devise\.
 
 **Tip**  
-For more information about how you can use tags with your AWS resources, see the white paper [Tagging Best Practices](https://docs.aws.amazon.com/whitepapers/latest/tagging-best-practices/tagging-best-practices.html)\.
+For more information about how you can use tags with your AWS resources, see the white paper [Tagging Best Practices](https://d1.awsstatic.com/whitepapers/aws-tagging-best-practices.pdf) \(PDF\)\.
 
 The [https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.Tags.html](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.Tags.html) class includes the static method `of()`, through which you can add tags to, or remove tags from, the specified construct\. 
 +  [https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.Tags.html#addkey-value-props](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.Tags.html#addkey-value-props) applies a new tag to the given construct and all of its children\. 
