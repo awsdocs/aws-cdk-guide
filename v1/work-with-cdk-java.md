@@ -118,10 +118,10 @@ To create maps with more than ten entries, use [https://docs.oracle.com/javase/9
 
 If you are using Java 8, you could provide your own methods similar to to these\.
 
-JavaScript arrays are represented as `List<Object>` or `List<String>` in Java\. The method `java.util.Arrays.asList` is convenient for defining short `ArrayList`s\.
+JavaScript arrays are represented as `List<Object>` or `List<String>` in Java\. The method `java.util.Arrays.asList` is convenient for defining short `List`s\.
 
 ```
-String[] cmds = Arrays.asList("cd lambda", "npm install", "npm install typescript")
+List<String> cmds = Arrays.asList("cd lambda", "npm install", "npm install typescript")
 ```
 
 ### Missing values<a name="java-missing-values"></a>
