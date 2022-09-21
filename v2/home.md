@@ -3,7 +3,7 @@
 Welcome to the *AWS Cloud Development Kit \(AWS CDK\) Developer Guide*\. This document provides information about the AWS CDK, a framework for defining cloud infrastructure in code and provisioning it through AWS CloudFormation\.
 
 **Note**  
-The CDK has been released in two major versions, v1 and v2\. This is the Developer Guide for AWS CDK v2\. CDK v1 entered maintenance on June 1, 2022\.
+The CDK has been released in two major versions, v1 and v2\. This is the Developer Guide for AWS CDK v2\. The older, CDK v1 entered maintenance on June 1, 2022\.
 
 The AWS CDK lets you build reliable, scalable, cost\-effective applications in the cloud with the considerable expressive power of a programming language\. This approach yields many benefits, including:
 + Build with high\-level constructs that automatically provide sensible, secure defaults for your AWS resources, defining more infrastructure with less code\.
