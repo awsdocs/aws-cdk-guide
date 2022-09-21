@@ -4,7 +4,11 @@ The AWS Construct Library uses a few common, widely\-implemented idioms to manag
 
 ## Principals<a name="permissions_principals"></a>
 
-An IAM principal is an entity that can be authenticated in order to access AWS resources, such as a user, a service, or an application\. The AWS Construct Library supports many types of principals, including:
+An IAM principal is an authenticated AWS entity representing a user, service, or application that can call AWS APIs\. The AWS Construct Library supports specifying principals in several flexible ways to grant them access your AWS resources\.
+
+In security contexts, the term "principal" refers specifically to authenticated entities such as users\. Objects like groups and roles do not *represent* users \(and other authenticated entities\) but rather *identify* them indirectly for the purpose of granting permissions\. For example, if you create an IAM group, you can grant the group \(i\.e\. its members\) write access to a Amazon RDS table, but the group itself is not a principal since it does not represent a single entity \(also, you cannot log in to a group\)\.
+
+In the CDK's IAM library, classes that directly or indirectly identify principals implement the [https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.IPrincipal.html](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.IPrincipal.html) interface, allowing these objects to be used interchangeably in access policies\. However, not all of them are principals in the security sense\. These objects include:
 
 1. IAM resources such as `[Role](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.Role.html)`, `[User](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.User.html)`, and `[Group](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.Group.html)`
 
@@ -28,7 +32,7 @@ Every construct that represents a resource that can be accessed, such as an Amaz
 
 The first argument of a **grant** method is always of type [IGrantable](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.IGrantable.html)\. This interface represents entities that can be granted permissions—that is, resources with roles, such as the IAM objects `[Role](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.Role.html)`, `[User](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.User.html)`, and `[Group](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.User.html)`\.
 
-Other entities can also be granted permissions\. For example, later in this topic, we show how to grant a CodeBuild project access to an Amazon S3 bucket\. Generally, the associated role is obtained via a `role` property on the entity being granted access\. Other entities that can be granted permissions are Amazon EC2 instances and CodeBuild projects\.
+Other entities can also be granted permissions\. For example, later in this topic, we show how to grant a CodeBuild project access to an Amazon S3 bucket\. Generally, the associated role is obtained via a `role` property on the entity being granted access\.
 
 Resources that use execution roles, such as `[lambda\.Function](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda.Function.html)`, also implement `IGrantable`, so you can grant them access directly instead of granting access to their role\. For example, if `bucket` is an Amazon S3 bucket, and `function` is a Lambda function, the code below grants the function read access to the bucket\.
 

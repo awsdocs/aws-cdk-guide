@@ -12,6 +12,9 @@ To work with the AWS CDK, you must have an AWS account and credentials and have 
 
 C\# AWS CDK applications require \.NET Core v3\.1 or later, [available here](https://dotnet.microsoft.com/download/dotnet-core/3.1)\.
 
+**Note**  
+Third\-party Language Deprecation: language version is only supported until its EOL \(End Of Life\) shared by the vendor or community and is subject to change with prior notice\.
+
 The \.NET toolchain includes `dotnet`, a command\-line tool for building and running \.NET applications and managing NuGet packages\. Even if you work mainly in Visual Studio, this command can be useful for batch operations and for installing AWS Construct Library packages\.
 
 ## Creating a project<a name="csharp-newproject"></a>
@@ -24,7 +27,7 @@ cd my-project
 cdk init app --language csharp
 ```
 
-`cdk init` uses the name of the project folder to name various elements of the project, including classes, subfolders, and files\. 
+`cdk init` uses the name of the project folder to name various elements of the project, including classes, subfolders, and files\. Hyphens in the folder name are converted to underscores\. However, the name should otherwise follow the form of a C\# identifier; for example, it should not start with a number or contain spaces\. 
 
 The resulting project includes a reference to the `Amazon.CDK` NuGet package\. It and its dependencies are installed automatically by NuGet\.
 
@@ -125,8 +128,8 @@ class MimeBucket : Bucket {
      }
 }
 
-// instantiate our MyBucket class 
-var bucket = new MyBucket(this, "MyBucket", new MimeBucketProps {
+// instantiate our MimeBucket class 
+var bucket = new MimeBucket(this, "MyBucket", new MimeBucketProps {
     Versioned = true,
     MimeType = "image/jpeg"
 });
@@ -141,11 +144,11 @@ A future release of the AWS CDK could coincidentally add a new property with a n
 In some APIs, the AWS CDK uses JavaScript arrays or untyped objects as input to a method\. \(See, for example, AWS CodeBuild's [https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-codebuild.BuildSpec.html#to-wbr-build-wbr-spec](https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-codebuild.BuildSpec.html#to-wbr-build-wbr-spec) method\.\) In C\#, these objects are represented as `System.Collections.Generic.Dictionary<String, Object>`\. In cases where the values are all strings, you can use `Dictionary<String, String>`\. JavaScript arrays are represented as `object[]` or `string[]` in C\#\.
 
 **Tip**  
-You might define short aliases to make it easier to work with these sepecific dictionary types\.  
+You might define short aliases to make it easier to work with these specific dictionary types\.  
 
 ```
-using StringDict = System.Collections.Dictionary<String, String>;
-using ObjectDict = System.Collections.Dictionary<String, Object>;
+using StringDict = System.Collections.Generic.Dictionary<string, string>;
+using ObjectDict = System.Collections.Generic.Dictionary<string, object>;
 ```
 
 ### Missing values<a name="csharp-missing-values"></a>

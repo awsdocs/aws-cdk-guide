@@ -584,7 +584,7 @@ If we hadn't changed the bucket's `RemovalPolicy`, the stack deletion would comp
 
 Where do you go now that you've dipped your toes in the AWS CDK?
 + Try the [CDK Workshop](https://cdkworkshop.com/) for a more in\-depth tour involving a more complex project\.
-+ Dig deeper into concepts like [Environments](environments.md), [Assets](assets.md), [Permissions](permissions.md), [Runtime context](context.md), [Parameters](parameters.md), and [Escape hatches](cfn_layer.md)\.
++ Dig deeper into concepts like [Environments](environments.md), [Assets](assets.md), [Permissions](permissions.md), [Runtime context](context.md), [Parameters](parameters.md), and [Abstractions and escape hatches](cfn_layer.md)\.
 + See the [API reference](https://docs.aws.amazon.com/cdk/api/v1/docs/aws-construct-library.html) to begin exploring the CDK constructs available for your favorite AWS services\.
 +  Visit [Construct Hub](https://constructs.dev/search?q=&cdk=aws-cdk&cdkver=1&sort=downloadsDesc&offset=0) to discover constructs created by AWS and others\. 
 + Explore [Examples](https://github.com/aws-samples/aws-cdk-examples/tree/CDKv1) of using the AWS CDK\.

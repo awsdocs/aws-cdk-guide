@@ -1375,26 +1375,17 @@ We can test it like this:
 #### [ TypeScript ]
 
 ```
-import { Match, Template } from "aws-cdk-lib/assertions";
-import * as cdk from "aws-cdk-lib";
+import { Match, Template } from "@aws-cdk/assertions";
+import * as cdk from "@aws-cdk/core";
 import { DeadLetterQueue } from "../lib/dead-letter-queue";
 
 describe("DeadLetterQueue", () => {
-  test("creates an alarm", () => {
+  test("matches the snapshot", () => {
     const stack = new cdk.Stack();
     new DeadLetterQueue(stack, "DeadLetterQueue");
 
     const template = Template.fromStack(stack);
-    template.hasResourceProperties("AWS::CloudWatch::Alarm", {
-      Namespace: "AWS/SQS",
-      MetricName: "ApproximateNumberOfMessagesVisible",
-      Dimensions: [
-        {
-          Name: "QueueName",
-          Value: Match.anyValue(),
-        },
-      ],
-    });
+    expect(template.toJSON()).toMatchSnapshot();
   });
 });
 ```
@@ -1403,26 +1394,17 @@ describe("DeadLetterQueue", () => {
 #### [ JavaScript ]
 
 ```
-const { Match, Template } = require("aws-cdk-lib/assertions");
-const cdk = require("aws-cdk-lib");
+const { Match, Template } = require("@aws-cdk/assertions");
+const cdk = require("@aws-cdk/core");
 const { DeadLetterQueue } = require("../lib/dead-letter-queue");
 
 describe("DeadLetterQueue", () => {
-  test("creates an alarm", () => {
+  test("matches the snapshot", () => {
     const stack = new cdk.Stack();
     new DeadLetterQueue(stack, "DeadLetterQueue");
 
     const template = Template.fromStack(stack);
-    template.hasResourceProperties("AWS::CloudWatch::Alarm", {
-      Namespace: "AWS/SQS",
-      MetricName: "ApproximateNumberOfMessagesVisible",
-      Dimensions: [
-        {
-          Name: "QueueName",
-          Value: Match.anyValue(),
-        },
-      ],
-    });
+    expect(template.toJSON()).toMatchSnapshot();
   });
 });
 ```
@@ -1431,29 +1413,17 @@ describe("DeadLetterQueue", () => {
 #### [ Python ]
 
 ```
-import aws_cdk as cdk
+from aws_cdk import core as cdk
 from aws_cdk.assertions import Match, Template
 
 from app.dead_letter_queue import DeadLetterQueue
 
-def test_creates_alarm():
+def snapshot_test():
     stack = cdk.Stack()
     DeadLetterQueue(stack, "DeadLetterQueue")
 
     template = Template.from_stack(stack)
-    template.has_resource_properties(
-        "AWS::CloudWatch::Alarm",
-        {
-            "Namespace": "AWS/SQS",
-            "MetricName": "ApproximateNumberOfMessagesVisible",
-            "Dimensions": [
-                {
-                    "Name": "QueueName",
-                    "Value": Match.any_value(),
-                },
-            ],
-        },
-    )
+    assert template.to_json() == snapshot
 ```
 
 ------
@@ -1463,28 +1433,22 @@ def test_creates_alarm():
 package software.amazon.samples.awscdkassertionssamples;
 
 import org.junit.jupiter.api.Test;
+import au.com.origin.snapshots.Expect;
 import software.amazon.awscdk.assertions.Match;
 import software.amazon.awscdk.assertions.Template;
-import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.core.Stack;
 
 import java.util.Collections;
 import java.util.Map;
 
 public class DeadLetterQueueTest {
     @Test
-    public void testCreatesAlarm() {
+    public void snapshotTest() {
         final Stack stack = new Stack();
         new DeadLetterQueue(stack, "DeadLetterQueue");
 
         final Template template = Template.fromStack(stack);
-        template.hasResourceProperties("AWS::CloudWatch::Alarm", Map.of(
-                "Namespace", "AWS/SQS",
-                "MetricName", "ApproximateNumberOfMessagesVisible",
-                "Dimensions", Collections.singletonList(Map.of(
-                        "Name", "QueueName",
-                        "Value", Match.anyValue()
-                ))
-        ));
+        expect.toMatchSnapshot(template.toJSON());
     }
 }
 ```
@@ -1511,26 +1475,14 @@ namespace TestProject1
     public class DeadLetterQueueTest
     {
     [TestMethod]
-        public void TestCreatesAlarm()
+        public void SnapshotTest()
         {
             var stack = new Stack();
             new DeadLetterQueue(stack, "DeadLetterQueue");
 
             var template = Template.FromStack(stack);
-            template.HasResourceProperties("AWS::CloudWatch::Alarm", new ObjectDict
-            {
-                { "Namespace", "AWS/SQS" },
-                { "MetricName", "ApproximateNumberOfMessagesVisible" },
-                { "Dimensions", new object[]
-                    {
-                        new ObjectDict
-                        {
-                            { "Name", "QueueName" },
-                            { "Value", Match.AnyValue() }
-                        }
-                    }
-                }
-            });
+
+            return Verifier.Verify(template.ToJSON());
         }
     }
 }

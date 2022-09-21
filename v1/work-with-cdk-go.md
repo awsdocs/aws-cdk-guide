@@ -12,6 +12,9 @@ To work with the AWS CDK, you must have an AWS account and credentials and have 
 
 The Go bindings for the AWS CDK use the standard [Go toolchain](https://golang.org/dl/), v1\.16 or later\. You can use the editor of your choice\.
 
+**Note**  
+Third\-party Language Deprecation: language version is only supported until its EOL \(End Of Life\) shared by the vendor or community and is subject to change with prior notice\.
+
 ## Creating a project<a name="go-newproject"></a>
 
 You create a new AWS CDK project by invoking `cdk init` in an empty directory\.
@@ -22,7 +25,7 @@ cd my-project
 cdk init app --language go
 ```
 
-`cdk init` uses the name of the project folder to name various elements of the project, including classes, subfolders, and files\. 
+`cdk init` uses the name of the project folder to name various elements of the project, including classes, subfolders, and files\. Hyphens in the folder name are converted to underscores\. However, the name should otherwise follow the form of a Go identifier; for example, it should not start with a number or contain spaces\. 
 
 The resulting project includes a reference to the AWS CDK Go module, `github.com/aws/aws-cdk-go/awscdk`, in `go.mod`\. The CDK and its dependencies are automatically installed when you build your app\.
 

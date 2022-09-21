@@ -7,7 +7,7 @@ Since the AWS CDK is always evolving, some of the code presented in these videos
 
 ## Infrastructure *is* Code with the AWS CDK<a name="videos-infrastructure-is-code"></a>
 
-## Deep dive into AWS Cloud Development Kit \(CDK\)<a name="videos-deep-dive"></a>
+## Deep dive into AWS Cloud Development Kit \(AWS CDK\)<a name="videos-deep-dive"></a>
 
 ## Contributing to the AWS Construct Library<a name="videos-contributing"></a>
 

@@ -1,6 +1,6 @@
 # What is the AWS CDK?<a name="home"></a>
 
-Welcome to the *AWS Cloud Development Kit \(CDK\) Developer Guide*\. This document provides information about the AWS CDK, a framework for defining cloud infrastructure in code and provisioning it through AWS CloudFormation\.
+Welcome to the *AWS Cloud Development Kit \(AWS CDK\) Developer Guide*\. This document provides information about the AWS CDK, a framework for defining cloud infrastructure in code and provisioning it through AWS CloudFormation\.
 
 **Important**  
 The CDK has been released in two major versions, v1 and v2\. This is the Developer Guide for AWS CDK v1\.  
@@ -241,7 +241,7 @@ In addition to this guide, the following other resources are available to AWS CD
   + [License](https://github.com/awslabs/aws-cdk/blob/master/LICENSE)
   + [Releases](https://github.com/awslabs/aws-cdk/releases)
     + [AWS CDK OpenPGP key](pgp-keys.md#cdk_pgp_key)
-    + [JSII OpenPGP key](pgp-keys.md#jsii_pgp_key)
+    + [jsii OpenPGP key](pgp-keys.md#jsii_pgp_key)
 + [AWS CDK Sample for Cloud9](https://docs.aws.amazon.com/cloud9/latest/user-guide/sample-cdk.html)
 + [AWS CloudFormation Concepts](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-whatis-concepts.html)
 + [AWS Glossary](https://docs.aws.amazon.com/general/latest/gr/glos-chap.html)

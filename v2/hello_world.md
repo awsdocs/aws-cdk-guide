@@ -466,7 +466,7 @@ You may be curious about why we specified `RemovalPolicy` in our AWS CDK app but
 It's informative to compare the output of cdk synth here with the previous output and see the many additional lines of AWS CloudFormation template that the AWS CDK generated for us based on these relatively small changes\.
 
 **Important**  
-Since the `autoDeleteObjects` property is implemented using a AWS CloudFormation custom resource, which is implemented using an AWS Lambda function, our stack contains an [asset](assets.md)\. This fact requires that our AWS account and region be [bootstrapped](bootstrapping.md) so that there's an Amazon S3 bucket to hold the asset during deployment\. If you haven't already bootstrapped, issue:  
+All AWS CDK v2 deployments use dedicated AWS resources to hold data during deployment, so your AWS account and region must be [bootstrapped](bootstrapping.md) to create these resources before you can deploy\. If you haven't already bootstrapped, issue:  
 
 ```
 cdk bootstrap aws://ACCOUNT-NUMBER/REGION
@@ -525,7 +525,7 @@ If we hadn't changed the bucket's `RemovalPolicy`, the stack deletion would comp
 
 Where do you go now that you've dipped your toes in the AWS CDK?
 + Try the [CDK Workshop](https://cdkworkshop.com/) for a more in\-depth tour involving a more complex project\.
-+ Dig deeper into concepts like [Environments](environments.md), [Assets](assets.md), [Permissions](permissions.md), [Runtime context](context.md), [Parameters](parameters.md), and [Escape hatches](cfn_layer.md)\.
++ Dig deeper into concepts like [Environments](environments.md), [Assets](assets.md), [Permissions](permissions.md), [Runtime context](context.md), [Parameters](parameters.md), and [Abstractions and escape hatches](cfn_layer.md)\.
 + See the [API reference](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-construct-library.html) to begin exploring the CDK constructs available for your favorite AWS services\.
 + Visit [Construct Hub](https://constructs.dev/search?q=&cdk=aws-cdk&cdkver=2&sort=downloadsDesc&offset=0) to discover constructs created by AWS and others\. 
 + Explore [Examples](https://github.com/aws-samples/aws-cdk-examples) of using the AWS CDK\.

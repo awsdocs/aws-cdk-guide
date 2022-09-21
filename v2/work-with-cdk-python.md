@@ -10,6 +10,9 @@ To work with the AWS CDK, you must have an AWS account and credentials and have 
 
 Python AWS CDK applications require Python 3\.6 or later\. If you don't already have it installed, [download a compatible version](https://www.python.org/downloads/) for your operating system at [python\.org](https://www.python.org/)\. If you run Linux, your system may have come with a compatible version, or you may install it using your distro's package manager \(`yum`, `apt`, etc\.\)\. Mac users may be interested in [Homebrew](https://brew.sh/), a Linux\-style package manager for macOS\.
 
+**Note**  
+Third\-party Language Deprecation: language version is only supported until its EOL \(End Of Life\) shared by the vendor or community and is subject to change with prior notice\.
+
 The Python package installer, `pip`, and virtual environment manager, `virtualenv`, are also required\. Windows installations of compatible Python versions include these tools\. On Linux, `pip` and `virtualenv` may be provided as separate packages in your package manager\. Alternatively, you may install them with the following commands:
 
 ```
@@ -23,6 +26,10 @@ If you encounter a permission error, run the above commands with the `--user` fl
 **Note**  
 It is common for Linux distros to use the executable name `python3` for Python 3\.x, and have `python` refer to a Python 2\.x installation\. Some distros have an optional package you can install that makes the `python` command refer to Python 3\. Failing that, you can adjust the command used to run your application by editing `cdk.json` in the project's main directory\.
 
+**Note**  
+On Windows, you may want to invoke Python \(and pip\) using the py executable, the [>Python launcher for Windows](https://docs.python.org/3/using/windows.html#launcher)\. Among other things, the launcher allows you to easily specify which installed version of Python you want to use\.  
+If typing python at the command line results in a message about installing Python from the Windows Store, even after installing a Windows version of Python, open Windows' Manage App Execution Aliases settings panel and turn off the two App Installer entries for Python\.
+
 ## Creating a project<a name="python-newproject"></a>
 
 You create a new AWS CDK project by invoking `cdk init` in an empty directory\.
@@ -33,7 +40,7 @@ cd my-project
 cdk init app --language python
 ```
 
-`cdk init` uses the name of the project folder to name various elements of the project, including classes, subfolders, and files\. 
+`cdk init` uses the name of the project folder to name various elements of the project, including classes, subfolders, and files\. Hyphens in the folder name are converted to underscores\. However, the name should otherwise follow the form of a Python identifier; for example, it should not start with a number or contain spaces\. 
 
 To work with the new project, activate its virtual environment\. This allows the project's dependencies to be installed locally in the project folder, instead of globally\.
 

@@ -1,14 +1,14 @@
 # Resources<a name="resources"></a>
 
-As described in [Constructs](constructs.md), the AWS CDK provides a rich class library of constructs, called *AWS constructs*, that represent all AWS resources\. This section describes some common patterns and best practices for how to use these constructs\.
+As described in [Constructs](constructs.md), the AWS CDK provides a rich class library of constructs, called *AWS constructs*, that represent all AWS resources\.
 
-Defining AWS resources in your CDK app is exactly like defining any other construct\. You create an instance of the construct class, pass in the scope as the first argument, the logical ID of the construct, and a set of configuration properties \(props\)\. For example, here's how to create an Amazon SQS queue with KMS encryption using the [sqs\.Queue](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_sqs.Queue.html) construct from the AWS Construct Library\.
+To create an instance of a resource using its corresponding construct, pass in the scope as the first argument, the logical ID of the construct, and a set of configuration properties \(props\)\. For example, here's how to create an Amazon SQS queue with KMS encryption using the [sqs\.Queue](https://docs.aws.amazon.com/cdk/api/v2/docs/@aws-cdk_aws-sqs.Queue.html) construct from the AWS Construct Library\.
 
 ------
 #### [ TypeScript ]
 
 ```
-import * as sqs from 'aws-cdk-lib/aws-sqs';
+import * as sqs from '@aws-cdk/aws-sqs';
             
 new sqs.Queue(this, 'MyQueue', {
     encryption: sqs.QueueEncryption.KMS_MANAGED
@@ -19,7 +19,7 @@ new sqs.Queue(this, 'MyQueue', {
 #### [ JavaScript ]
 
 ```
-const sqs = require('aws-cdk-lib/aws-sqs');
+const sqs = require('@aws-cdk/aws-sqs');
             
 new sqs.Queue(this, 'MyQueue', {
     encryption: sqs.QueueEncryption.KMS_MANAGED
@@ -69,7 +69,7 @@ Most resources in the AWS Construct Library expose attributes, which are resolve
 #### [ TypeScript ]
 
 ```
-import * as sqs from 'aws-cdk-lib/aws-sqs';
+import * as sqs from '@aws-cdk/aws-sqs';
       
 const queue = new sqs.Queue(this, 'MyQueue');
 const url = queue.queueUrl; // => A string representing a deploy-time value
@@ -79,7 +79,7 @@ const url = queue.queueUrl; // => A string representing a deploy-time value
 #### [ JavaScript ]
 
 ```
-const sqs = require('aws-cdk-lib/aws-sqs');
+const sqs = require('@aws-cdk/aws-sqs');
       
 const queue = new sqs.Queue(this, 'MyQueue');
 const url = queue.queueUrl; // => A string representing a deploy-time value
@@ -99,8 +99,6 @@ url = queue.queue_url # => A string representing a deploy-time value
 #### [ Java ]
 
 ```
-import software.amazon.awscdk.services.sqs.*;
-
 Queue queue = new Queue(this, "MyQueue");
 String url = queue.getQueueUrl();    // => A string representing a deploy-time value
 ```
@@ -109,8 +107,6 @@ String url = queue.getQueueUrl();    // => A string representing a deploy-time v
 #### [ C\# ]
 
 ```
-using Amazon.CDK.AWS.SQS;
-
 var queue = new Queue(this, "MyQueue");
 var url = queue.QueueUrl; // => A string representing a deploy-time value
 ```
@@ -121,15 +117,13 @@ See [Tokens](tokens.md) for information about how the AWS CDK encodes deploy\-ti
 
 ## Referencing resources<a name="resources_referencing"></a>
 
-Many AWS CDK classes require properties that are AWS CDK resource objects \(resources\)\. To satisfy these requirements, you can refer to a resource in one of two ways:
-+ By passing the resource directly
-+ By passing the resource's unique identifier, which is typically an ARN, but it could also be an ID or a name
-
-For example, an Amazon ECS service requires a reference to the cluster on which it runs; an Amazon CloudFront distribution requires a reference to the bucket containing source code\.
+Many AWS CDK classes require properties that are AWS CDK resource objects \(resources\)\. For example, an Amazon ECS resource requires a reference to the cluster on which it runs; an Amazon CloudFront distribution requires a reference to the bucket containing source code\. To satisfy these requirements, you can refer to a resource in one of two ways:
++ By passing a resource defined in your CDK app, either in the same stack or in a different one
++ By passing a proxy object referencing a resource defined in your AWS account, created from a unique identifier of the resource \(such as an ARN\)
 
 If a construct property represents another AWS construct, its type is that of the interface type of that construct\. For example, the Amazon ECS service takes a property `cluster` of type `ecs.ICluster`; the CloudFront distribution takes a property `sourceBucket` \(Python: `source_bucket`\) of type `s3.IBucket`\.
 
-Because every resource implements its corresponding interface, you can directly pass any resource object you're defining in the same AWS CDK app\. The following example defines an Amazon ECS cluster and then uses it to define an Amazon ECS service\.
+You can directly pass any resource object of the proper type defined in the same AWS CDK app\. The following example defines an Amazon ECS cluster and then uses it to define an Amazon ECS service\.
 
 ------
 #### [ TypeScript ]
@@ -177,9 +171,13 @@ var service = new Ec2Service(this, "Service", new Ec2ServiceProps { Cluster = cl
 
 ------
 
-## Accessing resources in a different stack<a name="resource_stack"></a>
+## Referencing resources in a different stack<a name="resource_stack"></a>
 
-You can access resources in a different stack, as long as they are in the same account and AWS Region\. The following example defines the stack `stack1`, which defines an Amazon S3 bucket\. Then it defines a second stack, `stack2`, which takes the bucket from `stack1` as a constructor property\.
+You can refer to resources in a different stack as long as they are defined in the same app and are in the same AWS account and region\. The pattern generally used is:
++ Store a reference to the construct as an attribute of the stack that produces the resource\. \(To get a reference to the current construct's stack, use `Stack.of(this)`\.\)
++ Pass this reference to the constructor of the stack that consumes the resource as a parameter or a property\. The consuming stack then passes it as a property to any construct that needs it\.
+
+The following example defines a stack `stack1`\. This stack defines an Amazon S3 bucket and stores a reference to the bucket construct as an attribute of the stack\. Then the app defines a second stack, `stack2`, which accepts a bucket at instantiation\. `stack2` might, for example, define an AWS Glue Table that uses the bucket for data storage\.
 
 ------
 #### [ TypeScript ]
@@ -187,7 +185,7 @@ You can access resources in a different stack, as long as they are in the same a
 ```
 const prod = { account: '123456789012', region: 'us-east-1' };
 
-const stack1 = new StackThatProvidesABucket(app, 'Stack1' , { env: prod });
+const stack1 = new StackThatProvidesABucket(app, 'Stack1', { env: prod });
 
 // stack2 will take a property { bucket: IBucket }
 const stack2 = new StackThatExpectsABucket(app, 'Stack2', {
@@ -202,7 +200,7 @@ const stack2 = new StackThatExpectsABucket(app, 'Stack2', {
 ```
 const prod = { account: '123456789012', region: 'us-east-1' };
 
-const stack1 = new StackThatProvidesABucket(app, 'Stack1' , { env: prod });
+const stack1 = new StackThatProvidesABucket(app, 'Stack1', { env: prod });
 
 // stack2 will take a property { bucket: IBucket }
 const stack2 = new StackThatExpectsABucket(app, 'Stack2', {
@@ -215,7 +213,7 @@ const stack2 = new StackThatExpectsABucket(app, 'Stack2', {
 #### [ Python ]
 
 ```
-prod = cdk.Environment(account="123456789012", region="us-east-1")
+prod = core.Environment(account="123456789012", region="us-east-1")
 
 stack1 = StackThatProvidesABucket(app, "Stack1", env=prod)
 
@@ -242,7 +240,7 @@ StackThatProvidesABucket stack1 = new StackThatProvidesABucket(app, "Stack1",
 
 // stack2 will take an argument "bucket"
 StackThatExpectsABucket stack2 = new StackThatExpectsABucket(app, "Stack,",
-        StackProps.builder().env(prod).build(), stack1.getBucket());
+        StackProps.builder().env(prod).build(), stack1.bucket);
 ```
 
 ------
@@ -258,18 +256,211 @@ var prod = makeEnv(account: "123456789012", region: "us-east-1");
 
 var stack1 = new StackThatProvidesABucket(app, "Stack1", new StackProps { Env = prod });
 
-// stack2 will take an argument "bucket"
+// stack2 will take a property "bucket"
 var stack2 = new StackThatExpectsABucket(app, "Stack2", new StackProps { Env = prod,
     bucket = stack1.Bucket});
 ```
 
 ------
 
-If the AWS CDK determines that the resource is in the same account and Region, but in a different stack, it automatically synthesizes AWS CloudFormation [exports](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-stack-exports.html) in the producing stack and an [Fn::ImportValue](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/intrinsic-function-reference-importvalue.html) in the consuming stack to transfer that information from one stack to the other\.
+If the AWS CDK determines that the resource is in the same account and region, but in a different stack, it automatically synthesizes AWS CloudFormation [exports](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-stack-exports.html) in the producing stack and an [Fn::ImportValue](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/intrinsic-function-reference-importvalue.html) in the consuming stack to transfer that information from one stack to the other\.
 
-Referencing a resource from one stack in a different stack creates a dependency between the two stacks\. Once this dependency is established, removing the use of the shared resource from the consuming stack can cause an unexpected deployment failure if the AWS CDK Toolkit deploys the producing stack before the consuming stack\. This happens if there is another dependency between the two stacks, but it can also happen that the producing stack is chosen by the AWS CDK Toolkit to be deployed first\. The AWS CloudFormation export is removed from the producing stack because it is no longer needed, but the exported resource is still being used in the consuming stack because its update has not yet been deployed, so deploying the producer stack fails\.
+### Resolving dependency deadlocks<a name="resources_deadlock"></a>
 
-To break this deadlock, remove the use of the shared resource from the consuming stack \(which will remove the automatic export from the producing stack\), then manually add the same export to the producing stack using exactly the same logical ID as the automatically\-generated export\. Remove the use of the shared resource in the consuming stack and deploy both stacks\. Then remove the manual export \(and the shared resource if it is no longer nededed\), and deploy both stacks again\. The stack's `[exportValue\(\)](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.Stack.html#exportwbrvalueexportedvalue-options)` method is a convenient way to create the manual export for this purpose \(see the example in the linked method reference\)\.
+Referencing a resource from one stack in a different stack creates a dependency between the two stacks to ensure that they are deployed in the right order\. Once this dependency has been made concrete by deploying the stacks, removing the use of the shared resource from the consuming stack can cause an unexpected deployment failure\. This happens if there is another dependency between the two stacks that force them to be deployed in the same order, but it can also happen without a dependency if the producing stack is simply chosen by the CDK Toolkit to be deployed first\. The AWS CloudFormation export is removed from the producing stack because it is no longer needed, but the exported resource is still being used in the consuming stack because its update has not yet been deployed, so deploying the producer stack fails\.
+
+To break this deadlock, remove the use of the shared resource from the consuming stack \(which will remove the automatic export from the producing stack\), then manually add the same export to the producing stack using exactly the same logical ID as the automatically\-generated export\. Remove the use of the shared resource in the consuming stack and deploy both stacks\. Then remove the manual export \(and the shared resource if it is no longer needed\), and deploy both stacks again\. The stack's `[exportValue\(\)](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ec2.Vpc.html#static-fromwbrlookupscope-id-options)` method is a convenient way to create the manual export for this purpose \(see the example in the linked method reference\)\.
+
+## Referencing resources in your AWS account<a name="resources_external"></a>
+
+Suppose you want to use a resource already available in your AWS account in your AWS CDK app: for example, a resource that was defined through the console, an AWS SDK, directly with AWS CloudFormation, or in a different AWS CDK application\. You can turn the resource's ARN \(or another identifying attribute, or group of attributes\) into a proxy object that serves as a reference to the resource by calling a static factory method on the resource's class\. 
+
+When you create such a proxy, the external resource **does not** become a part of your AWS CDK app, and therefore, changes you make to the proxy in your AWS CDK app do not affect the deployed resource\. The proxy can, however, be passed to any AWS CDK method that requires a resource of that type\. 
+
+The following example shows how to reference a bucket based on an existing bucket with the ARN **arn:aws:s3:::my\-bucket\-name**, and a Amazon Virtual Private Cloud based on an existing VPC having a specific ID\.
+
+------
+#### [ TypeScript ]
+
+```
+// Construct a proxy for a bucket by its name (must be same account)
+s3.Bucket.fromBucketName(this, 'MyBucket', 'my-bucket-name');
+
+// Construct a proxy for a bucket by its full ARN (can be another account)
+s3.Bucket.fromBucketArn(this, 'MyBucket', 'arn:aws:s3:::my-bucket-name');
+
+// Construct a proxy for an existing VPC from its attribute(s)
+ec2.Vpc.fromVpcAttributes(this, 'MyVpc', {
+  vpcId: 'vpc-1234567890abcde',
+});
+```
+
+------
+#### [ JavaScript ]
+
+```
+// Construct a proxy for a bucket by its name (must be same account)
+s3.Bucket.fromBucketName(this, 'MyBucket', 'my-bucket-name');
+
+// Construct a proxy for a bucket by its full ARN (can be another account)
+s3.Bucket.fromBucketArn(this, 'MyBucket', 'arn:aws:s3:::my-bucket-name');
+
+// Construct a proxy for an existing VPC from its attribute(s)
+ec2.Vpc.fromVpcAttributes(this, 'MyVpc', {
+  vpcId: 'vpc-1234567890abcde'
+});
+```
+
+------
+#### [ Python ]
+
+```
+# Construct a proxy for a bucket by its name (must be same account)
+s3.Bucket.from_bucket_name(self, "MyBucket", "my-bucket-name")
+
+# Construct a proxy for a bucket by its full ARN (can be another account)
+s3.Bucket.from_bucket_arn(self, "MyBucket", "arn:aws:s3:::my-bucket-name")
+
+# Construct a proxy for an existing VPC from its attribute(s)
+ec2.Vpc.from_vpc_attributes(self, "MyVpc", vpc_id="vpc-1234567890abcdef")
+```
+
+------
+#### [ Java ]
+
+```
+// Construct a proxy for a bucket by its name (must be same account)
+Bucket.fromBucketName(this, "MyBucket", "my-bucket-name");
+
+// Construct a proxy for a bucket by its full ARN (can be another account)
+Bucket.fromBucketArn(this, "MyBucket",
+        "arn:aws:s3:::my-bucket-name");
+
+// Construct a proxy for an existing VPC from its attribute(s)
+Vpc.fromVpcAttributes(this, "MyVpc", VpcAttributes.builder()
+        .vpcId("vpc-1234567890abcdef").build());
+```
+
+------
+#### [ C\# ]
+
+```
+// Construct a proxy for a bucket by its name (must be same account)
+Bucket.FromBucketName(this, "MyBucket", "my-bucket-name");
+
+// Construct a proxy for a bucket by its full ARN (can be another account)
+Bucket.FromBucketArn(this, "MyBucket", "arn:aws:s3:::my-bucket-name");
+
+// Construct a proxy for an existing VPC from its attribute(s)
+Vpc.FromVpcAttributes(this, "MyVpc", new VpcAttributes
+{ 
+    VpcId = "vpc-1234567890abcdef" 
+});
+```
+
+------
+
+Let's take a closer look at the [https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-ec2.Vpc.html#static-fromwbrlookupscope-id-options](https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-ec2.Vpc.html#static-fromwbrlookupscope-id-options) method\. Because the `ec2.Vpc` construct is complex, there are many ways you might want to select the VPC to be used with your CDK app\. To address this, the VPC construct has a `fromLookup` static method \(Python: `from_lookup`\) that lets you look up the desired Amazon VPC by querying your AWS account at synthesis time\.
+
+To use `Vpc.fromLookup()`, the system that synthesizes the stack must have access to the account that owns the Amazon VPC, since the CDK Toolkit queries the account to find the right Amazon VPC at synthesis time\. 
+
+Furthermore, `Vpc.fromLookup()` works only in stacks that are defined with an explicit **account** and **region** \(see [Environments](environments.md)\)\. If the AWS CDK attempts to look up an Amazon VPC from an [environment\-agnostic stack](stacks.md#stack_api), the CDK Toolkit does not know which environment to query to find the VPC\.
+
+You must provide `Vpc.fromLookup()` attributes sufficient to uniquely identify a VPC in your AWS account\. For example, there can only ever be one default VPC, so specifying that you want the VPC marked as the default is sufficient\.
+
+------
+#### [ TypeScript ]
+
+```
+ec2.Vpc.fromLookup(this, 'DefaultVpc', { 
+  isDefault: true 
+});
+```
+
+------
+#### [ JavaScript ]
+
+```
+ec2.Vpc.fromLookup(this, 'DefaultVpc', { 
+  isDefault: true 
+});
+```
+
+------
+#### [ Python ]
+
+```
+ec2.Vpc.from_lookup(self, "DefaultVpc", is_default=True)
+```
+
+------
+#### [ Java ]
+
+```
+Vpc.fromLookup(this, "DefaultVpc", VpcLookupOptions.builder()
+        .isDefault(true).build());
+```
+
+------
+#### [ C\# ]
+
+```
+Vpc.FromLookup(this, id = "DefaultVpc", new VpcLookupOptions { IsDefault = true });
+```
+
+------
+
+You can also use the `tags` property to query for VPCs by tag\. Tags may be added to the Amazon VPC at the time of its creation using AWS CloudFormation or the AWS CDK, and they may be edited at any time after creation using the AWS Management Console, the AWS CLI, or an AWS SDK\. In addition to any tags you have added yourself, the AWS CDK automatically adds the following tags to all VPCs it creates\. 
++ *Name* – The name of the VPC\.
++ *aws\-cdk:subnet\-name* – The name of the subnet\.
++ *aws\-cdk:subnet\-type* – The type of the subnet: Public, Private, or Isolated\.
+
+------
+#### [ TypeScript ]
+
+```
+ec2.Vpc.fromLookup(this, 'PublicVpc', 
+    {tags: {'aws-cdk:subnet-type': "Public"}});
+```
+
+------
+#### [ JavaScript ]
+
+```
+ec2.Vpc.fromLookup(this, 'PublicVpc', 
+    {tags: {'aws-cdk:subnet-type': "Public"}});
+```
+
+------
+#### [ Python ]
+
+```
+ec2.Vpc.from_lookup(self, "PublicVpc", 
+    tags={"aws-cdk:subnet-type": "Public"})
+```
+
+------
+#### [ Java ]
+
+```
+Vpc.fromLookup(this, "PublicVpc", VpcLookupOptions.builder()
+        .tags(java.util.Map.of("aws-cdk:subnet-type", "Public"))  // Java 9 or later
+        .build());
+```
+
+------
+#### [ C\# ]
+
+```
+Vpc.FromLookup(this, id = "PublicVpc", new VpcLookupOptions 
+     { Tags = new Dictionary<string, string> { ["aws-cdk:subnet-type"] = "Public" });
+```
+
+------
+
+Results of `Vpc.fromLookup()` are cached in the project's `cdk.context.json` file\. \(See [Runtime context](context.md)\.\) Commit this file to version control so that your app will continue to refer to the same Amazon VPC even if you later change the attributes of your VPCs in a way that would result in a different VPC being selected\. This is particularly important if you will be deploying the stack in an environment that does not have access to the AWS account that defines the VPC, such as [CDK Pipelines](cdk_pipeline.md)\.
+
+Although you can use an external resource anywhere you'd use a similar resource defined in your AWS CDK app, you cannot modify it\. For example, calling `addToResourcePolicy` \(Python: `add_to_resource_policy`\) on an external `s3.Bucket` does nothing\.
 
 ## Physical names<a name="resources_physical_names"></a>
 
@@ -330,7 +521,7 @@ In some cases, such as when creating an AWS CDK app with cross\-environment refe
 
 ```
 const bucket = new s3.Bucket(this, 'MyBucket', {
-  bucketName: cdk.PhysicalName.GENERATE_IF_NEEDED,
+  bucketName: core.PhysicalName.GENERATE_IF_NEEDED,
 });
 ```
 
@@ -339,7 +530,7 @@ const bucket = new s3.Bucket(this, 'MyBucket', {
 
 ```
 const bucket = new s3.Bucket(this, 'MyBucket', {
-  bucketName: cdk.PhysicalName.GENERATE_IF_NEEDED
+  bucketName: core.PhysicalName.GENERATE_IF_NEEDED
 });
 ```
 
@@ -348,7 +539,7 @@ const bucket = new s3.Bucket(this, 'MyBucket', {
 
 ```
 bucket = s3.Bucket(self, "MyBucket",
-                         bucket_name=cdk.PhysicalName.GENERATE_IF_NEEDED)
+                         bucket_name=core.PhysicalName.GENERATE_IF_NEEDED)
 ```
 
 ------
@@ -492,194 +683,7 @@ new Function(this, "MyLambda", new FunctionProps
 
 ------
 
-## Importing existing external resources<a name="resources_importing"></a>
-
-Sometimes you already have a resource in your AWS account and want to use it in your AWS CDK app, for example, a resource that was defined through the console, an AWS SDK, directly with AWS CloudFormation, or in a different AWS CDK application\. You can turn the resource's ARN \(or another identifying attribute, or group of attributes\) into an AWS CDK object in the current stack by calling a static factory method on the resource's class\. 
-
-The following example shows how to define a bucket based on an existing bucket with the ARN **arn:aws:s3:::my\-bucket\-name**, and a Amazon Virtual Private Cloud based on an existing VPC having a specific ID\.
-
-------
-#### [ TypeScript ]
-
-```
-// Construct a resource (bucket) just by its name (must be same account)
-s3.Bucket.fromBucketName(this, 'MyBucket', 'my-bucket-name');
-
-// Construct a resource (bucket) by its full ARN (can be cross account)
-s3.Bucket.fromBucketArn(this, 'MyBucket', 'arn:aws:s3:::my-bucket-name');
-
-// Construct a resource by giving attribute(s) (complex resources)
-ec2.Vpc.fromVpcAttributes(this, 'MyVpc', {
-  vpcId: 'vpc-1234567890abcde',
-});
-```
-
-------
-#### [ JavaScript ]
-
-```
-// Construct a resource (bucket) just by its name (must be same account)
-s3.Bucket.fromBucketName(this, 'MyBucket', 'my-bucket-name');
-
-// Construct a resource (bucket) by its full ARN (can be cross account)
-s3.Bucket.fromBucketArn(this, 'MyBucket', 'arn:aws:s3:::my-bucket-name');
-
-// Construct a resource by giving attribute(s) (complex resources)
-ec2.Vpc.fromVpcAttributes(this, 'MyVpc', {
-  vpcId: 'vpc-1234567890abcde'
-});
-```
-
-------
-#### [ Python ]
-
-```
-# Construct a resource (bucket) just by its name (must be same account)
-s3.Bucket.from_bucket_name(self, "MyBucket", "my-bucket-name")
-
-# Construct a resource (bucket) by its full ARN (can be cross account)
-s3.Bucket.from_bucket_arn(self, "MyBucket", "arn:aws:s3:::my-bucket-name")
-
-# Construct a resource by giving attribute(s) (complex resources)
-ec2.Vpc.from_vpc_attributes(self, "MyVpc", vpc_id="vpc-1234567890abcdef")
-```
-
-------
-#### [ Java ]
-
-```
-// Construct a resource (bucket) just by its name (must be same account)
-Bucket.fromBucketName(this, "MyBucket", "my-bucket-name");
-
-// Construct a resource (bucket) by its full ARN (can be cross account)
-Bucket.fromBucketArn(this, "MyBucket",
-        "arn:aws:s3:::my-bucket-name");
-
-// Construct a resource by giving attribute(s) (complex resources)
-Vpc.fromVpcAttributes(this, "MyVpc", VpcAttributes.builder()
-        .vpcId("vpc-1234567890abcdef").build());
-```
-
-------
-#### [ C\# ]
-
-```
-// Construct a resource (bucket) just by its name (must be same account)
-Bucket.FromBucketName(this, "MyBucket", "my-bucket-name");
-
-// Construct a resource (bucket) by its full ARN (can be cross account)
-Bucket.FromBucketArn(this, "MyBucket", "arn:aws:s3:::my-bucket-name");
-
-// Construct a resource by giving  attribute(s) (complex resources)
-Vpc.FromVpcAttributes(this, "MyVpc", new VpcAttributes
-{ 
-    VpcId = "vpc-1234567890abcdef" 
-});
-```
-
-------
-
-Because the `ec2.Vpc` construct is complex, composed of many AWS resources, such as the VPC itself, subnets, security groups, and routing tables, it can be difficult to specify those resources using attributes\. To address this, the VPC construct contains a `fromLookup` method \(Python: `from_lookup`\) that uses a [context method](context.md#context_methods) to resolve all the required attributes at synthesis time, and cache the values for future use in `cdk.context.json`\. 
-
-You must provide attributes sufficient to uniquely identify a VPC in your AWS account\. For example, there can only ever be one default VPC, so specifying that you want the VPC marked as the default is sufficient\.
-
-------
-#### [ TypeScript ]
-
-```
-ec2.Vpc.fromLookup(this, 'DefaultVpc', { 
-  isDefault: true 
-});
-```
-
-------
-#### [ JavaScript ]
-
-```
-ec2.Vpc.fromLookup(this, 'DefaultVpc', { 
-  isDefault: true 
-});
-```
-
-------
-#### [ Python ]
-
-```
-ec2.Vpc.from_lookup(self, "DefaultVpc", is_default=True)
-```
-
-------
-#### [ Java ]
-
-```
-Vpc.fromLookup(this, "DefaultVpc", VpcLookupOptions.builder()
-        .isDefault(true).build());
-```
-
-------
-#### [ C\# ]
-
-```
-Vpc.FromLookup(this, id = "DefaultVpc", new VpcLookupOptions { IsDefault = true });
-```
-
-------
-
-You can use the `tags` property to query by tag\. Tags may be added to the VPC at the time of its creation using AWS CloudFormation or the AWS CDK, and they may be edited at any time after creation using the AWS Management Console, the AWS CLI, or an AWS SDK\. In addition to any tags you have added yourself, the AWS CDK automatically adds the following tags to all VPCs it creates\. 
-+ *Name* – The name of the VPC\.
-+ *aws\-cdk:subnet\-name* – The name of the subnet\.
-+ *aws\-cdk:subnet\-type* – The type of the subnet: Public, Private, or Isolated\.
-
-------
-#### [ TypeScript ]
-
-```
-ec2.Vpc.fromLookup(this, 'PublicVpc', 
-    {tags: {'aws-cdk:subnet-type': "Public"}});
-```
-
-------
-#### [ JavaScript ]
-
-```
-ec2.Vpc.fromLookup(this, 'PublicVpc', 
-    {tags: {'aws-cdk:subnet-type': "Public"}});
-```
-
-------
-#### [ Python ]
-
-```
-ec2.Vpc.from_lookup(self, "PublicVpc", 
-    tags={"aws-cdk:subnet-type": "Public"})
-```
-
-------
-#### [ Java ]
-
-```
-Vpc.fromLookup(this, "PublicVpc", VpcLookupOptions.builder()
-        .tags(java.util.Map.of("aws-cdk:subnet-type", "Public"))  // Java 9 or later
-        .build());
-```
-
-------
-#### [ C\# ]
-
-```
-Vpc.FromLookup(this, id = "PublicVpc", new VpcLookupOptions 
-     { Tags = new Dictionary<string, string> { ["aws-cdk:subnet-type"] = "Public" });
-```
-
-------
-
-`Vpc.fromLookup()` works only in stacks that are defined with an explicit **account** and **region** in their `env` property\. If the AWS CDK attempts to look up an Amazon VPC from an [environment\-agnostic stack](stacks.md#stack_api), the CLI does not know which environment to query to find the VPC\.
-
-Results of `Vpc.fromLookup()` are cached in the project's `cdk.context.json` file\. Commit this file to version control if you will be deploying the stack in an environment that does not have access to the AWS account that defines the VPC, such as [CDK Pipelines](cdk_pipeline.md)\.
-
-Although you can use an external resource anywhere you'd use a similar resource defined in your app, you cannot modify the external resource\. For example, calling `addToResourcePolicy` \(Python: `add_to_resource_policy`\) on an external `s3.Bucket` does nothing\.
-
-## Permission grants<a name="resources_grants"></a>
+## Granting permissions<a name="resources_grants"></a>
 
 AWS constructs make least\-privilege permissions easy to achieve by offering simple, intent\-based APIs to express permission requirements\. Many AWS constructs offer grant methods that enable you to easily grant an entity, such as an IAM role or a user, permission to work with the resource without having to manually craft one or more IAM permission statements\.
 
@@ -777,7 +781,7 @@ table.Grant(func, "dynamodb:CreateBackup");
 
 Many resources, such as Lambda functions, require a role to be assumed when executing code\. A configuration property enables you to specify an `iam.IRole`\. If no role is specified, the function automatically creates a role specifically for this use\. You can then use grant methods on the resources to add statements to the role\.
 
-The grant methods are built using lower\-level APIs for handling with IAM policies\. Policies are modeled as [PolicyDocument](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.PolicyDocument.html) objects\. Add statements directly to roles \(or a construct's attached role\) using the `addToRolePolicy` method \(Python: `add_to_role_policy`\), or to a resource's policy \(such as a `Bucket` policy\) using the `addToResourcePolicy` \(Python: `add_to_resource_policy`\) method\. 
+The grant methods are built using lower\-level APIs for handling with IAM policies\. Policies are modeled as [PolicyDocument](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-iam-readme.html) objects\. Add statements directly to roles \(or a construct's attached role\) using the `addToRolePolicy` method \(Python: `add_to_role_policy`\), or to a resource's policy \(such as a `Bucket` policy\) using the `addToResourcePolicy` \(Python: `add_to_resource_policy`\) method\. 
 
 ## Metrics and alarms<a name="resources_metrics"></a>
 
@@ -789,9 +793,9 @@ The following example shows how to define an alarm when the `ApproximateNumberOf
 #### [ TypeScript ]
 
 ```
-import * as cw from 'aws-cdk-lib/aws-cloudwatch';
-import * as sqs from 'aws-cdk-lib/aws-sqs';
-import { Duration } from 'aws-cdk-lib';
+import * as cw from '@aws-cdk/aws-cloudwatch';
+import * as sqs from '@aws-cdk/aws-sqs';
+import { Duration } from '@aws-cdk/core';
 
 const queue = new sqs.Queue(this, 'MyQueue');
 
@@ -811,9 +815,9 @@ metric.createAlarm(this, 'TooManyMessagesAlarm', {
 #### [ JavaScript ]
 
 ```
-const cw = require('aws-cdk-lib/aws-cloudwatch');
-const sqs = require('aws-cdk-lib/aws-sqs');
-const { Duration } = require('aws-cdk-lib');
+const cw = require('@aws-cdk/aws-cloudwatch');
+const sqs = require('@aws-cdk/aws-sqs');
+const { Duration } = require('@aws-cdk/core');
 
 const queue = new sqs.Queue(this, 'MyQueue');
 
@@ -835,7 +839,7 @@ metric.createAlarm(this, 'TooManyMessagesAlarm', {
 ```
 import aws_cdk.aws_cloudwatch as cw
 import aws_cdk.aws_sqs as sqs
-from aws_cdk import Duration
+from aws_cdk.core import Duration
 
 queue = sqs.Queue(self, "MyQueue")
 metric = queue.metric_approximate_number_of_messages_not_visible(
@@ -854,7 +858,7 @@ metric.create_alarm(self, "TooManyMessagesAlarm",
 #### [ Java ]
 
 ```
-import software.amazon.awscdk.Duration;
+import software.amazon.awscdk.core.Duration;
 import software.amazon.awscdk.services.sqs.Queue;
 import software.amazon.awscdk.services.cloudwatch.Metric;
 import software.amazon.awscdk.services.cloudwatch.MetricOptions;
@@ -916,8 +920,8 @@ You enable data to flow on a given network path by using `allow` methods\. The f
 #### [ TypeScript ]
 
 ```
-import * as asg from 'aws-cdk-lib/aws-autoscaling';
-import * as ec2 from 'aws-cdk-lib/aws-ec2';
+import * as asg from '@aws-cdk/aws-autoscaling';
+import * as ec2 from '@aws-cdk/aws-ec2';
 
 const fleet1: asg.AutoScalingGroup = asg.AutoScalingGroup(/*...*/);
 
@@ -932,8 +936,8 @@ fleet1.connections.allowFrom(fleet2, ec2.Port.AllTraffic());
 #### [ JavaScript ]
 
 ```
-const asg = require('aws-cdk-lib/aws-autoscaling');
-const ec2 = require('aws-cdk-lib/aws-ec2');
+const asg = require('@aws-cdk/aws-autoscaling');
+const ec2 = require('@aws-cdk/aws-ec2');
 
 const fleet1 = asg.AutoScalingGroup();
 
@@ -1061,7 +1065,7 @@ The following example shows how to trigger a Lambda function when an object is a
 #### [ TypeScript ]
 
 ```
-import * as s3nots from 'aws-cdk-lib/aws-s3-notifications';
+import * as s3nots from '@aws-cdk/aws-s3-notifications';
 
 const handler = new lambda.Function(this, 'Handler', { /*…*/ });
 const bucket = new s3.Bucket(this, 'Bucket');
@@ -1072,7 +1076,7 @@ bucket.addObjectCreatedNotification(new s3nots.LambdaDestination(handler));
 #### [ JavaScript ]
 
 ```
-const s3nots = require('aws-cdk-lib/aws-s3-notifications');
+const s3nots = require('@aws-cdk/aws-s3-notifications');
 
 const handler = new lambda.Function(this, 'Handler', { /*…*/ });
 const bucket = new s3.Bucket(this, 'Bucket');
@@ -1120,7 +1124,7 @@ bucket.AddObjectCreatedNotification(new s3Nots.LambdaDestination(handler));
 
 ## Removal policies<a name="resources_removal"></a>
 
-Resources that maintain persistent data, such as databases and Amazon S3 buckets and even Amazon ECR registries, have a *removal policy* that indicates whether to delete persistent objects when the AWS CDK stack that contains them is destroyed\. The values specifying the removal policy are available through the `RemovalPolicy` enumeration in the `aws-cdk-lib` module\.
+Resources that maintain persistent data, such as databases and Amazon S3 buckets and even Amazon ECR registries, have a *removal policy* that indicates whether to delete persistent objects when the AWS CDK stack that contains them is destroyed\. The values specifying the removal policy are available through the `RemovalPolicy` enumeration in the AWS CDK `core` module\.
 
 **Note**  
 Resources besides those that store data persistently may also have a `removalPolicy` that is used for a different purpose\. For example, a Lambda function version uses a `removalPolicy` attribute to determine whether a given version is retained when a new version is deployed\. These have different meanings and defaults compared to the removal policy on an Amazon S3 bucket or DynamoDB table\.
@@ -1139,12 +1143,11 @@ Following is an example of creating an Amazon S3 bucket with `RemovalPolicy` of 
 #### [ TypeScript ]
 
 ```
-import * as cdk from 'aws-cdk-lib';
-import { Construct } from 'constructs';
-import * as s3 from 'aws-cdk-lib/aws-s3';
+import * as cdk from '@aws-cdk/core';
+import * as s3 from '@aws-cdk/aws-s3';
   
 export class CdkTestStack extends cdk.Stack {
-  constructor(scope: Construct, id: string, props?: cdk.StackProps) {
+  constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
   
     const bucket = new s3.Bucket(this, 'Bucket', {
@@ -1159,8 +1162,8 @@ export class CdkTestStack extends cdk.Stack {
 #### [ JavaScript ]
 
 ```
-const cdk = require('aws-cdk-lib');
-const s3 = require('aws-cdk-lib/aws-s3');
+const cdk = require('@aws-cdk/core');
+const s3 = require('@aws-cdk/aws-s3');
   
 class CdkTestStack extends cdk.Stack {
   constructor(scope, id, props) {
@@ -1180,12 +1183,11 @@ module.exports = { CdkTestStack }
 #### [ Python ]
 
 ```
-import aws_cdk as cdk
-from constructs import Construct
+import aws_cdk.core as cdk
 import aws_cdk.aws_s3 as s3
 
 class CdkTestStack(cdk.stack):
-    def __init__(self, scope: Construct, id: str, **kwargs):
+    def __init__(self, scope: cdk.Construct, id: str, **kwargs):
         super().__init__(scope, id, **kwargs)
         
         bucket = s3.Bucket(self, "Bucket",
@@ -1197,7 +1199,7 @@ class CdkTestStack(cdk.stack):
 #### [ Java ]
 
 ```
-software.amazon.awscdk.*;
+software.amazon.awscdk.core.*;
 import software.amazon.awscdk.services.s3.*;
 
 public class CdkTestStack extends Stack {

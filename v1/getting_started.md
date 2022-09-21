@@ -4,7 +4,7 @@ This topic introduces you to important AWS CDK concepts and describes how to ins
 
 ## Your background<a name="getting_started_background"></a>
 
-The AWS Cloud Development Kit \(CDK\) lets you define your cloud infrastructure as code in one of its supported programming languages\. It is intended for moderately to highly experienced AWS users\.
+The AWS Cloud Development Kit \(AWS CDK\) lets you define your cloud infrastructure as code in one of its supported programming languages\. It is intended for moderately to highly experienced AWS users\.
 
 Ideally, you already have experience with popular AWS services, particularly [AWS Identity and Access Management](https://aws.amazon.com/iam/) \(IAM\)\. You might already have AWS credentials on your workstation for use with an AWS SDK or the AWS CLI and experience working with AWS resources programmatically\.
 
@@ -147,7 +147,7 @@ You may also manually create or edit the `~/.aws/config` and `~/.aws/credentials
 
 **Note**  
 Although the AWS CDK uses credentials from the same configuration files as other AWS tools and SDKs, including the [AWS Command Line Interface](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html), it may behave slightly differently from these tools\. In particular, if you use a named profile from the `credentials` file, the `config` must have a profile of the same name specifying the region\. The AWS CDK does not fall back to reading the region from the `[default]` section in `config`\. Also, do not use a profile named "default" \(e\.g\. `[profile default]`\)\. See [Setting credentials](https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/setting-credentials.html) for complete details on setting up credentials for the AWS SDK for JavaScript, which the AWS CDK uses under the hood\.  
-AWS CDK does not natively support Single Sign\-On \(SSO\)\. To use SSO with the CDK, use a tool such as [yawsso](https://github.com/victorskl/yawsso)\.
+The AWS CDK natively AWS IAM Identity Center \(successor to AWS Single Sign\-On\)\. To use IAM Identity Center with the CDK, first create a profile using aws configure sso\. Then log in using aws sso login\. Finally, specify this profile when issuing cdk commands using the \-\-profile option or the `AWS_PROFILE` environment variable\.
 
 Alternatively, you can set the environment variables `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_DEFAULT_REGION` to appropriate values\. 
 
@@ -184,6 +184,9 @@ Java IDE recommended \(we use Eclipse in some examples in this Developer Guide\)
 Visual Studio 2019 \(any edition\) or Visual Studio Code recommended\.
 
 ------
+
+**Note**  
+Third\-party Language Deprecation: language version is only supported until its EOL \(End Of Life\) shared by the vendor or community and is subject to change with prior notice\.
 
 ## Install the AWS CDK<a name="getting_started_install"></a>
 
@@ -238,7 +241,7 @@ Where do you go now that you've dipped your toes in the AWS CDK?
 + Try the [CDK Workshop](https://cdkworkshop.com/) for a more in\-depth tour involving a more complex project\.
 + See the [API reference](https://docs.aws.amazon.com/cdk/api/v1/docs/aws-construct-library.html) to begin exploring the provided constructs available for your favorite AWS services\.
 + Visit the [Construct Hub](https://constructs.dev/search?q=&cdk=aws-cdk&cdkver=1&sort=downloadsDesc&offset=0) to find constructs from the CDK community as well as from AWS\.
-+ Dig deeper into concepts like [Environments](environments.md), [Assets](assets.md), [Bootstrapping](bootstrapping.md), [Permissions](permissions.md), [Runtime context](context.md), [Parameters](parameters.md), and [Escape hatches](cfn_layer.md)\.
++ Dig deeper into concepts like [Environments](environments.md), [Assets](assets.md), [Bootstrapping](bootstrapping.md), [Permissions](permissions.md), [Runtime context](context.md), [Parameters](parameters.md), and [Abstractions and escape hatches](cfn_layer.md)\.
 + Explore [Examples](https://github.com/aws-samples/aws-cdk-examples/tree/CDKv1) of using the AWS CDK\.
 
 The AWS CDK is an open\-source project\. Want to [contribute](https://github.com/aws/aws-cdk)?

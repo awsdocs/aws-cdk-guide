@@ -1,9 +1,9 @@
 # Environments<a name="environments"></a>
 
-Each `Stack` instance in your AWS CDK app is explicitly or implicitly associated with an environment \(`env`\)\. An environment is the target AWS account and region into which the stack is intended to be deployed\.
+Each `Stack` instance in your AWS CDK app is explicitly or implicitly associated with an environment \(`env`\)\. An environment is the target AWS account and region into which the stack is intended to be deployed\. The region is specified using a region code; see [Regional endpoints](https://docs.aws.amazon.com/general/latest/gr/rande.html#regional-endpoints) for a list\.
 
 **Note**  
-For all but the simplest deployments, you will need to [bootstrap](bootstrapping.md) each environment you will deploy into\. Deployment requires certain AWS resources to be available, and these resources are provisioned by bootstrapping\.
+You must [bootstrap](bootstrapping.md) each environment you will deploy CDK stacks into\. Bootstrapping provisions certain AWS resources that are used during deployment\.
 
 If you don't specify an environment when you instantiate a stack, the stack is said to be *environment\-agnostic*\. AWS CloudFormation templates synthesized from such a stack will try to use deploy\-time resolution on environment\-related attributes such as `stack.account`, `stack.region`, and `stack.availabilityZones` \(Python: `availability_zones`\)\.
 
@@ -15,7 +15,7 @@ The file `app.py` in your project's main directory\.
 The file named `ProjectNameApp.java`, for example `HelloCdkApp.java`, nested deep under the `src/main` directory\.
 The file named `Program.cs` under `src\ProjectName`, for example `src\HelloCdk\Program.cs`\.
 
-In an environment\-agnostic stack, any constructs that use availability zones will see two of them, allowing the stack to be deployed to any region\.
+In an environment\-agnostic stack, any constructs that use availability zones will see two AZs, allowing the stack to be deployed to any region\.
 
 When using cdk deploy to deploy environment\-agnostic stacks, the AWS CDK CLI uses the specified AWS CLI profile \(or the default profile, if none is specified\) to determine where to deploy\. The AWS CDK CLI follows a protocol similar to the AWS CLI to determine which AWS credentials to use when performing operations in your AWS account\. See [AWS CDK Toolkit \(`cdk` command\)](cli.md) for details\.
 

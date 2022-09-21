@@ -126,7 +126,7 @@ Resources:
   CDKMetadata:
     Type: AWS::CDK::Metadata
     Properties:
-      Modules: "..."
+      ...
 ```
 
 ## Create a Lambda function to list all widgets<a name="serverless_example_create_iam_function"></a>
@@ -198,7 +198,7 @@ Save it and be sure the project still results in an empty stack\. We haven't yet
 cdk synth
 ```
 
-## Creating a widget service<a name="serverless_example_create_widget_service"></a>
+## Create a widget service<a name="serverless_example_create_widget_service"></a>
 
 Create a new source file to define the widget service with the source code shown below\.
 
@@ -359,7 +359,7 @@ public class WidgetService extends Construct {
             .runtime(Runtime.NODEJS_14_X)
             .code(Code.fromAsset("resources"))
             .handler("widgets.main")
-            .environment(java.util.Map.of   // Java 9 or later
+            .environment(java.util.Map.of(   // Java 9 or later
                "BUCKET", bucket.getBucketName()) 
             .build();
 
@@ -533,7 +533,7 @@ cdk synth
 
 ## Deploy and test the app<a name="serverless_example_deploy_and_test"></a>
 
-Before you can deploy your first AWS CDK app containing a lambda function, you must bootstrap your AWS environment\. This creates a staging bucket that the AWS CDK uses to deploy stacks containing assets\. For details, see [Bootstrapping your AWS environment](cli.md#cli-bootstrap)\. If you've already bootstrapped, you'll get a warning and nothing will change\.
+Before you can deploy your first AWS CDK app, you must bootstrap your AWS environment\. This creates \(among other resources\) a staging bucket that the AWS CDK uses to deploy stacks containing assets\. For details, see [Bootstrapping your AWS environment](cli.md#cli-bootstrap)\. If you've already bootstrapped, you'll get a warning and nothing will change\.
 
 ```
 cdk bootstrap aws://ACCOUNT-NUMBER/REGION
@@ -655,7 +655,7 @@ exports.main = async function(event, context) {
       return {
         statusCode: 200,
         headers: {},
-        body: JSON.stringify(event.widgets)
+        body: data
       };
     }
 

@@ -1,6 +1,6 @@
 # Working with the AWS CDK<a name="work-with"></a>
 
-The AWS Cloud Development Kit \(CDK\) lets you define your AWS cloud infrastructure in a general\-purpose programming language\. Currently, the AWS CDK supports TypeScript, JavaScript, Python, Java, C\#, and Go\. It is also possible to use other JVM and \.NET languages, though we are unable to provide support for every such language\.
+The AWS Cloud Development Kit \(AWS CDK\) lets you define your AWS cloud infrastructure in a general\-purpose programming language\. Currently, the AWS CDK supports TypeScript, JavaScript, Python, Java, C\#, and Go\. It is also possible to use other JVM and \.NET languages, though we are unable to provide support for every such language\.
 
 **Note**  
 This Guide does not currently include instructions or code examples for Go aside from [Working with the AWS CDK in Go](work-with-cdk-go.md)\.
@@ -42,6 +42,9 @@ The specific language you work in also has its own prerequisites, described in t
 + [Working with the AWS CDK in Java](work-with-cdk-java.md)
 + [Working with the AWS CDK in C\#](work-with-cdk-csharp.md)
 + [Working with the AWS CDK in Go](work-with-cdk-go.md)
+
+**Note**  
+Third\-party Language Deprecation: language version is only supported until its EOL \(End Of Life\) shared by the vendor or community and is subject to change with prior notice\.
 
 ## AWS Construct Library<a name="work-with-library"></a>
 

@@ -1,4 +1,4 @@
-# AWS Cloud Development Kit (CDK) v2 Developer Guide
+# AWS Cloud Development Kit (AWS CDK) v2 Developer Guide
 
 -----
 *****Copyright &copy; Amazon Web Services, Inc. and/or its affiliates. All rights reserved.*****
@@ -42,8 +42,8 @@ Amazon's trademarks and trade dress may not be used in
    + [Runtime context](context.md)
    + [Feature flags](featureflags.md)
    + [Aspects](aspects.md)
-   + [Escape hatches](cfn_layer.md)
    + [Bootstrapping](bootstrapping.md)
++ [Abstractions and escape hatches](cfn_layer.md)
 + [Best practices for developing and deploying cloud infrastructure with the AWS CDK](best-practices.md)
 + [API reference](reference.md)
 + [Examples](examples.md)
@@ -73,5 +73,5 @@ Amazon's trademarks and trade dress may not be used in
    + [Infrastructure security for the AWS Cloud Development Kit (AWS CDK)](infrastructure-security.md)
 + [Troubleshooting common AWS CDK issues](troubleshooting.md)
 + [Videos](videos.md)
-+ [OpenPGP keys for the AWS CDK and JSII](pgp-keys.md)
++ [OpenPGP keys for the AWS CDK and jsii](pgp-keys.md)
 + [AWS CDK Developer Guide history](doc-history.md)

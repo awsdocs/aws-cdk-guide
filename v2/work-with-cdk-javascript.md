@@ -10,6 +10,9 @@ To work with the AWS CDK, you must have an AWS account and credentials and have 
 
 JavaScript AWS CDK applications require no additional prerequisites beyond these\.
 
+**Note**  
+Third\-party Language Deprecation: language version is only supported until its EOL \(End Of Life\) shared by the vendor or community and is subject to change with prior notice\.
+
 ## Creating a project<a name="javascript-newproject"></a>
 
 You create a new AWS CDK project by invoking `cdk init` in an empty directory\.
@@ -22,7 +25,7 @@ cdk init app --language javascript
 
 Creating a project also installs the [https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib-readme.html](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib-readme.html) module and its dependencies\.
 
-`cdk init` uses the name of the project folder to name various elements of the project, including classes, subfolders, and files\. 
+`cdk init` uses the name of the project folder to name various elements of the project, including classes, subfolders, and files\. Hyphens in the folder name are converted to underscores\. However, the name should otherwise follow the form of a JavaScript identifier; for example, it should not start with a number or contain spaces\. 
 
 ## Using local `cdk`<a name="typescript-local"></a>
 

@@ -10,11 +10,9 @@ When you refer to an asset in your app, the [cloud assembly](apps.md#apps_cloud_
 
 The AWS CDK generates a source hash for assets, which can be used at construction time to determine whether the contents of an asset have changed\.
 
-By default, the AWS CDK creates a copy of the asset in the cloud assembly directory, which defaults to `cdk.out`, under the source hash\. This is so that the cloud assembly is self\-contained and moved over to a different host for deployment\. See [Cloud assemblies](apps.md#apps_cloud_assembly) for details\.
+By default, the AWS CDK creates a copy of the asset in the cloud assembly directory, which defaults to `cdk.out`, under the source hash\. This way, the cloud assembly is self\-contained, so if it moved over to a different host for deployment, it can still be deployed\. See [Cloud assemblies](apps.md#apps_cloud_assembly) for details\.
 
-The AWS CDK also synthesizes AWS CloudFormation parameters that the AWS CDK CLI specifies during deployment\. The AWS CDK uses those parameters to refer to the deploy\-time values of the asset\.
-
-When the AWS CDK deploys an app that references assets \(either directly by the app code or through a library\), the AWS CDK CLI first prepares and publishes them to Amazon S3 or Amazon ECR, and only then deploys the stack\. The AWS CDK specifies the locations of the published assets as AWS CloudFormation parameters to the relevant stacks, and uses that information to enable referencing these locations within an AWS CDK app\.
+When the AWS CDK deploys an app that references assets \(either directly by the app code or through a library\), the AWS CDK CLI first prepares and publishes the assets to an Amazon S3 bucket or Amazon ECR repository, which was created during bootstrapping\. Only then are the resources defined in the stack deployed\.
 
 This section describes the low\-level APIs available in the framework\.
 

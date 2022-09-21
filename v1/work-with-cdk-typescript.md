@@ -19,6 +19,9 @@ If you get a permission error, and have administrator access on your system, try
 
 Keep TypeScript up to date with a regular `npm update -g typescript`\.
 
+**Note**  
+Third\-party Language Deprecation: language version is only supported until its EOL \(End Of Life\) shared by the vendor or community and is subject to change with prior notice\.
+
 ## Creating a project<a name="typescript-newproject"></a>
 
 You create a new AWS CDK project by invoking `cdk init` in an empty directory\.
@@ -31,7 +34,7 @@ cdk init app --language typescript
 
 Creating a project also installs the [https://docs.aws.amazon.com/cdk/api/v1/docs/core-readme.html](https://docs.aws.amazon.com/cdk/api/v1/docs/core-readme.html) module and its dependencies\.
 
-`cdk init` uses the name of the project folder to name various elements of the project, including classes, subfolders, and files\. 
+`cdk init` uses the name of the project folder to name various elements of the project, including classes, subfolders, and files\. Hyphens in the folder name are converted to underscores\. However, the name should otherwise follow the form of a TypeScript identifier; for example, it should not start with a number or contain spaces\. 
 
 ## Using local `tsc` and `cdk`<a name="typescript-local"></a>
 

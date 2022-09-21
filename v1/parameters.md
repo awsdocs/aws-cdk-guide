@@ -190,19 +190,19 @@ A generated template containing parameters can be deployed in the usual way thro
 The AWS CDK Toolkit \(`cdk` command\-line tool\) also supports specifying parameters at deployment\. You may provide these on the command line following the `--parameters` flag\. You might deploy a stack that uses the `uploadBucketName` parameter like this\.
 
 ```
-cdk deploy MyStack --parameters uploadBucketName=UploadBucket
+cdk deploy MyStack --parameters uploadBucketName=uploadbucket
 ```
 
 To define multiple parameters, use multiple `--parameters` flags\.
 
 ```
-cdk deploy MyStack --parameters uploadBucketName=UpBucket --parameters downloadBucketName=DownBucket
+cdk deploy MyStack --parameters uploadBucketName=upbucket --parameters downloadBucketName=downbucket
 ```
 
 If you are deploying multiple stacks, you can specify a different value of each parameter for each stack by prefixing the name of the parameter with the stack name and a colon\.
 
 ```
-cdk deploy MyStack YourStack --parameters MyStack:uploadBucketName=UploadBucket --parameters YourStack:uploadBucketName=UpBucket
+cdk deploy MyStack YourStack --parameters MyStack:uploadBucketName=uploadbucket --parameters YourStack:uploadBucketName=upbucket
 ```
 
 By default, the AWS CDK retains values of parameters from previous deployments and uses them in subsequent deployments if they are not specified explicitly\. Use the `--no-previous-parameters flag` to require all parameters to be specified\.

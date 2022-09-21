@@ -1,6 +1,9 @@
 # Migrating to AWS CDK v2<a name="migrating-v2"></a>
 
-Version 2 of the AWS Cloud Development Kit \(CDK\) is designed to make writing infrastructure as code in your preferred programming language even easier\.
+Version 2 of the AWS Cloud Development Kit \(AWS CDK\) is designed to make writing infrastructure as code in your preferred programming language even easier\. This topic describes the changes between v1 and v2 of the AWS CDK\.
+
+**Tip**  
+To identify stacks deployed with AWS CDK v1, use the [awscdk\-v1\-stack\-finder](https://www.npmjs.com/package/awscdk-v1-stack-finder) utility\.
 
 The main changes from AWS CDK v1 to CDK v2 are as follows\.
 + AWS CDK v2 consolidates the stable parts of the AWS Construct Library, including the core library, into a single package, `aws-cdk-lib`\. Developers no longer need to install additional packages for the individual AWS services they use\. This single\-package approach also eliminates the need to synchronize the versions of the various CDK library packages\.
@@ -21,7 +24,7 @@ The main changes from AWS CDK v1 to CDK v2 are as follows\.
 + The `Construct` class has been extracted from the AWS CDK into a separate library, along with related types, to support efforts to apply the Construct Programming Model to other domains\. If you are writing your own constructs or using related APIs, you must declare the `constructs` module as a dependency and make minor changes to your imports\. If you are using advanced features, such as hooking into the CDK app lifecycle, more changes may be needed\. [See the RFC](https://github.com/aws/aws-cdk-rfcs/blob/master/text/0192-remove-constructs-compat.md#release-notes) for full details\.
 + Deprecated properties, methods, and types in AWS CDK v1\.x and its Construct Library have been removed completely from the CDK v2 API\. In most supported languages, these APIs produce warnings under v1\.x, so you may have already migrated to the replacement APIs\. A complete [list of deprecated APIs](https://github.com/aws/aws-cdk/blob/master/DEPRECATED_APIs.md) in CDK v1\.x is available on GitHub\.
 + Behavior that was gated by feature flags in AWS CDK v1\.x is enabled by default in CDK v2, and the old feature flags are no longer needed or, in most cases, supported\. A handful are still available to let you to revert to CDK v1 behavior in very specific circumstances; see [Updating feature flags](#migrating-v2-v1-upgrade-cdk-json)\.
-+ CDK v2 requires that the environments you deploy into be boostrapped using the modern bootstrap stack; the legacy bootstrap stack \(the default under v1\) is no longer supported\. CDK v2 furthermore requires a new version of the modern stack\. Simply re\-bootstrap your existing environments to upgrade them\. It is no longer necessary to set any feature flags or environment variables to specify the modern bootstrap stack\.
++ CDK v2 requires that the environments you deploy into be bootstrapped using the modern bootstrap stack; the legacy bootstrap stack \(the default under v1\) is no longer supported\. CDK v2 furthermore requires a new version of the modern stack\. Simply re\-bootstrap your existing environments to upgrade them\. It is no longer necessary to set any feature flags or environment variables to specify the modern bootstrap stack\.
 
 **Important**  
 The modern bootstrap template effectively grants the permissions implied by the `--cloudformation-execution-policies` to any AWS account in the `--trust` list, which by default will extend permissions to read and write to any resource in the bootstrapped account\. Make sure to [configure the bootstrapping stack](bootstrapping.md#bootstrapping-customizing) with policies and trusted accounts you are comfortable with\.
@@ -346,4 +349,14 @@ If you see an error like this one:
 MyStack: SSM parameter /cdk-bootstrap/hnb659fds/version not found. Has the environment been bootstrapped? Please run 'cdk bootstrap' (see https://docs.aws.amazon.com/cdk/latest/guide/bootstrapping.html)
 ```
 
-AWS CDK v2 requires a new bootstrap stack, so you must re\-bootstrap your deployment environment\(s\)\. See [Bootstrapping](bootstrapping.md) for complete details\.
+AWS CDK v2 requires an updated bootstrap stack, and furthermore, all v2 deployments require bootstrap resources \(v1 allowed you to deploy simple stacks without having bootstrapped\)\. See [Bootstrapping](bootstrapping.md) for complete details\.
+
+## Finding v1 stacks<a name="finding-v1-stacks.title"></a>
+
+When migrating your CDK application from v1 to v2, you might want to identify the deployed AWS CloudFormation stacks that were created using v1\. To do this, run the following command: 
+
+```
+npx awscdk-v1-stack-finder
+```
+
+See the awscdk\-v1\-stack\-finder [README](https://github.com/cdklabs/awscdk-v1-stack-finder/blob/main/README.md) for usage details\.

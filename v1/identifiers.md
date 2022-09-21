@@ -274,4 +274,4 @@ For example, the Amazon S3 bucket in the previous example that is created within
 
 ### Logical ID stability<a name="identifiers_logical_id_stability"></a>
 
-Avoid changing the logical ID of a resource after it has been created\. Since AWS CloudFormation identifies resources by their logical ID, if you change the logical ID of a resource, AWS CloudFormation deletes the existing resource, and then creates a new resource with the new logical ID, which may cause service interruption or data loss\.
+Avoid changing the logical ID of a resource after it has been created\. Since AWS CloudFormation identifies resources by their logical ID, if you change the logical ID of a resource, AWS CloudFormation creates a new resource with the new logical ID, then deletes the existing one\. Depending on the type of resource, this may cause service interruption or data loss, or both\.

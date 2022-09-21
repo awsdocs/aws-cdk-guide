@@ -1,8 +1,8 @@
 # Apps<a name="apps"></a>
 
-As described in [Constructs](constructs.md), to provision infrastructure resources, all constructs that represent AWS resources must be defined, directly or indirectly, within the scope of a [Stack](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.Stack.html) construct\.
+As described in [Constructs](constructs.md), to provision infrastructure resources, all constructs that represent AWS resources must be defined, directly or indirectly, within the scope of a [Stack](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.Stack.html) construct\. An [App](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.App.html) is a container for one or more stacks: it serves as each stack's scope\. Stacks within a single `App` can easily refer to each others' resources \(and attributes of those resources\)\. The AWS CDK infers dependencies between stacks so that they can be deployed in the correct order\. You can deploy any or all of the stacks defined within an app at with a single `cdk deploy` command\.
 
-The following example declares a stack class named `MyFirstStack` that includes a single Amazon S3 bucket\. However, this only declares a stack\. You still need to define \(also known as to instantiate\) it in some scope to deploy it\.
+The following example declares a stack class named `MyFirstStack` that includes a single Amazon S3 bucket\.
 
 ------
 #### [ TypeScript ]
@@ -73,6 +73,8 @@ public class MyFirstStack : Stack
 ```
 
 ------
+
+However, this code has only *declared* a stack\. For the stack to actually be synthesized into a AWS CloudFormation template and deployed, it needs to be instantiated\. And, like all CDK constructs, it must be instantiated in some context\. The `App` is that context\.
 
 ## The app construct<a name="apps_construct"></a>
 
@@ -151,7 +153,7 @@ This is the final stage of the execution of your AWS CDK app\. It's triggered by
 In this phase, the AWS CDK Toolkit takes the deployment artifacts cloud assembly produced by the synthesis phase and deploys it to an AWS environment\. It uploads assets to Amazon S3 and Amazon ECR, or wherever they need to go, and then starts an AWS CloudFormation deployment to deploy the application and create the resources\.
 
 By the time the AWS CloudFormation deployment phase \(step 5\) starts, your AWS CDK app has already finished and exited\. This has the following implications:
-+ The AWS CDK app can't respond to events that happen during deployment, such as a resource being created or the whole deployment finishing\. To run code during the deployment phase, you have to inject it into the AWS CloudFormation template as a [custom resource](cfn_layer.md#cfn_layer_custom)\. For more information about adding a custom resource to your app, see the [AWS CloudFormation module](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_cloudformation-readme.html), or the [custom\-resource](https://github.com/aws-samples/aws-cdk-examples/tree/master/typescript/custom-resource/) example\.
++ The AWS CDK app can't respond to events that happen during deployment, such as a resource being created or the whole deployment finishing\. To run code during the deployment phase, you must inject it into the AWS CloudFormation template as a [custom resource](cfn_layer.md#cfn_layer_custom)\. For more information about adding a custom resource to your app, see the [AWS CloudFormation module](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_cloudformation-readme.html), or the [custom\-resource](https://github.com/aws-samples/aws-cdk-examples/tree/master/typescript/custom-resource/) example\.
 + The AWS CDK app might have to work with values that can't be known at the time it runs\. For example, if the AWS CDK app defines an Amazon S3 bucket with an automatically generated name, and you retrieve the `bucket.bucketName` \(Python: `bucket_name`\) attribute, that value is not the name of the deployed bucket\. Instead, you get a `Token` value\. To determine whether a particular value is available, call `Token.isUnresolved(value)` \(Python: `is_unresolved`\)\. See [Tokens](tokens.md) for details\.
 
 ## Cloud assemblies<a name="apps_cloud_assembly"></a>
