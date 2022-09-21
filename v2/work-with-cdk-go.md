@@ -25,7 +25,7 @@ cd my-project
 cdk init app --language go
 ```
 
-`cdk init` uses the name of the project folder to name various elements of the project, including classes, subfolders, and files\. 
+`cdk init` uses the name of the project folder to name various elements of the project, including classes, subfolders, and files\. Hyphens in the folder name are converted to underscores\. However, the name should otherwise follow the form of a Go identifier; for example, it should not start with a number or contain spaces\. 
 
 The resulting project includes a reference to the AWS CDK Go module, `github.com/aws/aws-cdk-go/awscdk/v2`, in `go.mod`\. The CDK and its dependencies are automatically installed when you build your app\.
 

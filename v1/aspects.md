@@ -41,7 +41,7 @@ Aspects.Of(myConstruct).add(new SomeAspect(...));
 
 ------
 
-The AWS CDK currently uses aspects only to [tag resources](tagging.md), but the framework is extensible and can also be used for other purposes\. For example, you can use it to validate or change the AWS CloudFormation resources that are defined for you by higher\-level constructs\.
+The AWS CDK uses aspects to [tag resources](tagging.md), but the framework can also be used for other purposes\. For example, you can use it to validate or change the AWS CloudFormation resources that are defined for you by higher\-level constructs\.
 
 ## Aspects in detail<a name="aspects_detail"></a>
 

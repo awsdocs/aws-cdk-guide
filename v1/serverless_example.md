@@ -126,7 +126,7 @@ Resources:
   CDKMetadata:
     Type: AWS::CDK::Metadata
     Properties:
-      Modules: "..."
+      ..."
 ```
 
 ## Create a Lambda function to list all widgets<a name="serverless_example_create_iam_function"></a>
@@ -198,7 +198,7 @@ Save it and be sure the project still results in an empty stack\. We haven't yet
 cdk synth
 ```
 
-## Creating a widget service<a name="serverless_example_create_widget_service"></a>
+## Create a widget service<a name="serverless_example_create_widget_service"></a>
 
 Add the API Gateway, Lambda, and Amazon S3 packages to the app\.
 
@@ -421,7 +421,7 @@ public class WidgetService extends Construct {
             .runtime(Runtime.NODEJS_14_X)
             .code(Code.fromAsset("resources"))
             .handler("widgets.main")
-            .environment(java.util.Map.of   // Java 9 or later
+            .environment(java.util.Map.of(   // Java 9 or later
                "BUCKET", bucket.getBucketName()) 
             .build();
 

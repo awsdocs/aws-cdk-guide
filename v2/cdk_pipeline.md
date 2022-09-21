@@ -14,7 +14,7 @@ Before you can use CDK Pipelines, you must bootstrap the AWS environment\(s\) to
 **Note**  
 See [Bootstrapping](bootstrapping.md) for more information on the kinds of resources created by bootstrapping and how to customize the bootstrap stack\.
 
-Continuous deployment with CDK Pipelines requires that the CDK Toolkit stack include an Amazon S3 bucket, an Amazon ECR repository, and IAM roles to give the various parts of a pipeline the permissions they need\. The CDK Toolkitwill upgrade your existing bootstrap stack or create a new one, as necessary\.
+Continuous deployment with CDK Pipelines requires that the CDK Toolkit stack include an Amazon S3 bucket, an Amazon ECR repository, and IAM roles to give the various parts of a pipeline the permissions they need\. The CDK Toolkit will upgrade your existing bootstrap stack or create a new one, as necessary\.
 
 To bootstrap an environment that can provision an AWS CDK pipeline, invoke `cdk bootstrap` as shown below\. Invoking the AWS CDK Toolkit via the `npx` command temporarily installs it if necessary, and will use the version of the Toolkit installed in the current project if one exists\. 
 

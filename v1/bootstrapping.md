@@ -182,7 +182,7 @@ The following additional switches are available only with the modern bootstrappi
 **Important**  
 To avoid deployment failures, be sure the policies you specify are sufficient for any deployments you will perform in the environment being bootstrapped\.
 + \-\-trust lists the AWS accounts that may deploy into the environment being bootstrapped\. Use this flag when bootstrapping an environment that a CDK Pipeline in another environment will deploy into\. The account doing the bootstrapping is always trusted\.
-+ \-\-trust\-for\-lookup lists the AWS accounts that may look up context information from the environment being bootstrapped\. Use this flag to give accounts permission to synthesize stacks that will be deployed into the environment, without actually giving them permission to deploy those stacks directly\. Accounts specified under \-\-trust are always trusted for context lookup\.
++ \-\-trust\-for\-lookup lists the AWS accounts that may look up context information from the environment being bootstrapped\. Use this flag to give accounts permission to synthesize stacks that will be deployed into the environment, without actually giving them permission to deploy those stacks directly\.
 + \-\-qualifier a string that is added to the names of all resources in the bootstrap stack\. A qualifier lets you avoid resource name clashes when you provision multiple bootstrap stacks in the same environment using \-\-toolkit\-stack\-name\. The default is `hnb659fds` \(this value has no significance\)\. Changing the qualifier also requires that your CDK app pass the changed value to the stack synthesizer\(see [Stack synthesizers](#bootstrapping-synthesizers)\)\. 
 
 **Important**  

@@ -5,7 +5,7 @@ Constructs are the basic building blocks of AWS CDK apps\. A construct represent
 **Note**  
 Constructs are part of the Construct Programming Model \(CPM\) and are also used by other tools such as CDK for Terraform \(CDKtf\), CDK for Kubernetes \(CDK8s\), and Projen\.
 
-A construct can represent a single AWS resource, such as an Amazon Simple Storage Service \(Amazon S3\) bucket, or it can be a higher\-level abstraction consisting of multiple AWS related resources\. Examples of such components include a worker queue with its associated compute capacity, or a scheduled job with monitoring resources and a dashboard\.
+A construct can represent a single AWS resource, such as an Amazon Simple Storage Service \(Amazon S3\) bucket, or it can be a higher\-level abstraction consisting of multiple related AWS resources\. Examples of such components include a worker queue with its associated compute capacity, or a scheduled job with monitoring resources and a dashboard\.
 
 The AWS CDK includes a collection of constructs called the AWS Construct Library, containing constructs for every AWS service\. [Construct Hub](https://constructs.dev/search?q=&cdk=aws-cdk&cdkver=1&sort=downloadsDesc&offset=0) is a resource to help you discover additional constructs from AWS, third parties, and the open\-source CDK community\.
 

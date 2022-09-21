@@ -30,7 +30,7 @@ cd my-project
 cdk init app --language java
 ```
 
-`cdk init` uses the name of the project folder to name various elements of the project, including classes, subfolders, and files\. 
+`cdk init` uses the name of the project folder to name various elements of the project, including classes, subfolders, and files\. Hyphens in the folder name are converted to underscores\. However, the name should otherwise follow the form of a Java identifier; for example, it should not start with a number or contain spaces\. 
 
 The resulting project includes a reference to the `software.amazon.awscdk` Maven package\. It and its dependencies are automatically installed by Maven\.
 

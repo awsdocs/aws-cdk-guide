@@ -136,7 +136,7 @@ To avoid deployment failures, be sure the policies you specify are sufficient fo
 + \-\-qualifier a string that is added to the names of all resources in the bootstrap stack\. A qualifier lets you avoid resource name clashes when you provision multiple bootstrap stacks in the same environment using \-\-toolkit\-stack\-name\. The default is `hnb659fds` \(this value has no significance\)\. Changing the qualifier also requires that your CDK app pass the changed value to the stack synthesizer\(see [Stack synthesizers](#bootstrapping-synthesizers)\)\. 
 + \-\-tags adds one or more AWS CloudFormation tags to the bootstrap stack\.
 + \-\-trust lists the AWS accounts that may deploy into the environment being bootstrapped\. Use this flag when bootstrapping an environment that a CDK Pipeline in another environment will deploy into\. The account doing the bootstrapping is always trusted\.
-+ \-\-trust\-for\-lookup lists the AWS accounts that may look up context information from the environment being bootstrapped\. Use this flag to give accounts permission to synthesize stacks that will be deployed into the environment, without actually giving them permission to deploy those stacks directly\. Accounts specified under \-\-trust are always trusted for context lookup\.
++ \-\-trust\-for\-lookup lists the AWS accounts that may look up context information from the environment being bootstrapped\. Use this flag to give accounts permission to synthesize stacks that will be deployed into the environment, without actually giving them permission to deploy those stacks directly\.
 + \-\-termination\-protection prevents the bootstrap stack from being deleted \(see [Protecting a stack from being deleted](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-protect-stacks.html) in the AWS CloudFormation User Guide\)
 
 **Important**  
@@ -576,3 +576,4 @@ The bootstrap template is versioned and evolves over time with the AWS CDK itsel
 | 11 | 2\.18\.0 | Adds policy allowing Lambda to pull from Amazon ECR repos so it survives rebootstrapping\. | 
 | 12 | 2\.20\.0 | Adds support for experimental cdk import\. | 
 | 13 | 2\.25\.0 | Makes container images in bootstrap\-created Amazon ECR repositories immutable\. | 
+| 14 | 2\.34\.0 | Turns off Amazon ECR image scanning at the repository level by default to allow bootstrapping regions that do not support image scanning\. | 
