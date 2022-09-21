@@ -30,7 +30,7 @@ All CDK Toolkit commands start with `cdk`, which is followed by a subcommand \(`
 | `cdk bootstrap` | Deploys the CDK Toolkit staging stack; see [Bootstrapping](bootstrapping.md) | 
 | `cdk deploy` | Deploys the specified stack\(s\) | 
 | `cdk destroy` | Destroys the specified stack\(s\) | 
-| `cdk diff` | Compares the specified stack with the deployed stack or a local CloudFormation template | 
+| `cdk diff` | Compares the specified stack and its dependencies with the deployed stack\(s\) or a local CloudFormation template | 
 | `cdk metadata` | Displays metadata about the specified stack | 
 | `cdk init` | Creates a new CDK project in the current directory from a specified template | 
 | `cdk context` | Manages cached context values | 
@@ -512,7 +512,7 @@ The setting can also be configured in the `cdk.json` file\.
 
 ## Comparing stacks<a name="cli-diff"></a>
 
-The `cdk diff` command compares the current version of a stack defined in your app with the already\-deployed version, or with a saved AWS CloudFormation template, and displays a list of changes \.
+The `cdk diff` command compares the current version of a stack \(and its dependencies\) defined in your app with the already\-deployed version\(s\), or with a saved AWS CloudFormation template, and displays a list of changes\.
 
 ```
 Stack HelloCdkStack
