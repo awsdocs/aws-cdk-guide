@@ -771,8 +771,8 @@ File: `lib/widget_service.ts`
 
     const widgetIntegration = new apigateway.LambdaIntegration(handler);
 
-    widget.addMethod("POST", widgetIntegration); // POST /{id}
-    widget.addMethod("GET", widgetIntegration); // GET /{id}
+    widget.addMethod("POST", widgetIntegration);   // POST /{id}
+    widget.addMethod("GET", widgetIntegration);    // GET /{id}
     widget.addMethod("DELETE", widgetIntegration); // DELETE /{id}
 ```
 
@@ -786,8 +786,8 @@ File: `lib/widget_service.js`
 
     const widgetIntegration = new apigateway.LambdaIntegration(handler);
 
-    widget.addMethod("POST", widgetIntegration); // POST /{id}
-    widget.addMethod("GET", widgetIntegration); // GET /{id}
+    widget.addMethod("POST", widgetIntegration);   // POST /{id}
+    widget.addMethod("GET", widgetIntegration);    // GET /{id}
     widget.addMethod("DELETE", widgetIntegration); // DELETE /{id}
 ```
 

@@ -708,18 +708,11 @@ File: `lib/widget_service.ts`
 ```
     const widget = api.root.addResource("{id}");
 
-    // Add new widget to bucket with: POST /{id}
-    const postWidgetIntegration = new apigateway.LambdaIntegration(handler);
+    const widgetIntegration = new apigateway.LambdaIntegration(handler);
 
-    // Get a specific widget from bucket with: GET /{id}
-    const getWidgetIntegration = new apigateway.LambdaIntegration(handler);
-
-    // Remove a specific widget from the bucket with: DELETE /{id}
-    const deleteWidgetIntegration = new apigateway.LambdaIntegration(handler);
-
-    widget.addMethod("POST", postWidgetIntegration); // POST /{id}
-    widget.addMethod("GET", getWidgetIntegration); // GET /{id}
-    widget.addMethod("DELETE", deleteWidgetIntegration); // DELETE /{id}
+    widget.addMethod("POST", widgetIntegration);   // POST /{id}
+    widget.addMethod("GET", widgetIntegration);    // GET /{id}
+    widget.addMethod("DELETE", widgetIntegration); // DELETE /{id}
 ```
 
 ------
@@ -730,18 +723,11 @@ File: `lib/widget_service.js`
 ```
     const widget = api.root.addResource("{id}");
 
-    // Add new widget to bucket with: POST /{id}
-    const postWidgetIntegration = new apigateway.LambdaIntegration(handler);
+    const widgetIntegration = new apigateway.LambdaIntegration(handler);
 
-    // Get a specific widget from bucket with: GET /{id}
-    const getWidgetIntegration = new apigateway.LambdaIntegration(handler);
-
-    // Remove a specific widget from the bucket with: DELETE /{id}
-    const deleteWidgetIntegration = new apigateway.LambdaIntegration(handler);
-
-    widget.addMethod("POST", postWidgetIntegration); // POST /{id}
-    widget.addMethod("GET", getWidgetIntegration); // GET /{id}
-    widget.addMethod("DELETE", deleteWidgetIntegration); // DELETE /{id}
+    widget.addMethod("POST", widgetIntegration);   // POST /{id}
+    widget.addMethod("GET", widgetIntegration);    // GET /{id}
+    widget.addMethod("DELETE", widgetIntegration); // DELETE /{id}
 ```
 
 ------
@@ -752,18 +738,11 @@ File: `my_widget_service/widget_service.py`
 ```
         widget = api.root.add_resource("{id}")
 
-        # Add new widget to bucket with: POST /{id}
-        post_widget_integration = apigateway.LambdaIntegration(handler)
+        widget_integration = apigateway.LambdaIntegration(handler)
 
-        # Get a specific widget from bucket with: GET /{id}
-        get_widget_integration = apigateway.LambdaIntegration(handler)
-
-        # Remove a specific widget from the bucket with: DELETE /{id}
-        delete_widget_integration = apigateway.LambdaIntegration(handler)
-
-        widget.add_method("POST", post_widget_integration);     # POST /{id}
-        widget.add_method("GET", get_widget_integration);       # GET /{id}
-        widget.add_method("DELETE", delete_widget_integration); # DELETE /{id}
+        widget.add_method("POST", widget_integration);   # POST /{id}
+        widget.add_method("GET", widget_integration);    # GET /{id}
+        widget.add_method("DELETE", widget_integration); # DELETE /{id}
 ```
 
 ------
@@ -774,18 +753,11 @@ File: `src/src/main/java/com/myorg/WidgetService.java`
 ```
         Resource widget = api.getRoot().addResource("{id}");
 
-        // Add new widget to bucket with: POST /{id}
-        LambdaIntegration postWidgetIntegration = new LambdaIntegration(handler);
+        LambdaIntegration widgetIntegration = new LambdaIntegration(handler);
 
-        // Get a specific widget from bucket with: GET /{id}
-        LambdaIntegration getWidgetIntegration = new LambdaIntegration(handler);
-
-        // Remove a specific widget from the bucket with: DELETE /{id}
-        LambdaIntegration deleteWidgetIntegration = new LambdaIntegration(handler);
-
-        widget.addMethod("POST", postWidgetIntegration);     // POST /{id}
-        widget.addMethod("GET", getWidgetIntegration);       // GET /{id}
-        widget.addMethod("DELETE", deleteWidgetIntegration); // DELETE /{id}
+        widget.addMethod("POST", widgetIntegration);   // POST /{id}
+        widget.addMethod("GET", widgetIntegration);    // GET /{id}
+        widget.addMethod("DELETE", widgetIntegration); // DELETE /{id}
 ```
 
 ------
@@ -796,18 +768,11 @@ File: `src/MyWidgetService/WidgetService.cs`
 ```
             var widget = api.Root.AddResource("{id}");
 
-            // Add new widget to bucket with: POST /{id}
-            var postWidgetIntegration = new LambdaIntegration(handler);
+            var widgetIntegration = new LambdaIntegration(handler);
 
-            // Get a specific widget from bucket with: GET /{id}
-            var getWidgetIntegration = new LambdaIntegration(handler);
-
-            // Remove a specific widget from the bucket with: DELETE /{id}
-            var deleteWidgetIntegration = new LambdaIntegration(handler);
-
-            widget.AddMethod("POST", postWidgetIntegration);        // POST /{id}
-            widget.AddMethod("GET", getWidgetIntegration);          // GET /{id}
-            widget.AdMethod("DELETE", deleteWidgetIntegration);    // DELETE /{id}
+            widget.AddMethod("POST", widgetIntegration);  // POST /{id}
+            widget.AddMethod("GET", widgetIntegration);   // GET /{id}
+            widget.AdMethod("DELETE", widgetIntegration); // DELETE /{id}
 ```
 
 ------
