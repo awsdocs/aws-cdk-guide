@@ -77,4 +77,3 @@ The syntax for reverting these flags in `cdk.json` is shown here\.
   }
 }
 ```
-
