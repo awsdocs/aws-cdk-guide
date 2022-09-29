@@ -80,32 +80,9 @@ To migrate your app to AWS CDK v2, first update the feature flags in `cdk.json`\
 
 ### Updating feature flags<a name="migrating-v2-v1-upgrade-cdk-json"></a>
 
-Remove all feature flags from `cdk.json`\. You can add one or more of the flags listed below, set to `false`, if your app relies on these specific AWS CDK v1 behaviors\. Use the `cdk diff` command to inspect the changes to your synthesized template to see if any of these flags are needed\.
+Remove all v1 feature flags from `cdk.json`, as these are all active by default in AWS CDK v2\.
 
-`@aws-cdk/aws-apigateway:usagePlanKeyOrderInsensitiveId`  
-If your application uses multiple Amazon API Gateway API keys and associates them to usage plans
-
-`@aws-cdk/aws-rds:lowercaseDbIdentifier`  
-If your application uses Amazon RDS database instance or database clusters, and explicitly specifies the identifier for these
-
-`@aws-cdk/aws-cloudfront:defaultSecurityPolicyTLSv1.2_2021`  
- If your application uses the TLS\_V1\_2\_2019 security policy with Amazon CloudFront distributions\. CDK v2 uses security policy TLSv1\.2\_2021 by default\. 
-
-`@aws-cdk/core:stackRelativeExports`  
-If your application uses multiple stacks and you refer to resources from one stack in another, this determines whether absolute or relative path is used to construct AWS CloudFormation exports
-
-The syntax for reverting these flags in `cdk.json` is shown here\.
-
-```
-{
-  "context": {
-    "@aws-cdk/aws-apigateway:usagePlanKeyOrderInsensitiveId": false,
-    "@aws-cdk/aws-cloudfront:defaultSecurityPolicyTLSv1.2_2021": false,
-    "@aws-cdk/aws-rds:lowercaseDbIdentifier": false,
-    "@aws-cdk/core:stackRelativeExports": false
-  }
-}
-```
+A handful of v1 feature flags can be set to `false` in order to revert to specific AWS CDK v1 behaviors; see [Disabling features with flags](featureflags.md#featureflags_disabling) for a complete list\. Use the `cdk diff` command to inspect the changes to your synthesized template to see if any of these flags are needed\.
 
 ### CDK Toolkit compatibility<a name="work-with-cdk-v2-cli"></a>
 
