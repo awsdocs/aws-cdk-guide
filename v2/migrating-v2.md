@@ -86,7 +86,7 @@ A handful of v1 feature flags can be set to `false` in order to revert to specif
 
 ### CDK Toolkit compatibility<a name="work-with-cdk-v2-cli"></a>
 
-CDK v2 requires v2 or later of the CDK Toolkit\. This version is backward\-compatible with CDK v1 apps, so you can use a single globally\-installed version of CDK Toolkit with all your AWS CDK projects, whether they use v1 or v2\. An exception is that CDK Toolkit v2 creates CDK v2 projects\.
+CDK v2 requires v2 or later of the CDK Toolkit\. This version is backward\-compatible with CDK v1 apps, so you can use a single globally\-installed version of CDK Toolkit with all your AWS CDK projects, whether they use v1 or v2\. An exception is that CDK Toolkit v2 only creates CDK v2 projects\.
 
 If you need to create both v1 and v2 CDK projects, **do not install CDK Toolkit v2 globally\.** \(Remove it if you already have it installed: `npm remove -g aws-cdk`\.\) To invoke the CDK Toolkit, use npx to run v1 or v2 of the CDK Toolkit as desired\.
 
