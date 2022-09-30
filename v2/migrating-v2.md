@@ -71,6 +71,13 @@ dotnet restore
 ```
 
 ------
+#### [ Go ]
+
+```
+go get
+```
+
+------
 
 After updating your dependencies, issue `npm update -g aws-cdk` to update the CDK Toolkit to the release version\.
 
@@ -291,6 +298,11 @@ using Amazon.CDK;                   // for core classes like App and Stack
 using Amazon.CDK.AWS.S3;            // for stable constructs like Bucket
 using Amazon.CDK.Codestar.Alpha;    // for experimental constructs
 ```
+
+------
+#### [ Go ]
+
+Issue go get to update your dependencies to the latest version and update your project's `.mod` file\.
 
 ------
 

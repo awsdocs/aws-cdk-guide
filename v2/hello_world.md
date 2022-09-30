@@ -86,6 +86,19 @@ cdk init app --language csharp
 If you are using Visual Studio, open the solution file in the `src` directory\.
 
 ------
+#### [ Go ]
+
+```
+cdk init app --language go
+```
+
+After the app has been created, also enter the following command to instll the AWS Construct Library modules required by the app\.
+
+```
+go get
+```
+
+------
 
 **Tip**  
 If you don't specify a template, the default is "app," which is the one we wanted anyway, so technically you can leave it out and save four keystrokes\.
@@ -134,9 +147,13 @@ dotnet build src
 Or press F6 in Visual Studio
 
 ------
+#### [ Go ]
 
-**Note**  
-If your project was created with an older version of the AWS CDK Toolkit, it may not automatically build when you run it\. If changes you make in your code fail to be reflected in the synthesized template, try a manual build\. Make sure you are using the latest available version of the AWS CDK for this tutorial\.
+```
+go build
+```
+
+------
 
 ## List the stacks in the app<a name="hello_world_tutorial_list_stacks"></a>
 
@@ -263,6 +280,58 @@ namespace HelloCdk
 ```
 
 ------
+#### [ Go ]
+
+In `hello-cdk.go`:
+
+```
+package main
+
+import (
+	"github.com/aws/aws-cdk-go/awscdk/v2"
+	"github.com/aws/aws-cdk-go/awscdk/v2/awss3"
+	"github.com/aws/constructs-go/constructs/v10"
+	"github.com/aws/jsii-runtime-go"
+)
+
+type HelloCdkStackProps struct {
+	awscdk.StackProps
+}
+
+func NewHelloCdkStack(scope constructs.Construct, id string, props *HelloCdkStackProps) awscdk.Stack {
+	var sprops awscdk.StackProps
+	if props != nil {
+		sprops = props.StackProps
+	}
+	stack := awscdk.NewStack(scope, &id, &sprops)
+
+	awss3.NewBucket(stack, jsii.String("MyFirstBucket"), &awss3.BucketProps{
+		Versioned: jsii.Bool(true),
+	})
+
+	return stack
+}
+
+func main() {
+	defer jsii.Close()
+
+	app := awscdk.NewApp(nil)
+
+	NewHelloCdkStack(app, "HelloCdkStack", &HelloCdkStackProps{
+		awscdk.StackProps{
+			Env: env(),
+		},
+	})
+
+	app.Synth(nil)
+}
+
+func env() *awscdk.Environment {
+	return nil
+}
+```
+
+------
 
 `Bucket` is the first construct we've seen, so let's take a closer look\. Like all constructs, the `Bucket` class takes three parameters\.
 + **scope:** Tells the bucket that the stack is its parent: it is defined within the scope of the stack\. You can define constructs inside of constructs, creating a hierarchy \(tree\)\. Here, and in most cases, the scope is `this` \(`self` in Python\), meaning the construct that contains the bucket: the stack\.
@@ -385,6 +454,33 @@ Bucket.Builder.create(this, "MyFirstBucket")
         .removalPolicy(RemovalPolicy.DESTROY)
         .autoDeleteObjects(true)
         .build();
+```
+
+------
+#### [ C\# ]
+
+Update `src/HelloCdk/HelloCdkStack.cs`\.
+
+```
+new Bucket(this, "MyFirstBucket", new BucketProps
+{
+    Versioned = true,
+    RemovalPolicy = RemovalPolicy.DESTROY,
+    AutoDeleteObjects = true
+});
+```
+
+------
+#### [ Go ]
+
+Update `hello-cdk.go`\.
+
+```
+	  awss3.NewBucket(stack, jsii.String("MyFirstBucket"), &awss3.BucketProps{
+		Versioned:         jsii.Bool(true),
+		RemovalPolicy:     awscdk.RemovalPolicy_DESTROY,
+		AutoDeleteObjects: jsii.Bool(true),
+	})
 ```
 
 ------

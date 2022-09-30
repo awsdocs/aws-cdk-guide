@@ -298,8 +298,6 @@ require (
 )
 ```
 
-Package names \(modules, in Go parlance\) are specified by URL with the version number appended\. Go's module system does not support version ranges, so all dependencies must be pinned to a specfic version\.
+Package names \(modules, in Go parlance\) are specified by URL with the required version number appended\. Go's module system does not support version ranges\.
 
-Go automatically downloads dependencies whenever you build\. The CDK does this for you automatically whenever you run your app, so there is no need to do it manually\.
-
-You may use the go get command to install a module and update `go.mod`\. To see a list of available updates for your dependencies, issue go list \-m \-u all\.
+Issue the go get command to install all modules and update `go.mod`\. To see a list of available updates for your dependencies, issue go list \-m \-u all\.

@@ -175,6 +175,45 @@ public class MyEcsConstructStack : Stack
 ```
 
 ------
+#### [ Go ]
+
+```
+func NewMyEcsConstructStack(scope constructs.Construct, id string, props *MyEcsConstructStackProps) awscdk.Stack {
+
+	var sprops awscdk.StackProps
+
+	if props != nil {
+		sprops = props.StackProps
+	}
+
+	stack := awscdk.NewStack(scope, &id, &sprops)
+
+	vpc := awsec2.NewVpc(stack, jsii.String("MyVpc"), &awsec2.VpcProps{
+		MaxAzs: jsii.Number(3), // Default is all AZs in region
+	})
+
+	cluster := awsecs.NewCluster(stack, jsii.String("MyCluster"), &awsecs.ClusterProps{
+		Vpc: vpc,
+	})
+
+	awsecspatterns.NewApplicationLoadBalancedFargateService(stack, jsii.String("MyFargateService"),
+		&awsecspatterns.ApplicationLoadBalancedFargateServiceProps{
+			Cluster:        cluster,           // required
+			Cpu:            jsii.Number(512),  // default is 256
+			DesiredCount:   jsii.Number(5),    // default is 1
+			MemoryLimitMiB: jsii.Number(2048), // Default is 512
+			TaskImageOptions: &awsecspatterns.ApplicationLoadBalancedTaskImageOptions{
+				Image: awsecs.ContainerImage_FromRegistry(jsii.String("amazon/amazon-ecs-sample"), nil),
+			},
+			PublicLoadBalancer: jsii.Bool(true), // Default is false
+		})
+
+	return stack
+
+}
+```
+
+------
 
 This class produces an AWS CloudFormation [template of more than 500 lines](https://github.com/awsdocs/aws-cdk-guide/blob/main/doc_source/my_ecs_construct-stack.yaml); deploying the AWS CDK app produces more than 50 resources of the following types\.
 +  [AWS::EC2::EIP](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-ec2-eip.html) 

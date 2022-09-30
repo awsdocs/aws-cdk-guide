@@ -8,6 +8,7 @@ For more details on working with the AWS CDK in its supported programming langua
 + [Working with the AWS CDK in Python](work-with-cdk-python.md)
 + [Working with the AWS CDK in Java](work-with-cdk-java.md)
 + [Working with the AWS CDK in C\#](work-with-cdk-csharp.md)
++ [Working with the AWS CDK in Go](work-with-cdk-go.md)
 
 ## Importing a module<a name="multiple_languages_import"></a>
 
@@ -134,10 +135,33 @@ var bucket = new Amazon.CDK.AWS.S3.Bucket(...)
 ```
 
 ------
+#### [ Go ]
+
+Each AWS Construct Library module is provided as a Go package\.
+
+```
+import (
+    "github.com/aws/aws-cdk-go/awscdk/v2"           // CDK core package
+    "github.com/aws/aws-cdk-go/awscdk/v2/awss3"     // AWS S3 construct library module
+)
+
+// now instantiate a bucket
+bucket := awss3.NewBucket(...)
+
+// use alias cdk for brevity/clarity
+import (
+    cdk "github.com/aws/aws-cdk-go/awscdk/v2"           // CDK core package
+    s3  "github.com/aws/aws-cdk-go/awscdk/v2/awss3"     // AWS S3 construct library module
+)
+
+bucket := s3.NewBucket(...)
+```
+
+------
 
 ## Instantiating a construct<a name="multiple_languages_class"></a>
 
-AWS CDK construct classes have the same name in all supported languages\. Most languages use the `new` keyword to instantiate a class \(Python is the only one that doesn't\)\. Also, in most languages, the keyword `this` refers to the current instance\. Python, again, is the exception \(it uses `self` by convention\)\. You should pass a reference to the current instance as the `scope` parameter to every construct you create\.
+AWS CDK construct classes have the same name in all supported languages\. Most languages use the `new` keyword to instantiate a class \(Python and Go do not\)\. Also, in most languages, the keyword `this` refers to the current instance\. \(Python uses `self` by convention\.\) You should pass a reference to the current instance as the `scope` parameter to every construct you create\.
 
  The third argument to a AWS CDK construct is `props`, an object containing attributes needed to build the construct\. This argument may be optional, but when it is required, the supported languages handle it in idiomatic ways\. The names of the attributes are also adapted to the language's standard naming patterns\. 
 
@@ -220,7 +244,7 @@ It is convenient to use the `var` keyword when instantiating a construct, so you
 // Instantiate default Bucket
 var bucket = Bucket(self, "MyBucket");
 
-// Instantiate Bucket with BucketName and versioned properties
+// Instantiate Bucket with BucketName and Versioned properties
 var bucket =  Bucket(self, "MyBucket", new BucketProps {
                       BucketName = "my-bucket",
                       Versioned  = true});
@@ -230,6 +254,30 @@ var bucket = Bucket(self, "MyBucket", new BucketProps {
                       WebsiteRedirect = new WebsiteRedirect {
                               HostName = "aws.amazon.com"
                       }});
+```
+
+------
+#### [ Go ]
+
+To create a construct in Go, call the function `NewXxxxxx` where `Xxxxxxx` is the name of the construct\. The constructs' properties are defined as a struct\.
+
+In Go, all construct parameters are pointers, including values like numbers, Booleans, and strings\. Use the convenience functions like `jsii.String` to create these pointers\.
+
+```
+	// Instantiate default Bucket
+	bucket := awss3.NewBucket(stack, jsii.String("MyBucket"), nil)
+
+	// Instantiate Bucket with BucketName and Versioned properties
+	bucket1 := awss3.NewBucket(stack, jsii.String("MyBucket"), &awss3.BucketProps{
+		BucketName: jsii.String("my-bucket"),
+		Versioned:  jsii.Bool(true),
+	})
+
+	// Instantiate Bucket with WebsiteRedirect, which has its own sub-properties
+	bucket2 := awss3.NewBucket(stack, jsii.String("MyBucket"), &awss3.BucketProps{
+		WebsiteRedirect: &awss3.RedirectTarget{
+			HostName: jsii.String("aws.amazon.com"),
+		}})
 ```
 
 ------
@@ -277,13 +325,28 @@ bucket.BucketArn
 ```
 
 ------
+#### [ Go ]
+
+Names are `PascalCase`\.
+
+```
+bucket.BucketArn
+```
+
+------
 
 ## Enum constants<a name="multiple_languages_enums"></a>
 
-Enum constants are scoped to a class, and have uppercase names with underscores in all languages \(sometimes referred to as `SCREAMING_SNAKE_CASE`\)\. Since class names also use the same casing in all supported languages, qualified enum names are also the same\.
+Enum constants are scoped to a class, and have uppercase names with underscores in all languages \(sometimes referred to as `SCREAMING_SNAKE_CASE`\)\. Since class names also use the same casing in all supported languages except Go, qualified enum names are also the same in these languages\.
 
 ```
 s3.BucketEncryption.KMS_MANAGED
+```
+
+In Go, enum constants are attributes of the module namespace and are written as follows\.
+
+```
+awss3.BucketEncryption_KMS_MANAGED
 ```
 
 ## Object interfaces<a name="multiple_languages_object"></a>
@@ -349,6 +412,20 @@ public class MyAspect : IAspect
     {
         System.Console.WriteLine($"Visited ${node.Node.Path}");
     }
+}
+```
+
+------
+#### [ Go ]
+
+Go structs do not need to explicitly declare which interfaces they implement\. The Go compiler determines implementation based on the methods and properties available on the structure\. For example, in the following code, `MyAspect` implements the `IAspect` interface because it provides a `Visit` method that takes a construct\.
+
+```
+type MyAspect struct {
+}
+
+func (a MyAspect) Visit(node constructs.IConstruct) {
+	fmt.Println("Visited", *node.Node().Path())
 }
 ```
 

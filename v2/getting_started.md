@@ -45,7 +45,7 @@ The actual package name of the main CDK package varies by language\.
 ------
 #### [ Python ]
 
-| Install | `python -m pip install aws-cdk-lib` | 
+| Install | python \-m pip install aws\-cdk\-lib | 
 | --- |--- |
 | Import | `import aws_cdk as cdk` | 
 | --- |--- |
@@ -61,12 +61,29 @@ The actual package name of the main CDK package varies by language\.
 ------
 #### [ C\# ]
 
-| Install | `dotnet add package Amazon.CDK.Lib` | 
+| Install | dotnet add package Amazon\.CDK\.Lib | 
 | --- |--- |
 | Import | `using Amazon.CDK;` | 
 | --- |--- |
 
 ------
+#### [ Go ]
+
+| Install | go get github\.com/aws/aws\-cdk\-go/awscdk/v2 | 
+| --- |--- |
+| Import | 
+
+```
+import (
+  "github.com/aws/aws-cdk-go/awscdk/v2"
+)
+``` | 
+| --- |--- |
+
+------
+
+**Note**  
+If you created a CDK project using cdk init, you won't need to manually install `aws-cdk-lib`\.
 
 Constructs come in three fundamental flavors:
 + **AWS CloudFormation\-only** or L1 \(short for "layer 1"\)\. These constructs correspond directly to resource types defined by AWS CloudFormation\. In fact, these constructs are automatically generated from the AWS CloudFormation specification, so when a new AWS service is launched, the AWS CDK supports it a short time after AWS CloudFormation does\.
@@ -148,6 +165,19 @@ var bucket = new Bucket(this, "MyBucket", new BucketProps {
 ```
 
 ------
+#### [ Go ]
+
+```
+bucket := awss3.NewBucket(scope, jsii.String("MyBucket"), &awss3.BucketProps {
+	BucketName: jsii.String("my-bucket"),
+	Versioned: jsii.Bool(true),
+	WebsiteRedirect: &awss3.RedirectTarget {
+		HostName: jsii.String("aws.amazon.com"),
+	},
+})
+```
+
+------
 
 **Note**  
 These code snippets are intended for illustration only\. They are incomplete and won't run as they are\.
@@ -208,7 +238,7 @@ Other prerequisites depend on the language in which you develop AWS CDK applicat
 
 ------
 #### [ TypeScript ]
-+ TypeScript 2\.7 or later \(`npm -g install typescript`\)
++ TypeScript 3\.8 or later \(`npm -g install typescript`\)
 
 ------
 #### [ JavaScript ]
@@ -234,9 +264,14 @@ Java IDE recommended \(we use Eclipse in some examples in this Developer Guide\)
 Visual Studio 2019 \(any edition\) or Visual Studio Code recommended\.
 
 ------
+#### [ Go ]
+
+Go 1\.1\.6 or later\.
+
+------
 
 **Note**  
-Third\-party Language Deprecation: language version is only supported until its EOL \(End Of Life\) shared by the vendor or community and is subject to change with prior notice\.
+Third\-party Language Deprecation: each language version is only supported until its EOL \(End Of Life\) shared by the vendor or community and is subject to change with prior notice\.
 
 ## Install the AWS CDK<a name="getting_started_install"></a>
 

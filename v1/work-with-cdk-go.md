@@ -39,12 +39,23 @@ The AWS CDK's core package, which you'll need in most AWS CDK apps, is imported 
 
 ```
 import (
-        "github.com/aws/aws-cdk-go/awscdk/awss3"
+        "github.com/aws/aws-cdk-go/awscdk/awss3" 2.16.0
         // ...
 )
 ```
 
-Once you have imported the Construct Library modules \(Go packages\) for the services you want to use in your app, you access constructs in that module using, for example, `awss3.Bucket`\.
+The contents of the Amazon S3 Go package are then available in the `awss3` namespace\. For example, to instantiate a bucket, you would call `awss3.NewBucket()`\.
+
+You may specify an alias when importing if you prefer more concise names:
+
+```
+import (
+        s3 "github.com/aws/aws-cdk-go/awscdk/awss3"   // use s3.NewBucket etc.
+        // ...
+)
+```
+
+The code examples in this guide use the actual Go package names, so it is clear which Go packages \(AWS Construct Library modules\) are needed\.
 
 ## AWS CDK idioms in Go<a name="go-cdk-idioms"></a>
 

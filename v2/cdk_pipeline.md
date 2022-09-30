@@ -132,6 +132,19 @@ cdk init app --language csharp
 If you are using Visual Studio, open the solution file in the `src` directory\.
 
 ------
+#### [ Go ]
+
+```
+cdk init app --language go
+```
+
+After the app has been created, also enter the following command to instll the AWS Construct Library modules required by the app\.
+
+```
+go get
+```
+
+------
 
 **Important**  
 Be sure to commit your `cdk.json` and `cdk.context.json` files to source control\. The context information \(such as feature flags and cached values retrieved from your AWS account\) are part of your project's state\. The values may be different in another environment, which can cause unexpected changes in your results\. For more information, see [Runtime context](context.md)\.
