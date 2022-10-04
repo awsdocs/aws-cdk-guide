@@ -10,7 +10,7 @@ This topic explains the ins and outs of working with the AWS CDK in Go\. See the
 
 To work with the AWS CDK, you must have an AWS account and credentials and have installed Node\.js and the AWS CDK Toolkit\. See [AWS CDK Prerequisites](work-with.md#work-with-prerequisites)\.
 
-The Go bindings for the AWS CDK use the standard [Go toolchain](https://golang.org/dl/), v1\.16 or later\. You can use the editor of your choice\.
+The Go bindings for the AWS CDK use the standard [Go toolchain](https://golang.org/dl/), v1\.18 or later\. You can use the editor of your choice\.
 
 **Note**  
 Third\-party Language Deprecation: language version is only supported until its EOL \(End Of Life\) shared by the vendor or community and is subject to change with prior notice\.
@@ -47,6 +47,14 @@ import (
 Once you have imported the Construct Library modules \(Go packages\) for the services you want to use in your app, you access constructs in that module using, for example, `awss3.Bucket`\.
 
 ## AWS CDK idioms in Go<a name="go-cdk-idioms"></a>
+
+### Field and method names<a name="go-naming"></a>
+
+Field and method names use camel casing \(`likeThis`\) in TypeScript, the CDK's language of origin\. In Go, these follow Go conventions, so are Pascal\-cased \(`LikeThis`\)\.
+
+### Cleaning up<a name="go-cdk-jsii-close"></a>
+
+In your `main` method, use `defer jsii.Close()` to make sure your CDK app cleans up after itself\.
 
 ### Field and method names<a name="go-naming"></a>
 

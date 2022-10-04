@@ -190,6 +190,7 @@ To help you use the AWS CDK in your favorite language, this Guide includes topic
 + [Working with the AWS CDK in Python](work-with-cdk-python.md)
 + [Working with the AWS CDK in Java](work-with-cdk-java.md)
 + [Working with the AWS CDK in C\#](work-with-cdk-csharp.md)
++ [Working with the AWS CDK in Go](work-with-cdk-go.md)
 
 TypeScript was the first language supported by the AWS CDK, and much AWS CDK example code is written in TypeScript\. This Guide includes a topic specifically to show how to adapt TypeScript AWS CDK code for use with the other supported languages\. See [Translating TypeScript AWS CDK code to other languages](multiple_languages.md)\.
 
@@ -247,7 +248,7 @@ No additional requirements
 
 ------
 #### [ Python ]
-+ Python 3\.6 or later including `pip` and `virtualenv`
++ Python 3\.7 or later including `pip` and `virtualenv`
 
 ------
 #### [ Java ]
@@ -259,14 +260,14 @@ Java IDE recommended \(we use Eclipse in some examples in this Developer Guide\)
 ------
 #### [ C\# ]
 
-\.NET Core 3\.1 or later\.
+\.NET Core 3\.1 or later, or \.NET 6\.0 or later\.
 
 Visual Studio 2019 \(any edition\) or Visual Studio Code recommended\.
 
 ------
 #### [ Go ]
 
-Go 1\.1\.6 or later\.
+Go 1\.1\.8 or later\.
 
 ------
 

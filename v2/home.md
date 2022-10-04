@@ -186,7 +186,7 @@ func NewMyEcsConstructStack(scope constructs.Construct, id string, props *MyEcsC
 		sprops = props.StackProps
 	}
 
-	stack := awscdk.NewStack(scope, &id, &sprops)
+	stack := awscdk.NewStack(scope, &id, sprops)
 
 	vpc := awsec2.NewVpc(stack, jsii.String("MyVpc"), &awsec2.VpcProps{
 		MaxAzs: jsii.Number(3), // Default is all AZs in region

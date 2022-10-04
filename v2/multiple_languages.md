@@ -148,7 +148,7 @@ import (
 // now instantiate a bucket
 bucket := awss3.NewBucket(...)
 
-// use alias cdk for brevity/clarity
+// use aliases for brevity/clarity
 import (
     cdk "github.com/aws/aws-cdk-go/awscdk/v2"           // CDK core package
     s3  "github.com/aws/aws-cdk-go/awscdk/v2/awss3"     // AWS S3 construct library module

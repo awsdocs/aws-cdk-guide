@@ -303,7 +303,7 @@ func NewHelloCdkStack(scope constructs.Construct, id string, props *HelloCdkStac
 	if props != nil {
 		sprops = props.StackProps
 	}
-	stack := awscdk.NewStack(scope, &id, &sprops)
+	stack := awscdk.NewStack(scope, &id, sprops)
 
 	awss3.NewBucket(stack, jsii.String("MyFirstBucket"), &awss3.BucketProps{
 		Versioned: jsii.Bool(true),
