@@ -136,7 +136,7 @@ const bucket = new s3.Bucket(this, 'MyBucket', {
 #### [ Python ]
 
 ```
-bucket = s3.Bucket(self, "MyBucket", bucket_name="my-bucket", versioned=True,
+bucket = s3.Bucket("MyBucket", bucket_name="my-bucket", versioned=True,
             website_redirect=s3.RedirectTarget(host_name="aws.amazon.com"))
 ```
 
