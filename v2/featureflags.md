@@ -43,9 +43,6 @@ The AWS CDK fails at synthesis time if the `SNAPSHOT` removal policy is not supp
 `@aws-cdk/aws-ecs:arnFormatIncludesClusterName`  
 Use the new ARN format when importing an Amazon EC2 or Fargate cluster\.
 
-`@aws-cdk/aws-ecs:arnFormatIncludesClusterName`  
-Use the new ARN format when importing an Amazon EC2 or Fargate cluster\.
-
 ## Disabling features with flags<a name="featureflags_disabling"></a>
 
 In CDK v2, a few feature flags are supported to revert certain behaviors to their v1 defaults\. The flags listed below, set to `false`, revert to specific AWS CDK v1 behaviors\. Use the `cdk diff` command to inspect the changes to your synthesized template to see if any of these flags are needed\.
