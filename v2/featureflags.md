@@ -28,7 +28,7 @@ Causes [https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-ec2.InstanceReq
 `@aws-cdk/aws-iam:minimizePolicies`  
 Minimize the creation of IAM policies when possible\.
 
-`@aws-cdk/aws-sns-subscriptions:restrictSqsDescryption`  
+`@aws-cdk/aws-sns-subscriptions:restrictSqsDecryption`  
 In an Amazon SQS queue subscribed to an Amazon SNS topic, restrict decryption permissions to just the topic instead of all of SNS\.
 
 `@aws-cdk/aws-s3:createDefaultLoggingPolicy`  
