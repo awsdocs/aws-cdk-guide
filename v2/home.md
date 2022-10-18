@@ -276,7 +276,7 @@ In addition to this guide, the following other resources are available to AWS CD
   + [Issues](https://github.com/awslabs/aws-cdk/issues)
   + [Examples](https://github.com/aws-samples/aws-cdk-examples)
   + [Documentation Source](https://github.com/awsdocs/aws-cdk-guide)
-  + [License](https://github.com/awslabs/aws-cdk/blob/master/LICENSE)
+  + [License](https://github.com/awslabs/aws-cdk/blob/main/LICENSE)
   + [Releases](https://github.com/awslabs/aws-cdk/releases)
     + [AWS CDK OpenPGP key](pgp-keys.md#cdk_pgp_key)
     + [jsii OpenPGP key](pgp-keys.md#jsii_pgp_key)
@@ -292,7 +292,7 @@ These tools can work with the AWS CDK to simplify serverless application develop
 
 ## Contributing to the AWS CDK<a name="contributing"></a>
 
-Because the AWS CDK is open source, the team encourages you to contribute to make it an even better tool\. For details, see [Contributing](https://github.com/awslabs/aws-cdk/blob/master/CONTRIBUTING.md)\.
+Because the AWS CDK is open source, the team encourages you to contribute to make it an even better tool\. For details, see [Contributing](https://github.com/awslabs/aws-cdk/blob/main/CONTRIBUTING.md)\.
 
 ## About Amazon Web Services<a name="about_aws"></a>
 
