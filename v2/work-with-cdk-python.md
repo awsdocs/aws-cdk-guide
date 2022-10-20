@@ -11,7 +11,7 @@ To work with the AWS CDK, you must have an AWS account and credentials and have 
 Python AWS CDK applications require Python 3\.6 or later\. If you don't already have it installed, [download a compatible version](https://www.python.org/downloads/) for your operating system at [python\.org](https://www.python.org/)\. If you run Linux, your system may have come with a compatible version, or you may install it using your distro's package manager \(`yum`, `apt`, etc\.\)\. Mac users may be interested in [Homebrew](https://brew.sh/), a Linux\-style package manager for macOS\.
 
 **Note**  
-Third\-party Language Deprecation: language version is only supported until its EOL \(End Of Life\) shared by the vendor or community and is subject to change with prior notice\.
+Third\-party language deprecation: language version is only supported until its EOL \(End Of Life\) shared by the vendor or community and is subject to change with prior notice\.
 
 The Python package installer, `pip`, and virtual environment manager, `virtualenv`, are also required\. Windows installations of compatible Python versions include these tools\. On Linux, `pip` and `virtualenv` may be provided as separate packages in your package manager\. Alternatively, you may install them with the following commands:
 

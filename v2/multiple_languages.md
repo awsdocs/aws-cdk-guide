@@ -1,6 +1,6 @@
 # Translating TypeScript AWS CDK code to other languages<a name="multiple_languages"></a>
 
-TypeScript was the first language supported for developing AWS CDK applications, and for that reason, there is a substantial amount of example CDK code written in TypeScript\. If you are developing in another language, it may be useful to compare how AWS CDK code is implemented in TypeScript and your language of choice, so you can, with a little effort, make use of these examples\.
+TypeScript was the first language supported for developing AWS CDK applications\. Therefore, a substantial amount of example CDK code is written in TypeScript\. If you are developing in another language, it might be useful to compare how AWS CDK code is implemented in TypeScript and your language of choice\. This can help you use these examples\.
 
 For more details on working with the AWS CDK in its supported programming languages, see:
 + [Working with the AWS CDK in TypeScript](work-with-cdk-typescript.md)
@@ -49,7 +49,7 @@ const bucket = Bucket(...);
 ------
 #### [ Python ]
 
-Like TypeScript, Python supports namespaced module imports and selective imports\. Namespaces in Python look like **aws\_cdk\.***xxx*, where *xxx* represents an AWS service name, such as **s3** for Amazon S3 \(we'll use Amazon S3 for our examples\)\.
+Like TypeScript, Python supports namespaced module imports and selective imports\. Namespaces in Python look like **aws\_cdk\.***xxx*, where *xxx* represents an AWS service name, such as **s3** for Amazon S3\. \(Amazon S3 is used in these examples\)\.
 
 ```
 # Import main CDK library as cdk
@@ -109,9 +109,9 @@ var bucket =
 ------
 #### [ C\# ]
 
-In C\#, you import types with the `using` directive\. There are two styles, which give you access either all the types in the specified namespace using their plain names, or let you refer to the namespace itself using an alias\.
+In C\#, you import types with the `using` directive\. There are two styles\. One gives you access to all the types in the specified namespace by using their plain names\. With the other, you can refer to the namespace itself by using an alias\.
 
-Packages are named like `Amazon.CDK.AWS.xxx` for AWS Construct Library packages \(the core module is `Amazon.CDK`\)\.
+Packages are named like `Amazon.CDK.AWS.xxx` for AWS Construct Library packages\. \(The core module is `Amazon.CDK`\.\)
 
 ```
 // Make CDK base classes available under cdk
@@ -163,7 +163,7 @@ bucket := s3.NewBucket(...)
 
 AWS CDK construct classes have the same name in all supported languages\. Most languages use the `new` keyword to instantiate a class \(Python and Go do not\)\. Also, in most languages, the keyword `this` refers to the current instance\. \(Python uses `self` by convention\.\) You should pass a reference to the current instance as the `scope` parameter to every construct you create\.
 
- The third argument to a AWS CDK construct is `props`, an object containing attributes needed to build the construct\. This argument may be optional, but when it is required, the supported languages handle it in idiomatic ways\. The names of the attributes are also adapted to the language's standard naming patterns\. 
+The third argument to an AWS CDK construct is `props`, an object containing attributes needed to build the construct\. This argument may be optional, but when it is required, the supported languages handle it in idiomatic ways\. The names of the attributes are also adapted to the language's standard naming patterns\. 
 
 ------
 #### [ TypeScript/JavaScript ]
@@ -190,7 +190,7 @@ const bucket = new s3.Bucket(this, 'MyBucket', {
 
 Python doesn't use a `new` keyword when instantiating a class\. The properties argument is represented using keyword arguments, and the arguments are named using `snake_case`\.
 
-If a props value is itself a bundle of attributes, it is represented by a class named after the property, which accepts keyword arguments for the sub\-properties\.
+If a props value is itself a bundle of attributes, it is represented by a class named after the property, which accepts keyword arguments for the subproperties\.
 
 In Python, the current instance is passed to methods as the first argument, which is named `self` by convention\.
 
@@ -211,7 +211,7 @@ bucket = s3.Bucket(self, "MyBucket", website_redirect=s3.WebsiteRedirect(
 
 In Java, the props argument is represented by a class named `XxxxProps` \(for example, `BucketProps` for the `Bucket` construct's props\)\. You build the props argument using a builder pattern\.
 
-Each `XxxxProps` class has a builder, and there is also a convenient builder for each construct that builds the props and the construct in one step, as shown here\.
+Each `XxxxProps` class has a builder\. There is also a convenient builder for each construct that builds the props and the construct in one step, as shown in the following example\.
 
 Props are named the same as in TypeScript, using `camelCase`\.
 
@@ -284,7 +284,7 @@ In Go, all construct parameters are pointers, including values like numbers, Boo
 
 ## Accessing members<a name="multiple_languages_members"></a>
 
-It is common to refer to attributes or properties of constructs and other AWS CDK classes and use these values as, for examples, inputs to build other constructs\. The naming differences described above for methods apply\. Furthermore, in Java, it is not possible to access members directly; instead, a getter method is provided\.
+It is common to refer to attributes or properties of constructs and other AWS CDK classes and use these values as, for example, inputs to build other constructs\. The naming differences described previously for methods apply here also\. Furthermore, in Java, it is not possible to access members directly\. Instead, a getter method is provided\.
 
 ------
 #### [ TypeScript/JavaScript ]
@@ -351,7 +351,7 @@ awss3.BucketEncryption_KMS_MANAGED
 
 ## Object interfaces<a name="multiple_languages_object"></a>
 
-The AWS CDK uses TypeScript object interfaces to indicate that a class implements an expected set of methods and properties\. You can recognize an object interface because its name starts with `I`\. A concrete class indicates the interface\(s\) it implements using the `implements` keyword\.
+The AWS CDK uses TypeScript object interfaces to indicate that a class implements an expected set of methods and properties\. You can recognize an object interface because its name starts with `I`\. A concrete class indicates the interfaces that it implements by using the `implements` keyword\.
 
 ------
 #### [ TypeScript/JavaScript ]

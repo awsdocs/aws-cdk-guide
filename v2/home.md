@@ -3,7 +3,7 @@
 Welcome to the *AWS Cloud Development Kit \(AWS CDK\) Developer Guide*\. This document provides information about the AWS CDK, a framework for defining cloud infrastructure in code and provisioning it through AWS CloudFormation\.
 
 **Note**  
-The CDK has been released in two major versions, v1 and v2\. This is the Developer Guide for AWS CDK v2\. The older CDK v1 entered maintenance on June 1, 2022\. Support for CDK v1 will end on June 1, 2023\.
+The CDK has been released in two major versions, v1 and v2\. This is the Developer Guide for AWS CDK v2\. The earlier CDK v1 entered maintenance on June 1, 2022\. Support for CDK v1 will end on June 1, 2023\.
 
 The AWS CDK lets you build reliable, scalable, cost\-effective applications in the cloud with the considerable expressive power of a programming language\. This approach yields many benefits, including:
 + Build with high\-level constructs that automatically provide sensible, secure defaults for your AWS resources, defining more infrastructure with less code\.
@@ -244,12 +244,12 @@ And let's not forget\.\.\. code completion within your IDE or editor\!
 
 It's easy to [get set up](getting_started.md) and [write your first CDK app](hello_world.md)\. Short code examples are available throughout this Guide in the AWS CDK's supported programming languages: TypeScript, JavaScript, Python, Java, and C\#\. Longer examples are available [in our GitHub repository](https://github.com/aws-samples/aws-cdk-examples)\.
 
-The [AWS CDK Toolkit](cli.md) is a command line tool for interacting with CDK apps\. It enables developers to synthesize artifacts such as AWS CloudFormation templates, deploy stacks to development AWS accounts, and diff against a deployed stack to understand the impact of a code change\.
+The [AWS CDK Toolkit](cli.md) is a command line tool for interacting with CDK apps\. Developers can use the AWS CDK Toolkit to synthesize artifacts such as AWS CloudFormation templates and to deploy stacks to development AWS accounts\. You can also diff against a deployed stack to understand the impact of a code change\.
 
 The [AWS Construct Library](constructs.md) offers constructs for each AWS service, many with "rich" APIs that provide high\-level abstractions\. The aim of the AWS Construct Library is to reduce the complexity and glue logic required when integrating various AWS services to achieve your goals on AWS\.
 
 **Note**  
-There is no charge for using the AWS CDK, but you might incur AWS charges for creating or using AWS [chargeable resources](https://docs.aws.amazon.com/general/latest/gr/glos-chap.html#chargeable-resources), such as running Amazon EC2 instances or using Amazon S3 storage\. Use the [AWS Pricing Calculator](https://calculator.aws/#/) to estimate charges for the use of various AWS resources\.
+There is no charge for using the AWS CDK, but you might incur AWS charges for creating or using AWS [chargeable resources](https://docs.aws.amazon.com/general/latest/gr/glos-chap.html#chargeable-resources)\. These might include running Amazon EC2 instances or using Amazon S3 storage\. Use the [AWS Pricing Calculator](https://calculator.aws/#/) to estimate charges for the use of various AWS resources\.
 
 ## The Construct Programming Model<a name="cpm"></a>
 
@@ -298,6 +298,6 @@ Because the AWS CDK is open source, the team encourages you to contribute to mak
 
 Amazon Web Services \(AWS\) is a collection of digital infrastructure services that developers can use when developing their applications\. The services include computing, storage, database, and application synchronization \(messaging and queueing\)\.
 
-AWS uses a pay\-as\-you\-go service model\. You are charged only for the services that you — or your applications — use\. Also, to make AWS useful as a platform for prototyping and experimentation, AWS offers a free usage tier, in which services are free below a certain level of usage\. For more information about AWS costs and the free usage tier, see [Test\-Driving AWS in the Free Usage Tier](https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/billing-free-tier.html)\.
+AWS uses a pay\-as\-you\-go service model\. You are charged only for the services that you — or your applications — use\. Also, to make AWS useful as a platform for prototyping and experimentation, AWS offers a free usage tier\. In the tier, services are free below a certain level of usage\. For more information about AWS costs and the free usage tier, see [Test\-Driving AWS in the Free Usage Tier](https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/billing-free-tier.html)\.
 
 To obtain an AWS account, go to [aws\.amazon\.com](https://aws.amazon.com), and then choose **Create an AWS Account**\.

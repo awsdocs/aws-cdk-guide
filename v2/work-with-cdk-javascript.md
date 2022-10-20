@@ -2,7 +2,7 @@
 
 JavaScript is a fully\-supported client language for the AWS CDK and is considered stable\. Working with the AWS CDK in JavaScript uses familiar tools, including [Node\.js](https://nodejs.org/) and the Node Package Manager \(`npm`\)\. You may also use [Yarn](https://yarnpkg.com/) if you prefer, though the examples in this Guide use NPM\. The modules comprising the AWS Construct Library are distributed via the NPM repository, [npmjs\.org](https://www.npmjs.com/)\.
 
-You can use any editor or IDE; many AWS CDK developers use [Visual Studio Code](https://code.visualstudio.com/) \(or its open\-source equivalent [VSCodium](https://vscodium.com/)\), which has good support for JavaScript\.
+You can use any editor or IDE\. Many AWS CDK developers use [Visual Studio Code](https://code.visualstudio.com/) \(or its open\-source equivalent [VSCodium](https://vscodium.com/)\), which has good support for JavaScript\.
 
 ## Prerequisites<a name="javascript-prerequisites"></a>
 
@@ -11,7 +11,7 @@ To work with the AWS CDK, you must have an AWS account and credentials and have 
 JavaScript AWS CDK applications require no additional prerequisites beyond these\.
 
 **Note**  
-Third\-party Language Deprecation: language version is only supported until its EOL \(End Of Life\) shared by the vendor or community and is subject to change with prior notice\.
+Third\-party language deprecation: language version is only supported until its EOL \(End Of Life\) shared by the vendor or community and is subject to change with prior notice\.
 
 ## Creating a project<a name="javascript-newproject"></a>
 

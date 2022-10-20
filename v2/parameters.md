@@ -1,8 +1,8 @@
 # Parameters<a name="parameters"></a>
 
-AWS CloudFormation templates can contain [parameters](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/parameters-section-structure.html)—custom values that are supplied at deployment time and incorporated into the template\. Since the AWS CDK synthesizes AWS CloudFormation templates, it too offers support for deployment\-time parameters\. 
+AWS CloudFormation templates can contain [parameters](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/parameters-section-structure.html)—custom values that are supplied at deployment time and incorporated into the template\. Because the AWS CDK synthesizes AWS CloudFormation templates, it also offers support for deployment\-time parameters\. 
 
-Using the AWS CDK, you can both define parameters, which can then be used in the properties of constructs you create, and you can also deploy stacks containing parameters\. 
+Using the AWS CDK, you can define parameters, which can then be used in the properties of constructs you create\. You can also deploy stacks that contain parameters\. 
 
 When deploying the AWS CloudFormation template using the AWS CDK Toolkit, you provide the parameter values on the command line\. If you deploy the template through the AWS CloudFormation console, you are prompted for the parameter values\.
 
@@ -11,18 +11,18 @@ In general, we recommend against using AWS CloudFormation parameters with the AW
 **Note**  
 To do control flow with parameters, you can use [https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.CfnCondition.html](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.CfnCondition.html) constructs, although this is awkward compared to native `if` statements\.
 
-Using parameters requires you to be mindful of how the code you're writing behaves at deployment time, as well as at synthesis time\. This makes it harder to understand and reason about your AWS CDK application, in many cases for little benefit\.
+Using parameters requires you to be mindful of how the code you're writing behaves at deployment time, and also at synthesis time\. This makes it harder to understand and reason about your AWS CDK application, in many cases for little benefit\.
 
-It is better, again in general, to have your CDK app accept any necessary information in some well\-defined way and use it directly to declare constructs in your CDK app\. An ideal AWS CDK\-generated AWS CloudFormation template is concrete, with no values remaining to be specified at deployment time\. 
+Generally, it's better to have your CDK app accept necessary information in a well\-defined way and use it directly to declare constructs in your CDK app\. An ideal AWS CDK\-generated AWS CloudFormation template is concrete, with no values remaining to be specified at deployment time\. 
 
-There are, however, use cases to which AWS CloudFormation parameters are uniquely suited\. If you have separate teams defining and deploying infrastructure, for example, you can use parameters to make the generated templates more widely useful\. Additionally, the AWS CDK's support for AWS CloudFormation parameters lets you use the AWS CDK with AWS services that use AWS CloudFormation templates \(such as AWS Service Catalog\), which use parameters to configure the template being deployed\.
+There are, however, use cases to which AWS CloudFormation parameters are uniquely suited\. If you have separate teams defining and deploying infrastructure, for example, you can use parameters to make the generated templates more widely useful\. Also, because the AWS CDK supports AWS CloudFormation parameters, you can use the AWS CDK with AWS services that use AWS CloudFormation templates \(such as AWS Service Catalog\)\. These AWS services use parameters to configure the template that's being deployed\.
 
 ## Defining parameters<a name="parameters_define"></a>
 
 Use the [https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.CfnParameter.html](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.CfnParameter.html) class to define a parameter\. You'll want to specify at least a type and a description for most parameters, though both are technically optional\. The description appears when the user is prompted to enter the parameter's value in the AWS CloudFormation console\. For more information on the available types, see [Types](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/parameters-section-structure.html#parameters-section-structure-properties-type)\.
 
 **Note**  
-You can define parameters in any scope, but we recommend defining parameters at the stack level so that their logical ID does not change when you refactor your code\.
+You can define parameters in any scope\. However, we recommend defining parameters at the stack level so that their logical ID doesn't change when you refactor your code\.
 
 ------
 #### [ TypeScript ]
@@ -75,9 +75,9 @@ var uploadBucketName = new CfnParameter(this, "uploadBucketName", new CfnParamet
 
 ## Using parameters<a name="parameters_use"></a>
 
-A `CfnParameter` instance exposes its value to your AWS CDK app via a [token](tokens.md)\. Like all tokens, the parameter's token is resolved at synthesis time, but it resolves to a reference to the parameter defined in the AWS CloudFormation template, which will be resolved at deploy time, rather than to a concrete value\.
+A `CfnParameter` instance exposes its value to your AWS CDK app via a [token](tokens.md)\. Like all tokens, the parameter's token is resolved at synthesis time\. But it resolves to a reference to the parameter defined in the AWS CloudFormation template \(which will be resolved at deploy time\), rather than to a concrete value\.
 
-You can retrieve the token as an instance of the `Token` class, or in string, string list, or numeric encoding, depending on the type of value required by the class or method you want to use the parameter with\.
+You can retrieve the token as an instance of the `Token` class, or in string, string list, or numeric encoding\. Your choice depends on the kind of value required by the class or method that you want to use the parameter with\.
 
 ------
 #### [ TypeScript ]
@@ -136,7 +136,7 @@ You can retrieve the token as an instance of the `Token` class, or in string, st
 
 ------
 
-For example, to use a parameter in a Bucket definition:
+For example, to use a parameter in a `Bucket` definition:
 
 ------
 #### [ TypeScript ]
@@ -185,9 +185,9 @@ var bucket = new Bucket(this, "myBucket")
 
 ## Deploying with parameters<a name="parameters_deploy"></a>
 
-A generated template containing parameters can be deployed in the usual way through the AWS CloudFormation console; you are prompted for the values of each parameter\.
+A generated template containing parameters can be deployed in the usual way through the AWS CloudFormation console\. You are prompted for the values of each parameter\.
 
-The AWS CDK Toolkit \(`cdk` command\-line tool\) also supports specifying parameters at deployment\. You may provide these on the command line following the `--parameters` flag\. You might deploy a stack that uses the `uploadBucketName` parameter like this\.
+The AWS CDK Toolkit \(`cdk` command line tool\) also supports specifying parameters at deployment\. You provide these on the command line following the `--parameters` flag\. You might deploy a stack that uses the `uploadBucketName` parameter, like the following example\.
 
 ```
 cdk deploy MyStack --parameters uploadBucketName=uploadbucket
@@ -199,7 +199,7 @@ To define multiple parameters, use multiple `--parameters` flags\.
 cdk deploy MyStack --parameters uploadBucketName=upbucket --parameters downloadBucketName=downbucket
 ```
 
-If you are deploying multiple stacks, you can specify a different value of each parameter for each stack by prefixing the name of the parameter with the stack name and a colon\.
+If you are deploying multiple stacks, you can specify a different value of each parameter for each stack\. To do so, prefix the name of the parameter with the stack name and a colon\.
 
 ```
 cdk deploy MyStack YourStack --parameters MyStack:uploadBucketName=uploadbucket --parameters YourStack:uploadBucketName=upbucket

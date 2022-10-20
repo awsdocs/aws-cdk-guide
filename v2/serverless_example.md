@@ -82,7 +82,7 @@ You may now open `src/MyWidgetService.sln` in Visual Studio\.
 ------
 
 **Note**  
-The CDK names source files and classes based on the name of the project directory\. If you don't use the name `MyWidgetService` as shown above, you'll have trouble following the rest of the steps because some of the files the instructions tell you to modify aren't there \(they'll have different names\)\.
+The CDK names source files and classes based on the name of the project directory\. If you don't use the name `MyWidgetService` as shown previously, it might be difficult to follow the rest of the steps\. Some of the files that the instructions tell you to modify wont' be there, because they will have different names\.
 
 The important files in the blank project are as follows\. \(We will also be adding a couple of new files\.\)
 
@@ -533,7 +533,7 @@ cdk synth
 
 ## Deploy and test the app<a name="serverless_example_deploy_and_test"></a>
 
-Before you can deploy your first AWS CDK app, you must bootstrap your AWS environment\. This creates \(among other resources\) a staging bucket that the AWS CDK uses to deploy stacks containing assets\. For details, see [Bootstrapping your AWS environment](cli.md#cli-bootstrap)\. If you've already bootstrapped, you'll get a warning and nothing will change\.
+Before you can deploy your first AWS CDK app, you must bootstrap your AWS environment\. Among other resources, this creates a staging bucket that the AWS CDK uses to deploy stacks containing assets\. For details, see [Bootstrapping your AWS environment](cli.md#cli-bootstrap)\. If you've already bootstrapped, you'll get a warning and nothing will change\.
 
 ```
 cdk bootstrap aws://ACCOUNT-NUMBER/REGION
@@ -557,15 +557,15 @@ Test your app by getting the list of widgets \(currently empty\) by navigating t
 curl -X GET 'https://GUID.execute-api.REGION.amazonaws.com/prod'
 ```
 
-You can also test the app by:
+You can also test the app by completing the following steps:
 
-1. Opening the AWS Management Console\.
+1. Open the AWS Management Console\.
 
-1. Navigating to the API Gateway service\.
+1. Navigate to the API Gateway service\.
 
-1. Finding **Widget Service** in the list\.
+1. Find **Widget Service** in the list\.
 
-1. Selecting **GET** and **Test** to test the function\.
+1. Select **GET** and **Test** to test the function\.
 
 Because we haven't stored any widgets yet, the output should be similar to the following\.
 

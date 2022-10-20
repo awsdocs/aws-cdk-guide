@@ -9,7 +9,7 @@ This topic shows how to read attributes from the AWS Systems Manager Parameter S
 
 ## Reading Systems Manager values at deployment time<a name="ssm_read_at_deploy"></a>
 
-To read values from the Systems Manager Parameter Store, use the [valueForStringParameter](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ssm.StringParameter.html#static-valuewbrforwbrstringwbrparameterscope-parametername-version) and [valueForSecureStringParameter](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ssm.StringParameter.html#static-valuewbrforwbrsecurewbrstringwbrparameterscope-parametername-version) methods, depending on whether the attribute you want is a plain string or a secure string value\. These methods return [tokens](tokens.md), not the actual value\. The value is resolved by AWS CloudFormation during deployment\.
+To read values from the Systems Manager Parameter Store, use the [valueForStringParameter](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ssm.StringParameter.html#static-valuewbrforwbrstringwbrparameterscope-parametername-version) and [valueForSecureStringParameter](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ssm.StringParameter.html#static-valuewbrforwbrsecurewbrstringwbrparameterscope-parametername-version) methods\. Choose a method based on whether the attribute you want is a plain string or a secure string value\. These methods return [tokens](tokens.md), not the actual value\. The value is resolved by AWS CloudFormation during deployment\.
 
 A [limited number of AWS services](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/dynamic-references.html#template-parameters-dynamic-patterns-resources) currently support this feature\.
 
@@ -102,14 +102,14 @@ var secureStringToken = StringParameter.ValueForSecureStringParameter(
 
 ## Reading Systems Manager values at synthesis time<a name="ssm_read_at_synth"></a>
 
-It is sometimes useful to "bake in" a parameter at synthesis time, so that the resulting AWS CloudFormation template always uses the same value, rather than resolving the value during deployment\.
+It is sometimes useful to "bake in" a parameter at synthesis time\. This way, the resulting AWS CloudFormation template always uses the same value, instead of resolving the value during deployment\.
 
-To read a value from the Systems Manager parameter store at synthesis time, use the [valueFromLookup](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ssm.StringParameter.html#static-valuewbrfromwbrlookupscope-parametername) method \(Python: `value_from_lookup`\)\. This method returns the actual value of the parameter as a [Runtime context](context.md) value\. If the value is not already cached in `cdk.json` or passed on the command line, it will be retrieved from the current AWS account\. For this reason, the stack *must* be synthesized with explicit account and region information\.
+To read a value from the Systems Manager Parameter Store at synthesis time, use the [valueFromLookup](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ssm.StringParameter.html#static-valuewbrfromwbrlookupscope-parametername) method \(Python: `value_from_lookup`\)\. This method returns the actual value of the parameter as a [Runtime context](context.md) value\. If the value is not already cached in `cdk.json` or passed on the command line, it is retrieved from the current AWS account\. For this reason, the stack *must* be synthesized with explicit account and Region information\.
 
 Only plain Systems Manager strings may be retrieved, not secure strings\. It is not possible to request a specific version; the latest version is always returned\.
 
 **Important**  
-The retrieved value will end up in your synthesized AWS CloudFormation template, which may be a security risk depending on who has access to your AWS CloudFormation templates and what kind of value it is\. Generally, don't use this feature for passwords, keys, or other values you want to keep private\.
+The retrieved value will end up in your synthesized AWS CloudFormation template\. This might be a security risk, depending on who has access to your AWS CloudFormation templates and what kind of value it is\. Generally, don't use this feature for passwords, keys, or other values you want to keep private\.
 
 ------
 #### [ TypeScript ]

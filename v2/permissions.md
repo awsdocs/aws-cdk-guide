@@ -1,12 +1,14 @@
 # Permissions<a name="permissions"></a>
 
-The AWS Construct Library uses a few common, widely\-implemented idioms to manage access and permissions\. The IAM module provides you with the tools you need to use these idioms\.
+The AWS Construct Library uses a few common, widely implemented idioms to manage access and permissions\. The IAM module provides you with the tools you need to use these idioms\.
 
 ## Principals<a name="permissions_principals"></a>
 
 An IAM principal is an authenticated AWS entity representing a user, service, or application that can call AWS APIs\. The AWS Construct Library supports specifying principals in several flexible ways to grant them access your AWS resources\.
 
-In security contexts, the term "principal" refers specifically to authenticated entities such as users\. Objects like groups and roles do not *represent* users \(and other authenticated entities\) but rather *identify* them indirectly for the purpose of granting permissions\. For example, if you create an IAM group, you can grant the group \(i\.e\. its members\) write access to a Amazon RDS table, but the group itself is not a principal since it does not represent a single entity \(also, you cannot log in to a group\)\.
+In security contexts, the term "principal" refers specifically to authenticated entities such as users\. Objects like groups and roles do not *represent* users \(and other authenticated entities\) but rather *identify* them indirectly for the purpose of granting permissions\.
+
+For example, if you create an IAM group, you can grant the group \(and thus its members\) write access to an Amazon RDS table\. However, the group itself is not a principal because it doesn't represent a single entity \(also, you cannot log in to a group\)\.
 
 In the CDK's IAM library, classes that directly or indirectly identify principals implement the [https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.IPrincipal.html](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.IPrincipal.html) interface, allowing these objects to be used interchangeably in access policies\. However, not all of them are principals in the security sense\. These objects include:
 
@@ -20,7 +22,7 @@ In the CDK's IAM library, classes that directly or indirectly identify principal
 
 1. Canonical user principals \(`new iam.[CanonicalUserPrincipal](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.CanonicalUserPrincipal.html)('79a59d[...]7ef2be')`\)
 
-1. AWS organizations principals \(`new iam.[OrganizationPrincipal](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.OrganizationPrincipal.html)('org-id')`\)
+1. AWS Organizations principals \(`new iam.[OrganizationPrincipal](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.OrganizationPrincipal.html)('org-id')`\)
 
 1. Arbitrary ARN principals \(`new iam.[ArnPrincipal](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.ArnPrincipal.html)(res.arn)`\)
 
@@ -28,13 +30,15 @@ In the CDK's IAM library, classes that directly or indirectly identify principal
 
 ## Grants<a name="permissions_grants"></a>
 
-Every construct that represents a resource that can be accessed, such as an Amazon S3 bucket or Amazon DynamoDB table, has methods that grant access to another entity\. All such methods have names starting with **grant**\. For example, Amazon S3 buckets have the methods `[grantRead](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.Bucket.html#grantwbrreadidentity-objectskeypattern)` and `[grantReadWrite](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.Bucket.html#grantwbrreadwbrwriteidentity-objectskeypattern)` \(Python: `grant_read`, `grant_read_write`\) to enable read and read/write access, respectively, from an entity to the bucket without having to know exactly which Amazon S3 IAM permissions are required to perform these operations\.
+Every construct that represents a resource that can be accessed, such as an Amazon S3 bucket or Amazon DynamoDB table, has methods that grant access to another entity\. All such methods have names starting with **grant**\.
 
-The first argument of a **grant** method is always of type [IGrantable](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.IGrantable.html)\. This interface represents entities that can be granted permissions—that is, resources with roles, such as the IAM objects `[Role](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.Role.html)`, `[User](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.User.html)`, and `[Group](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.User.html)`\.
+For example, Amazon S3 buckets have the methods `[grantRead](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.Bucket.html#grantwbrreadidentity-objectskeypattern)` and `[grantReadWrite](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.Bucket.html#grantwbrreadwbrwriteidentity-objectskeypattern)` \(Python: `grant_read`, `grant_read_write`\) to enable read and read/write access, respectively, from an entity to the bucket\. The entity doesn't have to know exactly which Amazon S3 IAM permissions are required to perform these operations\.
+
+The first argument of a **grant** method is always of type [IGrantable](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.IGrantable.html)\. This interface represents entities that can be granted permissions\. That is, it represents resources with roles, such as the IAM objects `[Role](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.Role.html)`, `[User](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.User.html)`, and `[Group](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.User.html)`\.
 
 Other entities can also be granted permissions\. For example, later in this topic, we show how to grant a CodeBuild project access to an Amazon S3 bucket\. Generally, the associated role is obtained via a `role` property on the entity being granted access\.
 
-Resources that use execution roles, such as `[lambda\.Function](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda.Function.html)`, also implement `IGrantable`, so you can grant them access directly instead of granting access to their role\. For example, if `bucket` is an Amazon S3 bucket, and `function` is a Lambda function, the code below grants the function read access to the bucket\.
+Resources that use execution roles, such as `[lambda\.Function](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda.Function.html)`, also implement `IGrantable`, so you can grant them access directly instead of granting access to their role\. For example, if `bucket` is an Amazon S3 bucket, and `function` is a Lambda function, the following code grants the function read access to the bucket\.
 
 ------
 #### [ TypeScript ]
@@ -73,7 +77,9 @@ bucket.GrantRead(function);
 
 ------
 
- Sometimes permissions must be applied while your stack is being deployed\. One such case is when you grant a AWS CloudFormation custom resource access to some other resource\. The custom resource will be invoked during deployment, so it must have the specified permissions at deployment time\. Another case is when a service verifies that the role you pass to it has the right policies applied \(a number of AWS services do this to make sure you didn't forget to set the policies\)\. In those cases, the deployment may fail if the permissions are applied too late\. 
+ Sometimes permissions must be applied while your stack is being deployed\. One such case is when you grant an AWS CloudFormation custom resource access to some other resource\. The custom resource will be invoked during deployment, so it must have the specified permissions at deployment time\.
+
+Another case is when a service verifies that the role you pass to it has the right policies applied\. \(A number of AWS services do this to make sure that you didn't forget to set the policies\.\) In those cases, the deployment might fail if the permissions are applied too late\. 
 
  To force the grant's permissions to be applied before another resource is created, you can add a dependency on the grant itself, as shown here\. Though the return value of grant methods is commonly discarded, every grant method in fact returns an `iam.Grant` object\.
 
@@ -263,9 +269,11 @@ role.AddToPolicy(new PolicyStatement(new PolicyStatementProps
 
 ------
 
- In our example above, we've created a new `[PolicyStatement](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.PolicyStatement.html)` inline with the `[addToPolicy](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.Role.html#addwbrtowbrpolicystatement)` \(Python: `add_to_policy`\) call\. You can also pass in an existing policy statement or one you've modified\. The [PolicyStatement](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.PolicyStatement.html) object has [numerous methods](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.PolicyStatement.html#methods) for adding principals, resources, conditions, and actions\. 
+ In the preceding example, we've created a new `[PolicyStatement](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.PolicyStatement.html)` inline with the `[addToPolicy](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.Role.html#addwbrtowbrpolicystatement)` \(Python: `add_to_policy`\) call\. You can also pass in an existing policy statement or one you've modified\. The [PolicyStatement](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.PolicyStatement.html) object has [numerous methods](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.PolicyStatement.html#methods) for adding principals, resources, conditions, and actions\. 
 
-If you're using a construct that requires a role to function correctly, you can either pass in an existing role when instantiating the construct object, or let the construct create a new role for you, trusting the appropriate service principal\. The following example uses such a construct: a CodeBuild project\.
+If you're using a construct that requires a role to function correctly, you can do one of the following:
++ Pass in an existing role when instantiating the construct object\.
++ Let the construct create a new role for you, trusting the appropriate service principal\. The following example uses such a construct: a CodeBuild project\.
 
 ------
 #### [ TypeScript ]
@@ -354,7 +362,11 @@ var project = new Project(this, "Project", new ProjectProps
 
 ------
 
-Once the object is created, the role \(whether the role passed in or the default one created by the construct\) is available as the property `role`\. This property is not available on external resources, however, so such constructs have an `addToRolePolicy` \(Python: `add_to_role_policy`\) method that does nothing if the construct is an external resource, and calls the `addToPolicy` \(Python: `add_to_policy`\) method of the `role` property otherwise, saving you the trouble of handling the undefined case explicitly\. The following example demonstrates:
+Once the object is created, the role \(whether the role passed in or the default one created by the construct\) is available as the property `role`\. However, this property is not available on external resources\. Therefore, these constructs have an `addToRolePolicy` \(Python: `add_to_role_policy`\) method\.
+
+The method does nothing if the construct is an external resource, and it calls the `addToPolicy` \(Python: `add_to_policy`\) method of the `role` property otherwise\. This saves you the trouble of handling the undefined case explicitly\.
+
+The following example demonstrates:
 
 ------
 #### [ TypeScript ]
@@ -494,13 +506,13 @@ bucket.AddToResourcePolicy(new PolicyStatement(new PolicyStatementProps
 
 ## Using external IAM objects<a name="permissions_existing"></a>
 
-If you have defined an IAM user, principal, group, or role outside your AWS CDK app, you can use that IAM object in your AWS CDK app by creating a reference to it using its ARN or \(for users, groups, and roles\) its name\. The returned reference can then be used to grant permissions or to construct policy statements as explained above\.
+If you have defined an IAM user, principal, group, or role outside your AWS CDK app, you can use that IAM object in your AWS CDK app\. To do so, create a reference to it using its ARN or its name\. \(Use the name for users, groups, and roles\.\) The returned reference can then be used to grant permissions or to construct policy statements as explained previously\.
 + For users, call `[User\.fromUserArn\(\)](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.User.html#static-fromwbruserwbrarnscope-id-userarn)` or `[User\.fromUserName\(\)](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.User.html#static-fromwbruserwbrnamescope-id-username)`\. `User.fromUserAttributes()` is also available, but currently provides the same functionality as `User.fromUserArn()`\.
 + For principals, instantiate an `[ArnPrincipal](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.ArnPrincipal.html)` object\.
 + For groups, call `[Group\.fromGroupArn\(\)](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.Group.html#static-fromwbrgroupwbrarnscope-id-grouparn)` or `[Group\.fromGroupName\(\)](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.Group.html#static-fromwbrgroupwbrnamescope-id-groupname)`\.
 + For roles, call `[Role\.fromRoleArn\(\)](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.Role.html#static-fromwbrrolewbrarnscope-id-rolearn-options)` or `[Role\.fromRoleName\(\)](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.Role.html#static-fromwbrrolewbrnamescope-id-rolename)`\.
 
-Policies \(including managed policies\) can be used in similar fashion using the methods listed below\. You can use references to these objects anywhere an IAM policy is required\.
+Policies \(including managed policies\) can be used in similar fashion using the following methods\. You can use references to these objects anywhere an IAM policy is required\.
 + `[Policy\.fromPolicyName](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.Policy.html#static-fromwbrpolicywbrnamescope-id-policyname)`
 + `[ManagedPolicy\.fromManagedPolicyArn](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.ManagedPolicy.html#static-fromwbrmanagedwbrpolicywbrarnscope-id-managedpolicyarn)`
 + `[ManagedPolicy\.fromManagedPolicyName](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.ManagedPolicy.html#static-fromwbrmanagedwbrpolicywbrnamescope-id-managedpolicyname)`

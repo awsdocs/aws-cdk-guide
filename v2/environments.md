@@ -1,6 +1,6 @@
 # Environments<a name="environments"></a>
 
-Each `Stack` instance in your AWS CDK app is explicitly or implicitly associated with an environment \(`env`\)\. An environment is the target AWS account and region into which the stack is intended to be deployed\. The region is specified using a region code; see [Regional endpoints](https://docs.aws.amazon.com/general/latest/gr/rande.html#regional-endpoints) for a list\.
+Each `Stack` instance in your AWS CDK app is explicitly or implicitly associated with an environment \(`env`\)\. An environment is the target AWS account and Region into which the stack is intended to be deployed\. The Region is specified using a Region code\. For a list, see [Regional endpoints](https://docs.aws.amazon.com/general/latest/gr/rande.html#regional-endpoints)\.
 
 **Note**  
 You must [bootstrap](bootstrapping.md) each environment you will deploy CDK stacks into\. Bootstrapping provisions certain AWS resources that are used during deployment\.
@@ -15,9 +15,9 @@ The file `app.py` in your project's main directory\.
 The file named `ProjectNameApp.java`, for example `HelloCdkApp.java`, nested deep under the `src/main` directory\.
 The file named `Program.cs` under `src\ProjectName`, for example `src\HelloCdk\Program.cs`\.
 
-In an environment\-agnostic stack, any constructs that use availability zones will see two AZs, allowing the stack to be deployed to any region\.
+In an environment\-agnostic stack, any constructs that use Availability Zones will see two AZs, allowing the stack to be deployed to any Region\.
 
-When using cdk deploy to deploy environment\-agnostic stacks, the AWS CDK CLI uses the specified AWS CLI profile \(or the default profile, if none is specified\) to determine where to deploy\. The AWS CDK CLI follows a protocol similar to the AWS CLI to determine which AWS credentials to use when performing operations in your AWS account\. See [AWS CDK Toolkit \(`cdk` command\)](cli.md) for details\.
+When using cdk deploy to deploy environment\-agnostic stacks, the AWS CDK CLI uses the specified AWS CLI profile to determine where to deploy\. If no profile is specified, the default profile is used\. The AWS CDK CLI follows a protocol similar to the AWS CLI to determine which AWS credentials to use when performing operations in your AWS account\. See [AWS CDK Toolkit \(`cdk` command\)](cli.md) for details\.
 
 For production stacks, we recommend that you explicitly specify the environment for each stack in your app using the `env` property\. The following example specifies different environments for its two different stacks\.
 
@@ -106,9 +106,9 @@ new MyFirstStack(app, "first-stack-eu", new StackProps { Env=envEU });
 
 ------
 
-When you hard\-code the target account and region as above, the stack will always be deployed to that specific account and region\. To make the stack deployable to a different target, but to determine the target at synthesis time, your stack can use two environment variables provided by the AWS CDK CLI: `CDK_DEFAULT_ACCOUNT` and `CDK_DEFAULT_REGION`\. These variables are set based on the AWS profile specified using the \-\-profile option, or the default AWS profile if you don't specify one\.
+When you hardcode the target account and Region as shown in the preceding example, the stack is always deployed to that specific account and Region\. To make the stack deployable to a different target, but to determine the target at synthesis time, your stack can use two environment variables provided by the AWS CDK CLI: `CDK_DEFAULT_ACCOUNT` and `CDK_DEFAULT_REGION`\. These variables are set based on the AWS profile specified using the \-\-profile option, or the default AWS profile if you don't specify one\.
 
-The following code fragment shows how to access the account and region passed from the AWS CDK CLI in your stack\.
+The following code fragment shows how to access the account and Region passed from the AWS CDK CLI in your stack\.
 
 ------
 #### [ TypeScript ]
@@ -116,7 +116,7 @@ The following code fragment shows how to access the account and region passed fr
 Access environment variables via Node's `process` object\.
 
 **Note**  
- You need the DefinitelyTyped module to use `process` in TypeScript\. `cdk init` installs this module for you, but if you are working with a project created before it was added, or didn't set up your project using `cdk init`, install it manually\.  
+ You need the `DefinitelyTyped` module to use `process` in TypeScript\. `cdk init` installs this module for you\. However, you should install this module manually if you are working with a project created before it was added, or if you didn't set up your project using `cdk init`\.  
 
 ```
 npm install @types/node
@@ -210,11 +210,11 @@ new MyDevStack(app, "dev", new StackProps { Env = makeEnv() });
 
 ------
 
-The AWS CDK distinguishes between not specifying the `env` property at all and specifying it using `CDK_DEFAULT_ACCOUNT` and `CDK_DEFAULT_REGION`\. The former implies that the stack should synthesize an environment\-agnostic template\. Constructs that are defined in such a stack cannot use any information about their environment\. For example, you can't write code like `if (stack.region === 'us-east-1')` or use framework facilities like [Vpc\.fromLookup](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ec2.Vpc.html#static-fromwbrlookupscope-id-options) \(Python: `from_lookup`\), which need to query your AWS account\. These features do not work at all without an explicit environment specified; to use them, you must specify `env`\.
+The AWS CDK distinguishes between not specifying the `env` property at all and specifying it using `CDK_DEFAULT_ACCOUNT` and `CDK_DEFAULT_REGION`\. The former implies that the stack should synthesize an environment\-agnostic template\. Constructs that are defined in such a stack cannot use any information about their environment\. For example, you can't write code like `if (stack.region === 'us-east-1')` or use framework facilities like [Vpc\.fromLookup](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ec2.Vpc.html#static-fromwbrlookupscope-id-options) \(Python: `from_lookup`\), which need to query your AWS account\. These features don't work at all until you specify an explicit environment; to use them, you must specify `env`\.
 
-When you pass in your environment using `CDK_DEFAULT_ACCOUNT` and `CDK_DEFAULT_REGION`, the stack will be deployed in the account and Region determined by the AWS CDK CLI at the time of synthesis\. This allows environment\-dependent code to work, but it also means that the synthesized template could be different based on the machine, user, or session under which it is synthesized\. This behavior is often acceptable or even desirable during development, but it would probably be an anti\-pattern for production use\.
+When you pass in your environment using `CDK_DEFAULT_ACCOUNT` and `CDK_DEFAULT_REGION`, the stack will be deployed in the account and Region determined by the AWS CDK CLI at the time of synthesis\. This lets environment\-dependent code work, but it also means that the synthesized template could be different based on the machine, user, or session that it's synthesized under\. This behavior is often acceptable or even desirable during development, but it would probably be an anti\-pattern for production use\.
 
-You can set `env` however you like, using any valid expression\. For example, you might write your stack to support two additional environment variables to let you override the account and region at synthesis time\. We'll call these `CDK_DEPLOY_ACCOUNT` and `CDK_DEPLOY_REGION` here, but you could name them anything you like, as they are not set by the AWS CDK\. In the following stack's environment, we use our alternative environment variables if they're set, falling back to the default environment provided by the AWS CDK if they are not\.
+You can set `env` however you like, using any valid expression\. For example, you might write your stack to support two additional environment variables to let you override the account and Region at synthesis time\. We'll call these `CDK_DEPLOY_ACCOUNT` and `CDK_DEPLOY_REGION` here, but you could name them anything you like, as they are not set by the AWS CDK\. In the following stack's environment, alternative environment variables are used if they're set\. If they're not set, they fall back to the default environment provided by the AWS CDK\.
 
 ------
 #### [ TypeScript ]
@@ -304,7 +304,7 @@ new MyDevStack(app, "dev", new StackProps { Env = makeEnv() });
 
 ------
 
-With your stack's environment declared this way, you can now write a short script or batch file like the following to set the variables from command line arguments, then call `cdk deploy`\. Any arguments beyond the first two are passed through to `cdk deploy` and can be used to specify command\-line options or stacks\.
+With your stack's environment declared this way, you can write a short script or batch file like the following to set the variables from command line arguments, then call `cdk deploy`\. Any arguments beyond the first two are passed through to `cdk deploy` and can be used to specify command line options or stacks\.
 
 ------
 #### [ macOS/Linux ]

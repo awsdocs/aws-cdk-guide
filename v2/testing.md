@@ -1,19 +1,19 @@
 # Testing constructs<a name="testing"></a>
 
-With the AWS CDK, your infrastructure can be as testable as any other code you write\. This article illustrates the standard approach to testing AWS CDK apps using the AWS CDK's [assertions](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.assertions-readme.html) module and popular test frameworks such as [Jest](https://jestjs.io/) for TypeScript and JavaScript or [Pytest](https://docs.pytest.org/en/6.2.x/) for Python\.
+With the AWS CDK, your infrastructure can be as testable as any other code you write\. The standard approach to testing AWS CDK apps uses the AWS CDK's [assertions](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.assertions-readme.html) module and popular test frameworks like [Jest](https://jestjs.io/) for TypeScript and JavaScript or [Pytest](https://docs.pytest.org/en/6.2.x/) for Python\.
 
-There are two categories of tests you can write for AWS CDK apps\.
-+  **Fine\-grained assertions** test specific aspects of the generated AWS CloudFormation template, such as "this resource has this property with this value\." These tests can detect regressions, and are also useful when you're developing new features using test\-driven development \(write a test first, then make it pass by writing a correct implementation\)\. Fine\-grained assertions are the tests you'll write the most of\.
-+  **Snapshot tests** test the synthesized AWS CloudFormation template against a previously\-stored baseline template or "master\." Snapshot tests let you refactor freely, since you can be sure that the refactored code works exactly the same way as the original\. If the changes were intentional, you can accept a new baseline for future tests\. However, CDK upgrades can also cause synthesized templates to change, so you can't rely only on snapshots to make sure your implementation is correct\.
+There are two categories of tests that you can write for AWS CDK apps\.
++  **Fine\-grained assertions** test specific aspects of the generated AWS CloudFormation template, such as "this resource has this property with this value\." These tests can detect regressions\. They're also useful when you're developing new features using test\-driven development\. \(You can write a test first, then make it pass by writing a correct implementation\.\) Fine\-grained assertions are the most frequently used tests\.
++ **Snapshot tests** test the synthesized AWS CloudFormation template against a previously stored baseline template\. Snapshot tests let you refactor freely, since you can be sure that the refactored code works exactly the same way as the original\. If the changes were intentional, you can accept a new baseline for future tests\. However, CDK upgrades can also cause synthesized templates to change, so you can't rely only on snapshots to make sure that your implementation is correct\.
 
 **Note**  
 Complete versions of the TypeScript, Python, and Java apps used as examples in this topic are [available on GitHub](https://github.com/cdklabs/aws-cdk-testing-examples/)\.
 
 ## Getting started<a name="testing_getting_started"></a>
 
-To illustrate how to write these tests, we'll create a stack that contains an AWS Step Functions state machine and a AWS Lambda function\. The Lambda function is subscribed to an Amazon SNS topic and simply forwards the message to the state machine\.
+To illustrate how to write these tests, we'll create a stack that contains an AWS Step Functions state machine and an AWS Lambda function\. The Lambda function is subscribed to an Amazon SNS topic and simply forwards the message to the state machine\.
 
-First, create an empty CDK application project using the CDK Toolkit and installing the libraries we'll need\. The constructs we'll use are all in the main CDK package, which is a default dependency in projects created with the CDK Toolkit, but you'll need to install your testing framework\.
+First, create an empty CDK application project using the CDK Toolkit and installing the libraries we'll need\. The constructs we'll use are all in the main CDK package, which is a default dependency in projects created with the CDK Toolkit\. However, you must install your testing framework\.
 
 ------
 #### [ TypeScript ]
@@ -35,7 +35,7 @@ Edit the project's `package.json` to tell NPM how to run Jest, and to tell Jest 
 + Add Jest and its types to the `devDependencies` section
 + Add a new `jest` top\-level key with a `moduleFileExtensions` declaration
 
-These changes are shown in outline below\. Place the new text where indicated in `package.json`\. The "\.\.\." placeholders indicate existing parts of the file that should not be changed\. 
+These changes are shown in the following outline\. Place the new text where indicated in `package.json`\. The "\.\.\." placeholders indicate existing parts of the file that should not be changed\. 
 
 ```
 {
@@ -75,7 +75,7 @@ Edit the project's `package.json` to tell NPM how to run Jest, and to tell Jest 
 + Add Jest to the `devDependencies` section
 + Add a new `jest` top\-level key with a `moduleFileExtensions` declaration
 
-These changes are shown in outline below\. Place the new text where indicated in `package.json`\. The "\.\.\." placeholders indicate existing parts of the file that s\.hould not be changed\. 
+These changes are shown in the following outline\. Place the new text where indicated in `package.json`\. The "\.\.\." placeholders indicate existing parts of the file that shouldn't be changed\. 
 
 ```
 {
@@ -133,7 +133,7 @@ Right\-click `TestProject1` and choose **Add** > **Project Reference**, and add 
 
 ## The example stack<a name="testing_app"></a>
 
-Here's the stack we'll be testing in this topic\. As we've previously described, it contains a Lambda function and a Step Functions state machine, and accepts one or more Amazon SNS topics\. The Lambda function is subscribed to the Amazon SNS topics and forwards them to the state machine\. 
+Here's the stack that will be tested in this topic\. As we've previously described, it contains a Lambda function and a Step Functions state machine, and accepts one or more Amazon SNS topics\. The Lambda function is subscribed to the Amazon SNS topics and forwards them to the state machine\. 
 
 You don't have to do anything special to make the app testable\. In fact, this CDK stack is not different in any important way from the other example stacks in this Guide\.
 
@@ -379,7 +379,7 @@ namespace AwsCdkAssertionSamples
 
 ------
 
-We'll modify the app's main entry point to not actually instantiate our stack, since we don't want to accidentally deploy it\. Our tests will create an app and an instance of the stack for testing\. This is a useful tactic when combined with test\-driven development: make sure the stack passes all tests before you enable deployment\.
+We'll modify the app's main entry point so that we don't actually instantiate our stack\. We don't want to accidentally deploy it\. Our tests will create an app and an instance of the stack for testing\. This is a useful tactic when combined with test\-driven development: make sure that the stack passes all tests before you enable deployment\.
 
 ------
 #### [ TypeScript ]
@@ -475,9 +475,9 @@ namespace AwsCdkAssertionSamples
 
 ## The Lambda function<a name="testing_lambda"></a>
 
-Our example stack includes a Lambda function that starts our state machine\. We must provide the source code for this function so the CDK can bundle it up and deploy it as part of creating the Lambda function resource\.
+Our example stack includes a Lambda function that starts our state machine\. We must provide the source code for this function so the CDK can bundle and deploy it as part of creating the Lambda function resource\.
 + Create the folder `start-state-machine` in the app's main directory\.
-+ In this folder, create at least one file\. For example, you can save the code below in `start-state-machines/index.js`\.
++ In this folder, create at least one file\. For example, you can save the following code in `start-state-machines/index.js`\.
 
   ```
   exports.handler = async function (event, context) {
@@ -489,7 +489,7 @@ Our example stack includes a Lambda function that starts our state machine\. We 
 
 ## Running tests<a name="testing_running_tests"></a>
 
-For reference, here are the commands you use to run tests in your AWS CDK app\. These are the same commands you'd use to run the tests in any project using the same testing framework\. For languages that require a build step, include that to make sure your tests have been compiled\.
+For reference, here are the commands you use to run tests in your AWS CDK app\. These are the same commands that you'd use to run the tests in any project using the same testing framework\. For languages that require a build step, include that to make sure that your tests have compiled\.
 
 ------
 #### [ TypeScript ]
@@ -538,7 +538,7 @@ The first step for testing a stack with fine\-grained assertions is to synthesiz
 
 Our `ProcessorStack` requires that we pass it the Amazon SNS topic to be forwarded to the state machine\. So in our test, we'll create a separate stack to contain the topic\.
 
-Ordinarily, if you were writing a CDK app, you'd subclass `Stack` and instantiate the Amazon SNS topic in the stack's constructor\. In our test, we instantiate `Stack` directly, then pass this stack as the `Topic`'s scope, attaching it to the stack\. This is functionally equivalent, less verbose, and helps make stacks used only in tests "look different" from stacks you intend to deploy\.
+Ordinarily, when writing a CDK app, you can subclass `Stack` and instantiate the Amazon SNS topic in the stack's constructor\. In our test, we instantiate `Stack` directly, then pass this stack as the `Topic`'s scope, attaching it to the stack\. This is functionally equivalent and less verbose\. It also helps make stacks that are used only in tests "look different" from the stacks that you intend to deploy\.
 
 ------
 #### [ TypeScript ]
@@ -807,7 +807,7 @@ Now we can assert that the Lambda function and the Amazon SNS subscription were 
 
 ------
 
-Our Lambda function test asserts that two particular properties of the function resource have specific values\. By default, the `hasResourceProperties` method performs a partial match on the resource's properties as given in the synthesized CloudFormation template\. This test requires that the provided properties exist and have the specified values, but the resource can also have other properties, and these are not tested\.
+Our Lambda function test asserts that two particular properties of the function resource have specific values\. By default, the `hasResourceProperties` method performs a partial match on the resource's properties as given in the synthesized CloudFormation template\. This test requires that the provided properties exist and have the specified values, but the resource can also have other properties, which are not tested\.
 
 Our Amazon SNS assertion asserts that the synthesized template contains a subscription, but nothing about the subscription itself\. We included this assertion mainly to illustrate how to assert on resource counts\. The `Template` class offers more specific methods to write assertions against the `Resources`, `Outputs`, and `Mapping` sections of the CloudFormation template\. 
 
@@ -815,7 +815,7 @@ Our Amazon SNS assertion asserts that the synthesized template contains a subscr
 
 The default partial matching behavior of `hasResourceProperties` can be changed using *matchers* from the [https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.assertions.Match.html#methods](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.assertions.Match.html#methods) class\. 
 
-Matchers range from the very lenient \(`Match.anyValue`\) to the quite strict \(`Match.objectEquals`\), and can be nested to apply different matching methods to different parts of the resource properties\. Using `Match.objectEquals` and `Match.anyValue` together, for example, we can test the state machine's IAM role more fully, while not requiring specific values for properties that may change\.
+Matchers range from lenient \(`Match.anyValue`\) to strict \(`Match.objectEquals`\)\. They can be nested to apply different matching methods to different parts of the resource properties\. Using `Match.objectEquals` and `Match.anyValue` together, for example, we can test the state machine's IAM role more fully, while not requiring specific values for properties that may change\.
 
 ------
 #### [ TypeScript ]
@@ -978,7 +978,9 @@ from aws_cdk.assertions import Match
 
 ------
 
-Many CloudFormation resources include serialized JSON objects represented as strings\. The `Match.serializedJson()` matcher can be used to match properties inside this JSON\. For example, Step Functions state machines are defined using a string in the JSON\-based [Amazon States Language](https://docs.aws.amazon.com/step-functions/latest/dg/concepts-amazon-states-language.html)\. We'll use `Match.serializedJson()` to make sure our initial state is the only step, again using nested matchers to apply different kinds of matching to different parts of the object\. 
+Many CloudFormation resources include serialized JSON objects represented as strings\. The `Match.serializedJson()` matcher can be used to match properties inside this JSON\.
+
+For example, Step Functions state machines are defined using a string in the JSON\-based [Amazon States Language](https://docs.aws.amazon.com/step-functions/latest/dg/concepts-amazon-states-language.html)\. We'll use `Match.serializedJson()` to make sure that our initial state is the only step\. Again, we'll use nested matchers to apply different kinds of matching to different parts of the object\. 
 
 ------
 #### [ TypeScript ]
@@ -1118,7 +1120,7 @@ It's often useful to test properties to make sure they follow specific formats, 
 
 By specifying a `Capture` instance in place of a value in `hasResourceProperties`, that value is retained in the `Capture` object\. The actual captured value can be retrieved using the object's `as` methods, including `asNumber()`, `asString()`, and `asObject`, and subjected to test\. Use `Capture` with a matcher to specify the exact location of the value to be captured within the resource's properties, including serialized JSON properties\.
 
-For example, this example tests to make sure that the starting state of our state machine has a name beginning with `Start` and also that this state is actually present within the list of states in the machine\.
+The following example tests to make sure that the starting state of our state machine has a name beginning with `Start`\. It also tests that this state is present within the list of states in the machine\.
 
 ------
 #### [ TypeScript ]
@@ -1252,7 +1254,9 @@ import re
 
 ## Snapshot tests<a name="testing_snapshot"></a>
 
-In *snapshot testing*, you compare the entire synthesized CloudFormation template against a previously\-stored master\. This isn't useful in catching regressions, as fine\-grained assertions are, because it applies to the entire template, and things besides code changes can cause small \(or not\-so\-small\) differences in synthesis results\. For example, we may update a CDK construct to incorporate a new best practice, which can cause changes to the synthesized resources or how they're organized, or we might update the CDK Toolkit to report additional metadata\. Changes to context values can also affect the synthesized template\. 
+In *snapshot testing*, you compare the entire synthesized CloudFormation template against a previously stored master\. Unlike fine\-grained assertions, snapshot testing isn't useful in catching regressions\. This is because snapshot testing applies to the entire template, and things besides code changes can cause small \(or not\-so\-small\) differences in synthesis results\.
+
+For example, you might update a CDK construct to incorporate a new best practice, which can cause changes to the synthesized resources or how they're organized\. Alternatively, you might update the CDK Toolkit to report additional metadata\. Changes to context values can also affect the synthesized template\. 
 
 Snapshot tests can be of great help in refactoring, though, as long as you hold constant all other factors that might affect the synthesized template\. You will know immediately if a change you made has unintentionally changed the template\. If the change is intentional, simply accept a new master and proceed\.
 
@@ -1492,6 +1496,8 @@ namespace TestProject1
 
 ## Tips for tests<a name="testing_tips"></a>
 
-Remember, your tests will live just as long as the code they test, and be read and modified just as often, so it pays to take a moment to consider how best to write them\. Don't copy and paste setup lines or common assertions, for example; refactor this logic into fixtures or helper functions\. Use good names that reflect what each test actually tests\.
+Remember, your tests will live just as long as the code they test, and they will be read and modified just as often\. Therefore, it pays to take a moment to consider how best to write them\.
 
-Don't try to do too much in one test\. Preferably, a test should test one and only one behavior\. If you accidentally break that behavior, exactly one test should fail, and the name of the test should tell you exactly what failed\. This is more an ideal to be striven for, however; sometimes you will unavoidably \(or inadvertently\) write tests that test more than one behavior\. Snapshot tests are, for reasons we've already described, especially prone to this problem, so use them sparingly\.
+Don't copy and paste setup lines or common assertions\. Instead, refactor this logic into fixtures or helper functions\. Use good names that reflect what each test actually tests\.
+
+Don't try to do too much in one test\. Preferably, a test should test one and only one behavior\. If you accidentally break that behavior, exactly one test should fail, and the name of the test should tell you what failed\. This is more an ideal to be striven for, however; sometimes you will unavoidably \(or inadvertently\) write tests that test more than one behavior\. Snapshot tests are, for reasons we've already described, especially prone to this problem, so use them sparingly\.

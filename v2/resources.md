@@ -2,7 +2,7 @@
 
 As described in [Constructs](constructs.md), the AWS CDK provides a rich class library of constructs, called *AWS constructs*, that represent all AWS resources\.
 
-To create an instance of a resource using its corresponding construct, pass in the scope as the first argument, the logical ID of the construct, and a set of configuration properties \(props\)\. For example, here's how to create an Amazon SQS queue with KMS encryption using the [sqs\.Queue](https://docs.aws.amazon.com/cdk/api/v2/docs/@aws-cdk_aws-sqs.Queue.html) construct from the AWS Construct Library\.
+To create an instance of a resource using its corresponding construct, pass in the scope as the first argument, the logical ID of the construct, and a set of configuration properties \(props\)\. For example, here's how to create an Amazon SQS queue with AWS KMS encryption using the [sqs\.Queue](https://docs.aws.amazon.com/cdk/api/v2/docs/@aws-cdk_aws-sqs.Queue.html) construct from the AWS Construct Library\.
 
 ------
 #### [ TypeScript ]
@@ -117,7 +117,7 @@ See [Tokens](tokens.md) for information about how the AWS CDK encodes deploy\-ti
 
 ## Referencing resources<a name="resources_referencing"></a>
 
-Many AWS CDK classes require properties that are AWS CDK resource objects \(resources\)\. For example, an Amazon ECS resource requires a reference to the cluster on which it runs; an Amazon CloudFront distribution requires a reference to the bucket containing source code\. To satisfy these requirements, you can refer to a resource in one of two ways:
+Many AWS CDK classes require properties that are AWS CDK resource objects \(resources\)\. For example, an Amazon ECS resource requires a reference to the cluster on which it runs\. An Amazon CloudFront distribution requires a reference to the bucket containing the source code\. To satisfy these requirements, you can refer to a resource in one of two ways:
 + By passing a resource defined in your CDK app, either in the same stack or in a different one
 + By passing a proxy object referencing a resource defined in your AWS account, created from a unique identifier of the resource \(such as an ARN\)
 
@@ -173,7 +173,7 @@ var service = new Ec2Service(this, "Service", new Ec2ServiceProps { Cluster = cl
 
 ## Referencing resources in a different stack<a name="resource_stack"></a>
 
-You can refer to resources in a different stack as long as they are defined in the same app and are in the same AWS account and region\. The pattern generally used is:
+You can refer to resources in a different stack as long as they are defined in the same app and are in the same AWS account and Region\. The following pattern is generally used:
 + Store a reference to the construct as an attribute of the stack that produces the resource\. \(To get a reference to the current construct's stack, use `Stack.of(this)`\.\)
 + Pass this reference to the constructor of the stack that consumes the resource as a parameter or a property\. The consuming stack then passes it as a property to any construct that needs it\.
 
@@ -263,21 +263,21 @@ var stack2 = new StackThatExpectsABucket(app, "Stack2", new StackProps { Env = p
 
 ------
 
-If the AWS CDK determines that the resource is in the same account and region, but in a different stack, it automatically synthesizes AWS CloudFormation [exports](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-stack-exports.html) in the producing stack and an [Fn::ImportValue](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/intrinsic-function-reference-importvalue.html) in the consuming stack to transfer that information from one stack to the other\.
+If the AWS CDK determines that the resource is in the same account and Region, but in a different stack, it automatically synthesizes AWS CloudFormation [exports](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-stack-exports.html) in the producing stack and an [Fn::ImportValue](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/intrinsic-function-reference-importvalue.html) in the consuming stack to transfer that information from one stack to the other\.
 
 ### Resolving dependency deadlocks<a name="resources_deadlock"></a>
 
-Referencing a resource from one stack in a different stack creates a dependency between the two stacks to ensure that they are deployed in the right order\. Once this dependency has been made concrete by deploying the stacks, removing the use of the shared resource from the consuming stack can cause an unexpected deployment failure\. This happens if there is another dependency between the two stacks that force them to be deployed in the same order, but it can also happen without a dependency if the producing stack is simply chosen by the CDK Toolkit to be deployed first\. The AWS CloudFormation export is removed from the producing stack because it is no longer needed, but the exported resource is still being used in the consuming stack because its update has not yet been deployed, so deploying the producer stack fails\.
+Referencing a resource from one stack in a different stack creates a dependency between the two stacks\. This makes sure that they're deployed in the right order\. After the stacks are deployed, this dependency is concrete\. After that, removing the use of the shared resource from the consuming stack can cause an unexpected deployment failure\. This happens if there is another dependency between the two stacks that force them to be deployed in the same order\. It can also happen without a dependency if the producing stack is simply chosen by the CDK Toolkit to be deployed first\. The AWS CloudFormation export is removed from the producing stack because it's no longer needed, but the exported resource is still being used in the consuming stack because its update is not yet deployed\. Therefore, deploying the producer stack fails\.
 
-To break this deadlock, remove the use of the shared resource from the consuming stack \(which will remove the automatic export from the producing stack\), then manually add the same export to the producing stack using exactly the same logical ID as the automatically\-generated export\. Remove the use of the shared resource in the consuming stack and deploy both stacks\. Then remove the manual export \(and the shared resource if it is no longer needed\), and deploy both stacks again\. The stack's `[exportValue\(\)](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ec2.Vpc.html#static-fromwbrlookupscope-id-options)` method is a convenient way to create the manual export for this purpose \(see the example in the linked method reference\)\.
+To break this deadlock, remove the use of the shared resource from the consuming stack\. \(This removes the automatic export from the producing stack\.\) Next, manually add the same export to the producing stack using exactly the same logical ID as the automatically generated export\. Remove the use of the shared resource in the consuming stack and deploy both stacks\. Then, remove the manual export \(and the shared resource if it's no longer needed\) and deploy both stacks again\. The stack's `[exportValue\(\)](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ec2.Vpc.html#static-fromwbrlookupscope-id-options)` method is a convenient way to create the manual export for this purpose\. \(See the example in the linked method reference\.\)
 
 ## Referencing resources in your AWS account<a name="resources_external"></a>
 
-Suppose you want to use a resource already available in your AWS account in your AWS CDK app: for example, a resource that was defined through the console, an AWS SDK, directly with AWS CloudFormation, or in a different AWS CDK application\. You can turn the resource's ARN \(or another identifying attribute, or group of attributes\) into a proxy object that serves as a reference to the resource by calling a static factory method on the resource's class\. 
+Suppose you want to use a resource already available in your AWS account in your AWS CDK app\. This might be a resource that was defined through the console, an AWS SDK, directly with AWS CloudFormation, or in a different AWS CDK application\. You can turn the resource's ARN \(or another identifying attribute, or group of attributes\) into a proxy object\. The proxy object serves as a reference to the resource by calling a static factory method on the resource's class\. 
 
-When you create such a proxy, the external resource **does not** become a part of your AWS CDK app, and therefore, changes you make to the proxy in your AWS CDK app do not affect the deployed resource\. The proxy can, however, be passed to any AWS CDK method that requires a resource of that type\. 
+When you create such a proxy, the external resource **does not** become a part of your AWS CDK app\. Therefore, changes you make to the proxy in your AWS CDK app do not affect the deployed resource\. The proxy can, however, be passed to any AWS CDK method that requires a resource of that type\. 
 
-The following example shows how to reference a bucket based on an existing bucket with the ARN **arn:aws:s3:::my\-bucket\-name**, and a Amazon Virtual Private Cloud based on an existing VPC having a specific ID\.
+The following example shows how to reference a bucket based on an existing bucket with the ARN **arn:aws:s3:::my\-bucket\-name**, and an Amazon Virtual Private Cloud based on an existing VPC having a specific ID\.
 
 ------
 #### [ TypeScript ]
@@ -362,11 +362,11 @@ Vpc.FromVpcAttributes(this, "MyVpc", new VpcAttributes
 
 Let's take a closer look at the [https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-ec2.Vpc.html#static-fromwbrlookupscope-id-options](https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-ec2.Vpc.html#static-fromwbrlookupscope-id-options) method\. Because the `ec2.Vpc` construct is complex, there are many ways you might want to select the VPC to be used with your CDK app\. To address this, the VPC construct has a `fromLookup` static method \(Python: `from_lookup`\) that lets you look up the desired Amazon VPC by querying your AWS account at synthesis time\.
 
-To use `Vpc.fromLookup()`, the system that synthesizes the stack must have access to the account that owns the Amazon VPC, since the CDK Toolkit queries the account to find the right Amazon VPC at synthesis time\. 
+To use `Vpc.fromLookup()`, the system that synthesizes the stack must have access to the account that owns the Amazon VPC\. This is because the CDK Toolkit queries the account to find the right Amazon VPC at synthesis time\. 
 
-Furthermore, `Vpc.fromLookup()` works only in stacks that are defined with an explicit **account** and **region** \(see [Environments](environments.md)\)\. If the AWS CDK attempts to look up an Amazon VPC from an [environment\-agnostic stack](stacks.md#stack_api), the CDK Toolkit does not know which environment to query to find the VPC\.
+Furthermore, `Vpc.fromLookup()` works only in stacks that are defined with an explicit **account** and **region** \(see [Environments](environments.md)\)\. If the AWS CDK tries to look up an Amazon VPC from an [environment\-agnostic stack](stacks.md#stack_api), the CDK Toolkit doesn't know which environment to query to find the VPC\.
 
-You must provide `Vpc.fromLookup()` attributes sufficient to uniquely identify a VPC in your AWS account\. For example, there can only ever be one default VPC, so specifying that you want the VPC marked as the default is sufficient\.
+You must provide `Vpc.fromLookup()` attributes sufficient to uniquely identify a VPC in your AWS account\. For example, there can only ever be one default VPC, so it's sufficient to specify the VPC as the default\.
 
 ------
 #### [ TypeScript ]
@@ -410,7 +410,7 @@ Vpc.FromLookup(this, id = "DefaultVpc", new VpcLookupOptions { IsDefault = true 
 
 ------
 
-You can also use the `tags` property to query for VPCs by tag\. Tags may be added to the Amazon VPC at the time of its creation using AWS CloudFormation or the AWS CDK, and they may be edited at any time after creation using the AWS Management Console, the AWS CLI, or an AWS SDK\. In addition to any tags you have added yourself, the AWS CDK automatically adds the following tags to all VPCs it creates\. 
+You can also use the `tags` property to query for VPCs by tag\. You can add tags to the Amazon VPC at the time of its creation by using AWS CloudFormation or the AWS CDK\. You can edit tags at any time after creation by using the AWS Management Console, the AWS CLI, or an AWS SDK\. In addition to any tags you add yourself, the AWS CDK automatically adds the following tags to all VPCs it creates\. 
 + *Name* – The name of the VPC\.
 + *aws\-cdk:subnet\-name* – The name of the subnet\.
 + *aws\-cdk:subnet\-type* – The type of the subnet: Public, Private, or Isolated\.
@@ -458,13 +458,13 @@ Vpc.FromLookup(this, id = "PublicVpc", new VpcLookupOptions
 
 ------
 
-Results of `Vpc.fromLookup()` are cached in the project's `cdk.context.json` file\. \(See [Runtime context](context.md)\.\) Commit this file to version control so that your app will continue to refer to the same Amazon VPC even if you later change the attributes of your VPCs in a way that would result in a different VPC being selected\. This is particularly important if you will be deploying the stack in an environment that does not have access to the AWS account that defines the VPC, such as [CDK Pipelines](cdk_pipeline.md)\.
+Results of `Vpc.fromLookup()` are cached in the project's `cdk.context.json` file\. \(See [Runtime context](context.md)\.\) Commit this file to version control so that your app will continue to refer to the same Amazon VPC\. This works even if you later change the attributes of your VPCs in a way that would result in a different VPC being selected\. This is particularly important if you're deploying the stack in an environment that doesn't have access to the AWS account that defines the VPC, such as [CDK Pipelines](cdk_pipeline.md)\.
 
 Although you can use an external resource anywhere you'd use a similar resource defined in your AWS CDK app, you cannot modify it\. For example, calling `addToResourcePolicy` \(Python: `add_to_resource_policy`\) on an external `s3.Bucket` does nothing\.
 
 ## Physical names<a name="resources_physical_names"></a>
 
-The logical names of resources in AWS CloudFormation are different from the names of resources that are shown in the AWS Management Console after AWS CloudFormation has deployed the resources\. The AWS CDK calls these final names *physical names*\.
+The logical names of resources in AWS CloudFormation are different from the names of resources that are shown in the AWS Management Console after they're deployed by AWS CloudFormation\. The AWS CDK calls these final names *physical names*\.
 
 For example, AWS CloudFormation might create the Amazon S3 bucket with the logical ID **Stack2MyBucket4DD88B4F** from the previous example with the physical name **stack2mybucket4dd88b4f\-iuv1rbv9z3to**\.
 
@@ -514,7 +514,7 @@ var bucket = new Bucket(this, "MyBucket", new BucketProps { BucketName = "my-buc
 
 Assigning physical names to resources has some disadvantages in AWS CloudFormation\. Most importantly, any changes to deployed resources that require a resource replacement, such as changes to a resource's properties that are immutable after creation, will fail if a resource has a physical name assigned\. If you end up in that state, the only solution is to delete the AWS CloudFormation stack, then deploy the AWS CDK app again\. See the [AWS CloudFormation documentation](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-name.html) for details\.
 
-In some cases, such as when creating an AWS CDK app with cross\-environment references, physical names are required for the AWS CDK to function correctly\. In those cases, if you don't want to bother with coming up with a physical name yourself, you can let the AWS CDK name it for you by using the special value `PhysicalName.GENERATE_IF_NEEDED`, as follows\.
+In some cases, such as when creating an AWS CDK app with cross\-environment references, physical names are required for the AWS CDK to function correctly\. In those cases, if you don't want to bother with coming up with a physical name yourself, you can let the AWS CDK name it for you\. To do so, use the special value `PhysicalName.GENERATE_IF_NEEDED`, as follows\.
 
 ------
 #### [ TypeScript ]
@@ -562,7 +562,9 @@ var bucket = new Bucket(this, "MyBucket", new BucketProps
 
 ## Passing unique identifiers<a name="resources_identifiers"></a>
 
-Whenever possible, you should pass resources by reference, as described in the previous section\. However, there are cases where you have no other choice but to refer to a resource by one of its attributes\. For example, when you are using the low\-level AWS CloudFormation resources, or need to expose resources to the runtime components of an AWS CDK application, such as when referring to Lambda functions through environment variables\.
+Whenever possible, you should pass resources by reference, as described in the previous section\. However, there are cases where you have no other choice but to refer to a resource by one of its attributes\. Example use cases include the following:
++ When you are using low\-level AWS CloudFormation resources
++ When you need to expose resources to the runtime components of an AWS CDK application, such as when referring to Lambda functions through environment variables
 
 These identifiers are available as attributes on the resources, such as the following\.
 
@@ -685,9 +687,9 @@ new Function(this, "MyLambda", new FunctionProps
 
 ## Granting permissions<a name="resources_grants"></a>
 
-AWS constructs make least\-privilege permissions easy to achieve by offering simple, intent\-based APIs to express permission requirements\. Many AWS constructs offer grant methods that enable you to easily grant an entity, such as an IAM role or a user, permission to work with the resource without having to manually craft one or more IAM permission statements\.
+AWS constructs make least\-privilege permissions achievable by offering simple, intent\-based APIs to express permission requirements\. Many AWS constructs offer grant methods that you can use to grant an entity \(such as an IAM role or user\) permission to work with the resource, without having to manually create IAM permission statements\.
 
-The following example creates the permissions to allow a Lambda function's execution role to read and write objects to a particular Amazon S3 bucket\. If the Amazon S3 bucket is encrypted using an AWS KMS key, this method also grants the Lambda function's execution role permissions to decrypt using this key\.
+The following example creates the permissions to allow a Lambda function's execution role to read and write objects to a particular Amazon S3 bucket\. If the Amazon S3 bucket is encrypted with an AWS KMS key, this method also grants permissions to the Lambda function's execution role to decrypt with the key\.
 
 ------
 #### [ TypeScript ]
@@ -785,7 +787,7 @@ The grant methods are built using lower\-level APIs for handling with IAM polici
 
 ## Metrics and alarms<a name="resources_metrics"></a>
 
-Many resources emit CloudWatch metrics that can be used to set up monitoring dashboards and alarms\. AWS constructs have metric methods that allow easy access to the metrics without having to look up the correct name to use\.
+Many resources emit CloudWatch metrics that can be used to set up monitoring dashboards and alarms\. AWS constructs have metric methods that let you access the metrics without looking up the correct name to use\.
 
 The following example shows how to define an alarm when the `ApproximateNumberOfMessagesNotVisible` of an Amazon SQS queue exceeds 100\.
 
@@ -1004,7 +1006,7 @@ fleet1.Connections.AllowFrom(fleet2, ec2.Port.AllTraffic());
 
 ------
 
-Certain resources have default ports associated with them, for example, the listener of a load balancer on the public port, and the ports on which the database engine accepts connections for instances of an Amazon RDS database\. In such cases, you can enforce tight network control without having to manually specify the port by using the `allowDefaultPortFrom` and `allowToDefaultPort` methods \(Python: `allow_default_port_from`, `allow_to_default_port`\)\. 
+Certain resources have default ports associated with them\. Examples include the listener of a load balancer on the public port, and the ports on which the database engine accepts connections for instances of an Amazon RDS database\. In such cases, you can enforce tight network control without having to manually specify the port\. To do so, use the `allowDefaultPortFrom` and `allowToDefaultPort` methods \(Python: `allow_default_port_from`, `allow_to_default_port`\)\. 
 
 The following example shows how to enable connections from any IPV4 address, and a connection from an Auto Scaling group to access a database\.
 
@@ -1124,10 +1126,10 @@ bucket.AddObjectCreatedNotification(new s3Nots.LambdaDestination(handler));
 
 ## Removal policies<a name="resources_removal"></a>
 
-Resources that maintain persistent data, such as databases and Amazon S3 buckets and even Amazon ECR registries, have a *removal policy* that indicates whether to delete persistent objects when the AWS CDK stack that contains them is destroyed\. The values specifying the removal policy are available through the `RemovalPolicy` enumeration in the AWS CDK `core` module\.
+Resources that maintain persistent data, such as databases, Amazon S3 buckets, and Amazon ECR registries, have a *removal policy*\. The removal policy indicates whether to delete persistent objects when the AWS CDK stack that contains them is destroyed\. The values specifying the removal policy are available through the `RemovalPolicy` enumeration in the AWS CDK `core` module\.
 
 **Note**  
-Resources besides those that store data persistently may also have a `removalPolicy` that is used for a different purpose\. For example, a Lambda function version uses a `removalPolicy` attribute to determine whether a given version is retained when a new version is deployed\. These have different meanings and defaults compared to the removal policy on an Amazon S3 bucket or DynamoDB table\.
+Resources besides those that store data persistently might also have a `removalPolicy` that is used for a different purpose\. For example, a Lambda function version uses a `removalPolicy` attribute to determine whether a given version is retained when a new version is deployed\. These have different meanings and defaults compared to the removal policy on an Amazon S3 bucket or DynamoDB table\.
 
 
 | Value | meaning | 
@@ -1135,7 +1137,7 @@ Resources besides those that store data persistently may also have a `removalPol
 | RemovalPolicy\.RETAIN | Keep the contents of the resource when destroying the stack \(default\)\. The resource is orphaned from the stack and must be deleted manually\. If you attempt to re\-deploy the stack while the resource still exists, you will receive an error message due to a name conflict\. | 
 | RemovalPolicy\.DESTROY | The resource will be destroyed along with the stack\. | 
 
-AWS CloudFormation does not remove Amazon S3 buckets that contain files even if their removal policy is set to `DESTROY`\. Attempting to do so is a AWS CloudFormation error\. To have the AWS CDK delete all files from the bucket before destroying it, set the bucket's `autoDeleteObjects` property to `true`\.
+AWS CloudFormation does not remove Amazon S3 buckets that contain files even if their removal policy is set to `DESTROY`\. Attempting to do so is an AWS CloudFormation error\. To have the AWS CDK delete all files from the bucket before destroying it, set the bucket's `autoDeleteObjects` property to `true`\.
 
 Following is an example of creating an Amazon S3 bucket with `RemovalPolicy` of `DESTROY` and `autoDeleteOjbects` set to `true`\.
 
@@ -1235,7 +1237,14 @@ public CdkTestStack(Construct scope, string id, IStackProps props) : base(scope,
 
 ------
 
-You can also apply a removal policy directly to the underlying AWS CloudFormation resource via the `applyRemovalPolicy()` method\. This method is available on some stateful resources that do not have a `removalPolicy` property in their L2 resource's props, including AWS CloudFormation stacks, Amazon Cognito user pools, Amazon DocumentDB database instances, Amazon EC2 volumes, Amazon OpenSearch Service domains, Amazon FSx file systems, and Amazon SQS queues\. 
+You can also apply a removal policy directly to the underlying AWS CloudFormation resource via the `applyRemovalPolicy()` method\. This method is available on some stateful resources that do not have a `removalPolicy` property in their L2 resource's props\. Examples include the following:
++ AWS CloudFormation stacks
++ Amazon Cognito user pools
++ Amazon DocumentDB database instances
++ Amazon EC2 volumes
++ Amazon OpenSearch Service domains
++ Amazon FSx file systems
++ Amazon SQS queues
 
 ------
 #### [ TypeScript ]
@@ -1280,4 +1289,4 @@ resource.ApplyRemovalPolicy(cdk.RemovalPolicy.DESTROY);
 ------
 
 **Note**  
-The AWS CDK's `RemovalPolicy` translates to AWS CloudFormation's `DeletionPolicy`, but the default in AWS CDK is to retain the data, which is the opposite of the AWS CloudFormation default\.
+The AWS CDK's `RemovalPolicy` translates to AWS CloudFormation's `DeletionPolicy`\. However, the default in AWS CDK is to retain the data, which is the opposite of the AWS CloudFormation default\.

@@ -1,9 +1,13 @@
 # Tagging<a name="tagging"></a>
 
-Tags are informational key\-value elements that you can add to constructs in your AWS CDK app\. A tag applied to a given construct also applies to all of its taggable children\. Tags are included in the AWS CloudFormation template synthesized from your app and are applied to the AWS resources it deploys\. You can use tags to identify and categorize resources to simplify management, in cost allocation, and for access control, as well as for any other purposes you devise\.
+Tags are informational key\-value elements that you can add to constructs in your AWS CDK app\. A tag applied to a given construct also applies to all of its taggable children\. Tags are included in the AWS CloudFormation template synthesized from your app and are applied to the AWS resources it deploys\. You can use tags to identify and categorize resources for the following purposes:
++ Simplifying management
++ Cost allocation
++ Access control
++ Any other purposes that you devise
 
 **Tip**  
-For more information about how you can use tags with your AWS resources, see the white paper [Tagging Best Practices](https://d1.awsstatic.com/whitepapers/aws-tagging-best-practices.pdf) \(PDF\)\.
+For more information about how you can use tags with your AWS resources, see the whitepaper [Tagging Best Practices](https://d1.awsstatic.com/whitepapers/aws-tagging-best-practices.pdf) \(PDF\)\.
 
 The [https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.Tags.html](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.Tags.html) class includes the static method `of()`, through which you can add tags to, or remove tags from, the specified construct\. 
 +  [https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.Tags.html#addkey-value-props](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.Tags.html#addkey-value-props) applies a new tag to the given construct and all of its children\. 
@@ -92,9 +96,9 @@ Tags.Of(myConstruct).Remove("key");
 
 If you are using `Stage` constructs, apply the tag at the `Stage` level or below\. Tags are not applied across `Stage` boundaries\.
 
-## Tag priorities<a name="w322aac21c23c23"></a>
+## Tag priorities<a name="w322aac23c26c25"></a>
 
-The AWS CDK applies and removes tags recursively\. If there are conflicts, the tagging operation with the highest priority wins\. \(Priorities are set using the optional `priority` property\.\) If the priorities of two operations are the same, the tagging operation closest to the bottom of the construct tree wins\. By default, applying a tag has a priority of 100 \(except for tags added directly to an AWS CloudFormation resource, which has a priority of 50\) and removing a tag has a priority of 200\. 
+The AWS CDK applies and removes tags recursively\. If there are conflicts, the tagging operation with the highest priority wins\. \(Priorities are set using the optional `priority` property\.\) If the priorities of two operations are the same, the tagging operation closest to the bottom of the construct tree wins\. By default, applying a tag has a priority of 100 \(except for tags added directly to an AWS CloudFormation resource, which has a priority of 50\)\. The default priority for removing a tag is 200\. 
 
 The following applies a tag with a priority of 300 to a construct\.
 
@@ -153,7 +157,7 @@ Use these to manipulate tags only on a subset of resources, based on AWS CloudFo
 `priority`  
 Use this to set the priority of this operation with respect to other `Tags.add()` and `Tags.remove()` operations\. Higher values take precedence over lower values\. The default is 100 for add operations \(50 for tags applied directly to AWS CloudFormation resources\) and 200 for remove operations\.
 
-The following example applies the tag **tagname** with the value **value** and priority **100** to resources of type **AWS::Xxx::Yyy** in the construct, but not to instances launched in an Amazon EC2 Auto Scaling group or to resources of type **AWS::Xxx::Zzz**\. \(These are placeholders for two arbitrary but different AWS CloudFormation resource types\.\)
+The following example applies the tag **tagname** with the value **value** and priority **100** to resources of type **AWS::Xxx::Yyy** in the construct\. It doesn't apply the tag to instances launched in an Amazon EC2 Auto Scaling group or to resources of type **AWS::Xxx::Zzz**\. \(These are placeholders for two arbitrary but different AWS CloudFormation resource types\.\)
 
 ------
 #### [ TypeScript ]
@@ -276,7 +280,7 @@ Tags.Of(myConstruct).Remove("tagname", new TagProps
 
 ## Example<a name="tagging_example"></a>
 
-The following example adds the tag key **StackType** with value **TheBest** to any resource created within the Stack named `MarketingSystem`\. Then it removes it again from all resources except Amazon EC2 VPC subnets\. The result is that only the subnets have the tag applied\.
+The following example adds the tag key **StackType** with value **TheBest** to any resource created within the `Stack` named `MarketingSystem`\. Then it removes it again from all resources except Amazon EC2 VPC subnets\. The result is that only the subnets have the tag applied\.
 
 ------
 #### [ TypeScript ]
@@ -418,7 +422,7 @@ Tags.Of(theBestStack).Add("StackType", "TheBest", new TagProps {
 
 `Tags.of(scope).add(key, value)` is the standard way to add tags to constructs in the AWS CDK\. Its tree\-walking behavior, which recursively tags all taggable resources under the given scope, is almost always what you want\. Sometimes, however, you need to tag a specific, arbitrary construct \(or constructs\)\.
 
-One such case involves applying tags whose value is derived from some property of the construct being tagged\. The standard tagging approach recursively applies the same key and value to all matching resources in the scope, but here, the value could be different for each tagged construct\.
+One such case involves applying tags whose value is derived from some property of the construct being tagged\. The standard tagging approach recursively applies the same key and value to all matching resources in the scope\. However, here the value could be different for each tagged construct\.
 
 Tags are implemented using [aspects](aspects.md), and the CDK calls the tag's `visit()` method for each construct under the scope you specified using `Tags.of(scope)`\. We can call `Tag.visit()` directly to apply a tag to a single construct\.
 
@@ -459,9 +463,9 @@ new Tag(key, value).Visit(scope);
 
 ------
 
-To tag all constructs under a scope but allow the values of the tags to be derived from properties of each construct, write an aspect, apply the tag in the aspect's `visit()` method as shown above, and add the aspect to the desired scope using `Aspects.of(scope).add(aspect)`\.
+You can tag all constructs under a scope but let the values of the tags derive from properties of each construct\. To do so, write an aspect and apply the tag in the aspect's `visit()` method as shown in the preceding example\. Then, add the aspect to the desired scope using `Aspects.of(scope).add(aspect)`\.
 
-The example below applies a tag to each resource in a stack containing the resource's path\.
+The following example applies a tag to each resource in a stack containing the resource's path\.
 
 ------
 #### [ TypeScript ]
@@ -537,4 +541,4 @@ Aspects.Of(stack).Add(new PathTagger);
 ------
 
 **Tip**  
-The logic of conditional tagging, including priorities, resource types, and so on, is built into the `Tag` class, so you can use these features when applying tags to arbitrary resources\. Also, the `Tag` class only tags taggble resources, so you don't need to test whether a construct is taggable before applying a tag\.
+The logic of conditional tagging, including priorities, resource types, and so on, is built into the `Tag` class\. You can use these features when applying tags to arbitrary resources; the tag is not applied if the conditions aren't met\. Also, the `Tag` class only tags taggable resources, so you don't need to test whether a construct is taggable before applying a tag\.

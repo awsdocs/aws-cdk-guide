@@ -31,7 +31,7 @@ If you get a permission error, and have administrator access on your system, try
 
 Test the installation by issuing `cdk --version`\. 
 
-If you get an error message at this point, try uninstalling \(`npm uninstall -g aws-cdk`\) and reinstalling\. As a last resort, delete the `node-modules` folder from the current project as well as the global `node-modules` folder\. To figure out where this folder is, issue `npm config get prefix`\.
+If you get an error message at this point, try uninstalling \(`npm uninstall -g aws-cdk`\) and reinstalling\. As a last resort, delete the `node-modules` folder from the current project and also from the global `node-modules` folder\. To figure out where this folder is, issue `npm config get prefix`\.
 
 ### Language\-specific prerequisites<a name="work-with-prerequisites-language"></a>
 

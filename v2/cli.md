@@ -10,7 +10,7 @@ npm install -g aws-cdk@X.YY.Z      # install specific version
 ```
 
 **Tip**  
-If you regularly work with multiple versions of the AWS CDK, you may want to install a matching version of the AWS CDK Toolkit in individual CDK projects\. To do this, omit `-g` from the `npm install` command\. Then use `npx aws-cdk` to invoke it; this will run the local version if one exists, falling back to a global version if not\.
+If you regularly work with multiple versions of the AWS CDK, consider installing a matching version of the AWS CDK Toolkit in individual CDK projects\. To do this, omit `-g` from the `npm install` command\. Then use `npx aws-cdk` to invoke it\. This runs the local version if one exists, falling back to a global version if not\.
 
 ## Toolkit commands<a name="cli-commands"></a>
 
@@ -20,24 +20,24 @@ All CDK Toolkit commands start with `cdk`, which is followed by a subcommand \(`
 | Command | Function | 
 | --- | --- | 
 | `cdk list` \(`ls`\) | Lists the stacks in the app | 
-| `cdk synthesize` \(`synth`\) | Synthesizes and prints the CloudFormation template for the specified stack\(s\) | 
+| `cdk synthesize` \(`synth`\) | Synthesizes and prints the CloudFormation template for one or more specified stacks | 
 | `cdk bootstrap` | Deploys the CDK Toolkit staging stack; see [Bootstrapping](bootstrapping.md) | 
-| `cdk deploy` | Deploys the specified stack\(s\) | 
-| `cdk destroy` | Destroys the specified stack\(s\) | 
-| `cdk diff` | Compares the specified stack and its dependencies with the deployed stack\(s\) or a local CloudFormation template | 
+| `cdk deploy` | Deploys one or more specified stacks | 
+| `cdk destroy` | Destroys one or more specified stacks | 
+| `cdk diff` | Compares the specified stack and its dependencies with the deployed stacks or a local CloudFormation template | 
 | `cdk metadata` | Displays metadata about the specified stack | 
 | `cdk init` | Creates a new CDK project in the current directory from a specified template | 
 | `cdk context` | Manages cached context values | 
-| `cdk docs` \(`doc`\) | Opens the CDK API reference in your browser | 
+| `cdk docs` \(`doc`\) | Opens the CDK API Reference in your browser | 
 | `cdk doctor` | Checks your CDK project for potential problems | 
 
 For the options available for each command, see [Toolkit reference](#cli-ref) or [Built\-in help](#cli-help)\.
 
 ## Specifying options and their values<a name="cli-options"></a>
 
-Command line options begin with two hyphens \(`--`\)\. Some frequently\-used options have single\-letter synonyms that begin with a single hyphen \(for example, `--app` has a synonym `-a`\)\. The order of options in an AWS CDK Toolkit command is not important\.
+Command line options begin with two hyphens \(`--`\)\. Some frequently used options have single\-letter synonyms that begin with a single hyphen \(for example, `--app` has a synonym `-a`\)\. The order of options in an AWS CDK Toolkit command is not important\.
 
-All options accept a value, which must follow the option name\. The value may be separated from the name by whitespace or by an equals sign `=`\. The following two options are equivalent
+All options accept a value, which must follow the option name\. The value may be separated from the name by white space or by an equals sign `=`\. The following two options are equivalent\.
 
 ```
 --toolkit-stack-name MyBootstrapStack
@@ -82,10 +82,10 @@ Issue `cdk version` to display the version of the AWS CDK Toolkit\. Provide this
 
 ## Version reporting<a name="version_reporting"></a>
 
-To gain insight into how the AWS CDK is used, the constructs used by AWS CDK applications are collected and reported by using a resource identified as `AWS::CDK::Metadata`\. This resource is added to AWS CloudFormation templates, and can easily be reviewed\. This information can also be used by AWS to identify stacks using a construct with known security or reliability issues, and to contact their users with important information\.
+To gain insight into how the AWS CDK is used, the constructs used by AWS CDK applications are collected and reported by using a resource identified as `AWS::CDK::Metadata`\. This resource is added to AWS CloudFormation templates, and can easily be reviewed\. This information can also be used by AWS to identify stacks using a construct with known security or reliability issues\. It can also be used to contact their users with important information\.
 
 **Note**  
-Prior to version 1\.93\.0, the AWS CDK reported the names and versions of the modules loaded during synthesis, rather than the constructs used in the stack\.
+Before version 1\.93\.0, the AWS CDK reported the names and versions of the modules loaded during synthesis, instead of the constructs used in the stack\.
 
 By default, the AWS CDK reports the use of constructs in the following NPM modules that are used in the stack:
 + AWS CDK core module
@@ -102,7 +102,7 @@ CDKMetadata:
     Analytics: "v2:deflate64:H4sIAND9SGAAAzXKSw5AMBAA0L1b2PdzBYnEAdio3RglglY60zQi7u6TWL/XKmNUlxeQSOKwaPTBqrNhwEWU3hGHiCzK0dWWfAxoL/Fd8mvk+QkS/0X6BdjnCdgmOOQKWz+AqqLDt2Y3YMnLYWwAAAA="
 ```
 
-The `Analytics` property is a gzipped, base64\-encoded, prefix\-encoded list of the constructs present in the stack\.
+The `Analytics` property is a gzipped, base64\-encoded, prefix\-encoded list of the constructs in the stack\.
 
 To opt out of version reporting, use one of the following methods:
 + Use the cdk command with the \-\-no\-version\-reporting argument to opt out for a single command\.
@@ -121,32 +121,32 @@ To opt out of version reporting, use one of the following methods:
   }
   ```
 
-## Specifying credentials and region<a name="cli-environment"></a>
+## Specifying credentials and Region<a name="cli-environment"></a>
 
-The CDK Toolkit needs to know your AWS account credentials and the AWS region into which you are deploying, not only for deployment operations but also to retrieve context values during synthesis\. Together, your account and region make up the *environment*\.
+The CDK Toolkit needs to know your AWS account credentials and the AWS Region that you're deploying into\. This is needed for deployment operations and to retrieve context values during synthesis\. Together, your account and Region make up the *environment*\.
 
 **Important**  
 We strongly recommend against using your main AWS account for day\-to\-day tasks\. Instead, create a user in IAM and use its credentials with the CDK\.
 
-Credentials and region may be specified using environment variables or in configuration files\. These are the same variables and files used by other AWS tools such as the AWS CLI and the various AWS SDKs\. The CDK Toolkit looks for this information in the following order\.
-+ The `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_DEFAULT_REGION` environment variables\. Always specify all three variables, not just one or two\.
+Credentials and Region may be specified using environment variables or in configuration files\. These are the same variables and files used by other AWS tools such as the AWS CLI and the various AWS SDKs\. The CDK Toolkit looks for this information in the following order\.
++ The `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_DEFAULT_REGION` environment variables\. Always specify all three variables, not only one or two\.
 + A specific profile defined in the standard AWS `config` and `credentials` files, and specified using the `--profile` option on `cdk` commands\.
 + The `[default]` section of the standard AWS `config` and `credentials` files\.
 
 **Note**  
 The standard AWS `config` and `credentials` files are located at `~/.aws/config` and `~/.aws/credentials` \(macOS/Linux\) or `%USERPROFILE%\.aws\config` and `%USERPROFILE%\.aws\credentials` \(Windows\)\.
 
-The environment specified in your AWS CDK app using the stack's `env` property is used during synthesis to generate an environment\-specific AWS CloudFormation template and during deployment to override the account or region specified by one of the above methods\. For more information, see [Environments](environments.md)\.
+The environment that you specify in your AWS CDK app by using the stack's `env` property is used during synthesis\. It's used to generate an environment\-specific AWS CloudFormation template, and during deployment, it overrides the account or Region specified by one of the preceding methods\. For more information, see [Environments](environments.md)\.
 
-If you have the AWS CLI installed, the easiest way to configure your account credentials and a default region is to issue the following command:
+If you have the AWS CLI installed, the easiest way to configure your account credentials and a default Region is to issue the following command:
 
 ```
 aws configure
 ```
 
-Provide your AWS access key ID, secret access key, and default region when prompted\. These values are written to the `[default]` section of the `config` and `credentials` files\.
+Provide your AWS access key ID, secret access key, and default Region when prompted\. These values are written to the `[default]` section of the `config` and `credentials` files\.
 
-If you don't have the AWS CLI installed, you can manually create or edit the `config` and `credentials` files to contain default credentials and a default region, in the following format\.
+If you don't have the AWS CLI installed, you can manually create or edit the `config` and `credentials` files to contain default credentials and a default Region\. Use the following format\.
 + In `~/.aws/config` or `%USERPROFILE%\.aws\config`
 
   ```
@@ -161,7 +161,7 @@ If you don't have the AWS CLI installed, you can manually create or edit the `co
   aws_secret_access_key=je7MtGbClwBF/2Zp9Utk/h3yCo8nvbEXAMPLEKEY
   ```
 
-Besides specifying AWS credentials and a region in the `[default]` section, you can also add one or more `[profile NAME]` sections, where *NAME* is the name of the profile\.
+Besides specifying AWS credentials and a Region in the `[default]` section, you can also add one or more `[profile NAME]` sections, where *NAME* is the name of the profile\.
 + In `~/.aws/config` or `%USERPROFILE%\.aws\config`
 
   ```
@@ -183,21 +183,21 @@ Besides specifying AWS credentials and a region in the `[default]` section, you 
   aws_secret_access_key=je7MtGbClwBF/2Zp9Utk/h3yCo8nvbEXAMPLEKEY
   ```
 
-Always add named profiles to both the `config` and `credentials` files\. The AWS CDK Toolkit does not fall back to using the region in the `[default]` section when the specified named profile is not found in the `config` file, as some other AWS tools do\.
+Always add named profiles to both the `config` and `credentials` files\. The AWS CDK Toolkit doesn't fall back to using the Region in the `[default]` section when the specified named profile is not found in the `config` file\. However, some other AWS tools do\.
 
 **Important**  
-Do not name a profile `default`: that is, do not use a `[profile default]` section in either `config` or `credentials`\.
+Do not name a profile `default`\. That is, do not use a `[profile default]` section in either `config` or `credentials`\.
 
 **Note**  
-Although the AWS CDK uses credentials from the same sources files as other AWS tools and SDKs, including the [AWS Command Line Interface](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html), it may behave slightly differently from these tools\. See [Setting credentials](https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/setting-credentials.html) for complete details on setting up credentials for the AWS SDK for JavaScript, which the AWS CDK uses under the hood\.
+The AWS CDK uses credentials from the same sources files as other AWS tools and SDKs, including the [AWS Command Line Interface](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html)\. However, the AWS CDK might behave somewhat differently from these tools\. It uses the AWS SDK for JavaScript under the hood\. For complete details on setting up credentials for the AWS SDK for JavaScript, see [Setting credentials](https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/setting-credentials.html)\.
 
 You may optionally use the `--role-arn` \(or `-r`\) option to specify the ARN of an IAM role that should be used for deployment\. This role must be assumable by the AWS account being used\.
 
 ## Specifying the app command<a name="cli-app-command"></a>
 
-Many features of the CDK Toolkit require one or more AWS CloudFormation templates be synthesized, which in turn requires running your application\. Since the AWS CDK supports programs written in a variety of languages, it uses a configuration option to specify the exact command necessary to run your app\. This option can be specified in two ways\.
+Many features of the CDK Toolkit require one or more AWS CloudFormation templates be synthesized, which in turn requires running your application\. The AWS CDK supports programs written in a variety of languages\. Therefore, it uses a configuration option to specify the exact command necessary to run your app\. This option can be specified in two ways\.
 
-First, and most commonly, it can be specified using the `app` key inside the file `cdk.json`, which is in the main directory of your AWS CDK project\. The CDK Toolkit provides an appropriate command when creating a new project with `cdk init`\. Here is the `cdk.json` from a fresh TypeScript project, for instance\.
+First, and most commonly, it can be specified using the `app` key inside the file `cdk.json`\. This is in the main directory of your AWS CDK project\. The CDK Toolkit provides an appropriate command when creating a new project with `cdk init`\. Here is the `cdk.json` from a fresh TypeScript project, for instance\.
 
 ```
 {
@@ -205,11 +205,11 @@ First, and most commonly, it can be specified using the `app` key inside the fil
 }
 ```
 
-The CDK Toolkit looks for `cdk.json` in the current working directory when attempting to run your app, so you might keep a shell open in your project's main directory for issuing CDK Toolkit commands\.
+The CDK Toolkit looks for `cdk.json` in the current working directory when attempting to run your app\. Because of this, you might keep a shell open in your project's main directory for issuing CDK Toolkit commands\.
 
 The CDK Toolkit also looks for the app key in `~/.cdk.json` \(that is, in your home directory\) if it can't find it in `./cdk.json`\. Adding the app command here can be useful if you usually work with CDK code in the same language\.
 
-If you are in some other directory, or if you want to run your app via a command other than the one in `cdk.json`, you can use the `--app` \(or `-a`\) option to specify it\.
+If you are in some other directory, or to run your app using a command other than the one in `cdk.json`, use the `--app` \(or `-a`\) option to specify it\.
 
 ```
 cdk --app "npx ts-node bin/hello-cdk.ts" ls
@@ -234,7 +234,7 @@ You may also use wildcards to specify IDs that match a pattern\.
 
 You may also use the \-\-all option to specify all stacks\.
 
-If your app uses [CDK Pipelines](cdk_pipeline.md), the CDK Toolkit understands your stacks and stages as a hierarchy, and the \-\-all option and the `*` wildcard only match top\-level stacks\. To match all the stacks, use `**`\. Also use `**` to indicate all the stacks under a particular hierarchy\.
+If your app uses [CDK Pipelines](cdk_pipeline.md), the CDK Toolkit understands your stacks and stages as a hierarchy\. Also, the \-\-all option and the `*` wildcard only match top\-level stacks\. To match all the stacks, use `**`\. Also use `**` to indicate all the stacks under a particular hierarchy\.
 
 When using wildcards, enclose the pattern in quotes, or escape the wildcards with `\`\. If you don't, your shell may try to expand the pattern to the names of files in the current directory\. At best, this won't do what you expect; at worst, you could deploy stacks you didn't intend to\. This isn't strictly necessary on Windows because `cmd.exe` does not expand wildcards, but is good practice nonetheless\.
 
@@ -247,7 +247,7 @@ cdk synth 'PipelineStack/Prod/**'   # All stacks in Prod stage in a CDK Pipeline
 ```
 
 **Note**  
-The order in which you specify the stacks is not necessarily the order in which they will be processed\. The AWS CDK Toolkit takes into account dependencies between stacks when deciding the order in which to process them\. For example, if one stack uses a value produced by another \(such as the ARN of a resource defined in the second stack\), the second stack is synthesized before the first one because of this dependency\. You can add dependencies between stacks manually using the stack's [https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.Stack.html#addwbrdependencytarget-reason](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.Stack.html#addwbrdependencytarget-reason) method\.
+The order in which you specify the stacks is not necessarily the order in which they will be processed\. The AWS CDK Toolkit accounts for dependencies between stacks when deciding the order in which to process them\. For example, let's say that one stack uses a value produced by another \(such as the ARN of a resource defined in the second stack\)\. In this case, the second stack is synthesized before the first one because of this dependency\. You can add dependencies between stacks manually using the stack's [https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.Stack.html#addwbrdependencytarget-reason](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.Stack.html#addwbrdependencytarget-reason) method\.
 
 ## Bootstrapping your AWS environment<a name="cli-bootstrap"></a>
 
@@ -257,9 +257,9 @@ Deploying stacks with the CDK requires special dedicated AWS CDK resources to be
 cdk bootstrap
 ```
 
-If issued with no arguments, as shown here, the `cdk bootstrap` command synthesizes the current app and bootstraps the environments its stacks will be deployed to\. If the app contains environment\-agnostic stacks, which do not explicitly specify an environment so they can be deployed anywhere, the default account and region are bootstrapped, or the environment specified using `--profile`\.
+If issued with no arguments, as shown here, the `cdk bootstrap` command synthesizes the current app and bootstraps the environments its stacks will be deployed to\. If the app contains environment\-agnostic stacks, which don't explicitly specify an environment, the default account and Region are bootstrapped, or the environment specified using `--profile`\.
 
-Outside of an app, you must explicitly specify the environment to be bootstrapped\. You may also do so to bootstrap an environment that's not specified in your app or local AWS profile\. Credentials must be configured \(e\.g\. in `~/.aws/credentials`\) for the specified account and region\. You may specify a profile that contains the required credentials\.
+Outside of an app, you must explicitly specify the environment to be bootstrapped\. You may also do so to bootstrap an environment that's not specified in your app or local AWS profile\. Credentials must be configured \(e\.g\. in `~/.aws/credentials`\) for the specified account and Region\. You may specify a profile that contains the required credentials\.
 
 ```
 cdk bootstrap ACCOUNT-NUMBER/REGION # e.g.
@@ -270,16 +270,16 @@ cdk bootstrap --profile test 1111111111/us-east-1
 **Important**  
 Each environment \(account/region combination\) to which you deploy such a stack must be bootstrapped separately\.
 
-You may incur AWS charges for what the AWS CDK stores in the bootstrapped resources\. Additionally, if you use `-bootstrap-customer-key`, a Customer Master Key \(CMK\) will be created, which also incurs charges per environment\.
+You may incur AWS charges for what the AWS CDK stores in the bootstrapped resources\. Additionally, if you use `-bootstrap-customer-key`, an AWS KMS key will be created, which also incurs charges per environment\.
 
 **Note**  
-Older versions of the bootstrap template created a Customer Master Key by default\. To avoid charges, re\-bootstrap using `--no-bootstrap-customer-key`\. 
+Earlier versions of the bootstrap template created a KMS key by default\. To avoid charges, re\-bootstrap using `--no-bootstrap-customer-key`\. 
 
 **Note**  
 CDK Toolkit v2 does not support the original bootstrap template, dubbed the legacy template, used by default with CDK v1\.
 
 **Important**  
-The modern bootstrap template effectively grants the permissions implied by the `--cloudformation-execution-policies` to any AWS account in the `--trust` list, which by default will extend permissions to read and write to any resource in the bootstrapped account\. Make sure to [configure the bootstrapping stack](bootstrapping.md#bootstrapping-customizing) with policies and trusted accounts you are comfortable with\.
+The modern bootstrap template effectively grants the permissions implied by the `--cloudformation-execution-policies` to any AWS account in the `--trust` list\. By default, this extends permissions to read and write to any resource in the bootstrapped account\. Make sure to [configure the bootstrapping stack](bootstrapping.md#bootstrapping-customizing) with policies and trusted accounts that you are comfortable with\.
 
 ## Creating a new app<a name="cli-init"></a>
 
@@ -321,11 +321,11 @@ cdk list
 cdk ls
 ```
 
-If your application contains [CDK Pipelines](cdk_pipeline.md) stacks, the CDK Toolkit displays stack names as paths according to their location in the pipeline hierarchy \(e\.g\., `PipelineStack`, `PipelineStack/Prod`, `PipelineStack/Prod/MyService`, etc\)\.
+If your application contains [CDK Pipelines](cdk_pipeline.md) stacks, the CDK Toolkit displays stack names as paths according to their location in the pipeline hierarchy\. \(For example, `PipelineStack`, `PipelineStack/Prod`, and `PipelineStack/Prod/MyService`\.\)
 
-If your app contains many stacks, you can specify full or partial stack IDs of the stacks to be listed; see [Specifying stacks](#cli-stacks)\.
+If your app contains many stacks, you can specify full or partial stack IDs of the stacks to be listed\. For more information, see [Specifying stacks](#cli-stacks)\.
 
-Add the `--long` flag to see more information about the stacks, including the stack names and their environments \(AWS account and region\)\.
+Add the `--long` flag to see more information about the stacks, including the stack names and their environments \(AWS account and Region\)\.
 
 ## Synthesizing stacks<a name="cli-synth"></a>
 
@@ -339,11 +339,11 @@ cdk synth "*"     # all stacks in app
 ```
 
 **Note**  
-The CDK Toolkit actually runs your app and synthesizes fresh templates before most operations \(e\.g\. when deploying or comparing stacks\)\. These templates are stored by default in the `cdk.out` directory\. The `cdk synth` command simply prints the generated templates for the specified stack\(s\)\.
+The CDK Toolkit actually runs your app and synthesizes fresh templates before most operations \(such as when deploying or comparing stacks\)\. These templates are stored by default in the `cdk.out` directory\. The `cdk synth` command simply prints the generated templates for one or more specified stacks\.
 
-See `cdk synth --help` for all available options\. A few of the most\-frequently\-used options are covered below\.
+See `cdk synth --help` for all available options\. A few of the most frequently used options are covered in the following section\.
 
-### Specifying context values<a name="w322aac33b7c31c11"></a>
+### Specifying context values<a name="w322aac35b7c31c11"></a>
 
 Use the `--context` or `-c` option to pass [runtime context](context.md) values to your CDK app\.
 
@@ -355,14 +355,14 @@ cdk synth --context key=value MyStack
 cdk synth --context key1=value1 --context key2=value2 MyStack
 ```
 
-When deploying multiple stacks, the specified context values are normally passed to all of them\. If you wish, you may specify different values for each stack by prefixing the stack name to the context value\.
+When deploying multiple stacks, the specified context values are normally passed to all of them\. If you want, you can specify different values for each stack by prefixing the stack name to the context value\.
 
 ```
 # different context values for each stack
 cdk synth --context Stack1:key=value Stack2:key=value Stack1 Stack2
 ```
 
-### Specifying display format<a name="w322aac33b7c31c13"></a>
+### Specifying display format<a name="w322aac35b7c31c13"></a>
 
 By default, the synthesized template is displayed in YAML format\. Add the `--json` flag to display it in JSON format instead\.
 
@@ -370,7 +370,7 @@ By default, the synthesized template is displayed in YAML format\. Add the `--js
 cdk synth --json MyStack
 ```
 
-### Specifying output directory<a name="w322aac33b7c31c15"></a>
+### Specifying output directory<a name="w322aac35b7c31c15"></a>
 
 Add the `--output` \(`-o`\) option to write the synthesized templates to a directory other than `cdk.out`\.
 
@@ -380,7 +380,7 @@ cdk synth --output=~/templates
 
 ## Deploying stacks<a name="cli-deploy"></a>
 
-The `cdk deploy` subcommand deploys the specified stack\(s\) to your AWS account\.
+The `cdk deploy` subcommand deploys one or more specified stacks to your AWS account\.
 
 ```
 cdk deploy        # if app contains only one stack
@@ -392,11 +392,11 @@ cdk deploy "*"    # all stacks in app
 **Note**  
 The CDK Toolkit runs your app and synthesizes fresh AWS CloudFormation templates before deploying anything\. Therefore, most command line options you can use with `cdk synth` \(for example, `--context`\) can also be used with `cdk deploy`\.
 
-See `cdk deploy --help` for all available options\. A few of the most useful options are covered below\.
+See `cdk deploy --help` for all available options\. A few of the most useful options are covered in the following section\.
 
 ### Skipping synthesis<a name="cli-deploy-nosynth"></a>
 
-The cdk deploy command normally synthesizes your app's stacks before deploying to make sure the deployment reflects the latest version of your app\. If you know that you haven't made any changes to your code since your last cdk synth, you may suppress the redundant synthesis step when deploying\. Simply specify your project's `cdk.out` directory in the \-\-app option\.
+The cdk deploy command normally synthesizes your app's stacks before deploying to make sure that the deployment reflects the latest version of your app\. If you know that you haven't changed your code since your last cdk synth, you can suppress the redundant synthesis step when deploying\. To do so, specify your project's `cdk.out` directory in the \-\-app option\.
 
 ```
 cdk deploy --app cdk.out StackOne StackTwo
@@ -404,15 +404,15 @@ cdk deploy --app cdk.out StackOne StackTwo
 
 ### Disabling rollback<a name="cli-deploy-norollback"></a>
 
-One of AWS CloudFormation's marquee features is its ability to roll back changes so that deployments are atomic—they either succeed or fail as a whole\. The AWS CDK inherits this capability because it synthesizes and deploys AWS CloudFormation templates\. 
+AWS CloudFormation has the ability to roll back changes so that deployments are atomic\. This means that they either succeed or fail as a whole\. The AWS CDK inherits this capability because it synthesizes and deploys AWS CloudFormation templates\. 
 
-Rollback makes sure your resources are in a consistent state at all times, which is vital for production stacks\. However, while you're still developing your infrastructure, some failures are inevitable, and rolling back failed deployments just slows you down\.
+Rollback makes sure that your resources are in a consistent state at all times, which is vital for production stacks\. However, while you're still developing your infrastructure, some failures are inevitable, and rolling back failed deployments can slow you down\.
 
-For this reason, the CDK Toolkit allows you to disable rollback by adding `--no-rollback` to your `cdk deploy` command\. With this flag, failed deployments are not rolled back\. Instead, resources deployed before the failed resource remain in place, and the next deployment starts with the failed resource\. You'll spend a lot less time waiting for deployments and a lot more time developing your infrastructure\.
+For this reason, the CDK Toolkit lets you disable rollback by adding `--no-rollback` to your `cdk deploy` command\. With this flag, failed deployments are not rolled back\. Instead, resources deployed before the failed resource remain in place, and the next deployment starts with the failed resource\. You'll spend a lot less time waiting for deployments and a lot more time developing your infrastructure\.
 
 ### Hot swapping<a name="cli-deploy-hotswap"></a>
 
-Use the `--hotswap` flag with `cdk deploy` to attempt to update your AWS resources directly instead of generating a AWS CloudFormation changeset and deploying it\. Deployment falls back to AWS CloudFormation deployment if hot swapping is not possible\.
+Use the `--hotswap` flag with `cdk deploy` to attempt to update your AWS resources directly instead of generating an AWS CloudFormation changeset and deploying it\. Deployment falls back to AWS CloudFormation deployment if hot swapping is not possible\.
 
 Currently hot swapping supports Lambda functions, Step Functions state machines, and Amazon ECS container images\. The `--hotswap` flag also disables rollback \(i\.e\., implies `--no-rollback`\)\.
 
@@ -421,11 +421,11 @@ Hot\-swapping is not recommended for production deployments\.
 
 ### Watch mode<a name="cli-deploy-watch"></a>
 
-The CDK Toolkit's watch mode \( cdk deploy \-\-watch, or cdk watch for short\) continuously monitors your CDK app's source files and assets for changes and immediately performs a deployment of the specified stacks when a change is detected\.
+The CDK Toolkit's watch mode \( cdk deploy \-\-watch, or cdk watch for short\) continuously monitors your CDK app's source files and assets for changes\. It immediately performs a deployment of the specified stacks when a change is detected\.
 
-By default, these deployments use the `--hotswap` flag, which fast\-tracks deployment of changes to Lambda functions, and falls back to deploying through AWS CloudFormation if you have changed infrastructure configuration\. To have `cdk watch` always perform full AWS CloudFormation deployments, add the `--no-hotswap` flag to `cdk watch`\.
+By default, these deployments use the `--hotswap` flag, which fast\-tracks deployment of changes to Lambda functions\. It also falls back to deploying through AWS CloudFormation if you have changed infrastructure configuration\. To have `cdk watch` always perform full AWS CloudFormation deployments, add the `--no-hotswap` flag to `cdk watch`\.
 
-Any changes made while `cdk watch` is already performing a deployment will be combined into a single deployment, which will begin as soon as the in\-progress deployment is complete\.
+Any changes made while `cdk watch` is already performing a deployment are combined into a single deployment, which begins as soon as the in\-progress deployment is complete\.
 
 Watch mode uses the `"watch"` key in the project's `cdk.json` to determine which files to monitor\. By default, these files are your application files and assets, but this can be changed by modifying the `"include"` and `"exclude"` entries in the `"watch"` key\. The following `cdk.json` file shows an example of these entries\.
 
@@ -439,14 +439,14 @@ Watch mode uses the `"watch"` key in the project's `cdk.json` to determine which
 }
 ```
 
-`cdk watch` executes the `"build"` command from `cdk.json` to build your app before synthesis\. If your deployment requires any commands to build or package your Lambda code \(or anything else that's not in your CDK app proper\), add it here\.
+`cdk watch` executes the `"build"` command from `cdk.json` to build your app before synthesis\. If your deployment requires any commands to build or package your Lambda code \(or anything else that's not in your CDK app\), add it here\.
 
 Git\-style wildcards, both `*` and `**`, can be used in the `"watch"` and `"build"` keys\. Each path is interpreted relative to the parent directory of `cdk.json`\. The default value of `include` is `**/*`, meaning all files and directories in the project root directory\. `exclude` is optional\.
 
 **Important**  
 Watch mode is not recommended for production deployments\.
 
-### Specifying AWS CloudFormation parameters<a name="w322aac33b7c33c19"></a>
+### Specifying AWS CloudFormation parameters<a name="w322aac35b7c33c19"></a>
 
 The AWS CDK Toolkit supports specifying AWS CloudFormation [parameters](parameters.md) at deployment\. You may provide these on the command line following the `--parameters` flag\.
 
@@ -460,7 +460,7 @@ To define multiple parameters, use multiple `--parameters` flags\.
 cdk deploy MyStack --parameters uploadBucketName=UpBucket --parameters downloadBucketName=DownBucket
 ```
 
-If you are deploying multiple stacks, you can specify a different value of each parameter for each stack by prefixing the name of the parameter with the stack name and a colon\. Otherwise, the same value is passed to all stacks\.
+If you are deploying multiple stacks, you can specify a different value of each parameter for each stack\. To do so, prefix the name of the parameter with the stack name and a colon\. Otherwise, the same value is passed to all stacks\.
 
 ```
 cdk deploy MyStack YourStack --parameters MyStack:uploadBucketName=UploadBucket --parameters YourStack:uploadBucketName=UpBucket
@@ -468,7 +468,7 @@ cdk deploy MyStack YourStack --parameters MyStack:uploadBucketName=UploadBucket 
 
 By default, the AWS CDK retains values of parameters from previous deployments and uses them in later deployments if they are not specified explicitly\. Use the `--no-previous-parameters` flag to require all parameters to be specified\.
 
-### Specifying outputs file<a name="w322aac33b7c33c21"></a>
+### Specifying outputs file<a name="w322aac35b7c33c21"></a>
 
 If your stack declares AWS CloudFormation outputs, these are normally displayed on the screen at the conclusion of deployment\. To write them to a file in JSON format, use the `--outputs-file` flag\.
 
@@ -504,7 +504,7 @@ The setting can also be configured in the `cdk.json` file\.
 
 ## Comparing stacks<a name="cli-diff"></a>
 
-The `cdk diff` command compares the current version of a stack \(and its dependencies\) defined in your app with the already\-deployed version\(s\), or with a saved AWS CloudFormation template, and displays a list of changes\.
+The `cdk diff` command compares the current version of a stack \(and its dependencies\) defined in your app with the already\-deployed versions, or with a saved AWS CloudFormation template, and displays a list of changes\.
 
 ```
 Stack HelloCdkStack
@@ -549,13 +549,13 @@ Resources
      └─ [+] Delete
 ```
 
-To compare your app's stack\(s\) with the existing deployment:
+To compare your app's stacks with the existing deployment:
 
 ```
 cdk diff MyStack
 ```
 
-To compare your app's stack\(s\) with a saved CloudFormation template:
+To compare your app's stacks with a saved CloudFormation template:
 
 ```
 cdk diff --template ~/stacks/MyStack.old MyStack
@@ -563,7 +563,7 @@ cdk diff --template ~/stacks/MyStack.old MyStack
 
 ## Configuration \(`cdk.json`\)<a name="cli-config"></a>
 
-Default values for many CDK Toolkit command\-line flags may be stored in a project's `cdk.json` file or in the `.cdk.json` file in your user directory\. Below is an alphabetical reference to the supported configuration settings\.
+Default values for many CDK Toolkit command line flags can be stored in a project's `cdk.json` file or in the `.cdk.json` file in your user directory\. Following is an alphabetical reference to the supported configuration settings\.
 
 
 | Key | Notes | CDK Toolkit option | 
@@ -582,7 +582,7 @@ Default values for many CDK Toolkit command\-line flags may be stored in a proje
 | outputsFile | The file to which AWS CloudFormation outputs from deployed stacks will be written \(in JSON format\)\. | \-\-outputs\-file | 
 | pathMetadata | If false, CDK path metadata is not added to synthesized templates\. | \-\-no\-path\-metadata | 
 | plugin | JSON array specifying the package names or local paths of packages that extend the CDK | \-\-plugin | 
-| profile | Name of the default AWS profile used for specifying region and account credentials\. | \-\-profile | 
+| profile | Name of the default AWS profile used for specifying Region and account credentials\. | \-\-profile | 
 | progress | If set to "events", the CDK Toolkit displays all AWS CloudFormation events during deployment, rather than a progress bar\. | \-\-progress | 
 | requireApproval | Default approval level for security changes\. See [Security\-related changes](#cli-security) | \-\-require\-approval | 
 | rollback | If false, failed deployments are not rolled back\. | \-\-no\-rollback | 
@@ -595,7 +595,7 @@ Default values for many CDK Toolkit command\-line flags may be stored in a proje
 
 ## Toolkit reference<a name="cli-ref"></a>
 
-This section provides a reference for the AWS CDK Toolkit derived from its help, first a general reference with the options available with all commands, then \(in collapsible sections\) specific references with options available only with specific subcommands\.
+This section provides a reference for the AWS CDK Toolkit derived from its help\. First there's a general reference with the options available with all commands\. Then \(in collapsible sections\), you can find specific references with options that are available only with specific subcommands\.
 
 ```
 Usage: cdk -a <cdk-app> COMMAND
@@ -725,7 +725,7 @@ If one of cdk.json or ~/.cdk.json exists, options specified there will be used
 as defaults. Settings in cdk.json take precedence.
 ```
 
-### `cdk list` \(`ls`\)<a name="w322aac33b7c39b7b1"></a>
+### `cdk list` \(`ls`\)<a name="w322aac35b7c39b7b1"></a>
 
 ```
 cdk list [STACKS..]
@@ -738,7 +738,7 @@ Options:
                                                       [boolean] [default: false]
 ```
 
-### `cdk synthesize` \(`synth`\)<a name="w322aac33b7c39b7b3"></a>
+### `cdk synthesize` \(`synth`\)<a name="w322aac35b7c39b7b3"></a>
 
 ```
 cdk synthesize [STACKS..]
@@ -759,7 +759,7 @@ Options:
                                                       [boolean] [default: false]
 ```
 
-### `cdk bootstrap`<a name="w322aac33b7c39b7b5"></a>
+### `cdk bootstrap`<a name="w322aac35b7c39b7b5"></a>
 
 ```
 cdk bootstrap [ENVIRONMENTS..]
@@ -839,7 +839,7 @@ Options:
                                             example)                    [string]
 ```
 
-### `cdk deploy`<a name="w322aac33b7c39b7b7"></a>
+### `cdk deploy`<a name="w322aac35b7c39b7b7"></a>
 
 ```
 cdk deploy [STACKS..]
@@ -917,7 +917,7 @@ Options:
                                                        [boolean] [default: true]
 ```
 
-### `cdk destroy`<a name="w322aac33b7c39b7b9"></a>
+### `cdk destroy`<a name="w322aac35b7c39b7b9"></a>
 
 ```
 cdk destroy [STACKS..]
@@ -936,7 +936,7 @@ Options:
                            stacks                                      [boolean]
 ```
 
-### `cdk diff`<a name="w322aac33b7c39b7c11"></a>
+### `cdk diff`<a name="w322aac35b7c39b7c11"></a>
 
 ```
 cdk diff [STACKS..]
@@ -962,7 +962,7 @@ Options:
                                                       [boolean] [default: false]
 ```
 
-### `cdk init`<a name="w322aac33b7c39b7c13"></a>
+### `cdk init`<a name="w322aac35b7c39b7c13"></a>
 
 ```
 cdk init [TEMPLATE]
@@ -984,7 +984,7 @@ Options:
                            project                    [boolean] [default: false]
 ```
 
-### `cdk context`<a name="w322aac33b7c39b7c15"></a>
+### `cdk context`<a name="w322aac35b7c39b7c15"></a>
 
 ```
 cdk context

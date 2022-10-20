@@ -1,28 +1,37 @@
 # Continuous integration and delivery \(CI/CD\) using CDK Pipelines<a name="cdk_pipeline"></a>
 
-[CDK Pipelines](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.pipelines-readme.html) is a construct library module for painless continuous delivery of AWS CDK applications\. Whenever you check your AWS CDK app's source code in to AWS CodeCommit, GitHub, or CodeStar, CDK Pipelines can automatically build, test, and deploy your new version\.
+[CDK Pipelines](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.pipelines-readme.html) is a construct library module for painless continuous delivery of AWS CDK applications\. Whenever you check your AWS CDK app's source code in to AWS CodeCommit, GitHub, or AWS CodeStar, CDK Pipelines can automatically build, test, and deploy your new version\.
 
-CDK Pipelines are self\-updating: if you add application stages or stacks, the pipeline automatically reconfigures itself to deploy those new stages and/or stacks\.
+CDK Pipelines are self\-updating\. If you add application stages or stacks, the pipeline automatically reconfigures itself to deploy those new stages or stacks\.
 
 **Note**  
-CDK Pipelines supports two APIs: the original API that was made available in the Developer Preview, and a modern one that incorporates feedback from CDK customers received during the preview phase\. The examples in this topic use the modern API\. For details on the differences between the two supported APIs, see [CDK Pipelines original API](https://github.com/aws/aws-cdk/blob/master/packages/@aws-cdk/pipelines/ORIGINAL_API.md)\.
+CDK Pipelines supports two APIs\. One is the original API that was made available in the CDK Pipelines Developer Preview\. The other is a modern API that incorporates feedback from CDK customers received during the preview phase\. The examples in this topic use the modern API\. For details on the differences between the two supported APIs, see [CDK Pipelines original API](https://github.com/aws/aws-cdk/blob/master/packages/@aws-cdk/pipelines/ORIGINAL_API.md)\.
 
 ## Bootstrap your AWS environments<a name="cdk_pipeline_bootstrap"></a>
 
-Before you can use CDK Pipelines, you must bootstrap the AWS environment\(s\) to which you will deploy your stacks\. An [environment](environments.md) is an account/region pair to which you want to deploy a CDK stack\. A CDK Pipeline involves at least two environments: the environment where the pipeline is provisioned, and the environment where you want to deploy the application's stacks \(or its stages, which are groups of related stacks\)\. These environments can be the same, though best practices recommend you isolate stages from each other in different AWS accounts or regions\.
+Before you can use CDK Pipelines, you must bootstrap the AWS environments to which you will deploy your stacks\. An [environment](environments.md) is an account/Region pair to which you want to deploy a CDK stack\.
+
+A CDK Pipeline involves at least two environments\. One environment is where the pipeline is provisioned\. The other environment is where you want to deploy the application's stacks \(or its stages, which are groups of related stacks\)\. These environments can be the same, though best practices recommend you isolate stages from each other in different AWS accounts or Regions\.
 
 **Note**  
 See [Bootstrapping](bootstrapping.md) for more information on the kinds of resources created by bootstrapping and how to customize the bootstrap stack\.
 
-Continuous deployment with CDK Pipelines requires that the CDK Toolkit stack include an Amazon S3 bucket, an Amazon ECR repository, and IAM roles to give the various parts of a pipeline the permissions they need\. The CDK Toolkit will upgrade your existing bootstrap stack or create a new one, as necessary\.
+Continuous deployment with CDK Pipelines requires the following to be included in the CDK Toolkit stack:
++ An S3 bucket
++ An Amazon ECR repository
++ IAM roles to give the various parts of a pipeline the permissions they need
 
-To bootstrap an environment that can provision an AWS CDK pipeline, invoke `cdk bootstrap` as shown below\. Invoking the AWS CDK Toolkit via the `npx` command temporarily installs it if necessary, and will use the version of the Toolkit installed in the current project if one exists\. 
+The CDK Toolkit upgrades your existing bootstrap stack or creates a new one if necessary\.
 
-\-\-cloudformation\-execution\-policies specifies the ARN of a policy under which future CDK Pipelines deployments will execute\. The default `AdministratorAccess` policy ensures that your pipeline can deploy every type of AWS resource\. If you use this policy, make sure you trust all the code and dependencies that make up your AWS CDK app\.
+To bootstrap an environment that can provision an AWS CDK pipeline, invoke `cdk bootstrap` as shown in the following example\. Invoking the AWS CDK Toolkit via the `npx` command temporarily installs it if necessary\. It will also use the version of the Toolkit installed in the current project, if one exists\. 
+
+\-\-cloudformation\-execution\-policies specifies the ARN of a policy under which future CDK Pipelines deployments will execute\. The default `AdministratorAccess` policy makes sure that your pipeline can deploy every type of AWS resource\. If you use this policy, make sure you trust all the code and dependencies that make up your AWS CDK app\.
 
 Most organizations mandate stricter controls on what kinds of resources can be deployed by automation\. Check with the appropriate department within your organization to determine the policy your pipeline should use\.
 
-You may omit the \-\-profile option if your default AWS profile contains the necessary credentials or to instead use the environment variables `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_DEFAULT_REGION` to provide your AWS account credentials\.
+You can omit the \-\-profile option in the following situations:
++ If your default AWS profile contains the necessary credentials
++ If you want to use the environment variables `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_DEFAULT_REGION` to provide your AWS account credentials
 
 ------
 #### [ macOS/Linux ]
@@ -42,9 +51,11 @@ npx cdk bootstrap aws://ACCOUNT-NUMBER/REGION --profile ADMIN-PROFILE ^
 
 ------
 
-To bootstrap additional environments into which AWS CDK applications will be deployed by the pipeline, use the commands below instead\. The \-\-trust option indicates which other account should have permissions to deploy AWS CDK applications into this environment; specify the pipeline's AWS account ID\.
+To bootstrap additional environments into which AWS CDK applications will be deployed by the pipeline, use the following commandsinstead\. The \-\-trust option indicates which other account should have permissions to deploy AWS CDK applications into this environment\. For this option, specify the pipeline's AWS account ID\.
 
-Again, you may omit the \-\-profile option if your default AWS profile contains the necessary credentials or if you are using the `AWS_*` environment variables to provide your AWS account credentials\.
+Again, you can omit the \-\-profile option in the following situations:
++ If your default AWS profile contains the necessary credentials
++ If you're using the `AWS_*` environment variables to provide your AWS account credentials
 
 ------
 #### [ macOS/Linux ]
@@ -69,11 +80,11 @@ npx cdk bootstrap aws://ACCOUNT-NUMBER/REGION --profile ADMIN-PROFILE ^
 **Tip**  
 Use administrative credentials only to bootstrap and to provision the initial pipeline\. Afterward, use the pipeline itself, not your local machine, to deploy changes\.
 
-If you are upgrading a legacy\-bootstrapped environment, the old Amazon S3 bucket is orphaned when the new bucket is created\. Delete it manually using the Amazon S3 console\.
+If you are upgrading a legacy bootstrapped environment, the previous Amazon S3 bucket is orphaned when the new bucket is created\. Delete it manually by using the Amazon S3 console\.
 
 ## Initialize project<a name="cdk_pipeline_init"></a>
 
-Create a new, empty GitHub project and clone it to your workstation in the `my-pipeline` directory\. \(Our code examples in this topic use GitHub; you can also use CodeStar or AWS CodeCommit\.\)
+Create a new, empty GitHub project and clone it to your workstation in the `my-pipeline` directory\. \(Our code examples in this topic use GitHub\. You can also use AWS CodeStar or AWS CodeCommit\.\)
 
 ```
 git clone GITHUB-CLONE-URL my-pipeline
@@ -81,7 +92,7 @@ cd my-pipeline
 ```
 
 **Note**  
-You may use a name other than `my-pipeline` for your app's main directory, but since the AWS CDK Toolkit bases some file and class names on the name of the main directory, you'll need to tweak these later in this topic\.
+You can use a name other than `my-pipeline` for your app's main directory\. However, if you do so, you will have to tweak the file and class names later in this topic\. This is because the AWS CDK Toolkit bases some file and class names on the name of the main directory\.
 
 After cloning, initialize the project as usual\.
 
@@ -106,7 +117,7 @@ cdk init app --language javascript
 cdk init app --language python
 ```
 
-After the app has been created, also enter the following two commands to activate the app's Python virtual environment and install the AWS CDK core dependencies\.
+After the app has been created, also enter the following two commands\. These activate the app's Python virtual environment and install the AWS CDK core dependencies\.
 
 ```
 source .venv/bin/activate
@@ -138,7 +149,7 @@ If you are using Visual Studio, open the solution file in the `src` directory\.
 cdk init app --language go
 ```
 
-After the app has been created, also enter the following command to instll the AWS Construct Library modules required by the app\.
+After the app has been created, also enter the following command to install the AWS Construct Library modules that the app requires\.
 
 ```
 go get
@@ -153,12 +164,14 @@ Be sure to commit your `cdk.json` and `cdk.context.json` files to source control
 
 Your CDK Pipelines application will include at least two stacks: one that represents the pipeline itself, and one or more stacks that represent the application deployed through it\. Stacks can also be grouped into *stages*, which you can use to deploy copies of infrastructure stacks to different environments\. For now, we'll consider the pipeline, and later delve into the application it will deploy\.
 
-The construct [https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.pipelines.CodePipeline.html](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.pipelines.CodePipeline.html) is the construct that represents a CDK Pipeline that uses AWS CodePipeline as its deployment engine\. When you instantiate `CodePipeline` in a stack, you define the source location for the pipeline \(e\.g\. a GitHub repository\) and the commands to build the app\. For example, the following defines a pipeline whose source is stored in a GitHub repository, and includes a build step for a TypeScript CDK application\. Fill in the information about your GitHub repo where indicated\.
+The construct [https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.pipelines.CodePipeline.html](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.pipelines.CodePipeline.html) is the construct that represents a CDK Pipeline that uses AWS CodePipeline as its deployment engine\. When you instantiate `CodePipeline` in a stack, you define the source location for the pipeline \(such as a GitHub repository\)\. You also define the commands to build the app\.
+
+For example, the following defines a pipeline whose source is stored in a GitHub repository\. It also includes a build step for a TypeScript CDK application\. Fill in the information about your GitHub repo where indicated\.
 
 **Note**  
 By default, the pipeline authenticates to GitHub using a personal access token stored in Secrets Manager under the name `github-token`\.
 
-You'll also need to update the instantiation of the pipeline stack to specify the AWS account and region\.
+You'll also need to update the instantiation of the pipeline stack to specify the AWS account and Region\.
 
 ------
 #### [ TypeScript ]
@@ -403,7 +416,7 @@ namespace MyPipeline
 
 ------
 
-You must deploy a pipeline manually once\. After that, the pipeline will keep itself up to date from the source code repository, so make sure the code in the repo is the code you want deployed\. Check in your changes and push to GitHub, then deploy:
+You must deploy a pipeline manually once\. After that, the pipeline keeps itself up to date from the source code repository\. So be sure that the code in the repo is the code you want deployed\. Check in your changes and push to GitHub, then deploy:
 
 ```
 git add --all
@@ -413,17 +426,17 @@ cdk deploy
 ```
 
 **Tip**  
-Now that you've done the initial deployment, your local AWS account no longer needs administrative access, because all changes to your app will be deployed via the pipeline\. All you need to be able to do is push to GitHub\.
+Now that you've done the initial deployment, your local AWS account no longer needs administrative access\. This is because all changes to your app will be deployed via the pipeline\. All you need to be able to do is push to GitHub\.
 
 ## Application stages<a name="cdk_pipeline_stages"></a>
 
-To define a multi\-stack AWS application that can be added to the pipeline all at once, define a subclass of `[Stage](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.Stage.html)` \(not to be confused with `CdkStage` in the CDK Pipelines module\)\.
+To define a multi\-stack AWS application that can be added to the pipeline all at once, define a subclass of `[Stage](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.Stage.html)`\. \(This is different from `CdkStage` in the CDK Pipelines module\.\)
 
 The stage contains the stacks that make up your application\. If there are dependencies between the stacks, the stacks are automatically added to the pipeline in the right order\. Stacks that don't depend on each other are deployed in parallel\. You can add a dependency relationship between stacks by calling `stack1.addDependency(stack2)`\.
 
 Stages accept a default `env` argument, which becomes the default environment for the stacks inside it\. \(Stacks can still have their own environment specified\.\)\.
 
-An application is added to the pipeline by calling `[addStage](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.pipelines.CodePipeline.html#addwbrstagestage-optionss)()` with instances of [https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.Stage.html](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.Stage.html)\. A stage can be instantiated and added to the pipeline multiple times to define different stages of your DTAP or multi\-region application pipeline:
+An application is added to the pipeline by calling `[addStage](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.pipelines.CodePipeline.html#addwbrstagestage-optionss)()` with instances of [https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.Stage.html](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.Stage.html)\. A stage can be instantiated and added to the pipeline multiple times to define different stages of your DTAP or multi\-Region application pipeline\.
 
 We will create a stack containing a simple Lambda function and place that stack in a stage\. Then we will add the stage to the pipeline so it can be deployed\.
 
@@ -882,7 +895,7 @@ testingStage.AddPost(new ManualApprovalStep("approval"));
 
 ------
 
-You can add stages to a [Wave](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.pipelines.Wave.html) to deploy them in parallel, for example when deploying a stage to multiple accounts or regions\.
+You can add stages to a [Wave](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.pipelines.Wave.html) to deploy them in parallel, for example when deploying a stage to multiple accounts or Regions\.
 
 ------
 #### [ TypeScript ]
@@ -966,7 +979,9 @@ wave.AddStage(new MyPipelineAppStage(this, "MyAppUS", new StageProps
 
 ## Testing deployments<a name="cdk_pipeline_validation"></a>
 
-You can add steps to a CDK Pipeline to validate the deployments you are performing\. Using the CDK Pipeline library's `[ShellStep](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.pipelines.ShellStep.html)`, you can try to access a just\-deployed Amazon API Gateway backed by a Lambda function, for example, or issue an AWS CLI command to check some setting of a deployed resource\.
+You can add steps to a CDK Pipeline to validate the deployments that you're performing\. For example, you can use the CDK Pipeline library's `[ShellStep](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.pipelines.ShellStep.html)` to perform tasks such as the following:
++ Trying to access a newly deployed Amazon API Gateway backed by a Lambda function
++ Checking a setting of a deployed resource by issuing an AWS CLI command
 
 In its simplest form, adding validation actions looks like this:
 
@@ -1028,9 +1043,9 @@ stage.AddPost(new ShellStep("validate", new ShellStepProps
 
 ------
 
-Because many AWS CloudFormation deployments result in the generation of resources with unpredictable names, CDK Pipelines provide a way to read AWS CloudFormation outputs after a deployment\. This makes it possible to pass \(for example\) the generated URL of a load balancer to a test action\.
+Many AWS CloudFormation deployments result in the generation of resources with unpredictable names\. Because of this, CDK Pipelines provide a way to read AWS CloudFormation outputs after a deployment\. This makes it possible to pass \(for example\) the generated URL of a load balancer to a test action\.
 
-To use outputs, expose the `CfnOutput` object you're interested in and pass it in a step's `envFromCfnOutputs` property to make it available as an environment variable within that step\.
+To use outputs, expose the `CfnOutput` object you're interested in\. Then, pass it in a step's `envFromCfnOutputs` property to make it available as an environment variable within that step\.
 
 ------
 #### [ TypeScript ]
@@ -1119,7 +1134,7 @@ stage.AddPost(new ShellStep("lbaddr", new ShellStepProps
 
 You can write simple validation tests right in the `ShellStep`, but this approach becomes unwieldy when the test is more than a few lines\. For more complex tests, you can bring additional files \(such as complete shell scripts, or programs in other languages\) into the `ShellStep` via the `inputs` property\. The inputs can be any step that has an output, including a source \(such as a GitHub repo\) or another `ShellStep`\.
 
-Bringing in files from the source repository is appropriate if the files are directly usable in the test \(for example, if they are themselves executable\)\. In this example, we declare our GitHub repo as `source` \(rather than instantiating it inline as part of the `CodePipeline`\), then pass this fileset to both the pipeline and the validation test\.
+Bringing in files from the source repository is appropriate if the files are directly usable in the test \(for example, if they are themselves executable\)\. In this example, we declare our GitHub repo as `source` \(rather than instantiating it inline as part of the `CodePipeline`\)\. Then, we pass this fileset to both the pipeline and the validation test\.
 
 ------
 #### [ TypeScript ]
@@ -1391,12 +1406,14 @@ stage.AddPost(new ShellStep("validate", new ShellStepProps
 
 ## Security notes<a name="cdk_pipeline_security"></a>
 
-Any form of continuous delivery has inherent security risks\. Under the AWS [Shared Responsibility Model](https://aws.amazon.com/compliance/shared-responsibility-model/), you are responsible for the security of your information in the AWS cloud\. The CDK Pipelines library gives you a head start by incorporating secure defaults and modeling best practices, but by its very nature a library that needs a high level of access to fulfill its intended purpose cannot assure complete security\. There are many attack vectors outside of AWS and your organization\.
+Any form of continuous delivery has inherent security risks\. Under the AWS [Shared Responsibility Model](https://aws.amazon.com/compliance/shared-responsibility-model/), you are responsible for the security of your information in the AWS Cloud\. The CDK Pipelines library gives you a head start by incorporating secure defaults and modeling best practices\.
 
-In particular, keep in mind the following\.
-+ Be mindful of the software you depend on\. Vet all third\-party software you run in your pipeline, as it has the ability to change the infrastructure that gets deployed\. 
-+ Use dependency locking to prevent accidental upgrades\. CDK Pipelines respects `package-lock.json` and `yarn.lock` to ensure your dependencies are the ones you expect\.
-+ Credentials for production environments should be short\-lived\. After bootstrapping and initial provisioning, there is no need for developers to have account credentials at all; changes can be deployed through the pipeline\. Eliminate the possibility of credentials leaking by not needing them in the first place\!
+However, by its very nature, a library that needs a high level of access to fulfill its intended purpose cannot assure complete security\. There are many attack vectors outside of AWS and your organization\.
+
+In particular, keep in mind the following:
++ Be mindful of the software you depend on\. Vet all third\-party software you run in your pipeline, because it can change the infrastructure that gets deployed\. 
++ Use dependency locking to prevent accidental upgrades\. CDK Pipelines respects `package-lock.json` and `yarn.lock` to make sure that your dependencies are the ones you expect\.
++ Credentials for production environments should be short\-lived\. After bootstrapping and initial provisioning, there is no need for developers to have account credentials at all\. Changes can be deployed through the pipeline\. Reduce the possibility of credentials leaking by not needing them in the first place\.
 
 ## Troubleshooting<a name="cdk_pipeline_troubleshooting"></a>
 

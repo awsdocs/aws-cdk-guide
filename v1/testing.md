@@ -4,7 +4,7 @@ With the AWS CDK, your infrastructure can be as testable as any other code you w
 
 There are two categories of tests you can write for AWS CDK apps\.
 +  **Fine\-grained assertions** test specific aspects of the generated AWS CloudFormation template, such as "this resource has this property with this value\." These tests can detect regressions, and are also useful when you're developing new features using test\-driven development \(write a test first, then make it pass by writing a correct implementation\)\. Fine\-grained assertions are the tests you'll write the most of\.
-+  **Snapshot tests** test the synthesized AWS CloudFormation template against a previously\-stored baseline template or "master\." Snapshot tests let you refactor freely, since you can be sure that the refactored code works exactly the same way as the original\. If the changes were intentional, you can accept a new baseline for future tests\. However, CDK upgrades can also cause synthesized templates to change, so you can't rely only on snapshots to make sure your implementation is correct\.
++  **Snapshot tests** test the synthesized AWS CloudFormation template against a previously\-stored baseline template\. Snapshot tests let you refactor freely, since you can be sure that the refactored code works exactly the same way as the original\. If the changes were intentional, you can accept a new baseline for future tests\. However, CDK upgrades can also cause synthesized templates to change, so you can't rely only on snapshots to make sure your implementation is correct\.
 
 **Note**  
 Complete versions of the TypeScript, Python, and Java apps used as examples in this topic are [available on GitHub](https://github.com/cdklabs/aws-cdk-testing-examples/)\.

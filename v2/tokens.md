@@ -8,7 +8,7 @@ ${TOKEN[Bucket.Name.1234]}
 
 This is how the AWS CDK encodes a token whose value is not yet known at construction time, but will become available later\. The AWS CDK calls these placeholders *tokens*\. In this case, it's a token encoded as a string\.
 
-You can pass this string around as if it was the name of the bucket, such as in the following example, where the bucket name is specified as an environment variable to an AWS Lambda function\.
+You can pass this string around as if it was the name of the bucket\. In the following example, the bucket name is specified as an environment variable to an AWS Lambda function\.
 
 ------
 #### [ TypeScript ]
@@ -85,7 +85,7 @@ Tokens are objects that implement the [IResolvable](https://docs.aws.amazon.com/
 **Note**  
 You'll hardly ever work directly with the `IResolvable` interface\. You will most likely only see string\-encoded versions of tokens\.
 
-Other functions typically only accept arguments of basic types, such as `string` or `number`\. To use tokens in these cases, you can encode them into one of three types using static methods on the [cdk\.Token](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.Token.html) class\.
+Other functions typically only accept arguments of basic types, such as `string` or `number`\. To use tokens in these cases, you can encode them into one of three types by using static methods on the [cdk\.Token](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.Token.html) class\.
 + [https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.Token.html#static-aswbrstringvalue-options](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.Token.html#static-aswbrstringvalue-options) to generate a string encoding \(or call `.toString()` on the token object\)
 + [https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.Token.html#static-aswbrlistvalue-options](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.Token.html#static-aswbrlistvalue-options) to generate a list encoding
 + [https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.Token.html#static-aswbrnumbervalue](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.Token.html#static-aswbrnumbervalue) to generate a numeric encoding
@@ -93,7 +93,7 @@ Other functions typically only accept arguments of basic types, such as `string`
 These take an arbitrary value, which can be an `IResolvable`, and encode them into a primitive value of the indicated type\.
 
 **Important**  
-Because any one of the previous types can potentially be an encoded token, be careful when you parse or try to read their contents\. For example, if you attempt to parse a string to extract a value from it, and the string is an encoded token, your parsing will fail\. Similarly, if you attempt to query the length of an array, or perform math operations with a number, you must first verify that they are not encoded tokens\.
+Because any one of the previous types can potentially be an encoded token, be careful when you parse or try to read their contents\. For example, if you attempt to parse a string to extract a value from it, and the string is an encoded token, your parsing fails\. Similarly, if you try to query the length of an array or perform math operations with a number, you must first verify that they aren't encoded tokens\.
 
 To check whether a value has an unresolved token in it, call the `Token.isUnresolved` \(Python: `is_unresolved`\) method\.
 
@@ -146,7 +146,7 @@ if (!Token.IsUnresolved(name) && name.Length > 10)
 If **name** is a token, validation isn't performed, and an error could still occur in a later stage in the lifecycle, such as during deployment\.
 
 **Note**  
-You can use token encodings to escape the type system\. For example, you could string\-encode a token that produces a number value at synthesis time\. If you use these functions, it's your responsibility to ensure that your template resolves to a usable state after synthesis\.
+You can use token encodings to escape the type system\. For example, you could string\-encode a token that produces a number value at synthesis time\. If you use these functions, it's your responsibility to make sure that your template resolves to a usable state after synthesis\.
 
 ## String\-encoded tokens<a name="tokens_string"></a>
 
@@ -238,7 +238,7 @@ Avoid manipulating the string in other ways\. For example, taking a substring of
 
 ## List\-encoded tokens<a name="tokens_list"></a>
 
-List\-encoded tokens look like the following
+List\-encoded tokens look like the following:
 
 ```
 ["#{TOKEN[Stack.NotificationArns.1234]}"]
@@ -258,7 +258,7 @@ As with list tokens, you cannot modify the number value, as doing so is likely t
 
 ## Lazy values<a name="tokens_lazy"></a>
 
-In addition to representing deploy\-time values, such as AWS CloudFormation [parameters](parameters.md), Tokens are also commonly used to represent synthesis\-time lazy values\. These are values for which the final value will be determined before synthesis has completed, just not at the point where the value is constructed\. Use tokens to pass a literal string or number value to another construct, while the actual value at synthesis time may depend on some calculation that has yet to occur\.
+In addition to representing deploy\-time values, such as AWS CloudFormation [parameters](parameters.md), tokens are also commonly used to represent synthesis\-time lazy values\. These are values for which the final value will be determined before synthesis has completed, but not at the point where the value is constructed\. Use tokens to pass a literal string or number value to another construct, while the actual value at synthesis time might depend on some calculation that has yet to occur\.
 
 You can construct tokens representing synth\-time lazy values using static methods on the `Lazy` class, such as [Lazy\.string](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.Lazy.html#static-stringproducer-options) and [Lazy\.number](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.Lazy.html#static-numberproducer)\. These methods accept an object whose `produce` property is a function that accepts a context argument and returns the final value when called\.
 

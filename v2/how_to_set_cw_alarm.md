@@ -111,7 +111,7 @@ var metric = new Metric(this, "Metric", new MetricProps
 
 ## Creating the alarm<a name="how_to_set_cw_alarm_create"></a>
 
-Once you have a metric, either an existing one or one you defined, you can create an alarm\. In this example, the alarm is raised when there are more than 100 of your metric in two of the last three evaluation periods\. You can use comparisons such as less\-than in your alarms via the `comparisonOperator` property; greater\-than\-or\-equal\-to is the AWS CDK default, so we don't need to specify it\.
+Once you have a metric, either an existing one or one you defined, you can create an alarm\. In this example, the alarm is raised when there are more than 100 of your metric in two of the last three evaluation periods\. You can use comparisons such as less\-than in your alarms via the `comparisonOperator` property\. Greater\-than\-or\-equal\-to is the AWS CDK default, so we don't need to specify it\.
 
 ------
 #### [ TypeScript ]
@@ -178,7 +178,7 @@ var alarm = new Alarm(this, "Alarm", new AlarmProps
 
 ------
 
-An alternative way to create an alarm is using the metric's [createAlarm\(\)](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_cloudwatch.Metric.html#createwbralarmscope-id-props) method, which takes essentially the same properties as the `Alarm` constructor; you just don't need to pass in the metric, since it's already known\.
+An alternative way to create an alarm is using the metric's [createAlarm\(\)](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_cloudwatch.Metric.html#createwbralarmscope-id-props) method, which takes essentially the same properties as the `Alarm` constructor\. You don't need to pass in the metric, because it's already known\.
 
 ------
 #### [ TypeScript ]

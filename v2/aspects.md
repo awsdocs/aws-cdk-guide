@@ -1,6 +1,6 @@
 # Aspects<a name="aspects"></a>
 
-Aspects are a way to apply an operation to all constructs in a given scope\. The aspect could modify the constructs, such as by adding tags, or it could verify something about the state of the constructs, such as ensuring that all buckets are encrypted\.
+Aspects are a way to apply an operation to all constructs in a given scope\. The aspect could modify the constructs, such as by adding tags\. Or it could verify something about the state of the constructs, such as making sure that all buckets are encrypted\.
 
 To apply an aspect to a construct and all constructs in the same scope, call [https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.Aspects.html#static-ofscope](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.Aspects.html#static-ofscope)`.of(SCOPE).add()` with a new aspect, as shown in the following example\.
 
@@ -58,12 +58,12 @@ interface IAspect {
 ------
 #### [ JavaScript ]
 
-JavaScript doesn't have interfaces as a language feature, so an aspect is simply an instance of a class having a `visit` method that accepts the node to be operated on\.
+JavaScript doesn't have interfaces as a language feature\. Therefore, an aspect is simply an instance of a class having a `visit` method that accepts the node to be operated on\.
 
 ------
 #### [ Python ]
 
-Python doesn't have interfaces as a language feature, so an aspect is simply an instance of a class having a `visit` method that accepts the node to be operated on\.
+Python doesn't have interfaces as a language feature\. Therefore, an aspect is simply an instance of a class having a `visit` method that accepts the node to be operated on\.
 
 ------
 #### [ Java ]
@@ -90,13 +90,13 @@ When you call `Aspects.of(SCOPE).add(...)`, the construct adds the aspect to an 
 
 During the [prepare phase](apps.md#lifecycle), the AWS CDK calls the `visit` method of the object for the construct and each of its children in top\-down order\.
 
-The `visit` method is free to change anything in the construct\. In strongly\-typed languages, cast the received construct to a more specific type before accessing construct\-specific properties or methods\.
+The `visit` method is free to change anything in the construct\. In strongly typed languages, cast the received construct to a more specific type before accessing construct\-specific properties or methods\.
 
 Aspects don't propagate across `Stage` construct boundaries, because `Stages` are self\-contained and immutable after definition\. Apply aspects on the `Stage` construct itself \(or lower\) if you want them to visit constructs inside the `Stage`\.
 
 ## Example<a name="aspects_example"></a>
 
-The following example validates that all buckets created in the stack have versioning enabled\. The aspect adds an error annotation to the constructs that fail the validation, which results in the synth operation failing and prevents deploying the resulting cloud assembly\.
+The following example validates that all buckets created in the stack have versioning enabled\. The aspect adds an error annotation to the constructs that fail the validation\. This results in the synth operation failing and prevents deploying the resulting cloud assembly\.
 
 ------
 #### [ TypeScript ]

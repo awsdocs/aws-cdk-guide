@@ -1,8 +1,13 @@
 # Create an app with multiple stacks<a name="stack_how_to_create_multiple_stacks"></a>
 
-Most of the other code examples in the *AWS CDK Developer Guide* involve only a single stack\. However, you can create apps containing any number of stacks\. Each stack results in its own AWS CloudFormation template\. Stacks are the *unit of deployment:* each stack in an app can be synthesized and deployed individually using the `cdk deploy` command\.
+Most of the code examples in the *AWS CDK Developer Guide* involve only a single stack\. However, you can create apps containing any number of stacks\. Each stack results in its own AWS CloudFormation template\. Stacks are the *unit of deployment:* each stack in an app can be synthesized and deployed individually using the `cdk deploy` command\.
 
-This topic illustrates how to extend the `Stack` class to accept new properties or arguments, how to use these properties to affect what resources the stack contains and their configuration, and how to instantiate multiple stacks from this class\. The example uses a Boolean property, named `encryptBucket` \(Python: `encrypt_bucket`\), to indicate whether an Amazon S3 bucket should be encrypted\. If so, the stack enables encryption using a key managed by AWS Key Management Service \(AWS KMS\)\. The app creates two instances of this stack, one with encryption and one without\.
+This topic illustrates the following:
++ How to extend the `Stack` class to accept new properties or arguments
++ How to use these properties to affect what resources the stack contains and their configuration
++ How to instantiate multiple stacks from this class
+
+The example uses a Boolean property, named `encryptBucket` \(Python: `encrypt_bucket`\)\. It indicates whether an Amazon S3 bucket should be encrypted\. If so, the stack enables encryption using a key managed by AWS Key Management Service \(AWS KMS\)\. The app creates two instances of this stack, one with encryption and one without\.
 
 ## Before you begin<a name="cdk-how-to-create-multiple-stacks-prereqs"></a>
 
@@ -65,9 +70,9 @@ You can open the file `src/Pipeline.sln` in Visual Studio\.
 
 ## Add optional parameter<a name="cdk-how-to-create-multiple-stacks-extend-stackprops"></a>
 
-The `props` argument of the `Stack` constructor fulfills the interface `StackProps`\. Because we want our stack to accept an additional property to tell us whether to encrypt the Amazon S3 bucket, we should create an interface or class that includes that property\. This allows the compiler to make sure the property has a Boolean value and enables autocompletion for it in your IDE\.
+The `props` argument of the `Stack` constructor fulfills the interface `StackProps`\. In this example, we want the stack to accept an additional property to tell us whether to encrypt the Amazon S3 bucket\. We should create an interface or class that includes the property\. This allows the compiler to make sure that the property has a Boolean value and enables autocompletion for it in your IDE\.
 
-So open the indicated source file in your IDE or editor and add the new interface, class, or argument\. The code should look like this after the changes\. The lines we added are shown in boldface\.
+So open the indicated source file in your IDE or editor and add the new interface, class, or argument\. The code should look like this after the changes\. The lines we added are shown in bold\.
 
 ------
 #### [ TypeScript ]
@@ -139,7 +144,7 @@ class MultistackStack(cdk.Stack):
 
 File: `src/main/java/com/myorg/MultistackStack.java`
 
-It's more complicated than we really want to get into to extend a props type in Java, so we'll simply write our stack's constructor to accept an optional Boolean parameter\. Since `props` is an optional argument, we'll write an additional constructor that allows you to skip it\. It will default to `false`\.
+It's more complicated than we really want to get into to extend a props type in Java\. Instead, write the stack's constructor to accept an optional Boolean parameter\. Because `props` is an optional argument, we'll write an additional constructor that lets you skip it\. It will default to `false`\.
 
 ```
 package com.myorg;
@@ -204,7 +209,7 @@ The new property is optional\. If `encryptBucket` \(Python: `encrypt_bucket`\) i
 
 ## Define the stack class<a name="cdk-how-to-create-multiple-stacks-define-stack"></a>
 
- Now let's define our stack class, using our new property\. Make the code look like the following\. The code you need to add or change is shown in boldface\. 
+ Now let's define our stack class, using our new property\. Make the code look like the following\. The code you need to add or change is shown in bold\. 
 
 ------
 #### [ TypeScript ]
@@ -396,7 +401,7 @@ namespace Multistack
 
 ## Create two stack instances<a name="stack_how_to_create_multiple_stacks-create-stacks"></a>
 
-Now we'll add the code to instantiate two separate stacks\. As before, the lines of code shown in boldface are the ones you need to add\. Delete the existing `MultistackStack` definition\.
+Now we'll add the code to instantiate two separate stacks\. As before, the lines of code shown in bold are the ones you need to add\. Delete the existing `MultistackStack` definition\.
 
 ------
 #### [ TypeScript ]
@@ -548,13 +553,13 @@ namespace Multistack
 
 ## Synthesize and deploy the stack<a name="cdk-how-to-create-multiple-stacks-synth-deploy"></a>
 
-Now you can deploy stacks from the app\. First, synthesize a AWS CloudFormation template for `MyEastCdkStack`—the stack in `us-east-1`\. This is the stack with the encrypted S3 bucket\.
+Now you can deploy stacks from the app\. First, synthesize an AWS CloudFormation template for `MyEastCdkStack`—the stack in `us-east-1`\. This is the stack with the encrypted S3 bucket\.
 
 ```
 $ cdk synth MyEastCdkStack
 ```
 
-To deploy this stack to your AWS account, issue one of the following commands\. The first command uses your default AWS profile to obtain the credentials to deploy the stack\. The second uses a profile you specify: for *PROFILE\_NAME*, substitute the name of an AWS CLI profile that contains appropriate credentials for deploying to the `us-east-1` AWS Region\.
+To deploy this stack to your AWS account, issue one of the following commands\. The first command uses your default AWS profile to obtain the credentials to deploy the stack\. The second uses a profile that you specify\. For *PROFILE\_NAME*, substitute the name of an AWS CLI profile that contains appropriate credentials for deploying to the `us-east-1` AWS Region\.
 
 ```
 cdk deploy MyEastCdkStack
@@ -572,4 +577,4 @@ To avoid charges for resources that you deployed, destroy the stack using the fo
 cdk destroy MyEastCdkStack
 ```
 
-The destroy operation fails if there is anything stored in the stack's bucket\. There shouldn't be if you've only followed the instructions in this topic\. But if you did put something in the bucket, you must delete the bucket's contents, but not the bucket itself, using the AWS Management Console or the AWS CLI before destroying the stack\.
+The destroy operation fails if there is anything stored in the stack's bucket\. There shouldn't be if you've only followed the instructions in this topic\. But if you did put something in the bucket, you must delete the bucket contents before destroying the stack\. \(Do not delete the bucket itself\.\) Use the AWS Management Console or the AWS CLI to delete the bucket contents\.
