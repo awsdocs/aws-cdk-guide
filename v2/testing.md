@@ -1379,8 +1379,8 @@ We can test it like this:
 #### [ TypeScript ]
 
 ```
-import { Match, Template } from "@aws-cdk/assertions";
-import * as cdk from "@aws-cdk/core";
+import { Match, Template } from "aws-cdk-lib/assertions";
+import * as cdk from "aws-cdk-lib";
 import { DeadLetterQueue } from "../lib/dead-letter-queue";
 
 describe("DeadLetterQueue", () => {
@@ -1398,8 +1398,8 @@ describe("DeadLetterQueue", () => {
 #### [ JavaScript ]
 
 ```
-const { Match, Template } = require("@aws-cdk/assertions");
-const cdk = require("@aws-cdk/core");
+const { Match, Template } = require("aws-cdk-lib/assertions");
+const cdk = require("aws-cdk-lib");
 const { DeadLetterQueue } = require("../lib/dead-letter-queue");
 
 describe("DeadLetterQueue", () => {
@@ -1417,8 +1417,8 @@ describe("DeadLetterQueue", () => {
 #### [ Python ]
 
 ```
-from aws_cdk import core as cdk
-from aws_cdk.assertions import Match, Template
+import aws_cdk_lib as cdk
+from aws_cdk_lib.assertions import Match, Template
 
 from app.dead_letter_queue import DeadLetterQueue
 
@@ -1440,7 +1440,7 @@ import org.junit.jupiter.api.Test;
 import au.com.origin.snapshots.Expect;
 import software.amazon.awscdk.assertions.Match;
 import software.amazon.awscdk.assertions.Template;
-import software.amazon.awscdk.core.Stack;
+import software.amazon.awscdk.Stack;
 
 import java.util.Collections;
 import java.util.Map;
