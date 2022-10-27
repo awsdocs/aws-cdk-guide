@@ -473,7 +473,7 @@ The following example applies a tag to each resource in a stack containing the r
 ```
 class PathTagger implements cdk.IAspect {
   visit(node: IConstruct) {
-    new cdk.Tag("aws-cdk-path", node.node.path).visit(scope);
+    new cdk.Tag("aws-cdk-path", node.node.path).visit(node);
   }
 }
  
@@ -487,7 +487,7 @@ cdk.Aspects.of(stack).add(new PathTagger())
 ```
 class PathTagger {
   visit(node) {
-    new cdk.Tag("aws-cdk-path", node.node.path).visit(scope);
+    new cdk.Tag("aws-cdk-path", node.node.path).visit(node);
   }
 }
 
@@ -502,7 +502,7 @@ cdk.Aspects.of(stack).add(new PathTagger())
 @jsii.implements(cdk.IAspect)
 class PathTagger:
     def visit(self, node: IConstruct):
-        cdk.Tag("aws-cdk-path", node.node.path).visit(scope)
+        cdk.Tag("aws-cdk-path", node.node.path).visit(node)
 
 stack = MyStack(app) 
 cdk.Aspects.of(stack).add(PathTagger())
