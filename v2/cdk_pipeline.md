@@ -51,7 +51,7 @@ npx cdk bootstrap aws://ACCOUNT-NUMBER/REGION --profile ADMIN-PROFILE ^
 
 ------
 
-To bootstrap additional environments into which AWS CDK applications will be deployed by the pipeline, use the following commandsinstead\. The \-\-trust option indicates which other account should have permissions to deploy AWS CDK applications into this environment\. For this option, specify the pipeline's AWS account ID\.
+To bootstrap additional environments into which AWS CDK applications will be deployed by the pipeline, use the following commands instead\. The \-\-trust option indicates which other account should have permissions to deploy AWS CDK applications into this environment\. For this option, specify the pipeline's AWS account ID\.
 
 Again, you can omit the \-\-profile option in the following situations:
 + If your default AWS profile contains the necessary credentials
