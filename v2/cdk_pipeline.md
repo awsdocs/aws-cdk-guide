@@ -1203,7 +1203,7 @@ stage = pipeline.add_stage(MyApplicationStage(self, "test",
             env=cdk.Environment(account="111111111111", region="eu-west-1")))
 
 stage.add_post(ShellStep("validate", input=source,
-    commands=["curl -Ssf https://my.webservice.com/"],
+    commands=["sh ./tests/validate.sh"],
 ))
 ```
 
