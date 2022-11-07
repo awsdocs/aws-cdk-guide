@@ -87,9 +87,18 @@ To migrate your app to AWS CDK v2, first update the feature flags in `cdk.json`\
 
 ### Updating feature flags<a name="migrating-v2-v1-upgrade-cdk-json"></a>
 
-Remove all v1 feature flags from `cdk.json`, as these are all active by default in AWS CDK v2\.
+Remove the following v1 feature flags from `cdk.json` if they exist, as these are all active by default in AWS CDK v2\. If their old effect is important for your infrastructure, you will need to make source code changes\. See [the list of flags on GitHub](https://github.com/aws/aws-cdk/blob/main/packages/%40aws-cdk/cx-api/FEATURE_FLAGS.md) for more information\.
++ `@aws-cdk/core:enableStackNameDuplicates`
++ `aws-cdk:enableDiffNoFail`
++ `@aws-cdk/aws-ecr-assets:dockerIgnoreSupport`
++ `@aws-cdk/aws-secretsmanager:parseOwnedSecretName`
++ `@aws-cdk/aws-kms:defaultKeyPolicies`
++ `@aws-cdk/aws-s3:grantWriteWithoutAcl`
++ `@aws-cdk/aws-efs:defaultEncryptionAtRest`
 
-A handful of v1 feature flags can be set to `false` in order to revert to specific AWS CDK v1 behaviors; see [Disabling features with flags](featureflags.md#featureflags_disabling) for a complete list\. Use the `cdk diff` command to inspect the changes to your synthesized template to see if any of these flags are needed\.
+A handful of v1 feature flags can be set to `false` in order to revert to specific AWS CDK v1 behaviors; see [Reverting to v1 behavior](featureflags.md#featureflags_disabling) or the list on GitHub for a complete reference\.
+
+For both types of flags, use the `cdk diff` command to inspect the changes to your synthesized template to see if the changes to any of these flags affect your infrastructure\.
 
 ### CDK Toolkit compatibility<a name="work-with-cdk-v2-cli"></a>
 
@@ -152,7 +161,7 @@ Note that `aws-cdk-lib` appears both as a peer dependency and a dev dependency\.
     "aws-cdk-lib": "^2.0.0",
     "constructs": "^10.0.0",
     "typescript": "~3.9.0"
-  }  
+  }
 }
 ```
 
@@ -237,10 +246,10 @@ import aws_cdk.aws_codestar_alpha as codestar     # experimental module
 
 class MyConstruct(Construct):
     # ...
-    
+
 class MyStack(Stack):
     # ...
-    
+
 s3.Bucket(...)
 ```
 

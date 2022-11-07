@@ -15,6 +15,6 @@ The names of all feature flags begin with the NPM name of the package affected b
 
 Feature flags are disabled by default, so existing projects that do not specify the flag will continue to work as expected with later AWS CDK releases\. New projects created using cdk init include flags enabling all features available in the release that created the project\. Edit `cdk.json` to disable any flags for which you prefer the old behavior, or to add flags to enable new behaviors after upgrading the AWS CDK\.
 
-See the `CHANGELOG` in a given release for a description of any new feature flags added in that release\. The AWS CDK source file [https://github.com/aws/aws-cdk/blob/master/packages/@aws-cdk/cx-api/lib/features.ts](https://github.com/aws/aws-cdk/blob/master/packages/@aws-cdk/cx-api/lib/features.ts) provides a complete list of all current feature flags\.
+See the `CHANGELOG` in a given release for a description of any new feature flags added in that release\. A list of all current feature flags can be found on the AWS CDK GitHub repository in [https://github.com/aws/aws-cdk/blob/main/packages/%40aws-cdk/cx-api/FEATURE_FLAGS.md](https://github.com/aws/aws-cdk/blob/main/packages/%40aws-cdk/cx-api/FEATURE_FLAGS.md)\.
 
 As feature flags are stored in `cdk.json`, they are not removed by the cdk context \-\-reset or cdk context \-\-clear commands\.

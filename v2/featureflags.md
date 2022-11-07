@@ -4,9 +4,9 @@ The AWS CDK uses *feature flags* to enable potentially breaking behaviors in a r
 
 Feature flags are disabled by default\. Existing projects that do not specify the flag will continue to work as before with later AWS CDK releases\. New projects created using cdk init include flags enabling all features available in the release that created the project\. Edit `cdk.json` to disable any flags for which you prefer the earlier behavior\. You can also add flags to enable new behaviors after upgrading the AWS CDK\.
 
-See the `CHANGELOG` in a given release for a description of any new feature flags added in that release\. The AWS CDK source file [https://github.com/aws/aws-cdk/blob/master/packages/@aws-cdk/cx-api/lib/features.ts](https://github.com/aws/aws-cdk/blob/master/packages/@aws-cdk/cx-api/lib/features.ts) provides a complete list of all current feature flags\.
+See the `CHANGELOG` in a given release for a description of any new feature flags added in that release\. A list of all current feature flags can be found on the AWS CDK GitHub repository in [https://github.com/aws/aws-cdk/blob/main/packages/%40aws-cdk/cx-api/FEATURE_FLAGS.md](https://github.com/aws/aws-cdk/blob/main/packages/%40aws-cdk/cx-api/FEATURE_FLAGS.md)\.
 
-## Enabling features with flags<a name="w322aac23c34b9"></a>
+## Enabling features with flags<a name="w55aac23c34b9"></a>
 
 The following feature flags may be set to `true` to enable the described behavior\.
 
@@ -43,9 +43,12 @@ The AWS CDK fails at synthesis time if the `SNAPSHOT` removal policy is not supp
 `@aws-cdk/aws-ecs:arnFormatIncludesClusterName`  
 Use the new ARN format when importing an Amazon EC2 or Fargate cluster\.
 
-## Disabling features with flags<a name="featureflags_disabling"></a>
+## Reverting to v1 behavior<a name="featureflags_disabling"></a>
 
-In CDK v2, a few feature flags are supported to revert certain behaviors to their v1 defaults\. The following flags, set to `false`, revert to specific AWS CDK v1 behaviors\. Use the `cdk diff` command to inspect the changes to your synthesized template to see if any of these flags are needed\.
+In CDK v2, the defaults for a set of feature flags have been changed with respect to v1\. You can set these back to `false` to revert to specific AWS CDK v1 behavior\. Use the `cdk diff` command to inspect the changes to your synthesized template to see if any of these flags are needed\.
+
+`@aws-cdk/core:newStyleStackSynthesis`  
+Use the new stack synthesis method, which assumes bootstrap resources with well\-known names\. Requires [modern bootstrapping](bootstrapping.md), but in turn allows CI/CD via [CDK Pipelines](cdk_pipeline.md) and cross\-account deployments out of the box\.
 
 `@aws-cdk/aws-apigateway:usagePlanKeyOrderInsensitiveId`  
 If your application uses multiple Amazon API Gateway API keys and associates them to usage plans\.
@@ -60,17 +63,19 @@ If your application uses Amazon RDS database instance or database clusters, and 
 If your application uses multiple stacks and you refer to resources from one stack in another, this determines whether absolute or relative path is used to construct AWS CloudFormation exports\.
 
 `@aws-cdk/aws-lambda:recognizeVersionProps`  
-If set to `false`, the CDK includes metadata when detecting whether a Lambda function has changed\. This can cause deployment failures when only the metadata has changed, since duplicate versions are not allowed\.
+If set to `false`, the CDK includes metadata when detecting whether a Lambda function has changed\. This can cause deployment failures when only the metadata has changed, since duplicate versions are not allowed\. There is no need to revert this flag if you've made at least one change to all Lambda Functions in your application\.
 
 The syntax for reverting these flags in `cdk.json` is shown here\.
 
 ```
 {
   "context": {
+    "@aws-cdk/core:newStyleStackSynthesis": false,
     "@aws-cdk/aws-apigateway:usagePlanKeyOrderInsensitiveId": false,
     "@aws-cdk/aws-cloudfront:defaultSecurityPolicyTLSv1.2_2021": false,
     "@aws-cdk/aws-rds:lowercaseDbIdentifier": false,
     "@aws-cdk/core:stackRelativeExports": false,
+    "@aws-cdk/aws-lambda:recognizeVersionProps": false
   }
 }
 ```
