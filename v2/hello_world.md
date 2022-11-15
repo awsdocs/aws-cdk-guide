@@ -487,20 +487,6 @@ Update `hello-cdk.go`\.
 ```
 
 ------
-#### [ C\# ]
-
-Update `src/HelloCdk/HelloCdkStack.cs`\.
-
-```
-new Bucket(this, "MyFirstBucket", new BucketProps
-{
-    Versioned = true,
-    RemovalPolicy = RemovalPolicy.DESTROY,
-    AutoDeleteObjects = true
-});
-```
-
-------
 
 Here, we haven't written any code that, in itself, changes our Amazon S3 bucket\. Instead, our code defines the desired state of the bucket\. The AWS CDK synthesizes that state to a new AWS CloudFormation template\. Then, it deploys a changeset that makes only the changes necessary to reach that state\.
 
