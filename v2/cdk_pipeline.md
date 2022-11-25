@@ -269,6 +269,7 @@ In `my-pipeline/my-pipeline-stack.py` \(may vary if your project folder isn't na
 ```
 import aws_cdk as cdk
 from aws_cdk.pipelines import CodePipeline, CodePipelineSource, ShellStep
+from constructs import Construct
 
 class MyPipelineStack(cdk.Stack):
 
@@ -1202,7 +1203,7 @@ stage = pipeline.add_stage(MyApplicationStage(self, "test",
             env=cdk.Environment(account="111111111111", region="eu-west-1")))
 
 stage.add_post(ShellStep("validate", input=source,
-    commands=["curl -Ssf https://my.webservice.com/"],
+    commands=["sh ./tests/validate.sh"],
 ))
 ```
 
