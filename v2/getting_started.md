@@ -22,7 +22,7 @@ Constructs \(and also stacks and apps\) are represented as classes \(types\) in 
 
 The AWS CDK includes the CDK Toolkit \(also called the CLI\), a command line tool for working with your AWS CDK apps and stacks\. Among other functions, the Toolkit provides the ability to do the following: 
 + Convert one or more AWS CDK stacks to AWS CloudFormation templates and related assets \(a process called *synthesis*\)
-+ Deploy your stacks to an AWS account
++ Deploy your stacks to an AWS account and Region
 
 The AWS CDK includes a library of AWS constructs called the AWS Construct Library, organized into various modules\. The library contains constructs for each AWS service\. The main CDK package is called `aws-cdk-lib`, and it contains the majority of the AWS Construct Library\. It also contains base classes like `Stack` and `App` that are used in most CDK applications\. 
 
@@ -200,7 +200,7 @@ TypeScript was the first language supported by the AWS CDK, and much AWS CDK exa
 
 Here's what you need to install to use the AWS CDK\.
 
-All AWS CDK developers, even those working in Python, Java, or C\#, need [Node\.js](https://nodejs.org/en/download/) 10\.13\.0 or later\. All supported languages use the same backend, which runs on Node\.js\. We recommend a version in [active long\-term support](https://nodejs.org/en/about/releases/), which, at this writing, is the latest 16\.x release\. Your organization may have a different recommendation\.
+All AWS CDK developers, even those working in Python, Java, or C\#, need [Node\.js](https://nodejs.org/en/download/) 10\.13\.0 or later\. All supported languages use the same backend, which runs on Node\.js\. We recommend a version in [active long\-term support](https://nodejs.org/en/about/releases/)\. Your organization may have a different recommendation\.
 
 **Important**  
 Node\.js versions 13\.0\.0 through 13\.6\.0 are not compatible with the AWS CDK due to compatibility issues with its dependencies\.
@@ -235,7 +235,24 @@ The AWS CDK natively supports AWS IAM Identity Center \(successor to AWS Single 
 Alternatively, you can set the environment variables `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_DEFAULT_REGION` to appropriate values\. 
 
 **Important**  
-We strongly recommend against using your AWS root account for day\-to\-day tasks\. Instead, create a user in IAM and use its credentials with the CDK\. Best practices are to change this account's access key regularly and to use a least\-privileges role \(specifying `--role-arn`\) when deploying\.
+Using your AWS root account is the fastest way to get started with the AWS CDK\. Once you've worked through a few tutorials, however, we strongly recommend against using your root account for day\-to\-day tasks\. Instead, create a user in IAM and use its credentials with the CDK\. Best practices are to change this account's access key regularly and to use a least\-privileges role\. The AWS CDK includes roles that your account should have permission to assume, for example using the policy here\.  
+
+```
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "sts:AssumeRole"
+            ],
+            "Resource": [
+                "arn:aws:iam::*:role/cdk-*"
+            ]
+        }
+    ]
+}
+```
 
 Other prerequisites depend on the language in which you develop AWS CDK applications and are as follows\.
 
