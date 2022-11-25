@@ -18,7 +18,7 @@ If you have the [AWS CLI](https://aws.amazon.com/cli/) installed, the simplest w
 aws configure
 ```
 
-All AWS CDK applications require Node\.js 10\.13 or later, even if you work in Python, Java, C\#, or Go\. You may download a compatible version at [nodejs\.org](https://nodejs.org/)\. We recommend the [active LTS version](https://nodejs.org/en/about/releases/) \(at this writing, the latest 16\.x release\)\. Node\.js versions 13\.0\.0 through 13\.6\.0 are not compatible with the AWS CDK due to compatibility issues with its dependencies\.
+All AWS CDK applications require Node\.js 10\.13 or later, even if you work in Python, Java, C\#, or Go\. You may download a compatible version at [nodejs\.org](https://nodejs.org/)\. We recommend the [active LTS version](https://nodejs.org/en/about/releases/)\. Node\.js versions 13\.0\.0 through 13\.6\.0 are not compatible with the AWS CDK due to compatibility issues with its dependencies\.
 
 After installing Node\.js, install the AWS CDK Toolkit \(the `cdk` command\):
 
