@@ -274,7 +274,7 @@ string addr = myConstruct.Node.Addr;
 
 Unique IDs serve as the *logical identifiers* \(or *logical names*\) of resources in the generated AWS CloudFormation templates for constructs that represent AWS resources\.
 
-For example, the Amazon S3 bucket in the previous example that is created within `Stack2` results in an `AWS::S3::Bucket` resource\. The resource's logical ID is `Stack2MyBucket4DD88B4F` in the resulting AWS CloudFormation template\.
+For example, the Amazon S3 bucket in the previous example that is created within `Stack2` results in an `AWS::S3::Bucket` resource\. The resource's logical ID is `Stack2MyBucket4DD88B4F` in the resulting AWS CloudFormation template\. \(For details on how this identifier is generated, see [Unique IDs](#identifiers_unique_ids)\.\)
 
 ### Logical ID stability<a name="identifiers_logical_id_stability"></a>
 
