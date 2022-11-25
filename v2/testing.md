@@ -1254,11 +1254,11 @@ import re
 
 ## Snapshot tests<a name="testing_snapshot"></a>
 
-In *snapshot testing*, you compare the entire synthesized CloudFormation template against a previously stored master\. Unlike fine\-grained assertions, snapshot testing isn't useful in catching regressions\. This is because snapshot testing applies to the entire template, and things besides code changes can cause small \(or not\-so\-small\) differences in synthesis results\.
+In *snapshot testing*, you compare the entire synthesized CloudFormation template against a previously stored baseline \(often called a "master"\) template\. Unlike fine\-grained assertions, snapshot testing isn't useful in catching regressions\. This is because snapshot testing applies to the entire template, and things besides code changes can cause small \(or not\-so\-small\) differences in synthesis results\. These changes may not even affect your deployment, but they will still cause a snapshot test to fail\.
 
-For example, you might update a CDK construct to incorporate a new best practice, which can cause changes to the synthesized resources or how they're organized\. Alternatively, you might update the CDK Toolkit to report additional metadata\. Changes to context values can also affect the synthesized template\. 
+For example, you might update a CDK construct to incorporate a new best practice, which can cause changes to the synthesized resources or how they're organized\. Alternatively, you might update the CDK Toolkit to a version that reports additional metadata\. Changes to context values can also affect the synthesized template\.
 
-Snapshot tests can be of great help in refactoring, though, as long as you hold constant all other factors that might affect the synthesized template\. You will know immediately if a change you made has unintentionally changed the template\. If the change is intentional, simply accept a new master and proceed\.
+Snapshot tests can be of great help in refactoring, though, as long as you hold constant all other factors that might affect the synthesized template\. You will know immediately if a change you made has unintentionally changed the template\. If the change is intentional, simply accept the new template as the baseline\.
 
 For example, if we have this `DeadLetterQueue` construct:
 
