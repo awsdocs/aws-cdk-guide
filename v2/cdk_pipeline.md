@@ -268,8 +268,8 @@ In `my-pipeline/my-pipeline-stack.py` \(may vary if your project folder isn't na
 
 ```
 import aws_cdk as cdk
+from constructs import Constuct
 from aws_cdk.pipelines import CodePipeline, CodePipelineSource, ShellStep
-from constructs import Construct
 
 class MyPipelineStack(cdk.Stack):
 
@@ -993,7 +993,7 @@ In its simplest form, adding validation actions looks like this:
 // stage was returned by pipeline.addStage
 
 stage.addPost(new ShellStep("validate", {
-  commands: ['curl -Ssf https://my.webservice.com/'],
+  commands: ['../tests/validate.sh'],
 }));
 ```
 
@@ -1004,7 +1004,7 @@ stage.addPost(new ShellStep("validate", {
 // stage was returned by pipeline.addStage
 
 stage.addPost(new ShellStep("validate", {
-  commands: ['curl -Ssf https://my.webservice.com/'],
+  commands: ['../tests/validate.sh'],
 }));
 ```
 
@@ -1015,7 +1015,7 @@ stage.addPost(new ShellStep("validate", {
 # stage was returned by pipeline.add_stage
 
 stage.add_post(ShellStep("validate",
-  commands=['curl -Ssf https://my.webservice.com/']
+  commands=[''../tests/validate.sh'']
 ))
 ```
 
@@ -1026,7 +1026,7 @@ stage.add_post(ShellStep("validate",
 // stage was returned by pipeline.addStage
 
 stage.addPost(ShellStep.Builder.create("validate")
-        .commands(Arrays.asList("curl -Ssf https://my.webservice.com/"))
+        .commands(Arrays.asList("'../tests/validate.sh'"))
         .build());
 ```
 
@@ -1038,7 +1038,7 @@ stage.addPost(ShellStep.Builder.create("validate")
 
 stage.AddPost(new ShellStep("validate", new ShellStepProps
 {
-    Commands = new string[] { "curl -Ssf https://my.webservice.com/" }
+    Commands = new string[] { "'../tests/validate.sh'" }
 }));
 ```
 
@@ -1157,7 +1157,7 @@ const stage = pipeline.addStage(new MyPipelineAppStage(this, 'test', {
 
 stage.addPost(new ShellStep('validate', {
   input: source,
-  commands: ['sh ./tests/validate.sh']
+  commands: ['sh ../tests/validate.sh']
 }));
 ```
 
@@ -1181,7 +1181,7 @@ const stage = pipeline.addStage(new MyPipelineAppStage(this, 'test', {
 
 stage.addPost(new ShellStep('validate', {
   input: source,
-  commands: ['sh ./tests/validate.sh']
+  commands: ['sh ../tests/validate.sh']
 }));
 ```
 
@@ -1203,7 +1203,7 @@ stage = pipeline.add_stage(MyApplicationStage(self, "test",
             env=cdk.Environment(account="111111111111", region="eu-west-1")))
 
 stage.add_post(ShellStep("validate", input=source,
-    commands=["sh ./tests/validate.sh"],
+    commands=["sh ../tests/validate.sh"],
 ))
 ```
 
@@ -1231,7 +1231,7 @@ final StageDeployment stage =
 
 stage.addPost(ShellStep.Builder.create("validate")
         .input(source)
-        .commands(Arrays.asList("sh ./tests/validate.sh"))
+        .commands(Arrays.asList("sh ../tests/validate.sh"))
         .build());
 ```
 
@@ -1262,7 +1262,7 @@ var stage = pipeline.AddStage(new MyPipelineAppStage(this, "test", new StageProp
 stage.AddPost(new ShellStep("validate", new ShellStepProps
 {
     Input = source,
-    Commands = new string[] { "sh ./tests/validate.sh" }
+    Commands = new string[] { "sh ../tests/validate.sh" }
 }));
 ```
 
