@@ -150,12 +150,12 @@ import * as lambda from "aws-cdk-lib/aws-lambda";
 import * as sfn from "aws-cdk-lib/aws-stepfunctions";
 import { Construct } from "constructs";
 
-export interface ProcessorStackProps extends cdk.StackProps {
+export interface StateMachineStackProps extends cdk.StackProps {
   readonly topics: sns.Topic[];
 }
 
-export class ProcessorStack extends cdk.Stack {
-  constructor(scope: Construct, id: string, props: ProcessorStackProps) {
+export class StateMachineStack extends cdk.Stack {
+  constructor(scope: Construct, id: string, props: StateMachineStackProps) {
     super(scope, id, props);
 
     // In the future this state machine will do some work...
@@ -194,7 +194,7 @@ const sns_subscriptions = require("aws-cdk-lib/aws-sns-subscriptions");
 const lambda = require("aws-cdk-lib/aws-lambda");
 const sfn = require("aws-cdk-lib/aws-stepfunctions");
 
-class ProcessorStack extends cdk.Stack {
+class StateMachineStack extends cdk.Stack {
   constructor(scope, id, props) {
     super(scope, id, props);
 
@@ -221,7 +221,7 @@ class ProcessorStack extends cdk.Stack {
   }
 }
 
-module.exports = { ProcessorStack }
+module.exports = { StateMachineStack }
 ```
 
 ------
@@ -238,7 +238,7 @@ import aws_cdk.aws_sns_subscriptions as sns_subscriptions
 import aws_cdk.aws_stepfunctions as sfn
 import aws_cdk as cdk
 
-class ProcessorStack(cdk.Stack):
+class StateMachineStack(cdk.Stack):
     def __init__(
         self,
         scope: cdk.Construct,
@@ -293,12 +293,12 @@ import software.amazon.awscdk.services.stepfunctions.StateMachine;
 import java.util.Collections;
 import java.util.List;
 
-public class ProcessorStack extends Stack {
-    public ProcessorStack(final Construct scope, final String id, final List<Topic> topics) {
+public class StateMachineStack extends Stack {
+    public StateMachineStack(final Construct scope, final String id, final List<Topic> topics) {
         this(scope, id, null, topics);
     }
 
-    public ProcessorStack(final Construct scope, final String id, final StackProps props, final List<Topic> topics) {
+    public StateMachineStack(final Construct scope, final String id, final StackProps props, final List<Topic> topics) {
         super(scope, id, props);
 
         // In the future this state machine will do some work...
@@ -536,7 +536,7 @@ dotnet test src
 
 The first step for testing a stack with fine\-grained assertions is to synthesize the stack, because we're writing assertions against the generated AWS CloudFormation template\.
 
-Our `ProcessorStack` requires that we pass it the Amazon SNS topic to be forwarded to the state machine\. So in our test, we'll create a separate stack to contain the topic\.
+Our `StateMachineStackStack` requires that we pass it the Amazon SNS topic to be forwarded to the state machine\. So in our test, we'll create a separate stack to contain the topic\.
 
 Ordinarily, when writing a CDK app, you can subclass `Stack` and instantiate the Amazon SNS topic in the stack's constructor\. In our test, we instantiate `Stack` directly, then pass this stack as the `Topic`'s scope, attaching it to the stack\. This is functionally equivalent and less verbose\. It also helps make stacks that are used only in tests "look different" from the stacks that you intend to deploy\.
 
@@ -547,28 +547,28 @@ Ordinarily, when writing a CDK app, you can subclass `Stack` and instantiate the
 import { Capture, Match, Template } from "aws-cdk-lib/assertions";
 import * as cdk from "aws-cdk-lib";
 import * as sns from "aws-cdk-lib/aws-sns";
-import { ProcessorStack } from "../lib/processor-stack";
+import { StateMachineStack } from "../lib/state-machine-stack";
 
-describe("ProcessorStack", () => {
+describe("StateMachineStack", () => {
   test("synthesizes the way we expect", () => {
     const app = new cdk.App();
 
-    // Since the ProcessorStack consumes resources from a separate stack
+    // Since the StateMachineStack consumes resources from a separate stack
     // (cross-stack references), we create a stack for our SNS topics to live
-    // in here. These topics can then be passed to the ProcessorStack later,
+    // in here. These topics can then be passed to the StateMachineStack later,
     // creating a cross-stack reference.
     const topicsStack = new cdk.Stack(app, "TopicsStack");
 
     // Create the topic the stack we're testing will reference.
     const topics = [new sns.Topic(topicsStack, "Topic1", {})];
 
-    // Create the ProcessorStack.
-    const processorStack = new ProcessorStack(app, "ProcessorStack", {
+    // Create the StateMachineStack.
+    const stateMachineStack = new StateMachineStack(app, "StateMachineStack", {
       topics: topics, // Cross-stack reference
     });
 
     // Prepare the stack for assertions.
-    const template = Template.fromStack(processorStack);
+    const template = Template.fromStack(stateMachineStack);
 
 
 }
@@ -581,28 +581,28 @@ describe("ProcessorStack", () => {
 const { Capture, Match, Template } = require("aws-cdk-lib/assertions");
 const cdk = require("aws-cdk-lib");
 const sns = require("aws-cdk-lib/aws-sns");
-const { ProcessorStack } = require("../lib/processor-stack");
+const { StateMachineStack } = require("../lib/state-machine-stack");
 
-describe("ProcessorStack", () => {
+describe("StateMachineStack", () => {
   test("synthesizes the way we expect", () => {
     const app = new cdk.App();
 
-    // Since the ProcessorStack consumes resources from a separate stack
+    // Since the StateMachineStack consumes resources from a separate stack
     // (cross-stack references), we create a stack for our SNS topics to live
-    // in here. These topics can then be passed to the ProcessorStack later,
+    // in here. These topics can then be passed to the StateMachineStack later,
     // creating a cross-stack reference.
     const topicsStack = new cdk.Stack(app, "TopicsStack");
 
     // Create the topic the stack we're testing will reference.
     const topics = [new sns.Topic(topicsStack, "Topic1", {})];
 
-    // Create the ProcessorStack.
-    const processorStack = new ProcessorStack(app, "ProcessorStack", {
+    // Create the StateMachineStack.
+    const StateMachineStack = new StateMachineStack(app, "StateMachineStack", {
       topics: topics, // Cross-stack reference
     });
 
     // Prepare the stack for assertions.
-    const template = Template.fromStack(processorStack);
+    const template = Template.fromStack(stateMachineStack);
 ```
 
 ------
@@ -613,27 +613,27 @@ from aws_cdk import aws_sns as sns
 import aws_cdk as cdk
 from aws_cdk.assertions import Template
 
-from app.processor_stack import ProcessorStack
+from app.state_machine_stack import StateMachineStack
 
 def test_synthesizes_properly():
     app = cdk.App()
 
-    # Since the ProcessorStack consumes resources from a separate stack
+    # Since the StateMachineStack consumes resources from a separate stack
     # (cross-stack references), we create a stack for our SNS topics to live
-    # in here. These topics can then be passed to the ProcessorStack later,
+    # in here. These topics can then be passed to the StateMachineStack later,
     # creating a cross-stack reference.
     topics_stack = cdk.Stack(app, "TopicsStack")
 
     # Create the topic the stack we're testing will reference.
     topics = [sns.Topic(topics_stack, "Topic1")]
 
-    # Create the ProcessorStack.
-    processor_stack = ProcessorStack(
-        app, "ProcessorStack", topics=topics  # Cross-stack reference
+    # Create the StateMachineStack.
+    state_machine_stack = StateMachineStack(
+        app, "StateMachineStack", topics=topics  # Cross-stack reference
     )
 
     # Prepare the stack for assertions.
-    template = Template.from_stack(processor_stack)
+    template = Template.from_stack(state_machine_stack)
 ```
 
 ------
@@ -654,28 +654,28 @@ import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ProcessorStackTest {
+public class StateMachineStackTest {
     @Test
     public void testSynthesizesProperly() {
         final App app = new App();
 
-        // Since the ProcessorStack consumes resources from a separate stack (cross-stack references), we create a stack
-        // for our SNS topics to live in here. These topics can then be passed to the ProcessorStack later, creating a
+        // Since the StateMachineStack consumes resources from a separate stack (cross-stack references), we create a stack
+        // for our SNS topics to live in here. These topics can then be passed to the StateMachineStack later, creating a
         // cross-stack reference.
         final Stack topicsStack = new Stack(app, "TopicsStack");
 
         // Create the topic the stack we're testing will reference.
         final List<Topic> topics = Collections.singletonList(Topic.Builder.create(topicsStack, "Topic1").build());
 
-        // Create the ProcessorStack.
-        final ProcessorStack processorStack = new ProcessorStack(
+        // Create the StateMachineStack.
+        final StateMachineStack stateMachineStack = new StateMachineStack(
                 app,
-                "ProcessorStack",
+                "StateMachineStack",
                 topics // Cross-stack reference
         );
 
         // Prepare the stack for assertions.
-        final Template template = Template.fromStack(processorStack)
+        final Template template = Template.fromStack(stateMachineStack)
 ```
 
 ------
@@ -695,29 +695,29 @@ using StringDict = System.Collections.Generic.Dictionary<string, string>;
 namespace TestProject1
 {
     [TestClass]
-    public class ProcessorStackTest
+    public class StateMachineStackTest
     {
         [TestMethod]
         public void TestMethod1()
         {
             var app = new App();
 
-            // Since the ProcessorStack consumes resources from a separate stack (cross-stack references), we create a stack
-            // for our SNS topics to live in here. These topics can then be passed to the ProcessorStack later, creating a
+            // Since the StateMachineStack consumes resources from a separate stack (cross-stack references), we create a stack
+            // for our SNS topics to live in here. These topics can then be passed to the StateMachineStack later, creating a
             // cross-stack reference.
             var topicsStack = new Stack(app, "TopicsStack");
 
             // Create the topic the stack we're testing will reference.
             var topics = new Topic[] { new Topic(topicsStack, "Topic1") };
 
-            // Create the ProcessorStack.
-            var processorStack = new StateMachineStack(app, "ProcessorStack", new StateMachineStackProps
+            // Create the StateMachineStack.
+            var StateMachineStack = new StateMachineStack(app, "StateMachineStack", new StateMachineStackProps
             {
                 Topics = topics
             });
 
             // Prepare the stack for assertions.
-            var template = Template.FromStack(processorStack);
+            var template = Template.FromStack(stateMachineStack);
             
             // test will go here
         }
@@ -793,7 +793,7 @@ Now we can assert that the Lambda function and the Amazon SNS subscription were 
 
 ```
             // Prepare the stack for assertions.
-            var template = Template.FromStack(processorStack);
+            var template = Template.FromStack(stateMachineStack);
 
             // Assert it creates the function with the correct properties...
             template.HasResourceProperties("AWS::Lambda::Function", new StringDict {
@@ -1473,7 +1473,7 @@ using StringDict = System.Collections.Generic.Dictionary<string, string>;
 namespace TestProject1
 {
     [TestClass]
-    public class ProcessorStackTest
+    public class StateMachineStackTest
 
     [TestClass]
     public class DeadLetterQueueTest
