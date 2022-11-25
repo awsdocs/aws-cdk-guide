@@ -164,6 +164,25 @@ namespace HelloCdkApp
 ```
 
 ------
+#### [ Go ]
+
+```
+func NewHelloCdkStack(scope constructs.Construct, id string, props *HelloCdkStackProps) awscdk.Stack {
+	var sprops awscdk.StackProps
+	if props != nil {
+		sprops = props.StackProps
+	}
+	stack := awscdk.NewStack(scope, &id, &sprops)
+
+	awss3.NewBucket(stack, jsii.String("MyFirstBucket"), &awss3.BucketProps{
+		Versioned: jsii.Bool(true),
+	})
+
+	return stack
+}
+```
+
+------
 
 As you can see, you need a scope within which to define your bucket\. Resources eventually need to be deployed as part of an AWS CloudFormation stack into an *AWS [environment](environments.md)*\. The environment covers a specific AWS account and AWS Region\. AWS constructs, such as `s3.Bucket`, must be defined within the scope of a [Stack](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.Stack.html)\.
 
@@ -288,8 +307,17 @@ var bucket = new CfnBucket(this, "MyBucket", new CfnBucketProps
 ```
 
 ------
+#### [ Go ]
 
-In Python, Java, and C\#, L1 construct properties that aren't simple Booleans, strings, numbers, or containers are represented by types defined as inner classes of the L1 construct\. For example, the optional property `corsConfiguration` of a `CfnBucket` requires a wrapper of type `CfnBucket.CorsConfigurationProperty`\. Here we are defining `corsConfiguration` on a `CfnBucket` instance\. 
+```
+	awss3.NewCfnBucket(stack, jsii.String("MyBucket"), &awss3.CfnBucketProps{
+		BucketName: jsii.String("MyBucket"),
+	})
+```
+
+------
+
+Construct properties that aren't simple Booleans, strings, numbers, or containers are handled differently in the supported languages\.
 
 ------
 #### [ TypeScript ]
@@ -324,6 +352,8 @@ const bucket = new s3.CfnBucket(this, "MyBucket", {
 ------
 #### [ Python ]
 
+In Python, these properties are represented by types defined as inner classes of the L1 construct\. For example, the optional property `cors_configuraiton` of a `CfnBucket` requires a wrapper of type `CfnBucket.CorsConfigurationProperty`\. Here we are defining `cors_onfiguration` on a `CfnBucket` instance\. 
+
 ```
 bucket = CfnBucket(self, "MyBucket", bucket_name="MyBucket",
     cors_configuration=CfnBucket.CorsConfigurationProperty(
@@ -337,6 +367,8 @@ bucket = CfnBucket(self, "MyBucket", bucket_name="MyBucket",
 
 ------
 #### [ Java ]
+
+In Java, these properties are represented by types defined as inner classes of the L1 construct\. For example, the optional property `corsConfiguration` of a `CfnBucket` requires a wrapper of type `CfnBucket.CorsConfigurationProperty`\. Here we are defining `corsConfiguration` on a `CfnBucket` instance\. 
 
 ```
 CfnBucket bucket = CfnBucket.Builder.create(this, "MyBucket")
@@ -352,6 +384,8 @@ CfnBucket bucket = CfnBucket.Builder.create(this, "MyBucket")
 
 ------
 #### [ C\# ]
+
+In C\#, these properties are represented by types defined as inner classes of the L1 construct\. For example, the optional property `CorsConfiguration` of a `CfnBucket` requires a wrapper of type `CfnBucket.CorsConfigurationProperty`\. Here we are defining `CorsConfiguration` on a `CfnBucket` instance\. 
 
 ```
 var bucket = new CfnBucket(this, "MyBucket", new CfnBucketProps
@@ -371,9 +405,28 @@ var bucket = new CfnBucket(this, "MyBucket", new CfnBucketProps
 ```
 
 ------
+#### [ Go ]
+
+In Go, these types are named using the name of the L1 construct, an underscore, and the property name\. For example, the optional property `CorsConfiguration` of a `CfnBucket` requires a wrapper of type `CfnBucket_CorsConfigurationProperty`\. Here we are defining `CorsConfiguration` on a `CfnBucket` instance\.
+
+```
+	awss3.NewCfnBucket(stack, jsii.String("MyBucket"), &awss3.CfnBucketProps{
+		BucketName: jsii.String("MyBucket"),
+		CorsConfiguration: &awss3.CfnBucket_CorsConfigurationProperty{
+			CorsRules: []awss3.CorsRule{
+				awss3.CorsRule{
+					AllowedOrigins: jsii.Strings("*"),
+					AllowedMethods: &[]awss3.HttpMethods{"GET"},
+				},
+			},
+		},
+	})
+```
+
+------
 
 **Important**  
-You can't use L2 property types with L1 constructs, or vice versa\. When working with L1 constructs, always use the types defined inside the L1 construct you're using\. Do not use types from other L1 constructs \(some may have the same name, but they are not the same type\)\.   
+You can't use L2 property types with L1 constructs, or vice versa\. When working with L1 constructs, always use the types defined for the L1 construct you're using\. Do not use types from other L1 constructs \(some may have the same name, but they are not the same type\)\.   
 Some of our language\-specific API references currently have errors in the paths to L1 property types, or don't document these classes at all\. We hope to fix this soon\. In the meantime, remember that such types are always inner classes of the L1 construct they are used with\.
 
 ## Using L2 constructs<a name="constructs_using"></a>
@@ -448,6 +501,21 @@ new Bucket(this, "MyFirstBucket", new BucketProps
 ```
 
 ------
+#### [ Go ]
+
+```
+import (
+	"github.com/aws/aws-cdk-go/awscdk/v2/awss3"
+	"github.com/aws/jsii-runtime-go"
+)
+
+// stack is HelloCdkStack
+awss3.NewBucket(stack, jsii.String("MyFirstBucket"), &awss3.BucketProps{
+		Versioned: jsii.Bool(true),
+	})>
+```
+
+------
 
 The [AWS Construct Library](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-construct-library.html) includes constructs that represent many AWS resources\.
 
@@ -507,6 +575,16 @@ new Bucket(this, "MyEncryptedBucket", new BucketProps
 ```
 
 ------
+#### [ Go ]
+
+```
+	awss3.NewBucket(stack, jsii.String("MyEncryptedBucket"), &awss3.BucketProps{
+		Encryption: awss3.BucketEncryption_KMS,
+		WebsiteIndexDocument: jsii.String("index.html"),
+	})
+```
+
+------
 
  AWS constructs are designed around the concept of "sensible defaults\." Most constructs have a minimal required configuration, enabling you to quickly get started while also providing full control over the configuration when you need it\. 
 
@@ -561,6 +639,15 @@ rawData.grantRead(dataScience);
 var rawData = new Bucket(this, "raw-data");
 var dataScience = new Group(this, "data-science");
 rawData.GrantRead(dataScience);
+```
+
+------
+#### [ Go ]
+
+```
+	rawData := awss3.NewBucket(stack, jsii.String("raw-data"), nil)
+	dataScience := awsiam.NewGroup(stack, jsii.String("data-science"), nil)
+	rawData.GrantRead(dataScience, nil)
 ```
 
 ------
@@ -642,6 +729,20 @@ var createJobLambda = new Function(this, "create-job", new FunctionProps
         ["QUEUE_URL"] = jobsQueue.QueueUrl
     }
 });
+```
+
+------
+#### [ Go ]
+
+```
+	createJobLambda := awslambda.NewFunction(stack, jsii.String("create-job"), &awslambda.FunctionProps{
+		Runtime: awslambda.Runtime_NODEJS_14_X(),
+		Handler: jsii.String("index.handler"),
+		Code:    awslambda.Code_FromAsset(jsii.String(".\\create-job-lambda-code"), nil),
+		Environment: &map[string]*string{
+			"QUEUE_URL": jsii.String(*jobsQueue.QueueUrl()),
+		},
+	})
 ```
 
 ------
@@ -760,6 +861,34 @@ public class NotifyingBucket : Construct
 ```
 
 ------
+#### [ Go ]
+
+```
+type NotifyingBucketProps struct {
+	awss3.BucketProps
+	Prefix *string
+}
+
+func NewNotifyingBucket(scope constructs.Construct, id *string, props *NotifyingBucketProps) awss3.Bucket {
+	var bucket awss3.Bucket
+	if props == nil {
+		bucket = awss3.NewBucket(scope, jsii.String(*id+"Bucket"), nil)
+	} else {
+		bucket = awss3.NewBucket(scope, jsii.String(*id+"Bucket"), &props.BucketProps)
+	}
+	topic := awssns.NewTopic(scope, jsii.String(*id+"Topic"), nil)
+	if props == nil {
+		bucket.AddObjectCreatedNotification(awss3notifications.NewSnsDestination(topic))
+	} else {
+		bucket.AddObjectCreatedNotification(awss3notifications.NewSnsDestination(topic), &awss3.NotificationKeyFilter{
+			Prefix: props.Prefix,
+		})
+	}
+	return bucket
+}
+```
+
+------
 
 **Note**  
 Our `NotifyingBucket` construct inherits not from `Bucket` but rather from `Construct`\. We are using composition, not inheritance, to bundle an Amazon S3 bucket and an Amazon SNS topic together\. In general, composition is preferred over inheritance when developing AWS CDK constructs\.
@@ -802,6 +931,13 @@ new NotifyingBucket(this, "MyNotifyingBucket");
 ```
 
 ------
+#### [ Go ]
+
+```
+NewNotifyingBucket(stack, jsii.String("MyNotifyingBucket"), nil)
+```
+
+------
 
 Or you could use `props` \(in Java, an additional parameter\) to specify the path prefix to filter on, for example:
 
@@ -841,6 +977,15 @@ new NotifyingBucket(this, "MyNotifyingBucket", new NotifyingBucketProps
 {
     Prefix = "/images"
 });
+```
+
+------
+#### [ Go ]
+
+```
+NewNotifyingBucket(stack, jsii.String("MyNotifyingBucket"), &NotifyingBucketProps{
+	Prefix: jsii.String("images/"),
+})
 ```
 
 ------
@@ -947,6 +1092,39 @@ public class NotifyingBucket : Construct
 ```
 
 ------
+#### [ Go ]
+
+To do this in Go, we'll need a little extra plumbing\. Our original `NewNotifyingBucket` function returned an `awss3.Bucket`\. We'll need to extend `Bucket` to include a `topic` member by creating a `NotifyingBucket` struct\. Our function will then return this type\.
+
+```
+type NotifyingBucket struct {
+	awss3.Bucket
+	topic awssns.Topic
+}
+
+func NewNotifyingBucket(scope constructs.Construct, id *string, props *NotifyingBucketProps) NotifyingBucket {
+	var bucket awss3.Bucket
+	if props == nil {
+		bucket = awss3.NewBucket(scope, jsii.String(*id+"Bucket"), nil)
+	} else {
+		bucket = awss3.NewBucket(scope, jsii.String(*id+"Bucket"), &props.BucketProps)
+	}
+	topic := awssns.NewTopic(scope, jsii.String(*id+"Topic"), nil)
+	if props == nil {
+		bucket.AddObjectCreatedNotification(awss3notifications.NewSnsDestination(topic))
+	} else {
+		bucket.AddObjectCreatedNotification(awss3notifications.NewSnsDestination(topic), &awss3.NotificationKeyFilter{
+			Prefix: props.Prefix,
+		})
+	}
+	var nbucket NotifyingBucket
+	nbucket.Bucket = bucket
+	nbucket.topic = topic
+	return nbucket
+}
+```
+
+------
 
 Now, consumers can subscribe to the topic, for example:
 
@@ -995,6 +1173,17 @@ var images = new NotifyingBucket(this, "MyNotifyingBucket", new NotifyingBucketP
     Prefix = "/images"
 });
 images.topic.AddSubscription(new SqsSubscription(queue));
+```
+
+------
+#### [ Go ]
+
+```
+	queue := awssqs.NewQueue(stack, jsii.String("NewImagesQueue"), nil)
+	images := NewNotifyingBucket(stack, jsii.String("MyNotifyingBucket"), &NotifyingBucketProps{
+		Prefix: jsii.String("/images"),
+	})
+	images.topic.AddSubscription(awssnssubscriptions.NewSqsSubscription(queue, nil))
 ```
 
 ------
