@@ -350,11 +350,11 @@ new DefaultStackSynthesizer({
   deployRoleArn: 'arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-${Qualifier}-deploy-role-${AWS::AccountId}-${AWS::Region}',
   deployRoleExternalId: '',
 
-  // ARN of the role used for file asset publishing (assumed from the deploy role)
+  // ARN of the role used for file asset publishing (assumed from the CLI role)
   fileAssetPublishingRoleArn: 'arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-${Qualifier}-file-publishing-role-${AWS::AccountId}-${AWS::Region}',
   fileAssetPublishingExternalId: '',
 
-  // ARN of the role used for Docker asset publishing (assumed from the deploy role)
+  // ARN of the role used for Docker asset publishing (assumed from the CLI role)
   imageAssetPublishingRoleArn: 'arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-${Qualifier}-image-publishing-role-${AWS::AccountId}-${AWS::Region}',
   imageAssetPublishingExternalId: '',
 
@@ -390,11 +390,11 @@ new DefaultStackSynthesizer({
   deployRoleArn: 'arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-${Qualifier}-deploy-role-${AWS::AccountId}-${AWS::Region}',
   deployRoleExternalId: '',
 
-  // ARN of the role used for file asset publishing (assumed from the deploy role)
+  // ARN of the role used for file asset publishing (assumed from the CLI role)
   fileAssetPublishingRoleArn: 'arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-${Qualifier}-file-publishing-role-${AWS::AccountId}-${AWS::Region}',
   fileAssetPublishingExternalId: '',
 
-  // ARN of the role used for Docker asset publishing (assumed from the deploy role)
+  // ARN of the role used for Docker asset publishing (assumed from the CLI role)
   imageAssetPublishingRoleArn: 'arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-${Qualifier}-image-publishing-role-${AWS::AccountId}-${AWS::Region}',
   imageAssetPublishingExternalId: '',
 
@@ -429,11 +429,11 @@ DefaultStackSynthesizer(
   deploy_role_arn="arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-${Qualifier}-deploy-role-${AWS::AccountId}-${AWS::Region}",
   deploy_role_external_id="",
 
-  # ARN of the role used for file asset publishing (assumed from the deploy role)
+  # ARN of the role used for file asset publishing (assumed from the CLI role)
   file_asset_publishing_role_arn="arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-${Qualifier}-file-publishing-role-${AWS::AccountId}-${AWS::Region}",
   file_asset_publishing_external_id="",
 
-  # ARN of the role used for Docker asset publishing (assumed from the deploy role)
+  # ARN of the role used for Docker asset publishing (assumed from the CLI role)
   image_asset_publishing_role_arn="arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-${Qualifier}-image-publishing-role-${AWS::AccountId}-${AWS::Region}",
   image_asset_publishing_external_id="",
 
@@ -468,11 +468,11 @@ DefaultStackSynthesizer.Builder.create()
     .deployRoleArn("arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-${Qualifier}-deploy-role-${AWS::AccountId}-${AWS::Region}")
     .deployRoleExternalId("")
 
-    // ARN of the role used for file asset publishing (assumed from the deploy role)
+    // ARN of the role used for file asset publishing (assumed from the CLI role)
     .fileAssetPublishingRoleArn("arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-${Qualifier}-file-publishing-role-${AWS::AccountId}-${AWS::Region}")
     .fileAssetPublishingExternalId("")
 
-    // ARN of the role used for Docker asset publishing (assumed from the deploy role)
+    // ARN of the role used for Docker asset publishing (assumed from the CLI role)
     .imageAssetPublishingRoleArn("arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-${Qualifier}-image-publishing-role-${AWS::AccountId}-${AWS::Region}")
     .imageAssetPublishingExternalId("")
 
@@ -507,11 +507,11 @@ new DefaultStackSynthesizer(new DefaultStackSynthesizerProps
     DeployRoleArn = "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-${Qualifier}-deploy-role-${AWS::AccountId}-${AWS::Region}",
     DeployRoleExternalId = "",
 
-    // ARN of the role used for file asset publishing (assumed from the deploy role)
+    // ARN of the role used for file asset publishing (assumed from the CLI role)
     FileAssetPublishingRoleArn = "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-${Qualifier}-file-publishing-role-${AWS::AccountId}-${AWS::Region}",
     FileAssetPublishingExternalId = "",
 
-    // ARN of the role used for Docker asset publishing (assumed from the deploy role)
+    // ARN of the role used for Docker asset publishing (assumed from the CLI role)
     ImageAssetPublishingRoleArn = "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-${Qualifier}-image-publishing-role-${AWS::AccountId}-${AWS::Region}",
     ImageAssetPublishingExternalId = "",
 
