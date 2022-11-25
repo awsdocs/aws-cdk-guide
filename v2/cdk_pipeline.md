@@ -614,7 +614,7 @@ class MyPipelineAppStage(cdk.Stage):
         lambdaStack = MyLambdaStack(self, "LambdaStack")
 ```
 
-Edit `my_pipeline/my_pipeline_stack.py` to add the stage to our pipeline\.
+Edit `my_pipeline/my-pipeline-stack.py` to add the stage to our pipeline\.
 
 ```
 import aws_cdk as cdk
