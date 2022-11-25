@@ -137,7 +137,7 @@ The following command line options, when used with CDK Toolkit's cdk bootstrap, 
   ```
 **Important**  
 To avoid deployment failures, be sure the policies that you specify are sufficient for any deployments you will perform in the environment being bootstrapped\.
-+ \-\-qualifier is a string that is added to the names of all resources in the bootstrap stack\. A qualifier lets you avoid resource name clashes when you provision multiple bootstrap stacks in the same environment using \-\-toolkit\-stack\-name\. The default is `hnb659fds` \(this value has no significance\)\.
++ \-\-qualifier is a string that is added to the names of all resources in the bootstrap stack\. A qualifier lets you avoid resource name clashes when you provision multiple bootstrap stacks in the same environment\. The default is `hnb659fds` \(this value has no significance\)\.
 
   Changing the qualifier also requires that your CDK app pass the changed value to the stack synthesizer\. For more information, see [Stack synthesizers](#bootstrapping-synthesizers)\. 
 + \-\-tags adds one or more AWS CloudFormation tags to the bootstrap stack\.
