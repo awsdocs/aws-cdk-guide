@@ -578,7 +578,7 @@ Default values for many CDK Toolkit command line flags can be stored in a projec
 | language | The language to be used for initializing new projects\. | \-\-language | 
 | lookups | If false, no context lookups are permitted\. Synthesis will fail if any context lookups need to be performed\. | \-\-no\-lookups | 
 | notices | If false, suppresses the display of messages about security vulnerabilities, regressions, and unsupported versions\. | \-\-no\-notices | 
-| output | The name of the directory into which the synthesized cloud assembly will be emitted \(default "cdk\.out"\)\. | \-\-outputs\-file | 
+| output | The name of the directory into which the synthesized cloud assembly will be emitted \(default "cdk\.out"\)\. | \-\-output | 
 | outputsFile | The file to which AWS CloudFormation outputs from deployed stacks will be written \(in JSON format\)\. | \-\-outputs\-file | 
 | pathMetadata | If false, CDK path metadata is not added to synthesized templates\. | \-\-no\-path\-metadata | 
 | plugin | JSON array specifying the package names or local paths of packages that extend the CDK | \-\-plugin | 
