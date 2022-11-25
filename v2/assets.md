@@ -28,7 +28,7 @@ These are Docker images that the AWS CDK uploads to Amazon ECR\.
 
 These asset types are explained in the following sections\.
 
-### Amazon S3 assets<a name="assets_types_s3"></a>
+## Amazon S3 assets<a name="assets_types_s3"></a>
 
 You can define local files and directories as assets, and the AWS CDK packages and uploads them to Amazon S3 through the [aws\-s3\-assets](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3_assets-readme.html) module\.
 
@@ -132,7 +132,7 @@ var fileAsset = new Asset(this, "SampleSingleFileAsset", new AssetProps
 
 In most cases, you don't need to directly use the APIs in the `aws-s3-assets` module\. Modules that support assets, such as `aws-lambda`, have convenience methods so that you can use assets\. For Lambda functions, the [fromAsset\(\)](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda.Code.html#static-fromwbrassetpath-options) static method enables you to specify a directory or a \.zip file in the local file system\.
 
-#### Lambda function example<a name="assets_types_s3_lambda"></a>
+### Lambda function example<a name="assets_types_s3_lambda"></a>
 
 A common use case is creating Lambda functions with the handler code as an Amazon S3 asset\.
 
@@ -273,7 +273,7 @@ The `Function` method uses assets to bundle the contents of the directory and us
 **Tip**  
 Java `.jar` files are ZIP files with a different extension\. These are uploaded as\-is to Amazon S3, but when deployed as a Lambda function, the files they contain are extracted, which you might not want\. To avoid this, place the `.jar` file in a directory and specify that directory as the asset\.
 
-#### Deploy\-time attributes example<a name="assets_types_s3_deploy"></a>
+### Deploy\-time attributes example<a name="assets_types_s3_deploy"></a>
 
 Amazon S3 asset types also expose [deploy\-time attributes](resources.md#resources_attributes) that can be referenced in AWS CDK libraries and apps\. The AWS CDK CLI command cdk synth displays asset properties as AWS CloudFormation parameters\.
 
@@ -414,7 +414,7 @@ new Function(this, "myLambdaFunction", new FunctionProps
 
 ------
 
-#### Permissions<a name="assets_types_s3_permissions"></a>
+### Permissions<a name="assets_types_s3_permissions"></a>
 
 If you use Amazon S3 assets directly through the [aws\-s3\-assets](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3_assets-readme.html) module, IAM roles, users, or groups, and you need to read assets in runtime, then grant those assets IAM permissions through the [asset\.grantRead](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3_assets.Asset.html#grantwbrreadgrantee) method\.
 
@@ -511,7 +511,7 @@ asset.GrantRead(group);
 
 ------
 
-### Docker image assets<a name="assets_types_docker"></a>
+## Docker image assets<a name="assets_types_docker"></a>
 
 The AWS CDK supports bundling local Docker images as assets through the [aws\-ecr\-assets](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ecr_assets-readme.html) module\.
 
@@ -573,7 +573,7 @@ using Amazon.CDK.AWS.ECR.Assets;
 
 var asset = new DockerImageAsset(this, "MyBuildImage", new DockerImageAssetProps
 {
-    Directory = Path.Combine(Path.Combine(Directory.GetCurrentDirectory(), "my-image"))
+    Directory = Path.Combine(Directory.GetCurrentDirectory(), "my-image")
 });
 ```
 
@@ -581,7 +581,7 @@ var asset = new DockerImageAsset(this, "MyBuildImage", new DockerImageAssetProps
 
 The `my-image` directory must include a Dockerfile\. The AWS CDK CLI builds a Docker image from `my-image`, pushes it to an Amazon ECR repository, and specifies the name of the repository as an AWS CloudFormation parameter to your stack\. Docker image asset types expose [deploy\-time attributes](resources.md#resources_attributes) that can be referenced in AWS CDK libraries and apps\. The AWS CDK CLI command cdk synth displays asset properties as AWS CloudFormation parameters\.
 
-#### Amazon ECS task definition example<a name="assets_types_docker_ecs"></a>
+### Amazon ECS task definition example<a name="assets_types_docker_ecs"></a>
 
 A common use case is to create an Amazon ECS [TaskDefinition](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ecs.TaskDefinition.html) to run Docker containers\. The following example specifies the location of a Docker image asset that the AWS CDK builds locally and pushes to Amazon ECR\. 
 
@@ -590,6 +590,7 @@ A common use case is to create an Amazon ECS [TaskDefinition](https://docs.aws.a
 
 ```
 import * as ecs from 'aws-cdk-lib/aws-ecs';
+import * as ecr_assets from 'aws-cdk-lib/aws-ecr-assets';
 import * as path from 'path';
 
 const taskDefinition = new ecs.FargateTaskDefinition(this, "TaskDef", {
@@ -597,8 +598,12 @@ const taskDefinition = new ecs.FargateTaskDefinition(this, "TaskDef", {
   cpu: 512
 });
 
+const asset = new ecr_assets.DockerImageAsset(this, 'MyBuildImage', {
+  directory: path.join(__dirname, 'my-image')
+});
+
 taskDefinition.addContainer("my-other-container", {
-  image: ecs.ContainerImage.fromAsset(path.join(__dirname, "..", "demo-image"))
+  image: ecs.ContainerImage.fromDockerImageAsset(asset)
 });
 ```
 
@@ -607,6 +612,7 @@ taskDefinition.addContainer("my-other-container", {
 
 ```
 const ecs = require('aws-cdk-lib/aws-ecs');
+const ecr_assets = require('aws-cdk-lib/aws-ecr-assets');
 const path = require('path');
 
 const taskDefinition = new ecs.FargateTaskDefinition(this, "TaskDef", {
@@ -614,8 +620,12 @@ const taskDefinition = new ecs.FargateTaskDefinition(this, "TaskDef", {
   cpu: 512
 });
 
+const asset = new ecr_assets.DockerImageAsset(this, 'MyBuildImage', {
+  directory: path.join(__dirname, 'my-image')
+});
+
 taskDefinition.addContainer("my-other-container", {
-  image: ecs.ContainerImage.fromAsset(path.join(__dirname, "..", "demo-image"))
+  image: ecs.ContainerImage.fromDockerImageAsset(asset)
 });
 ```
 
@@ -624,6 +634,7 @@ taskDefinition.addContainer("my-other-container", {
 
 ```
 import aws_cdk.aws_ecs as ecs
+import aws_cdk.aws_ecr_assets as ecr_assets 
 
 import os.path
 dirname = os.path.dirname(__file__)
@@ -632,9 +643,11 @@ task_definition = ecs.FargateTaskDefinition(self, "TaskDef",
     memory_limit_mib=1024,
     cpu=512)
 
+asset = ecr_assets.DockerImageAsset(self, 'MyBuildImage',
+    directory=os.path.join(dirname, 'my-image'))
+
 task_definition.add_container("my-other-container",
-    image=ecs.ContainerImage.from_asset(
-        os.path.join(dirname, "..", "demo-image")))
+    image=ecs.ContainerImage.from_docker_image_asset(asset))
 ```
 
 ------
@@ -647,15 +660,20 @@ import software.amazon.awscdk.services.ecs.FargateTaskDefinition;
 import software.amazon.awscdk.services.ecs.ContainerDefinitionOptions;
 import software.amazon.awscdk.services.ecs.ContainerImage;
 
+import software.amazon.awscdk.services.ecr.assets.DockerImageAsset;
+
 File startDir = new File(System.getProperty("user.dir"));
 
 FargateTaskDefinition taskDefinition = FargateTaskDefinition.Builder.create(
         this, "TaskDef").memoryLimitMiB(1024).cpu(512).build();
 
+DockerImageAsset asset = DockerImageAsset.Builder.create(this, "MyBuildImage")
+            .directory(new File(startDir, "my-image").toString()).build();
+
 taskDefinition.addContainer("my-other-container",
         ContainerDefinitionOptions.builder()
-            .image(ContainerImage.fromAsset(new File(startDir,
-                        "demo-image").toString())).build());
+            .image(ContainerImage.fromDockerImageAsset(asset))
+            .build();
 ```
 
 ------
@@ -664,6 +682,7 @@ taskDefinition.addContainer("my-other-container",
 ```
 using System.IO;
 using Amazon.CDK.AWS.ECS;
+using Amazon.CDK.AWS.Ecr.Assets;
 
 var taskDefinition = new FargateTaskDefinition(this, "TaskDef", new FargateTaskDefinitionProps
 {
@@ -671,15 +690,20 @@ var taskDefinition = new FargateTaskDefinition(this, "TaskDef", new FargateTaskD
     Cpu = 512
 });
 
+var asset = new DockerImageAsset(this, "MyBuildImage", new DockerImageAssetProps
+{
+    Directory = Path.Combine(Directory.GetCurrentDirectory(), "my-image")
+});
+
 taskDefinition.AddContainer("my-other-container", new ContainerDefinitionOptions
 {
-    Image = ContainerImage.FromAsset(Path.Combine(Directory.GetCurrentDirectory(), "demo-image");
+    Image = ContainerImage.FromDockerImageAsset(asset)
 });
 ```
 
 ------
 
-#### Deploy\-time attributes example<a name="assets_types_docker_deploy"></a>
+### Deploy\-time attributes example<a name="assets_types_docker_deploy"></a>
 
 The following example shows how to use the deploy\-time attributes `repository` and `imageUri` to create an Amazon ECS task definition with the AWS Fargate launch type\. Note that the Amazon ECR repo lookup requires the image's tag, not its URI, so we snip it from the end of the asset's URI\.
 
@@ -803,7 +827,7 @@ taskDefinition.AddContainer("my-other-container", new ContainerDefinitionOptions
 
 ------
 
-#### Build arguments example<a name="assets_types_docker_build"></a>
+### Build arguments example<a name="assets_types_docker_build"></a>
 
 You can provide customized build arguments for the Docker build step through the `buildArgs` \(Python: `build_args`\) property option when the AWS CDK CLI builds the image during deployment\.
 
@@ -866,7 +890,7 @@ var asset = new DockerImageAsset(this, "MyBuildImage", new DockerImageAssetProps
 
 ------
 
-#### Permissions<a name="assets_types_docker_permissions"></a>
+### Permissions<a name="assets_types_docker_permissions"></a>
 
 If you use a module that supports Docker image assets, such as [aws\-ecs](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ecs-readme.html), the AWS CDK manages permissions for you when you use assets directly or through [ContainerImage\.fromEcrRepository](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ecs.ContainerImage.html#static-fromwbrecrwbrrepositoryrepository-tag) \(Python: `from_ecr_repository`\)\. If you use Docker image assets directly, make sure that the consuming principal has permissions to pull the image\. 
 
