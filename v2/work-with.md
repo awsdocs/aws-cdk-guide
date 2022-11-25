@@ -115,7 +115,7 @@ The AWS CDK supports using resources defined outside CDK applications using meth
 
 When instantiating resources in your CDK app, then, you should always use concrete classes such as `Bucket`\. When specifying the type of an argument you are accepting in one of your own constructs, use the interface type such as `IBucket` if you are prepared to deal with external resources \(that is, you won't need to change them\)\. If you require a CDK\-defined construct, specify the most general type you can use\.
 
-Some interfaces are minimum versions of properties or options bundles \(shown in the AWS CDK API Reference as Structs\) that are associated with specific constructs\. For example, `IBucketProps` is the smallest set of properties required to instantiate a bucket\. Such interfaces can be useful when subclassing constructs to accept arguments that you'll pass on to your parent class\. If you require one or more additional properties, you'll want to implement or derive from this interface, or from a more specific type such as `BucketProps`\.
+Some interfaces are minimum versions of properties or options bundles associated with specific classes, rather than constructs\. Such interfaces can be useful when subclassing to accept arguments that you'll pass on to your parent class\. If you require one or more additional properties, you'll want to implement or derive from this interface, or from a more specific type\.
 
 **Note**  
 Some programming languages supported by the AWS CDK don't have an interface feature\. In these languages, interfaces are just ordinary classes\. You can identify them by their names, which follow the pattern of an initial "I" followed by the name of some other construct \(e\.g\. `IBucket`\)\. The same rules apply\.
