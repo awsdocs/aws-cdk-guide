@@ -64,7 +64,7 @@ Outside the context of a construct, you can access the context variable from the
 
 ```
 const app = new cdk.App();
-const bucket_name = app.node.tryGetContext('bucket_name')
+const bucket_name = app.node.tryGetContext('bucket_name');
 ```
 
 ------
