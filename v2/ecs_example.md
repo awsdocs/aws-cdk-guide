@@ -87,6 +87,17 @@ You may now open `src/MyEcsConstruct.sln` in Visual Studio\.
 
 ------
 
+#### [ Go ]
+
+```
+mkdir MyEcsConstruct
+cd MyEcsConstruct
+cdk init --language go
+go get
+```
+
+------
+
 Run the app and confirm that it creates an empty stack\.
 
 ```
@@ -155,6 +166,18 @@ File: `src/MyEcsConstruct/MyEcsConstructStack.cs`
 using Amazon.CDK.AWS.EC2;
 using Amazon.CDK.AWS.ECS;
 using Amazon.CDK.AWS.ECS.Patterns;
+```
+
+------
+
+#### [ Go ]
+
+File: `my_ecs_construct/my_ecs_construct.go`
+
+```
+"github.com/aws/aws-cdk-go/awscdk/v2/awsec2"
+"github.com/aws/aws-cdk-go/awscdk/v2/awsecs"
+"github.com/aws/aws-cdk-go/awscdk/v2/awsecspatterns"
 ```
 
 ------
@@ -278,6 +301,31 @@ Replace the comment at the end of the constructor with the following code\.
                     PublicLoadBalancer = true   // Default is true
                 }
             );
+```
+
+------
+#### [ Go ]
+
+```
+vpc := awsec2.NewVpc(stack, jsii.String("MyVpc"), &awsec2.VpcProps{
+	MaxAzs: jsii.Number(3), // Default is all AZs in region
+})
+
+cluster := awsecs.NewCluster(stack, jsii.String("EcsCluster"), &awsecs.ClusterProps{
+	Vpc: vpc,
+})
+
+awsecspatterns.NewApplicationLoadBalancedFargateService(stack, jsii.String("MyFargateService"), &awsecspatterns.ApplicationLoadBalancedFargateServiceProps{
+	Cluster:      cluster,          // Required
+	Cpu:          jsii.Number(512), // Default is 256
+	DesiredCount: jsii.Number(6),   // Default is 1
+	TaskImageOptions: &awsecspatterns.ApplicationLoadBalancedTaskImageOptions{
+		Image: awsecs.ContainerImage_FromRegistry(jsii.String("amazon/amazon-ecs-sample"), &awsecs.RepositoryImageProps{}),
+	},
+	MemoryLimitMiB:     jsii.Number(2048), // Default is 512
+	PublicLoadBalancer: jsii.Bool(true),   // Default is true
+})
+
 ```
 
 ------
