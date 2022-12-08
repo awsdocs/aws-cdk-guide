@@ -172,7 +172,7 @@ using Amazon.CDK.AWS.ECS.Patterns;
 
 #### [ Go ]
 
-File: `my_ecs_construct/my_ecs_construct.go`
+File: `my_ecs_construct.go`
 
 ```
 "github.com/aws/aws-cdk-go/awscdk/v2/awsec2"
