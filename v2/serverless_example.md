@@ -80,6 +80,19 @@ cdk init --language csharp
 You may now open `src/MyWidgetService.sln` in Visual Studio\.
 
 ------
+#### [ Go ]
+
+```
+mkdir MyWidgetService
+cd MyWidgetService
+cdk init --language go
+```
+
+You may now open the Go project in your IDE\.
+
+You may also need to run `go get` and `go mod tidy` before your run `cdk synth` in next steps
+
+------
 
 **Note**  
 The CDK names source files and classes based on the name of the project directory\. If you don't use the name `MyWidgetService` as shown previously, it might be difficult to follow the rest of the steps\. Some of the files that the instructions tell you to modify wont' be there, because they will have different names\.
@@ -110,6 +123,11 @@ The important files in the blank project are as follows\. \(We will also be addi
 #### [ C\# ]
 + `src/MyWidgetService/Program.cs` – Main entry point for the application
 + `src/MyWidgetService/MyWidgetServiceStack.cs` – Defines the widget service stack
+
+------
+#### [ Go ]
++ `my_widget_service.go` – Main entry point for the application and service stack
++ `my_widget_service_test.go` – Sample Go test file
 
 ------
 
@@ -436,7 +454,56 @@ namespace MyWidgetService
 ```
 
 ------
+#### [ Go ]
 
+File: `lib/widget_service.go`
+
+```
+package widgetservice
+
+import (
+	"github.com/aws/aws-cdk-go/awscdk/v2"
+	"github.com/aws/aws-cdk-go/awscdk/v2/awsapigateway"
+	"github.com/aws/aws-cdk-go/awscdk/v2/awslambda"
+	"github.com/aws/aws-cdk-go/awscdk/v2/awss3"
+	"github.com/aws/aws-cdk-go/awscdk/v2/awss3assets"
+	"github.com/aws/constructs-go/constructs/v10"
+	"github.com/aws/jsii-runtime-go"
+)
+
+func WidgetService(scope constructs.Construct, id string) {
+	this := constructs.NewConstruct(scope, &id)
+
+	var bucket = awss3.NewBucket(scope, jsii.String("WidgetStore"), &awss3.BucketProps{})
+
+	var handler = awslambda.NewFunction(this, jsii.String("WidgetHandler"), &awslambda.FunctionProps{
+		Runtime: awslambda.Runtime_NODEJS_16_X(),
+		Code:    awslambda.AssetCode_FromAsset(jsii.String("resources"), &awss3assets.AssetOptions{}),
+		Handler: jsii.String("widgets.main"),
+		Environment: &map[string]*string{
+			"BUCKET": bucket.BucketName(),
+		},
+	})
+
+	bucket.GrantReadWrite(handler, nil)
+
+	api := awsapigateway.NewRestApi(this, jsii.String("widgets-api"), &awsapigateway.RestApiProps{
+		RestApiName: jsii.String("Widget Service Deployed via Go"),
+		Description: jsii.String("This service serves widgets."),
+	})
+
+	getWidgetsIntegration := awsapigateway.NewLambdaIntegration(handler, &awsapigateway.LambdaIntegrationOptions{
+		RequestTemplates: &map[string]*string{
+			"application/json": jsii.String("{ \"statusCode\": 200 }"),
+		},
+	})
+
+	api.Root().AddMethod(jsii.String("GET"), getWidgetsIntegration, &awsapigateway.MethodOptions{
+		ApiKeyRequired: jsii.Bool(false),
+	})
+}
+```
+------
 **Tip**  
 We're using a `[lambda\.Function](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda.Function.html)` in to deploy this function because it supports a wide variety of programming languages\. For JavaScript and TypeScript specifically, you might consider a `[lambda\-nodejs\.NodejsFunction](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda_nodejs.NodejsFunction.html)`\. The latter uses esbuild to bundle up the script and converts code written in TypeScript automatically\.
 
@@ -525,6 +592,19 @@ new WidgetService(this, "Widgets");
 
 ------
 
+#### [ Go ]
+
+File: `my_widget_service.go`
+
+Replace the comment in the constructor with the following line of code\.
+
+```
+widgetservice.WidgetService(stack, "Widgets")
+
+```
+Ensure `widgetservice` package has been imported with statement: `"my_widget_service/lib"`
+
+------
 Be sure the app runs and synthesizes a stack \(we won't show the stack here: it's over 250 lines\)\.
 
 ```
@@ -773,6 +853,22 @@ File: `src/MyWidgetService/WidgetService.cs`
             widget.AddMethod("POST", widgetIntegration);  // POST /{id}
             widget.AddMethod("GET", widgetIntegration);   // GET /{id}
             widget.AdMethod("DELETE", widgetIntegration); // DELETE /{id}
+```
+
+------
+
+#### [ Go ]
+
+File: `lib/my_widget_service.go`
+
+```
+	        widget := api.Root().AddResource(jsii.String("{id}"), nil)
+	        
+          widgetIntegration := awsapigateway.NewLambdaIntegration       (handler, nil)
+
+	        widget.AddMethod(jsii.String("POST"), widgetIntegration,        nil)   // POST /{id}
+	        widget.AddMethod(jsii.String("GET"), widgetIntegration,         nil)    // GET /{id}
+	        widget.AddMethod(jsii.String("DELETE"), widgetIntegration, nil) // DELETE /{id}
 ```
 
 ------
