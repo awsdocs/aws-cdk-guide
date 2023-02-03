@@ -331,7 +331,7 @@ Before deploying your stacks, use `cdk diff` to check for unexpected changes to 
 Expected changes include but are not limited to:
 + Changes to the `CDKMetadata` resource\.
 + Updated asset hashes\.
-+ Changes related to the new\-style stack synthesis\. Applies if your app used the legacy stack synthesizer in v1\. \(CDK v2 does not support the legacy stack synthesizer\.\)
++ Changes related to the new\-style stack synthesis\. Applies if your app used the legacy stack synthesizer in v1\.
 + The addition of a `CheckBootstrapVersion` rule\.
 
 Unexpected changes are typically not caused by upgrading to AWS CDK v2 in itself\. Usually, they're the result of deprecated behavior that was previously changed by feature flags\. This is a symptom of upgrading from a version of CDK earlier than about 1\.85\.x\. You would see the same changes upgrading to the latest v1\.x release\. You can usually resolve this by doing the following:
