@@ -178,9 +178,9 @@ Besides specifying AWS credentials and a Region in the `[default]` section, you 
   aws_access_key_id=AKIAI44QH8DHBEXAMPLE
   aws_secret_access_key=je7MtGbClwBF/2Zp9Utk/h3yCo8nvbEXAMPLEKEY
   
-  [profile test]
-  aws_access_key_id=AKIAI44QH8DHBEXAMPLE
-  aws_secret_access_key=je7MtGbClwBF/2Zp9Utk/h3yCo8nvbEXAMPLEKEY
+  [profile prod]
+  aws_access_key_id=AKIAIOSFODNN7EXAMPLE
+  aws_secret_access_key=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
   ```
 
 Always add named profiles to both the `config` and `credentials` files\. The AWS CDK Toolkit doesn't fall back to using the Region in the `[default]` section when the specified named profile is not found in the `config` file\. However, some other AWS tools do\.
