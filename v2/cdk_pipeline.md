@@ -416,6 +416,123 @@ namespace MyPipeline
 ```
 
 ------
+#### [ Go ]
+
+This is working example for a CDK pipeline in go. "NewCdkStack" creates a stack with an example resource (SSM Parameter). The application has this one stack and gets deployed via the CDK Pipeline.
+
+```
+package main
+
+import (
+	"github.com/aws/aws-cdk-go/awscdk/v2"
+	codebuild "github.com/aws/aws-cdk-go/awscdk/v2/awscodebuild"
+	codecommit "github.com/aws/aws-cdk-go/awscdk/v2/awscodecommit"
+	ssm "github.com/aws/aws-cdk-go/awscdk/v2/awsssm"
+	pipeline "github.com/aws/aws-cdk-go/awscdk/v2/pipelines"
+	"github.com/aws/constructs-go/constructs/v10"
+	"github.com/aws/jsii-runtime-go"
+	"os"
+)
+
+// my CDK Stack with resources
+func NewCdkStack(scope constructs.Construct, id *string, props awscdk.StackProps) *awscdk.Stack {
+	this := awscdk.NewStack(scope, id, &props)
+
+	// create an example ssm parameter
+	_ = ssm.NewStringParameter(this, jsii.String("ssm-test-param"), &ssm.StringParameterProps{
+		ParameterName: jsii.String("/testparam"),
+		Description:   jsii.String("ssm parameter for demo"),
+		StringValue:   jsii.String("my test param"),
+	})
+
+	return &this
+
+}
+
+// my CDK Application
+func NewCdkApplication(scope constructs.Construct, id *string, props awscdk.StageProps) *awscdk.Stage {
+	this := awscdk.NewStage(scope, id, &props)
+
+	_ = NewCdkStack(this, jsii.String("cdk-stack"), awscdk.StackProps{Env: props.Env})
+
+	return &this
+}
+
+// my CDK Pipeline
+func NewCdkPipeline(scope constructs.Construct, id *string, props awscdk.StackProps) *awscdk.Stack {
+	this := awscdk.NewStack(scope, id, &props)
+
+	// codecommit repo with name "cdk-application"
+	codecommitRepo := codecommit.Repository_FromRepositoryName(this, jsii.String("cdkRepoResource"), jsii.String("cdk-application"))
+
+	// self mutating pipeline
+	myPipeline := pipeline.NewCodePipeline(this, jsii.String("cdkPipeline"), &pipeline.CodePipelineProps{
+		PipelineName: jsii.String("CdkPipeline"),
+		// self mutation true - pipeline changes itself before application deployment
+		SelfMutation: jsii.Bool(true),
+		CodeBuildDefaults: &pipeline.CodeBuildOptions{
+			BuildEnvironment: &codebuild.BuildEnvironment{
+				// image version 6.0 recommended for newer go version
+				BuildImage: codebuild.LinuxBuildImage_FromCodeBuildImageId(jsii.String("aws/codebuild/standard:6.0")),
+			},
+		},
+		Synth: pipeline.NewCodeBuildStep(jsii.String("Synth"), &pipeline.CodeBuildStepProps{
+			Input: pipeline.CodePipelineSource_CodeCommit(codecommitRepo, jsii.String("main"), &pipeline.CodeCommitSourceOptions{}),
+			Commands: &[]*string{
+				jsii.String("npm install -g aws-cdk"),
+				jsii.String("cdk synth"),
+			},
+		}),
+	})
+
+	// deployment of actual CDK application
+	myPipeline.AddStage(*NewCdkApplication(this, jsii.String("MyApplication"), awscdk.StageProps{
+		Env: targetAccountEnv(),
+	}), &pipeline.AddStageOpts{
+		Post: &[]pipeline.Step{
+			pipeline.NewCodeBuildStep(jsii.String("Manual Steps"), &pipeline.CodeBuildStepProps{
+				Commands: &[]*string{
+					jsii.String("echo \"My CDK App deployed, manual steps go here ... \""),
+				},
+			}),
+		},
+	})
+
+	return &this
+}
+
+// main app
+func main() {
+	defer jsii.Close()
+
+	app := awscdk.NewApp(nil)
+
+	// call CDK Pipeline
+	NewCdkPipeline(app, jsii.String("CdkPipelineStack"), awscdk.StackProps{
+		Env: pipelineEnv(),
+	},
+	)
+
+	app.Synth(nil)
+}
+
+// env determines the AWS environment (account+region) in which our stack is to
+// be deployed. For more information see: https://docs.aws.amazon.com/cdk/latest/guide/environments.html
+func pipelineEnv() *awscdk.Environment {
+	return &awscdk.Environment{
+		Account: jsii.String(os.Getenv("CDK_DEFAULT_ACCOUNT")),
+		Region:  jsii.String(os.Getenv("CDK_DEFAULT_REGION")),
+	}
+}
+
+func targetAccountEnv() *awscdk.Environment {
+	return &awscdk.Environment{
+		Account: jsii.String(os.Getenv("CDK_DEFAULT_ACCOUNT")),
+		Region:  jsii.String(os.Getenv("CDK_DEFAULT_REGION")),
+	}
+}
+```
+------
 
 You must deploy a pipeline manually once\. After that, the pipeline keeps itself up to date from the source code repository\. So be sure that the code in the repo is the code you want deployed\. Check in your changes and push to GitHub, then deploy:
 
