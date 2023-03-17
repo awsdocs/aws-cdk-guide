@@ -71,6 +71,18 @@ app.Synth();
 ```
 
 ------
+#### [ Go ]
+
+```
+app := awscdk.NewApp(nil)
+
+MyFirstStack(app, "stack1")
+MySecondStack(app, "stack2")
+
+app.Synth(nil)
+```
+
+------
 
 To list all the stacks in an AWS CDK app, run the cdk ls command, which for the previous AWS CDK app would have the following output\.
 
@@ -296,6 +308,55 @@ class Program
 ```
 
 ------
+#### [ Go ]
+
+```
+package main
+
+import (
+	"github.com/aws/aws-cdk-go/awscdk/v2"
+	"github.com/aws/constructs-go/constructs/v10"
+)
+
+type MyServiceProps struct {
+	Prod bool `json:"prod"`
+}
+
+type MyService struct {
+	constructs.Construct
+}
+
+// imagine these stacks declare a bunch of related resources
+func NewControlPlane(scope constructs.Construct, id string) {
+	awscdk.NewStack(scope, &id, &awscdk.StackProps{})
+}
+
+func NewDataPlane(scope constructs.Construct, id string) {
+	awscdk.NewStack(scope, &id, &awscdk.StackProps{})
+}
+
+func NewMonitoring(scope constructs.Construct, id string) {
+	awscdk.NewStack(scope, &id, &awscdk.StackProps{})
+}
+
+func NewMyService(scope constructs.Construct, id string, props *MyServiceProps) {
+	// we might use the prod argument to change how the service is configured
+	NewControlPlane(scope, "cp")
+	NewDataPlane(scope, "data")
+	NewMonitoring(scope, "mon")
+}
+
+func main() {
+	app := awscdk.NewApp(nil)
+
+	NewMyService(app, "beta", nil)
+	NewMyService(app, "prod", &MyServiceProps{Prod: true})
+
+	app.Synth(nil)
+}
+```
+
+------
 
 This AWS CDK app eventually consists of six stacks, three for each environment:
 
@@ -349,6 +410,17 @@ new MyStack(this, "not:a:stack:name", new StackProps
 {
     StackName = "this-is-stack-name"
 });
+```
+
+------
+#### [ Go ]
+
+```
+MyStack(app, "not:a:stack:name", &MyStack{
+	awscdk.StackProps{
+		StackName: jsii.String("this-is-stack-name"),
+	},
+})
 ```
 
 ------
