@@ -1,6 +1,7 @@
 # Creating a serverless application using the AWS CDK<a name="serverless_example"></a>
 
 This example walks you through creating the resources for a simple widget dispensing service\. \(For the purpose of this example, a widget is just a name or identifier that can be added to, retrieved from, and deleted from a collection\.\) The example includes:
+
 + An AWS Lambda function\.
 + An Amazon API Gateway API to call the Lambda function\.
 + An Amazon S3 bucket that holds the widgets\.
@@ -141,30 +142,25 @@ mkdir resources
 
 Create the following JavaScript file, `widgets.js`, in the `resources` directory\.
 
-```
-/* 
-This code uses callbacks to handle asynchronous function responses.
-It currently demonstrates using an async-await pattern. 
-AWS supports both the async-await and promises patterns.
-For more information, see the following: 
-https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function
-https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises
-https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/calling-services-asynchronously.html
-https://docs.aws.amazon.com/lambda/latest/dg/nodejs-prog-model-handler.html 
-*/
-const AWS = require('aws-sdk');
-const S3 = new AWS.S3();
+```js
+import {
+  S3Client,
+  ListObjectsV2Command,
+} from '@aws-sdk/client-s3';
 
+// In the following code we are using AWS JS SDK v3
+// See https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/index.html
+const S3 = new S3Client({});
 const bucketName = process.env.BUCKET;
 
 exports.main = async function(event, context) {
   try {
-    var method = event.httpMethod;
+    const method = event.httpMethod;
 
     if (method === "GET") {
       if (event.path === "/") {
-        const data = await S3.listObjectsV2({ Bucket: bucketName }).promise();
-        var body = {
+        const data = await S3.send(new ListObjectsV2Command({ Bucket: bucketName }));
+        const body = {
           widgets: data.Contents.map(function(e) { return e.Key })
         };
         return {
@@ -182,7 +178,7 @@ exports.main = async function(event, context) {
       body: "We only accept GET /"
     };
   } catch(error) {
-    var body = error.stack || JSON.stringify(error, null, 2);
+    const body = error.stack || JSON.stringify(error, null, 2);
     return {
       statusCode: 400,
         headers: {},
@@ -221,7 +217,7 @@ export class WidgetService extends Construct {
     const bucket = new s3.Bucket(this, "WidgetStore");
 
     const handler = new lambda.Function(this, "WidgetHandler", {
-      runtime: lambda.Runtime.NODEJS_14_X, // So we can use async in widget.js
+      runtime: lambda.Runtime.NODEJS_18_X,
       code: lambda.Code.fromAsset("resources"),
       handler: "widgets.main",
       environment: {
@@ -229,7 +225,7 @@ export class WidgetService extends Construct {
       }
     });
 
-    bucket.grantReadWrite(handler); // was: handler.role);
+    bucket.grantReadWrite(handler);
 
     const api = new apigateway.RestApi(this, "widgets-api", {
       restApiName: "Widget Service",
@@ -264,7 +260,7 @@ class WidgetService extends Construct {
     const bucket = new s3.Bucket(this, "WidgetStore");
 
     const handler = new lambda.Function(this, "WidgetHandler", {
-      runtime: lambda.Runtime.NODEJS_14_X, // So we can use async in widget.js
+      runtime: lambda.Runtime.NODEJS_18_X,
       code: lambda.Code.fromAsset("resources"),
       handler: "widgets.main",
       environment: {
@@ -309,7 +305,7 @@ class WidgetService(Construct):
         bucket = s3.Bucket(self, "WidgetStore")
 
         handler = lambda_.Function(self, "WidgetHandler",
-                    runtime=lambda_.Runtime.NODEJS_14_X,
+                    runtime=lambda_.Runtime.NODEJS_18_X,
                     code=lambda_.Code.from_asset("resources"),
                     handler="widgets.main",
                     environment=dict(
@@ -356,7 +352,7 @@ public class WidgetService extends Construct {
         Bucket bucket = new Bucket(this, "WidgetStore");
 
         Function handler = Function.Builder.create(this, "WidgetHandler")
-            .runtime(Runtime.NODEJS_14_X)
+            .runtime(Runtime.NODEJS_18_X)
             .code(Code.fromAsset("resources"))
             .handler("widgets.main")
             .environment(java.util.Map.of(   // Java 9 or later
@@ -403,7 +399,7 @@ namespace MyWidgetService
 
             var handler = new Function(this, "WidgetHandler", new FunctionProps
             {
-                Runtime = Runtime.NODEJS_14_X,
+                Runtime = Runtime.NODEJS_18_X,
                 Code = Code.FromAsset("resources"),
                 Handler = "widgets.main",
                 Environment = new Dictionary<string, string>
@@ -579,33 +575,31 @@ The next step is to create Lambda functions to create, show, and delete individu
 
 Replace the code in `widgets.js` \(in `resources`\) with the following\.
 
-```
-const AWS = require('aws-sdk');
-const S3 = new AWS.S3();
+```js
+import {
+  S3Client,
+  ListObjectsV2Command,
+  GetObjectCommand,
+  PutObjectCommand,
+  DeleteObjectCommand
+} from '@aws-sdk/client-s3';
 
+// In the following code we are using AWS JS SDK v3
+// See https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/index.html
+const S3 = new S3Client({});
 const bucketName = process.env.BUCKET;
 
-/* 
-This code uses callbacks to handle asynchronous function responses.
-It currently demonstrates using an async-await pattern. 
-AWS supports both the async-await and promises patterns.
-For more information, see the following: 
-https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function
-https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises
-https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/calling-services-asynchronously.html
-https://docs.aws.amazon.com/lambda/latest/dg/nodejs-prog-model-handler.html 
-*/
 exports.main = async function(event, context) {
   try {
-    var method = event.httpMethod;
+    const method = event.httpMethod;
     // Get name, if present
-    var widgetName = event.path.startsWith('/') ? event.path.substring(1) : event.path;
+    const widgetName = event.path.startsWith('/') ? event.path.substring(1) : event.path;
 
     if (method === "GET") {
       // GET / to get the names of all widgets
       if (event.path === "/") {
-        const data = await S3.listObjectsV2({ Bucket: bucketName }).promise();
-        var body = {
+        const data = await S3.send(new ListObjectsV2Command({ Bucket: bucketName }));
+        const body = {
           widgets: data.Contents.map(function(e) { return e.Key })
         };
         return {
@@ -617,8 +611,8 @@ exports.main = async function(event, context) {
 
       if (widgetName) {
         // GET /name to get info on widget name
-        const data = await S3.getObject({ Bucket: bucketName, Key: widgetName}).promise();
-        var body = data.Body.toString('utf-8');
+        const data = await S3.send(new GetObjectCommand({ Bucket: bucketName, Key: widgetName}));
+        const body = data.Body.toString('utf-8');
 
         return {
           statusCode: 200,
@@ -641,16 +635,16 @@ exports.main = async function(event, context) {
 
       // Create some dummy data to populate object
       const now = new Date();
-      var data = widgetName + " created: " + now;
+      const data = widgetName + " created: " + now;
 
-      var base64data = new Buffer(data, 'binary');
+      const base64data = Buffer.from(data, 'binary');
 
-      await S3.putObject({
+      await S3.send(new PutObjectCommand({
         Bucket: bucketName,
         Key: widgetName,
         Body: base64data,
         ContentType: 'application/json'
-      }).promise();
+      }));
 
       return {
         statusCode: 200,
@@ -670,9 +664,9 @@ exports.main = async function(event, context) {
         };
       }
 
-      await S3.deleteObject({
+      await S3.send(new DeleteObjectCommand({
         Bucket: bucketName, Key: widgetName
-      }).promise();
+      }));
 
       return {
         statusCode: 200,
