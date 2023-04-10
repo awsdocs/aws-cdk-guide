@@ -2,6 +2,10 @@
 
 The AWS Construct Library uses a few common, widely implemented idioms to manage access and permissions\. The IAM module provides you with the tools you need to use these idioms\.
 
+AWS CDK uses AWS CloudFormation to deploy changes\. Every deployment involves an actor \(either a developer, or an automated system\) that starts a AWS CloudFormation deployment\. In the course of doing this, the actor will assume one or more IAM Identities \(user or roles\) and optionally pass a role to AWS CloudFormation\. 
+
+ If you use AWS IAM Identity Center \(successor to AWS Single Sign\-On\) to authenticate as a user, then the single sign\-on provider supplies short\-lived session credentials that authorize you to act as a pre\-defined IAM role\. To learn how the AWS CDK obtains AWS credentials from IAM Identity Center authentication, see [Understand IAM Identity Center authentication](https://docs.aws.amazon.com/sdkref/latest/guide/understanding-sso.html) in the *AWS SDKs and Tools Reference Guide*\. 
+
 ## Principals<a name="permissions_principals"></a>
 
 An IAM principal is an authenticated AWS entity representing a user, service, or application that can call AWS APIs\. The AWS Construct Library supports specifying principals in several flexible ways to grant them access your AWS resources\.

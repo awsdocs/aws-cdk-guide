@@ -29,9 +29,7 @@ To bootstrap an environment that can provision an AWS CDK pipeline, invoke `cdk 
 
 Most organizations mandate stricter controls on what kinds of resources can be deployed by automation\. Check with the appropriate department within your organization to determine the policy your pipeline should use\.
 
-You can omit the \-\-profile option in the following situations:
-+ If your default AWS profile contains the necessary credentials
-+ If you want to use the environment variables `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_DEFAULT_REGION` to provide your AWS account credentials
+You can omit the \-\-profile option if your default AWS profile contains the necessary authentication configuration and AWS Region\.
 
 ------
 #### [ macOS/Linux ]
@@ -53,9 +51,7 @@ npx cdk bootstrap aws://ACCOUNT-NUMBER/REGION --profile ADMIN-PROFILE ^
 
 To bootstrap additional environments into which AWS CDK applications will be deployed by the pipeline, use the following commands instead\. The \-\-trust option indicates which other account should have permissions to deploy AWS CDK applications into this environment\. For this option, specify the pipeline's AWS account ID\.
 
-Again, you can omit the \-\-profile option in the following situations:
-+ If your default AWS profile contains the necessary credentials
-+ If you're using the `AWS_*` environment variables to provide your AWS account credentials
+Again, you can omit the \-\-profile option if your default AWS profile contains the necessary authentication configuration and AWS Region\.
 
 ------
 #### [ macOS/Linux ]
@@ -268,7 +264,7 @@ In `my-pipeline/my-pipeline-stack.py` \(may vary if your project folder isn't na
 
 ```
 import aws_cdk as cdk
-from constructs import Constuct
+from constructs import Construct
 from aws_cdk.pipelines import CodePipeline, CodePipelineSource, ShellStep
 
 class MyPipelineStack(cdk.Stack):
@@ -276,12 +272,12 @@ class MyPipelineStack(cdk.Stack):
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
-        pipeline =  CodePipeline(self, "Pipeline", 
+        pipeline =  CodePipeline(self, "Pipeline",
                         pipeline_name="MyPipeline",
-                        synth=ShellStep("Synth", 
+                        synth=ShellStep("Synth",
                             input=CodePipelineSource.git_hub("OWNER/REPO", "main"),
-                            commands=["npm install -g aws-cdk", 
-                                "python -m pip install -r requirements.txt", 
+                            commands=["npm install -g aws-cdk",
+                                "python -m pip install -r requirements.txt",
                                 "cdk synth"]
                         )
                     )
@@ -295,7 +291,7 @@ import aws_cdk as cdk
 from my_pipeline.my_pipeline_stack import MyPipelineStack
 
 app = cdk.App()
-MyPipelineStack(app, "MyPipelineStack", 
+MyPipelineStack(app, "MyPipelineStack",
     env=cdk.Environment(account="111111111111", region="eu-west-1")
 )
 
@@ -405,7 +401,7 @@ namespace MyPipeline
             var app = new App();
             new MyPipelineStack(app, "MyPipelineStack", new StackProps
             {
-                Env = new Amazon.CDK.Environment { 
+                Env = new Amazon.CDK.Environment {
                     Account = "111111111111", Region = "eu-west-1" }
             });
 
@@ -454,7 +450,7 @@ import { Function, InlineCode, Runtime } from 'aws-cdk-lib/aws-lambda';
 export class MyLambdaStack extends cdk.Stack {
     constructor(scope: Construct, id: string, props?: cdk.StackProps) {
       super(scope, id, props);
-  
+
       new Function(this, 'LambdaFunction', {
         runtime: Runtime.NODEJS_12_X,
         handler: 'index.handler',
@@ -472,11 +468,11 @@ import { Construct } from "constructs";
 import { MyLambdaStack } from './my-pipeline-lambda-stack';
 
 export class MyPipelineAppStage extends cdk.Stage {
-    
+
     constructor(scope: Construct, id: string, props?: cdk.StageProps) {
       super(scope, id, props);
-  
-      const lambdaStack = new MyLambdaStack(this, 'LambdaStack');      
+
+      const lambdaStack = new MyLambdaStack(this, 'LambdaStack');
     }
 }
 ```
@@ -520,7 +516,7 @@ const { Function, InlineCode, Runtime } = require('aws-cdk-lib/aws-lambda');
 class MyLambdaStack extends cdk.Stack {
     constructor(scope, id, props) {
       super(scope, id, props);
-  
+
       new Function(this, 'LambdaFunction', {
         runtime: Runtime.NODEJS_12_X,
         handler: 'index.handler',
@@ -539,11 +535,11 @@ const cdk = require('aws-cdk-lib');
 const { MyLambdaStack } = require('./my-pipeline-lambda-stack');
 
 class MyPipelineAppStage extends cdk.Stage {
-    
+
     constructor(scope, id, props) {
       super(scope, id, props);
-  
-      const lambdaStack = new MyLambdaStack(this, 'LambdaStack');      
+
+      const lambdaStack = new MyLambdaStack(this, 'LambdaStack');
     }
 }
 
@@ -593,7 +589,7 @@ class MyLambdaStack(cdk.Stack):
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
-        Function(self, "LambdaFunction", 
+        Function(self, "LambdaFunction",
             runtime=Runtime.NODEJS_12_X,
             handler="index.handler",
             code=InlineCode("exports.handler = _ => 'Hello, CDK';")
@@ -627,9 +623,9 @@ class MyPipelineStack(cdk.Stack):
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
-        pipeline =  CodePipeline(self, "Pipeline", 
+        pipeline =  CodePipeline(self, "Pipeline",
                         pipeline_name="MyPipeline",
-                        synth=ShellStep("Synth", 
+                        synth=ShellStep("Synth",
                             input=CodePipelineSource.git_hub("OWNER/REPO", "main"),
                             commands=["npm install -g aws-cdk",
                                 "python -m pip install -r requirements.txt",
@@ -691,7 +687,7 @@ public class MyPipelineAppStage extends Stage {
 
     public MyPipelineAppStage(final Construct scope, final String id, final StageProps props) {
         super(scope, id, props);
-        
+
         Stack lambdaStack = new MyPipelineLambdaStack(this, "LambdaStack");
     }
 
@@ -728,7 +724,7 @@ public class MyPipelineStack extends Stack {
                 .commands(Arrays.asList("npm install -g aws-cdk", "cdk synth"))
                 .build())
             .build();
-        
+
         pipeline.addStage(new MyPipelineAppStage(this, "test", StageProps.builder()
             .env(Environment.builder()
                 .account("111111111111")
@@ -868,7 +864,7 @@ testing_stage.add_post(ManualApprovalStep('approval'))
 // import software.amazon.awscdk.pipelines.StageDeployment;
 // import software.amazon.awscdk.pipelines.ManualApprovalStep;
 
-StageDeployment testingStage = 
+StageDeployment testingStage =
         pipeline.addStage(new MyPipelineAppStage(this, "test", StageProps.builder()
                 .env(Environment.builder()
                         .account("111111111111")
@@ -929,9 +925,9 @@ wave.addStage(new MyApplicationStage(this, 'MyAppUS', {
 
 ```
 wave = pipeline.add_wave("wave")
-wave.add_stage(MyApplicationStage(self, "MyAppEU", 
+wave.add_stage(MyApplicationStage(self, "MyAppEU",
     env=cdk.Environment(account="111111111111", region="eu-west-1")))
-wave.add_stage(MyApplicationStage(self, "MyAppUS", 
+wave.add_stage(MyApplicationStage(self, "MyAppUS",
     env=cdk.Environment(account="111111111111", region="us-west-1")))
 ```
 
@@ -1085,11 +1081,11 @@ stage.addPost(new ShellStep("lbaddr", {
 
 ```
 # given a stack lb_stack that exposes a load balancer construct as load_balancer
-self.load_balancer_address = cdk.CfnOutput(lb_stack, "LbAddress", 
+self.load_balancer_address = cdk.CfnOutput(lb_stack, "LbAddress",
     value=f"https://{lb_stack.load_balancer.load_balancer_dns_name}/")
 
 # pass the load balancer address to a shell step
-stage.add_post(ShellStep("lbaddr", 
+stage.add_post(ShellStep("lbaddr",
     env_from_cfn_outputs={"lb_addr": lb_stack.load_balancer_address}
     commands=["echo $lb_addr"]))
 ```
@@ -1100,7 +1096,7 @@ stage.add_post(ShellStep("lbaddr",
 ```
 // given a stack lbStack that exposes a load balancer construct as loadBalancer
 loadBalancerAddress = CfnOutput.Builder.create(lbStack, "LbAddress")
-                            .value(String.format("https://%s/", 
+                            .value(String.format("https://%s/",
                                     lbStack.loadBalancer.loadBalancerDnsName))
                             .build();
 
@@ -1191,9 +1187,9 @@ stage.addPost(new ShellStep('validate', {
 ```
 source   = CodePipelineSource.git_hub("OWNER/REPO", "main")
 
-pipeline =  CodePipeline(self, "Pipeline", 
+pipeline =  CodePipeline(self, "Pipeline",
                 pipeline_name="MyPipeline",
-                synth=ShellStep("Synth", 
+                synth=ShellStep("Synth",
                     input=source,
                     commands=["npm install -g aws-cdk",
                         "python -m pip install -r requirements.txt",
@@ -1221,7 +1217,7 @@ final CodePipeline pipeline = CodePipeline.Builder.create(this, "pipeline")
                 .build())
         .build();
 
-final StageDeployment stage = 
+final StageDeployment stage =
         pipeline.addStage(new MyPipelineAppStage(this, "test", StageProps.builder()
                 .env(Environment.builder()
                         .account("111111111111")
@@ -1324,13 +1320,13 @@ stage.addPost(new ShellStep('validate', {
 #### [ Python ]
 
 ```
-synth_step = ShellStep("Synth", 
+synth_step = ShellStep("Synth",
                 input=CodePipelineSource.git_hub("OWNER/REPO", "main"),
                 commands=["npm install -g aws-cdk",
                   "python -m pip install -r requirements.txt",
                   "cdk synth"])
 
-pipeline   = CodePipeline(self, "Pipeline", 
+pipeline   = CodePipeline(self, "Pipeline",
                 pipeline_name="MyPipeline",
                 synth=synth_step)
 
@@ -1351,14 +1347,14 @@ stage.add_post(ShellStep("validate",
 final ShellStep synth = ShellStep.Builder.create("Synth")
                             .input(CodePipelineSource.gitHub("OWNER/REPO", "main"))
                             .commands(Arrays.asList("npm install -g aws-cdk", "cdk synth"))
-                            .build();   
-        
+                            .build();
+
 final CodePipeline pipeline = CodePipeline.Builder.create(this, "pipeline")
         .pipelineName("MyPipeline")
         .synth(synth)
         .build();
 
-final StageDeployment stage = 
+final StageDeployment stage =
         pipeline.addStage(new MyPipelineAppStage(this, "test", StageProps.builder()
                 .env(Environment.builder()
                         .account("111111111111")
@@ -1414,6 +1410,7 @@ However, by its very nature, a library that needs a high level of access to fulf
 In particular, keep in mind the following:
 + Be mindful of the software you depend on\. Vet all third\-party software you run in your pipeline, because it can change the infrastructure that gets deployed\. 
 + Use dependency locking to prevent accidental upgrades\. CDK Pipelines respects `package-lock.json` and `yarn.lock` to make sure that your dependencies are the ones you expect\.
++ CDK Pipelines runs on resources created in your own account, and the configuration of those resources is controlled by developers submitting code through the pipeline\. Therefore, CDK Pipelines by itself cannot protect against malicious developers trying to bypass compliance checks\. If your threat model includes developers writing CDK code, you should have external compliance mechanisms in place like [AWS CloudFormation Hooks](http://aws.amazon.com/blogs/blogs/mt/proactively-keep-resources-secure-and-compliant-with-aws-cloudformation-hooks/) \(preventive\) or [AWS Config](https://aws.amazon.com/config/) \(reactive\) that the AWS CloudFormation Execution Role does not have permissions to disable\. 
 + Credentials for production environments should be short\-lived\. After bootstrapping and initial provisioning, there is no need for developers to have account credentials at all\. Changes can be deployed through the pipeline\. Reduce the possibility of credentials leaking by not needing them in the first place\.
 
 ## Troubleshooting<a name="cdk_pipeline_troubleshooting"></a>

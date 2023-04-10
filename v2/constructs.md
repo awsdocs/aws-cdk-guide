@@ -352,7 +352,7 @@ const bucket = new s3.CfnBucket(this, "MyBucket", {
 ------
 #### [ Python ]
 
-In Python, these properties are represented by types defined as inner classes of the L1 construct\. For example, the optional property `cors_configuraiton` of a `CfnBucket` requires a wrapper of type `CfnBucket.CorsConfigurationProperty`\. Here we are defining `cors_onfiguration` on a `CfnBucket` instance\. 
+In Python, these properties are represented by types defined as inner classes of the L1 construct\. For example, the optional property `cors_configuraiton` of a `CfnBucket` requires a wrapper of type `CfnBucket.CorsConfigurationProperty`\. Here we are defining `cors_configuration` on a `CfnBucket` instance\. 
 
 ```
 bucket = CfnBucket(self, "MyBucket", bucket_name="MyBucket",

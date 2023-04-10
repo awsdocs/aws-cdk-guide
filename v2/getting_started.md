@@ -6,7 +6,7 @@ This topic introduces you to important AWS CDK concepts and describes how to ins
 
 The AWS Cloud Development Kit \(AWS CDK\) lets you define your cloud infrastructure as code in one of its supported programming languages\. It is intended for moderately to highly experienced AWS users\.
 
-Ideally, you already have experience with popular AWS services, particularly [AWS Identity and Access Management](https://aws.amazon.com/iam/) \(IAM\)\. You might already have AWS credentials on your workstation for use with an AWS SDK or the AWS CLI\. You might also have experience working with AWS resources programmatically\.
+Ideally, you already have experience with popular AWS services, particularly [AWS IAM Identity Center \(successor to AWS Single Sign\-On\)](https://docs.aws.amazon.com/singlesignon/latest/userguide/)\. You might also have experience working with AWS resources programmatically\.
 
 Familiarity with [AWS CloudFormation](https://aws.amazon.com/cloudformation/) is also useful, because the output of an AWS CDK program is an AWS CloudFormation template\.
 
@@ -200,59 +200,10 @@ TypeScript was the first language supported by the AWS CDK, and much AWS CDK exa
 
 Here's what you need to install to use the AWS CDK\.
 
-All AWS CDK developers, even those working in Python, Java, or C\#, need [Node\.js](https://nodejs.org/en/download/) 10\.13\.0 or later\. All supported languages use the same backend, which runs on Node\.js\. We recommend a version in [active long\-term support](https://nodejs.org/en/about/releases/)\. Your organization may have a different recommendation\.
+All AWS CDK developers, even those working in Python, Java, or C\#, need [Node\.js](https://nodejs.org/en/download/) 14\.15\.0 or later\. All supported languages use the same backend, which runs on Node\.js\. We recommend a version in [active long\-term support](https://nodejs.org/en/about/releases/)\. Your organization may have a different recommendation\.
 
 **Important**  
 Node\.js versions 13\.0\.0 through 13\.6\.0 are not compatible with the AWS CDK due to compatibility issues with its dependencies\.
-
-You must configure your workstation with your credentials and an AWS Region, if you have not already done so\. If you have the AWS CLI installed, we recommend running the following command:
-
-```
-aws configure
-```
-
-Provide your AWS access key ID, secret access key, and default Region when prompted\.
-
-You can also manually create or edit the `~/.aws/config` and `~/.aws/credentials` \(macOS/Linux\) or `%USERPROFILE%\.aws\config` and `%USERPROFILE%\.aws\credentials` \(Windows\) files to contain credentials and a default Region\. Use the following format\.
-+ In `~/.aws/config` or `%USERPROFILE%\.aws\config`
-
-  ```
-  [default]
-  region=us-west-2
-  ```
-+ In `~/.aws/credentials` or `%USERPROFILE%\.aws\credentials`
-
-  ```
-  [default]
-  aws_access_key_id=AKIAI44QH8DHBEXAMPLE
-  aws_secret_access_key=je7MtGbClwBF/2Zp9Utk/h3yCo8nvbEXAMPLEKEY
-  ```
-
-**Note**  
-Although the AWS CDK uses credentials from the same configuration files as other AWS tools and SDKs, including the [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html), it might behave somewhat differently from these tools\. In particular, if you use a named profile from the `credentials` file, the `config` must have a profile of the same name specifying the Region\. The AWS CDK does not fall back to reading the Region from the `[default]` section in `config`\. Also, do not use a profile named "default" \(e\.g\. `[profile default]`\)\. See [Setting credentials](https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/setting-credentials.html) for complete details on setting up credentials for the AWS SDK for JavaScript, which the AWS CDK uses under the hood\.  
-The AWS CDK natively supports AWS IAM Identity Center \(successor to AWS Single Sign\-On\)\. To use IAM Identity Center with the CDK, first create a profile using aws configure sso\. Then log in using aws sso login\. Finally, specify this profile when issuing cdk commands using the \-\-profile option or the `AWS_PROFILE` environment variable\.
-
-Alternatively, you can set the environment variables `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_DEFAULT_REGION` to appropriate values\. 
-
-**Important**  
-Using your AWS root account is the fastest way to get started with the AWS CDK\. Once you've worked through a few tutorials, however, we strongly recommend against using your root account for day\-to\-day tasks\. Instead, create a user in IAM and use its credentials with the CDK\. Best practices are to change this account's access key regularly and to use a least\-privileges role\. The AWS CDK includes roles that your account should have permission to assume, for example using the policy here\.  
-
-```
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Effect": "Allow",
-            "Action": [
-                "sts:AssumeRole"
-            ],
-            "Resource": [
-                "arn:aws:iam::*:role/cdk-*"
-            ]
-        }
-    ]
-}
-```
 
 Other prerequisites depend on the language in which you develop AWS CDK applications and are as follows\.
 
@@ -292,6 +243,56 @@ Go 1\.1\.8 or later\.
 
 **Note**  
 Third\-party language deprecation: each language version is only supported until its EOL \(End Of Life\) shared by the vendor or community and is subject to change with prior notice\.
+
+## Authentication with AWS<a name="getting_started_auth"></a>
+
+You must establish how the AWS CDK authenticates with AWS when developing with AWS services\. There are different ways in which you can configure programmatic access to AWS resources, depending on the environment and the AWS access available to you\. 
+
+To choose your method of authentication and configure it for the AWS CDK, see [Authentication and access](https://docs.aws.amazon.com/sdkref/latest/guide/access.html) in the *AWS SDKs and Tools Reference Guide*\. 
+
+The recommended approach for new users developing locally, who aren't given a method of authentication by their employer, is to set up AWS IAM Identity Center \(successor to AWS Single Sign\-On\)\. This method includes installing the AWS CLI for ease of configuration and for regularly signing in to the AWS access portal\. If you choose this method, your environment should contain the following elements after you complete the procedure for [IAM Identity Center authentication](https://docs.aws.amazon.com/sdkref/latest/guide/access-sso.html) in the *AWS SDKs and Tools Reference Guide*:
++ The AWS CLI, which you use to start an AWS access portal session before you run your application\.
++ A [shared AWS`config` file](https://docs.aws.amazon.com/sdkref/latest/guide/file-format.html) having a `[default]` profile with a set of configuration values that can be referenced from the AWS CDK\. To find the location of this file, see [Location of the shared files](https://docs.aws.amazon.com/sdkref/latest/guide/file-location.html) in the *AWS SDKs and Tools Reference Guide*\.
++  The shared `config` file sets the [https://docs.aws.amazon.com/sdkref/latest/guide/feature-region.html](https://docs.aws.amazon.com/sdkref/latest/guide/feature-region.html) setting\. This sets the default AWS Region the AWS CDK uses for AWS requests\. 
++  The AWS CDK uses the profile's [SSO token provider configuration](https://docs.aws.amazon.com/sdkref/latest/guide/feature-sso-credentials.html#feature-sso-credentials-profile) to acquire credentials before sending requests to AWS\. The `sso_role_name` value, which is an IAM role connected to an IAM Identity Center permission set, should allow access to the AWS services used in your application\.
+
+  The following sample `config` file shows a default profile set up with SSO token provider configuration\. The profile's `sso_session` setting refers to the named [`sso-session` section](https://docs.aws.amazon.com/sdkref/latest/guide/file-format.html#section-session)\. The `sso-session` section contains settings to initiate an AWS access portal session\.
+
+  ```
+  [default]
+  sso_session = my-sso
+  sso_account_id = 111122223333
+  sso_role_name = SampleRole
+  region = us-east-1
+  output = json
+  
+  [sso-session my-sso]
+  sso_region = us-east-1
+  sso_start_url = https://provided-domain.awsapps.com/start
+  sso_registration_scopes = sso:account:access
+  ```
+
+### Start an AWS access portal session<a name="accessportal"></a>
+
+Before accessing AWS services, you need an active AWS access portal session for the AWS CDK to use IAM Identity Center authentication to resolve credentials\. Depending on your configured session lengths, your access will eventually expire and the AWS CDK will encounter an authentication error\. Run the following command in the AWS CLI to sign in to the AWS access portal\.
+
+```
+aws sso login
+```
+
+ If your SSO token provider configuration is using a named profile instead of the default profile, the command is `aws sso login --profile NAME`\. Also specify this profile when issuing cdk commands using the \-\-profile option or the `AWS_PROFILE` environment variable\.
+
+To test if you already have an active session, run the following AWS CLI command\.
+
+```
+aws sts get-caller-identity
+```
+
+The response to this command should report the IAM Identity Center account and permission set configured in the shared `config` file\.
+
+**Note**  
+If you already have an active AWS access portal session and run `aws sso login`, you won't be required to provide credentials\.   
+The sign in process may prompt you to allow the AWS CLI access to your data\. Since the AWS CLI is built on top of the SDK for Python, permission messages may contain variations of the `botocore` name\.
 
 ## Install the AWS CDK<a name="getting_started_install"></a>
 

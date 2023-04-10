@@ -85,9 +85,9 @@ powershell "cdk bootstrap --show-template | Out-File -encoding utf8 bootstrap-te
 
 ------
 
-The template is also available in the [AWS CDK GitHub repository](https://github.com/aws/aws-cdk/blob/master/packages/aws-cdk/lib/api/bootstrap/bootstrap-template.yaml)\.
+The template is also available in the [AWS CDK GitHub repository](https://github.com/aws/aws-cdk/blob/main/packages/aws-cdk/lib/api/bootstrap/bootstrap-template.yaml)\.
 
-Deploy this template using cdk bootstrap \-\-template *TEMPLATE\_FILENAME* or your preferred deployment mechanism for AWS CloudFormation templates\. For example, the following command deploys the template using the AWS CLI:
+Deploy this template using the CDK CLI or your preferred deployment mechanism for AWS CloudFormation templates\. To deploy using the CDK CLI, run cdk bootstrap \-\-template *TEMPLATE\_FILENAME*\. You can also deploy it using the AWS CLI by running the command below, or [deploy to one or more accounts at once using AWS CloudFormation Stack Sets](https://aws.amazon.com/blogs/mt/bootstrapping-multiple-aws-accounts-for-aws-cdk-using-cloudformation-stacksets/)\. 
 
 ------
 #### [ macOS/Linux ]
@@ -160,7 +160,7 @@ When you need more customization than the AWS CDK Toolkit switches can provide, 
 cdk bootstrap --show-template
 ```
 
-Any modifications you make must adhere to the [bootstrapping template contract](#bootstrapping-contract)\.
+Any modifications you make must adhere to the [bootstrapping template contract](#bootstrapping-contract)\. To ensure that your customizations are not accidentally overwritten later by someone running cdk bootstrap using the default template, change the default value of the `BootstrapVariant` template parameter\. The CDK CLI will only allow overwriting the bootstrap stack with templates that have the same `BootstrapVariant` and a equal or higher version than the template that is currently deployed\. 
 
 Deploy your modified template as described in [Bootstrapping from the AWS CloudFormation template](#bootstrapping-howto-cfn), or using cdk bootstrap \-\-template\.
 
@@ -443,7 +443,7 @@ DefaultStackSynthesizer(
   # ARN of the role used to look up context information in an environment
   lookup_role_arn="arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-${Qualifier}-lookup-role-${AWS::AccountId}-${AWS::Region}",
   lookup_role_external_id="",
-  
+
   # Name of the SSM parameter which describes the bootstrap stack version number
   bootstrap_stack_version_ssm_parameter="/cdk-bootstrap/${Qualifier}/version",
 
@@ -520,7 +520,7 @@ new DefaultStackSynthesizer(new DefaultStackSynthesizerProps
 
     LookupRoleArn = "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-${Qualifier}-lookup-role-${AWS::AccountId}-${AWS::Region}",
     LookupRoleExternalId = "",
-    
+
     // Name of the SSM parameter which describes the bootstrap stack version number
     BootstrapStackVersionSsmParameter = "/cdk-bootstrap/${Qualifier}/version",
 

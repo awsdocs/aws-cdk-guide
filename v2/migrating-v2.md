@@ -85,6 +85,12 @@ After updating your dependencies, issue `npm update -g aws-cdk` to update the CD
 
 To migrate your app to AWS CDK v2, first update the feature flags in `cdk.json`\. Then update your app's dependencies and imports as necessary for the programming language that it's written in\.
 
+### Updating to a recent v1<a name="migrating-v2-v1-recent-v1"></a>
+
+We are seeing a number of customers upgrading from an old version of AWS CDK v1 to the most recent version of v2 in one step\. While it is certainly possible to do that, you would be both upgrading across multiple years of changes \(that unfortunately may not all have had the same amount of evolution testing we have today\), as well as ugprading across versions with new defaults and a different code organization\. 
+
+For the safest upgrade experience and to more easily diagnose the sources of any unexpected changes, we recommend you separate those two steps: first upgrade to the latest v1 version, then make the switch to v2 afterwards\. 
+
 ### Updating feature flags<a name="migrating-v2-v1-upgrade-cdk-json"></a>
 
 Remove the following v1 feature flags from `cdk.json` if they exist, as these are all active by default in AWS CDK v2\. If their old effect is important for your infrastructure, you will need to make source code changes\. See [the list of flags on GitHub](https://github.com/aws/aws-cdk/blob/main/packages/%40aws-cdk/cx-api/FEATURE_FLAGS.md) for more information\.

@@ -111,7 +111,7 @@ In TypeScript, you import modules into your code under the same name you use to 
 
 ### Props<a name="typescript-props"></a>
 
-All AWS Construct Library classes are instantiated using three arguments: the *scope* in which the construct is being defined \(its parent in the construct tree\), an *id*, and *props*, a bundle of key/value pairs that the construct uses to configure the AWS resources it creates\. Other classes and methods also use the "bundle of attributes" pattern for arguments\.
+All AWS Construct Library classes are instantiated using three arguments: the *scope* in which the construct is being defined \(its parent in the construct tree\), an *id*, and *props*\. Argument *props* is a bundle of key/value pairs that the construct uses to configure the AWS resources it creates\. Other classes and methods also use the "bundle of attributes" pattern for arguments\.
 
 In TypeScript, the shape of `props` is defined using an interface that tells you the required and optional arguments and their types\. Such an interface is defined for each kind of `props` argument, usually specific to a single construct or method\. For example, the [Bucket](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.Bucket.html) construct \(in the `aws-cdk-lib/aws-s3 module`\) specifies a `props` argument conforming to the [BucketProps](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.BucketProps.html) interface\. 
 

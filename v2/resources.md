@@ -2,7 +2,7 @@
 
 As described in [Constructs](constructs.md), the AWS CDK provides a rich class library of constructs, called *AWS constructs*, that represent all AWS resources\.
 
-To create an instance of a resource using its corresponding construct, pass in the scope as the first argument, the logical ID of the construct, and a set of configuration properties \(props\)\. For example, here's how to create an Amazon SQS queue with AWS KMS encryption using the [sqs\.Queue](https://docs.aws.amazon.com/cdk/api/v2/docs/@aws-cdk_aws-sqs.Queue.html) construct from the AWS Construct Library\.
+To create an instance of a resource using its corresponding construct, pass in the scope as the first argument, the logical ID of the construct, and a set of configuration properties \(props\)\. For example, here's how to create an Amazon SQS queue with AWS KMS encryption using the [sqs\.Queue](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_sqs.Queue.html) construct from the AWS Construct Library\.
 
 ------
 #### [ TypeScript ]
@@ -783,7 +783,7 @@ table.Grant(func, "dynamodb:CreateBackup");
 
 Many resources, such as Lambda functions, require a role to be assumed when executing code\. A configuration property enables you to specify an `iam.IRole`\. If no role is specified, the function automatically creates a role specifically for this use\. You can then use grant methods on the resources to add statements to the role\.
 
-The grant methods are built using lower\-level APIs for handling with IAM policies\. Policies are modeled as [PolicyDocument](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-iam-readme.html) objects\. Add statements directly to roles \(or a construct's attached role\) using the `addToRolePolicy` method \(Python: `add_to_role_policy`\), or to a resource's policy \(such as a `Bucket` policy\) using the `addToResourcePolicy` \(Python: `add_to_resource_policy`\) method\. 
+The grant methods are built using lower\-level APIs for handling with IAM policies\. Policies are modeled as [PolicyDocument](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.PolicyDocument.html) objects\. Add statements directly to roles \(or a construct's attached role\) using the `addToRolePolicy` method \(Python: `add_to_role_policy`\), or to a resource's policy \(such as a `Bucket` policy\) using the `addToResourcePolicy` \(Python: `add_to_resource_policy`\) method\.
 
 ## Metrics and alarms<a name="resources_metrics"></a>
 
