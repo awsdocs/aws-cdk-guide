@@ -143,14 +143,12 @@ mkdir resources
 Create the following JavaScript file, `widgets.js`, in the `resources` directory\.
 
 ```js
-import {
+const {
   S3Client,
-  ListObjectsV2Command,
-} from '@aws-sdk/client-s3';
-
-// In the following code we are using AWS JS SDK v3
-// See https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/index.html
+  ListObjectsV2Command
+} = require('@aws-sdk/client-s3');
 const S3 = new S3Client({});
+
 const bucketName = process.env.BUCKET;
 
 exports.main = async function(event, context) {
@@ -160,8 +158,8 @@ exports.main = async function(event, context) {
     if (method === "GET") {
       if (event.path === "/") {
         const data = await S3.send(new ListObjectsV2Command({ Bucket: bucketName }));
-        const body = {
-          widgets: data.Contents.map(function(e) { return e.Key })
+        const body =  {
+          widgets: data.KeyCount > 0 ? data.Contents.map(function(e) { return e.Key }) : []
         };
         return {
           statusCode: 200,
@@ -576,20 +574,18 @@ The next step is to create Lambda functions to create, show, and delete individu
 Replace the code in `widgets.js` \(in `resources`\) with the following\.
 
 ```js
-import {
+const {
   S3Client,
   ListObjectsV2Command,
   GetObjectCommand,
   PutObjectCommand,
-  DeleteObjectCommand
-} from '@aws-sdk/client-s3';
-
-// In the following code we are using AWS JS SDK v3
-// See https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/index.html
+  DeleteObjectCommand,
+} = require("@aws-sdk/client-s3");
 const S3 = new S3Client({});
+
 const bucketName = process.env.BUCKET;
 
-exports.main = async function(event, context) {
+exports.main = async function (event, context) {
   try {
     const method = event.httpMethod;
     // Get name, if present
@@ -598,26 +594,35 @@ exports.main = async function(event, context) {
     if (method === "GET") {
       // GET / to get the names of all widgets
       if (event.path === "/") {
-        const data = await S3.send(new ListObjectsV2Command({ Bucket: bucketName }));
+        const data = await S3.send(
+          new ListObjectsV2Command({ Bucket: bucketName })
+        );
         const body = {
-          widgets: data.Contents.map(function(e) { return e.Key })
+          widgets:
+            data.KeyCount > 0
+              ? data.Contents.map(function (e) {
+                  return e.Key;
+                })
+              : [],
         };
         return {
           statusCode: 200,
           headers: {},
-          body: JSON.stringify(body)
+          body: JSON.stringify(body),
         };
       }
 
       if (widgetName) {
         // GET /name to get info on widget name
-        const data = await S3.send(new GetObjectCommand({ Bucket: bucketName, Key: widgetName}));
-        const body = data.Body.toString('utf-8');
+        const data = await S3.send(
+          new GetObjectCommand({ Bucket: bucketName, Key: widgetName })
+        );
+        const body = data.Body.toString("utf-8");
 
         return {
           statusCode: 200,
           headers: {},
-          body: JSON.stringify(body)
+          body: JSON.stringify(body),
         };
       }
     }
@@ -629,7 +634,7 @@ exports.main = async function(event, context) {
         return {
           statusCode: 400,
           headers: {},
-          body: "Widget name missing"
+          body: "Widget name missing",
         };
       }
 
@@ -637,19 +642,21 @@ exports.main = async function(event, context) {
       const now = new Date();
       const data = widgetName + " created: " + now;
 
-      const base64data = Buffer.from(data, 'binary');
+      const base64data = Buffer.from(data, "binary");
 
-      await S3.send(new PutObjectCommand({
-        Bucket: bucketName,
-        Key: widgetName,
-        Body: base64data,
-        ContentType: 'application/json'
-      }));
+      await S3.send(
+        new PutObjectCommand({
+          Bucket: bucketName,
+          Key: widgetName,
+          Body: base64data,
+          ContentType: "application/json",
+        })
+      );
 
       return {
         statusCode: 200,
         headers: {},
-        body: data
+        body: data,
       };
     }
 
@@ -660,18 +667,21 @@ exports.main = async function(event, context) {
         return {
           statusCode: 400,
           headers: {},
-          body: "Widget name missing"
+          body: "Widget name missing",
         };
       }
 
-      await S3.send(new DeleteObjectCommand({
-        Bucket: bucketName, Key: widgetName
-      }));
+      await S3.send(
+        new DeleteObjectCommand({
+          Bucket: bucketName,
+          Key: widgetName,
+        })
+      );
 
       return {
         statusCode: 200,
         headers: {},
-        body: "Successfully deleted widget " + widgetName
+        body: "Successfully deleted widget " + widgetName,
       };
     }
 
@@ -679,17 +689,17 @@ exports.main = async function(event, context) {
     return {
       statusCode: 400,
       headers: {},
-      body: "We only accept GET, POST, and DELETE, not " + method
+      body: "We only accept GET, POST, and DELETE, not " + method,
     };
-  } catch(error) {
+  } catch (error) {
     var body = error.stack || JSON.stringify(error, null, 2);
     return {
       statusCode: 400,
       headers: {},
-      body: body
-    }
+      body: body,
+    };
   }
-}
+};
 ```
 
 Wire up these functions to your API Gateway code at the end of the `WidgetService` constructor\.
