@@ -7,6 +7,7 @@ The table below represents significant documentation milestones\. We fix errors 
 
 | Change | Description | Date | 
 | --- |--- |--- |
+| [IAM best practices updates](#doc-history) | Updated guide to align with the IAM best practices\. For more information, see [Security best practices in IAM](https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html)\. | March 23, 2023 | 
 | [Document `cdk.json`](#doc-history) | Add documentation of `cdk.json` configuration values\. | April 20, 2022 | 
 | [Dependency management](#doc-history) | Add topic on managing dependencies with the AWS CDK\. | April 7, 2022 | 
 | [Remove double\-braces from Java examples](#doc-history) | Replace this anti\-pattern with Java 9 `Map.of` throughout\. | March 9, 2022 | 

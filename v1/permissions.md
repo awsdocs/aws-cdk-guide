@@ -2,11 +2,15 @@
 
 The AWS Construct Library uses a few common, widely\-implemented idioms to manage access and permissions\. The IAM module provides you with the tools you need to use these idioms\.
 
+AWS CDK uses AWS CloudFormation to deploy changes\. Every deployment involves an actor \(either a developer, or an automated system\) that starts a AWS CloudFormation deployment\. In the course of doing this, the actor will assume one or more IAM Identities \(user or roles\) and optionally pass a role to AWS CloudFormation\. 
+
+ If you use AWS IAM Identity Center \(successor to AWS Single Sign\-On\) to authenticate as a user, then the single sign\-on provider supplies short\-lived session credentials that authorize you to act as a pre\-defined IAM role\. To learn how the AWS CDK obtains AWS credentials from IAM Identity Center authentication, see [Understand IAM Identity Center authentication](https://docs.aws.amazon.com/sdkref/latest/guide/understanding-sso.html) in the *AWS SDKs and Tools Reference Guide*\. 
+
 ## Principals<a name="permissions_principals"></a>
 
 An IAM principal is an authenticated AWS entity representing a user, service, or application that can call AWS APIs\. The AWS Construct Library supports specifying principals in several flexible ways to grant them access your AWS resources\.
 
-In security contexts, the term "principal" refers specifically to authenticated entities such as users\. Objects like groups and roles do not *represent* users \(and other authenticated entities\) but rather *identify* them indirectly for the purpose of granting permissions\. For example, if you create an IAM group, you can grant the group \(i\.e\. its members\) write access to a Amazon RDS table, but the group itself is not a principal since it does not represent a single entity \(also, you cannot log in to a group\)\.
+The AWS Construct Library supports specifying principals in several flexible ways to grant them access your AWS resources\. In security contexts, the term "principal" refers specifically to authenticated entities such as users\. Objects like groups and roles do not *represent* users \(and other authenticated entities\) but rather *identify* them indirectly for the purpose of granting permissions\. For example, if you create an IAM group, you can grant the group \(i\.e\. its members\) write access to a Amazon RDS table, but the group itself is not a principal since it does not represent a single entity \(also, you cannot log in to a group\)\.
 
 In the CDK's IAM library, classes that directly or indirectly identify principals implement the [https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-iam.IPrincipal.html](https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-iam.IPrincipal.html) interface, allowing these objects to be used interchangeably in access policies\. However, not all of them are principals in the security sense\. These objects include:
 

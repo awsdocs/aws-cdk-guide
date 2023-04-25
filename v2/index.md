@@ -61,6 +61,7 @@ sponsored by Amazon.
    + [Set a CloudWatch alarm](how_to_set_cw_alarm.md)
    + [Get a value from a context variable](get_context_var.md)
    + [Continuous integration and delivery (CI/CD) using CDK Pipelines](cdk_pipeline.md)
+   + [AWS CDK policy validation at synthesis time](policy-validation-synthesis.md)
 + [AWS CDK tools](tools.md)
    + [AWS CDK Toolkit (cdk command)](cli.md)
    + [AWS Toolkit for Visual Studio Code](vscode.md)

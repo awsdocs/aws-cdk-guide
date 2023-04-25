@@ -127,75 +127,73 @@ To opt out of version reporting, use one of the following methods:
   }
   ```
 
-## Specifying credentials and region<a name="cli-environment"></a>
+## Authentication with AWS<a name="getting_started_auth"></a>
 
-The CDK Toolkit needs to know your AWS account credentials and the AWS region into which you are deploying, not only for deployment operations but also to retrieve context values during synthesis\. Together, your account and region make up the *environment*\.
+ There are different ways in which you can configure programmatic access to AWS resources, depending on the environment and the AWS access available to you\. 
 
-**Important**  
-We strongly recommend against using your main AWS account for day\-to\-day tasks\. Instead, create a user in IAM and use its credentials with the CDK\.
+To choose your method of authentication and configure it for the CDK Toolkit, see [Authentication and access](https://docs.aws.amazon.com/sdkref/latest/guide/access.html) in the *AWS SDKs and Tools Reference Guide*\. 
 
-Credentials and region may be specified using environment variables or in configuration files\. These are the same variables and files used by other AWS tools such as the AWS CLI and the various AWS SDKs\. The CDK Toolkit looks for this information in the following order\.
-+ The `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_DEFAULT_REGION` environment variables\. Always specify all three variables, not just one or two\.
-+ A specific profile defined in the standard AWS `config` and `credentials` files, and specified using the `--profile` option on `cdk` commands\.
-+ The `[default]` section of the standard AWS `config` and `credentials` files\.
+The recommended approach for new users developing locally, who are not given a method of authentication by their employer, is to set up AWS IAM Identity Center \(successor to AWS Single Sign\-On\)\. This method includes installing the AWS CLI for ease of configuration and for regularly signing in to the AWS access portal\. If you choose this method, your environment should contain the following elements after you complete the procedure for [IAM Identity Center authentication](https://docs.aws.amazon.com/sdkref/latest/guide/access-sso.html) in the *AWS SDKs and Tools Reference Guide*:
++ The AWS CLI, which you use to start an AWS access portal session before you run your application\.
++ A [shared AWS`config` file](https://docs.aws.amazon.com/sdkref/latest/guide/file-format.html) having a `[default]` profile with a set of configuration values that can be referenced from the AWS CDK\. To find the location of this file, see [Location of the shared files](https://docs.aws.amazon.com/sdkref/latest/guide/file-location.html) in the *AWS SDKs and Tools Reference Guide*\.
++  The shared `config` file sets the [https://docs.aws.amazon.com/sdkref/latest/guide/feature-region.html](https://docs.aws.amazon.com/sdkref/latest/guide/feature-region.html) setting\. This sets the default AWS Region the AWS CDK and CDK Toolkit use for AWS requests\. 
++  The CDK Toolkit uses the profile's [SSO token provider configuration](https://docs.aws.amazon.com/sdkref/latest/guide/feature-sso-credentials.html#feature-sso-credentials-profile) to acquire credentials before sending requests to AWS\. The `sso_role_name` value, which is an IAM role connected to an IAM Identity Center permission set, should allow access to the AWS services used in your application\.
 
-**Note**  
-The standard AWS `config` and `credentials` files are located at `~/.aws/config` and `~/.aws/credentials` \(macOS/Linux\) or `%USERPROFILE%\.aws\config` and `%USERPROFILE%\.aws\credentials` \(Windows\)\.
-
-The environment specified in your AWS CDK app using the stack's `env` property is used during synthesis to generate an environment\-specific AWS CloudFormation template and during deployment to override the account or region specified by one of the above methods\. For more information, see [Environments](environments.md)\.
-
-If you have the AWS CLI installed, the easiest way to configure your account credentials and a default region is to issue the following command:
-
-```
-aws configure
-```
-
-Provide your AWS access key ID, secret access key, and default region when prompted\. These values are written to the `[default]` section of the `config` and `credentials` files\.
-
-If you don't have the AWS CLI installed, you can manually create or edit the `config` and `credentials` files to contain default credentials and a default region, in the following format\.
-+ In `~/.aws/config` or `%USERPROFILE%\.aws\config`
+  The following sample `config` file shows a default profile set up with SSO token provider configuration\. The profile's `sso_session` setting refers to the named [`sso-session` section](https://docs.aws.amazon.com/sdkref/latest/guide/file-format.html#section-session)\. The `sso-session` section contains settings to initiate an AWS access portal session\.
 
   ```
   [default]
-  region=us-west-2
-  ```
-+ In `~/.aws/credentials` or `%USERPROFILE%\.aws\credentials`
-
-  ```
-  [default]
-  aws_access_key_id=AKIAI44QH8DHBEXAMPLE
-  aws_secret_access_key=je7MtGbClwBF/2Zp9Utk/h3yCo8nvbEXAMPLEKEY
-  ```
-
-Besides specifying AWS credentials and a region in the `[default]` section, you can also add one or more `[profile NAME]` sections, where *NAME* is the name of the profile\.
-+ In `~/.aws/config` or `%USERPROFILE%\.aws\config`
-
-  ```
-  [profile test]
-  region=us-east-1
+  sso_session = my-sso
+  sso_account_id = 111122223333
+  sso_role_name = SampleRole
+  region = us-east-1
+  output = json
   
-  [profile prod]
-  region=us-west-1
-  ```
-+ In `~/.aws/credentials` or `%USERPROFILE%\.aws\credentials`
-
-  ```
-  [profile test]
-  aws_access_key_id=AKIAI44QH8DHBEXAMPLE
-  aws_secret_access_key=je7MtGbClwBF/2Zp9Utk/h3yCo8nvbEXAMPLEKEY
-  
-  [profile test]
-  aws_access_key_id=AKIAI44QH8DHBEXAMPLE
-  aws_secret_access_key=je7MtGbClwBF/2Zp9Utk/h3yCo8nvbEXAMPLEKEY
+  [sso-session my-sso]
+  sso_region = us-east-1
+  sso_start_url = https://provided-domain.awsapps.com/start
+  sso_registration_scopes = sso:account:access
   ```
 
-Always add named profiles to both the `config` and `credentials` files\. The AWS CDK Toolkit does not fall back to using the region in the `[default]` section when the specified named profile is not found in the `config` file, as some other AWS tools do\.
+### Start an AWS access portal session<a name="accessportal"></a>
 
-**Important**  
-Do not name a profile `default`: that is, do not use a `[profile default]` section in either `config` or `credentials`\.
+Before accessing AWS services, you need an active AWS access portal session for the CDK Toolkit to use IAM Identity Center authentication to resolve credentials\. Depending on your configured session lengths, your access will eventually expire and the CDK Toolkit will encounter an authentication error\. Run the following command in the AWS CLI to sign in to the AWS access portal\.
+
+```
+aws sso login
+```
+
+ If your SSO token provider configuration is using a named profile instead of the default profile, the command is `aws sso login --profile NAME`\. Also specify this profile when issuing cdk commands using the \-\-profile option or the `AWS_PROFILE` environment variable\.
+
+To test if you already have an active session, run the following AWS CLI command\.
+
+```
+aws sts get-caller-identity
+```
+
+The response to this command should report the IAM Identity Center account and permission set configured in the shared `config` file\.
 
 **Note**  
-Although the AWS CDK uses credentials from the same sources files as other AWS tools and SDKs, including the [AWS Command Line Interface](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html), it may behave slightly differently from these tools\. See [Setting credentials](https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/setting-credentials.html) for complete details on setting up credentials for the AWS SDK for JavaScript, which the AWS CDK uses under the hood\.
+If you already have an active AWS access portal session and run `aws sso login`, you will not be required to provide credentials\.   
+The sign in process may prompt you to allow the AWS CLI access to your data\. Since the AWS CLI is built on top of the SDK for Python, permission messages may contain variations of the `botocore` name\.
+
+## Specifying Region and other configuration<a name="cli-environment"></a>
+
+The CDK Toolkit needs to know the AWS Region that you're deploying into and how to authenticate with AWS\. This is needed for deployment operations and to retrieve context values during synthesis\. Together, your account and Region make up the *environment*\.
+
+Region may be specified using environment variables or in configuration files\. These are the same variables and files used by other AWS tools such as the AWS CLI and the various AWS SDKs\. The CDK Toolkit looks for this information in the following order\.
++ The `AWS_DEFAULT_REGION` environment variable\.
++ A named profile defined in the standard AWS `config` file and specified using the `--profile` option on `cdk` commands\.
++ The `[default]` section of the standard AWS `config` file\.
+
+Besides specifying AWS authentication and a Region in the `[default]` section, you can also add one or more `[profile NAME]` sections, where *NAME* is the name of the profile\. For more information about named profiles, see [Shared config and credentials files](https://docs.aws.amazon.com/sdkref/latest/guide/file-format.html) in the *AWS SDKs and Tools Reference Guide*\.
+
+The standard AWS `config` file is located at `~/.aws/config` \(macOS/Linux\) or `%USERPROFILE%\.aws\config` \(Windows\)\. For details and alternate locations, see [Location of the shared config and credentials files](https://docs.aws.amazon.com/sdkref/latest/guide/file-location.html) in the *AWS SDKs and Tools Reference Guide*
+
+The environment that you specify in your AWS CDK app by using the stack's `env` property is used during synthesis\. It's used to generate an environment\-specific AWS CloudFormation template, and during deployment, it overrides the account or Region specified by one of the preceding methods\. For more information, see [Environments](environments.md)\.
+
+**Note**  
+The AWS CDK uses credentials from the same source files as other AWS tools and SDKs, including the [AWS Command Line Interface](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html)\. However, the AWS CDK might behave somewhat differently from these tools\. It uses the AWS SDK for JavaScript under the hood\. For complete details on setting up credentials for the AWS SDK for JavaScript, see [Setting credentials](https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/setting-credentials.html)\.
 
 You may optionally use the `--role-arn` \(or `-r`\) option to specify the ARN of an IAM role that should be used for deployment\. This role must be assumable by the AWS account being used\.
 
@@ -351,7 +349,7 @@ The CDK Toolkit actually runs your app and synthesizes fresh templates before mo
 
 See `cdk synth --help` for all available options\. A few of the most\-frequently\-used options are covered below\.
 
-### Specifying context values<a name="w55aac33b7c35c11"></a>
+### Specifying context values<a name="w55aac33b7c37c11"></a>
 
 Use the `--context` or `-c` option to pass [runtime context](context.md) values to your CDK app\.
 
@@ -370,7 +368,7 @@ When deploying multiple stacks, the specified context values are normally passed
 cdk synth --context Stack1:key=value Stack2:key=value Stack1 Stack2
 ```
 
-### Specifying display format<a name="w55aac33b7c35c13"></a>
+### Specifying display format<a name="w55aac33b7c37c13"></a>
 
 By default, the synthesized template is displayed in YAML format\. Add the `--json` flag to display it in JSON format instead\.
 
@@ -378,7 +376,7 @@ By default, the synthesized template is displayed in YAML format\. Add the `--js
 cdk synth --json MyStack
 ```
 
-### Specifying output directory<a name="w55aac33b7c35c15"></a>
+### Specifying output directory<a name="w55aac33b7c37c15"></a>
 
 Add the `--output` \(`-o`\) option to write the synthesized templates to a directory other than `cdk.out`\.
 
@@ -454,7 +452,7 @@ Git\-style wildcards, both `*` and `**`, can be used in the `"watch"` and `"buil
 **Important**  
 Watch mode is not recommended for production deployments\.
 
-### Specifying AWS CloudFormation parameters<a name="w55aac33b7c37c19"></a>
+### Specifying AWS CloudFormation parameters<a name="w55aac33b7c39c19"></a>
 
 The AWS CDK Toolkit supports specifying AWS CloudFormation [parameters](parameters.md) at deployment\. You may provide these on the command line following the `--parameters` flag\.
 
@@ -476,7 +474,7 @@ cdk deploy MyStack YourStack --parameters MyStack:uploadBucketName=UploadBucket 
 
 By default, the AWS CDK retains values of parameters from previous deployments and uses them in later deployments if they are not specified explicitly\. Use the `--no-previous-parameters` flag to require all parameters to be specified\.
 
-### Specifying outputs file<a name="w55aac33b7c37c21"></a>
+### Specifying outputs file<a name="w55aac33b7c39c21"></a>
 
 If your stack declares AWS CloudFormation outputs, these are normally displayed on the screen at the conclusion of deployment\. To write them to a file in JSON format, use the `--outputs-file` flag\.
 
@@ -733,7 +731,7 @@ If one of cdk.json or ~/.cdk.json exists, options specified there will be used
 as defaults. Settings in cdk.json take precedence.
 ```
 
-### `cdk list` \(`ls`\)<a name="w55aac33b7c43b7b1"></a>
+### `cdk list` \(`ls`\)<a name="w55aac33b7c45b7b1"></a>
 
 ```
 cdk list [STACKS..]
@@ -746,7 +744,7 @@ Options:
                                                       [boolean] [default: false]
 ```
 
-### `cdk synthesize` \(`synth`\)<a name="w55aac33b7c43b7b3"></a>
+### `cdk synthesize` \(`synth`\)<a name="w55aac33b7c45b7b3"></a>
 
 ```
 cdk synthesize [STACKS..]
@@ -767,7 +765,7 @@ Options:
                                                       [boolean] [default: false]
 ```
 
-### `cdk bootstrap`<a name="w55aac33b7c43b7b5"></a>
+### `cdk bootstrap`<a name="w55aac33b7c45b7b5"></a>
 
 ```
 cdk bootstrap [ENVIRONMENTS..]
@@ -847,7 +845,7 @@ Options:
                                             example)                    [string]
 ```
 
-### `cdk deploy`<a name="w55aac33b7c43b7b7"></a>
+### `cdk deploy`<a name="w55aac33b7c45b7b7"></a>
 
 ```
 cdk deploy [STACKS..]
@@ -925,7 +923,7 @@ Options:
                                                        [boolean] [default: true]
 ```
 
-### `cdk destroy`<a name="w55aac33b7c43b7b9"></a>
+### `cdk destroy`<a name="w55aac33b7c45b7b9"></a>
 
 ```
 cdk destroy [STACKS..]
@@ -944,7 +942,7 @@ Options:
                            stacks                                      [boolean]
 ```
 
-### `cdk diff`<a name="w55aac33b7c43b7c11"></a>
+### `cdk diff`<a name="w55aac33b7c45b7c11"></a>
 
 ```
 cdk diff [STACKS..]
@@ -970,7 +968,7 @@ Options:
                                                       [boolean] [default: false]
 ```
 
-### `cdk init`<a name="w55aac33b7c43b7c13"></a>
+### `cdk init`<a name="w55aac33b7c45b7c13"></a>
 
 ```
 cdk init [TEMPLATE]
@@ -992,7 +990,7 @@ Options:
                            project                    [boolean] [default: false]
 ```
 
-### `cdk context`<a name="w55aac33b7c43b7c15"></a>
+### `cdk context`<a name="w55aac33b7c45b7c15"></a>
 
 ```
 cdk context

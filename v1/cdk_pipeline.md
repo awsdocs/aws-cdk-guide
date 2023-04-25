@@ -22,7 +22,7 @@ To bootstrap an environment that can provision an AWS CDK pipeline, set the envi
 
 Most organizations mandate stricter controls on what kinds of resources can be deployed by automation\. Check with the appropriate department within your organization to determine the policy your pipeline should use\.
 
-You may omit the \-\-profile option if your default AWS profile contains the necessary credentials or to instead use the environment variables `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_DEFAULT_REGION` to provide your AWS account credentials\.
+You can omit the \-\-profile option if your default AWS profile contains the necessary authentication configuration and AWS Region\.
 
 ------
 #### [ macOS/Linux ]
@@ -46,7 +46,7 @@ cdk bootstrap aws://ACCOUNT-NUMBER/REGION --profile ADMIN-PROFILE ^
 
 To bootstrap additional environments into which AWS CDK applications will be deployed by the pipeline, use the commands below instead\. The \-\-trust option indicates which other account should have permissions to deploy AWS CDK applications into this environment; specify the pipeline's AWS account ID\.
 
-Again, you may omit the \-\-profile option if your default AWS profile contains the necessary credentials or if you are using the `AWS_*` environment variables to provide your AWS account credentials\.
+Again, you can omit the \-\-profile option if your default AWS profile contains the necessary authentication configuration and AWS Region\.
 
 ------
 #### [ macOS/Linux ]

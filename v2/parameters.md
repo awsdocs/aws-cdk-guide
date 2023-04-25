@@ -15,7 +15,7 @@ Using parameters requires you to be mindful of how the code you're writing behav
 
 Generally, it's better to have your CDK app accept necessary information in a well\-defined way and use it directly to declare constructs in your CDK app\. An ideal AWS CDK\-generated AWS CloudFormation template is concrete, with no values remaining to be specified at deployment time\. 
 
-There are, however, use cases to which AWS CloudFormation parameters are uniquely suited\. If you have separate teams defining and deploying infrastructure, for example, you can use parameters to make the generated templates more widely useful\. Also, because the AWS CDK supports AWS CloudFormation parameters, you can use the AWS CDK with AWS services that use AWS CloudFormation templates \(such as AWS Service Catalog\)\. These AWS services use parameters to configure the template that's being deployed\.
+There are, however, use cases to which AWS CloudFormation parameters are uniquely suited\. If you have separate teams defining and deploying infrastructure, for example, you can use parameters to make the generated templates more widely useful\. Also, because the AWS CDK supports AWS CloudFormation parameters, you can use the AWS CDK with AWS services that use AWS CloudFormation templates \(such as Service Catalog\)\. These AWS services use parameters to configure the template that's being deployed\.
 
 ## Defining parameters<a name="parameters_define"></a>
 
