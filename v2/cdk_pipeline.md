@@ -452,7 +452,7 @@ export class MyLambdaStack extends cdk.Stack {
       super(scope, id, props);
 
       new Function(this, 'LambdaFunction', {
-        runtime: Runtime.NODEJS_12_X,
+        runtime: Runtime.NODEJS_18_X,
         handler: 'index.handler',
         code: new InlineCode('exports.handler = _ => "Hello, CDK";')
       });
