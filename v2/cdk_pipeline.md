@@ -452,7 +452,7 @@ export class MyLambdaStack extends cdk.Stack {
       super(scope, id, props);
 
       new Function(this, 'LambdaFunction', {
-        runtime: Runtime.NODEJS_12_X,
+        runtime: Runtime.NODEJS_18_X,
         handler: 'index.handler',
         code: new InlineCode('exports.handler = _ => "Hello, CDK";')
       });
@@ -518,7 +518,7 @@ class MyLambdaStack extends cdk.Stack {
       super(scope, id, props);
 
       new Function(this, 'LambdaFunction', {
-        runtime: Runtime.NODEJS_12_X,
+        runtime: Runtime.NODEJS_18_X,
         handler: 'index.handler',
         code: new InlineCode('exports.handler = _ => "Hello, CDK";')
       });
@@ -590,7 +590,7 @@ class MyLambdaStack(cdk.Stack):
         super().__init__(scope, construct_id, **kwargs)
 
         Function(self, "LambdaFunction",
-            runtime=Runtime.NODEJS_12_X,
+            runtime=Runtime.NODEJS_18_X,
             handler="index.handler",
             code=InlineCode("exports.handler = _ => 'Hello, CDK';")
         )
@@ -660,7 +660,7 @@ public class MyPipelineLambdaStack extends Stack {
         super(scope, id, props);
 
         Function.Builder.create(this, "LambdaFunction")
-          .runtime(Runtime.NODEJS_12_X)
+          .runtime(Runtime.NODEJS_18_X)
           .handler("index.handler")
           .code(new InlineCode("exports.handler = _ => 'Hello, CDK';"))
           .build();
@@ -753,7 +753,7 @@ namespace MyPipeline
         {
             new Function(this, "LambdaFunction", new FunctionProps
             {
-                Runtime = Runtime.NODEJS_12_X,
+                Runtime = Runtime.NODEJS_18_X,
                 Handler = "index.handler",
                 Code = new InlineCode("exports.handler = _ => 'Hello, CDK';")
             });
@@ -1410,7 +1410,7 @@ However, by its very nature, a library that needs a high level of access to fulf
 In particular, keep in mind the following:
 + Be mindful of the software you depend on\. Vet all third\-party software you run in your pipeline, because it can change the infrastructure that gets deployed\. 
 + Use dependency locking to prevent accidental upgrades\. CDK Pipelines respects `package-lock.json` and `yarn.lock` to make sure that your dependencies are the ones you expect\.
-+ CDK Pipelines runs on resources created in your own account, and the configuration of those resources is controlled by developers submitting code through the pipeline\. Therefore, CDK Pipelines by itself cannot protect against malicious developers trying to bypass compliance checks\. If your threat model includes developers writing CDK code, you should have external compliance mechanisms in place like [AWS CloudFormation Hooks](http://aws.amazon.com/blogs/blogs/mt/proactively-keep-resources-secure-and-compliant-with-aws-cloudformation-hooks/) \(preventive\) or [AWS Config](https://aws.amazon.com/config/) \(reactive\) that the AWS CloudFormation Execution Role does not have permissions to disable\. 
++ CDK Pipelines runs on resources created in your own account, and the configuration of those resources is controlled by developers submitting code through the pipeline\. Therefore, CDK Pipelines by itself cannot protect against malicious developers trying to bypass compliance checks\. If your threat model includes developers writing CDK code, you should have external compliance mechanisms in place like [AWS CloudFormation Hooks](http://aws.amazon.com/blogs/mt/proactively-keep-resources-secure-and-compliant-with-aws-cloudformation-hooks/) \(preventive\) or [AWS Config](http://aws.amazon.com/config/) \(reactive\) that the AWS CloudFormation Execution Role does not have permissions to disable\. 
 + Credentials for production environments should be short\-lived\. After bootstrapping and initial provisioning, there is no need for developers to have account credentials at all\. Changes can be deployed through the pipeline\. Reduce the possibility of credentials leaking by not needing them in the first place\.
 
 ## Troubleshooting<a name="cdk_pipeline_troubleshooting"></a>

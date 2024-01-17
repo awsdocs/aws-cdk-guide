@@ -165,7 +165,7 @@ export class StateMachineStack extends cdk.Stack {
 
     // This Lambda function starts the state machine.
     const func = new lambda.Function(this, "LambdaFunction", {
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_18_X,
       handler: "handler",
       code: lambda.Code.fromAsset("./start-state-machine"),
       environment: {
@@ -205,7 +205,7 @@ class StateMachineStack extends cdk.Stack {
 
     // This Lambda function starts the state machine.
     const func = new lambda.Function(this, "LambdaFunction", {
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_18_X,
       handler: "handler",
       code: lambda.Code.fromAsset("./start-state-machine"),
       environment: {
@@ -258,7 +258,7 @@ class StateMachineStack(cdk.Stack):
         func = lambda_.Function(
             self,
             "LambdaFunction",
-            runtime=lambda_.Runtime.NODEJS_14_X,
+            runtime=lambda_.Runtime.NODEJS_18_X,
             handler="handler",
             code=lambda_.Code.from_asset("./start-state-machine"),
             environment={
@@ -308,7 +308,7 @@ public class StateMachineStack extends Stack {
 
         // This Lambda function starts the state machine.
         final Function func = Function.Builder.create(this, "LambdaFunction")
-                .runtime(Runtime.NODEJS_14_X)
+                .runtime(Runtime.NODEJS_18_X)
                 .handler("handler")
                 .code(Code.fromAsset("./start-state-machine"))
                 .environment(Collections.singletonMap("STATE_MACHINE_ARN", stateMachine.getStateMachineArn()))
@@ -357,7 +357,7 @@ namespace AwsCdkAssertionSamples
             // This Lambda function starts the state machine.
             var func = new Function(this, "LambdaFunction", new FunctionProps
             {
-                Runtime = Runtime.NODEJS_14_X,
+                Runtime = Runtime.NODEJS_18_X,
                 Handler = "handler",
                 Code = Code.FromAsset("./start-state-machine"),
                 Environment = new Dictionary<string, string>

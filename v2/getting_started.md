@@ -55,9 +55,9 @@ The actual package name of the main CDK package varies by language\.
 ------
 #### [ Java ]
 
-| Add to `pom.xml` | Group `software.amazon.awscdk`; artifact `aws-cdk-lib` | 
+| In `pom.xml`, add | Group `software.amazon.awscdk`; artifact `aws-cdk-lib` | 
 | --- |--- |
-| Import | `import software.amazon.awscdk.App;` \(for example\) | 
+| Import | `import software.amazon.awscdk.App;` | 
 | --- |--- |
 
 ------

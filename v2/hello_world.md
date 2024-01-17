@@ -488,7 +488,7 @@ Update `hello-cdk.go`\.
 
 ------
 
-Here, we haven't written any code that, in itself, changes our Amazon S3 bucket\. Instead, our code defines the desired state of the bucket\. The AWS CDK synthesizes that state to a new AWS CloudFormation template\. Then, it deploys a changeset that makes only the changes necessary to reach that state\.
+Here, we haven't written any code that, in itself, changes our Amazon S3 bucket\. Instead, our code defines the desired state of the bucket\. The AWS CDK synthesizes that state to a new AWS CloudFormation template\. Then, it deploys a change set that makes only the changes necessary to reach that state\.
 
 To see these changes, we'll use the `cdk diff` command\.
 

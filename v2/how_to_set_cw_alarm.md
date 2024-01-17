@@ -54,7 +54,7 @@ Create your own [metric](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib
 const metric = new cloudwatch.Metric({
   namespace: 'MyNamespace',
   metricName: 'MyMetric',
-  dimensions: { MyDimension: 'MyDimensionValue' }
+  dimensionsMap: { MyDimension: 'MyDimensionValue' }
 });
 ```
 
@@ -65,7 +65,7 @@ const metric = new cloudwatch.Metric({
 const metric = new cloudwatch.Metric({
   namespace: 'MyNamespace',
   metricName: 'MyMetric',
-  dimensions: { MyDimension: 'MyDimensionValue' }
+  dimensionsMap: { MyDimension: 'MyDimensionValue' }
 });
 ```
 
@@ -76,7 +76,7 @@ const metric = new cloudwatch.Metric({
 metric = cloudwatch.Metric(
     namespace="MyNamespace",
     metric_name="MyMetric",
-    dimensions=dict(MyDimension="MyDimensionValue")
+    dimensionsMap=dict(MyDimension="MyDimensionValue")
 )
 ```
 

@@ -1,6 +1,8 @@
 # Constructs<a name="constructs"></a>
 
-Constructs are the basic building blocks of AWS CDK apps\. A construct represents a "cloud component" and encapsulates everything AWS CloudFormation needs to create the component\. 
+Constructs are the basic building blocks of AWS CDK apps\. A construct represents a "cloud component" and encapsulates everything AWS CloudFormation needs to create the component\.
+
+The following tutorial video provides a comprehensive overview of CDK constructs, and explains how you can use them in your insfrastructure as code \(IaC\)\.
 
 **Note**  
 Constructs are part of the Construct Programming Model \(CPM\)\. They're also used by other tools such as CDK for Terraform \(CDKtf\), CDK for Kubernetes \(CDK8s\), and Projen\.
@@ -186,7 +188,7 @@ func NewHelloCdkStack(scope constructs.Construct, id string, props *HelloCdkStac
 
 As you can see, you need a scope within which to define your bucket\. Resources eventually need to be deployed as part of an AWS CloudFormation stack into an *AWS [environment](environments.md)*\. The environment covers a specific AWS account and AWS Region\. AWS constructs, such as `s3.Bucket`, must be defined within the scope of a [Stack](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.Stack.html)\.
 
-Stacks in AWS CDK apps extend the **Stack** base class, as shown in the previous example\. The following example is a common pattern when creating a stack within your AWS CDK app\. It shows how to extend the **Stack** class, define a constructor that accepts **scope**, **id**, and **props**, and invoke the base class constructor via `super` with the received **scope**, **id**, and **props**\. 
+Stacks in AWS CDK apps extend the **Stack** base class, as shown in the previous example\. The following example is a common pattern when creating a stack within your AWS CDK app\. It shows how to extend the **Stack** class, define a constructor that accepts **scope**, **id**, and **props**, and invoke the base class constructor via `super` with the received **scope**, **id**, and **props**\.
 
 ------
 #### [ TypeScript ]
@@ -262,7 +264,7 @@ public class HelloCdkStack : Stack
 
 Once you have defined a stack, you can populate it with resources by instantiating constructs\. First, we'll do it with an L1 construct\.
 
-L1 constructs are exactly the resources defined by AWS CloudFormation—no more, no less\. You must provide the resource's required configuration yourself\. Here, for example, is how to create an Amazon S3 bucket using the `CfnBucket` class\. \(You'll see a similar definition using the `Bucket` class in the next section\.\) 
+L1 constructs are exactly the resources defined by AWS CloudFormation—no more, no less\. You must provide the resource's required configuration yourself\. Here, for example, is how to create an Amazon S3 bucket using the `CfnBucket` class\. \(You'll see a similar definition using the `Bucket` class in the next section\.\)
 
 ------
 #### [ TypeScript ]
@@ -352,7 +354,7 @@ const bucket = new s3.CfnBucket(this, "MyBucket", {
 ------
 #### [ Python ]
 
-In Python, these properties are represented by types defined as inner classes of the L1 construct\. For example, the optional property `cors_configuraiton` of a `CfnBucket` requires a wrapper of type `CfnBucket.CorsConfigurationProperty`\. Here we are defining `cors_configuration` on a `CfnBucket` instance\. 
+In Python, these properties are represented by types defined as inner classes of the L1 construct\. For example, the optional property `cors_configuration` of a `CfnBucket` requires a wrapper of type `CfnBucket.CorsConfigurationProperty`\. Here we are defining `cors_configuration` on a `CfnBucket` instance\.
 
 ```
 bucket = CfnBucket(self, "MyBucket", bucket_name="MyBucket",
@@ -368,7 +370,7 @@ bucket = CfnBucket(self, "MyBucket", bucket_name="MyBucket",
 ------
 #### [ Java ]
 
-In Java, these properties are represented by types defined as inner classes of the L1 construct\. For example, the optional property `corsConfiguration` of a `CfnBucket` requires a wrapper of type `CfnBucket.CorsConfigurationProperty`\. Here we are defining `corsConfiguration` on a `CfnBucket` instance\. 
+In Java, these properties are represented by types defined as inner classes of the L1 construct\. For example, the optional property `corsConfiguration` of a `CfnBucket` requires a wrapper of type `CfnBucket.CorsConfigurationProperty`\. Here we are defining `corsConfiguration` on a `CfnBucket` instance\.
 
 ```
 CfnBucket bucket = CfnBucket.Builder.create(this, "MyBucket")
@@ -385,7 +387,7 @@ CfnBucket bucket = CfnBucket.Builder.create(this, "MyBucket")
 ------
 #### [ C\# ]
 
-In C\#, these properties are represented by types defined as inner classes of the L1 construct\. For example, the optional property `CorsConfiguration` of a `CfnBucket` requires a wrapper of type `CfnBucket.CorsConfigurationProperty`\. Here we are defining `CorsConfiguration` on a `CfnBucket` instance\. 
+In C\#, these properties are represented by types defined as inner classes of the L1 construct\. For example, the optional property `CorsConfiguration` of a `CfnBucket` requires a wrapper of type `CfnBucket.CorsConfigurationProperty`\. Here we are defining `CorsConfiguration` on a `CfnBucket` instance\.
 
 ```
 var bucket = new CfnBucket(this, "MyBucket", new CfnBucketProps
@@ -426,7 +428,7 @@ In Go, these types are named using the name of the L1 construct, an underscore, 
 ------
 
 **Important**  
-You can't use L2 property types with L1 constructs, or vice versa\. When working with L1 constructs, always use the types defined for the L1 construct you're using\. Do not use types from other L1 constructs \(some may have the same name, but they are not the same type\)\.   
+You can't use L2 property types with L1 constructs, or vice versa\. When working with L1 constructs, always use the types defined for the L1 construct you're using\. Do not use types from other L1 constructs \(some may have the same name, but they are not the same type\)\.  
 Some of our language\-specific API references currently have errors in the paths to L1 property types, or don't document these classes at all\. We hope to fix this soon\. In the meantime, remember that such types are always inner classes of the L1 construct they are used with\.
 
 ## Using L2 constructs<a name="constructs_using"></a>
@@ -586,7 +588,7 @@ new Bucket(this, "MyEncryptedBucket", new BucketProps
 
 ------
 
- AWS constructs are designed around the concept of "sensible defaults\." Most constructs have a minimal required configuration, enabling you to quickly get started while also providing full control over the configuration when you need it\. 
+ AWS constructs are designed around the concept of "sensible defaults\." Most constructs have a minimal required configuration, enabling you to quickly get started while also providing full control over the configuration when you need it\.
 
 ## Interacting with constructs<a name="constructs_interact"></a>
 
@@ -662,7 +664,7 @@ The following code defines an AWS Lambda function and associates it with an Amaz
 ```
 const jobsQueue = new sqs.Queue(this, 'jobs');
 const createJobLambda = new lambda.Function(this, 'create-job', {
-  runtime: lambda.Runtime.NODEJS_14_X,
+  runtime: lambda.Runtime.NODEJS_18_X,
   handler: 'index.handler',
   code: lambda.Code.fromAsset('./create-job-lambda-code'),
   environment: {
@@ -677,7 +679,7 @@ const createJobLambda = new lambda.Function(this, 'create-job', {
 ```
 const jobsQueue = new sqs.Queue(this, 'jobs');
 const createJobLambda = new lambda.Function(this, 'create-job', {
-  runtime: lambda.Runtime.NODEJS_14_X,
+  runtime: lambda.Runtime.NODEJS_18_X,
   handler: 'index.handler',
   code: lambda.Code.fromAsset('./create-job-lambda-code'),
   environment: {
@@ -692,7 +694,7 @@ const createJobLambda = new lambda.Function(this, 'create-job', {
 ```
 jobs_queue = sqs.Queue(self, "jobs")
 create_job_lambda = lambda_.Function(self, "create-job",
-    runtime=lambda_.Runtime.NODEJS_14_X,
+    runtime=lambda_.Runtime.NODEJS_18_X,
     handler="index.handler",
     code=lambda_.Code.from_asset("./create-job-lambda-code"),
     environment=dict(
@@ -721,7 +723,7 @@ Function createJobLambda = Function.Builder.create(this, "create-job")
 var jobsQueue = new Queue(this, "jobs");
 var createJobLambda = new Function(this, "create-job", new FunctionProps
 {
-    Runtime = Runtime.NODEJS_14_X,
+    Runtime = Runtime.NODEJS_18_X,
     Handler = "index.handler",
     Code = Code.FromAsset(@".\create-job-lambda-code"),
     Environment = new Dictionary<string, string>
@@ -736,7 +738,7 @@ var createJobLambda = new Function(this, "create-job", new FunctionProps
 
 ```
 	createJobLambda := awslambda.NewFunction(stack, jsii.String("create-job"), &awslambda.FunctionProps{
-		Runtime: awslambda.Runtime_NODEJS_14_X(),
+		Runtime: awslambda.Runtime_NODEJS_18_X(),
 		Handler: jsii.String("index.handler"),
 		Code:    awslambda.Code_FromAsset(jsii.String(".\\create-job-lambda-code"), nil),
 		Environment: &map[string]*string{
@@ -893,7 +895,7 @@ func NewNotifyingBucket(scope constructs.Construct, id *string, props *Notifying
 **Note**  
 Our `NotifyingBucket` construct inherits not from `Bucket` but rather from `Construct`\. We are using composition, not inheritance, to bundle an Amazon S3 bucket and an Amazon SNS topic together\. In general, composition is preferred over inheritance when developing AWS CDK constructs\.
 
-The `NotifyingBucket` constructor has a typical construct signature: `scope`, `id`, and `props`\. The last argument, `props`, is optional \(gets the default value `{}`\) because all props are optional\. \(The base `Construct` class does not take a `props` argument\.\) You could define an instance of this construct in your app without `props`, for example: 
+The `NotifyingBucket` constructor has a typical construct signature: `scope`, `id`, and `props`\. The last argument, `props`, is optional \(gets the default value `{}`\) because all props are optional\. \(The base `Construct` class does not take a `props` argument\.\) You could define an instance of this construct in your app without `props`, for example:
 
 ------
 #### [ TypeScript ]

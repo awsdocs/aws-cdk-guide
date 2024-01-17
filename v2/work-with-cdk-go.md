@@ -56,10 +56,6 @@ Field and method names use camel casing \(`likeThis`\) in TypeScript, the CDK's 
 
 In your `main` method, use `defer jsii.Close()` to make sure your CDK app cleans up after itself\.
 
-### Field and method names<a name="go-naming"></a>
-
-Field and method names use camel casing \(`likeThis`\) in TypeScript, the CDK's language of origin\. In Go, these follow Go conventions, so are Pascal\-cased \(`LikeThis`\)\.
-
 ### Missing values and pointer conversion<a name="go-missing-values"></a>
 
 In Go, missing values in AWS CDK objects such as property bundles are represented by `nil`\. Go doesn't have nullable types; the only type that can contain `nil` is a pointer\. To allow values to be optional, then, all CDK properties, arguments, and return values are pointers, even for primitive types\. This applies to required values as well as optional ones, so if a required value later becomes optional, no breaking change in type is needed\.

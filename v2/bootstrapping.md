@@ -597,3 +597,22 @@ This section contains a list of the changes made in each version\.
 | 12 | 2\.20\.0 | Adds support for experimental cdk import\. | 
 | 13 | 2\.25\.0 | Makes container images in bootstrap\-created Amazon ECR repositories immutable\. | 
 | 14 | 2\.34\.0 | Turns off Amazon ECR image scanning at the repository level by default to allow bootstrapping Regions that do not support image scanning\. | 
+| 15 | 2\.60\.0 | KMS keys cannot be tagged\. | 
+| 16 | 2\.69\.0 | Addresses Security Hub finding [KMS\.2](https://docs.aws.amazon.com/securityhub/latest/userguide/kms-controls.html#kms-2)\. | 
+| 17 | 2\.72\.0 | Addresses Security Hub finding [ECR\.3](https://docs.aws.amazon.com/securityhub/latest/userguide/ecr-controls.html#ecr-3)\. | 
+| 18 | 2\.80\.0 | Reverted changes made for version 16 as they don't work in all partitions and are are not recommended\. | 
+| 19 | 2\.106\.1 | Reverted changes made to version 18 where AccessControl property was removed from the template\. \([\#27964](https://github.com/aws/aws-cdk/issues/27964)\) | 
+
+## Security Hub Findings<a name="bootstrapping-securityhub"></a>
+
+ If you are using AWS Security Hub, you may see findings reported on some of the resources created by the AWS CDK Bootstrapping process\. Security Hub findings help you find resource configurations you should double\-check for accuracy and safety\. We have reviewed these specific resource configurations with AWS Security and are confident they do not constitute a security problem\. 
+
+### \[KMS\.2\] IAM principals should not have IAM inline policies that allow decryption actions on all KMS keys<a name="bootstrapping-securityhub-kms2"></a>
+
+ The Deploy Role \(default name `cdk-hnb659fds-deploy-role-ACCOUNT-REGION`\) has permissions to read encrypted data stored in Amazon S3\. The policy does not give permission to any data by itself: only data read from Amazon S3 can be decrypted, and only from buckets that explicitly allow the Deploy Role to read from them via their Bucket Policy, and keys that explicitly allow the Deploy Role to decrypt using them using their Key Policy\. This statement is used to allow AWS CDK Pipelines to perform cross\-account deployments\. 
+
+ ** Why does Security Hub flag this? ** The policy contains a `Resource: *` combined with a `Condition` clause; Security Hub is flagging the `*`\. The `*` is necessary because at the time the account is bootstrapped, the AWS KMS key created by AWS CDK Pipelines for the CodePipeline Artifact Bucket does not exist yet so we can't reference its ARN\. In addition, Security Hub does not include the `Condition` clause in the policy statement in its reasoning\. 
+
+**What if I want to fix this finding?** As long as the resource policies on your AWS KMS keys are not unnecessarily permissive, the current Role policy does not allow the Deploy Role to access any more data than it should\. If you still want to get rid of the finding, you can do so by customizing the bootstrap stack \(using the process outlined above\) in one of these 2 ways:
++ If you are not using AWS CDK Pipelines for cross\-account deployments: remove the statement with `Sid: PipelineCrossAccountArtifactsBucket` from the deploy role; or
++ If you are using AWS CDK Pipelines for cross\-account deployments: after deploying your AWS CDK Pipeline, look up the AWS KMS Key ARN of the Artifact Bucket and replace the `Resource: *` of the `Sid: PipelineCrossAccountArtifactsBucket` statement with the actual Key ARN\.
