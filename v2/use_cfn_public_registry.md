@@ -5,7 +5,7 @@
 All public extensions published by AWS are available to all accounts in all Regions without any action on your part\. However, you must activate each third\-party extension you want to use, in each account and Region where you want to use it\. 
 
 **Note**  
-When you use AWS CloudFormation with third\-party resource types, you will incur charges\. Charges are based on the number of handler operations you run per month and handler operation duration\. See [CloudFormation pricing](http://aws.amazon.com/cloudformation/pricing/) for complete details\.
+When you use AWS CloudFormation with third\-party resource types, you will incur charges\. Charges are based on the number of handler operations you run per month and handler operation duration\. See [CloudFormation pricing](https://aws.amazon.com/cloudformation/pricing/) for complete details\.
 
 See [Using public extensions in CloudFormation](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/registry-public.html) for complete documentation of this feature from the AWS CloudFormation side\.
 

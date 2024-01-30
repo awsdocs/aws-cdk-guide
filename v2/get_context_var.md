@@ -18,6 +18,8 @@ To specify the same context variable and value in the `cdk.json` file, use the f
 }
 ```
 
+If you specify a context variable using both the AWS CDK CLI and `cdk.json` file, the AWS CDK CLI value takes precedence\.
+
 To get the value of a context variable in your app, use the `TryGetContext` method in the context of a construct\. \(That is, when `this`, or `self` in Python, is an instance of some construct\.\) The example gets the context value **bucket\_name**\. If the requested value is not defined, `TryGetContext` returns `undefined` \(`None` in Python; `null` in Java and C\#; `nil` in Go\) rather than raising an exception\.
 
 ------

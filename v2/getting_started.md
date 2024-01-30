@@ -6,7 +6,7 @@ This topic introduces you to important AWS CDK concepts and describes how to ins
 
 The AWS Cloud Development Kit \(AWS CDK\) lets you define your cloud infrastructure as code in one of its supported programming languages\. It is intended for moderately to highly experienced AWS users\.
 
-Ideally, you already have experience with popular AWS services, particularly [AWS IAM Identity Center \(successor to AWS Single Sign\-On\)](https://docs.aws.amazon.com/singlesignon/latest/userguide/)\. You might also have experience working with AWS resources programmatically\.
+Ideally, you already have experience with popular AWS services, particularly [AWS IAM Identity Center](https://docs.aws.amazon.com/singlesignon/latest/userguide/)\. You might also have experience working with AWS resources programmatically\.
 
 Familiarity with [AWS CloudFormation](https://aws.amazon.com/cloudformation/) is also useful, because the output of an AWS CDK program is an AWS CloudFormation template\.
 
@@ -250,7 +250,7 @@ You must establish how the AWS CDK authenticates with AWS when developing with A
 
 To choose your method of authentication and configure it for the AWS CDK, see [Authentication and access](https://docs.aws.amazon.com/sdkref/latest/guide/access.html) in the *AWS SDKs and Tools Reference Guide*\. 
 
-The recommended approach for new users developing locally, who aren't given a method of authentication by their employer, is to set up AWS IAM Identity Center \(successor to AWS Single Sign\-On\)\. This method includes installing the AWS CLI for ease of configuration and for regularly signing in to the AWS access portal\. If you choose this method, your environment should contain the following elements after you complete the procedure for [IAM Identity Center authentication](https://docs.aws.amazon.com/sdkref/latest/guide/access-sso.html) in the *AWS SDKs and Tools Reference Guide*:
+The recommended approach for new users developing locally, who aren't given a method of authentication by their employer, is to set up AWS IAM Identity Center\. This method includes installing the AWS CLI for ease of configuration and for regularly signing in to the AWS access portal\. If you choose this method, your environment should contain the following elements after you complete the procedure for [IAM Identity Center authentication](https://docs.aws.amazon.com/sdkref/latest/guide/access-sso.html) in the *AWS SDKs and Tools Reference Guide*:
 + The AWS CLI, which you use to start an AWS access portal session before you run your application\.
 + A [shared AWS`config` file](https://docs.aws.amazon.com/sdkref/latest/guide/file-format.html) having a `[default]` profile with a set of configuration values that can be referenced from the AWS CDK\. To find the location of this file, see [Location of the shared files](https://docs.aws.amazon.com/sdkref/latest/guide/file-location.html) in the *AWS SDKs and Tools Reference Guide*\.
 +  The shared `config` file sets the [https://docs.aws.amazon.com/sdkref/latest/guide/feature-region.html](https://docs.aws.amazon.com/sdkref/latest/guide/feature-region.html) setting\. This sets the default AWS Region the AWS CDK uses for AWS requests\. 
