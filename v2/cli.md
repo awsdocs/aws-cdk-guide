@@ -122,7 +122,7 @@ To opt out of version reporting, use one of the following methods:
   }
   ```
 
-## Authentication with AWS<a name="getting_started_auth"></a>
+## Authentication with AWS<a name="cli_auth"></a>
 
  There are different ways in which you can configure programmatic access to AWS resources, depending on the environment and the AWS access available to you\. 
 

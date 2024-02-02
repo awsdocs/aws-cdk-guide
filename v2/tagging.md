@@ -7,7 +7,7 @@ Tags are informational key\-value elements that you can add to constructs in you
 + Any other purposes that you devise
 
 **Tip**  
-For more information about how you can use tags with your AWS resources, see the whitepaper [Tagging Best Practices](https://d1.awsstatic.com/whitepapers/aws-tagging-best-practices.pdf) \(PDF\)\.
+For more information about how you can use tags with your AWS resources, see [Best Practices for Tagging AWS Resources](https://docs.aws.amazon.com/whitepapers/latest/tagging-best-practices/tagging-best-practices.html) in the *AWS Whitepaper*\.
 
 The [https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.Tags.html](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.Tags.html) class includes the static method `of()`, through which you can add tags to, or remove tags from, the specified construct\. 
 +  [https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.Tags.html#addkey-value-props](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.Tags.html#addkey-value-props) applies a new tag to the given construct and all of its children\. 

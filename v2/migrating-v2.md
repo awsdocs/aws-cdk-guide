@@ -1,4 +1,4 @@
-# Migrating to AWS CDK v2<a name="migrating-v2"></a>
+# Migrating from AWS CDK v1 to AWS CDK v2<a name="migrating-v2"></a>
 
 Version 2 of the AWS Cloud Development Kit \(AWS CDK\) is designed to make writing infrastructure as code in your preferred programming language easier\. This topic describes the changes between v1 and v2 of the AWS CDK\.
 
