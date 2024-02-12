@@ -1,5 +1,20 @@
 # Resources<a name="resources"></a>
 
+*Resources* are what you configure to use AWS services in your applications\. Resources are a feature of AWS CloudFormation\. By configuring resources and their properties in a AWS CloudFormation template, you can deploy to AWS CloudFormation to provision your resources\. With the AWS Cloud Development Kit \(AWS CDK\), you can configure resources through constructs\. You then deploy your CDK app, which involves synthesizing a AWS CloudFormation template and deploying to AWS CloudFormation to provision your resources\.
+
+**Topics**
++ [Configuring resources using constructs](#resources-configure)
++ [Referencing resources](#resources_referencing)
++ [Resource physical names](#resources_physical_names)
++ [Passing unique resource identifiers](#resources_identifiers)
++ [Granting permissions between resources](#resources_grants)
++ [Resource metrics and alarms](#resources_metrics)
++ [Network traffic](#resources_traffic)
++ [Event handling](#resources_events)
++ [Removal policies](#resources_removal)
+
+## Configuring resources using constructs<a name="resources-configure"></a>
+
 As described in [Constructs](constructs.md), the AWS CDK provides a rich class library of constructs, called *AWS constructs*, that represent all AWS resources\.
 
 To create an instance of a resource using its corresponding construct, pass in the scope as the first argument, the logical ID of the construct, and a set of configuration properties \(props\)\. For example, here's how to create an Amazon SQS queue with AWS KMS encryption using the [sqs\.Queue](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_sqs.Queue.html) construct from the AWS Construct Library\.
@@ -61,7 +76,7 @@ new Queue(this, "MyQueue", new QueueProps
 
 Some configuration props are optional, and in many cases have default values\. In some cases, all props are optional, and the last argument can be omitted entirely\.
 
-## Resource attributes<a name="resources_attributes"></a>
+### Resource attributes<a name="resources_attributes"></a>
 
 Most resources in the AWS Construct Library expose attributes, which are resolved at deployment time by AWS CloudFormation\. Attributes are exposed in the form of properties on the resource classes with the type name as a prefix\. The following example shows how to get the URL of an Amazon SQS queue using the `queueUrl` \(Python: `queue_url`\) property\.
 
@@ -117,11 +132,15 @@ See [Tokens](tokens.md) for information about how the AWS CDK encodes deploy\-ti
 
 ## Referencing resources<a name="resources_referencing"></a>
 
-Many AWS CDK classes require properties that are AWS CDK resource objects \(resources\)\. For example, an Amazon ECS resource requires a reference to the cluster on which it runs\. An Amazon CloudFront distribution requires a reference to the bucket containing the source code\. To satisfy these requirements, you can refer to a resource in one of two ways:
+When configuring resources, you will often have to reference properties of another resource\. The following are examples:
++ An Amazon Elastic Container Service \(Amazon ECS\) resource requires a reference to the cluster on which it runs\.
++ An Amazon CloudFront distribution requires a reference to the Amazon Simple Storage Service \(Amazon S3\) bucket containing the source code\.
+
+You can reference resources in any of the following ways:
 + By passing a resource defined in your CDK app, either in the same stack or in a different one
 + By passing a proxy object referencing a resource defined in your AWS account, created from a unique identifier of the resource \(such as an ARN\)
 
-If a construct property represents another AWS construct, its type is that of the interface type of that construct\. For example, the Amazon ECS service takes a property `cluster` of type `ecs.ICluster`; the CloudFront distribution takes a property `sourceBucket` \(Python: `source_bucket`\) of type `s3.IBucket`\.
+If the property of a construct represents a construct for another resource, its type is that of the interface type of the construct\. For example, the Amazon ECS construct takes a property `cluster` of type `ecs.ICluster`\. Another example, is the CloudFront distribution construct that takes a property `sourceBucket` \(Python: `source_bucket`\) of type `s3.IBucket`\. 
 
 You can directly pass any resource object of the proper type defined in the same AWS CDK app\. The following example defines an Amazon ECS cluster and then uses it to define an Amazon ECS service\.
 
@@ -171,9 +190,9 @@ var service = new Ec2Service(this, "Service", new Ec2ServiceProps { Cluster = cl
 
 ------
 
-## Referencing resources in a different stack<a name="resource_stack"></a>
+### Referencing resources in a different stack<a name="resource_stack"></a>
 
-You can refer to resources in a different stack as long as they are defined in the same app and are in the same AWS account and Region\. The following pattern is generally used:
+You can refer to resources in a different stack as long as they are defined in the same app and are in the same AWS environment\. The following pattern is generally used:
 + Store a reference to the construct as an attribute of the stack that produces the resource\. \(To get a reference to the current construct's stack, use `Stack.of(this)`\.\)
 + Pass this reference to the constructor of the stack that consumes the resource as a parameter or a property\. The consuming stack then passes it as a property to any construct that needs it\.
 
@@ -263,15 +282,15 @@ var stack2 = new StackThatExpectsABucket(app, "Stack2", new StackProps { Env = p
 
 ------
 
-If the AWS CDK determines that the resource is in the same account and Region, but in a different stack, it automatically synthesizes AWS CloudFormation [exports](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-stack-exports.html) in the producing stack and an [Fn::ImportValue](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/intrinsic-function-reference-importvalue.html) in the consuming stack to transfer that information from one stack to the other\.
+If the AWS CDK determines that the resource is in the same environment, but in a different stack, it automatically synthesizes AWS CloudFormation [exports](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-stack-exports.html) in the producing stack and an [Fn::ImportValue](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/intrinsic-function-reference-importvalue.html) in the consuming stack to transfer that information from one stack to the other\.
 
-### Resolving dependency deadlocks<a name="resources_deadlock"></a>
+#### Resolving dependency deadlocks<a name="resources_deadlock"></a>
 
 Referencing a resource from one stack in a different stack creates a dependency between the two stacks\. This makes sure that they're deployed in the right order\. After the stacks are deployed, this dependency is concrete\. After that, removing the use of the shared resource from the consuming stack can cause an unexpected deployment failure\. This happens if there is another dependency between the two stacks that force them to be deployed in the same order\. It can also happen without a dependency if the producing stack is simply chosen by the CDK Toolkit to be deployed first\. The AWS CloudFormation export is removed from the producing stack because it's no longer needed, but the exported resource is still being used in the consuming stack because its update is not yet deployed\. Therefore, deploying the producer stack fails\.
 
 To break this deadlock, remove the use of the shared resource from the consuming stack\. \(This removes the automatic export from the producing stack\.\) Next, manually add the same export to the producing stack using exactly the same logical ID as the automatically generated export\. Remove the use of the shared resource in the consuming stack and deploy both stacks\. Then, remove the manual export \(and the shared resource if it's no longer needed\) and deploy both stacks again\. The stack's `[exportValue\(\)](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.Stack.html#exportwbrvalueexportedvalue-options)` method is a convenient way to create the manual export for this purpose\. \(See the example in the linked method reference\.\)
 
-## Referencing resources in your AWS account<a name="resources_external"></a>
+### Referencing resources in your AWS account<a name="resources_external"></a>
 
 Suppose you want to use a resource already available in your AWS account in your AWS CDK app\. This might be a resource that was defined through the console, an AWS SDK, directly with AWS CloudFormation, or in a different AWS CDK application\. You can turn the resource's ARN \(or another identifying attribute, or group of attributes\) into a proxy object\. The proxy object serves as a reference to the resource by calling a static factory method on the resource's class\. 
 
@@ -462,13 +481,13 @@ Results of `Vpc.fromLookup()` are cached in the project's `cdk.context.json` fil
 
 Although you can use an external resource anywhere you'd use a similar resource defined in your AWS CDK app, you cannot modify it\. For example, calling `addToResourcePolicy` \(Python: `add_to_resource_policy`\) on an external `s3.Bucket` does nothing\.
 
-## Physical names<a name="resources_physical_names"></a>
+## Resource physical names<a name="resources_physical_names"></a>
 
 The logical names of resources in AWS CloudFormation are different from the names of resources that are shown in the AWS Management Console after they're deployed by AWS CloudFormation\. The AWS CDK calls these final names *physical names*\.
 
-For example, AWS CloudFormation might create the Amazon S3 bucket with the logical ID **Stack2MyBucket4DD88B4F** from the previous example with the physical name **stack2mybucket4dd88b4f\-iuv1rbv9z3to**\.
+For example, AWS CloudFormation might create the Amazon S3 bucket with the logical ID `Stack2MyBucket4DD88B4F` from the previous example with the physical name `stack2mybucket4dd88b4f-iuv1rbv9z3to`\.
 
-You can specify a physical name when creating constructs that represent resources by using the property <resourceType>Name\. The following example creates an Amazon S3 bucket with the physical name **my\-bucket\-name**\.
+You can specify a physical name when creating constructs that represent resources by using the property *<resourceType>*Name\. The following example creates an Amazon S3 bucket with the physical name `my-bucket-name`\.
 
 ------
 #### [ TypeScript ]
@@ -560,11 +579,11 @@ var bucket = new Bucket(this, "MyBucket", new BucketProps
 
 ------
 
-## Passing unique identifiers<a name="resources_identifiers"></a>
+## Passing unique resource identifiers<a name="resources_identifiers"></a>
 
 Whenever possible, you should pass resources by reference, as described in the previous section\. However, there are cases where you have no other choice but to refer to a resource by one of its attributes\. Example use cases include the following:
-+ When you are using low\-level AWS CloudFormation resources
-+ When you need to expose resources to the runtime components of an AWS CDK application, such as when referring to Lambda functions through environment variables
++ When you are using low\-level AWS CloudFormation resources\.
++ When you need to expose resources to the runtime components of an AWS CDK application, such as when referring to Lambda functions through environment variables\.
 
 These identifiers are available as attributes on the resources, such as the following\.
 
@@ -685,9 +704,9 @@ new Function(this, "MyLambda", new FunctionProps
 
 ------
 
-## Granting permissions<a name="resources_grants"></a>
+## Granting permissions between resources<a name="resources_grants"></a>
 
-AWS constructs make least\-privilege permissions achievable by offering simple, intent\-based APIs to express permission requirements\. Many AWS constructs offer grant methods that you can use to grant an entity \(such as an IAM role or user\) permission to work with the resource, without having to manually create IAM permission statements\.
+Higher\-level constructs make least\-privilege permissions achievable by offering simple, intent\-based APIs to express permission requirements\. For example, many L2 constructs offer grant methods that you can use to grant an entity \(such as an IAM role or user\) permission to work with the resource, without having to manually create IAM permission statements\.
 
 The following example creates the permissions to allow a Lambda function's execution role to read and write objects to a particular Amazon S3 bucket\. If the Amazon S3 bucket is encrypted with an AWS KMS key, this method also grants permissions to the Lambda function's execution role to decrypt with the key\.
 
@@ -785,9 +804,9 @@ Many resources, such as Lambda functions, require a role to be assumed when exec
 
 The grant methods are built using lower\-level APIs for handling with IAM policies\. Policies are modeled as [PolicyDocument](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.PolicyDocument.html) objects\. Add statements directly to roles \(or a construct's attached role\) using the `addToRolePolicy` method \(Python: `add_to_role_policy`\), or to a resource's policy \(such as a `Bucket` policy\) using the `addToResourcePolicy` \(Python: `add_to_resource_policy`\) method\.
 
-## Metrics and alarms<a name="resources_metrics"></a>
+## Resource metrics and alarms<a name="resources_metrics"></a>
 
-Many resources emit CloudWatch metrics that can be used to set up monitoring dashboards and alarms\. AWS constructs have metric methods that let you access the metrics without looking up the correct name to use\.
+Many resources emit CloudWatch metrics that can be used to set up monitoring dashboards and alarms\. Higher\-level constructs have metric methods that let you access the metrics without looking up the correct name to use\.
 
 The following example shows how to define an alarm when the `ApproximateNumberOfMessagesNotVisible` of an Amazon SQS queue exceeds 100\.
 

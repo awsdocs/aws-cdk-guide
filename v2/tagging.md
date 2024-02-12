@@ -9,6 +9,15 @@ Tags are informational key\-value elements that you can add to constructs in you
 **Tip**  
 For more information about how you can use tags with your AWS resources, see [Best Practices for Tagging AWS Resources](https://docs.aws.amazon.com/whitepapers/latest/tagging-best-practices/tagging-best-practices.html) in the *AWS Whitepaper*\.
 
+**Topics**
++ [Using tags](#tagging-use)
++ [Tag priorities](#w88aac13c29c21)
++ [Optional properties](#tagging_props)
++ [Example](#tagging_example)
++ [Tagging single constructs](#tagging_single)
+
+## Using tags<a name="tagging-use"></a>
+
 The [https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.Tags.html](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.Tags.html) class includes the static method `of()`, through which you can add tags to, or remove tags from, the specified construct\. 
 +  [https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.Tags.html#addkey-value-props](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.Tags.html#addkey-value-props) applies a new tag to the given construct and all of its children\. 
 +  [https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.Tags.html#removekey-props](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.Tags.html#removekey-props) removes a tag from the given construct and any of its children, including tags a child construct may have applied to itself\. 
@@ -96,7 +105,7 @@ Tags.Of(myConstruct).Remove("key");
 
 If you are using `Stage` constructs, apply the tag at the `Stage` level or below\. Tags are not applied across `Stage` boundaries\.
 
-## Tag priorities<a name="w52aac21c26c25"></a>
+## Tag priorities<a name="w88aac13c29c21"></a>
 
 The AWS CDK applies and removes tags recursively\. If there are conflicts, the tagging operation with the highest priority wins\. \(Priorities are set using the optional `priority` property\.\) If the priorities of two operations are the same, the tagging operation closest to the bottom of the construct tree wins\. By default, applying a tag has a priority of 100 \(except for tags added directly to an AWS CloudFormation resource, which has a priority of 50\)\. The default priority for removing a tag is 200\. 
 

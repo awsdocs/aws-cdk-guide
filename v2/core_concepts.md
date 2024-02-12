@@ -1,5 +1,20 @@
-# Concepts<a name="core_concepts"></a>
+# AWS CDK concepts<a name="core_concepts"></a>
 
-This topic describes some of the concepts \(the why and how\) behind the AWS CDK\. It also discusses the AWS Construct Library\.
+Learn core concepts behind the AWS Cloud Development Kit \(AWS CDK\)\.
 
-AWS CDK apps are composed of building blocks known as [Constructs](constructs.md), which are composed together to form [stacks](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.Stack.html) and [apps](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.App.html)\.
+**Topics**
++ [Constructs](constructs.md)
++ [Apps](apps.md)
++ [Stacks](stacks.md)
++ [Environments](environments.md)
++ [Bootstrapping](bootstrapping.md)
++ [Resources](resources.md)
++ [Identifiers](identifiers.md)
++ [Tokens](tokens.md)
++ [Parameters](parameters.md)
++ [Tagging](tagging.md)
++ [Assets](assets.md)
++ [Permissions](permissions.md)
++ [Runtime context](context.md)
++ [Feature flags](featureflags.md)
++ [Aspects](aspects.md)

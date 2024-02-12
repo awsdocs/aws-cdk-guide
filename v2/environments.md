@@ -1,23 +1,12 @@
 # Environments<a name="environments"></a>
 
-Each `Stack` instance in your AWS CDK app is explicitly or implicitly associated with an environment \(`env`\)\. An environment is the target AWS account and Region into which the stack is intended to be deployed\. The Region is specified using a Region code\. For a list, see [Regional endpoints](https://docs.aws.amazon.com/general/latest/gr/rande.html#regional-endpoints)\.
+An *environment* is the target AWS account and AWS Region that stacks are deployed to\. All stacks in your CDK app are explicitly or implicitly associated with an environment \(`env`\)\.
 
-**Note**  
-You must [bootstrap](bootstrapping.md) each environment you will deploy CDK stacks into\. Bootstrapping provisions certain AWS resources that are used during deployment\.
+**Topics**
++ [Configuring environments](#environments-configure)
++ [Bootstrapping environments](#environments-bootstrap)
 
-If you don't specify an environment when you instantiate a stack, the stack is said to be *environment\-agnostic*\. AWS CloudFormation templates synthesized from such a stack will try to use deploy\-time resolution on environment\-related attributes such as `stack.account`, `stack.region`, and `stack.availabilityZones` \(Python: `availability_zones`\)\.
-
-**Tip**  
-If you're using the standard AWS CDK development template, your stacks are instantiated in the same file where you instantiate the `App` object\.  
-The file named after your project \(for example, `hello-cdk.ts`\) in your project's `bin` folder\.
-The file named after your project \(for example, `hello-cdk.js`\) in your project's `bin` folder\.
-The file `app.py` in your project's main directory\.
-The file named `ProjectNameApp.java`, for example `HelloCdkApp.java`, nested deep under the `src/main` directory\.
-The file named `Program.cs` under `src\ProjectName`, for example `src\HelloCdk\Program.cs`\.
-
-In an environment\-agnostic stack, any constructs that use Availability Zones will see two AZs, allowing the stack to be deployed to any Region\.
-
-When using cdk deploy to deploy environment\-agnostic stacks, the AWS CDK CLI uses the specified AWS CLI profile to determine where to deploy\. If no profile is specified, the default profile is used\. The AWS CDK CLI follows a protocol similar to the AWS CLI to determine which AWS credentials to use when performing operations in your AWS account\. See [AWS CDK Toolkit \(`cdk` command\)](cli.md) for details\.
+## Configuring environments<a name="environments-configure"></a>
 
 For production stacks, we recommend that you explicitly specify the environment for each stack in your app using the `env` property\. The following example specifies different environments for its two different stacks\.
 
@@ -106,7 +95,7 @@ new MyFirstStack(app, "first-stack-eu", new StackProps { Env=envEU });
 
 ------
 
-When you hardcode the target account and Region as shown in the preceding example, the stack is always deployed to that specific account and Region\. To make the stack deployable to a different target, but to determine the target at synthesis time, your stack can use two environment variables provided by the AWS CDK CLI: `CDK_DEFAULT_ACCOUNT` and `CDK_DEFAULT_REGION`\. These variables are set based on the AWS profile specified using the \-\-profile option, or the default AWS profile if you don't specify one\.
+When you hard\-code the target account and Region as shown in the preceding example, the stack is always deployed to that specific account and Region\. To make the stack deployable to a different target, but to determine the target at synthesis time, your stack can use two environment variables provided by the AWS CDK CLI: `CDK_DEFAULT_ACCOUNT` and `CDK_DEFAULT_REGION`\. These variables are set based on the AWS profile specified using the \-\-profile option, or the default AWS profile if you don't specify one\.
 
 The following code fragment shows how to access the account and Region passed from the AWS CDK CLI in your stack\.
 
@@ -209,6 +198,8 @@ new MyDevStack(app, "dev", new StackProps { Env = makeEnv() });
 ```
 
 ------
+
+Specify the AWS Region using a Region code\. For a list, see [Regional endpoints](https://docs.aws.amazon.com/general/latest/gr/rande.html#regional-endpoints)\.
 
 The AWS CDK distinguishes between not specifying the `env` property at all and specifying it using `CDK_DEFAULT_ACCOUNT` and `CDK_DEFAULT_REGION`\. The former implies that the stack should synthesize an environment\-agnostic template\. Constructs that are defined in such a stack cannot use any information about their environment\. For example, you can't write code like `if (stack.region === 'us-east-1')` or use framework facilities like [Vpc\.fromLookup](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ec2.Vpc.html#static-fromwbrlookupscope-id-options) \(Python: `from_lookup`\), which need to query your AWS account\. These features don't work at all until you specify an explicit environment; to use them, you must specify `env`\.
 
@@ -395,3 +386,13 @@ cdk-deploy-to 245813579 eu-west-1 %*
 ------
 
 Developers could still use the normal `cdk deploy` command to deploy to their own AWS environments for development\.
+
+If you don't specify an environment when you instantiate a stack, the stack is said to be *environment\-agnostic*\. AWS CloudFormation templates synthesized from such a stack will try to use deploy\-time resolution on environment\-related attributes such as `stack.account`, `stack.region`, and `stack.availabilityZones` \(Python: `availability_zones`\)\.
+
+When using cdk deploy to deploy environment\-agnostic stacks, the AWS CDK CLI will use the specified AWS CLI profile to determine where to deploy\. If no profile is specified, the default profile is used\. The AWS CDK CLI follows a protocol similar to the AWS CLI to determine which AWS credentials to use when performing operations in your AWS account\. See [AWS CDK Toolkit \(`cdk` command\)](cli.md) for details\. 
+
+In an environment\-agnostic stack, any constructs that use Availability Zones will see two Availability Zones, allowing the stack to be deployed to any Region\.
+
+## Bootstrapping environments<a name="environments-bootstrap"></a>
+
+You must bootstrap each environment that you will deploy CDK stacks into\. Bootstrapping prepares the environment for deployment\. To learn more, see [Bootstrapping](bootstrapping.md)\. 

@@ -1,10 +1,16 @@
 # Identifiers<a name="identifiers"></a>
 
-The AWS CDK deals with many types of identifiers and names\. To use the AWS CDK effectively and avoid errors, you need to understand the types of identifiers\.
+When building AWS Cloud Development Kit \(AWS CDK\) apps, you will use many types of identifiers and names\. To use the AWS CDK effectively and avoid errors, it is important to understand the types of identifiers\.
 
 Identifiers must be unique within the scope in which they are created; they do not need to be globally unique in your AWS CDK application\.
 
 If you attempt to create an identifier with the same value within the same scope, the AWS CDK throws an exception\.
+
+**Topics**
++ [Construct IDs](#identifiers_construct_ids)
++ [Paths](#identifiers_paths)
++ [Unique IDs](#identifiers_unique_ids)
++ [Logical IDs](#identifiers_logical_ids)
 
 ## Construct IDs<a name="identifiers_construct_ids"></a>
 
