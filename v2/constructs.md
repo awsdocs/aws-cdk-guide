@@ -15,7 +15,74 @@ Constructs are part of the Construct Programming Model \(CPM\)\. They are availa
 
 ## AWS Construct Library<a name="constructs_lib"></a>
 
-The AWS Construct Library contains a collection of constructs that are developed and maintained by AWS\. These constructs represent all of the resources available on AWS\. For reference information, see the [AWS CDK API Reference](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-construct-library.html)\.
+The AWS Construct Library contains a collection of constructs that are developed and maintained by AWS\. It is organized into various modules that contain constructs representing all of the resources available on AWS\. For reference information, see the [AWS CDK API Reference](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-construct-library.html)\.
+
+The main CDK package is called `aws-cdk-lib`, and it contains the majority of the AWS Construct Library\. It also contains base classes such as `Stack` and `App`\.
+
+The actual package name of the main CDK package varies by language\.
+
+------
+#### [ TypeScript ]
+
+| Install | `npm install aws-cdk-lib` | 
+| --- |--- |
+| Import | `import * as cdk from 'aws-cdk-lib';` | 
+| --- |--- |
+
+------
+#### [ JavaScript ]
+
+| Install | `npm install aws-cdk-lib` | 
+| --- |--- |
+| Import | `const cdk = require('aws-cdk-lib');` | 
+| --- |--- |
+
+------
+#### [ Python ]
+
+| Install | python \-m pip install aws\-cdk\-lib | 
+| --- |--- |
+| Import | `import aws_cdk as cdk` | 
+| --- |--- |
+
+------
+#### [ Java ]
+
+| In `pom.xml`, add | Group `software.amazon.awscdk`; artifact `aws-cdk-lib` | 
+| --- |--- |
+| Import | `import software.amazon.awscdk.App;` | 
+| --- |--- |
+
+------
+#### [ C\# ]
+
+| Install | dotnet add package Amazon\.CDK\.Lib | 
+| --- |--- |
+| Import | `using Amazon.CDK;` | 
+| --- |--- |
+
+------
+#### [ Go ]
+
+| Install | go get github\.com/aws/aws\-cdk\-go/awscdk/v2 | 
+| --- |--- |
+| Import | 
+
+```
+import (
+  "github.com/aws/aws-cdk-go/awscdk/v2"
+)
+``` | 
+| --- |--- |
+
+------
+
+**Note**  
+If you created a CDK project using cdk init, you don't need to manually install `aws-cdk-lib`\.
+
+The AWS Construct Library also contains the `[constructs](https://docs.aws.amazon.com/cdk/api/v2/docs/constructs-readme.html)` package with the `Construct` base class\. It's in its own package because it's used by other construct\-based tools in addition to the AWS CDK, including CDK for Terraform and CDK for Kubernetes\.
+
+Numerous third parties have also published constructs compatible with the AWS CDK\. Visit [Construct Hub](https://constructs.dev/search?q=&cdk=aws-cdk&cdkver=2&offset=0) to explore the AWS CDK construct partner ecosystem\.
 
 ### Construct levels<a name="constructs_lib_levels"></a>
 
@@ -28,14 +95,16 @@ In the AWS Construct Library, L1 constructs are named starting with `Cfn`, follo
 L1 constructs are generated from the [AWS CloudFormation resource specification](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-resource-specification.html)\. New resources or properties may take up to a week to become available in the AWS Construct Library\.
 
 **Level 2 \(L2\) constructs**  <a name="constructs_lib_levels_two"></a>
-L2 constructs also map directly to single AWS CloudFormation resources\. Compared to L1 constructs, L2 constructs provide a higher\-level abstraction through an intuitive intent\-based API\. L2 constructs include sensible default property configurations and generate a lot of the boilerplate code and glue logic for you\.  
+L2 constructs, also known as *curated* constructs, map directly to single AWS CloudFormation resources, similar to L1 constructs\. Compared to L1 constructs, L2 constructs provide a higher\-level abstraction through an intuitive intent\-based API\. L2 constructs include sensible default property configurations, best practice security policies, and generate a lot of the boilerplate code and glue logic for you\.  
 L2 constructs also provide helper methods for most resources that make it simpler and quicker to define properties, permissions, event\-based interactions between resources, and more\.  
-The `[s3\.Bucket](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.Bucket.html)` class is an example of an L2 construct for an Amazon Simple Storage Service \(Amazon S3\) bucket resource\.
+The `[s3\.Bucket](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.Bucket.html)` class is an example of an L2 construct for an Amazon Simple Storage Service \(Amazon S3\) bucket resource\.  
+The AWS Construct Library contains L2 constructs that are designated stable and ready for production use\. For L2 constructs under development, they are designated as experimental and offered in a separate module\.
 
 **Level 3 \(L3\) constructs**  <a name="constructs_lib_levels_three"></a>
-L3 constructs, also known as *patterns*, are the highest\-level of abstraction\. Each L3 construct can contain multiple resources that are configured to work together to accomplish a specific task or service within your application\.  
+L3 constructs, also known as *patterns*, are the highest\-level of abstraction\. Each L3 construct can contain multiple resources that are configured to work together to accomplish a specific task or service within your application\. L3 constructs are used to create entire AWS architectures for particular use cases in your application\.  
 L3 constructs offer opinionated default property configurations\. With L3 constructs, you can create and configure multiple resources quickly, with the fewest amount of input and code\.  
-The `[ecsPatterns\.ApplicationLoadBalancedFargateService](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ecs_patterns.ApplicationLoadBalancedFargateService.html)` class is an example of an L3 construct that represents an AWS Fargate service running on an Amazon Elastic Container Service \(Amazon ECS\) cluster and fronted by an application load balancer\.
+The `[ecsPatterns\.ApplicationLoadBalancedFargateService](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ecs_patterns.ApplicationLoadBalancedFargateService.html)` class is an example of an L3 construct that represents an AWS Fargate service running on an Amazon Elastic Container Service \(Amazon ECS\) cluster and fronted by an application load balancer\.  
+Similar to L2 constructs, L3 constructs that are ready for production use are included in the AWS Construct Library\. Those under development are offered in separate modules\.
 
 ## Defining constructs<a name="constructs_define"></a>
 

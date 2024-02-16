@@ -64,7 +64,7 @@ Project assets, such as AWS Lambda code, will not directly migrate into the new 
 **Migrating stateful resources**  
 When migrating stateful resources, such as databases and Amazon Simple Storage Service \(Amazon S3\) buckets, you’d most often want to migrate the existing resource instead of creating a new resource\.  
 To migrate and preserve stateful resources, do the following:  
-+ Verify that your stateful resource supports import\. For more information, see [Resources that support import and drift operations](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/resource-import-supported-resources.html) in the *AWS CloudFormation User Guide*\.
++ Verify that your stateful resource supports import\. For more information, see [Resource type support](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/resource-import-supported-resources.html) in the *AWS CloudFormation User Guide*\.
 + After migration, verify that the migrated resource’s logical ID in the new CDK app matches the logical ID of the deployed resource\.
 + If migrating from an AWS CloudFormation stack, verify that the stack name in the new CDK app matches the AWS CloudFormation stack\.
 + Deploy the CDK app using the same AWS account and AWS Region of the migrated resource\.
@@ -193,7 +193,7 @@ By default, the AWS CDK CLI will scan the entire AWS environment and migrate res
 Depending on the number of resources in your account, scanning may take a few minutes\. A progress bar will display during the scanning process\.
 
 **Supported resource types**  <a name="migrate-resources-supported"></a>
-The AWS CDK CLI will migrate resources supported by the IaC generator\. For a full list, see [Supported resource types](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/generate-IaC-supported-resources.html) in the *AWS CloudFormation User Guide*\.
+The AWS CDK CLI will migrate resources supported by the IaC generator\. For a full list, see [Resource type support](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/resource-import-supported-resources.html) in the *AWS CloudFormation User Guide*\.
 
 ### Resolve write\-only properties<a name="migrate-resources-writeonly"></a>
 

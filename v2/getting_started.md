@@ -1,206 +1,28 @@
 # Getting started with the AWS CDK<a name="getting_started"></a>
 
-This topic introduces you to important AWS CDK concepts and describes how to install and configure the AWS CDK\. When you're done, you'll be ready to create [your first AWS CDK app](hello_world.md)\.
+Get started with the AWS Cloud Development Kit \(AWS CDK\) by installing the AWS CDK CLI and creating your first CDK app\.
 
-## Your background<a name="getting_started_background"></a>
-
-The AWS Cloud Development Kit \(AWS CDK\) lets you define your cloud infrastructure as code in one of its supported programming languages\. It is intended for moderately to highly experienced AWS users\.
-
-Ideally, you already have experience with popular AWS services, particularly [AWS IAM Identity Center](https://docs.aws.amazon.com/singlesignon/latest/userguide/)\. You might also have experience working with AWS resources programmatically\.
-
-Familiarity with [AWS CloudFormation](https://aws.amazon.com/cloudformation/) is also useful, because the output of an AWS CDK program is an AWS CloudFormation template\.
-
-Finally, you should be proficient in the programming language you intend to use with the AWS CDK\. 
-
-## Key concepts<a name="getting_started_concepts"></a>
-
-The AWS CDK is designed around a handful of important concepts\. We will introduce a few of these here briefly\. Follow the links to learn more, or see the Concepts topics in this guide's Table of Contents\.
-
-An AWS CDK [app](apps.md) is an application written in TypeScript, JavaScript, Python, Java, C\# or Go that uses the AWS CDK to define AWS infrastructure\. An app defines one or more [stacks](stacks.md)\. Stacks \(equivalent to AWS CloudFormation stacks\) contain [constructs](constructs.md)\. Each construct defines one or more concrete AWS resources, such as Amazon S3 buckets, Lambda functions, or Amazon DynamoDB tables\.
-
-Constructs \(and also stacks and apps\) are represented as classes \(types\) in your programming language of choice\. You instantiate constructs within a stack to declare them to AWS, and connect them to each other using well\-defined interfaces\.
-
-The AWS CDK includes the CDK Toolkit \(also called the CLI\), a command line tool for working with your AWS CDK apps and stacks\. Among other functions, the Toolkit provides the ability to do the following: 
-+ Convert one or more AWS CDK stacks to AWS CloudFormation templates and related assets \(a process called *synthesis*\)
-+ Deploy your stacks to an AWS account and Region
-
-The AWS CDK includes a library of AWS constructs called the AWS Construct Library, organized into various modules\. The library contains constructs for each AWS service\. The main CDK package is called `aws-cdk-lib`, and it contains the majority of the AWS Construct Library\. It also contains base classes like `Stack` and `App` that are used in most CDK applications\. 
-
-The actual package name of the main CDK package varies by language\.
-
-------
-#### [ TypeScript ]
-
-| Install | `npm install aws-cdk-lib` | 
-| --- |--- |
-| Import | `import * as cdk from 'aws-cdk-lib';` | 
-| --- |--- |
-
-------
-#### [ JavaScript ]
-
-| Install | `npm install aws-cdk-lib` | 
-| --- |--- |
-| Import | `const cdk = require('aws-cdk-lib');` | 
-| --- |--- |
-
-------
-#### [ Python ]
-
-| Install | python \-m pip install aws\-cdk\-lib | 
-| --- |--- |
-| Import | `import aws_cdk as cdk` | 
-| --- |--- |
-
-------
-#### [ Java ]
-
-| In `pom.xml`, add | Group `software.amazon.awscdk`; artifact `aws-cdk-lib` | 
-| --- |--- |
-| Import | `import software.amazon.awscdk.App;` | 
-| --- |--- |
-
-------
-#### [ C\# ]
-
-| Install | dotnet add package Amazon\.CDK\.Lib | 
-| --- |--- |
-| Import | `using Amazon.CDK;` | 
-| --- |--- |
-
-------
-#### [ Go ]
-
-| Install | go get github\.com/aws/aws\-cdk\-go/awscdk/v2 | 
-| --- |--- |
-| Import | 
-
-```
-import (
-  "github.com/aws/aws-cdk-go/awscdk/v2"
-)
-``` | 
-| --- |--- |
-
-------
-
-**Note**  
-If you created a CDK project using cdk init, you don't need to manually install `aws-cdk-lib`\.
-
-Constructs come in three fundamental flavors:
-+ **AWS CloudFormation\-only** or L1 \(short for "layer 1"\)\. These constructs correspond directly to resource types defined by AWS CloudFormation\. In fact, these constructs are automatically generated from the AWS CloudFormation specification\. Therefore, when a new AWS service is launched, the AWS CDK supports it a short time after AWS CloudFormation does\.
-
-  AWS CloudFormation resources always have names that begin with `Cfn`\. For example, for the Amazon S3 service, `CfnBucket` is the L1 construct for an Amazon S3 bucket\.
-
-  All L1 resources are in `aws-cdk-lib`\.
-+ **Curated** or L2\. These constructs are carefully developed by the AWS CDK team to address specific use cases and simplify infrastructure development\. For the most part, they encapsulate L1 resources, providing sensible defaults and best practice security policies\. For example, `Bucket` is the L2 construct for an Amazon S3 bucket\. 
-
-  Libraries may also define supporting resources needed by the primary L2 resource\. Some services have more than one L2 namespace in the Construct Library for organizational purposes\. 
-
-  `aws-cdk-lib` contains L2 constructs that are designated stable, i\.e\., ready for production use\. If a service's L2 support is still under development, its constructs are designated experimental and provided in a separate module\.
-+ **Patterns** or L3\. Patterns declare multiple resources to create entire AWS architectures for particular use cases\. All the plumbing is already hooked up, and configuration is boiled down to a few important parameters\.
-
-  As with L2 constructs, L3 constructs that are ready for production use \(stable\) are included in `aws-cdk-lib`, while those still under development are in separate modules\.
-
-Finally, the `constructs` package contains the `Construct` base class\. It's in its own package because it's used by other construct\-based tools in addition to the AWS CDK, including CDK for Terraform and CDK for Kubernetes\.
-
-Numerous third parties have also published constructs compatible with the AWS CDK\. Visit [Construct Hub](https://constructs.dev/search?q=&cdk=aws-cdk&cdkver=2&offset=0) to explore the AWS CDK construct partner ecosystem\.
-
-## Supported programming languages<a name="getting_started_languages"></a>
-
-The AWS CDK has first\-class support for TypeScript, JavaScript, Python, Java, C\#, and Go\. Other JVM and \.NET CLR languages may also be used, at least in theory\. However, we are unable to offer support for them at this time\.
-
-To facilitate supporting so many languages, the AWS CDK is developed in one language \(TypeScript\)\. Language bindings are generated for the other languages through the use of a tool called [JSII](https://github.com/aws/jsii)\.
-
-We have taken pains to make AWS CDK app development in each language follow that language's usual conventions\. This way, writing AWS CDK apps feels natural, not like writing TypeScript in Python, for example\. Take a look at the following examples:
-
-------
-#### [ TypeScript ]
-
-```
-const bucket = new s3.Bucket(this, 'MyBucket', {
-  bucketName: 'my-bucket',
-  versioned: true,
-  websiteRedirect: {hostName: 'aws.amazon.com'}});
-```
-
-------
-#### [ JavaScript ]
-
-```
-const bucket = new s3.Bucket(this, 'MyBucket', {
-  bucketName: 'my-bucket',
-  versioned: true,
-  websiteRedirect: {hostName: 'aws.amazon.com'}});
-```
-
-------
-#### [ Python ]
-
-```
-bucket = s3.Bucket("MyBucket", bucket_name="my-bucket", versioned=True,
-            website_redirect=s3.RedirectTarget(host_name="aws.amazon.com"))
-```
-
-------
-#### [ Java ]
-
-```
-Bucket bucket = Bucket.Builder.create(self, "MyBucket")
-                      .bucketName("my-bucket")
-                      .versioned(true)
-                      .websiteRedirect(new RedirectTarget.Builder()
-                          .hostName("aws.amazon.com").build())
-                      .build();
-```
-
-------
-#### [ C\# ]
-
-```
-var bucket = new Bucket(this, "MyBucket", new BucketProps {
-                      BucketName = "my-bucket",
-                      Versioned  = true,
-                      WebsiteRedirect = new RedirectTarget {
-                              HostName = "aws.amazon.com"
-                      }});
-```
-
-------
-#### [ Go ]
-
-```
-bucket := awss3.NewBucket(scope, jsii.String("MyBucket"), &awss3.BucketProps {
-	BucketName: jsii.String("my-bucket"),
-	Versioned: jsii.Bool(true),
-	WebsiteRedirect: &awss3.RedirectTarget {
-		HostName: jsii.String("aws.amazon.com"),
-	},
-})
-```
-
-------
-
-**Note**  
-These code snippets are intended for illustration only\. They are incomplete and won't run as they are\.
-
-The AWS Construct Library is distributed using each language's standard package management tools, including NPM, PyPi, Maven, and NuGet\. There's even a version of the [AWS CDK API Reference](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-construct-library.html) for each language\.
-
-To help you use the AWS CDK in your favorite language, this guide includes the following topics for supported languages:
-+ [Working with the AWS CDK in TypeScript](work-with-cdk-typescript.md)
-+ [Working with the AWS CDK in JavaScript](work-with-cdk-javascript.md)
-+ [Working with the AWS CDK in Python](work-with-cdk-python.md)
-+ [Working with the AWS CDK in Java](work-with-cdk-java.md)
-+ [Working with the AWS CDK in C\#](work-with-cdk-csharp.md)
-+ [Working with the AWS CDK in Go](work-with-cdk-go.md)
-
-TypeScript was the first language supported by the AWS CDK, and much AWS CDK example code is written in TypeScript\. This guide includes a topic specifically to show how to adapt TypeScript AWS CDK code for use with the other supported languages\. For more information, see [Translating TypeScript AWS CDK code to other languages](multiple_languages.md)\.
+**Topics**
++ [Prerequisites](#getting_started_prerequisites)
++ [Authentication with AWS](#getting_started_auth)
++ [Install the AWS CDK](#getting_started_install)
++ [Bootstrap your environment](#getting_started_bootstrap)
++ [Optional AWS CDK tools](#getting_started_tools)
++ [Next steps](#getting_started_next_steps)
++ [Learn more](#getting_started_learn_more)
++ [Your first AWS CDK app](hello_world.md)
 
 ## Prerequisites<a name="getting_started_prerequisites"></a>
 
-Here's what you need to install to use the AWS CDK\.
+Before getting started with the AWS CDK, we recommend a basic understanding of the following:
++ An introduction to the AWS CDK\. To learn more, see [What is the AWS CDK?](home.md)
++ Core concepts behind the AWS CDK\. To learn more, see [AWS CDK concepts](core_concepts.md)\.
++ The AWS services that you want to manage with the AWS CDK\.
++ AWS Identity and Access Management\. For more information, see [What is IAM?](https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html) and [What is IAM Identity Center?](https://docs.aws.amazon.com/singlesignon/latest/userguide/what-is.html)
++ AWS CloudFormation since the AWS CDK utilizes the AWS CloudFormation service to provision resources created in the CDK\. To learn more, see [What is AWS CloudFormation?](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/Welcome.html)
++ The supported programming language that you plan to use with the AWS CDK\.
 
-All AWS CDK developers, even those working in Python, Java, or C\#, need [Node\.js](https://nodejs.org/en/download/) 14\.15\.0 or later\. All supported languages use the same backend, which runs on Node\.js\. We recommend a version in [active long\-term support](https://nodejs.org/en/about/releases/)\. Your organization may have a different recommendation\.
+All AWS CDK developers, regardless of your preferred language, need [https://nodejs.org/en/download/](https://nodejs.org/en/download/) 14\.15\.0 or later\. All supported programming languages use the same backend, which runs on Node\.js\. We recommend a version in [active long\-term support](https://nodejs.org/en/about/releases/)\. Your organization may have a different recommendation\. 
 
 **Important**  
 Node\.js versions 13\.0\.0 through 13\.6\.0 are not compatible with the AWS CDK due to compatibility issues with its dependencies\.
@@ -241,8 +63,8 @@ Go 1\.1\.8 or later\.
 
 ------
 
-**Note**  
-Third\-party language deprecation: each language version is only supported until its EOL \(End Of Life\) shared by the vendor or community and is subject to change with prior notice\.
+**Third\-party language deprecation**  
+Each language version is only supported until it is EOL \(End Of Life\) and is subject to change with prior notice\.
 
 ## Authentication with AWS<a name="getting_started_auth"></a>
 
@@ -296,6 +118,8 @@ The sign in process may prompt you to allow the AWS CLI access to your data\. Si
 
 ## Install the AWS CDK<a name="getting_started_install"></a>
 
+The AWS CDK Toolkit, also known as the Command Line Interface \(CLI\), is the main tool you use to create, manage, and deploy your AWS CDK projects\. It also has deployment, diff, deletion, and troubleshooting capabilities\. For more information, see cdk \-\-help or [AWS CDK Toolkit \(`cdk` command\)](cli.md)\.
+
 Install the AWS CDK Toolkit globally using the following Node Package Manager command\.
 
 ```
@@ -309,11 +133,13 @@ cdk --version
 ```
 
 **Note**  
-CDK Toolkit v2 works with your existing CDK v1 projects\. However, it can't initialize new CDK v1 projects\. See [New prerequisites](migrating-v2.md#migrating-v2-prerequisites) if you need to be able to do that\.
+CDK Toolkit v2 works with existing CDK v1 projects\. However, it can't initialize new CDK v1 projects\. See [New prerequisites](migrating-v2.md#migrating-v2-prerequisites) if you need to be able to do that\.
 
-## Bootstrapping<a name="getting_started_bootstrap"></a>
+## Bootstrap your environment<a name="getting_started_bootstrap"></a>
 
-Deploying stacks with the AWS CDK requires dedicated Amazon S3 buckets and other containers to be available to AWS CloudFormation during deployment\. Creating these is called [bootstrapping](bootstrapping.md)\. To bootstrap, issue:
+Each AWS [environment](environments.md) that you plan to deploy resources to must be [bootstrapped](bootstrapping.md)\.
+
+To bootstrap, run the following:
 
 ```
 cdk bootstrap aws://ACCOUNT-NUMBER/REGION
@@ -337,20 +163,20 @@ aws configure get region
 aws configure get region --profile prod
 ```
 
-## AWS CDK tools<a name="getting_started_tools"></a>
-
-The AWS CDK Toolkit, also known as the Command Line Interface \(CLI\), is the main tool you use to interact with your AWS CDK app\. It executes your code and produces and deploys the AWS CloudFormation templates it generates\. It also has deployment, diff, deletion, and troubleshooting capabilities\. For more information, see cdk \-\-help or [AWS CDK Toolkit \(`cdk` command\)](cli.md)\.
+## Optional AWS CDK tools<a name="getting_started_tools"></a>
 
 The [AWS Toolkit for Visual Studio Code](https://aws.amazon.com/visualstudiocode/) is an open source plug\-in for Visual Studio Code that helps you create, debug, and deploy applications on AWS\. The toolkit provides an integrated experience for developing AWS CDK applications\. It includes the AWS CDK Explorer feature to list your AWS CDK projects and browse the various components of the CDK application\. [Install the plug\-in](https://docs.aws.amazon.com/toolkit-for-vscode/latest/userguide/setup-toolkit.html) and learn more about [using the AWS CDK Explorer](https://docs.aws.amazon.com/toolkit-for-vscode/latest/userguide/cdk-explorer.html)\.
 
 ## Next steps<a name="getting_started_next_steps"></a>
 
-Where do you go now that you've dipped your toes in the AWS CDK?
-+ Come on in; the water's fine\! Build [your first AWS CDK app](hello_world.md)\.
-+ Try the [CDK Workshop](https://cdkworkshop.com/) for a more in\-depth tour involving a more complex project\.
-+ See the [API reference](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-construct-library.html) to begin exploring the provided constructs available for your favorite AWS services\.
-+ Visit the [Construct Hub](https://constructs.dev/search?q=&cdk=aws-cdk&cdkver=2&sort=downloadsDesc&offset=0) to find constructs from the CDK community and also from AWS\.
-+ Dig deeper into concepts like [Environments](environments.md), [Assets](assets.md), [Bootstrapping](bootstrapping.md), [Permissions](permissions.md), [Runtime context](context.md), [Parameters](parameters.md), and [Abstractions and escape hatches](cfn_layer.md)\.
-+ Explore [Examples](https://github.com/aws-samples/aws-cdk-examples) of using the AWS CDK\.
+Now that you've installed the AWS CDK CLI, use it to build [your first AWS CDK app](hello_world.md)\.
 
-The AWS CDK is an open\-source project\. Want to [contribute](https://github.com/aws/aws-cdk)?
+The AWS CDK is an open\-source project\. To contribute, see [Contributing to the AWS Cloud Development Kit \(AWS CDK\)](https://github.com/aws/aws-cdk/blob/main/CONTRIBUTING.md)\.
+
+## Learn more<a name="getting_started_learn_more"></a>
+
+To learn more about the AWS CDK, see the following:
++ **[CDK Workshop](https://cdkworkshop.com/)** – In\-depth hands\-on workshop\.
++ **[API reference](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-construct-library.html)** – Explore constructs available for the AWS services that you will use\.
++ **[Construct Hub](https://constructs.dev/search?q=&cdk=aws-cdk&cdkver=2&sort=downloadsDesc&offset=0)** – Find constructs from the CDK community\.
++ **[AWS CDK examples](https://github.com/aws-samples/aws-cdk-examples)** – Explore code examples of AWS CDK projects\.
