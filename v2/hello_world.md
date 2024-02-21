@@ -612,7 +612,11 @@ If you didn't change the bucket's `RemovalPolicy`, the stack deletion would comp
 
 ## Next steps<a name="hello_world_next_steps"></a>
 
-Congratulations\! You've completed this tutorial and have used the AWS CDK to successfully create, modify, and delete resources in the AWS Cloud\. You're now ready to begin using the AWS CDK\. For additional resources, see the following:
+Congratulations\! You've completed this tutorial and have used the AWS CDK to successfully create, modify, and delete resources in the AWS Cloud\. You're now ready to begin using the AWS CDK\.
+
+To learn more about using the AWS CDK in your preferred programming language, see [Working with the AWS CDK in supported programming languages](work-with.md)\.
+
+For additional resources, see the following:
 + Try the [CDK Workshop](https://cdkworkshop.com/) for a more in\-depth tour involving a more complex project\.
 + Dive deeper into concepts like [Environments](environments.md), [Assets](assets.md), [Permissions](permissions.md), [Runtime context](context.md), [Parameters](parameters.md), and [Abstractions and escape hatches](cfn_layer.md)\.
 + See the [API reference](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-construct-library.html) to begin exploring the CDK constructs available for your favorite AWS services\.

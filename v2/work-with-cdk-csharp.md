@@ -6,9 +6,16 @@ You can develop AWS CDK applications in C\# using familiar tools including Visua
 
 We suggest using [Visual Studio 2019](https://visualstudio.microsoft.com/downloads/) \(any edition\) on Windows to develop AWS CDK apps in C\#\.
 
-## Prerequisites<a name="csharp-prerequisites"></a>
+**Topics**
++ [Get started with C\#](#csharp-prerequisites)
++ [Creating a project](#csharp-newproject)
++ [Managing AWS Construct Library modules](#csharp-managemodules)
++ [AWS CDK idioms in C\#](#csharp-cdk-idioms)
++ [Building, synthesizing, and deploying](#csharp-running)
 
-To work with the AWS CDK, you must have an AWS account and credentials and have installed Node\.js and the AWS CDK Toolkit\. See [AWS CDK Prerequisites](work-with.md#work-with-prerequisites)\.
+## Get started with C\#<a name="csharp-prerequisites"></a>
+
+To work with the AWS CDK, you must have an AWS account and credentials and have installed Node\.js and the AWS CDK Toolkit\. See [Getting started with the AWS CDK](getting_started.md)\.
 
 C\# AWS CDK applications require \.NET Core v3\.1 or later, [available here](https://dotnet.microsoft.com/download/dotnet-core/3.1)\.
 
@@ -19,7 +26,7 @@ The \.NET toolchain includes `dotnet`, a command\-line tool for building and run
 
 ## Creating a project<a name="csharp-newproject"></a>
 
-You create a new AWS CDK project by invoking `cdk init` in an empty directory\.
+You create a new AWS CDK project by invoking `cdk init` in an empty directory\. Use the `--language` option and specify `csharp`:
 
 ```
 mkdir my-project

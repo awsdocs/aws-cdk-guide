@@ -34,7 +34,7 @@ sponsored by Amazon.
    + [Aspects](aspects.md)
 + [Getting started with the AWS CDK](getting_started.md)
    + [Your first AWS CDK app](hello_world.md)
-+ [Working with the AWS CDK](work-with.md)
++ [Working with the AWS CDK in supported programming languages](work-with.md)
    + [Working with the AWS CDK in TypeScript](work-with-cdk-typescript.md)
    + [Working with the AWS CDK in JavaScript](work-with-cdk-javascript.md)
    + [Working with the AWS CDK in Python](work-with-cdk-python.md)

@@ -1,12 +1,20 @@
 # Working with the AWS CDK in TypeScript<a name="work-with-cdk-typescript"></a>
 
-TypeScript is a fully\-supported client language for the AWS CDK and is considered stable\. Working with the AWS CDK in TypeScript uses familiar tools, including Microsoft's TypeScript compiler \(`tsc`\), [Node\.js](https://nodejs.org/) and the Node Package Manager \(`npm`\)\. You may also use [Yarn](https://yarnpkg.com/) if you prefer, though the examples in this Guide use NPM\. The modules comprising the AWS Construct Library are distributed via the NPM repository, [npmjs\.org](https://www.npmjs.com/)\.
+TypeScript is a fully\-supported client language for the AWS Cloud Development Kit \(AWS CDK\) and is considered stable\. Working with the AWS CDK in TypeScript uses familiar tools, including Microsoft's TypeScript compiler \(`tsc`\), [Node\.js](https://nodejs.org/) and the Node Package Manager \(`npm`\)\. You may also use [Yarn](https://yarnpkg.com/) if you prefer, though the examples in this Guide use NPM\. The modules comprising the AWS Construct Library are distributed via the NPM repository, [npmjs\.org](https://www.npmjs.com/)\.
 
 You can use any editor or IDE\. Many AWS CDK developers use [Visual Studio Code](https://code.visualstudio.com/) \(or its open\-source equivalent [VSCodium](https://vscodium.com/)\), which has excellent support for TypeScript\.
 
-## Prerequisites<a name="typescript-prerequisites"></a>
+**Topics**
++ [Get started with TypeScript](#typescript-prerequisites)
++ [Creating a project](#typescript-newproject)
++ [Using local `tsc` and `cdk`](#typescript-local)
++ [Managing AWS Construct Library modules](#typescript-managemodules)
++ [AWS CDK idioms in TypeScript](#typescript-cdk-idioms)
++ [Building, synthesizing, and deploying](#typescript-running)
 
-To work with the AWS CDK, you must have an AWS account and credentials and have installed Node\.js and the AWS CDK Toolkit\. See [AWS CDK Prerequisites](work-with.md#work-with-prerequisites)\.
+## Get started with TypeScript<a name="typescript-prerequisites"></a>
+
+To work with the AWS CDK, you must have an AWS account and credentials and have installed Node\.js and the AWS CDK Toolkit\. See [Getting started with the AWS CDK](getting_started.md)\.
 
 You also need TypeScript itself \(version 3\.8 or later\)\. If you don't already have it, you can install it using `npm`\.
 
@@ -24,7 +32,7 @@ Third\-party language deprecation: language version is only supported until its 
 
 ## Creating a project<a name="typescript-newproject"></a>
 
-You create a new AWS CDK project by invoking `cdk init` in an empty directory\.
+You create a new AWS CDK project by invoking `cdk init` in an empty directory\. Use the `--language` option and specify `typescript`:
 
 ```
 mkdir my-project

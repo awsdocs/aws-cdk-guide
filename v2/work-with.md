@@ -1,41 +1,9 @@
-# Working with the AWS CDK<a name="work-with"></a>
+# Working with the AWS CDK in supported programming languages<a name="work-with"></a>
 
-The AWS Cloud Development Kit \(AWS CDK\) lets you define your AWS cloud infrastructure in a general\-purpose programming language\. Currently, the AWS CDK supports TypeScript, JavaScript, Python, Java, C\#, and Go\. It is also possible to use other JVM and \.NET languages, though we are unable to provide support for every such language\.
+Use the AWS Cloud Development Kit \(AWS CDK\) to define your AWS Cloud infrastructure with a [supported programming language](languages.md)\.
 
-**Note**  
-This Guide does not currently include instructions or code examples for Go aside from [Working with the AWS CDK in Go](work-with-cdk-go.md)\.
-
-We develop the AWS CDK in TypeScript and use [JSII](https://github.com/aws/jsii) to provide a "native" experience in other supported languages\. For example, we distribute AWS Construct Library modules using your preferred language's standard repository, and you install them using the language's standard package manager\. Methods and properties are even named using your language's recommended naming patterns\.
-
-## AWS CDK prerequisites<a name="work-with-prerequisites"></a>
-
-To use the AWS CDK, you need an AWS account and a corresponding access key\. If you don't have an AWS account yet, see [Create and Activate an AWS Account](https://aws.amazon.com/premiumsupport/knowledge-center/create-and-activate-aws-account/)\. To find out how to obtain an access key ID and secret access key for your AWS account, see [Understanding and Getting Your Security Credentials](https://docs.aws.amazon.com/general/latest/gr/aws-sec-cred-types.html)\. To find out how to configure your workstation so the AWS CDK uses your credentials, see [Setting Credentials in Node\.js](https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/setting-credentials-node.html)\.
-
-**Tip**  
-If you have the [AWS CLI](https://aws.amazon.com/cli/) installed, the simplest way to set up your workstation with your AWS credentials is to open a command prompt and type:  
-
-```
-aws configure
-```
-
-All AWS CDK applications require Node\.js 10\.13 or later, even if you work in Python, Java, C\#, or Go\. You may download a compatible version at [nodejs\.org](https://nodejs.org/)\. We recommend the [active LTS version](https://nodejs.org/en/about/releases/)\. Node\.js versions 13\.0\.0 through 13\.6\.0 are not compatible with the AWS CDK due to compatibility issues with its dependencies\.
-
-After installing Node\.js, install the AWS CDK Toolkit \(the `cdk` command\):
-
-```
-npm install -g aws-cdk
-```
-
-**Note**  
-If you get a permission error, and have administrator access on your system, try `sudo npm install -g aws-cdk`\.
-
-Test the installation by issuing `cdk --version`\. 
-
-If you get an error message at this point, try uninstalling \(`npm uninstall -g aws-cdk`\) and reinstalling\. As a last resort, delete the `node-modules` folder from the current project and also from the global `node-modules` folder\. To figure out where this folder is, issue `npm config get prefix`\.
-
-### Language\-specific prerequisites<a name="work-with-prerequisites-language"></a>
-
-The specific language you work in also has its own prerequisites, described in the corresponding topic listed here\.
+**Topics**
++ [Importing the AWS Construct Library](#work-with-library)
 + [Working with the AWS CDK in TypeScript](work-with-cdk-typescript.md)
 + [Working with the AWS CDK in JavaScript](work-with-cdk-javascript.md)
 + [Working with the AWS CDK in Python](work-with-cdk-python.md)
@@ -43,10 +11,7 @@ The specific language you work in also has its own prerequisites, described in t
 + [Working with the AWS CDK in C\#](work-with-cdk-csharp.md)
 + [Working with the AWS CDK in Go](work-with-cdk-go.md)
 
-**Note**  
-Third\-party Language Deprecation: language version is only supported until its EOL \(End Of Life\) shared by the vendor or community and is subject to change with prior notice\.
-
-## AWS Construct Library<a name="work-with-library"></a>
+## Importing the AWS Construct Library<a name="work-with-library"></a>
 
 The AWS CDK includes the AWS Construct Library, a collection of constructs organized by AWS service\. The library's constructs are mainly in a single module, colloquially called `aws-cdk-lib` because that's its name in TypeScript\. The actual package name of the main CDK package varies by language\.
 
@@ -95,9 +60,11 @@ The AWS CDK includes the AWS Construct Library, a collection of constructs organ
 **Note**  
 Experimental constructs are provided as separate modules\.
 
+### The AWS CDK API Reference<a name="work-with-library-reference"></a>
+
 The [AWS CDK API Reference](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-construct-library.html) provides detailed documentation of the constructs \(and other components\) in the library\. A version of the API Reference is provided for each supported programming language\.
 
-Each module's reference material is broken into the following sections\. 
+Each module's reference material is broken into the following sections\.
 + *Overview*: Introductory material you'll need to know to work with the service in the AWS CDK, including concepts and examples\.
 + *Constructs*: Library classes that represent one or more concrete AWS resources\. These are the "curated" \(L2\) resources or patterns \(L3 resources\) that provide a high\-level interface with sane defaults\.
 + *Classes*: Non\-construct classes that provide functionality used by constructs in the module\.
@@ -107,9 +74,9 @@ Each module's reference material is broken into the following sections\.
 + *CloudFormation Resources*: These L1 constructs, whose names begin with "Cfn", represent exactly the resources defined in the CloudFormation specification\. They are automatically generated from that specification with each CDK release\. Each L2 or L3 construct encapsulates one or more CloudFormation resources\.
 + *CloudFormation Property Types*: The collection of named values that define the properties for each CloudFormation Resource\.
 
-### Interfaces vs\. construct classes<a name="work-with-library-interfaces"></a>
+### Interfaces compared with construct classes<a name="work-with-library-interfaces"></a>
 
-The AWS CDK uses interfaces in a specific way that might not be obvious even if you are familiar with interfaces as a programming concept\.
+The AWS CDK uses interfaces in a specific way that may not be obvious even if you are familiar with interfaces as a programming concept\.
 
 The AWS CDK supports using resources defined outside CDK applications using methods such as `Bucket.fromBucketArn()`\. External resources cannot be modified and may not have all the functionality available with resources defined in your CDK app using e\.g\. the `Bucket` class\. Interfaces, then, represent the bare minimum functionality available in the CDK for a given AWS resource type, *including external resources\.*
 

@@ -1,12 +1,19 @@
 # Working with the AWS CDK in Python<a name="work-with-cdk-python"></a>
 
-Python is a fully\-supported client language for the AWS CDK and is considered stable\. Working with the AWS CDK in Python uses familiar tools, including the standard Python implementation \(CPython\), virtual environments with `virtualenv`, and the Python package installer `pip`\. The modules comprising the AWS Construct Library are distributed via [pypi\.org](https://pypi.org/search/?q=aws-cdk)\. The Python version of the AWS CDK even uses Python\-style identifiers \(for example, `snake_case` method names\)\.
+Python is a fully\-supported client language for the AWS Cloud Development Kit \(AWS CDK\) and is considered stable\. Working with the AWS CDK in Python uses familiar tools, including the standard Python implementation \(CPython\), virtual environments with `virtualenv`, and the Python package installer `pip`\. The modules comprising the AWS Construct Library are distributed via [pypi\.org](https://pypi.org/search/?q=aws-cdk)\. The Python version of the AWS CDK even uses Python\-style identifiers \(for example, `snake_case` method names\)\.
 
 You can use any editor or IDE\. Many AWS CDK developers use [Visual Studio Code](https://code.visualstudio.com/) \(or its open\-source equivalent [VSCodium](https://vscodium.com/)\), which has good support for Python via an [official extension](https://marketplace.visualstudio.com/items?itemName=ms-python.python)\. The IDLE editor included with Python will suffice to get started\. The Python modules for the AWS CDK do have type hints, which are useful for a linting tool or an IDE that supports type validation\.
 
-## Prerequisites<a name="python-prerequisites"></a>
+**Topics**
++ [Get started with Python](#python-prerequisites)
++ [Creating a project](#python-newproject)
++ [Managing AWS Construct Library modules](#python-managemodules)
++ [AWS CDK idioms in Python](#python-cdk-idioms)
++ [Synthesizing and deploying](#python-running)
 
-To work with the AWS CDK, you must have an AWS account and credentials and have installed Node\.js and the AWS CDK Toolkit\. See [AWS CDK Prerequisites](work-with.md#work-with-prerequisites)\.
+## Get started with Python<a name="python-prerequisites"></a>
+
+To work with the AWS CDK, you must have an AWS account and credentials and have installed Node\.js and the AWS CDK Toolkit\. See [Getting started with the AWS CDK](getting_started.md)\.
 
 Python AWS CDK applications require Python 3\.6 or later\. If you don't already have it installed, [download a compatible version](https://www.python.org/downloads/) for your operating system at [python\.org](https://www.python.org/)\. If you run Linux, your system may have come with a compatible version, or you may install it using your distro's package manager \(`yum`, `apt`, etc\.\)\. Mac users may be interested in [Homebrew](https://brew.sh/), a Linux\-style package manager for macOS\.
 
@@ -32,7 +39,7 @@ If typing python at the command line results in a message about installing Pytho
 
 ## Creating a project<a name="python-newproject"></a>
 
-You create a new AWS CDK project by invoking `cdk init` in an empty directory\.
+You create a new AWS CDK project by invoking `cdk init` in an empty directory\. Use the `--language` option and specify `python`:
 
 ```
 mkdir my-project
