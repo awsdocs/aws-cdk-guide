@@ -10,6 +10,7 @@ This topic provides guidance when working with the AWS CDK in Go\. See the [anno
 + [Get started with Go](#go-prerequisites)
 + [Creating a project](#go-newproject)
 + [Managing AWS Construct Library modules](#go-managemodules)
++ [Managing dependencies in Go](#work-with-cdk-go-dependencies)
 + [AWS CDK idioms in Go](#go-cdk-idioms)
 + [Building, synthesizing, and deploying](#go-running)
 
@@ -52,6 +53,26 @@ import (
 ```
 
 Once you have imported the Construct Library modules \(Go packages\) for the services you want to use in your app, you access constructs in that module using, for example, `awss3.Bucket`\.
+
+## Managing dependencies in Go<a name="work-with-cdk-go-dependencies"></a>
+
+In Go, dependencies versions are defined in `go.mod`\. The default `go.mod` is similar to the one shown here\.
+
+```
+module my-package
+
+go 1.16
+
+require (
+  github.com/aws/aws-cdk-go/awscdk/v2 v2.16.0
+  github.com/aws/constructs-go/constructs/v10 v10.0.5
+  github.com/aws/jsii-runtime-go v1.29.0
+)
+```
+
+Package names \(modules, in Go parlance\) are specified by URL with the required version number appended\. Go's module system does not support version ranges\.
+
+Issue the go get command to install all required modules and update `go.mod`\. To see a list of available updates for your dependencies, issue go list \-m \-u all\.
 
 ## AWS CDK idioms in Go<a name="go-cdk-idioms"></a>
 

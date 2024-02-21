@@ -4,6 +4,7 @@ Use the AWS Cloud Development Kit \(AWS CDK\) to define your AWS Cloud infrastru
 
 **Topics**
 + [Importing the AWS Construct Library](#work-with-library)
++ [Managing dependencies](#work-with-cdk-dependencies)
 + [Working with the AWS CDK in TypeScript](work-with-cdk-typescript.md)
 + [Working with the AWS CDK in JavaScript](work-with-cdk-javascript.md)
 + [Working with the AWS CDK in Python](work-with-cdk-python.md)
@@ -13,7 +14,7 @@ Use the AWS Cloud Development Kit \(AWS CDK\) to define your AWS Cloud infrastru
 
 ## Importing the AWS Construct Library<a name="work-with-library"></a>
 
-The AWS CDK includes the AWS Construct Library, a collection of constructs organized by AWS service\. The library's constructs are mainly in a single module, colloquially called `aws-cdk-lib` because that's its name in TypeScript\. The actual package name of the main CDK package varies by language\.
+The AWS CDK includes the AWS Construct Library, a collection of constructs organized by AWS service\. The library's stable constructs are offered in a single module, called by its TypeScript package name: `aws-cdk-lib`\. The actual package name varies by language\.
 
 ------
 #### [ TypeScript ]
@@ -57,8 +58,7 @@ The AWS CDK includes the AWS Construct Library, a collection of constructs organ
 
 ------
 
-**Note**  
-Experimental constructs are provided as separate modules\.
+The `construct` base class and supporting code is in the `constructs` module\. Experimental constructs, where the API is still undergoing refinement, are distributed as separate modules\.
 
 ### The AWS CDK API Reference<a name="work-with-library-reference"></a>
 
@@ -86,3 +86,30 @@ Some interfaces are minimum versions of properties or options bundles associated
 
 **Note**  
 Some programming languages supported by the AWS CDK don't have an interface feature\. In these languages, interfaces are just ordinary classes\. You can identify them by their names, which follow the pattern of an initial "I" followed by the name of some other construct \(e\.g\. `IBucket`\)\. The same rules apply\.
+
+## Managing dependencies<a name="work-with-cdk-dependencies"></a>
+
+Dependencies for your AWS CDK app or library are managed using package management tools\. These tools are commonly used with the programming languages\.
+
+Typically, the AWS CDK supports the language's standard or official package management tool if there is one\. Otherwise, the AWS CDK will support the language's most popular or widely supported one\. You may also be able to use other tools, especially if they work with the supported tools\. However, official support for other tools is limited\.
+
+The AWS CDK supports the following package managers:
+
+
+| Language | Supported package management tool | 
+| --- | --- | 
+| TypeScript/JavaScript | NPM \(Node Package Manager\) or Yarn | 
+| Python | PIP \(Package Installer for Python\) | 
+| Java | Maven | 
+| C\# | NuGet | 
+| Go | Go modules | 
+
+When you create a new project using the AWS CDK CLI `cdk init` command, dependencies for the CDK core libraries and stable constructs are automatically specified\.
+
+For more information on managing dependencies for supported programming languages, see the following:
++ [Managing dependencies in TypeScript](work-with-cdk-typescript.md#work-with-cdk-typescript-dependencies)\.
++ [Managing dependencies in JavaScript](work-with-cdk-javascript.md#work-with-cdk-javascript-dependencies)\.
++ [Managing dependencies in Python](work-with-cdk-python.md#work-with-cdk-python-dependencies)\.
++ [Managing dependencies in Java](work-with-cdk-java.md#work-with-cdk-java-dependencies)\.
++ [Managing dependencies in C\#](work-with-cdk-csharp.md#work-with-cdk-csharp-dependencies)\.
++ [Managing dependencies in Go](work-with-cdk-go.md#work-with-cdk-go-dependencies)\.

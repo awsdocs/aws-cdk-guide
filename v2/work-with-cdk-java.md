@@ -15,6 +15,7 @@ It is possible to write AWS CDK applications in JVM\-hosted languages other than
 + [Get started with Java](#java-prerequisites)
 + [Creating a project](#java-newproject)
 + [Managing AWS Construct Library modules](#java-managemodules)
++ [Managing dependencies in Java](#work-with-cdk-java-dependencies)
 + [AWS CDK idioms in Java](#java-cdk-idioms)
 + [Building, synthesizing, and deploying](#java-running)
 
@@ -68,6 +69,34 @@ If your application depends on an experimental package, edit your project's `pom
 
 **Tip**  
 If you use a Java IDE, it probably has features for managing Maven dependencies\. We recommend editing `pom.xml` directly, however, unless you are absolutely sure the IDE's functionality matches what you'd do by hand\.
+
+## Managing dependencies in Java<a name="work-with-cdk-java-dependencies"></a>
+
+In Java, dependencies are specified in `pom.xml` and installed using Maven\. The `<dependencies>` container includes a `<dependency>` element for each package\. Following is a section of `pom.xml` for a typical CDK Java app\.
+
+```
+<dependencies>
+    <dependency>
+        <groupId>software.amazon.awscdk</groupId>
+        <artifactId>aws-cdk-lib</artifactId>
+        <version>2.14.0</version>
+    </dependency>
+    <dependency>
+        <groupId>software.amazon.awscdk</groupId>
+        <artifactId>appsync-alpha</artifactId>
+        <version>2.10.0-alpha.0</version>
+    </dependency>
+</dependencies>
+```
+
+**Tip**  
+Many Java IDEs have integrated Maven support and visual `pom.xml` editors, which you may find convenient for managing dependencies\.
+
+Maven does not support dependency locking\. Although it's possible to specify version ranges in `pom.xml`, we recommend you always use exact versions to keep your builds repeatable\.
+
+Maven automatically installs transitive dependencies, but there can only be one installed copy of each package\. The version that is specified highest in the POM tree is selected; applications always have the last word in what version of packages get installed\.
+
+Maven automatically installs or updates your dependencies whenever you build \(mvn compile\) or package \(mvn package\) your project\. The CDK Toolkit does this automatically every time you run it, so generally there is no need to manually invoke Maven\.
 
 ## AWS CDK idioms in Java<a name="java-cdk-idioms"></a>
 

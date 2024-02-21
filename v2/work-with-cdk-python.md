@@ -8,6 +8,7 @@ You can use any editor or IDE\. Many AWS CDK developers use [Visual Studio Code]
 + [Get started with Python](#python-prerequisites)
 + [Creating a project](#python-newproject)
 + [Managing AWS Construct Library modules](#python-managemodules)
++ [Managing dependencies in Python](#work-with-cdk-python-dependencies)
 + [AWS CDK idioms in Python](#python-cdk-idioms)
 + [Synthesizing and deploying](#python-running)
 
@@ -122,6 +123,64 @@ With `requirements.txt` edited appropriately to allow upgrades, issue this comma
 ```
 pip install --upgrade -r requirements.txt
 ```
+
+## Managing dependencies in Python<a name="work-with-cdk-python-dependencies"></a>
+
+In Python, you specify dependencies by putting them in `requirements.txt` for applications or `setup.py` for construct libraries\. Dependencies are then managed with the PIP tool\. PIP is invoked in one of the following ways:
+
+```
+pip command options
+python -m pip command options
+```
+
+The python \-m pip invocation works on most systems; pip requires that PIP's executable be on the system path\. If pip doesn't work, try replacing it with python \-m pip\.
+
+The cdk init \-\-language python command creates a virtual environment for your new project\. This lets each project have its own versions of dependencies, and also a basic `requirements.txt` file\. You must activate this virtual environment by running source \.venv/bin/activate each time you begin working with the project\.
+
+### CDK applications<a name="work-with-cdk-python-dependencies-apps"></a>
+
+The following is an example `requirements.txt` file\. Because PIP does not have a dependency\-locking feature, we recommend that you use the == operator to specify exact versions for all dependencies, as shown here\.
+
+```
+aws-cdk-lib==2.14.0
+aws-cdk.aws-appsync-alpha==2.10.0a0
+```
+
+Installing a module with pip install does not automatically add it to `requirements.txt`\. You must do that yourself\. If you want to upgrade to a later version of a dependency, edit its version number in `requirements.txt`\.
+
+To install or update your project's dependencies after creating or editing `requirements.txt`, run the following:
+
+```
+python -m pip install -r requirements.txt
+```
+
+**Tip**  
+The pip freeze command outputs the versions of all installed dependencies in a format that can be written to a text file\. This can be used as a requirements file with `pip install -r`\. This file is convenient for pinning all dependencies \(including transitive ones\) to the exact versions that you tested with\. To avoid problems when upgrading packages later, use a separate file for this, such as `freeze.txt` \(not `requirements.txt`\)\. Then, regenerate it when you upgrade your project's dependencies\.
+
+### Third\-party construct libraries<a name="work-with-cdk-python-dependencies-libraries"></a>
+
+In libraries, dependencies are specified in `setup.py`, so that transitive dependencies are automatically downloaded when the package is consumed by an application\. Otherwise, every application that wants to use your package needs to copy your dependencies into their `requirements.txt`\. An example `setup.py` is shown here\.
+
+```
+from setuptools import setup
+
+setup(
+  name='my-package',
+  version='0.0.1',
+  install_requires=[
+    'aws-cdk-lib==2.14.0',
+  ], 
+  ...
+)
+```
+
+To work on the package for development, create or activate a virtual environment, then run the following command\.
+
+```
+python -m pip install -e .
+```
+
+Although PIP automatically installs transitive dependencies, there can only be one installed copy of any one package\. The version that is specified highest in the dependency tree is selected; applications always have the last word in what version of packages get installed\. 
 
 ## AWS CDK idioms in Python<a name="python-cdk-idioms"></a>
 

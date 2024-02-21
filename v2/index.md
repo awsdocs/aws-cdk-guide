@@ -41,7 +41,6 @@ sponsored by Amazon.
    + [Working with the AWS CDK in Java](work-with-cdk-java.md)
    + [Working with the AWS CDK in C#](work-with-cdk-csharp.md)
    + [Working with the AWS CDK in Go](work-with-cdk-go.md)
-+ [Managing dependencies](manage-dependencies.md)
 + [Migrating from AWS CDK v1 to AWS CDK v2](migrating-v2.md)
 + [Translating TypeScript AWS CDK code to other languages](multiple_languages.md)
 + [Abstractions and escape hatches](cfn_layer.md)
