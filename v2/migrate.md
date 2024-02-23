@@ -1,4 +1,4 @@
-# Migrate to AWS CDK<a name="migrate"></a>
+# Migrate to the AWS CDK<a name="migrate"></a>
 
 
 |  | 

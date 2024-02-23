@@ -99,4 +99,4 @@ To help you use the AWS CDK in your preferred language, this guide includes the 
 + [Working with the AWS CDK in C\#](work-with-cdk-csharp.md)
 + [Working with the AWS CDK in Go](work-with-cdk-go.md)
 
-TypeScript was the first language supported by the AWS CDK, and much of the AWS CDK example code is written in TypeScript\. This guide includes a topic specifically to show how to adapt TypeScript AWS CDK code for use with the other supported languages\. For more information, see [Translating TypeScript AWS CDK code to other languages](multiple_languages.md)\.
+TypeScript was the first language supported by the AWS CDK, and much of the AWS CDK example code is written in TypeScript\. This guide includes a topic specifically to show how to adapt TypeScript AWS CDK code for use with the other supported languages\. For more information, see [Comparing AWS CDK in TypeScript with other languages](work-with.md#work-with-cdk-compare)\.
