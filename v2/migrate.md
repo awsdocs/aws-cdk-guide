@@ -1,4 +1,4 @@
-# Migrate to the AWS CDK<a name="migrate"></a>
+# Migrate existing resources and AWS CloudFormation templates to the AWS CDK<a name="migrate"></a>
 
 
 |  | 

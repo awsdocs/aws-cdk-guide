@@ -1,6 +1,6 @@
 # cdk migrate command reference<a name="ref-cli-cdk-migrate"></a>
 
-Reference for the AWS Cloud Development Kit \(AWS CDK\) Command Line Interface \(CLI\) `cdk migrate` command\. For more information on using `cdk migrate`, see [Migrate to the AWS CDK](migrate.md)\.
+Reference for the AWS Cloud Development Kit \(AWS CDK\) Command Line Interface \(CLI\) `cdk migrate` command\. For more information on using `cdk migrate`, see [Migrate existing resources and AWS CloudFormation templates to the AWS CDK](migrate.md)\.
 
 The `cdk migrate` command migrates deployed AWS resources, AWS CloudFormation stacks, and local AWS CloudFormation templates to AWS CDK\.
 

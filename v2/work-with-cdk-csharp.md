@@ -73,7 +73,7 @@ Your project's `.csproj` file contains an `<ItemGroup>` container that lists you
 Visual Studio's NuGet tools are accessible from **Tools** > **NuGet Package Manager** > **Manage NuGet Packages for Solution**\. Use the **Browse** tab to find the AWS Construct Library packages you want to install\. You can choose the desired version, including prerelease versions of your modules, and add them to any of the open projects\. 
 
 **Note**  
-All AWS Construct Library modules deemed "experimental" \(see [Versioning](reference.md#versioning)\) are flagged as prerelease in NuGet and have an `alpha` name suffix\.
+All AWS Construct Library modules deemed "experimental" \(see [AWS CDK versioning](versioning.md)\) are flagged as prerelease in NuGet and have an `alpha` name suffix\.
 
 ![\[Image NOT FOUND\]](http://docs.aws.amazon.com/cdk/v2/guide/images/visual-studio-nuget.png)
 
