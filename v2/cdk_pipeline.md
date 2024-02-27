@@ -1,29 +1,38 @@
 # Continuous integration and delivery \(CI/CD\) using CDK Pipelines<a name="cdk_pipeline"></a>
 
-[CDK Pipelines](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.pipelines-readme.html) is a construct library module for painless continuous delivery of AWS CDK applications\. Whenever you check your AWS CDK app's source code in to AWS CodeCommit, GitHub, or AWS CodeStar, CDK Pipelines can automatically build, test, and deploy your new version\.
+Use the [CDK Pipelines](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.pipelines-readme.html) module from the AWS Construct Library to configure continuous delivery of AWS CDK applications\. When you commit your CDK app's source code into AWS CodeCommit, GitHub, or AWS CodeStar, CDK Pipelines can automatically build, test, and deploy your new version\.
 
 CDK Pipelines are self\-updating\. If you add application stages or stacks, the pipeline automatically reconfigures itself to deploy those new stages or stacks\.
 
 **Note**  
-CDK Pipelines supports two APIs\. One is the original API that was made available in the CDK Pipelines Developer Preview\. The other is a modern API that incorporates feedback from CDK customers received during the preview phase\. The examples in this topic use the modern API\. For details on the differences between the two supported APIs, see [CDK Pipelines original API](https://github.com/aws/aws-cdk/blob/master/packages/@aws-cdk/pipelines/ORIGINAL_API.md)\.
+CDK Pipelines supports two APIs\. One is the original API that was made available in the CDK Pipelines Developer Preview\. The other is a modern API that incorporates feedback from CDK customers received during the preview phase\. The examples in this topic use the modern API\. For details on the differences between the two supported APIs, see [CDK Pipelines original API](https://github.com/aws/aws-cdk/blob/master/packages/@aws-cdk/pipelines/ORIGINAL_API.md) in the *aws\-cdk GitHub repository*\.
+
+**Topics**
++ [Bootstrap your AWS environments](#cdk_pipeline_bootstrap)
++ [Initialize a project](#cdk_pipeline_init)
++ [Define a pipeline](#cdk_pipeline_define)
++ [Application stages](#cdk_pipeline_stages)
++ [Testing deployments](#cdk_pipeline_validation)
++ [Security notes](#cdk_pipeline_security)
++ [Troubleshooting](#cdk_pipeline_troubleshooting)
 
 ## Bootstrap your AWS environments<a name="cdk_pipeline_bootstrap"></a>
 
-Before you can use CDK Pipelines, you must bootstrap the AWS environments to which you will deploy your stacks\. An [environment](environments.md) is an account/Region pair to which you want to deploy a CDK stack\.
+Before you can use CDK Pipelines, you must bootstrap the AWS [environment](environments.md) that you will deploy your stacks to\.
 
-A CDK Pipeline involves at least two environments\. One environment is where the pipeline is provisioned\. The other environment is where you want to deploy the application's stacks \(or its stages, which are groups of related stacks\)\. These environments can be the same, though best practices recommend you isolate stages from each other in different AWS accounts or Regions\.
+A CDK Pipeline involves at least two environments\. The first environment is where the pipeline is provisioned\. The second environment is where you want to deploy the application's stacks or stages to \(stages are groups of related stacks\)\. These environments can be the same, but a best practice recommendation is to isolate stages from each other in different environments\.
 
 **Note**  
 See [Bootstrapping](bootstrapping.md) for more information on the kinds of resources created by bootstrapping and how to customize the bootstrap stack\.
 
 Continuous deployment with CDK Pipelines requires the following to be included in the CDK Toolkit stack:
-+ An S3 bucket
-+ An Amazon ECR repository
-+ IAM roles to give the various parts of a pipeline the permissions they need
++ An Amazon Simple Storage Service \(Amazon S3\) bucket\.
++ An Amazon ECR repository\.
++ IAM roles to give the various parts of a pipeline the permissions they need\.
 
-The CDK Toolkit upgrades your existing bootstrap stack or creates a new one if necessary\.
+The CDK Toolkit will upgrade your existing bootstrap stack or creates a new one if necessary\.
 
-To bootstrap an environment that can provision an AWS CDK pipeline, invoke `cdk bootstrap` as shown in the following example\. Invoking the AWS CDK Toolkit via the `npx` command temporarily installs it if necessary\. It will also use the version of the Toolkit installed in the current project, if one exists\. 
+To bootstrap an environment that can provision an AWS CDK pipeline, invoke `cdk bootstrap` as shown in the following example\. Invoking the AWS CDK Toolkit via the `npx` command temporarily installs it if necessary\. It will also use the version of the Toolkit installed in the current project, if one exists\.
 
 \-\-cloudformation\-execution\-policies specifies the ARN of a policy under which future CDK Pipelines deployments will execute\. The default `AdministratorAccess` policy makes sure that your pipeline can deploy every type of AWS resource\. If you use this policy, make sure you trust all the code and dependencies that make up your AWS CDK app\.
 
@@ -78,7 +87,7 @@ Use administrative credentials only to bootstrap and to provision the initial pi
 
 If you are upgrading a legacy bootstrapped environment, the previous Amazon S3 bucket is orphaned when the new bucket is created\. Delete it manually by using the Amazon S3 console\.
 
-## Initialize project<a name="cdk_pipeline_init"></a>
+## Initialize a project<a name="cdk_pipeline_init"></a>
 
 Create a new, empty GitHub project and clone it to your workstation in the `my-pipeline` directory\. \(Our code examples in this topic use GitHub\. You can also use AWS CodeStar or AWS CodeCommit\.\)
 
