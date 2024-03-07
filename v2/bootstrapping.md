@@ -34,10 +34,10 @@ If you are using CDK Pipelines to deploy into another account's environment, and
 Policy contains a statement with one or more invalid principals
 ```
 
-This error message means that the appropriate IAM roles do not exist in the other environment\. The most likely cause is a lack of bootstrapping\.
+This error message means that the appropriate IAM roles do not exist in the other environment\. The most likely cause is that the environment has not been bootstrapped\. Bootstrap the environment and try again\.
 
 **Note**  
-Do not delete and recreate an account's bootstrap stack if you are using CDK Pipelines to deploy into that account\. The pipeline will stop working\. To update the bootstrap stack to a new version, instead re\-run `cdk bootstrap` to update the bootstrap stack in place\.
+If the environment is bootstrapped, do not delete and recreate the environment's bootstrap stack\. Deleting the bootstrap stack will delete the AWS resources that were originally provisioned in the environment to support CDK deployments\. This will cause the pipeline to stop working\. Instead, try to update the bootstrap stack to a new version by running the CDK CLI `cdk bootstrap` command again\.
 
 ## How to bootstrap<a name="bootstrapping-howto"></a>
 

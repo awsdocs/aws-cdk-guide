@@ -15,12 +15,10 @@ Resources:
     Type: AWS::EC2::Subnet
     Properties:
       CidrBlock: 10.0.0.0/18
-      VpcId:
-        Ref: MyVpcF9F0CA6F
-      AvailabilityZone:
-        Fn::Select:
-          - 0
-          - Fn::GetAZs: ""
+      VpcId: !Ref MyVpcF9F0CA6F
+      AvailabilityZone: !Select
+        - 0
+        - !GetAZs ''
       MapPublicIpOnLaunch: true
       Tags:
         - Key: Name
@@ -34,8 +32,7 @@ Resources:
   MyVpcPublicSubnet1RouteTableC46AB2F4:
     Type: AWS::EC2::RouteTable
     Properties:
-      VpcId:
-        Ref: MyVpcF9F0CA6F
+      VpcId: !Ref MyVpcF9F0CA6F
       Tags:
         - Key: Name
           Value: MyEcsConstruct/MyVpc/PublicSubnet1
@@ -44,20 +41,16 @@ Resources:
   MyVpcPublicSubnet1RouteTableAssociation2ECEE1CB:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
-      RouteTableId:
-        Ref: MyVpcPublicSubnet1RouteTableC46AB2F4
-      SubnetId:
-        Ref: MyVpcPublicSubnet1SubnetF6608456
+      RouteTableId: !Ref MyVpcPublicSubnet1RouteTableC46AB2F4
+      SubnetId: !Ref MyVpcPublicSubnet1SubnetF6608456
     Metadata:
       aws:cdk:path: MyEcsConstruct/MyVpc/PublicSubnet1/RouteTableAssociation
   MyVpcPublicSubnet1DefaultRoute95FDF9EB:
     Type: AWS::EC2::Route
     Properties:
-      RouteTableId:
-        Ref: MyVpcPublicSubnet1RouteTableC46AB2F4
+      RouteTableId: !Ref MyVpcPublicSubnet1RouteTableC46AB2F4
       DestinationCidrBlock: 0.0.0.0/0
-      GatewayId:
-        Ref: MyVpcIGW5C4A4F63
+      GatewayId: !Ref MyVpcIGW5C4A4F63
     DependsOn:
       - MyVpcVPCGW488ACE0D
     Metadata:
@@ -71,12 +64,8 @@ Resources:
   MyVpcPublicSubnet1NATGatewayAD3400C1:
     Type: AWS::EC2::NatGateway
     Properties:
-      AllocationId:
-        Fn::GetAtt:
-          - MyVpcPublicSubnet1EIP096967CB
-          - AllocationId
-      SubnetId:
-        Ref: MyVpcPublicSubnet1SubnetF6608456
+      AllocationId: !GetAtt MyVpcPublicSubnet1EIP096967CB.AllocationId
+      SubnetId: !Ref MyVpcPublicSubnet1SubnetF6608456
       Tags:
         - Key: Name
           Value: MyEcsConstruct/MyVpc/PublicSubnet1
@@ -86,12 +75,10 @@ Resources:
     Type: AWS::EC2::Subnet
     Properties:
       CidrBlock: 10.0.64.0/18
-      VpcId:
-        Ref: MyVpcF9F0CA6F
-      AvailabilityZone:
-        Fn::Select:
-          - 1
-          - Fn::GetAZs: ""
+      VpcId: !Ref MyVpcF9F0CA6F
+      AvailabilityZone: !Select
+        - 1
+        - !GetAZs ''
       MapPublicIpOnLaunch: true
       Tags:
         - Key: Name
@@ -105,8 +92,7 @@ Resources:
   MyVpcPublicSubnet2RouteTable1DF17386:
     Type: AWS::EC2::RouteTable
     Properties:
-      VpcId:
-        Ref: MyVpcF9F0CA6F
+      VpcId: !Ref MyVpcF9F0CA6F
       Tags:
         - Key: Name
           Value: MyEcsConstruct/MyVpc/PublicSubnet2
@@ -115,20 +101,16 @@ Resources:
   MyVpcPublicSubnet2RouteTableAssociation227DE78D:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
-      RouteTableId:
-        Ref: MyVpcPublicSubnet2RouteTable1DF17386
-      SubnetId:
-        Ref: MyVpcPublicSubnet2Subnet492B6BFB
+      RouteTableId: !Ref MyVpcPublicSubnet2RouteTable1DF17386
+      SubnetId: !Ref MyVpcPublicSubnet2Subnet492B6BFB
     Metadata:
       aws:cdk:path: MyEcsConstruct/MyVpc/PublicSubnet2/RouteTableAssociation
   MyVpcPublicSubnet2DefaultRoute052936F6:
     Type: AWS::EC2::Route
     Properties:
-      RouteTableId:
-        Ref: MyVpcPublicSubnet2RouteTable1DF17386
+      RouteTableId: !Ref MyVpcPublicSubnet2RouteTable1DF17386
       DestinationCidrBlock: 0.0.0.0/0
-      GatewayId:
-        Ref: MyVpcIGW5C4A4F63
+      GatewayId: !Ref MyVpcIGW5C4A4F63
     DependsOn:
       - MyVpcVPCGW488ACE0D
     Metadata:
@@ -142,12 +124,8 @@ Resources:
   MyVpcPublicSubnet2NATGateway91BFBEC9:
     Type: AWS::EC2::NatGateway
     Properties:
-      AllocationId:
-        Fn::GetAtt:
-          - MyVpcPublicSubnet2EIP8CCBA239
-          - AllocationId
-      SubnetId:
-        Ref: MyVpcPublicSubnet2Subnet492B6BFB
+      AllocationId: !GetAtt MyVpcPublicSubnet2EIP8CCBA239.AllocationId
+      SubnetId: !Ref MyVpcPublicSubnet2Subnet492B6BFB
       Tags:
         - Key: Name
           Value: MyEcsConstruct/MyVpc/PublicSubnet2
@@ -157,12 +135,10 @@ Resources:
     Type: AWS::EC2::Subnet
     Properties:
       CidrBlock: 10.0.128.0/18
-      VpcId:
-        Ref: MyVpcF9F0CA6F
-      AvailabilityZone:
-        Fn::Select:
-          - 0
-          - Fn::GetAZs: ""
+      VpcId: !Ref MyVpcF9F0CA6F
+      AvailabilityZone: !Select
+        - 0
+        - !GetAZs ''
       MapPublicIpOnLaunch: false
       Tags:
         - Key: Name
@@ -176,8 +152,7 @@ Resources:
   MyVpcPrivateSubnet1RouteTable8819E6E2:
     Type: AWS::EC2::RouteTable
     Properties:
-      VpcId:
-        Ref: MyVpcF9F0CA6F
+      VpcId: !Ref MyVpcF9F0CA6F
       Tags:
         - Key: Name
           Value: MyEcsConstruct/MyVpc/PrivateSubnet1
@@ -186,32 +161,26 @@ Resources:
   MyVpcPrivateSubnet1RouteTableAssociation56D38C7E:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
-      RouteTableId:
-        Ref: MyVpcPrivateSubnet1RouteTable8819E6E2
-      SubnetId:
-        Ref: MyVpcPrivateSubnet1Subnet5057CF7E
+      RouteTableId: !Ref MyVpcPrivateSubnet1RouteTable8819E6E2
+      SubnetId: !Ref MyVpcPrivateSubnet1Subnet5057CF7E
     Metadata:
       aws:cdk:path: MyEcsConstruct/MyVpc/PrivateSubnet1/RouteTableAssociation
   MyVpcPrivateSubnet1DefaultRouteA8CDE2FA:
     Type: AWS::EC2::Route
     Properties:
-      RouteTableId:
-        Ref: MyVpcPrivateSubnet1RouteTable8819E6E2
+      RouteTableId: !Ref MyVpcPrivateSubnet1RouteTable8819E6E2
       DestinationCidrBlock: 0.0.0.0/0
-      NatGatewayId:
-        Ref: MyVpcPublicSubnet1NATGatewayAD3400C1
+      NatGatewayId: !Ref MyVpcPublicSubnet1NATGatewayAD3400C1
     Metadata:
       aws:cdk:path: MyEcsConstruct/MyVpc/PrivateSubnet1/DefaultRoute
   MyVpcPrivateSubnet2Subnet0040C983:
     Type: AWS::EC2::Subnet
     Properties:
       CidrBlock: 10.0.192.0/18
-      VpcId:
-        Ref: MyVpcF9F0CA6F
-      AvailabilityZone:
-        Fn::Select:
-          - 1
-          - Fn::GetAZs: ""
+      VpcId: !Ref MyVpcF9F0CA6F
+      AvailabilityZone: !Select
+        - 1
+        - !GetAZs ''
       MapPublicIpOnLaunch: false
       Tags:
         - Key: Name
@@ -225,8 +194,7 @@ Resources:
   MyVpcPrivateSubnet2RouteTableCEDCEECE:
     Type: AWS::EC2::RouteTable
     Properties:
-      VpcId:
-        Ref: MyVpcF9F0CA6F
+      VpcId: !Ref MyVpcF9F0CA6F
       Tags:
         - Key: Name
           Value: MyEcsConstruct/MyVpc/PrivateSubnet2
@@ -235,20 +203,16 @@ Resources:
   MyVpcPrivateSubnet2RouteTableAssociation86A610DA:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
-      RouteTableId:
-        Ref: MyVpcPrivateSubnet2RouteTableCEDCEECE
-      SubnetId:
-        Ref: MyVpcPrivateSubnet2Subnet0040C983
+      RouteTableId: !Ref MyVpcPrivateSubnet2RouteTableCEDCEECE
+      SubnetId: !Ref MyVpcPrivateSubnet2Subnet0040C983
     Metadata:
       aws:cdk:path: MyEcsConstruct/MyVpc/PrivateSubnet2/RouteTableAssociation
   MyVpcPrivateSubnet2DefaultRoute9CE96294:
     Type: AWS::EC2::Route
     Properties:
-      RouteTableId:
-        Ref: MyVpcPrivateSubnet2RouteTableCEDCEECE
+      RouteTableId: !Ref MyVpcPrivateSubnet2RouteTableCEDCEECE
       DestinationCidrBlock: 0.0.0.0/0
-      NatGatewayId:
-        Ref: MyVpcPublicSubnet2NATGateway91BFBEC9
+      NatGatewayId: !Ref MyVpcPublicSubnet2NATGateway91BFBEC9
     Metadata:
       aws:cdk:path: MyEcsConstruct/MyVpc/PrivateSubnet2/DefaultRoute
   MyVpcIGW5C4A4F63:
@@ -262,10 +226,8 @@ Resources:
   MyVpcVPCGW488ACE0D:
     Type: AWS::EC2::VPCGatewayAttachment
     Properties:
-      VpcId:
-        Ref: MyVpcF9F0CA6F
-      InternetGatewayId:
-        Ref: MyVpcIGW5C4A4F63
+      VpcId: !Ref MyVpcF9F0CA6F
+      InternetGatewayId: !Ref MyVpcIGW5C4A4F63
     Metadata:
       aws:cdk:path: MyEcsConstruct/MyVpc/VPCGW
   MyCluster4C1BA579:
@@ -278,12 +240,10 @@ Resources:
       LoadBalancerAttributes: []
       Scheme: internet-facing
       SecurityGroups:
-        - Fn::GetAtt:
-            - MyFargateServiceLBSecurityGroup6FBF16F1
-            - GroupId
+        - !GetAtt MyFargateServiceLBSecurityGroup6FBF16F1.GroupId
       Subnets:
-        - Ref: MyVpcPublicSubnet1SubnetF6608456
-        - Ref: MyVpcPublicSubnet2Subnet492B6BFB
+        - !Ref MyVpcPublicSubnet1SubnetF6608456
+        - !Ref MyVpcPublicSubnet2Subnet492B6BFB
       Type: application
     DependsOn:
       - MyVpcPublicSubnet1DefaultRoute95FDF9EB
@@ -301,23 +261,16 @@ Resources:
           FromPort: 80
           IpProtocol: tcp
           ToPort: 80
-      VpcId:
-        Ref: MyVpcF9F0CA6F
+      VpcId: !Ref MyVpcF9F0CA6F
     Metadata:
       aws:cdk:path: MyEcsConstruct/MyFargateService/LB/SecurityGroup/Resource
   MyFargateServiceLBSecurityGrouptoMyEcsConstructMyFargateServiceSecurityGroup67F71DB380B308A4F1:
     Type: AWS::EC2::SecurityGroupEgress
     Properties:
-      GroupId:
-        Fn::GetAtt:
-          - MyFargateServiceLBSecurityGroup6FBF16F1
-          - GroupId
+      GroupId: !GetAtt MyFargateServiceLBSecurityGroup6FBF16F1.GroupId
       IpProtocol: tcp
       Description: Load balancer to target
-      DestinationSecurityGroupId:
-        Fn::GetAtt:
-          - MyFargateServiceSecurityGroup7016792A
-          - GroupId
+      DestinationSecurityGroupId: !GetAtt MyFargateServiceSecurityGroup7016792A.GroupId
       FromPort: 80
       ToPort: 80
     Metadata:
@@ -326,11 +279,9 @@ Resources:
     Type: AWS::ElasticLoadBalancingV2::Listener
     Properties:
       DefaultActions:
-        - TargetGroupArn:
-            Ref: MyFargateServiceLBPublicListenerECSGroup4A3EDF05
+        - TargetGroupArn: !Ref MyFargateServiceLBPublicListenerECSGroup4A3EDF05
           Type: forward
-      LoadBalancerArn:
-        Ref: MyFargateServiceLBDE830E97
+      LoadBalancerArn: !Ref MyFargateServiceLBDE830E97
       Port: 80
       Protocol: HTTP
       Certificates: []
@@ -344,8 +295,7 @@ Resources:
       TargetGroupAttributes: []
       Targets: []
       TargetType: ip
-      VpcId:
-        Ref: MyVpcF9F0CA6F
+      VpcId: !Ref MyVpcF9F0CA6F
     Metadata:
       aws:cdk:path: MyEcsConstruct/MyFargateService/LB/PublicListener/ECSGroup/Resource
   MyFargateServiceTaskDefTaskRole62C7D397:
@@ -356,12 +306,11 @@ Resources:
           - Action: sts:AssumeRole
             Effect: Allow
             Principal:
-              Service:
-                Fn::Join:
-                  - ""
-                  - - ecs-tasks.
-                    - Ref: AWS::URLSuffix
-        Version: "2012-10-17"
+              Service: !Join
+                - ''
+                - - ecs-tasks.
+                  - !Ref AWS::URLSuffix
+        Version: '2012-10-17'
     Metadata:
       aws:cdk:path: MyEcsConstruct/MyFargateService/TaskDef/TaskRole/Resource
   MyFargateServiceTaskDef5DA17B39:
@@ -374,11 +323,9 @@ Resources:
           LogConfiguration:
             LogDriver: awslogs
             Options:
-              awslogs-group:
-                Ref: MyFargateServiceTaskDefwebLogGroup4A6C44E8
+              awslogs-group: !Ref MyFargateServiceTaskDefwebLogGroup4A6C44E8
               awslogs-stream-prefix: MyFargateService
-              awslogs-region:
-                Ref: AWS::Region
+              awslogs-region: !Ref AWS::Region
           MountPoints: []
           Name: web
           PortMappings:
@@ -386,20 +333,14 @@ Resources:
               Protocol: tcp
           Ulimits: []
           VolumesFrom: []
-      Cpu: "512"
-      ExecutionRoleArn:
-        Fn::GetAtt:
-          - MyFargateServiceTaskDefExecutionRoleD6305504
-          - Arn
+      Cpu: '512'
+      ExecutionRoleArn: !GetAtt MyFargateServiceTaskDefExecutionRoleD6305504.Arn
       Family: MyEcsConstructMyFargateServiceTaskDef164AB9B9
-      Memory: "2048"
+      Memory: '2048'
       NetworkMode: awsvpc
       RequiresCompatibilities:
         - FARGATE
-      TaskRoleArn:
-        Fn::GetAtt:
-          - MyFargateServiceTaskDefTaskRole62C7D397
-          - Arn
+      TaskRoleArn: !GetAtt MyFargateServiceTaskDefTaskRole62C7D397.Arn
       Volumes: []
     Metadata:
       aws:cdk:path: MyEcsConstruct/MyFargateService/TaskDef/Resource
@@ -416,12 +357,11 @@ Resources:
           - Action: sts:AssumeRole
             Effect: Allow
             Principal:
-              Service:
-                Fn::Join:
-                  - ""
-                  - - ecs-tasks.
-                    - Ref: AWS::URLSuffix
-        Version: "2012-10-17"
+              Service: !Join
+                - ''
+                - - ecs-tasks.
+                  - !Ref AWS::URLSuffix
+        Version: '2012-10-17'
     Metadata:
       aws:cdk:path: MyEcsConstruct/MyFargateService/TaskDef/ExecutionRole/Resource
   MyFargateServiceTaskDefExecutionRoleDefaultPolicyEC22B20F:
@@ -433,23 +373,18 @@ Resources:
               - logs:CreateLogStream
               - logs:PutLogEvents
             Effect: Allow
-            Resource:
-              Fn::GetAtt:
-                - MyFargateServiceTaskDefwebLogGroup4A6C44E8
-                - Arn
-        Version: "2012-10-17"
+            Resource: !GetAtt MyFargateServiceTaskDefwebLogGroup4A6C44E8.Arn
+        Version: '2012-10-17'
       PolicyName: MyFargateServiceTaskDefExecutionRoleDefaultPolicyEC22B20F
       Roles:
-        - Ref: MyFargateServiceTaskDefExecutionRoleD6305504
+        - !Ref MyFargateServiceTaskDefExecutionRoleD6305504
     Metadata:
       aws:cdk:path: MyEcsConstruct/MyFargateService/TaskDef/ExecutionRole/DefaultPolicy/Resource
   MyFargateServiceF490C034:
     Type: AWS::ECS::Service
     Properties:
-      TaskDefinition:
-        Ref: MyFargateServiceTaskDef5DA17B39
-      Cluster:
-        Ref: MyCluster4C1BA579
+      TaskDefinition: !Ref MyFargateServiceTaskDef5DA17B39
+      Cluster: !Ref MyCluster4C1BA579
       DeploymentConfiguration:
         MaximumPercent: 200
         MinimumHealthyPercent: 50
@@ -459,18 +394,15 @@ Resources:
       LoadBalancers:
         - ContainerName: web
           ContainerPort: 80
-          TargetGroupArn:
-            Ref: MyFargateServiceLBPublicListenerECSGroup4A3EDF05
+          TargetGroupArn: !Ref MyFargateServiceLBPublicListenerECSGroup4A3EDF05
       NetworkConfiguration:
         AwsvpcConfiguration:
           AssignPublicIp: DISABLED
           SecurityGroups:
-            - Fn::GetAtt:
-                - MyFargateServiceSecurityGroup7016792A
-                - GroupId
+            - !GetAtt MyFargateServiceSecurityGroup7016792A.GroupId
           Subnets:
-            - Ref: MyVpcPrivateSubnet1Subnet5057CF7E
-            - Ref: MyVpcPrivateSubnet2Subnet0040C983
+            - !Ref MyVpcPrivateSubnet1Subnet5057CF7E
+            - !Ref MyVpcPrivateSubnet2Subnet0040C983
       ServiceRegistries: []
     DependsOn:
       - MyFargateServiceLBPublicListenerECSGroup4A3EDF05
@@ -484,10 +416,9 @@ Resources:
       SecurityGroupEgress:
         - CidrIp: 0.0.0.0/0
           Description: Allow all outbound traffic by default
-          IpProtocol: "-1"
+          IpProtocol: '-1'
       SecurityGroupIngress: []
-      VpcId:
-        Ref: MyVpcF9F0CA6F
+      VpcId: !Ref MyVpcF9F0CA6F
     Metadata:
       aws:cdk:path: MyEcsConstruct/MyFargateService/Service/SecurityGroup/Resource
   MyFargateServiceSecurityGroupfromMyEcsConstructMyFargateServiceLBSecurityGroup8793A2F780B3ABD3C6:
@@ -496,20 +427,11 @@ Resources:
       IpProtocol: tcp
       Description: Load balancer to target
       FromPort: 80
-      GroupId:
-        Fn::GetAtt:
-          - MyFargateServiceSecurityGroup7016792A
-          - GroupId
-      SourceSecurityGroupId:
-        Fn::GetAtt:
-          - MyFargateServiceLBSecurityGroup6FBF16F1
-          - GroupId
+      GroupId: !GetAtt MyFargateServiceSecurityGroup7016792A.GroupId
+      SourceSecurityGroupId: !GetAtt MyFargateServiceLBSecurityGroup6FBF16F1.GroupId
       ToPort: 80
     Metadata:
       aws:cdk:path: MyEcsConstruct/MyFargateService/Service/SecurityGroup/from MyEcsConstructMyFargateServiceLBSecurityGroup8793A2F7:80
 Outputs:
   MyFargateServiceLoadBalancerDNS704F6391:
-    Value:
-      Fn::GetAtt:
-        - MyFargateServiceLBDE830E97
-        - DNSName
+    Value: !GetAtt MyFargateServiceLBDE830E97.DNSName

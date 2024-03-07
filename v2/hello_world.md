@@ -2,6 +2,25 @@
 
 Get started with using the AWS Cloud Development Kit \(AWS CDK\) by building your first CDK app\.
 
+Before starting this tutorial, we recommend that you complete the following:
++ See [What is the AWS CDK?](home.md) for an introduction to the AWS CDK\.
++ See [AWS CDK concepts](core_concepts.md) to learn core concepts of the AWS CDK\.
++ Go through prerequisites and AWS CDK setup steps at [Getting started with the AWS CDK](getting_started.md)\.
+
+**Topics**
++ [About this tutorial](#hello_world_about)
++ [Step 1: Create the app](#hello_world_tutorial_create_app)
++ [Step 2: Build the app](#hello_world_tutorial_build)
++ [Step 3: List the stacks in the app](#hello_world_tutorial_list_stacks)
++ [Step 4: Add an Amazon S3 bucket](#hello_world_tutorial_add_bucket)
++ [Step 5: Synthesize an AWS CloudFormation template](#hello_world_tutorial_synth)
++ [Step 6: Deploy your stack](#hello_world_tutorial_deploy)
++ [Step 7: Modify your app](#hello_world_tutorial_modify)
++ [Step 8: Destroying the app's resources](#hello_world_tutorial_destroy)
++ [Next steps](#hello_world_next_steps)
+
+## About this tutorial<a name="hello_world_about"></a>
+
 In this tutorial, you will create and deploy a simple AWS CDK app\. This app contains one stack with a single Amazon Simple Storage Service \(Amazon S3\) bucket resource\. Through this tutorial, you will learn the following:
 + The structure of an AWS CDK project\.
 + How to create an AWS CDK app\.
@@ -24,17 +43,6 @@ The standard AWS CDK development workflow consists of the following steps:
 Through a typical workflow, you'll go back and repeat previous steps to modify or debug your app\.
 
 We recommend that you use version control for your AWS CDK projects\.
-
-**Topics**
-+ [Step 1: Create the app](#hello_world_tutorial_create_app)
-+ [Step 2: Build the app](#hello_world_tutorial_build)
-+ [Step 3: List the stacks in the app](#hello_world_tutorial_list_stacks)
-+ [Step 4: Add an Amazon S3 bucket](#hello_world_tutorial_add_bucket)
-+ [Step 5: Synthesize an AWS CloudFormation template](#hello_world_tutorial_synth)
-+ [Step 6: Deploy your stack](#hello_world_tutorial_deploy)
-+ [Step 7: Modify your app](#hello_world_tutorial_modify)
-+ [Step 8: Destroying the app's resources](#hello_world_tutorial_destroy)
-+ [Next steps](#hello_world_next_steps)
 
 ## Step 1: Create the app<a name="hello_world_tutorial_create_app"></a>
 
@@ -398,6 +406,9 @@ To deploy your CDK stack to AWS CloudFormation using the CDK CLI, run the follow
 cdk deploy
 ```
 
+**Important**  
+You must perform a one\-time bootstrapping of your AWS environment before deployment\. For instructions, see [Bootstrap your environment](getting_started.md#getting_started_bootstrap)\.
+
 Similar to `cdk synth`, you don't have to specify the AWS CDK stack since the app contains a single stack\.
 
 If your code has security implications, the CDK CLI will output a summary\. You will need to confirm them to continue with deployment\. The app in this tutorial doesn't have these implications\.
@@ -553,13 +564,6 @@ This diff has four sections:
 You may notice that we specified `RemovalPolicy` in our AWS CDK app but got a `DeletionPolicy` property in the resulting AWS CloudFormation template\. This is because the AWS CDK uses a different name for the property\. The AWS CDK default is to retain the bucket when the stack is deleted, while the AWS CloudFormation default is to delete it\. For more information, see [Removal policies](resources.md#resources_removal)\.
 
 To see your new AWS CloudFormation template, you can run cdk synth\. By making a few changes to your CDK app, your new AWS CloudFormation template now includes many additional lines of code compared to the original AWS CloudFormation template\.
-
-**Important**  
-All AWS CDK v2 deployments use dedicated AWS resources to hold data during deployment\. Therefore, your AWS environment must be [bootstrapped](bootstrapping.md) to create these resources before you can deploy\. If you haven't already bootstrapped, issue the following command:  
-
-```
-cdk bootstrap aws://ACCOUNT-NUMBER/REGION
-```
 
 Next, deploy your app by running the following:
 

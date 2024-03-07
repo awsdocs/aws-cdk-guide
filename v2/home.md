@@ -27,6 +27,7 @@ With the AWS CDK, you can put your infrastructure, application code, and configu
 
 **Define your cloud infrastructure using general programming languages**  <a name="home-benefits-languages"></a>
 With the AWS CDK, you can use any of the following programming languages to define your cloud infrastructure: TypeScript, JavaScript, Python, Java, C\#/\.Net, and Go\. Choose your preferred language and use programming elements like parameters, conditionals, loops, composition, and inheritance to define the desired outcome of your infrastructure\.  
+Use the same programming language to define your infrastructure and your application logic\.  
 Receive the benefits of developing infrastructure in your preferred IDE \(Integrated Development Environment\), such as syntax highlighting and intelligent code completion\.  
 
 ![\[Image NOT FOUND\]](http://docs.aws.amazon.com/cdk/v2/guide/images/CodeCompletion.png)
@@ -35,7 +36,7 @@ Receive the benefits of developing infrastructure in your preferred IDE \(Integr
 AWS CDK integrates with AWS CloudFormation to deploy and provision your infrastructure on AWS\. AWS CloudFormation is a managed AWS service that offers extensive support of resource and property configurations for provisioning services on AWS\. With AWS CloudFormation, you can perform infrastructure deployments predictably and repeatedly, with rollback on error\. If you are already familiar with AWS CloudFormation, you don’t have to learn a new IaC management service when getting started with the AWS CDK\.
 
 **Get started developing your application quickly with constructs**  <a name="home-benefits-constructs"></a>
-Use low\-level constructs to define individual AWS CloudFormation resources and their properties\. Use high\-level constructs to quickly define larger components of your application, with sensible, secure defaults for your AWS resources, defining more infrastructure with less code\.  
+Develop faster by using and sharing reusable components called constructs\. Use low\-level constructs to define individual AWS CloudFormation resources and their properties\. Use high\-level constructs to quickly define larger components of your application, with sensible, secure defaults for your AWS resources, defining more infrastructure with less code\.  
 Create your own constructs that are customized for your unique use cases and share them across your organization or even with the public\.
 
 ## Example of the AWS CDK<a name="home-example"></a>
