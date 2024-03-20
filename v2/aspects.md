@@ -4,55 +4,49 @@ Aspects are a way to apply an operation to all constructs in a given scope\. The
 
 To apply an aspect to a construct and all constructs in the same scope, call [https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.Aspects.html#static-ofscope](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.Aspects.html#static-ofscope)`.of(SCOPE).add()` with a new aspect, as shown in the following example\.
 
----
-
+------
 #### [ TypeScript ]
 
 ```
 Aspects.of(myConstruct).add(new SomeAspect(...));
 ```
 
----
-
+------
 #### [ JavaScript ]
 
 ```
 Aspects.of(myConstruct).add(new SomeAspect(...));
 ```
 
----
-
+------
 #### [ Python ]
 
 ```
 Aspects.of(my_construct).add(SomeAspect(...))
 ```
 
----
-
+------
 #### [ Java ]
 
 ```
 Aspects.of(myConstruct).add(new SomeAspect(...));
 ```
 
----
-
+------
 #### [ C\# ]
 
 ```
 Aspects.Of(myConstruct).add(new SomeAspect(...));
 ```
 
----
-
+------
 #### [ Go ]
 
 ```
 awscdk.Aspects_Of(stack).Add(awscdk.NewTag(...))
 ```
 
----
+------
 
 The AWS CDK uses aspects to [tag resources](tagging.md), but the framework can also be used for other purposes\. For example, you can use it to validate or change the AWS CloudFormation resources that are defined for you by higher\-level constructs\.
 
@@ -60,8 +54,7 @@ The AWS CDK uses aspects to [tag resources](tagging.md), but the framework can a
 
 Aspects employ the [visitor pattern](https://en.wikipedia.org/wiki/Visitor_pattern)\. An aspect is a class that implements the following interface\.
 
----
-
+------
 #### [ TypeScript ]
 
 ```
@@ -69,20 +62,17 @@ interface IAspect {
    visit(node: IConstruct): void;}
 ```
 
----
-
+------
 #### [ JavaScript ]
 
 JavaScript doesn't have interfaces as a language feature\. Therefore, an aspect is simply an instance of a class having a `visit` method that accepts the node to be operated on\.
 
----
-
+------
 #### [ Python ]
 
 Python doesn't have interfaces as a language feature\. Therefore, an aspect is simply an instance of a class having a `visit` method that accepts the node to be operated on\.
 
----
-
+------
 #### [ Java ]
 
 ```
@@ -91,8 +81,7 @@ public interface IAspect {
 }
 ```
 
----
-
+------
 #### [ C\# ]
 
 ```
@@ -102,17 +91,16 @@ public interface IAspect
 }
 ```
 
----
-
+------
 #### [ Go ]
 
 ```
 type IAspect interface {
-    Visit(node constructs.IConstruct)
+  Visit(node constructs.IConstruct)
 }
 ```
 
----
+------
 
 When you call `Aspects.of(SCOPE).add(...)`, the construct adds the aspect to an internal list of aspects\. You can obtain the list with `Aspects.of(SCOPE)`\.
 
@@ -126,8 +114,7 @@ Aspects don't propagate across `Stage` construct boundaries, because `Stages` ar
 
 The following example validates that all buckets created in the stack have versioning enabled\. The aspect adds an error annotation to the constructs that fail the validation\. This results in the synth operation failing and prevents deploying the resulting cloud assembly\.
 
----
-
+------
 #### [ TypeScript ]
 
 ```
@@ -151,8 +138,7 @@ class BucketVersioningChecker implements IAspect {
 Aspects.of(stack).add(new BucketVersioningChecker());
 ```
 
----
-
+------
 #### [ JavaScript ]
 
 ```
@@ -176,8 +162,7 @@ class BucketVersioningChecker {
 Aspects.of(stack).add(new BucketVersioningChecker());
 ```
 
----
-
+------
 #### [ Python ]
 
 ```
@@ -199,8 +184,7 @@ class BucketVersioningChecker:
 Aspects.of(stack).add(BucketVersioningChecker())
 ```
 
----
-
+------
 #### [ Java ]
 
 ```
@@ -227,8 +211,7 @@ public class BucketVersioningChecker implements IAspect
 Aspects.of(stack).add(new BucketVersioningChecker());
 ```
 
----
-
+------
 #### [ C\# ]
 
 ```
@@ -252,4 +235,4 @@ class BucketVersioningChecker : Amazon.Jsii.Runtime.Deputy.DeputyBase, IAspect
 Aspects.Of(stack).add(new BucketVersioningChecker());
 ```
 
----
+------

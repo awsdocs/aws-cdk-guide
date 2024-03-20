@@ -36,8 +36,7 @@ You can define local files and directories as assets, and the AWS CDK packages a
 
 The following example defines a local directory asset and a file asset\.
 
----
-
+------
 #### [ TypeScript ]
 
 ```
@@ -54,8 +53,7 @@ const fileAsset = new Asset(this, 'SampleSingleFileAsset', {
 });
 ```
 
----
-
+------
 #### [ JavaScript ]
 
 ```
@@ -72,8 +70,7 @@ const fileAsset = new Asset(this, 'SampleSingleFileAsset', {
 });
 ```
 
----
-
+------
 #### [ Python ]
 
 ```
@@ -93,8 +90,7 @@ file_asset = Asset(self, 'SampleSingleFileAsset',
 )
 ```
 
----
-
+------
 #### [ Java ]
 
 ```
@@ -114,8 +110,7 @@ Asset fileAsset = Asset.Builder.create(this, "SampleSingleFileAsset")
                 .path(new File(startDir, "file-asset.txt").toString()).build();
 ```
 
----
-
+------
 #### [ C\# ]
 
 ```
@@ -135,26 +130,25 @@ var fileAsset = new Asset(this, "SampleSingleFileAsset", new AssetProps
 });
 ```
 
----
-
+------
 #### [ Go ]
 
 ```
-	dirName, err := os.Getwd()
-	if err != nil {
-		panic(err)
-	}
+dirName, err := os.Getwd()
+if err != nil {
+  panic(err)
+}
 
-	awss3assets.NewAsset(stack, jsii.String("SampleZippedDirAsset"), &awss3assets.AssetProps{
-		Path: jsii.String(path.Join(dirName, "sample-asset-directory")),
-	})
+awss3assets.NewAsset(stack, jsii.String("SampleZippedDirAsset"), &awss3assets.AssetProps{
+  Path: jsii.String(path.Join(dirName, "sample-asset-directory")),
+})
 
-	awss3assets.NewAsset(stack, jsii.String("SampleSingleFileAsset"), &awss3assets.AssetProps{
-		Path: jsii.String(path.Join(dirName, "file-asset.txt")),
-	})
+awss3assets.NewAsset(stack, jsii.String("SampleSingleFileAsset"), &awss3assets.AssetProps{
+  Path: jsii.String(path.Join(dirName, "file-asset.txt")),
+})
 ```
 
----
+------
 
 In most cases, you don't need to directly use the APIs in the `aws-s3-assets` module\. Modules that support assets, such as `aws-lambda`, have convenience methods so that you can use assets\. For Lambda functions, the [fromAsset\(\)](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda.Code.html#static-fromwbrassetpath-options) static method enables you to specify a directory or a \.zip file in the local file system\.
 
@@ -174,8 +168,7 @@ def lambda_handler(event, context):
 
 The code for the main AWS CDK app should look like the following\.
 
----
-
+------
 #### [ TypeScript ]
 
 ```
@@ -197,8 +190,7 @@ export class HelloAssetStack extends cdk.Stack {
 }
 ```
 
----
-
+------
 #### [ JavaScript ]
 
 ```
@@ -221,8 +213,7 @@ class HelloAssetStack extends cdk.Stack {
 module.exports = { HelloAssetStack }
 ```
 
----
-
+------
 #### [ Python ]
 
 ```
@@ -243,8 +234,7 @@ class HelloAssetStack(Stack):
             handler="index.lambda_handler")
 ```
 
----
-
+------
 #### [ Java ]
 
 ```
@@ -269,13 +259,12 @@ public class HelloAssetStack extends Stack {
         Function.Builder.create(this, "myLambdaFunction")
                 .code(Code.fromAsset(new File(startDir, "handler").toString()))
                 .runtime(Runtime.PYTHON_3_6)
-                .handler("index.lambda_handler").build();
+                .handler("index.lambda_handler").build();        
     }
 }
 ```
 
----
-
+------
 #### [ C\# ]
 
 ```
@@ -297,47 +286,44 @@ public class HelloAssetStack : Stack
 }
 ```
 
----
-
+------
 #### [ Go ]
 
 ```
 import (
-	"os"
-	"path"
+  "os"
+  "path"
 
-	"github.com/aws/aws-cdk-go/awscdk/v2"
-	"github.com/aws/aws-cdk-go/awscdk/v2/awslambda"
-	"github.com/aws/aws-cdk-go/awscdk/v2/awss3assets"
-
-	"github.com/aws/constructs-go/constructs/v10"
-	"github.com/aws/jsii-runtime-go"
+  "github.com/aws/aws-cdk-go/awscdk/v2"
+  "github.com/aws/aws-cdk-go/awscdk/v2/awslambda"
+  "github.com/aws/aws-cdk-go/awscdk/v2/awss3assets"
+  "github.com/aws/constructs-go/constructs/v10"
+  "github.com/aws/jsii-runtime-go"
 )
 
-
 func HelloAssetStack(scope constructs.Construct, id string, props *HelloAssetStackProps) awscdk.Stack {
-	var sprops awscdk.StackProps
-	if props != nil {
-		sprops = props.StackProps
-	}
-	stack := awscdk.NewStack(scope, &id, &sprops)
+  var sprops awscdk.StackProps
+  if props != nil {
+    sprops = props.StackProps
+  }
+  stack := awscdk.NewStack(scope, &id, &sprops)
+	
+  dirName, err := os.Getwd()
+  if err != nil {
+    panic(err)
+  }
+	
+  awslambda.NewFunction(stack, jsii.String("myLambdaFunction"), &awslambda.FunctionProps{
+    Code: awslambda.AssetCode_FromAsset(jsii.String(path.Join(dirName, "handler")), &awss3assets.AssetOptions{}),
+    Runtime: awslambda.Runtime_PYTHON_3_6(),
+    Handler: jsii.String("index.lambda_handler"),
+  })
 
-	dirName, err := os.Getwd()
-	if err != nil {
-		panic(err)
-	}
-
-	awslambda.NewFunction(stack, jsii.String("myLambdaFunction"), &awslambda.FunctionProps{
-		Code:    awslambda.AssetCode_FromAsset(jsii.String(path.Join(dirName, "handler")), &awss3assets.AssetOptions{}),
-		Runtime: awslambda.Runtime_PYTHON_3_6(),
-		Handler: jsii.String("index.lambda_handler"),
-	})
-
-	return stack
+  return stack
 }
 ```
 
----
+------
 
 The `Function` method uses assets to bundle the contents of the directory and use it for the function's code\.
 
@@ -350,8 +336,7 @@ Amazon S3 asset types also expose [deploy\-time attributes](resources.md#resourc
 
 The following example uses deploy\-time attributes to pass the location of an image asset into a Lambda function as environment variables\. \(The kind of file doesn't matter; the PNG image used here is only an example\.\)
 
----
-
+------
 #### [ TypeScript ]
 
 ```
@@ -374,8 +359,7 @@ new lambda.Function(this, "myLambdaFunction", {
 });
 ```
 
----
-
+------
 #### [ JavaScript ]
 
 ```
@@ -398,8 +382,7 @@ new lambda.Function(this, "myLambdaFunction", {
 });
 ```
 
----
-
+------
 #### [ Python ]
 
 ```
@@ -423,8 +406,7 @@ lambda_.Function(self, "myLambdaFunction",
         S3_OBJECT_URL=image_asset.s3_object_url))
 ```
 
----
-
+------
 #### [ Java ]
 
 ```
@@ -458,8 +440,7 @@ public class FunctionStack extends Stack {
 }
 ```
 
----
-
+------
 #### [ C\# ]
 
 ```
@@ -488,18 +469,17 @@ new Function(this, "myLambdaFunction", new FunctionProps
 });
 ```
 
----
-
+------
 #### [ Go ]
 
 ```
 import (
-	"os"
-	"path"
-
-	"github.com/aws/aws-cdk-go/awscdk/v2"
-	"github.com/aws/aws-cdk-go/awscdk/v2/awslambda"
-	"github.com/aws/aws-cdk-go/awscdk/v2/awss3assets"
+  "os"
+  "path"
+  
+  "github.com/aws/aws-cdk-go/awscdk/v2"
+  "github.com/aws/aws-cdk-go/awscdk/v2/awslambda"
+  "github.com/aws/aws-cdk-go/awscdk/v2/awss3assets"
 )
 
 dirName, err := os.Getwd()
@@ -512,18 +492,18 @@ imageAsset := awss3assets.NewAsset(stack, jsii.String("SampleAsset"), &awss3asse
 })
 
 awslambda.NewFunction(stack, jsii.String("myLambdaFunction"), &awslambda.FunctionProps{
-  Code:    awslambda.AssetCode_FromAsset(jsii.String(path.Join(dirName, "handler"))),
+  Code: awslambda.AssetCode_FromAsset(jsii.String(path.Join(dirName, "handler"))),
   Runtime: awslambda.Runtime_PYTHON_3_6(),
   Handler: jsii.String("index.lambda_handler"),
   Environment: &map[string]*string{
     "S3_BUCKET_NAME": imageAsset.S3BucketName(),
-    "S3_OBJECT_KEY":  imageAsset.S3ObjectKey(),
-    "S3_URL":         imageAsset.S3ObjectUrl(),
+    "S3_OBJECT_KEY": imageAsset.S3ObjectKey(),
+    "S3_URL": imageAsset.S3ObjectUrl(),
   },
 })
 ```
 
----
+------
 
 ### Permissions<a name="assets_types_s3_permissions"></a>
 
@@ -531,8 +511,7 @@ If you use Amazon S3 assets directly through the [aws\-s3\-assets](https://docs.
 
 The following example grants an IAM group read permissions on a file asset\.
 
----
-
+------
 #### [ TypeScript ]
 
 ```
@@ -547,8 +526,7 @@ const group = new iam.Group(this, 'MyUserGroup');
 asset.grantRead(group);
 ```
 
----
-
+------
 #### [ JavaScript ]
 
 ```
@@ -563,8 +541,7 @@ const group = new iam.Group(this, 'MyUserGroup');
 asset.grantRead(group);
 ```
 
----
-
+------
 #### [ Python ]
 
 ```
@@ -581,8 +558,7 @@ dirname = os.path.dirname(__file__)
         asset.grant_read(group)
 ```
 
----
-
+------
 #### [ Java ]
 
 ```
@@ -607,8 +583,7 @@ public class GrantStack extends Stack {
 }
 ```
 
----
-
+------
 #### [ C\# ]
 
 ```
@@ -625,20 +600,18 @@ var group = new Group(this, "MyUserGroup");
 asset.GrantRead(group);
 ```
 
----
-
+------
 #### [ Go ]
 
 ```
 import (
-	"os"
-	"path"
+  "os"
+  "path"
 
-	"github.com/aws/aws-cdk-go/awscdk/v2"
-	"github.com/aws/aws-cdk-go/awscdk/v2/awsiam"
-	"github.com/aws/aws-cdk-go/awscdk/v2/awss3assets"
+  "github.com/aws/aws-cdk-go/awscdk/v2"
+  "github.com/aws/aws-cdk-go/awscdk/v2/awsiam"
+  "github.com/aws/aws-cdk-go/awscdk/v2/awss3assets"
 )
-
 
 dirName, err := os.Getwd()
 if err != nil {
@@ -654,16 +627,15 @@ group := awsiam.NewGroup(stack, jsii.String("MyUserGroup"), &awsiam.GroupProps{}
 asset.GrantRead(group)
 ```
 
----
+------
 
 ## Docker image assets<a name="assets_types_docker"></a>
 
 The AWS CDK supports bundling local Docker images as assets through the [aws\-ecr\-assets](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ecr_assets-readme.html) module\.
 
-The following example defines a Docker image that is built locally and pushed to Amazon ECR\. Images are built from a local Docker context directory \(with a Dockerfile\) and uploaded to Amazon ECR by the AWS CDK CLI or your app's CI/CD pipeline\. The images can be naturally referenced in your AWS CDK app\.
+The following example defines a Docker image that is built locally and pushed to Amazon ECR\. Images are built from a local Docker context directory \(with a Dockerfile\) and uploaded to Amazon ECR by the AWS CDK CLI or your app's CI/CD pipeline\. The images can be naturally referenced in your AWS CDK app\. 
 
----
-
+------
 #### [ TypeScript ]
 
 ```
@@ -674,8 +646,7 @@ const asset = new DockerImageAsset(this, 'MyBuildImage', {
 });
 ```
 
----
-
+------
 #### [ JavaScript ]
 
 ```
@@ -686,8 +657,7 @@ const asset = new DockerImageAsset(this, 'MyBuildImage', {
 });
 ```
 
----
-
+------
 #### [ Python ]
 
 ```
@@ -700,8 +670,7 @@ asset = DockerImageAsset(self, 'MyBuildImage',
     directory=os.path.join(dirname, 'my-image'))
 ```
 
----
-
+------
 #### [ Java ]
 
 ```
@@ -713,8 +682,7 @@ DockerImageAsset asset = DockerImageAsset.Builder.create(this, "MyBuildImage")
             .directory(new File(startDir, "my-image").toString()).build();
 ```
 
----
-
+------
 #### [ C\# ]
 
 ```
@@ -727,19 +695,17 @@ var asset = new DockerImageAsset(this, "MyBuildImage", new DockerImageAssetProps
 });
 ```
 
----
-
+------
 #### [ Go ]
 
 ```
 import (
-	"os"
-	"path"
+  "os"
+  "path"
 
-	"github.com/aws/aws-cdk-go/awscdk/v2"
-	"github.com/aws/aws-cdk-go/awscdk/v2/awsecrassets"
+  "github.com/aws/aws-cdk-go/awscdk/v2"
+  "github.com/aws/aws-cdk-go/awscdk/v2/awsecrassets"
 )
-
 
 dirName, err := os.Getwd()
 if err != nil {
@@ -751,16 +717,15 @@ asset := awsecrassets.NewDockerImageAsset(stack, jsii.String("MyBuildImage"), &a
 })
 ```
 
----
+------
 
 The `my-image` directory must include a Dockerfile\. The AWS CDK CLI builds a Docker image from `my-image`, pushes it to an Amazon ECR repository, and specifies the name of the repository as an AWS CloudFormation parameter to your stack\. Docker image asset types expose [deploy\-time attributes](resources.md#resources_attributes) that can be referenced in AWS CDK libraries and apps\. The AWS CDK CLI command cdk synth displays asset properties as AWS CloudFormation parameters\.
 
 ### Amazon ECS task definition example<a name="assets_types_docker_ecs"></a>
 
-A common use case is to create an Amazon ECS [TaskDefinition](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ecs.TaskDefinition.html) to run Docker containers\. The following example specifies the location of a Docker image asset that the AWS CDK builds locally and pushes to Amazon ECR\.
+A common use case is to create an Amazon ECS [TaskDefinition](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ecs.TaskDefinition.html) to run Docker containers\. The following example specifies the location of a Docker image asset that the AWS CDK builds locally and pushes to Amazon ECR\. 
 
----
-
+------
 #### [ TypeScript ]
 
 ```
@@ -782,8 +747,7 @@ taskDefinition.addContainer("my-other-container", {
 });
 ```
 
----
-
+------
 #### [ JavaScript ]
 
 ```
@@ -805,13 +769,12 @@ taskDefinition.addContainer("my-other-container", {
 });
 ```
 
----
-
+------
 #### [ Python ]
 
 ```
 import aws_cdk.aws_ecs as ecs
-import aws_cdk.aws_ecr_assets as ecr_assets
+import aws_cdk.aws_ecr_assets as ecr_assets 
 
 import os.path
 dirname = os.path.dirname(__file__)
@@ -827,8 +790,7 @@ task_definition.add_container("my-other-container",
     image=ecs.ContainerImage.from_docker_image_asset(asset))
 ```
 
----
-
+------
 #### [ Java ]
 
 ```
@@ -854,8 +816,7 @@ taskDefinition.addContainer("my-other-container",
             .build();
 ```
 
----
-
+------
 #### [ C\# ]
 
 ```
@@ -880,20 +841,18 @@ taskDefinition.AddContainer("my-other-container", new ContainerDefinitionOptions
 });
 ```
 
----
-
+------
 #### [ Go ]
 
 ```
 import (
-	"os"
-	"path"
-
-	"github.com/aws/aws-cdk-go/awscdk/v2"
-	"github.com/aws/aws-cdk-go/awscdk/v2/awsecrassets"
-	"github.com/aws/aws-cdk-go/awscdk/v2/awsecs"
+  "os"
+  "path"
+  
+  "github.com/aws/aws-cdk-go/awscdk/v2"
+  "github.com/aws/aws-cdk-go/awscdk/v2/awsecrassets"
+  "github.com/aws/aws-cdk-go/awscdk/v2/awsecs"
 )
-
 
 dirName, err := os.Getwd()
 if err != nil {
@@ -902,7 +861,7 @@ if err != nil {
 
 taskDefinition := awsecs.NewTaskDefinition(stack, jsii.String("TaskDef"), &awsecs.TaskDefinitionProps{
   MemoryMiB: jsii.String("1024"),
-  Cpu:       jsii.String("512"),
+  Cpu: jsii.String("512"),
 })
 
 asset := awsecrassets.NewDockerImageAsset(stack, jsii.String("MyBuildImage"), &awsecrassets.DockerImageAssetProps{
@@ -914,14 +873,13 @@ taskDefinition.AddContainer(jsii.String("MyOtherContainer"), &awsecs.ContainerDe
 })
 ```
 
----
+------
 
 ### Deploy\-time attributes example<a name="assets_types_docker_deploy"></a>
 
 The following example shows how to use the deploy\-time attributes `repository` and `imageUri` to create an Amazon ECS task definition with the AWS Fargate launch type\. Note that the Amazon ECR repo lookup requires the image's tag, not its URI, so we snip it from the end of the asset's URI\.
 
----
-
+------
 #### [ TypeScript ]
 
 ```
@@ -943,8 +901,7 @@ taskDefinition.addContainer("my-other-container", {
 });
 ```
 
----
-
+------
 #### [ JavaScript ]
 
 ```
@@ -966,8 +923,7 @@ taskDefinition.addContainer("my-other-container", {
 });
 ```
 
----
-
+------
 #### [ Python ]
 
 ```
@@ -988,8 +944,7 @@ task_definition.add_container("my-other-container",
         asset.repository, asset.image_uri.rpartition(":")[-1]))
 ```
 
----
-
+------
 #### [ Java ]
 
 ```
@@ -1018,8 +973,7 @@ taskDefinition.addContainer("my-other-container",
                 asset.getRepository(), imageTag)).build());
 ```
 
----
-
+------
 #### [ C\# ]
 
 ```
@@ -1043,20 +997,18 @@ taskDefinition.AddContainer("my-other-container", new ContainerDefinitionOptions
 });
 ```
 
----
-
+------
 #### [ Go ]
 
 ```
 import (
-	"os"
-	"path"
+  "os"
+  "path"
 
-	"github.com/aws/aws-cdk-go/awscdk/v2"
-	"github.com/aws/aws-cdk-go/awscdk/v2/awsecrassets"
-	"github.com/aws/aws-cdk-go/awscdk/v2/awsecs"
+  "github.com/aws/aws-cdk-go/awscdk/v2"
+  "github.com/aws/aws-cdk-go/awscdk/v2/awsecrassets"
+  "github.com/aws/aws-cdk-go/awscdk/v2/awsecs"
 )
-
 
 dirName, err := os.Getwd()
 if err != nil {
@@ -1069,7 +1021,7 @@ asset := awsecrassets.NewDockerImageAsset(stack, jsii.String("MyImage"), &awsecr
 
 taskDefinition := awsecs.NewFargateTaskDefinition(stack, jsii.String("TaskDef"), &awsecs.FargateTaskDefinitionProps{
   MemoryLimitMiB: jsii.Number(1024),
-  Cpu:            jsii.Number(512),
+  Cpu: jsii.Number(512),
 })
 
 taskDefinition.AddContainer(jsii.String("MyOtherContainer"), &awsecs.ContainerDefinitionOptions{
@@ -1077,14 +1029,13 @@ taskDefinition.AddContainer(jsii.String("MyOtherContainer"), &awsecs.ContainerDe
 })
 ```
 
----
+------
 
 ### Build arguments example<a name="assets_types_docker_build"></a>
 
 You can provide customized build arguments for the Docker build step through the `buildArgs` \(Python: `build_args`\) property option when the AWS CDK CLI builds the image during deployment\.
 
----
-
+------
 #### [ TypeScript ]
 
 ```
@@ -1096,8 +1047,7 @@ const asset = new DockerImageAsset(this, 'MyBuildImage', {
 });
 ```
 
----
-
+------
 #### [ JavaScript ]
 
 ```
@@ -1109,8 +1059,7 @@ const asset = new DockerImageAsset(this, 'MyBuildImage', {
 });
 ```
 
----
-
+------
 #### [ Python ]
 
 ```
@@ -1119,8 +1068,7 @@ asset = DockerImageAsset(self, "MyBulidImage",
     build_args=dict(HTTP_PROXY="http://10.20.30.2:1234"))
 ```
 
----
-
+------
 #### [ Java ]
 
 ```
@@ -1131,8 +1079,7 @@ DockerImageAsset asset = DockerImageAsset.Builder.create(this, "my-image"),
             .build();
 ```
 
----
-
+------
 #### [ C\# ]
 
 ```
@@ -1145,8 +1092,7 @@ var asset = new DockerImageAsset(this, "MyBuildImage", new DockerImageAssetProps
 });
 ```
 
----
-
+------
 #### [ Go ]
 
 ```
@@ -1163,13 +1109,13 @@ asset := awsecrassets.NewDockerImageAsset(stack, jsii.String("MyBuildImage"), &a
 })
 ```
 
----
+------
 
 ### Permissions<a name="assets_types_docker_permissions"></a>
 
-If you use a module that supports Docker image assets, such as [aws\-ecs](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ecs-readme.html), the AWS CDK manages permissions for you when you use assets directly or through [ContainerImage\.fromEcrRepository](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ecs.ContainerImage.html#static-fromwbrecrwbrrepositoryrepository-tag) \(Python: `from_ecr_repository`\)\. If you use Docker image assets directly, make sure that the consuming principal has permissions to pull the image\.
+If you use a module that supports Docker image assets, such as [aws\-ecs](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ecs-readme.html), the AWS CDK manages permissions for you when you use assets directly or through [ContainerImage\.fromEcrRepository](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ecs.ContainerImage.html#static-fromwbrecrwbrrepositoryrepository-tag) \(Python: `from_ecr_repository`\)\. If you use Docker image assets directly, make sure that the consuming principal has permissions to pull the image\. 
 
-In most cases, you should use [asset\.repository\.grantPull](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ecr.Repository.html#grantwbrpullgrantee) method \(Python: `grant_pull`\. This modifies the IAM policy of the principal to enable it to pull images from this repository\. If the principal that is pulling the image is not in the same account, or if it's an AWS service that doesn't assume a role in your account \(such as AWS CodeBuild\), you must grant pull permissions on the resource policy and not on the principal's policy\. Use the [asset\.repository\.addToResourcePolicy](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ecr.Repository.html#addwbrtowbrresourcewbrpolicystatement) method \(Python: `add_to_resource_policy`\) to grant the appropriate principal permissions\.
+In most cases, you should use [asset\.repository\.grantPull](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ecr.Repository.html#grantwbrpullgrantee) method \(Python: `grant_pull`\. This modifies the IAM policy of the principal to enable it to pull images from this repository\. If the principal that is pulling the image is not in the same account, or if it's an AWS service that doesn't assume a role in your account \(such as AWS CodeBuild\), you must grant pull permissions on the resource policy and not on the principal's policy\. Use the [asset\.repository\.addToResourcePolicy](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ecr.Repository.html#addwbrtowbrresourcewbrpolicystatement) method \(Python: `add_to_resource_policy`\) to grant the appropriate principal permissions\. 
 
 ## AWS CloudFormation resource metadata<a name="assets_cfn"></a>
 
@@ -1177,10 +1123,9 @@ In most cases, you should use [asset\.repository\.grantPull](https://docs.aws.am
 This section is relevant only for construct authors\. In certain situations, tools need to know that a certain CFN resource is using a local asset\. For example, you can use the AWS SAM CLI to invoke Lambda functions locally for debugging purposes\. See [AWS SAM integration](sam.md) for details\.
 
 To enable such use cases, external tools consult a set of metadata entries on AWS CloudFormation resources:
-
-- `aws:asset:path` – Points to the local path of the asset\.
-- `aws:asset:property` – The name of the resource property where the asset is used\.
++ `aws:asset:path` – Points to the local path of the asset\.
++ `aws:asset:property` – The name of the resource property where the asset is used\.
 
 Using these two metadata entries, tools can identify that assets are used by a certain resource, and enable advanced local experiences\.
 
-To add these metadata entries to a resource, use the `asset.addResourceMetadata` \(Python: `add_resource_metadata`\) method\.
+To add these metadata entries to a resource, use the `asset.addResourceMetadata` \(Python: `add_resource_metadata`\)  method\.  

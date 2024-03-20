@@ -221,6 +221,22 @@ public class MyFirstStack : Stack
 ```
 
 ------
+#### [ Go ]
+
+```
+func MyFirstStack(scope constructs.Construct, id string, props *MyFirstStackProps) awscdk.Stack {
+  var sprops awscdk.StackProps
+  if props != nil {
+    sprops = props.StackProps
+  }
+  stack := awscdk.NewStack(scope, &id, &sprops)
+	
+  s3.NewBucket(stack, jsii.String("MyFirstBucket"), &s3.BucketProps{})
+  return stack
+}
+```
+
+------
 
 However, this code has only *declared* a stack\. For the stack to actually be synthesized into an AWS CloudFormation template and deployed, it must be instantiated\. And, like all CDK constructs, it must be instantiated in some context\. The `App` is that context\.
 
