@@ -1,14 +1,22 @@
 # Working with the AWS CDK in Go<a name="work-with-cdk-go"></a>
 
-Go is a fully\-supported client language for the AWS CDK and is considered stable\. Working with the AWS CDK in Go uses familiar tools\. The Go version of the AWS CDK even uses Go\-style identifiers\.
+Go is a fully\-supported client language for the AWS Cloud Development Kit \(AWS CDK\) and is considered stable\. Working with the AWS CDK in Go uses familiar tools\. The Go version of the AWS CDK even uses Go\-style identifiers\.
 
-Unlike the other languages the CDK supports, Go is not a traditional object\-oriented programming language\. Go uses composition where other languages often leverage inheritance\. We have tried to employ idiomatic Go approaches as much as possible, but there are places where the CDK charts its own course\.
+Unlike the other languages the CDK supports, Go is not a traditional object\-oriented programming language\. Go uses composition where other languages often leverage inheritance\. We have tried to employ idiomatic Go approaches as much as possible, but there are places where the CDK may differ\.
 
-This topic explains the ins and outs of working with the AWS CDK in Go\. See the [announcement blog post](https://aws.amazon.com/blogs/developer/getting-started-with-the-aws-cloud-development-kit-and-go/) for a walkthrough of a simple Go project for the AWS CDK\.
+This topic provides guidance when working with the AWS CDK in Go\. See the [announcement blog post](https://aws.amazon.com/blogs/developer/getting-started-with-the-aws-cloud-development-kit-and-go/) for a walkthrough of a simple Go project for the AWS CDK\.
 
-## Prerequisites<a name="go-prerequisites"></a>
+**Topics**
++ [Get started with Go](#go-prerequisites)
++ [Creating a project](#go-newproject)
++ [Managing AWS Construct Library modules](#go-managemodules)
++ [Managing dependencies in Go](#work-with-cdk-go-dependencies)
++ [AWS CDK idioms in Go](#go-cdk-idioms)
++ [Building, synthesizing, and deploying](#go-running)
 
-To work with the AWS CDK, you must have an AWS account and credentials and have installed Node\.js and the AWS CDK Toolkit\. See [AWS CDK Prerequisites](work-with.md#work-with-prerequisites)\.
+## Get started with Go<a name="go-prerequisites"></a>
+
+To work with the AWS CDK, you must have an AWS account and credentials and have installed Node\.js and the AWS CDK Toolkit\. See [Getting started with the AWS CDK](getting_started.md)\.
 
 The Go bindings for the AWS CDK use the standard [Go toolchain](https://golang.org/dl/), v1\.18 or later\. You can use the editor of your choice\.
 
@@ -17,7 +25,7 @@ Third\-party language deprecation: language version is only supported until its 
 
 ## Creating a project<a name="go-newproject"></a>
 
-You create a new AWS CDK project by invoking `cdk init` in an empty directory\.
+You create a new AWS CDK project by invoking `cdk init` in an empty directory\. Use the `--language` option and specify `go`:
 
 ```
 mkdir my-project
@@ -46,6 +54,26 @@ import (
 
 Once you have imported the Construct Library modules \(Go packages\) for the services you want to use in your app, you access constructs in that module using, for example, `awss3.Bucket`\.
 
+## Managing dependencies in Go<a name="work-with-cdk-go-dependencies"></a>
+
+In Go, dependencies versions are defined in `go.mod`\. The default `go.mod` is similar to the one shown here\.
+
+```
+module my-package
+
+go 1.16
+
+require (
+  github.com/aws/aws-cdk-go/awscdk/v2 v2.16.0
+  github.com/aws/constructs-go/constructs/v10 v10.0.5
+  github.com/aws/jsii-runtime-go v1.29.0
+)
+```
+
+Package names \(modules, in Go parlance\) are specified by URL with the required version number appended\. Go's module system does not support version ranges\.
+
+Issue the go get command to install all required modules and update `go.mod`\. To see a list of available updates for your dependencies, issue go list \-m \-u all\.
+
 ## AWS CDK idioms in Go<a name="go-cdk-idioms"></a>
 
 ### Field and method names<a name="go-naming"></a>
@@ -55,10 +83,6 @@ Field and method names use camel casing \(`likeThis`\) in TypeScript, the CDK's 
 ### Cleaning up<a name="go-cdk-jsii-close"></a>
 
 In your `main` method, use `defer jsii.Close()` to make sure your CDK app cleans up after itself\.
-
-### Field and method names<a name="go-naming"></a>
-
-Field and method names use camel casing \(`likeThis`\) in TypeScript, the CDK's language of origin\. In Go, these follow Go conventions, so are Pascal\-cased \(`LikeThis`\)\.
 
 ### Missing values and pointer conversion<a name="go-missing-values"></a>
 

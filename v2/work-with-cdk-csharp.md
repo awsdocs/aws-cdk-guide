@@ -6,20 +6,25 @@ You can develop AWS CDK applications in C\# using familiar tools including Visua
 
 We suggest using [Visual Studio 2019](https://visualstudio.microsoft.com/downloads/) \(any edition\) on Windows to develop AWS CDK apps in C\#\.
 
-## Prerequisites<a name="csharp-prerequisites"></a>
+**Topics**
++ [Get started with C\#](#csharp-prerequisites)
++ [Creating a project](#csharp-newproject)
++ [Managing AWS Construct Library modules](#csharp-managemodules)
++ [Managing dependencies in C\#](#work-with-cdk-csharp-dependencies)
++ [AWS CDK idioms in C\#](#csharp-cdk-idioms)
++ [Building, synthesizing, and deploying](#csharp-running)
 
-To work with the AWS CDK, you must have an AWS account and credentials and have installed Node\.js and the AWS CDK Toolkit\. See [AWS CDK Prerequisites](work-with.md#work-with-prerequisites)\.
+## Get started with C\#<a name="csharp-prerequisites"></a>
 
-C\# AWS CDK applications require \.NET Core v3\.1 or later, [available here](https://dotnet.microsoft.com/download/dotnet-core/3.1)\.
+To work with the AWS CDK, you must have an AWS account and credentials and have installed Node\.js and the AWS CDK Toolkit\. See [Getting started with the AWS CDK](getting_started.md)\.
 
-**Note**  
-Third\-party language deprecation: language version is only supported until its EOL \(End Of Life\) shared by the vendor or community and is subject to change with prior notice\.
+C\# AWS CDK applications require \.NET Core v3\.1 or later, available [ here](https://dotnet.microsoft.com/download/dotnet-core/3.1)\.
 
 The \.NET toolchain includes `dotnet`, a command\-line tool for building and running \.NET applications and managing NuGet packages\. Even if you work mainly in Visual Studio, this command can be useful for batch operations and for installing AWS Construct Library packages\.
 
 ## Creating a project<a name="csharp-newproject"></a>
 
-You create a new AWS CDK project by invoking `cdk init` in an empty directory\.
+You create a new AWS CDK project by invoking `cdk init` in an empty directory\. Use the `--language` option and specify `csharp`:
 
 ```
 mkdir my-project
@@ -44,34 +49,51 @@ The AWS CDK's main module, which you'll need in most AWS CDK apps, is imported i
 
 We recommend writing C\# `using` directives for the CDK core constructs and for each AWS service you use in each of your C\# source files\. You may find it convenient to use an alias for a namespace or type to help resolve name conflicts\. You can always use a type's fully\-qualfiied name \(including its namespace\) without a `using` statement\.
 
-NuGet has four standard, mostly\-equivalent interfaces; you can use the one that suits your needs and working style\. You can also use compatible tools, such as [Paket](https://fsprojects.github.io/Paket/) or [MyGet](https://www.myget.org/)\.
+## Managing dependencies in C\#<a name="work-with-cdk-csharp-dependencies"></a>
 
-### The Visual Studio NuGet GUI<a name="csharp-vs-nuget-gui"></a>
+In C\# AWS CDK apps, you manage dependencies using NuGet\. NuGet has four standard, mostly equivalent interfaces\. Use the one that suits your needs and working style\. You can also use compatible tools, such as [Paket](https://fsprojects.github.io/Paket/) or [MyGet](https://www.myget.org/) or even edit the `.csproj` file directly\.
 
-Visual Studio's NuGet tools are accessible from **Tools** > **NuGet Package Manager** > **Manage NuGet Packages for Solution**\. Use the **Browse** tab to find the AWS Construct Library packages you want to install\. You can choose the desired version, including pre\-release versions of your modules and add them to any of the open projects\. 
+NuGet does not let you specify version ranges for dependencies\. Every dependency is pinned to a specific version\.
+
+After updating your dependencies, Visual Studio will use NuGet to retrieve the specified versions of each package the next time you build\. If you are not using Visual Studio, use the dotnet restore command to update your dependencies\.
+
+### Editing the project file directly<a name="manage-dependencies-csharp-direct-edit"></a>
+
+Your project's `.csproj` file contains an `<ItemGroup>` container that lists your dependencies as `<PackageReference` elements\.
+
+```
+<ItemGroup>
+    <PackageReference Include="Amazon.CDK.Lib" Version="2.14.0" />
+    <PackageReference Include="Constructs" Version="%constructs-version%" />
+</ItemGroup>
+```
+
+### The Visual Studio NuGet GUI<a name="manage-dependencies-csharp-vs-nuget-gui"></a>
+
+Visual Studio's NuGet tools are accessible from **Tools** > **NuGet Package Manager** > **Manage NuGet Packages for Solution**\. Use the **Browse** tab to find the AWS Construct Library packages you want to install\. You can choose the desired version, including prerelease versions of your modules, and add them to any of the open projects\. 
 
 **Note**  
-All AWS Construct Library modules deemed "experimental" \(see [Versioning](reference.md#versioning)\) are flagged as pre\-release in NuGet and have an `alpha` name suffix\.
+All AWS Construct Library modules deemed "experimental" \(see [AWS CDK versioning](versioning.md)\) are flagged as prerelease in NuGet and have an `alpha` name suffix\.
 
 ![\[Image NOT FOUND\]](http://docs.aws.amazon.com/cdk/v2/guide/images/visual-studio-nuget.png)
 
 Look on the **Updates** page to install new versions of your packages\.
 
-### The NuGet console<a name="csharp-vs-nuget-console"></a>
+### The NuGet console<a name="manage-dependencies-csharp-vs-nuget-console"></a>
 
 The NuGet console is a PowerShell\-based interface to NuGet that works in the context of a Visual Studio project\. You can open it in Visual Studio by choosing **Tools** > **NuGet Package Manager** > **Package Manager Console**\. For more information about using this tool, see [Install and Manage Packages with the Package Manager Console in Visual Studio](https://docs.microsoft.com/en-us/nuget/consume-packages/install-use-packages-powershell)\.
 
-### The `dotnet` command<a name="csharp-vs-dotnet-command"></a>
+### The `dotnet` command<a name="manage-dependencies-csharp-vs-dotnet-command"></a>
 
-The `dotnet` command is the primary command\-line tool for working with Visual Studio C\# projects\. You can invoke it from any Windows command prompt\. Among its many capabilities, `dotnet` can add NuGet dependencies to a Visual Studio project\.
+The `dotnet` command is the primary command line tool for working with Visual Studio C\# projects\. You can invoke it from any Windows command prompt\. Among its many capabilities, `dotnet` can add NuGet dependencies to a Visual Studio project\.
 
-Assuming you're in the same directory as the Visual Studio project \(`.csproj`\) file, issue a command like the following to install a package\. Note that since the main CDK library is included when you create a project, you should ever only need to explictly install experimental modules\. Experimental modules require you to specify an explicit version number\.
+Assuming you're in the same directory as the Visual Studio project \(`.csproj`\) file, issue a command like the following to install a package\. Because the main CDK library is included when you create a project, you only need to explicitly install experimental modules\. Experimental modules require you to specify an explicit version number\.
 
 ```
 dotnet add package Amazon.CDK.AWS.IoT.Alpha -v VERSION-NUMBER
 ```
 
-You may issue the command from another directory by including the path to the project file, or to the directory that contains it, after the `add` keyword\. The following example assumes that you are in your AWS CDK project's main directory\.
+You can issue the command from another directory\. To do so, include the path to the project file, or to the directory that contains it, after the `add` keyword\. The following example assumes that you are in your AWS CDK project's main directory\.
 
 ```
 dotnet add src/PROJECT-DIR package Amazon.CDK.AWS.IoT.Alpha -v VERSION-NUMBER
@@ -83,7 +105,7 @@ To update a package, issue the same `dotnet add` command you used to install it\
 
 For more information about managing packages using the `dotnet` command, see [Install and Manage Packages Using the dotnet CLI](https://docs.microsoft.com/en-us/nuget/consume-packages/install-use-packages-dotnet-cli)\.
 
-### The `nuget` command<a name="csharp-vs-nuget-command"></a>
+### The `nuget` command<a name="manage-dependencies-csharp-vs-nuget-command"></a>
 
 The `nuget` command line tool can install and update NuGet packages\. However, it requires your Visual Studio project to be set up differently from the way `cdk init` sets up projects\. \(Technical details: `nuget` works with `Packages.config` projects, while `cdk init` creates a newer\-style `PackageReference` project\.\)
 

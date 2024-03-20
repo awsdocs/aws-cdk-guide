@@ -25,6 +25,7 @@ All CDK Toolkit commands start with `cdk`, which is followed by a subcommand \(`
 | `cdk deploy` | Deploys one or more specified stacks | 
 | `cdk destroy` | Destroys one or more specified stacks | 
 | `cdk diff` | Compares the specified stack and its dependencies with the deployed stacks or a local CloudFormation template | 
+| `cdk import` | Uses CloudFormation resource imports to bring existing resources into a stack managed by CDK | 
 | `cdk metadata` | Displays metadata about the specified stack | 
 | `cdk init` | Creates a new CDK project in the current directory from a specified template | 
 | `cdk context` | Manages cached context values | 
@@ -121,13 +122,13 @@ To opt out of version reporting, use one of the following methods:
   }
   ```
 
-## Authentication with AWS<a name="getting_started_auth"></a>
+## Authentication with AWS<a name="cli_auth"></a>
 
  There are different ways in which you can configure programmatic access to AWS resources, depending on the environment and the AWS access available to you\. 
 
 To choose your method of authentication and configure it for the CDK Toolkit, see [Authentication and access](https://docs.aws.amazon.com/sdkref/latest/guide/access.html) in the *AWS SDKs and Tools Reference Guide*\. 
 
-The recommended approach for new users developing locally, who are not given a method of authentication by their employer, is to set up AWS IAM Identity Center \(successor to AWS Single Sign\-On\)\. This method includes installing the AWS CLI for ease of configuration and for regularly signing in to the AWS access portal\. If you choose this method, your environment should contain the following elements after you complete the procedure for [IAM Identity Center authentication](https://docs.aws.amazon.com/sdkref/latest/guide/access-sso.html) in the *AWS SDKs and Tools Reference Guide*:
+The recommended approach for new users developing locally, who are not given a method of authentication by their employer, is to set up AWS IAM Identity Center\. This method includes installing the AWS CLI for ease of configuration and for regularly signing in to the AWS access portal\. If you choose this method, your environment should contain the following elements after you complete the procedure for [IAM Identity Center authentication](https://docs.aws.amazon.com/sdkref/latest/guide/access-sso.html) in the *AWS SDKs and Tools Reference Guide*:
 + The AWS CLI, which you use to start an AWS access portal session before you run your application\.
 + A [shared AWS`config` file](https://docs.aws.amazon.com/sdkref/latest/guide/file-format.html) having a `[default]` profile with a set of configuration values that can be referenced from the AWS CDK\. To find the location of this file, see [Location of the shared files](https://docs.aws.amazon.com/sdkref/latest/guide/file-location.html) in the *AWS SDKs and Tools Reference Guide*\.
 +  The shared `config` file sets the [https://docs.aws.amazon.com/sdkref/latest/guide/feature-region.html](https://docs.aws.amazon.com/sdkref/latest/guide/feature-region.html) setting\. This sets the default AWS Region the AWS CDK and CDK Toolkit use for AWS requests\. 
@@ -341,7 +342,7 @@ The CDK Toolkit actually runs your app and synthesizes fresh templates before mo
 
 See `cdk synth --help` for all available options\. A few of the most frequently used options are covered in the following section\.
 
-### Specifying context values<a name="w53aac33b7c33c11"></a>
+### Specifying context values<a name="w91aac51b7c33c11"></a>
 
 Use the `--context` or `-c` option to pass [runtime context](context.md) values to your CDK app\.
 
@@ -360,7 +361,7 @@ When deploying multiple stacks, the specified context values are normally passed
 cdk synth --context Stack1:key=value Stack2:key=value Stack1 Stack2
 ```
 
-### Specifying display format<a name="w53aac33b7c33c13"></a>
+### Specifying display format<a name="w91aac51b7c33c13"></a>
 
 By default, the synthesized template is displayed in YAML format\. Add the `--json` flag to display it in JSON format instead\.
 
@@ -368,7 +369,7 @@ By default, the synthesized template is displayed in YAML format\. Add the `--js
 cdk synth --json MyStack
 ```
 
-### Specifying output directory<a name="w53aac33b7c33c15"></a>
+### Specifying output directory<a name="w91aac51b7c33c15"></a>
 
 Add the `--output` \(`-o`\) option to write the synthesized templates to a directory other than `cdk.out`\.
 
@@ -410,7 +411,7 @@ For this reason, the CDK Toolkit lets you disable rollback by adding `--no-rollb
 
 ### Hot swapping<a name="cli-deploy-hotswap"></a>
 
-Use the `--hotswap` flag with `cdk deploy` to attempt to update your AWS resources directly instead of generating an AWS CloudFormation changeset and deploying it\. Deployment falls back to AWS CloudFormation deployment if hot swapping is not possible\.
+Use the `--hotswap` flag with `cdk deploy` to attempt to update your AWS resources directly instead of generating an AWS CloudFormation change set and deploying it\. Deployment falls back to AWS CloudFormation deployment if hot swapping is not possible\.
 
 Currently hot swapping supports Lambda functions, Step Functions state machines, and Amazon ECS container images\. The `--hotswap` flag also disables rollback \(i\.e\., implies `--no-rollback`\)\.
 
@@ -444,7 +445,7 @@ Git\-style wildcards, both `*` and `**`, can be used in the `"watch"` and `"buil
 **Important**  
 Watch mode is not recommended for production deployments\.
 
-### Specifying AWS CloudFormation parameters<a name="w53aac33b7c35c19"></a>
+### Specifying AWS CloudFormation parameters<a name="w91aac51b7c35c19"></a>
 
 The AWS CDK Toolkit supports specifying AWS CloudFormation [parameters](parameters.md) at deployment\. You may provide these on the command line following the `--parameters` flag\.
 
@@ -466,7 +467,7 @@ cdk deploy MyStack YourStack --parameters MyStack:uploadBucketName=UploadBucket 
 
 By default, the AWS CDK retains values of parameters from previous deployments and uses them in later deployments if they are not specified explicitly\. Use the `--no-previous-parameters` flag to require all parameters to be specified\.
 
-### Specifying outputs file<a name="w53aac33b7c35c21"></a>
+### Specifying outputs file<a name="w91aac51b7c35c21"></a>
 
 If your stack declares AWS CloudFormation outputs, these are normally displayed on the screen at the conclusion of deployment\. To write them to a file in JSON format, use the `--outputs-file` flag\.
 
@@ -558,6 +559,25 @@ To compare your app's stacks with a saved CloudFormation template:
 ```
 cdk diff --template ~/stacks/MyStack.old MyStack
 ```
+
+## Importing existing resources into a stack<a name="cli-import"></a>
+
+You can use the `cdk import` command to bring resources under the management of CloudFormation for a particular AWS CDK stack\. This is useful if you are migrating to AWS CDK, or are moving resources between stacks or changing their logical id\. `cdk import` uses [ CloudFormation resource imports](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/resource-import.html)\. See the [list of resources that can be imported here](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/resource-import-supported-resources.html)\. 
+
+To import an existing resource into a AWS CDK stack, follow the following steps:
++ Make sure the resource is not currently being managed by any other CloudFormation stack\. If it is, first set the removal policy to `RemovalPolicy.RETAIN` in the stack the resource is currently in and perform a deployment\. Then, remove the resource from the stack and perform another deployment\. This process will make sure that the resource is no longer managed by CloudFormation but does not delete it\.
++ Run a `cdk diff` to make sure there are no pending changes to the AWS CDK stack you want to import resources into\. The only changes allowed in an "import" operation are the addition of new resources which you want to import\.
++ Add constructs for the resources you want to import to your stack\. For example, if you want to import an Amazon S3 bucket, add something like `new s3.Bucket(this, 'ImportedS3Bucket', {});`\. Do not make any modifications to any other resource\.
+
+  You must also make sure to exactly model the state that the resource currently has into the definition\. For the example of the bucket, be sure to include AWS KMS keys, life cycle policies, and anything else that's relevant about the bucket\. If you do not, subsequent update operations may not do what you expect\.
+
+  You can choose whether or not to include the physical bucket name\. We usually recommend to not include resource names into your AWS CDK resource definitions so that it becomes easier to deploy your resources multiple times\.
++ Run `cdk import STACKNAME`\.
++ If the resource names are not in your model, the CLI will prompt you to pass in the actual names of the resources you are importing\. After this, the import starts\.
++ When `cdk import` reports success, the resource is now managed by AWS CDK and CloudFormation\. Any subsequent changes you make to the resource properties in your AWS CDK app the construct configuration will be applied on the next deployment\.
++ To confirm that the resource definition in your AWS CDK app matches the current state of the resource, you can start an [CloudFormation drift detection operation](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-stack-drift.html)\.
+
+This feature currently does not support importing resources into nested stacks\.
 
 ## Configuration \(`cdk.json`\)<a name="cli-config"></a>
 

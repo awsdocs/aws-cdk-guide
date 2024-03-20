@@ -1,20 +1,25 @@
 # Using resources from the AWS CloudFormation Public Registry<a name="use_cfn_public_registry"></a>
 
- The AWS CloudFormation Public Registry is a collection of AWS CloudFormation extensions from both AWS and third parties\. The extensions are available for use by all AWS customers\. You can also publish your own extension for others to use\. Extensions are of two types: resources and modules\. You can use public resource extensions in your AWS CDK app using the [https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.CfnResource.html](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.CfnResource.html) construct\.
+The AWS CloudFormation Public Registry lets you manage extensions, both public and private, such as resources, modules, and hooks that are available for use in your AWS account\. You can use public resource extensions in your AWS Cloud Development Kit \(AWS CDK\) applications with the [https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.CfnResource.html](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.CfnResource.html) construct\. 
+
+To learn more about the AWS CloudFormation Public Registry, see [Using the AWS CloudFormation registry](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/registry.html) in the *AWS CloudFormation User Guide*\.
 
 All public extensions published by AWS are available to all accounts in all Regions without any action on your part\. However, you must activate each third\-party extension you want to use, in each account and Region where you want to use it\. 
 
 **Note**  
-When you use AWS CloudFormation with third\-party resource types, you will incur charges\. Charges are based on the number of handler operations you run per month and handler operation duration\. See [CloudFormation pricing](http://aws.amazon.com/cloudformation/pricing/) for complete details\.
+When you use AWS CloudFormation with third\-party resource types, you will incur charges\. Charges are based on the number of handler operations you run per month and handler operation duration\. See [CloudFormation pricing](https://aws.amazon.com/cloudformation/pricing/) for complete details\.
 
-See [Using public extensions in CloudFormation](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/registry-public.html) for complete documentation of this feature from the AWS CloudFormation side\.
+To learn more about public extensions, see [Using public extensions in CloudFormation](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/registry-public.html) in the *AWS CloudFormation User Guide*
+
+**Topics**
++ [Activating a third\-party resource in your account and Region](#use_cfn_public_registry_activate)
++ [Adding a resource from the AWS CloudFormation Public Registry to your CDK app](#use_cfn_public_registry_add)
 
 ## Activating a third\-party resource in your account and Region<a name="use_cfn_public_registry_activate"></a>
 
-Extensions published by AWS do not require activation; they are always available in every account and Region\. You can activate a third\-party extension through the AWS Management Console, via the AWS Command Line Interface, or by deploying a special AWS CloudFormation resource\.
+Extensions published by AWS do not require activation\. They are always available in every account and Region\. You can activate a third\-party extension through the AWS Management Console, via the AWS Command Line Interface, or by deploying a special AWS CloudFormation resource\.
 
-To activate a third\-party extension through the AWS Management Console, or to see what resources are available, follow these steps\.
-
+**To activate a third\-party extension through the AWS Management Console or see what resources are available**  
 ![\[Image NOT FOUND\]](http://docs.aws.amazon.com/cdk/v2/guide/images/activate-cfn-extension.png)
 
 1. Sign in to the AWS account in which you want to use the extension, then switch to the Region where you want to use it\.
@@ -29,20 +34,29 @@ To activate a third\-party extension through the AWS Management Console, or to s
 
 1. In the **Activate** page, you can override the extension's default name and specify an execution role and logging configuration\. You can also choose whether to automatically update the extension when a new version is released\. When you have set these options as you like, choose **Activate extension** at the bottom of the page\.
 
-To activate a third\-party extension using the AWS CLI, use the `activate-type `command\. Substitute the ARN of the custom type you want to use where indicated\.
+**To activate a third\-party extension using the AWS CLI**
++ Use the `activate-type` command\. Substitute the ARN of the custom type you want to use where indicated\.
 
-```
-aws cloudformation activate-type --public-type-arn public_extension_ARN --auto-update-activated
-```
+  The following is an example:
 
-To activate an extension through CloudFormation or the CDK, deploy a resource of type `AWS::CloudFormation::TypeActivation`, specifying the following properties\.
-+ `TypeName` \- The name of the type, such as `AWSQS::EKS::Cluster`\.
-+ `MajorVersion` \- The major version number of the extension that you want\. Omit if you want the latest version\.
-+ `AutoUpdate` \- Whether to automatically update this extension when a new minor version is released by the publisher\. \(Major version updates require explicitly changing the `MajorVersion` property\.\)
-+ `ExecutionRoleArn` \- The ARN of the IAM role under which this extension will run\.
-+ `LoggingConfig` \- The logging configuration for the extension\.
+  ```
+  aws cloudformation activate-type --public-type-arn public_extension_ARN --auto-update-activated
+  ```
 
-The `TypeActivation` resource can be deployed by the CDK using the [https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.CfnResource.html](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.CfnResource.html) construct\. This is shown for the actual extensions in the following section\.
+**To activate a third\-party extension through CloudFormation or CDK**
++ Deploy a resource of type `AWS::CloudFormation::TypeActivation` and specify the following properties:
+
+  1. `TypeName` \- The name of the type, such as `AWSQS::EKS::Cluster`\.
+
+  1. `MajorVersion` \- The major version number of the extension that you want\. Omit if you want the latest version\.
+
+  1. `AutoUpdate` \- Whether to automatically update this extension when a new minor version is released by the publisher\. \(Major version updates require explicitly changing the `MajorVersion` property\.\)
+
+  1. `ExecutionRoleArn` \- The ARN of the IAM role under which this extension will run\.
+
+  1. `LoggingConfig` \- The logging configuration for the extension\.
+
+  The `TypeActivation` resource can be deployed by the CDK using the [https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.CfnResource.html](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.CfnResource.html) construct\. This is shown for the actual extensions in the following section\.
 
 ## Adding a resource from the AWS CloudFormation Public Registry to your CDK app<a name="use_cfn_public_registry_add"></a>
 

@@ -1,23 +1,32 @@
 # Bootstrapping<a name="bootstrapping"></a>
 
-*Bootstrapping* is the process of provisioning resources for the AWS CDK before you can deploy AWS CDK apps into an AWS [environment](environments.md)\. \(An AWS environment is a combination of an AWS account and Region\)\.
+*Bootstrapping* is the process of preparing an [environment](environments.md) for deployment\. Bootstrapping is a one\-time action that you must perform for every environment that you deploy resources into\.
 
-These resources include an Amazon S3 bucket for storing files and IAM roles that grant permissions needed to perform deployments\.
+**Topics**
++ [Bootstrapping environments](#bootstrapping-env)
++ [How to bootstrap](#bootstrapping-howto)
++ [Customizing bootstrapping](#bootstrapping-customizing)
++ [Bootstrapping template differences](#bootstrapping-template)
++ [Stack synthesizers](#bootstrapping-synthesizers)
++ [Customizing synthesis](#bootstrapping-custom-synth)
++ [The bootstrapping template contract](#bootstrapping-contract)
++ [Security Hub Findings](#bootstrapping-securityhub)
 
-The required resources are defined in an AWS CloudFormation stack, called the *bootstrap stack*, which is usually named `CDKToolkit`\. Like any AWS CloudFormation stack, it appears in the AWS CloudFormation console once it has been deployed\.
-
-**Note**  
-CDK v2 uses a bootstrap template dubbed the modern template\. The legacy template from CDK v1 is not supported in v2\.
-
-Environments are independent\. If you want to deploy to multiple environments \(different AWS accounts or different Regions in the same account\), each environment must be bootstrapped separately\.
+## Bootstrapping environments<a name="bootstrapping-env"></a>
 
 **Important**  
 You may incur AWS charges for data stored in the bootstrapped resources\.
 
-**Note**  
-Earlier versions of the bootstrap template created an AWS KMS key in each bootstrapped environment by default\. To avoid charges for the KMS key, re\-bootstrap these environments using `--no-bootstrap-customer-key`\. The current default is no KMS key, which helps avoid these charges\. 
+Bootstrapping provisions resources in your environment such as an Amazon Simple Storage Service \(Amazon S3\) bucket for storing files and AWS Identity and Access Management \(IAM\) roles that grant permissions needed to perform deployments\. These resources get provisioned in an AWS CloudFormation stack, called the *bootstrap stack*\. It is usually named `CDKToolkit`\. Like any AWS CloudFormation stack, it will appear in the AWS CloudFormation console of your environment once it has been deployed\.
 
-If you attempt to deploy an AWS CDK application into an environment that doesn't have the necessary resources, an error message reminds you to bootstrap the environment\.
+**Note**  
+CDK v2 uses a modern bootstrap template\. The legacy template from CDK v1 is not supported in v2\.
+
+Environments are independent\. If you want to deploy to multiple environments, each environment must be bootstrapped separately\.
+
+If you attempt to deploy a CDK app into an environment that hasn't been bootstrapped, you will receive an error message reminding you to bootstrap the environment\.
+
+### Bootstrapping with CDK Pipelines<a name="bootstrapping-env-pipelines"></a>
 
 If you are using CDK Pipelines to deploy into another account's environment, and you receive a message like the following:
 
@@ -25,53 +34,61 @@ If you are using CDK Pipelines to deploy into another account's environment, and
 Policy contains a statement with one or more invalid principals
 ```
 
-This error message means that the appropriate IAM roles do not exist in the other environment\. The most likely cause is a lack of bootstrapping\.
+This error message means that the appropriate IAM roles do not exist in the other environment\. The most likely cause is that the environment has not been bootstrapped\. Bootstrap the environment and try again\.
 
 **Note**  
-Do not delete and recreate an account's bootstrap stack if you are using CDK Pipelines to deploy into that account\. The pipeline will stop working\. To update the bootstrap stack to a new version, instead re\-run `cdk bootstrap` to update the bootstrap stack in place\.
+If the environment is bootstrapped, do not delete and recreate the environment's bootstrap stack\. Deleting the bootstrap stack will delete the AWS resources that were originally provisioned in the environment to support CDK deployments\. This will cause the pipeline to stop working\. Instead, try to update the bootstrap stack to a new version by running the CDK CLI `cdk bootstrap` command again\.
 
 ## How to bootstrap<a name="bootstrapping-howto"></a>
 
-Bootstrapping is the deployment of an AWS CloudFormation template to a specific AWS environment \(account and Region\)\. The bootstrapping template accepts parameters that customize some aspects of the bootstrapped resources \(see [Customizing bootstrapping](#bootstrapping-customizing)\)\. Thus, you can bootstrap in one of two ways\.
-+ Use the AWS CDK Toolkit's cdk bootstrap command\. This is the simplest method and works well if you have only a few environments to bootstrap\.
-+ Deploy the template provided by the AWS CDK Toolkit using another AWS CloudFormation deployment tool\. This lets you use AWS CloudFormation StackSets or AWS Control Tower and also the AWS CloudFormation console or the AWS CLI\. You can make small modifications to the template before deployment\. This approach is more flexible and is suitable for large\-scale deployments\.
+When you bootstrap an environment, an AWS CloudFormation template is deployed to the specific environment\. This template provisions resources in your account to prepare your environment for deployment\.
 
-It is not an error to bootstrap an environment more than once\. If an environment you bootstrap has already been bootstrapped, its bootstrap stack will be upgraded if necessary\. Otherwise, nothing happens\.
+The bootstrapping template accepts parameters that customize some aspects of the bootstrapped resources\. For more information, see [Customizing bootstrapping](#bootstrapping-customizing)\.
 
-### Bootstrapping with the AWS CDK Toolkit<a name="bootstrapping-howto-cli"></a>
+You can bootstrap in any of the following ways:
++ Use the AWS CDK CLI cdk bootstrap command\. This is the simplest method and works well if you have only a few environments to bootstrap\.
++ Deploy the template provided by the AWS CDK CLI using another AWS CloudFormation deployment tool\. This lets you use AWS CloudFormation StackSets or AWS Control Tower and also the AWS CloudFormation console or the AWS CLI\. You can make small modifications to the template before deployment\. This approach is more flexible and is suitable for large\-scale deployments\.
 
-Use the `cdk bootstrap` command to bootstrap one or more AWS environments\. In its basic form, this command bootstraps one or more specified AWS environments \(two, in this example\)\.
+It's not an error to bootstrap an environment more than once\. If an environment you bootstrap has already been bootstrapped, its bootstrap stack will be upgraded if necessary\. Otherwise, nothing will happen\.
+
+### Bootstrapping with the AWS CDK CLI<a name="bootstrapping-howto-cli"></a>
+
+Use the `cdk bootstrap` command to bootstrap one or more AWS environments\.
+
+The following example bootstraps two environments:
 
 ```
-cdk bootstrap aws://ACCOUNT-NUMBER-1/REGION-1 aws://ACCOUNT-NUMBER-2/REGION-2 ...
+$ cdk bootstrap aws://ACCOUNT-NUMBER-1/REGION-1 aws://ACCOUNT-NUMBER-2/REGION-2 ...
 ```
 
-The following examples illustrate bootstrapping of one and two environments, respectively\. \(Both use the same AWS account\.\) As shown in the second example, the `aws://` prefix is optional when specifying an environment\.
+The following examples show multiple ways of bootstrapping environments\. As shown in the second example, the `aws://` prefix is optional when specifying an environment\.
 
 ```
-cdk bootstrap aws://123456789012/us-east-1
-cdk bootstrap 123456789012/us-east-1 123456789012/us-west-1
+$ cdk bootstrap aws://123456789012/us-east-1
+$ cdk bootstrap 123456789012/us-east-1 123456789012/us-west-1
 ```
 
-The CDK Toolkit always synthesizes the AWS CDK app in the current directory\. If you do not specify at least one environment in the `cdk bootstrap` command, it bootstraps all the environments referenced in the app\.
+When you run cdk bootstrap, the CDK CLI always synthesizes the CDK app in the current directory\. If you do not specify at least one environment, the CDK CLI will bootstrap all environments referenced in the app\.
 
-If a stack is environment\-agnostic \(meaning it doesn't have an `env` property\), then the CDK's environment is applied to make the stack environment\-specific\. The CDK's environment is the one specified using \-\-profile or environment variables, or the default AWS environment otherwise\. That environment is then bootstrapped\.
+For environment\-agnostic stacks, the CDK CLI will attempt to determine an environment from default sources\. This could be an environment specified using the \-\-profile option, from environment variables, or default AWS CLI sources\. If found, the environment is then bootstrapped\.
 
 For example, the following command synthesizes the current AWS CDK app using the `prod` AWS profile, then bootstraps its environments\.
 
 ```
-cdk bootstrap --profile prod
+$ cdk bootstrap --profile prod
 ```
 
 ### Bootstrapping from the AWS CloudFormation template<a name="bootstrapping-howto-cfn"></a>
 
-AWS CDK bootstrapping is performed by an AWS CloudFormation template\. To get a copy of this template in the file `bootstrap-template.yaml`, run the following command\.
+You can bootstrap an environment by obtaining and deploying the bootstrap AWS CloudFormation template\.
+
+To get a copy of this template in the file `bootstrap-template.yaml`, run the following command:
 
 ------
 #### [ macOS/Linux ]
 
 ```
-cdk bootstrap --show-template > bootstrap-template.yaml
+$ cdk bootstrap --show-template > bootstrap-template.yaml
 ```
 
 ------
@@ -95,7 +112,9 @@ Deploy this template using the CDK CLI or your preferred deployment mechanism fo
 ```
 aws cloudformation create-stack \
   --stack-name CDKToolkit \
-  --template-body file://bootstrap-template.yaml
+  --template-body file://path/to/bootstrap-template.yaml \
+  --capabilities CAPABILITY_NAMED_IAM \
+  --region us-west-1
 ```
 
 ------
@@ -104,28 +123,20 @@ aws cloudformation create-stack \
 ```
 aws cloudformation create-stack ^
   --stack-name CDKToolkit ^
-  --template-body file://bootstrap-template.yaml
+  --template-body file://path/to/bootstrap-template.yaml ^
+  --capabilities CAPABILITY_NAMED_IAM ^
+  --region us-west-1
 ```
 
 ------
 
-## Bootstrapping template<a name="bootstrapping-template"></a>
-
-As previously mentioned, AWS CDK v1 supported two bootstrapping templates, legacy and modern\. CDK v2 supports only the modern template\. For reference, here are the high\-level differences between these two templates\.
-
-[\[See the AWS documentation website for more details\]](http://docs.aws.amazon.com/cdk/v2/guide/bootstrapping.html)
-
-\* *We will add additional resources to the bootstrap template as needed\.*
-
-An environment that was bootstrapped using the legacy template must be upgraded to use the modern template for CDK v2 by re\-bootstrapping\. Re\-deploy all AWS CDK applications in the environment at least once before deleting the legacy bucket\.
-
 ## Customizing bootstrapping<a name="bootstrapping-customizing"></a>
 
-There are two ways to customize the bootstrapping resources\.
+There are two ways to customize the bootstrapping of resources in your environment:
 + Use command line parameters with the `cdk bootstrap` command\. This lets you modify a few aspects of the template\.
 + Modify the default bootstrap template and deploy it yourself\. This gives you more complete control over the bootstrap resources\.
 
-The following command line options, when used with CDK Toolkit's cdk bootstrap, provide commonly needed adjustments to the bootstrapping template\.
+The following command line options, when used with CDK CLI cdk bootstrap, provide commonly used adjustments to the bootstrapping template:
 +  \-\-bootstrap\-bucket\-name overrides the name of the Amazon S3 bucket\. May require changes to your CDK app \(see [Stack synthesizers](#bootstrapping-synthesizers)\)\.
 + \-\-bootstrap\-kms\-key\-id overrides the AWS KMS key used to encrypt the S3 bucket\.
 + \-\-cloudformation\-execution\-policies specifies the ARNs of managed policies that should be attached to the deployment role assumed by AWS CloudFormation during deployment of your stacks\. By default, stacks are deployed with full administrator permissions using the `AdministratorAccess` policy\.
@@ -154,19 +165,29 @@ The modern bootstrap template effectively grants the permissions implied by the 
 
 ### Customizing the template<a name="bootstrapping-customizing-extended"></a>
 
-When you need more customization than the AWS CDK Toolkit switches can provide, you can modify the bootstrap template to suit your needs\. Remember that you can obtain the template by using the \-\-show\-template flag\.
+When you need more customization than the CDK CLI can provide, you can modify the bootstrap template to suit your needs\. First, you obtain the template using the \-\-show\-template option\. The following is an example:
 
 ```
-cdk bootstrap --show-template
+$ cdk bootstrap --show-template
 ```
 
 Any modifications you make must adhere to the [bootstrapping template contract](#bootstrapping-contract)\. To ensure that your customizations are not accidentally overwritten later by someone running cdk bootstrap using the default template, change the default value of the `BootstrapVariant` template parameter\. The CDK CLI will only allow overwriting the bootstrap stack with templates that have the same `BootstrapVariant` and a equal or higher version than the template that is currently deployed\. 
 
-Deploy your modified template as described in [Bootstrapping from the AWS CloudFormation template](#bootstrapping-howto-cfn), or using cdk bootstrap \-\-template\.
+You can then deploy your modified template as described in [Bootstrapping from the AWS CloudFormation template](#bootstrapping-howto-cfn), or using cdk bootstrap \-\-template\.
 
 ```
-cdk bootstrap --template bootstrap-template.yaml
+$ cdk bootstrap --template bootstrap-template.yaml
 ```
+
+## Bootstrapping template differences<a name="bootstrapping-template"></a>
+
+As previously mentioned, AWS CDK v1 supported two bootstrapping templates, legacy and modern\. CDK v2 supports only the modern template\. For reference, here are the high\-level differences between these two templates\.
+
+[\[See the AWS documentation website for more details\]](http://docs.aws.amazon.com/cdk/v2/guide/bootstrapping.html)
+
+\* *We will add additional resources to the bootstrap template as needed\.*
+
+An environment that was bootstrapped using the legacy template must be upgraded to use the modern template for CDK v2 by re\-bootstrapping\. Re\-deploy all AWS CDK applications in the environment at least once before deleting the legacy bucket\.
 
 ## Stack synthesizers<a name="bootstrapping-synthesizers"></a>
 
@@ -577,6 +598,9 @@ The AWS CDK Toolkit requires that the following CloudFormation outputs exist on 
 
 The bootstrap template is versioned and evolves over time with the AWS CDK itself\. If you provide your own bootstrap template, keep it up to date with the canonical default template\. You want to make sure that your template continues to work with all CDK features\.
 
+**Note**  
+Earlier versions of the bootstrap template created an AWS KMS key in each bootstrapped environment by default\. To avoid charges for the KMS key, re\-bootstrap these environments using `--no-bootstrap-customer-key`\. The current default is no KMS key, which helps avoid these charges\. 
+
 This section contains a list of the changes made in each version\.
 
 
@@ -597,3 +621,22 @@ This section contains a list of the changes made in each version\.
 | 12 | 2\.20\.0 | Adds support for experimental cdk import\. | 
 | 13 | 2\.25\.0 | Makes container images in bootstrap\-created Amazon ECR repositories immutable\. | 
 | 14 | 2\.34\.0 | Turns off Amazon ECR image scanning at the repository level by default to allow bootstrapping Regions that do not support image scanning\. | 
+| 15 | 2\.60\.0 | KMS keys cannot be tagged\. | 
+| 16 | 2\.69\.0 | Addresses Security Hub finding [KMS\.2](https://docs.aws.amazon.com/securityhub/latest/userguide/kms-controls.html#kms-2)\. | 
+| 17 | 2\.72\.0 | Addresses Security Hub finding [ECR\.3](https://docs.aws.amazon.com/securityhub/latest/userguide/ecr-controls.html#ecr-3)\. | 
+| 18 | 2\.80\.0 | Reverted changes made for version 16 as they don't work in all partitions and are are not recommended\. | 
+| 19 | 2\.106\.1 | Reverted changes made to version 18 where AccessControl property was removed from the template\. \([\#27964](https://github.com/aws/aws-cdk/issues/27964)\) | 
+
+## Security Hub Findings<a name="bootstrapping-securityhub"></a>
+
+ If you are using AWS Security Hub, you may see findings reported on some of the resources created by the AWS CDK Bootstrapping process\. Security Hub findings help you find resource configurations you should double\-check for accuracy and safety\. We have reviewed these specific resource configurations with AWS Security and are confident they do not constitute a security problem\. 
+
+### \[KMS\.2\] IAM principals should not have IAM inline policies that allow decryption actions on all KMS keys<a name="bootstrapping-securityhub-kms2"></a>
+
+ The Deploy Role \(default name `cdk-hnb659fds-deploy-role-ACCOUNT-REGION`\) has permissions to read encrypted data stored in Amazon S3\. The policy does not give permission to any data by itself: only data read from Amazon S3 can be decrypted, and only from buckets that explicitly allow the Deploy Role to read from them via their Bucket Policy, and keys that explicitly allow the Deploy Role to decrypt using them using their Key Policy\. This statement is used to allow AWS CDK Pipelines to perform cross\-account deployments\. 
+
+ ** Why does Security Hub flag this? ** The policy contains a `Resource: *` combined with a `Condition` clause; Security Hub is flagging the `*`\. The `*` is necessary because at the time the account is bootstrapped, the AWS KMS key created by AWS CDK Pipelines for the CodePipeline Artifact Bucket does not exist yet so we can't reference its ARN\. In addition, Security Hub does not include the `Condition` clause in the policy statement in its reasoning\. 
+
+**What if I want to fix this finding?** As long as the resource policies on your AWS KMS keys are not unnecessarily permissive, the current Role policy does not allow the Deploy Role to access any more data than it should\. If you still want to get rid of the finding, you can do so by customizing the bootstrap stack \(using the process outlined above\) in one of these 2 ways:
++ If you are not using AWS CDK Pipelines for cross\-account deployments: remove the statement with `Sid: PipelineCrossAccountArtifactsBucket` from the deploy role; or
++ If you are using AWS CDK Pipelines for cross\-account deployments: after deploying your AWS CDK Pipeline, look up the AWS KMS Key ARN of the Artifact Bucket and replace the `Resource: *` of the `Sid: PipelineCrossAccountArtifactsBucket` statement with the actual Key ARN\.

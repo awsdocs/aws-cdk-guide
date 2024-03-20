@@ -1,6 +1,11 @@
 # AWS CDK policy validation at synthesis time<a name="policy-validation-synthesis"></a>
 
-## Policy validation<a name="policy-validation"></a>
+**Topics**
++ [Policy validation at synthesis time](#policy-validation)
++ [For application developers](#for-application-developers)
++ [For plugin authors](#plugin-authors)
+
+## Policy validation at synthesis time<a name="policy-validation"></a>
 
 If you or your organization use any policy validation tool, such as [AWS CloudFormation Guard](https://docs.aws.amazon.com/cfn-guard/latest/ug/what-is-guard.html) or [OPA](https://www.openpolicyagent.org/), to define constraints on your AWS CloudFormation template, you can integrate them with the AWS CDK at synthesis time\. By using the appropriate policy validation plugin, you can make the AWS CDK application check the generated AWS CloudFormation template against your policies immediately after synthesis\. If there are any violations, the synthesis will fail and a report will be printed to the console\.
 
@@ -12,7 +17,7 @@ The goal of AWS CDK policy validation is to minimize the amount of set up needed
 This feature is considered experimental, and both the plugin API and the format of the validation report are subject to change in the future\.
 
 **Topics**
-+ [Policy validation](#policy-validation)
++ [Policy validation at synthesis time](#policy-validation)
 + [For application developers](#for-application-developers)
 + [For plugin authors](#plugin-authors)
 
@@ -40,7 +45,7 @@ Other than modifying the cloud assembly, plugins can do anything that your AWS C
 
 ### AWS CloudFormation Guard plugin<a name="cfnguard-plugin"></a>
 
-Using the [CfnGuardValidator](https://github.com/cdklabs/cdk-validator-cfnguard) plugin allows you to use [AWS CloudFormation Guard](https://github.com/aws-cloudformation/cloudformation-guard) to perform policy validations\. The `CfnGuardValidator` plugin comes with a select set of [AWS Control Tower proactive controls](https://docs.aws.amazon.com/controltower/latest/userguide/proactive-controls.html) built in\. The current set of rules can be found in the [project documentation](https://github.com/cdklabs/cdk-validator-cfnguard/blob/main/README.md)\. As mentioned in [Policy validation](#policy-validation), we recommend that organizations set up a more authoritative method of validation using [AWS CloudFormation hooks](https://docs.aws.amazon.com/cloudformation-cli/latest/userguide/hooks.html)\. 
+Using the [CfnGuardValidator](https://github.com/cdklabs/cdk-validator-cfnguard) plugin allows you to use [AWS CloudFormation Guard](https://github.com/aws-cloudformation/cloudformation-guard) to perform policy validations\. The `CfnGuardValidator` plugin comes with a select set of [AWS Control Tower proactive controls](https://docs.aws.amazon.com/controltower/latest/userguide/proactive-controls.html) built in\. The current set of rules can be found in the [project documentation](https://github.com/cdklabs/cdk-validator-cfnguard/blob/main/README.md)\. As mentioned in [Policy validation at synthesis time](#policy-validation), we recommend that organizations set up a more authoritative method of validation using [AWS CloudFormation hooks](https://docs.aws.amazon.com/cloudformation-cli/latest/userguide/hooks.html)\. 
 
 For[AWS Control Tower](https://docs.aws.amazon.com/controltower/latest/userguide/what-is-control-tower.html) customers, these same proactive controls can be deployed across your organization\. When you enable AWS Control Tower proactive controls in your AWS Control Tower environment, the controls can stop the deployment of non\-compliant resources deployed via AWS CloudFormation\. For more information about managed proactive controls and how they work, see the [AWS Control Tower documentation](https://docs.aws.amazon.com/controltower/latest/userguide/proactive-controls.html)\.
 

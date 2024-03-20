@@ -1,4 +1,12 @@
-# Get a value from a context variable<a name="get_context_var"></a>
+# Save and retrieve context variable values<a name="get_context_var"></a>
+
+You can specify context variables with the AWS Cloud Development Kit \(AWS CDK\) CLI or in the `cdk.json` file\. Then, use the `TryGetContext` method to retrieve values\.
+
+**Topics**
++ [Specify context variables](#develop-context-specify)
++ [Retrieve context variable values](#develop-context-retrieve)
+
+## Specify context variables<a name="develop-context-specify"></a>
 
 You can specify a context variable either as part of an AWS CDK CLI command, or in `cdk.json`\.
 
@@ -18,7 +26,13 @@ To specify the same context variable and value in the `cdk.json` file, use the f
 }
 ```
 
-To get the value of a context variable in your app, use the `TryGetContext` method in the context of a construct\. \(That is, when `this`, or `self` in Python, is an instance of some construct\.\) The example gets the context value **bucket\_name**\. If the requested value is not defined, `TryGetContext` returns `undefined` \(`None` in Python; `null` in Java and C\#; `nil` in Go\) rather than raising an exception\.
+If you specify a context variable using both the AWS CDK CLI and `cdk.json` file, the AWS CDK CLI value takes precedence\.
+
+## Retrieve context variable values<a name="develop-context-retrieve"></a>
+
+To get the value of a context variable in your app, use the `TryGetContext` method in the context of a construct\. \(That is, when `this`, or `self` in Python, is an instance of some construct\.\)
+
+In this example, we retrieve the value of the `bucket_name` context variable\. If the requested value is not defined, `TryGetContext` returns `undefined` \(`None` in Python; `null` in Java and C\#; `nil` in Go\) rather than raising an exception\.
 
 ------
 #### [ TypeScript ]

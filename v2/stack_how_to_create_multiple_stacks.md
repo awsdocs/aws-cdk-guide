@@ -1,13 +1,21 @@
 # Create an app with multiple stacks<a name="stack_how_to_create_multiple_stacks"></a>
 
-Most of the code examples in the *AWS CDK Developer Guide* involve only a single stack\. However, you can create apps containing any number of stacks\. Each stack results in its own AWS CloudFormation template\. Stacks are the *unit of deployment:* each stack in an app can be synthesized and deployed individually using the `cdk deploy` command\.
+You can create an AWS Cloud Development Kit \(AWS CDK\) application containing multiple [stacks](stacks.md)\. When you deploy the AWS CDK app, each stack becomes its own AWS CloudFormation template\. You can also synthesize and deploy each stack individually using the AWS CDK CLI `cdk deploy` command\.
 
-This topic illustrates the following:
-+ How to extend the `Stack` class to accept new properties or arguments
-+ How to use these properties to affect what resources the stack contains and their configuration
-+ How to instantiate multiple stacks from this class
+This tutorial covers the following:
++ How to extend the `Stack` class to accept new properties or arguments\.
++ How to use properties to determine which resources the stack contains and their configuration\.
++ How to instantiate multiple stacks from this class\.
 
-The example uses a Boolean property, named `encryptBucket` \(Python: `encrypt_bucket`\)\. It indicates whether an Amazon S3 bucket should be encrypted\. If so, the stack enables encryption using a key managed by AWS Key Management Service \(AWS KMS\)\. The app creates two instances of this stack, one with encryption and one without\.
+The example in this topic uses a Boolean property, named `encryptBucket` \(Python: `encrypt_bucket`\)\. It indicates whether an Amazon S3 bucket should be encrypted\. If so, the stack enables encryption using a key managed by AWS Key Management Service \(AWS KMS\)\. The app creates two instances of this stack, one with encryption and one without\.
+
+**Topics**
++ [Before you begin](#cdk-how-to-create-multiple-stacks-prereqs)
++ [Add optional parameter](#cdk-how-to-create-multiple-stacks-extend-stackprops)
++ [Define the stack class](#cdk-how-to-create-multiple-stacks-define-stack)
++ [Create two stack instances](#stack_how_to_create_multiple_stacks-create-stacks)
++ [Synthesize and deploy the stack](#cdk-how-to-create-multiple-stacks-synth-deploy)
++ [Clean up](#cdk-how-to-create-multiple-stacks-destroy-stack)
 
 ## Before you begin<a name="cdk-how-to-create-multiple-stacks-prereqs"></a>
 

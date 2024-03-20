@@ -1,29 +1,38 @@
 # Continuous integration and delivery \(CI/CD\) using CDK Pipelines<a name="cdk_pipeline"></a>
 
-[CDK Pipelines](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.pipelines-readme.html) is a construct library module for painless continuous delivery of AWS CDK applications\. Whenever you check your AWS CDK app's source code in to AWS CodeCommit, GitHub, or AWS CodeStar, CDK Pipelines can automatically build, test, and deploy your new version\.
+Use the [CDK Pipelines](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.pipelines-readme.html) module from the AWS Construct Library to configure continuous delivery of AWS CDK applications\. When you commit your CDK app's source code into AWS CodeCommit, GitHub, or AWS CodeStar, CDK Pipelines can automatically build, test, and deploy your new version\.
 
 CDK Pipelines are self\-updating\. If you add application stages or stacks, the pipeline automatically reconfigures itself to deploy those new stages or stacks\.
 
 **Note**  
-CDK Pipelines supports two APIs\. One is the original API that was made available in the CDK Pipelines Developer Preview\. The other is a modern API that incorporates feedback from CDK customers received during the preview phase\. The examples in this topic use the modern API\. For details on the differences between the two supported APIs, see [CDK Pipelines original API](https://github.com/aws/aws-cdk/blob/master/packages/@aws-cdk/pipelines/ORIGINAL_API.md)\.
+CDK Pipelines supports two APIs\. One is the original API that was made available in the CDK Pipelines Developer Preview\. The other is a modern API that incorporates feedback from CDK customers received during the preview phase\. The examples in this topic use the modern API\. For details on the differences between the two supported APIs, see [CDK Pipelines original API](https://github.com/aws/aws-cdk/blob/master/packages/@aws-cdk/pipelines/ORIGINAL_API.md) in the *aws\-cdk GitHub repository*\.
+
+**Topics**
++ [Bootstrap your AWS environments](#cdk_pipeline_bootstrap)
++ [Initialize a project](#cdk_pipeline_init)
++ [Define a pipeline](#cdk_pipeline_define)
++ [Application stages](#cdk_pipeline_stages)
++ [Testing deployments](#cdk_pipeline_validation)
++ [Security notes](#cdk_pipeline_security)
++ [Troubleshooting](#cdk_pipeline_troubleshooting)
 
 ## Bootstrap your AWS environments<a name="cdk_pipeline_bootstrap"></a>
 
-Before you can use CDK Pipelines, you must bootstrap the AWS environments to which you will deploy your stacks\. An [environment](environments.md) is an account/Region pair to which you want to deploy a CDK stack\.
+Before you can use CDK Pipelines, you must bootstrap the AWS [environment](environments.md) that you will deploy your stacks to\.
 
-A CDK Pipeline involves at least two environments\. One environment is where the pipeline is provisioned\. The other environment is where you want to deploy the application's stacks \(or its stages, which are groups of related stacks\)\. These environments can be the same, though best practices recommend you isolate stages from each other in different AWS accounts or Regions\.
+A CDK Pipeline involves at least two environments\. The first environment is where the pipeline is provisioned\. The second environment is where you want to deploy the application's stacks or stages to \(stages are groups of related stacks\)\. These environments can be the same, but a best practice recommendation is to isolate stages from each other in different environments\.
 
 **Note**  
 See [Bootstrapping](bootstrapping.md) for more information on the kinds of resources created by bootstrapping and how to customize the bootstrap stack\.
 
 Continuous deployment with CDK Pipelines requires the following to be included in the CDK Toolkit stack:
-+ An S3 bucket
-+ An Amazon ECR repository
-+ IAM roles to give the various parts of a pipeline the permissions they need
++ An Amazon Simple Storage Service \(Amazon S3\) bucket\.
++ An Amazon ECR repository\.
++ IAM roles to give the various parts of a pipeline the permissions they need\.
 
-The CDK Toolkit upgrades your existing bootstrap stack or creates a new one if necessary\.
+The CDK Toolkit will upgrade your existing bootstrap stack or creates a new one if necessary\.
 
-To bootstrap an environment that can provision an AWS CDK pipeline, invoke `cdk bootstrap` as shown in the following example\. Invoking the AWS CDK Toolkit via the `npx` command temporarily installs it if necessary\. It will also use the version of the Toolkit installed in the current project, if one exists\. 
+To bootstrap an environment that can provision an AWS CDK pipeline, invoke `cdk bootstrap` as shown in the following example\. Invoking the AWS CDK Toolkit via the `npx` command temporarily installs it if necessary\. It will also use the version of the Toolkit installed in the current project, if one exists\.
 
 \-\-cloudformation\-execution\-policies specifies the ARN of a policy under which future CDK Pipelines deployments will execute\. The default `AdministratorAccess` policy makes sure that your pipeline can deploy every type of AWS resource\. If you use this policy, make sure you trust all the code and dependencies that make up your AWS CDK app\.
 
@@ -78,7 +87,7 @@ Use administrative credentials only to bootstrap and to provision the initial pi
 
 If you are upgrading a legacy bootstrapped environment, the previous Amazon S3 bucket is orphaned when the new bucket is created\. Delete it manually by using the Amazon S3 console\.
 
-## Initialize project<a name="cdk_pipeline_init"></a>
+## Initialize a project<a name="cdk_pipeline_init"></a>
 
 Create a new, empty GitHub project and clone it to your workstation in the `my-pipeline` directory\. \(Our code examples in this topic use GitHub\. You can also use AWS CodeStar or AWS CodeCommit\.\)
 
@@ -452,7 +461,7 @@ export class MyLambdaStack extends cdk.Stack {
       super(scope, id, props);
 
       new Function(this, 'LambdaFunction', {
-        runtime: Runtime.NODEJS_12_X,
+        runtime: Runtime.NODEJS_18_X,
         handler: 'index.handler',
         code: new InlineCode('exports.handler = _ => "Hello, CDK";')
       });
@@ -518,7 +527,7 @@ class MyLambdaStack extends cdk.Stack {
       super(scope, id, props);
 
       new Function(this, 'LambdaFunction', {
-        runtime: Runtime.NODEJS_12_X,
+        runtime: Runtime.NODEJS_18_X,
         handler: 'index.handler',
         code: new InlineCode('exports.handler = _ => "Hello, CDK";')
       });
@@ -590,7 +599,7 @@ class MyLambdaStack(cdk.Stack):
         super().__init__(scope, construct_id, **kwargs)
 
         Function(self, "LambdaFunction",
-            runtime=Runtime.NODEJS_12_X,
+            runtime=Runtime.NODEJS_18_X,
             handler="index.handler",
             code=InlineCode("exports.handler = _ => 'Hello, CDK';")
         )
@@ -660,7 +669,7 @@ public class MyPipelineLambdaStack extends Stack {
         super(scope, id, props);
 
         Function.Builder.create(this, "LambdaFunction")
-          .runtime(Runtime.NODEJS_12_X)
+          .runtime(Runtime.NODEJS_18_X)
           .handler("index.handler")
           .code(new InlineCode("exports.handler = _ => 'Hello, CDK';"))
           .build();
@@ -753,7 +762,7 @@ namespace MyPipeline
         {
             new Function(this, "LambdaFunction", new FunctionProps
             {
-                Runtime = Runtime.NODEJS_12_X,
+                Runtime = Runtime.NODEJS_18_X,
                 Handler = "index.handler",
                 Code = new InlineCode("exports.handler = _ => 'Hello, CDK';")
             });
@@ -1410,7 +1419,7 @@ However, by its very nature, a library that needs a high level of access to fulf
 In particular, keep in mind the following:
 + Be mindful of the software you depend on\. Vet all third\-party software you run in your pipeline, because it can change the infrastructure that gets deployed\. 
 + Use dependency locking to prevent accidental upgrades\. CDK Pipelines respects `package-lock.json` and `yarn.lock` to make sure that your dependencies are the ones you expect\.
-+ CDK Pipelines runs on resources created in your own account, and the configuration of those resources is controlled by developers submitting code through the pipeline\. Therefore, CDK Pipelines by itself cannot protect against malicious developers trying to bypass compliance checks\. If your threat model includes developers writing CDK code, you should have external compliance mechanisms in place like [AWS CloudFormation Hooks](http://aws.amazon.com/blogs/blogs/mt/proactively-keep-resources-secure-and-compliant-with-aws-cloudformation-hooks/) \(preventive\) or [AWS Config](https://aws.amazon.com/config/) \(reactive\) that the AWS CloudFormation Execution Role does not have permissions to disable\. 
++ CDK Pipelines runs on resources created in your own account, and the configuration of those resources is controlled by developers submitting code through the pipeline\. Therefore, CDK Pipelines by itself cannot protect against malicious developers trying to bypass compliance checks\. If your threat model includes developers writing CDK code, you should have external compliance mechanisms in place like [AWS CloudFormation Hooks](https://aws.amazon.com/blogs/mt/proactively-keep-resources-secure-and-compliant-with-aws-cloudformation-hooks/) \(preventive\) or [AWS Config](https://aws.amazon.com/config/) \(reactive\) that the AWS CloudFormation Execution Role does not have permissions to disable\. 
 + Credentials for production environments should be short\-lived\. After bootstrapping and initial provisioning, there is no need for developers to have account credentials at all\. Changes can be deployed through the pipeline\. Reduce the possibility of credentials leaking by not needing them in the first place\.
 
 ## Troubleshooting<a name="cdk_pipeline_troubleshooting"></a>

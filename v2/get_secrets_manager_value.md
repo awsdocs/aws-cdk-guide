@@ -1,6 +1,6 @@
 # Get a value from AWS Secrets Manager<a name="get_secrets_manager_value"></a>
 
-To use values from AWS Secrets Manager in your AWS CDK app, use the [fromSecretAttributes\(\)](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_secretsmanager.Secret.html#static-fromwbrsecretwbrattributesscope-id-attrs) method\. It represents a value that is retrieved from Secrets Manager and used at AWS CloudFormation deployment time\.
+To use values from AWS Secrets Manager in your AWS CDK app, use the [fromSecretAttributes\(\)](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_secretsmanager.Secret.html#static-fromwbrsecretwbrattributesscope-id-attrs) method\. It represents a value that is retrieved from Secrets Manager and used at AWS CloudFormation deployment time\. The following is an example:
 
 ------
 #### [ TypeScript ]
@@ -104,7 +104,7 @@ public class SecretsManagerStack : Stack
 ------
 
 **Tip**  
-Use the [create\-secret](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_secretsmanager.Secret.html) CLI command to create a secret from the command line, such as when testing:  
+Use the AWS CLI [create\-secret](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_secretsmanager.Secret.html) CLI command to create a secret from the command line, such as when testing:  
 
 ```
 aws secretsmanager create-secret --name ImportedSecret --secret-string mygroovybucket

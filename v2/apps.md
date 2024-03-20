@@ -1,107 +1,16 @@
 # Apps<a name="apps"></a>
 
-As described in [Constructs](constructs.md), to provision infrastructure resources, all constructs that represent AWS resources must be defined, directly or indirectly, within the scope of a [Stack](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.Stack.html) construct\. An [App](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.App.html) is a container for one or more stacks: it serves as each stack's scope\. Stacks within a single `App` can easily refer to each others' resources \(and attributes of those resources\)\. The AWS CDK infers dependencies between stacks so that they can be deployed in the correct order\. You can deploy any or all of the stacks defined within an app at with a single `cdk deploy` command\.
+The AWS Cloud Development Kit \(AWS CDK\) application is called an *app*\. A CDK app is a container for one or more stacks\. Therefore, an app serves as each stack's scope\.
 
-The following example declares a stack class named `MyFirstStack` that includes a single Amazon S3 bucket\.
+**Topics**
++ [Defining apps](#apps_construct)
++ [Working with apps](#apps-work)
 
----
 
-#### [ TypeScript ]
+You create an app by importing and using the [https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.App.html](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.App.html) class from the AWS Construct Library\. You then define your stacks within the app and define your constructs within stacks\. An app must contain at least one stack\.
 
-```
-class MyFirstStack extends Stack {
-  constructor(scope: Construct, id: string, props?: StackProps) {
-    super(scope, id, props);
+With this structure in place, you can synthesize stacks before deployment\. Synthesizing stacks involves creating an AWS CloudFormation template per stack that is then used to deploy to AWS CloudFormation to provision your AWS resources\. To learn more about stacks, see [Stacks](stacks.md)\.
 
-    new s3.Bucket(this, 'MyFirstBucket');
-  }
-}
-```
-
----
-
-#### [ JavaScript ]
-
-```
-class MyFirstStack extends Stack {
-  constructor(scope, id, props) {
-    super(scope, id, props);
-
-    new s3.Bucket(this, 'MyFirstBucket');
-  }
-}
-```
-
----
-
-#### [ Python ]
-
-```
-class MyFirstStack(Stack):
-
-    def __init__(self, scope: Construct, id: str, **kwargs):
-        super().__init__(scope, id, **kwargs)
-
-        s3.Bucket(self, "MyFirstBucket")
-```
-
----
-
-#### [ Java ]
-
-```
-public class MyFirstStack extends Stack {
-    public MyFirstStack(final Construct scope, final String id) {
-        this(scope, id, null);
-    }
-
-    public MyFirstStack(final Construct scope, final String id, final StackProps props) {
-        super(scope, id, props);
-
-        new Bucket(this, "MyFirstBucket");
-    }
-}
-```
-
----
-
-#### [ C\# ]
-
-```
-public class MyFirstStack : Stack
-{
-    public MyFirstStack(Stack scope, string id, StackProps props = null) : base(scope, id, props)
-    {
-        new Bucket(this, "MyFirstBucket");
-    }
-}
-```
-
----
-
-#### [ Go ]
-
-```
-func MyFirstStack(scope constructs.Construct, id string, props *MyFirstStackProps) awscdk.Stack {
-	var sprops awscdk.StackProps
-	if props != nil {
-		sprops = props.StackProps
-	}
-	stack := awscdk.NewStack(scope, &id, &sprops)
-
-	s3.NewBucket(stack, jsii.String("MyFirstBucket"), &s3.BucketProps{})
-
-	return stack
-}
-```
-
----
-
-However, this code has only _declared_ a stack\. For the stack to actually be synthesized into an AWS CloudFormation template and deployed, it must be instantiated\. And, like all CDK constructs, it must be instantiated in some context\. The `App` is that context\.
-
-## The app construct<a name="apps_construct"></a>
-
-To define the previous stack within the scope of an application, use the [App](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.App.html) construct\. The following example app instantiates a `MyFirstStack` and produces the AWS CloudFormation template that the stack defined\.
 
 ---
 
@@ -171,11 +80,13 @@ app.Synth(nil)
 
 ---
 
-The `App` construct doesn't require any initialization arguments, because it's the only construct that can be used as a root for the construct tree\. You can now use the `App` instance as a scope for defining a single instance of your stack\.
+Stacks within a single app can easily refer to each other's resources and properties\. The AWS CDK infers dependencies between stacks so that they can be deployed in the correct order\. You can deploy any or all of the stacks within an app with a single `cdk deploy` command\.
 
-## App lifecycle<a name="lifecycle"></a>
+## Working with apps<a name="apps-work"></a>
 
-The following diagram shows the phases that the AWS CDK goes through when you call the cdk deploy\. This command deploys the resources that your app defines\.
+### The app lifecycle<a name="lifecycle"></a>
+
+The following diagram shows the phases that the AWS CDK goes through when you call cdk deploy\. This command deploys the resources that your app defines\.
 
 ![[Image NOT FOUND]](http://docs.aws.amazon.com/cdk/v2/guide/images/Lifecycle.png)
 
@@ -198,10 +109,8 @@ In this phase, the AWS CDK Toolkit takes the deployment artifacts cloud assembly
 
 By the time the AWS CloudFormation deployment phase \(step 5\) starts, your AWS CDK app has already finished and exited\. This has the following implications:
 
-- The AWS CDK app can't respond to events that happen during deployment, such as a resource being created or the whole deployment finishing\. To run code during the deployment phase, you must inject it into the AWS CloudFormation template as a [custom resource](cfn_layer.md#cfn_layer_custom)\. For more information about adding a custom resource to your app, see the [AWS CloudFormation module](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_cloudformation-readme.html), or the [custom\-resource](https://github.com/aws-samples/aws-cdk-examples/tree/master/typescript/custom-resource/) example\.
-- The AWS CDK app might have to work with values that can't be known at the time it runs\. For example, if the AWS CDK app defines an Amazon S3 bucket with an automatically generated name, and you retrieve the `bucket.bucketName` \(Python: `bucket_name`\) attribute, that value is not the name of the deployed bucket\. Instead, you get a `Token` value\. To determine whether a particular value is available, call `cdk.isUnresolved(value)` \(Python: `is_unresolved`\)\. See [Tokens](tokens.md) for details\.
 
-## Cloud assemblies<a name="apps_cloud_assembly"></a>
+### Cloud assemblies<a name="apps_cloud_assembly"></a>
 
 The call to `app.synth()` is what tells the AWS CDK to synthesize a cloud assembly from an app\. Typically you don't interact directly with cloud assemblies\. They are files that include everything needed to deploy your app to a cloud environment\. For example, it includes an AWS CloudFormation template for each stack in your app\. It also includes a copy of any file assets or Docker images that you reference in your app\.
 
@@ -276,13 +185,11 @@ The CDK Toolkit needs to know how to execute your AWS CDK app\. If you created t
 If you didn't create your project using the CDK Toolkit, or if you want to override the command line given in `cdk.json`, you can use the \-\-app option when issuing the `cdk` command\.
 
 ```
-cdk --app 'executable' cdk-command ...
+$ cdk --app 'executable' cdk-command ...
 ```
 
 The _executable_ part of the command indicates the command that should be run to execute your CDK application\. Use quotation marks as shown, since such commands contain spaces\. The _cdk\-command_ is a subcommand like synth or deploy that tells the CDK Toolkit what you want to do with your app\. Follow this with any additional options needed for that subcommand\.
 
 The CLI can also interact directly with an already\-synthesized cloud assembly\. To do that, pass the directory in which the cloud assembly is stored in \-\-app\. The following example lists the stacks defined in the cloud assembly stored under `./my-cloud-assembly`\.
 
-```
-cdk --app ./my-cloud-assembly ls
 ```

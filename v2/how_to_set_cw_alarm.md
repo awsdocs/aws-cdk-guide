@@ -1,10 +1,15 @@
 # Set a CloudWatch alarm<a name="how_to_set_cw_alarm"></a>
 
-The [aws\-cloudwatch](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_cloudwatch-readme.html) package supports setting CloudWatch alarms on CloudWatch metrics\. So the first thing you need is a metric\. You can use a predefined metric or you can create your own\.
+Use the [aws\-cloudwatch](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_cloudwatch-readme.html) package to set up Amazon CloudWatch alarms on CloudWatch metrics\. You can use predefined metrics or create your own\.
+
+**Topics**
++ [Using an existing metric](#how_to_set_cw_alarm_use_metric)
++ [Creating your own metric](#how_to_set_cw_alarm_new_metric)
++ [Creating the alarm](#how_to_set_cw_alarm_create)
 
 ## Using an existing metric<a name="how_to_set_cw_alarm_use_metric"></a>
 
-Many AWS Construct Library modules let you set an alarm on an existing metric by passing the metric's name to a convenience method on an instance of an object that has metrics\. For example, given an Amazon SQS queue, you can get the metric **ApproximateNumberOfMessagesVisible** from the queue's [metric\(\)](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_sqs.Queue.html#metricmetricname-props) method\.
+Many AWS Construct Library modules let you set an alarm on an existing metric by passing the metric's name to a convenience method on an instance of an object that has metrics\. For example, given an Amazon SQS queue, you can get the metric **ApproximateNumberOfMessagesVisible** from the queue's [metric\(\)](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_sqs.Queue.html#metricmetricname-props) method:
 
 ------
 #### [ TypeScript ]
@@ -45,7 +50,7 @@ var metric = queue.Metric("ApproximateNumberOfMessagesVisible");
 
 ## Creating your own metric<a name="how_to_set_cw_alarm_new_metric"></a>
 
-Create your own [metric](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_cloudwatch.Metric.html) as follows, where the *namespace* value should be something like **AWS/SQS** for an Amazon SQS queue\. You also need to specify your metric's name and dimension\.
+Create your own [metric](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_cloudwatch.Metric.html) as follows, where the *namespace* value should be something like **AWS/SQS** for an Amazon SQS queue\. You also need to specify your metric's name and dimension:
 
 ------
 #### [ TypeScript ]
@@ -54,7 +59,7 @@ Create your own [metric](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib
 const metric = new cloudwatch.Metric({
   namespace: 'MyNamespace',
   metricName: 'MyMetric',
-  dimensions: { MyDimension: 'MyDimensionValue' }
+  dimensionsMap: { MyDimension: 'MyDimensionValue' }
 });
 ```
 
@@ -65,7 +70,7 @@ const metric = new cloudwatch.Metric({
 const metric = new cloudwatch.Metric({
   namespace: 'MyNamespace',
   metricName: 'MyMetric',
-  dimensions: { MyDimension: 'MyDimensionValue' }
+  dimensionsMap: { MyDimension: 'MyDimensionValue' }
 });
 ```
 
@@ -76,7 +81,7 @@ const metric = new cloudwatch.Metric({
 metric = cloudwatch.Metric(
     namespace="MyNamespace",
     metric_name="MyMetric",
-    dimensions=dict(MyDimension="MyDimensionValue")
+    dimensionsMap=dict(MyDimension="MyDimensionValue")
 )
 ```
 

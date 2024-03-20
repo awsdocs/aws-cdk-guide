@@ -1,4 +1,4 @@
-# Migrating to AWS CDK v2<a name="migrating-v2"></a>
+# Migrating from AWS CDK v1 to AWS CDK v2<a name="migrating-v2"></a>
 
 Version 2 of the AWS Cloud Development Kit \(AWS CDK\) is designed to make writing infrastructure as code in your preferred programming language easier\. This topic describes the changes between v1 and v2 of the AWS CDK\.
 
@@ -87,7 +87,7 @@ To migrate your app to AWS CDK v2, first update the feature flags in `cdk.json`\
 
 ### Updating to a recent v1<a name="migrating-v2-v1-recent-v1"></a>
 
-We are seeing a number of customers upgrading from an old version of AWS CDK v1 to the most recent version of v2 in one step\. While it is certainly possible to do that, you would be both upgrading across multiple years of changes \(that unfortunately may not all have had the same amount of evolution testing we have today\), as well as ugprading across versions with new defaults and a different code organization\. 
+We are seeing a number of customers upgrading from an old version of AWS CDK v1 to the most recent version of v2 in one step\. While it is certainly possible to do that, you would be both upgrading across multiple years of changes \(that unfortunately may not all have had the same amount of evolution testing we have today\), as well as upgrading across versions with new defaults and a different code organization\. 
 
 For the safest upgrade experience and to more easily diagnose the sources of any unexpected changes, we recommend you separate those two steps: first upgrade to the latest v1 version, then make the switch to v2 afterwards\. 
 

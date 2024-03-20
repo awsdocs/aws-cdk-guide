@@ -1,6 +1,6 @@
 # Tokens<a name="tokens"></a>
 
-Tokens represent values that can only be resolved at a later time in the lifecycle of an app \(see [App lifecycle](apps.md#lifecycle)\)\. For example, the name of an Amazon S3 bucket that you define in your AWS CDK app is only allocated when the AWS CloudFormation template is synthesized\. If you print the `bucket.bucketName` attribute, which is a string, you see it contains something like the following\.
+*Tokens* represent values that can only be resolved at a later time in the [app lifecycle](apps.md#lifecycle)\. For example, the name of an Amazon Simple Storage Service \(Amazon S3\) bucket that you define in your CDK app is only allocated when the AWS CloudFormation template is synthesized\. If you print the `bucket.bucketName` attribute, which is a string, you will see that it contains something like the following:
 
 ```
 ${TOKEN[Bucket.Name.1234]}
@@ -78,12 +78,20 @@ var fn = new Function(this, "MyLambda", new FunctionProps {
 
 When the AWS CloudFormation template is finally synthesized, the token is rendered as the AWS CloudFormation intrinsic `{ "Ref": "MyBucket" }`\. At deployment time, AWS CloudFormation replaces this intrinsic with the actual name of the bucket that was created\.
 
+**Topics**
++ [Tokens and token encodings](#tokens_encoding)
++ [String\-encoded tokens](#tokens_string)
++ [List\-encoded tokens](#tokens_list)
++ [Number\-encoded tokens](#tokens_number)
++ [Lazy values](#tokens_lazy)
++ [Converting to JSON](#tokens_json)
+
 ## Tokens and token encodings<a name="tokens_encoding"></a>
 
 Tokens are objects that implement the [IResolvable](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.IResolvable.html) interface, which contains a single `resolve` method\. The AWS CDK calls this method during synthesis to produce the final value for the AWS CloudFormation template\. Tokens participate in the synthesis process to produce arbitrary values of any type\.
 
 **Note**  
-You'll hardly ever work directly with the `IResolvable` interface\. You will most likely only see string\-encoded versions of tokens\.
+You'll rarely work directly with the `IResolvable` interface\. You will most likely only see string\-encoded versions of tokens\.
 
 Other functions typically only accept arguments of basic types, such as `string` or `number`\. To use tokens in these cases, you can encode them into one of three types by using static methods on the [cdk\.Token](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.Token.html) class\.
 + [https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.Token.html#static-aswbrstringvalue-options](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.Token.html#static-aswbrstringvalue-options) to generate a string encoding \(or call `.toString()` on the token object\)

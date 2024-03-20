@@ -2,6 +2,8 @@
 
 Assets are local files, directories, or Docker images that can be bundled into AWS CDK libraries and apps\. For example, an asset might be a directory that contains the handler code for an AWS Lambda function\. Assets can represent any artifact that the app needs to operate\.
 
+The following tutorial video provides a comprehensive overview of CDK assets, and explains how you can use them in your insfrastructure as code \(IaC\)\.
+
 You add assets through APIs that are exposed by specific AWS constructs\. For example, when you define a [lambda\.Function](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda.Function.html) construct, the [code](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda.Function.html#code) property lets you pass an [asset](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda.Code.html#static-fromwbrassetpath-options) \(directory\)\. `Function` uses assets to bundle the contents of the directory and use it for the function's code\. Similarly, [ecs\.ContainerImage\.fromAsset](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ecs.ContainerImage.html#static-fromwbrassetdirectory-props) uses a Docker image built from a local directory when defining an Amazon ECS task definition\.
 
 ## Assets in detail<a name="assets_details"></a>
@@ -367,7 +369,7 @@ new lambda.Function(this, "myLambdaFunction", {
   environment: {
     'S3_BUCKET_NAME': imageAsset.s3BucketName,
     'S3_OBJECT_KEY': imageAsset.s3ObjectKey,
-    'S3_URL': imageAsset.s3Url
+    'S3_OBJECT_URL': imageAsset.s3ObjectUrl
   }
 });
 ```
@@ -391,7 +393,7 @@ new lambda.Function(this, "myLambdaFunction", {
   environment: {
     'S3_BUCKET_NAME': imageAsset.s3BucketName,
     'S3_OBJECT_KEY': imageAsset.s3ObjectKey,
-    'S3_URL': imageAsset.s3Url
+    'S3_OBJECT_URL': imageAsset.s3ObjectUrl
   }
 });
 ```
@@ -418,7 +420,7 @@ lambda_.Function(self, "myLambdaFunction",
     environment=dict(
         S3_BUCKET_NAME=image_asset.s3_bucket_name,
         S3_OBJECT_KEY=image_asset.s3_object_key,
-        S3_URL=image_asset.s3_url))
+        S3_OBJECT_URL=image_asset.s3_object_url))
 ```
 
 ---
@@ -450,7 +452,7 @@ public class FunctionStack extends Stack {
                 .environment(java.util.Map.of(    // Java 9 or later
                     "S3_BUCKET_NAME", imageAsset.getS3BucketName(),
                     "S3_OBJECT_KEY", imageAsset.getS3ObjectKey(),
-                    "S3_URL", imageAsset.getS3Url()))
+                    "S3_OBJECT_URL", imageAsset.getS3ObjectUrl()))
                 .build();
     }
 }
@@ -481,7 +483,7 @@ new Function(this, "myLambdaFunction", new FunctionProps
     {
         ["S3_BUCKET_NAME"] = imageAsset.S3BucketName,
         ["S3_OBJECT_KEY"] = imageAsset.S3ObjectKey,
-        ["S3_URL"] = imageAsset.S3Url
+        ["S3_OBJECT_URL"] = imageAsset.S3ObjectUrl
     }
 });
 ```
