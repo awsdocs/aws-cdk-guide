@@ -442,7 +442,7 @@ using Amazon.CDK.AWS.APIGateway;
 using Amazon.CDK.AWS.Lambda;
 using Amazon.CDK.AWS.S3;
 using System.Collections.Generic;
-using constructs;
+using Constructs;
 
 namespace MyWidgetService
 {

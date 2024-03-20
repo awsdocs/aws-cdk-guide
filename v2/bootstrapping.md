@@ -112,7 +112,9 @@ Deploy this template using the CDK CLI or your preferred deployment mechanism fo
 ```
 aws cloudformation create-stack \
   --stack-name CDKToolkit \
-  --template-body file://bootstrap-template.yaml
+  --template-body file://path/to/bootstrap-template.yaml \
+  --capabilities CAPABILITY_NAMED_IAM \
+  --region us-west-1
 ```
 
 ------
@@ -121,7 +123,9 @@ aws cloudformation create-stack \
 ```
 aws cloudformation create-stack ^
   --stack-name CDKToolkit ^
-  --template-body file://bootstrap-template.yaml
+  --template-body file://path/to/bootstrap-template.yaml ^
+  --capabilities CAPABILITY_NAMED_IAM ^
+  --region us-west-1
 ```
 
 ------

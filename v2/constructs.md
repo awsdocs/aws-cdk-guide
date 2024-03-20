@@ -422,8 +422,12 @@ HelloCdkStack(app, "HelloCdkStack")
 ------
 #### [ Java ]
 
+Stack defined in `HelloCdkStack.java` file:
+
 ```
-import software.amazon.awscdk.*;
+import software.constructs.Construct;
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
 import software.amazon.awscdk.services.s3.*;
 
 public class HelloCdkStack extends Stack {
@@ -435,7 +439,25 @@ public class HelloCdkStack extends Stack {
         super(scope, id, props);
 
         Bucket.Builder.create(this, "MyFirstBucket")
-                .versioned(true).build();
+            .versioned(true).build();
+    }
+}
+```
+
+App defined in `HelloCdkApp.java` file:
+
+```
+import software.amazon.awscdk.App;
+import software.amazon.awscdk.StackProps;
+
+public class HelloCdkApp {
+    public static void main(final String[] args) {
+        App app = new App();
+
+        new HelloCdkStack(app, "HelloCdkStack", StackProps.builder()
+                .build());
+
+        app.synth();
     }
 }
 ```
