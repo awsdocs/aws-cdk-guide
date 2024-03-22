@@ -1,6 +1,6 @@
 # Stacks<a name="stacks"></a>
 
-A unit of deployment in the AWS Cloud Development Kit \(AWS CDK\) is called a *stack*\. Constructs that represent AWS resources are defined within the context of a stack\. Stacks are defined within the context of an app\. When deploying, constructs within a stack are provisioned as a single unit called an AWS CloudFormation stack\. To learn more about AWS CloudFormation stacks, see [Working with stacks](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/stacks.html) in the *AWS CloudFormation User Guide*\.
+An AWS Cloud Development Kit \(AWS CDK\) *stack* is a collection of one or more constructs, which define AWS resources\. Each CDK stack represents an AWS CloudFormation stack in your CDK app\. At deployment, constructs within a stack are provisioned as a single unit, called an AWS CloudFormation stack\. To learn more about AWS CloudFormation stacks, see [Working with stacks](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/stacks.html) in the *AWS CloudFormation User Guide*\.
 
 Since CDK stacks are implemented through AWS CloudFormation stacks, AWS CloudFormation quotas and limitations apply\. To learn more, see [AWS CloudFormation quotas](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cloudformation-limits.html)\.
 
@@ -78,7 +78,7 @@ app.Synth();
 
 ------
 
-The following example is a common pattern for creating a stack within your CDK app\. Here, we extend or inherit the `Stack` class and define a constructor that accepts `scope`, `id`, and `props`\. Then, we invoke the base `Stack` class constructor using `super` with the received `scope`, `id`, and `props`\.
+The following example is a common pattern for defining a stack on a separate file\. Here, we extend or inherit the `Stack` class and define a constructor that accepts `scope`, `id`, and `props`\. Then, we invoke the base `Stack` class constructor using `super` with the received `scope`, `id`, and `props`\.
 
 ------
 #### [ TypeScript ]
@@ -145,6 +145,21 @@ public class HelloCdkStack : Stack
     {
         //...
     }
+}
+```
+
+------
+#### [ Go ]
+
+```
+func HelloCdkStack(scope constructs.Construct, id string, props *HelloCdkStackProps) awscdk.Stack {
+ var sprops awscdk.StackProps
+ if props != nil {
+  sprops = props.StackProps
+ }
+ stack := awscdk.NewStack(scope, &id, &sprops)
+
+  return stack
 }
 ```
 
@@ -240,13 +255,34 @@ func MyFirstStack(scope constructs.Construct, id string, props *MyFirstStackProp
 
 However, this code has only *declared* a stack\. For the stack to actually be synthesized into an AWS CloudFormation template and deployed, it must be instantiated\. And, like all CDK constructs, it must be instantiated in some context\. The `App` is that context\.
 
-**Tip**  
-If you're using the standard AWS CDK development template, your stacks are instantiated in the same file where you instantiate the `App` object\.  
+If you're using the standard AWS CDK development template, your stacks are instantiated in the same file where you instantiate the `App` object\.
+
+------
+#### [ TypeScript ]
+
 The file named after your project \(for example, `hello-cdk.ts`\) in your project's `bin` folder\.
+
+------
+#### [ JavaScript ]
+
 The file named after your project \(for example, `hello-cdk.js`\) in your project's `bin` folder\.
+
+------
+#### [ Python ]
+
 The file `app.py` in your project's main directory\.
+
+------
+#### [ Java ]
+
 The file named `ProjectNameApp.java`, for example `HelloCdkApp.java`, nested deep under the `src/main` directory\.
+
+------
+#### [ C\# ]
+
 The file named `Program.cs` under `src\ProjectName`, for example `src\HelloCdk\Program.cs`\.
+
+------
 
 ### The stack API<a name="stack_api"></a>
 
