@@ -356,8 +356,8 @@ if region, b = os.LookupEnv("CDK_DEPLOY_REGION"); !b || len(region) == 0 {
 
 MyDevStack(app, "dev", &awscdk.StackProps{
     Env: &awscdk.Environment{
-        Account: jsii.String(os.Getenv(account)),
-        Region:  jsii.String(os.Getenv(region)),
+        Account: &account,
+        Region:  &region,
     },
 })
 
