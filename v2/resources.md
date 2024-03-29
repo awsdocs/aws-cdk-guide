@@ -58,6 +58,21 @@ new Queue(this, "MyQueue", new QueueProps
 ```
 
 ------
+#### [ Go ]
+
+```
+import (
+	"github.com/aws/aws-cdk-go/awscdk/v2"
+	"github.com/aws/jsii-runtime-go"	
+    import sqs "github.com/aws/aws-cdk-go/awscdk/v2/awssqs"
+)
+
+sqs.NewQueue(stack, jsii.String("MyQueue"), &sqs.QueueProps{
+    Encryption: sqs.QueueEncryption_KMS_MANAGED,
+})
+```
+
+------
 
 Some configuration props are optional, and in many cases have default values\. In some cases, all props are optional, and the last argument can be omitted entirely\.
 
@@ -109,6 +124,20 @@ String url = queue.getQueueUrl();    // => A string representing a deploy-time v
 ```
 var queue = new Queue(this, "MyQueue");
 var url = queue.QueueUrl; // => A string representing a deploy-time value
+```
+
+------
+#### [ Go ]
+
+```
+import (
+	"github.com/aws/aws-cdk-go/awscdk/v2"
+	"github.com/aws/jsii-runtime-go"	
+    import sqs "github.com/aws/aws-cdk-go/awscdk/v2/awssqs"
+)
+
+queue := sqs.NewQueue(stack, jsii.String("MyQueue"), &sqs.QueueProps{})
+url := queue.QueueUrl() // => A string representing a deploy-time value
 ```
 
 ------
@@ -167,6 +196,22 @@ Ec2Service service = new Ec2Service(this, "Service",
 ```
 var cluster = new Cluster(this, "Cluster");
 var service = new Ec2Service(this, "Service", new Ec2ServiceProps { Cluster = cluster });
+```
+
+------
+#### [ Go ]
+
+```
+import (
+	"github.com/aws/aws-cdk-go/awscdk/v2"
+	"github.com/aws/jsii-runtime-go"	    
+    import ecs "github.com/aws/aws-cdk-go/awscdk/v2/awsecs"
+)
+
+cluster := ecs.NewCluster(stack, jsii.String("MyCluster"), &ecs.ClusterProps{})
+service := ecs.NewEc2Service(stack, jsii.String("MyService"), &ecs.Ec2ServiceProps{
+    Cluster: cluster,
+})
 ```
 
 ------
@@ -359,6 +404,22 @@ Vpc.FromVpcAttributes(this, "MyVpc", new VpcAttributes
 ```
 
 ------
+#### [ Go ]
+
+```
+// Construct a proxy for a bucket by its name (must be same account)
+s3.Bucket_FromBucketName(stack, jsii.String("MyBucket"), jsii.String("MyBucketName"))
+
+// Construct a proxy for a bucket by its full ARN (can be another account)
+s3.Bucket_FromBucketArn(stack, jsii.String("MyBucket"), jsii.String("arn:aws:s3:::my-bucket-name"))
+
+// Construct a proxy for an existing VPC from its attribute(s)
+ec2.Vpc_FromVpcAttributes(stack, jsii.String("MyVpc"), &ec2.VpcAttributes{
+    VpcId: jsii.String("vpc-1234567890abcde"),
+})
+```
+
+------
 
 Let's take a closer look at the [https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-ec2.Vpc.html#static-fromwbrlookupscope-id-options](https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-ec2.Vpc.html#static-fromwbrlookupscope-id-options) method\. Because the `ec2.Vpc` construct is complex, there are many ways you might want to select the VPC to be used with your CDK app\. To address this, the VPC construct has a `fromLookup` static method \(Python: `from_lookup`\) that lets you look up the desired Amazon VPC by querying your AWS account at synthesis time\.
 
@@ -409,6 +470,15 @@ Vpc.FromLookup(this, id = "DefaultVpc", new VpcLookupOptions { IsDefault = true 
 ```
 
 ------
+#### [ Go ]
+
+```
+ec2.Vpc_FromLookup(this, jsii.String("DefaultVpc"), &ec2.VpcLookupOptions{
+    IsDefault: jsii.Bool(true),
+})
+```
+
+------
 
 You can also use the `tags` property to query for VPCs by tag\. You can add tags to the Amazon VPC at the time of its creation by using AWS CloudFormation or the AWS CDK\. You can edit tags at any time after creation by using the AWS Management Console, the AWS CLI, or an AWS SDK\. In addition to any tags you add yourself, the AWS CDK automatically adds the following tags to all VPCs it creates\. 
 + *Name* – The name of the VPC\.
@@ -454,6 +524,15 @@ Vpc.fromLookup(this, "PublicVpc", VpcLookupOptions.builder()
 ```
 Vpc.FromLookup(this, id = "PublicVpc", new VpcLookupOptions 
      { Tags = new Dictionary<string, string> { ["aws-cdk:subnet-type"] = "Public" });
+```
+
+------
+#### [ Go ]
+
+```
+ec2.Vpc_FromLookup(this, jsii.String("DefaultVpc"), &ec2.VpcLookupOptions{
+    Tags: &map[string]*string{"aws-cdk:subnet-type": jsii.String("Public")},
+})
 ```
 
 ------
@@ -511,6 +590,15 @@ var bucket = new Bucket(this, "MyBucket", new BucketProps { BucketName = "my-buc
 ```
 
 ------
+#### [ Go ]
+
+```
+bucket := s3.NewBucket(this, jsii.String("MyBucket"), &s3.BucketProps{
+    BucketName: jsii.String("my-bucket-name"),
+})
+```
+
+------
 
 Assigning physical names to resources has some disadvantages in AWS CloudFormation\. Most importantly, any changes to deployed resources that require a resource replacement, such as changes to a resource's properties that are immutable after creation, will fail if a resource has a physical name assigned\. If you end up in that state, the only solution is to delete the AWS CloudFormation stack, then deploy the AWS CDK app again\. See the [AWS CloudFormation documentation](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-name.html) for details\.
 
@@ -556,6 +644,15 @@ Bucket bucket = Bucket.Builder.create(this, "MyBucket")
 ```
 var bucket = new Bucket(this, "MyBucket", new BucketProps 
     { BucketName = PhysicalName.GENERATE_IF_NEEDED });
+```
+
+------
+#### [ Go ]
+
+```
+bucket := s3.NewBucket(this, jsii.String("MyBucket"), &s3.BucketProps{
+    BucketName: awscdk.PhysicalName_GENERATE_IF_NEEDED(),
+})
 ```
 
 ------
@@ -613,6 +710,14 @@ securityGroup.getGroupArn()
 bucket.BucketName
 lambdaFunc.FunctionArn
 securityGroup.GroupArn
+```
+
+------
+#### [ Go ]
+
+```
+bucket.BucketName()
+fn.FunctionArn()
 ```
 
 ------
@@ -684,6 +789,17 @@ new Function(this, "MyLambda", new FunctionProps
 ```
 
 ------
+#### [ Go ]
+
+```
+bucket := s3.NewBucket(this, jsii.String("Bucket"), &s3.BucketProps{})
+
+lambda.NewFunction(this, jsii.String("MyLambda"), &lambda.FunctionProps{
+    Environment: &map[string]*string{"BUCKET_NAME": bucket.BucketName()},
+})
+```
+
+------
 
 ## Granting permissions<a name="resources_grants"></a>
 
@@ -737,6 +853,15 @@ if (bucket.GrantReadWrite(func).Success)
 ```
 
 ------
+#### [ Go ]
+
+```
+if *bucket.GrantReadWrite(function, nil).Success() {
+    // ...
+}
+```
+
+------
 
 The grant methods return an `iam.Grant` object\. Use the `success` attribute of the `Grant` object to determine whether the grant was effectively applied \(for example, it may not have been applied on [external resources](#resources_referencing)\)\. You can also use the `assertSuccess` \(Python: `assert_success`\) method of the `Grant` object to enforce that the grant was successfully applied\.
 
@@ -777,6 +902,14 @@ table.grant(func, "dynamodb:CreateBackup");
 
 ```
 table.Grant(func, "dynamodb:CreateBackup");
+```
+
+------
+#### [ Go ]
+
+```
+table := dynamodb.NewTable(this, jsii.String("MyTable"), &dynamodb.TableProps{})
+table.Grant(function, jsii.String("dynamodb:CreateBackup"))
 ```
 
 ------
@@ -905,6 +1038,29 @@ metric.CreateAlarm(this, "TooManyMessagesAlarm", new cw.CreateAlarmOptions
 ```
 
 ------
+#### [ Go ]
+
+```
+import (
+	"github.com/aws/aws-cdk-go/awscdk/v2"
+	"github.com/aws/jsii-runtime-go"
+    cw "github.com/aws/aws-cdk-go/awscdk/v2/awscloudwatch"
+    sqs "github.com/aws/aws-cdk-go/awscdk/v2/awssqs"
+)
+
+queue := sqs.NewQueue(this, jsii.String("MyQueue"), &sqs.QueueProps{})
+metric := queue.MetricApproximateNumberOfMessagesNotVisible(&cw.MetricOptions{
+    Label: jsii.String("Messages Visible (Approx)"),
+    Period: awscdk.Duration_Minutes(jsii.Number(5)),
+}) 
+metric.CreateAlarm(this, jsii.String("TooManyMessagesAlarm"), &cw.CreateAlarmOptions{
+    ComparisonOperator: cw.ComparisonOperator_GREATER_THAN_THRESHOLD,
+    Threshold: jsii.Number(100),
+})
+
+```
+
+------
 
 If there is no method for a particular metric, you can use the general metric method to specify the metric name manually\.
 
@@ -1005,6 +1161,25 @@ fleet1.Connections.AllowFrom(fleet2, ec2.Port.AllTraffic());
 ```
 
 ------
+#### [ Go ]
+
+```
+import (
+	"github.com/aws/aws-cdk-go/awscdk/v2"
+	"github.com/aws/jsii-runtime-go"
+	autoscaling "github.com/aws/aws-cdk-go/awscdk/v2/awsautoscaling"
+	ec2 "github.com/aws/aws-cdk-go/awscdk/v2/awsec2"
+)
+
+fleet1 := autoscaling.NewAutoScalingGroup(this, jsii.String("MyFleet1"), &autoscaling.AutoScalingGroupProps{})
+fleet1.Connections().AllowTo(ec2.Peer_AnyIpv4(),ec2.NewPort(&ec2.PortProps{ FromPort: jsii.Number(443), ToPort: jsii.Number(443) }),jsii.String("secure web"))
+
+fleet2 := autoscaling.NewAutoScalingGroup(this, jsii.String("MyFleet2"), &autoscaling.AutoScalingGroupProps{}) 
+fleet1.Connections().AllowFrom(fleet2, ec2.Port_AllTraffic(),jsii.String("all traffic"))
+
+```
+
+------
 
 Certain resources have default ports associated with them\. Examples include the listener of a load balancer on the public port, and the ports on which the database engine accepts connections for instances of an Amazon RDS database\. In such cases, you can enforce tight network control without having to manually specify the port\. To do so, use the `allowDefaultPortFrom` and `allowToDefaultPort` methods \(Python: `allow_default_port_from`, `allow_to_default_port`\)\. 
 
@@ -1053,6 +1228,14 @@ fleet.getConnections().AllowToDefaultPort(rdsDatabase, "Fleet can access databas
 listener.Connections.AllowDefaultPortFromAnyIpv4("Allow public access");
 
 fleet.Connections.AllowToDefaultPort(rdsDatabase, "Fleet can access database");
+```
+
+------
+#### [ Go ]
+
+```
+listener.Connections().AllowDefaultPortFromAnyIpv4(jsii.String("Allow public Access"))
+fleet.Connections().AllowToDefaultPort(rdsDatabase, jsii.String("Fleet can access database"))
 ```
 
 ------
@@ -1120,6 +1303,22 @@ using s3Nots = Amazon.CDK.AWS.S3.Notifications;
 var handler = new lambda.Function(this, "Handler", new lambda.FunctionProps { .. });
 var bucket = new s3.Bucket(this, "Bucket");
 bucket.AddObjectCreatedNotification(new s3Nots.LambdaDestination(handler));
+```
+
+------
+#### [ Go ]
+
+```
+import (
+	"github.com/aws/aws-cdk-go/awscdk/v2"
+	"github.com/aws/jsii-runtime-go"
+	s3 "github.com/aws/aws-cdk-go/awscdk/v2/awss3"
+	s3nots "github.com/aws/aws-cdk-go/awscdk/v2/awss3notifications"	
+)
+
+handler := lambda.NewFunction(this, jsii.String("MyFunction"), &lambda.FunctionProps{})
+bucket := s3.NewBucket(this, jsii.String("Bucket"), &s3.BucketProps{})
+bucket.AddObjectCreatedNotification(s3nots.NewLambdaDestination(handler), nil)
 ```
 
 ------
@@ -1233,6 +1432,23 @@ public CdkTestStack(Construct scope, string id, IStackProps props) : base(scope,
         AutoDeleteObjects = true
     });
 }
+```
+
+------
+#### [ Go ]
+
+```
+import (
+	"github.com/aws/aws-cdk-go/awscdk/v2"
+	"github.com/aws/jsii-runtime-go"
+	s3 "github.com/aws/aws-cdk-go/awscdk/v2/awss3"
+)
+
+s3.NewBucket(this, jsii.String("Bucket"), &s3.BucketProps{
+    RemovalPolicy: awscdk.RemovalPolicy_DESTROY,
+    AutoDeleteObjects: jsii.Bool(true),
+})
+
 ```
 
 ------
