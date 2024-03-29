@@ -105,6 +105,29 @@ new MyFirstStack(app, "first-stack-eu", new StackProps { Env=envEU });
 ```
 
 ------
+#### [ Go ]
+
+```
+
+env_EU := awscdk.Environment{
+    Account: jsii.String("8373873873"),
+    Region:  jsii.String("eu-west-1"),
+}
+env_USA := awscdk.Environment{
+    Account: jsii.String("2383838383"),
+    Region:  jsii.String("us-west-2"),
+}
+
+MyFirstStack(app, "first-stack-us", &awscdk.StackProps{
+    Env: &env_USA,
+})
+MyFirstStack(app, "first-stack-eu", &awscdk.StackProps{
+    Env: &env_EU,
+})
+
+```
+
+------
 
 When you hardcode the target account and Region as shown in the preceding example, the stack is always deployed to that specific account and Region\. To make the stack deployable to a different target, but to determine the target at synthesis time, your stack can use two environment variables provided by the AWS CDK CLI: `CDK_DEFAULT_ACCOUNT` and `CDK_DEFAULT_REGION`\. These variables are set based on the AWS profile specified using the \-\-profile option, or the default AWS profile if you don't specify one\.
 
@@ -209,6 +232,21 @@ new MyDevStack(app, "dev", new StackProps { Env = makeEnv() });
 ```
 
 ------
+#### [ Go ]
+
+```
+import "os"
+
+MyDevStack(app, "dev", &awscdk.StackProps{
+    Env: &awscdk.Environment{
+        Account: jsii.String(os.Getenv("CDK_DEFAULT_ACCOUNT")),
+        Region:  jsii.String(os.Getenv("CDK_DEFAULT_REGION")),
+    },
+})
+
+```
+
+------
 
 The AWS CDK distinguishes between not specifying the `env` property at all and specifying it using `CDK_DEFAULT_ACCOUNT` and `CDK_DEFAULT_REGION`\. The former implies that the stack should synthesize an environment\-agnostic template\. Constructs that are defined in such a stack cannot use any information about their environment\. For example, you can't write code like `if (stack.region === 'us-east-1')` or use framework facilities like [Vpc\.fromLookup](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ec2.Vpc.html#static-fromwbrlookupscope-id-options) \(Python: `from_lookup`\), which need to query your AWS account\. These features don't work at all until you specify an explicit environment; to use them, you must specify `env`\.
 
@@ -300,6 +338,29 @@ Amazon.CDK.Environment makeEnv(string account=null, string region=null)
 }
 
 new MyDevStack(app, "dev", new StackProps { Env = makeEnv() });
+```
+
+------
+#### [ Go ]
+
+```
+var account, region string
+var b bool
+
+if account, b = os.LookupEnv("CDK_DEPLOY_ACCOUNT"); !b || len(account) == 0 {
+    account = os.Getenv("CDK_DEFAULT_ACCOUNT")
+}
+if region, b = os.LookupEnv("CDK_DEPLOY_REGION"); !b || len(region) == 0 {
+    region = os.Getenv("CDK_DEFAULT_REGION")
+}
+
+MyDevStack(app, "dev", &awscdk.StackProps{
+    Env: &awscdk.Environment{
+        Account: jsii.String(os.Getenv(account)),
+        Region:  jsii.String(os.Getenv(region)),
+    },
+})
+
 ```
 
 ------
