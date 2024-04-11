@@ -1,432 +1,330 @@
-# Creating a serverless application using the AWS CDK<a name="serverless_example"></a>
+# Create a serverless Hello World application<a name="serverless_example"></a>
 
-This example walks you through creating the resources for a simple widget dispensing service\. \(For the purpose of this example, a widget is just a name or identifier that can be added to, retrieved from, and deleted from a collection\.\) The example includes:
-+ An AWS Lambda function\.
-+ An Amazon API Gateway API to call the Lambda function\.
-+ An Amazon S3 bucket that holds the widgets\.
+In this tutorial, you use the AWS Cloud Development Kit \(AWS CDK\) to create a simple serverless Hello World application that implements a basic API backend by creating the following:
++ **Amazon API Gateway REST API** – Provides an HTTP endpoint that is used to invoke your function through an HTTP GET request\.
++ **AWS Lambda function** – Function that returns a `Hello World!` message when invoked with the HTTP endpoint\.
++ **Integrations and permissions** – Configuration details and permissions for your resources to interact with one another and perform actions, such as writing logs to Amazon CloudWatch\.
 
-This tutorial contains the following steps\.
+The following diagram shows the components of this application:
 
-1. Create an AWS CDK app
+![\[Diagram of a Lambda function that is invoked when you send a GET request to the API Gateway endpoint.\]](http://docs.aws.amazon.com/cdk/v2/guide/images/serverless-example-01.png)
 
-1. Create a Lambda function that gets a list of widgets with HTTP GET /
+For this tutorial, you will complete the following:
 
-1. Create the service that calls the Lambda function
+1. Create an AWS CDK project\.
 
-1. Add the service to the AWS CDK app
+1. Define a Lambda function and API Gateway REST API using L2 constructs from the AWS Construct Library\.
 
-1. Test the app
+1. Deploy your application to the AWS Cloud\.
 
-1. Add Lambda functions to do the following:
-   + Create a widget with POST /\{name\}
-   + Get a widget by name with GET /\{name\}
-   + Delete a widget by name with DELETE /\{name\}
+1. Interact with your application in the AWS Cloud\.
 
-1. Tear everything down when you're finished
+1. Delete the sample application from the AWS Cloud\.
 
-## Create an AWS CDK app<a name="serverless_example_create_app"></a>
+## Prerequisites<a name="serverless-example-pre"></a>
 
-Create the app **MyWidgetService** in the current folder\.
+Before starting this tutorial, complete the following:
++ Create an AWS account and have the AWS Command Line Interface \(AWS CLI\) installed and configured\.
++ Install Node\.js and npm\.
++ Install the CDK Toolkit globally, using `npm install -g aws-cdk`\.
+
+For more information, see [Getting started with the AWS CDK](getting_started.md)\.
+
+We also recommend a basic understanding of the following:
++ [What is the AWS CDK?](home.md) for a basic introduction to the AWS CDK\.
++ [AWS CDK concepts](core_concepts.md) for an overview of core concepts of the AWS CDK\.
+
+## Step 1: Create a CDK project<a name="serverless-example-project"></a>
+
+In this step, you create a new CDK project using the AWS CDK CLI `cdk init` command\.
+
+**To create a CDK project**
+
+1. From a starting directory of your choice, create and navigate to a project directory named `cdk-hello-world` on your machine:
+
+   ```
+   $ mkdir cdk-hello-world && cd cdk-hello-world
+   ```
+
+1. Use the `cdk init` command to create a new project in your preferred programming language:
 
 ------
 #### [ TypeScript ]
 
-```
-mkdir MyWidgetService
-cd MyWidgetService
-cdk init --language typescript
-```
+   ```
+   $ cdk init --language typescript
+   ```
+
+   Install AWS CDK libraries:
+
+   ```
+   $ npm install aws-cdk-lib constructs
+   ```
 
 ------
 #### [ JavaScript ]
 
-```
-mkdir MyWidgetService
-cd MyWidgetService
-cdk init --language javascript
-```
+   ```
+   $ cdk init --language javascript
+   ```
+
+   Install AWS CDK libraries:
+
+   ```
+   $ npm install aws-cdk-lib constructs
+   ```
 
 ------
 #### [ Python ]
 
-```
-mkdir MyWidgetService
-cd MyWidgetService
-cdk init --language python
-source .venv/bin/activate
-pip install -r requirements.txt
-```
+   ```
+   $ cdk init --language python
+   ```
+
+   Activate the virtual environment:
+
+   ```
+   $ source .venv/bin/activate
+   ```
+
+   Install AWS CDK libraries and project dependencies:
+
+   ```
+   (.venv)$ python3 -m pip install -r requirements.txt
+   ```
 
 ------
 #### [ Java ]
 
-```
-mkdir MyWidgetService
-cd MyWidgetService
-cdk init --language java
-```
+   ```
+   $ cdk init --language java
+   ```
 
-You may now import the Maven project into your IDE\.
+   Install AWS CDK libraries and project dependencies:
+
+   ```
+   $ mvn package
+   ```
 
 ------
 #### [ C\# ]
 
-```
-mkdir MyWidgetService
-cd MyWidgetService
-cdk init --language csharp
-```
+   ```
+   $ cdk init --language csharp
+   ```
 
-You may now open `src/MyWidgetService.sln` in Visual Studio\.
+   Install AWS CDK libraries and project dependencies:
+
+   ```
+   $ dotnet restore src
+   ```
+
+------
+#### [ Go ]
+
+   ```
+   $ cdk init --language go
+   ```
+
+   Install project dependencies:
+
+   ```
+   $ go mod tidy
+   ```
 
 ------
 
-**Note**  
-The CDK names source files and classes based on the name of the project directory\. If you don't use the name `MyWidgetService` as shown previously, it might be difficult to follow the rest of the steps\. Some of the files that the instructions tell you to modify wont' be there, because they will have different names\.
-
-The important files in the blank project are as follows\. \(We will also be adding a couple of new files\.\)
+   The CDK CLI creates a project with the following structure:
 
 ------
 #### [ TypeScript ]
-+ `bin/my_widget_service.ts` – Main entry point for the application
-+ `lib/my_widget_service-stack.ts` – Defines the widget service stack
+
+   ```
+   cdk-hello-world
+   ├── .git
+   ├── .gitignore
+   ├── .npmignore
+   ├── README.md
+   ├── bin
+   │   └── cdk-hello-world.ts
+   ├── cdk.json
+   ├── jest.config.js
+   ├── lib
+   │   └── cdk-hello-world-stack.ts
+   ├── node_modules
+   ├── package-lock.json
+   ├── package.json
+   ├── test
+   │   └── cdk-hello-world.test.ts
+   └── tsconfig.json
+   ```
 
 ------
 #### [ JavaScript ]
-+ `bin/my_widget_service.js` – Main entry point for the application
-+ `lib/my_widget_service-stack.js` – Defines the widget service stack
+
+   ```
+   cdk-hello-world
+   ├── .git
+   ├── .gitignore
+   ├── .npmignore
+   ├── README.md
+   ├── bin
+   │   └── cdk-hello-world.js
+   ├── cdk.json
+   ├── jest.config.js
+   ├── lib
+   │   └── cdk-hello-world-stack.js
+   ├── node_modules
+   ├── package-lock.json
+   ├── package.json
+   └── test
+       └── cdk-hello-world.test.js
+   ```
 
 ------
 #### [ Python ]
-+ `app.py` – Main entry point for the application
-+ `my_widget_service/my_widget_service_stack.py` – Defines the widget service stack
+
+   ```
+   cdk-hello-world
+   ├── .git
+   ├── .gitignore
+   ├── .venv
+   ├── README.md
+   ├── app.py
+   ├── cdk.json
+   ├── cdk_hello_world
+   │   ├── __init__.py
+   │   └── cdk_hello_world_stack.py
+   ├── requirements-dev.txt
+   ├── requirements.txt
+   ├── source.bat
+   └── tests
+   ```
 
 ------
 #### [ Java ]
-+ `src/main/java/com/myorg/MyWidgetServiceApp.java` – Main entry point for the application
-+ `src/main/java/com/myorg/MyWidgetServiceStack.java` – Defines the widget service stack
+
+   ```
+   cdk-hello-world
+   ├── .git
+   ├── .gitignore
+   ├── README.md
+   ├── cdk.json
+   ├── pom.xml
+   ├── src
+   │   ├── main
+   │   │   └── java
+   │   │       └── com
+   │   │           └── myorg
+   │   │               ├── CdkHelloWorldApp.java
+   │   │               └── CdkHelloWorldStack.java
+   └── target
+   ```
 
 ------
 #### [ C\# ]
-+ `src/MyWidgetService/Program.cs` – Main entry point for the application
-+ `src/MyWidgetService/MyWidgetServiceStack.cs` – Defines the widget service stack
+
+   ```
+   cdk-hello-world
+   ├── .git
+   ├── .gitignore
+   ├── README.md
+   ├── cdk.json
+   └── src
+       ├── CdkHelloWorld
+       │   ├── CdkHelloWorld.csproj
+       │   ├── CdkHelloWorldStack.cs
+       │   ├── GlobalSuppressions.cs
+       │   └── Program.cs
+       └── CdkHelloWorld.sln
+   ```
+
+------
+#### [ Go ]
+
+   ```
+   cdk-hello-world
+   ├── .git
+   ├── .gitignore
+   ├── README.md
+   ├── cdk-hello-world.go
+   ├── cdk-hello-world_test.go
+   ├── cdk.json
+   └── go.mod
+   ```
 
 ------
 
-Run the app and note that it synthesizes an empty stack\.
-
-```
-cdk synth
-```
-
-You should see output beginning with YAML code like the following\.
-
-```
-Resources:
-  CDKMetadata:
-    Type: AWS::CDK::Metadata
-    Properties:
-      ...
-```
-
-## Create a Lambda function to list all widgets<a name="serverless_example_create_iam_function"></a>
-
-The next step is to create a Lambda function to list all of the widgets in our Amazon S3 bucket\. We will provide the Lambda function's code in JavaScript\.
-
-Create the `resources` directory in the project's main directory\.
-
-```
-mkdir resources
-```
-
-Create the following JavaScript file, `widgets.js`, in the `resources` directory\.
-
-```
-import { S3Client, ListObjectsCommand } from "@aws-sdk/client-s3";
-
-// The following code uses the AWS SDK for JavaScript (v3).
-// For more information, see https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/index.html.
-const s3Client = new S3Client({});
-
-/**
- * @param {string} bucketName
- */
-const listObjectNames = async (bucketName) => {
-  const command = new ListObjectsCommand({ Bucket: bucketName });
-  const { Contents } = await s3Client.send(command);
-
-  if (!Contents.length) {
-    const err = new Error(`No objects found in ${bucketName}`);
-    err.name = "EmptyBucketError";
-    throw err;
-  }
-
-  // Map the response to a list of strings representing the keys of the Amazon Simple Storage Service (Amazon S3) objects.
-  // Filter out any objects that don't have keys.
-  return Contents.map(({ Key }) => Key).filter((k) => !!k);
-};
-
-/**
- * @typedef {{ httpMethod: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH', path: string }} LambdaEvent
- */
-
-/**
- *
- * @param {LambdaEvent} lambdaEvent
- */
-const routeRequest = (lambdaEvent) => {
-  if (lambdaEvent.httpMethod === "GET" && lambdaEvent.path === "/") {
-    return handleGetRequest();
-  }
-
-  const error = new Error(
-    `Unimplemented HTTP method: ${lambdaEvent.httpMethod}`,
-  );
-  error.name = "UnimplementedHTTPMethodError";
-  throw error;
-};
-
-const handleGetRequest = async () => {
-  if (process.env.BUCKET === "undefined") {
-    const err = new Error(`No bucket name provided.`);
-    err.name = "MissingBucketName";
-    throw err;
-  }
-
-  const objects = await listObjectNames(process.env.BUCKET);
-  return buildResponseBody(200, objects);
-};
-
-/**
- * @typedef {{statusCode: number, body: string, headers: Record<string, string> }} LambdaResponse
- */
-
-/**
- *
- * @param {number} status
- * @param {Record<string, string>} headers
- * @param {Record<string, unknown>} body
- *
- * @returns {LambdaResponse}
- */
-const buildResponseBody = (status, body, headers = {}) => {
-  return {
-    statusCode: status,
-    headers,
-    body,
-  };
-};
-
-/**
- *
- * @param {LambdaEvent} event
- */
-export const handler = async (event) => {
-  try {
-    return await routeRequest(event);
-  } catch (err) {
-    console.error(err);
-
-    if (err.name === "MissingBucketName") {
-      return buildResponseBody(400, err.message);
-    }
-
-    if (err.name === "EmptyBucketError") {
-      return buildResponseBody(204, []);
-    }
-
-    if (err.name === "UnimplementedHTTPMethodError") {
-      return buildResponseBody(400, err.message);
-    }
-
-    return buildResponseBody(500, err.message || "Unknown server error");
-  }
-};
-```
-
-Save it and be sure the project still results in an empty stack\. We haven't yet wired the Lambda function to the AWS CDK app, so the Lambda asset doesn't appear in the output\.
-
-```
-cdk synth
-```
-
-## Create a widget service<a name="serverless_example_create_widget_service"></a>
-
-Create a new source file to define the widget service with the source code shown below\.
+The CDK CLI automatically creates a CDK app that contains a single stack\. The CDK app instance is created from the `[App](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.App.html)` class\. The following is a portion of your CDK application file:
 
 ------
 #### [ TypeScript ]
 
-File: `lib/widget_service.ts`
+Located in `bin/cdk-hello-world.ts`:
 
 ```
-import * as cdk from "aws-cdk-lib";
-import { Construct } from "constructs";
-import * as apigateway from "aws-cdk-lib/aws-apigateway";
-import * as lambda from "aws-cdk-lib/aws-lambda";
-import * as s3 from "aws-cdk-lib/aws-s3";
+#!/usr/bin/env node
+import 'source-map-support/register';
+import * as cdk from 'aws-cdk-lib';
+import { CdkHelloWorldStack } from '../lib/cdk-hello-world-stack';
 
-export class WidgetService extends Construct {
-  constructor(scope: Construct, id: string) {
-    super(scope, id);
-
-    const bucket = new s3.Bucket(this, "WidgetStore");
-
-    const handler = new lambda.Function(this, "WidgetHandler", {
-      runtime: lambda.Runtime.NODEJS_18_X,
-      code: lambda.Code.fromAsset("resources"),
-      handler: "widgets.main",
-      environment: {
-        BUCKET: bucket.bucketName
-      }
-    });
-
-    bucket.grantReadWrite(handler);
-
-    const api = new apigateway.RestApi(this, "widgets-api", {
-      restApiName: "Widget Service",
-      description: "This service serves widgets."
-    });
-
-    const getWidgetsIntegration = new apigateway.LambdaIntegration(handler, {
-      requestTemplates: { "application/json": '{ "statusCode": "200" }' }
-    });
-
-    api.root.addMethod("GET", getWidgetsIntegration); // GET /
-  }
-}
+const app = new cdk.App();
+new CdkHelloWorldStack(app, 'CdkHelloWorldStack', {
+});
 ```
 
 ------
 #### [ JavaScript ]
 
-File: `lib/widget_service.js`
+Located in `bin/cdk-hello-world.js`:
 
 ```
-const cdk = require("aws-cdk-lib");
-const { Construct } = require("constructs");
-const apigateway = require("aws-cdk-lib/aws-apigateway");
-const lambda = require("aws-cdk-lib/aws-lambda");
-const s3 = require("aws-cdk-lib/aws-s3");
-
-class WidgetService extends Construct {
-  constructor(scope, id) {
-    super(scope, id);
-
-    const bucket = new s3.Bucket(this, "WidgetStore");
-
-    const handler = new lambda.Function(this, "WidgetHandler", {
-      runtime: lambda.Runtime.NODEJS_18_X,
-      code: lambda.Code.fromAsset("resources"),
-      handler: "widgets.main",
-      environment: {
-        BUCKET: bucket.bucketName
-      }
-    });
-
-    bucket.grantReadWrite(handler); // was: handler.role);
-
-    const api = new apigateway.RestApi(this, "widgets-api", {
-      restApiName: "Widget Service",
-      description: "This service serves widgets."
-    });
-
-    const getWidgetsIntegration = new apigateway.LambdaIntegration(handler, {
-      requestTemplates: { "application/json": '{ "statusCode": "200" }' }
-    });
-
-    api.root.addMethod("GET", getWidgetsIntegration); // GET /
-  }
-}
-
-module.exports = { WidgetService }
+#!/usr/bin/env node
+const cdk = require('aws-cdk-lib');
+const { CdkHelloWorldStack } = require('../lib/cdk-hello-world-stack');
+const app = new cdk.App();
+new CdkHelloWorldStack(app, 'CdkHelloWorldStack', {
+});
 ```
 
 ------
 #### [ Python ]
 
-File: `my_widget_service/widget_service.py`
+Located in `app.py`:
 
 ```
+#!/usr/bin/env python3
+import os
 import aws_cdk as cdk
-from constructs import Construct
-from aws_cdk import (aws_apigateway as apigateway,
-                     aws_s3 as s3,
-                     aws_lambda as lambda_)
+from cdk_hello_world.cdk_hello_world_stack import CdkHelloWorldStack
 
-class WidgetService(Construct):
-    def __init__(self, scope: Construct, id: str):
-        super().__init__(scope, id)
-
-        bucket = s3.Bucket(self, "WidgetStore")
-
-        handler = lambda_.Function(self, "WidgetHandler",
-                    runtime=lambda_.Runtime.NODEJS_18_X,
-                    code=lambda_.Code.from_asset("resources"),
-                    handler="widgets.main",
-                    environment=dict(
-                    BUCKET=bucket.bucket_name)
-                    )
-
-        bucket.grant_read_write(handler)
-
-        api = apigateway.RestApi(self, "widgets-api",
-                  rest_api_name="Widget Service",
-                  description="This service serves widgets.")
-
-        get_widgets_integration = apigateway.LambdaIntegration(handler,
-                request_templates={"application/json": '{ "statusCode": "200" }'})
-
-        api.root.add_method("GET", get_widgets_integration)   # GET /
+app = cdk.App()
+CdkHelloWorldStack(app, "CdkHelloWorldStack",)
+app.synth()
 ```
 
 ------
 #### [ Java ]
 
-File: `src/src/main/java/com/myorg/WidgetService.java`
+Located in `src/main/java/.../CdkHelloWorldApp.java`:
 
 ```
 package com.myorg;
 
-import java.util.HashMap;
+import software.amazon.awscdk.App;
+import software.amazon.awscdk.Environment;
+import software.amazon.awscdk.StackProps;
 
-import software.constructs.Construct;
-import software.amazon.awscdk.services.apigateway.LambdaIntegration;
-import software.amazon.awscdk.services.apigateway.Resource;
-import software.amazon.awscdk.services.apigateway.RestApi;
-import software.amazon.awscdk.services.lambda.Code;
-import software.amazon.awscdk.services.lambda.Function;
-import software.amazon.awscdk.services.lambda.Runtime;
-import software.amazon.awscdk.services.s3.Bucket;
+import java.util.Arrays;
 
-public class WidgetService extends Construct {
+public class JavaApp {
+    public static void main(final String[] args) {
+        App app = new App();
 
-    @SuppressWarnings("serial")
-    public WidgetService(Construct scope, String id) {
-        super(scope, id);
+        new JavaStack(app, "JavaStack", StackProps.builder()
+                .build());
 
-        Bucket bucket = new Bucket(this, "WidgetStore");
-
-        Function handler = Function.Builder.create(this, "WidgetHandler")
-            .runtime(Runtime.NODEJS_18_X)
-            .code(Code.fromAsset("resources"))
-            .handler("widgets.main")
-            .environment(java.util.Map.of(   // Java 9 or later
-               "BUCKET", bucket.getBucketName()) 
-            .build();
-
-        bucket.grantReadWrite(handler);
-        
-        RestApi api = RestApi.Builder.create(this, "Widgets-API")
-                .restApiName("Widget Service").description("This service services widgets.")
-                .build();
-
-        LambdaIntegration getWidgetsIntegration = LambdaIntegration.Builder.create(handler) 
-                .requestTemplates(java.util.Map.of(   // Map.of is Java 9 or later
-                    "application/json", "{ \"statusCode\": \"200\" }"))
-                .build();
-
-        api.getRoot().addMethod("GET", getWidgetsIntegration);    
+        app.synth();
     }
 }
 ```
@@ -434,422 +332,1201 @@ public class WidgetService extends Construct {
 ------
 #### [ C\# ]
 
-File: `src/MyWidgetService/WidgetService.cs`
+Located in `src/CdkHelloWorld/Program.cs`:
 
 ```
 using Amazon.CDK;
-using Amazon.CDK.AWS.APIGateway;
-using Amazon.CDK.AWS.Lambda;
-using Amazon.CDK.AWS.S3;
+using System;
 using System.Collections.Generic;
-using Constructs;
+using System.Linq;
 
-namespace MyWidgetService
+namespace CdkHelloWorld
 {
-
-    public class WidgetService : Construct
+    sealed class Program
     {
-        public WidgetService(Construct scope, string id) : base(scope, id)
+        public static void Main(string[] args)
         {
-            var bucket = new Bucket(this, "WidgetStore");
-
-            var handler = new Function(this, "WidgetHandler", new FunctionProps
+            var app = new App();
+            new CdkHelloWorldStack(app, "CdkHelloWorldStack", new StackProps
             {
-                Runtime = Runtime.NODEJS_18_X,
-                Code = Code.FromAsset("resources"),
-                Handler = "widgets.main",
-                Environment = new Dictionary<string, string>
-                {
-                    ["BUCKET"] = bucket.BucketName
-                }
+            
             });
-
-            bucket.GrantReadWrite(handler);
-
-            var api = new RestApi(this, "Widgets-API", new RestApiProps
-            {
-                RestApiName = "Widget Service",
-                Description = "This service services widgets."
-            });
-
-            var getWidgetsIntegration = new LambdaIntegration(handler, new LambdaIntegrationOptions
-            {
-                RequestTemplates = new Dictionary<string, string>
-                {
-                    ["application/json"] = "{ \"statusCode\": \"200\" }"
-                }
-            });
-
-            api.Root.AddMethod("GET", getWidgetsIntegration);
-
+            app.Synth();
         }
     }
 }
 ```
 
 ------
+#### [ Go ]
 
-**Tip**  
-We're using a `[lambda\.Function](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda.Function.html)` in to deploy this function because it supports a wide variety of programming languages\. For JavaScript and TypeScript specifically, you might consider a `[lambda\-nodejs\.NodejsFunction](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda_nodejs.NodejsFunction.html)`\. The latter uses esbuild to bundle up the script and converts code written in TypeScript automatically\.
-
-Save the app and make sure it still synthesizes an empty stack\.
+Located in `cdk-hello-world.go`:
 
 ```
-cdk synth
+package main
+import (
+    "github.com/aws/aws-cdk-go/awscdk/v2"
+    "github.com/aws/constructs-go/constructs/v10"
+    "github.com/aws/jsii-runtime-go"
+)
+
+// ...
+
+func main() {
+    defer jsii.Close()
+    app := awscdk.NewApp(nil)
+    NewCdkHelloWorldStack(app, "CdkHelloWorldStack", &CdkHelloWorldStackProps{
+        awscdk.StackProps{
+            Env: env(),
+        },
+    })
+    app.Synth(nil)
+}
+
+func env() *awscdk.Environment {
+    return nil
+}
 ```
 
-## Add the service to the app<a name="serverless_example_add_service"></a>
+------
 
-To add the widget service to our AWS CDK app, we'll need to modify the source file that defines the stack to instantiate the service construct\.
+## Step 2: Create your Lambda function<a name="serverless-example-function"></a>
+
+Within your CDK project, create a `lambda` directory that includes a new `hello.js` file\. The following is an example:
 
 ------
 #### [ TypeScript ]
 
-File: `lib/my_widget_service-stack.ts`
-
-Add the following line of code after the existing `import` statement\.
+From the root of your project, run the following:
 
 ```
-import * as widget_service from '../lib/widget_service';
+$ mkdir lambda && cd lambda
+$ touch hello.js
 ```
 
-Replace the comment in the constructor with the following line of code\.
+The following should now be added to your CDK project:
 
 ```
-    new widget_service.WidgetService(this, 'Widgets');
+cdk-hello-world
+└── lambda
+    └── hello.js
 ```
 
 ------
 #### [ JavaScript ]
 
-File: `lib/my_widget_service-stack.js`
-
-Add the following line of code after the existing `require()` line\.
+From the root of your project, run the following:
 
 ```
-const widget_service = require('../lib/widget_service');
+$ mkdir lambda && cd lambda
+$ touch hello.js
 ```
 
-Replace the comment in the constructor with the following line of code\.
+The following should now be added to your CDK project:
 
 ```
-    new widget_service.WidgetService(this, 'Widgets');
+cdk-hello-world
+└── lambda
+    └── hello.js
 ```
 
 ------
 #### [ Python ]
 
-File: `my_widget_service/my_widget_service_stack.py`
-
-Add the following line of code after the existing `import` statement\.
+From the root of your project, run the following:
 
 ```
-from . import widget_service
+$ mkdir lambda && cd lambda
+$ touch hello.js
 ```
 
-Replace the comment in the constructor with the following line of code\.
+The following should now be added to your CDK project:
 
 ```
-        widget_service.WidgetService(self, "Widgets")
+cdk-hello-world
+└── lambda
+    └── hello.js
 ```
 
 ------
 #### [ Java ]
 
-File: `src/src/main/java/com/myorg/MyWidgetServiceStack.java`
-
-Replace the comment in the constructor with the following line of code\.
+From the root of your project, run the following:
 
 ```
-new WidgetService(this, "Widgets");
+$ mkdir -p src/main/resources/lambda
+$ cd src/main/resources/lambda
+$ touch hello.js
+```
+
+The following should now be added to your CDK project:
+
+```
+cdk-hello-world
+└── src
+    └── main
+        └──resources
+            └──lambda
+                └──hello.js
 ```
 
 ------
 #### [ C\# ]
 
-File: `src/MyWidgetService/MyWidgetServiceStack.cs`
-
-Replace the comment in the constructor with the following line of code\.
+From the root of your project, run the following:
 
 ```
-new WidgetService(this, "Widgets");
+$ mkdir lambda && cd lambda
+$ touch hello.js
+```
+
+The following should now be added to your CDK project:
+
+```
+cdk-hello-world
+└── lambda
+    └── hello.js
+```
+
+------
+#### [ Go ]
+
+From the root of your project, run the following:
+
+```
+$ mkdir lambda && cd lambda
+$ touch hello.js
+```
+
+The following should now be added to your CDK project:
+
+```
+cdk-hello-world
+└── lambda
+    └── hello.js
 ```
 
 ------
 
-Be sure the app runs and synthesizes a stack \(we won't show the stack here: it's over 250 lines\)\.
+**Note**  
+To keep this tutorial simple, we use a JavaScript Lambda function for all CDK programming languages\.
+
+Define your Lambda function by adding the following to the newly created file:
 
 ```
-cdk synth
-```
-
-## Deploy and test the app<a name="serverless_example_deploy_and_test"></a>
-
-Before you can deploy your first AWS CDK app, you must bootstrap your AWS environment\. Among other resources, this creates a staging bucket that the AWS CDK uses to deploy stacks containing assets\. For details, see [Bootstrapping your AWS environment](cli.md#cli-bootstrap)\. If you've already bootstrapped, you'll get a warning and nothing will change\.
-
-```
-cdk bootstrap aws://ACCOUNT-NUMBER/REGION
-```
-
-Now we're ready to deploy the app as follows\.
-
-```
-cdk deploy
-```
-
-If the deployment succeeds, save the URL for your server\. This URL appears in one of the last lines in the window, where *GUID* is an alphanumeric GUID and *REGION* is your AWS Region\.
-
-```
-https://GUID.execute-api-REGION.amazonaws.com/prod/
-```
-
-Test your app by getting the list of widgets \(currently empty\) by navigating to this URL in a browser, or use the following command\.
-
-```
-curl -X GET 'https://GUID.execute-api.REGION.amazonaws.com/prod'
-```
-
-You can also test the app by completing the following steps:
-
-1. Open the AWS Management Console\.
-
-1. Navigate to the API Gateway service\.
-
-1. Find **Widget Service** in the list\.
-
-1. Select **GET** and **Test** to test the function\.
-
-Because we haven't stored any widgets yet, the output should be similar to the following\.
-
-```
-{ "widgets": [] }
-```
-
-## Add the individual widget functions<a name="serverless_example_add_widget_functions"></a>
-
-The next step is to create Lambda functions to create, show, and delete individual widgets\. 
-
-Replace the code in `widgets.js` \(in `resources`\) with the following\.
-
-```
-import {
-  S3Client,
-  ListObjectsV2Command,
-  GetObjectCommand,
-  PutObjectCommand,
-  DeleteObjectCommand
-} from '@aws-sdk/client-s3';
-
-// In the following code we are using AWS JS SDK v3
-// See https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/index.html
-const S3 = new S3Client({});
-const bucketName = process.env.BUCKET;
-
-exports.main = async function(event, context) {
-  try {
-    const method = event.httpMethod;
-    // Get name, if present
-    const widgetName = event.path.startsWith('/') ? event.path.substring(1) : event.path;
-
-    if (method === "GET") {
-      // GET / to get the names of all widgets
-      if (event.path === "/") {
-        const data = await S3.send(new ListObjectsV2Command({ Bucket: bucketName }));
-        const body = {
-          widgets: data.Contents.map(function(e) { return e.Key })
-        };
-        return {
-          statusCode: 200,
-          headers: {},
-          body: JSON.stringify(body)
-        };
-      }
-
-      if (widgetName) {
-        // GET /name to get info on widget name
-        const data = await S3.send(new GetObjectCommand({ Bucket: bucketName, Key: widgetName}));
-        const body = data.Body.toString('utf-8');
-
-        return {
-          statusCode: 200,
-          headers: {},
-          body: JSON.stringify(body)
-        };
-      }
-    }
-
-    if (method === "POST") {
-      // POST /name
-      // Return error if we do not have a name
-      if (!widgetName) {
-        return {
-          statusCode: 400,
-          headers: {},
-          body: "Widget name missing"
-        };
-      }
-
-      // Create some dummy data to populate object
-      const now = new Date();
-      const data = widgetName + " created: " + now;
-
-      const base64data = Buffer.from(data, 'binary');
-
-      await S3.send(new PutObjectCommand({
-        Bucket: bucketName,
-        Key: widgetName,
-        Body: base64data,
-        ContentType: 'application/json'
-      }));
-
-      return {
-        statusCode: 200,
-        headers: {},
-        body: data
-      };
-    }
-
-    if (method === "DELETE") {
-      // DELETE /name
-      // Return an error if we do not have a name
-      if (!widgetName) {
-        return {
-          statusCode: 400,
-          headers: {},
-          body: "Widget name missing"
-        };
-      }
-
-      await S3.send(new DeleteObjectCommand({
-        Bucket: bucketName, Key: widgetName
-      }));
-
-      return {
-        statusCode: 200,
-        headers: {},
-        body: "Successfully deleted widget " + widgetName
-      };
-    }
-
-    // We got something besides a GET, POST, or DELETE
+exports.handler = async (event) => {
     return {
-      statusCode: 400,
-      headers: {},
-      body: "We only accept GET, POST, and DELETE, not " + method
+        statusCode: 200,
+        headers: { "Content-Type": "text/plain" },
+        body: JSON.stringify({ message: "Hello, World!" }),
     };
-  } catch(error) {
-    var body = error.stack || JSON.stringify(error, null, 2);
-    return {
-      statusCode: 400,
-      headers: {},
-      body: body
-    }
+};
+```
+
+## Step 3: Define your constructs<a name="serverless-example-constructs"></a>
+
+In this step, you will define your Lambda and API Gateway resources using AWS CDK L2 constructs\.
+
+Open the project file that defines your CDK stack\. You will modify this file to define your constructs\. The following is an example of your starting stack file:
+
+------
+#### [ TypeScript ]
+
+Located in `lib/cdk-hello-world-stack.ts`:
+
+```
+import * as cdk from 'aws-cdk-lib';
+import { Construct } from 'constructs';
+
+export class CdkHelloWorldStack extends cdk.Stack {
+  constructor(scope: Construct, id: string, props?: cdk.StackProps) {
+    super(scope, id, props);
+    
+    // Your constructs will go here
+    
   }
 }
 ```
 
-Wire up these functions to your API Gateway code at the end of the `WidgetService` constructor\.
-
-------
-#### [ TypeScript ]
-
-File: `lib/widget_service.ts`
-
-```
-    const widget = api.root.addResource("{id}");
-
-    const widgetIntegration = new apigateway.LambdaIntegration(handler);
-
-    widget.addMethod("POST", widgetIntegration);   // POST /{id}
-    widget.addMethod("GET", widgetIntegration);    // GET /{id}
-    widget.addMethod("DELETE", widgetIntegration); // DELETE /{id}
-```
-
 ------
 #### [ JavaScript ]
 
-File: `lib/widget_service.js`
+Located in `lib/cdk-hello-world-stack.js`:
 
 ```
-    const widget = api.root.addResource("{id}");
+const { Stack, Duration } = require('aws-cdk-lib');
+const lambda = require('aws-cdk-lib/aws-lambda');
+const apigateway = require('aws-cdk-lib/aws-apigateway');
 
-    const widgetIntegration = new apigateway.LambdaIntegration(handler);
+class CdkHelloWorldStack extends Stack {
 
-    widget.addMethod("POST", widgetIntegration);   // POST /{id}
-    widget.addMethod("GET", widgetIntegration);    // GET /{id}
-    widget.addMethod("DELETE", widgetIntegration); // DELETE /{id}
+  constructor(scope, id, props) {
+    super(scope, id, props);
+    
+    // Your constructs will go here
+    
+  }
+}
+
+module.exports = { CdkHelloWorldStack }
 ```
 
 ------
 #### [ Python ]
 
-File: `my_widget_service/widget_service.py`
+Located in `cdk_hello_world/cdk_hello_world_stack.py`:
 
 ```
-        widget = api.root.add_resource("{id}")
+from aws_cdk import Stack
+from constructs import Construct
 
-        widget_integration = apigateway.LambdaIntegration(handler)
-
-        widget.add_method("POST", widget_integration);   # POST /{id}
-        widget.add_method("GET", widget_integration);    # GET /{id}
-        widget.add_method("DELETE", widget_integration); # DELETE /{id}
+class CdkHelloWorldStack(Stack):
+    def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
+        super().__init__(scope, construct_id, **kwargs)
+          
+          // Your constructs will go here
 ```
 
 ------
 #### [ Java ]
 
-File: `src/src/main/java/com/myorg/WidgetService.java`
+Located in `src/main/java/.../CdkHelloWorldStack.java`:
 
 ```
-        Resource widget = api.getRoot().addResource("{id}");
+package com.myorg;
 
-        LambdaIntegration widgetIntegration = new LambdaIntegration(handler);
+import software.constructs.Construct;
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
 
-        widget.addMethod("POST", widgetIntegration);   // POST /{id}
-        widget.addMethod("GET", widgetIntegration);    // GET /{id}
-        widget.addMethod("DELETE", widgetIntegration); // DELETE /{id}
+public class CdkHelloWorldStack extends Stack {
+    public CdkHelloWorldStack(final Construct scope, final String id) {
+        this(scope, id, null);
+    }
+
+    public CdkHelloWorldStack(final Construct scope, final String id, final StackProps props) {
+        super(scope, id, props);
+
+        // Your constructs will go here
+    }
+}
 ```
 
 ------
 #### [ C\# ]
 
-File: `src/MyWidgetService/WidgetService.cs`
+Located in `src/CdkHelloWorld/CdkHelloWorldStack.cs`:
 
 ```
-            var widget = api.Root.AddResource("{id}");
+using Amazon.CDK;
+using Constructs;
 
-            var widgetIntegration = new LambdaIntegration(handler);
+namespace CdkHelloWorld
+{
+    public class CdkHelloWorldStack : Stack
+    {
+        internal CdkHelloWorldStack(Construct scope, string id, IStackProps props = null) : base(scope, id, props)
+        {
+            // Your constructs will go here
+        }
+    }
+}
+```
 
-            widget.AddMethod("POST", widgetIntegration);  // POST /{id}
-            widget.AddMethod("GET", widgetIntegration);   // GET /{id}
-            widget.AdMethod("DELETE", widgetIntegration); // DELETE /{id}
+------
+#### [ Go ]
+
+Located at `cdk-hello-world.go`:
+
+```
+package main
+import (
+    "github.com/aws/aws-cdk-go/awscdk/v2"
+    "github.com/aws/constructs-go/constructs/v10"
+    "github.com/aws/jsii-runtime-go"
+)
+type CdkHelloWorldStackProps struct {
+    awscdk.StackProps
+}
+func NewCdkHelloWorldStack(scope constructs.Construct, id string, props *CdkHelloWorldStackProps) awscdk.Stack {
+    var sprops awscdk.StackProps
+    if props != nil {
+        sprops = props.StackProps
+    }
+    stack := awscdk.NewStack(scope, &id, &sprops)
+    // Your constructs will go here
+    return stack
+}
+func main() {
+    // ...
+}
+
+func env() *awscdk.Environment {
+    return nil
+}
 ```
 
 ------
 
-Save and deploy the app\.
+In this file, the AWS CDK is doing the following:
++ Your CDK stack instance is instantiated from the `[Stack](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.Stack.html)` class\.
++ The `[Constructs](https://docs.aws.amazon.com/cdk/api/v2/docs/constructs-readme.html)` base class is imported and provided as the scope or parent of your stack instance\.
+
+### Define your Lambda function resource<a name="serverless-example-constructs-lambda"></a>
+
+To define your Lambda function resource, you import and use the `[aws\-lambda](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda-readme.html)` L2 construct from the AWS Construct Library\.
+
+Modify your stack file as follows:
+
+------
+#### [ TypeScript ]
 
 ```
-cdk deploy
+import * as cdk from 'aws-cdk-lib';
+import { Construct } from 'constructs';
+// Import Lambda L2 construct
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+
+export class CdkHelloWorldStack extends cdk.Stack {
+  constructor(scope: Construct, id: string, props?: cdk.StackProps) {
+    super(scope, id, props);
+
+    // Define the Lambda function resource
+    const helloWorldFunction = new lambda.Function(this, 'HelloWorldFunction', {
+      runtime: lambda.Runtime.NODEJS_20_X, // Choose any supported Node.js runtime
+      code: lambda.Code.fromAsset('lambda'), // Points to the lambda directory
+      handler: 'hello.handler', // Points to the 'hello' file in the lambda directory
+    });
+  }
+}
 ```
 
-We can now store, show, or delete an individual widget\. Use the following commands to list the widgets, create the widget **example**, list all of the widgets, show the contents of **example** \(it should show today's date\), delete **example**, and then show the list of widgets again\.
+------
+#### [ JavaScript ]
 
 ```
-curl -X GET 'https://GUID.execute-api.REGION.amazonaws.com/prod'
-curl -X POST 'https://GUID.execute-api.REGION.amazonaws.com/prod/example'
-curl -X GET 'https://GUID.execute-api.REGION.amazonaws.com/prod'
-curl -X GET 'https://GUID.execute-api.REGION.amazonaws.com/prod/example'
-curl -X DELETE 'https://GUID.execute-api.REGION.amazonaws.com/prod/example'
-curl -X GET 'https://GUID.execute-api.REGION.amazonaws.com/prod'
+const { Stack, Duration } = require('aws-cdk-lib');
+// Import Lambda L2 construct
+const lambda = require('aws-cdk-lib/aws-lambda');
+
+
+class CdkHelloWorldStack extends Stack {
+  constructor(scope, id, props) {
+    super(scope, id, props);
+
+    // Define the Lambda function resource
+    const helloWorldFunction = new lambda.Function(this, 'HelloWorldFunction', {
+      runtime: lambda.Runtime.NODEJS_20_X, // Choose any supported Node.js runtime
+      code: lambda.Code.fromAsset('lambda'), // Points to the lambda directory
+      handler: 'hello.handler', // Points to the 'hello' file in the lambda directory
+    });
+  }
+}
+
+module.exports = { CdkHelloWorldStack }
 ```
 
-You can also use the API Gateway console to test these functions\. Set the **name** value to the name of a widget, such as **example**\.
-
-## Clean up<a name="serverless_example_destroy"></a>
-
-To avoid unexpected AWS charges, destroy your AWS CDK stack after you're done with this exercise\.
+------
+#### [ Python ]
 
 ```
-cdk destroy
+from aws_cdk import (
+    Stack,
+    # Import Lambda L2 construct
+    aws_lambda as _lambda,
+)
+# ...
+
+class CdkHelloWorldStack(Stack):
+
+    def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
+        super().__init__(scope, construct_id, **kwargs)
+
+        # Define the Lambda function resource
+        hello_world_function = _lambda.Function(
+            self,
+            "HelloWorldFunction",
+            runtime = _lambda.Runtime.NODEJS_20_X, # Choose any supported Node.js runtime
+            code = _lambda.Code.from_asset("lambda"), # Points to the lambda directory
+            handler = "hello.handler", # Points to the 'hello' file in the lambda directory
+        )
 ```
+
+**Note**  
+We import the `aws_lambda` module as `_lambda` because `lambda` is a build\-in identifier in Python\.
+
+------
+#### [ Java ]
+
+```
+// ...
+// Import Lambda L2 construct
+import software.amazon.awscdk.services.lambda.Code;
+import software.amazon.awscdk.services.lambda.Function;
+import software.amazon.awscdk.services.lambda.Runtime;
+
+public class CdkHelloWorldStack extends Stack {
+    public CdkHelloWorldStack(final Construct scope, final String id) {
+        this(scope, id, null);
+    }
+
+    public CdkHelloWorldStack(final Construct scope, final String id, final StackProps props) {
+        super(scope, id, props);
+
+        // Define the Lambda function resource
+        Function helloWorldFunction = Function.Builder.create(this, "HelloWorldFunction")
+                .runtime(Runtime.NODEJS_20_X)  // Choose any supported Node.js runtime
+                .code(Code.fromAsset("src/main/resources/lambda")) // Points to the lambda directory
+                .handler("hello.handler")  // Points to the 'hello' file in the lambda directory
+                .build();
+    }
+}
+```
+
+------
+#### [ C\# ]
+
+```
+// ...
+// Import Lambda L2 construct
+using Amazon.CDK.AWS.Lambda;
+
+namespace CdkHelloWorld
+{
+    public class CdkHelloWorldStack : Stack
+    {
+        internal CdkHelloWorldStack(Construct scope, string id, IStackProps props = null) : base(scope, id, props)
+        {
+            // Define the Lambda function resource
+            var helloWorldFunction = new Function(this, "HelloWorldFunction", new FunctionProps
+            {
+                Runtime = Runtime.NODEJS_20_X, // Choose any supported Node.js runtime
+                Code = Code.FromAsset("lambda"), // Points to the lambda directory
+                Handler = "hello.handler" // Points to the 'hello' file in the lambda directory
+            });
+        }
+    }
+}
+```
+
+------
+#### [ Go ]
+
+```
+package main
+
+import (
+    // ...
+    // Import Lambda L2 construct
+    "github.com/aws/aws-cdk-go/awscdk/v2/awslambda"
+    // ...
+)
+
+// ...
+
+func NewCdkHelloWorldStack(scope constructs.Construct, id string, props *CdkHelloWorldStackProps) awscdk.Stack {
+    var sprops awscdk.StackProps
+    if props != nil {
+        sprops = props.StackProps
+    }
+    stack := awscdk.NewStack(scope, &id, &sprops)
+
+    // Define the Lambda function resource
+    helloWorldFunction := awslambda.NewFunction(stack, jsii.String("HelloWorldFunction"), &awslambda.FunctionProps{
+        Runtime: awslambda.Runtime_NODEJS_20_X(), // Choose any supported Node.js runtime
+        Code:    awslambda.Code_FromAsset(jsii.String("lambda")), // Points to the lambda directory
+        Handler: jsii.String("hello"), // Points to the 'hello' file in the lambda directory
+    })
+
+    return stack
+}
+
+// ...
+```
+
+------
+
+Here, you create a Lambda function resource and define the following properties:
++ `runtime` – The environment the function runs in\. Here, we use Node\.js version 20\.x\.
++ `code` – The path to the function code on your local machine\.
++ `handler` – The name of the specific file that contains your function code\.
+
+### Define your API Gateway REST API resource<a name="serverless-example-constructs-api"></a>
+
+To define your API Gateway REST API resource, you import and use the `[aws\-apigateway](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_apigateway-readme.html)` L2 construct from the AWS Construct Library\.
+
+Modify your stack file as follows:
+
+------
+#### [ TypeScript ]
+
+```
+// ...
+//Import API Gateway L2 construct
+import * as apigateway from 'aws-cdk-lib/aws-apigateway';
+
+
+export class CdkHelloWorldStack extends cdk.Stack {
+  constructor(scope: Construct, id: string, props?: cdk.StackProps) {
+    super(scope, id, props);
+
+    // ...
+    
+    // Define the API Gateway resource
+    const api = new apigateway.LambdaRestApi(this, 'HelloWorldApi', {
+      handler: helloWorldFunction,
+      proxy: false,
+    });
+        
+    // Define the '/hello' resource with a GET method
+    const helloResource = api.root.addResource('hello');
+    helloResource.addMethod('GET');
+  }
+}
+```
+
+------
+#### [ JavaScript ]
+
+```
+// ...
+// Import API Gateway L2 construct
+const apigateway = require('aws-cdk-lib/aws-apigateway');
+
+
+class CdkHelloWorldStack extends Stack {
+  constructor(scope, id, props) {
+    super(scope, id, props);
+
+    // ...
+
+    // Define the API Gateway resource
+    const api = new apigateway.LambdaRestApi(this, 'HelloWorldApi', {
+      handler: helloWorldFunction, 
+      proxy: false,
+    });
+    
+    // Define the '/hello' resource with a GET method
+    const helloResource = api.root.addResource('hello');
+    helloResource.addMethod('GET');
+  };
+};
+
+// ...
+```
+
+------
+#### [ Python ]
+
+```
+from aws_cdk import (
+    # ...
+    # Import API Gateway L2 construct
+    aws_apigateway as apigateway,
+)
+from constructs import Construct
+
+class CdkHelloWorldStack(Stack):
+
+    def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
+        super().__init__(scope, construct_id, **kwargs)
+
+        # ...
+
+        # Define the API Gateway resource
+        api = apigateway.LambdaRestApi(
+            self,
+            "HelloWorldApi",
+            handler = hello_world_function,
+            proxy = False,
+        )
+        
+        # Define the '/hello' resource with a GET method
+        hello_resource = api.root.add_resource("hello")
+        hello_resource.add_method("GET")
+```
+
+------
+#### [ Java ]
+
+```
+// ...
+// Import API Gateway L2 construct
+import software.amazon.awscdk.services.apigateway.LambdaRestApi;
+import software.amazon.awscdk.services.apigateway.Resource;
+
+public class CdkHelloWorldStack extends Stack {
+    public CdkHelloWorldStack(final Construct scope, final String id) {
+        this(scope, id, null);
+    }
+
+    public CdkHelloWorldStack(final Construct scope, final String id, final StackProps props) {
+        super(scope, id, props);
+
+        // ...
+
+        // Define the API Gateway resource
+        LambdaRestApi api = LambdaRestApi.Builder.create(this, "HelloWorldApi")
+                .handler(helloWorldFunction)
+                .proxy(false) // Turn off default proxy integration
+                .build();
+
+        // Define the '/hello' resource and its GET method
+        Resource helloResource = api.getRoot().addResource("hello");
+        helloResource.addMethod("GET");
+    }
+}
+```
+
+------
+#### [ C\# ]
+
+```
+// ...
+// Import API Gateway L2 construct
+using Amazon.CDK.AWS.APIGateway;
+
+namespace CdkHelloWorld
+{
+    public class CdkHelloWorldStack : Stack
+    {
+        internal CdkHelloWorldStack(Construct scope, string id, IStackProps props = null) : base(scope, id, props)
+        {
+           // ...
+
+            // Define the API Gateway resource
+            var api = new LambdaRestApi(this, "HelloWorldApi", new LambdaRestApiProps
+            {
+                Handler = helloWorldFunction,
+                Proxy = false
+            });
+
+            // Add a '/hello' resource with a GET method
+            var helloResource = api.Root.AddResource("hello");
+            helloResource.AddMethod("GET");
+        }
+    }
+}
+```
+
+------
+#### [ Go ]
+
+
+
+```
+// ...
+
+import (
+    // ...
+    // Import Api Gateway L2 construct
+    "github.com/aws/aws-cdk-go/awscdk/v2/awsapigateway"
+    // ...
+)
+
+// ...
+
+func NewCdkHelloWorldStack(scope constructs.Construct, id string, props *CdkHelloWorldStackProps) awscdk.Stack {
+    var sprops awscdk.StackProps
+    if props != nil {
+        sprops = props.StackProps
+    }
+    stack := awscdk.NewStack(scope, &id, &sprops)
+
+    // Define the Lambda function resource
+    // ...
+    
+    // Define the API Gatweay resource
+    api := awsapigateway.NewLambdaRestApi(stack, jsii.String("HelloWorldApi"), &awsapigateway.LambdaRestApiProps{
+        Handler: helloWorldFunction,
+        Proxy: jsii.Bool(false),
+    })
+
+    // Add a '/hello' resource with a GET method
+    helloResource := api.Root().AddResource(jsii.String("hello"))
+    helloResource.AddMethod(jsii.String("GET"))
+
+    return stack
+}
+
+// ...
+```
+
+------
+
+Here, you create an API Gateway REST API resource, along with the following:
++ An integration between the REST API and your Lambda function, allowing the API to invoke your function\. This includes the creation of a Lambda permission resource\.
++ A new resource or path named `hello` that is added to the root of the API endpoint\. This creates a new endpoint that adds `/hello` to your base URL\.
++ A GET method for the `hello` resource\. When a GET request is sent to the `/hello` endpoint, the Lambda function is invoked and its response is returned\.
+
+## Step 4: Prepare your application for deployment<a name="serverless-example-deploy"></a>
+
+In this step you prepare your application for deployment by building, if necessary, and performing basic validation with the AWS CDK CLI `cdk synth` command\.
+
+If necessary, build your application:
+
+------
+#### [ TypeScript ]
+
+From the root of your project, run the following:
+
+```
+$ npm run build
+```
+
+------
+#### [ JavaScript ]
+
+Building is not required\.
+
+------
+#### [ Python ]
+
+Building is not required\.
+
+------
+#### [ Java ]
+
+From the root of your project, run the following:
+
+```
+$ mvn package
+```
+
+------
+#### [ C\# ]
+
+From the root of your project, run the following:
+
+```
+$ dotnet build src
+```
+
+------
+#### [ Go ]
+
+From the root of your project, run the following:
+
+```
+$ go build
+```
+
+------
+
+Run `cdk synth` to synthesize an AWS CloudFormation template from your CDK code\. By using L2 constructs, many of the configuration details required by AWS CloudFormation to facilitate the interaction between your Lambda function and REST API are provisioned for you by the AWS CDK\.
+
+From the root of your project, run the following:
+
+```
+$ cdk synth
+```
+
+**Note**  
+If you receive an error like the following, verify that you are in the `cdk-hello-world` directory and try again:  
+
+```
+--app is required either in command-line, in cdk.json or in ~/.cdk.json
+```
+
+If successful, the AWS CDK CLI will output the AWS CloudFormation template in YAML format at the command prompt\. A JSON formatted template is also saved in the `cdk.out` directory\.
+
+The following is an example output of the AWS CloudFormation template:
+
+### AWS CloudFormation template<a name="serverless-example-deploy-cfn"></a>
+
+```
+Resources:
+  HelloWorldFunctionServiceRoleunique-identifier:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+        Version: "2012-10-17"
+      ManagedPolicyArns:
+        - Fn::Join:
+            - ""
+            - - "arn:"
+              - Ref: AWS::Partition
+              - :iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+    Metadata:
+      aws:cdk:path: CdkHelloWorldStack/HelloWorldFunction/ServiceRole/Resource
+  HelloWorldFunctionunique-identifier:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        S3Bucket:
+          Fn::Sub: cdk-unique-identifier-assets-${AWS::AccountId}-${AWS::Region}
+        S3Key: unique-identifier.zip
+      Handler: hello.handler
+      Role:
+        Fn::GetAtt:
+          - HelloWorldFunctionServiceRoleunique-identifier
+          - Arn
+      Runtime: nodejs20.x
+    DependsOn:
+      - HelloWorldFunctionServiceRoleunique-identifier
+    Metadata:
+      aws:cdk:path: CdkHelloWorldStack/HelloWorldFunction/Resource
+      aws:asset:path: asset.unique-identifier
+      aws:asset:is-bundled: false
+      aws:asset:property: Code
+  HelloWorldApiunique-identifier:
+    Type: AWS::ApiGateway::RestApi
+    Properties:
+      Name: HelloWorldApi
+    Metadata:
+      aws:cdk:path: CdkHelloWorldStack/HelloWorldApi/Resource
+  HelloWorldApiDeploymentunique-identifier:
+    Type: AWS::ApiGateway::Deployment
+    Properties:
+      Description: Automatically created by the RestApi construct
+      RestApiId:
+        Ref: HelloWorldApiunique-identifier
+    DependsOn:
+      - HelloWorldApihelloGETunique-identifier
+      - HelloWorldApihellounique-identifier
+    Metadata:
+      aws:cdk:path: CdkHelloWorldStack/HelloWorldApi/Deployment/Resource
+  HelloWorldApiDeploymentStageprod012345ABC:
+    Type: AWS::ApiGateway::Stage
+    Properties:
+      DeploymentId:
+        Ref: HelloWorldApiDeploymentunique-identifier
+      RestApiId:
+        Ref: HelloWorldApiunique-identifier
+      StageName: prod
+    Metadata:
+      aws:cdk:path: CdkHelloWorldStack/HelloWorldApi/DeploymentStage.prod/Resource
+  HelloWorldApihellounique-identifier:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      ParentId:
+        Fn::GetAtt:
+          - HelloWorldApiunique-identifier
+          - RootResourceId
+      PathPart: hello
+      RestApiId:
+        Ref: HelloWorldApiunique-identifier
+    Metadata:
+      aws:cdk:path: CdkHelloWorldStack/HelloWorldApi/Default/hello/Resource
+  HelloWorldApihelloGETApiPermissionCdkHelloWorldStackHelloWorldApiunique-identifier:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName:
+        Fn::GetAtt:
+          - HelloWorldFunctionunique-identifier
+          - Arn
+      Principal: apigateway.amazonaws.com
+      SourceArn:
+        Fn::Join:
+          - ""
+          - - "arn:"
+            - Ref: AWS::Partition
+            - ":execute-api:"
+            - Ref: AWS::Region
+            - ":"
+            - Ref: AWS::AccountId
+            - ":"
+            - Ref: HelloWorldApi9E278160
+            - /
+            - Ref: HelloWorldApiDeploymentStageprodunique-identifier
+            - /GET/hello
+    Metadata:
+      aws:cdk:path: CdkHelloWorldStack/HelloWorldApi/Default/hello/GET/ApiPermission.CdkHelloWorldStackHelloWorldApiunique-identifier.GET..hello
+  HelloWorldApihelloGETApiPermissionTestCdkHelloWorldStackHelloWorldApiunique-identifier:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName:
+        Fn::GetAtt:
+          - HelloWorldFunctionunique-identifier
+          - Arn
+      Principal: apigateway.amazonaws.com
+      SourceArn:
+        Fn::Join:
+          - ""
+          - - "arn:"
+            - Ref: AWS::Partition
+            - ":execute-api:"
+            - Ref: AWS::Region
+            - ":"
+            - Ref: AWS::AccountId
+            - ":"
+            - Ref: HelloWorldApiunique-identifier
+            - /test-invoke-stage/GET/hello
+    Metadata:
+      aws:cdk:path: CdkHelloWorldStack/HelloWorldApi/Default/hello/GET/ApiPermission.Test.CdkHelloWorldStackHelloWorldApiunique-identifier.GET..hello
+  HelloWorldApihelloGETunique-identifier:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      AuthorizationType: NONE
+      HttpMethod: GET
+      Integration:
+        IntegrationHttpMethod: POST
+        Type: AWS_PROXY
+        Uri:
+          Fn::Join:
+            - ""
+            - - "arn:"
+              - Ref: AWS::Partition
+              - ":apigateway:"
+              - Ref: AWS::Region
+              - :lambda:path/2015-03-31/functions/
+              - Fn::GetAtt:
+                  - HelloWorldFunctionunique-identifier
+                  - Arn
+              - /invocations
+      ResourceId:
+        Ref: HelloWorldApihellounique-identifier
+      RestApiId:
+        Ref: HelloWorldApiunique-identifier
+    Metadata:
+      aws:cdk:path: CdkHelloWorldStack/HelloWorldApi/Default/hello/GET/Resource
+  CDKMetadata:
+    Type: AWS::CDK::Metadata
+    Properties:
+      Analytics: v2:deflate64:unique-identifier
+    Metadata:
+      aws:cdk:path: CdkHelloWorldStack/CDKMetadata/Default
+    Condition: CDKMetadataAvailable
+Outputs:
+  HelloWorldApiEndpointunique-identifier:
+    Value:
+      Fn::Join:
+        - ""
+        - - https://
+          - Ref: HelloWorldApiunique-identifier
+          - .execute-api.
+          - Ref: AWS::Region
+          - "."
+          - Ref: AWS::URLSuffix
+          - /
+          - Ref: HelloWorldApiDeploymentStageprodunique-identifier
+          - /
+Conditions:
+  CDKMetadataAvailable:
+    Fn::Or:
+      - Fn::Or:
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - af-south-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ap-east-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ap-northeast-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ap-northeast-2
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ap-south-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ap-southeast-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ap-southeast-2
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ca-central-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - cn-north-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - cn-northwest-1
+      - Fn::Or:
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - eu-central-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - eu-north-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - eu-south-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - eu-west-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - eu-west-2
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - eu-west-3
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - il-central-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - me-central-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - me-south-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - sa-east-1
+      - Fn::Or:
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - us-east-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - us-east-2
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - us-west-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - us-west-2
+Parameters:
+  BootstrapVersion:
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: /cdk-bootstrap/hnb659fds/version
+    Description: Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]
+Rules:
+  CheckBootstrapVersion:
+    Assertions:
+      - Assert:
+          Fn::Not:
+            - Fn::Contains:
+                - - "1"
+                  - "2"
+                  - "3"
+                  - "4"
+                  - "5"
+                - Ref: BootstrapVersion
+        AssertDescription: CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI.
+```
+
+By using L2 constructs, you define a few properties to configure your resources and use helper methods to integrate them together\. The AWS CDK configures the majority of your AWS CloudFormation resources and properties required to provision your application\.
+
+## Step 5: Deploy your application<a name="serverless-example-deploy"></a>
+
+In this step, you use the AWS CDK CLI `cdk deploy` command to deploy your application\. The AWS CDK works with the AWS CloudFormation service to provision your resources\.
+
+**Important**  
+You must perform a one\-time bootstrapping of your AWS environment before deployment\. For instructions, see [Bootstrap your environment](getting_started.md#getting_started_bootstrap)\.
+
+From the root of your project, run the following\. Confirm changes if prompted:
+
+```
+$ cdk deploy
+
+✨  Synthesis time: 2.44s
+
+...
+
+Do you wish to deploy these changes (y/n)? y
+```
+
+When deployment completes, the AWS CDK CLI will output your endpoint URL\. Copy this URL for the next step\. The following is an example:
+
+```
+...
+✅  HelloWorldStack
+
+✨  Deployment time: 45.37s
+
+Outputs:
+HelloWorldStack.HelloWorldApiEndpointunique-identifier = https://<api-id>.execute-api.<region>.amazonaws.com/prod/
+Stack ARN:
+arn:aws:cloudformation:region:account-id:stack/HelloWorldStack/unique-identifier
+...
+```
+
+## Step 6: Interact with your application<a name="serverless-example-interact"></a>
+
+In this step, you initiate a GET request to your API endpoint and receive your Lambda function response\.
+
+Locate your endpoint URL from the previous step and add the `/hello` path\. Then, using your browser or command prompt, send a GET request to your endpoint\. The following is an example:
+
+```
+$ curl https://<api-id>.execute-api.<region>.amazonaws.com/prod/hello
+{"message":"Hello World!"}%
+```
+
+Congratulations, you have successfully created, deployed, and interacted with your application using the AWS CDK\! 
+
+## Step 7: Delete your application<a name="serverless-example-delete"></a>
+
+In this step, you use the AWS CDK CLI to delete your application from the AWS Cloud\.
+
+To delete your application, run `cdk destroy`\. When prompted, confirm your request to delete the application:
+
+```
+$ cdk destroy
+Are you sure you want to delete: CdkHelloWorldStack (y/n)? y
+CdkHelloWorldStack: destroying... [1/1]
+...
+ ✅  CdkHelloWorldStack: destroyed
+```
+
+## Troubleshooting<a name="serverless-example-troubleshooting"></a>
+
+### Error: \{“message”: “Internal server error”\}%<a name="w94aac49c13c51b5"></a>
+
+When invoking the deployed Lambda function, you receive this error\. This error could occur for multiple reasons\.
+
+**To troubleshoot further**
+
+Use the AWS CLI to invoke your Lambda function\.
+
+1. Modify your stack file to capture the output value of your deployed Lambda function name\. The following is an example:
+
+   ```
+   ...
+   
+   class CdkHelloWorldStack extends Stack {
+     constructor(scope, id, props) {
+       super(scope, id, props);
+   
+       // Define the Lambda function resource
+       // ...
+   
+       new CfnOutput(this, 'HelloWorldFunctionName', {
+         value: helloWorldFunction.functionName,
+         description: 'JavaScript Lambda function'
+       });
+   
+       // Define the API Gateway resource
+       // ...
+   ```
+
+1. Deploy your application again\. The AWS CDK CLI will output the value of your deployed Lambda function name:
+
+   ```
+   $ cdk deploy
+   
+   ✨  Synthesis time: 0.29s
+   ...
+    ✅  CdkHelloWorldStack
+   
+   ✨  Deployment time: 20.36s
+   
+   Outputs:
+   ...
+   CdkHelloWorldStack.HelloWorldFunctionName = CdkHelloWorldStack-HelloWorldFunctionunique-identifier
+   ...
+   ```
+
+1. Use the AWS CLI to invoke your Lambda function in the AWS Cloud and output the response to a text file:
+
+   ```
+   $ aws lambda invoke --function-name CdkHelloWorldStack-HelloWorldFunctionunique-identifier output.txt
+   ```
+
+1. Check `output.txt` to see your results\.
+
+**Possible cause: API Gateway resource is defined incorrectly in your stack file\.**  
+If `output.txt` shows a successful Lambda function response, the issue could be with how you defined your API Gateway REST API\. The AWS CLI invokes your Lambda directly, not through your endpoint\. Check your code to ensure it matches this tutorial\. Then, deploy again\.
+
+**Possible cause: Lambda resource is defined incorrectly in your stack file\.**  
+If `output.txt` returns an error, the issue could be with how you defined your Lambda function\. Check your code to ensure it matches this tutorial\. Then deploy again\.
