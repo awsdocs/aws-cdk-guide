@@ -12,7 +12,7 @@ The AWS CDK is tightly integrated with AWS CloudFormation\. AWS CloudFormation i
 
 AWS CloudFormation templates are *declarative*, meaning they declare the desired state or outcome of your infrastructure\. Using JSON or YAML, you declare your AWS infrastructure by defining AWS *resources* and *properties*\. Resources represent the many services on AWS and properties represent your desired configuration of those services\. When you deploy your template to AWS CloudFormation, your resources and their configured properties are provisioned as described on your template\.
 
-With the AWS CDK, you can manage your infrastructure *imperatively*, using general programming languages\. Instead of just defining a desired state declaratively, you can define the logic or sequence necessary to reach the desired state\. For example, you can use `if` statements or conditional loops that determine how to reach a desired end state for your infrastructure\.
+With the AWS CDK, you can manage your infrastructure *imperatively*, using general\-purpose programming languages\. Instead of just defining a desired state declaratively, you can define the logic or sequence necessary to reach the desired state\. For example, you can use `if` statements or conditional loops that determine how to reach a desired end state for your infrastructure\.
 
 Infrastructure created with the AWS CDK is eventually translated, or *synthesized* into AWS CloudFormation templates and deployed using the AWS CloudFormation service\. So while the AWS CDK offers a different approach to creating your infrastructure, you still receive the benefits of AWS CloudFormation, such as extensive AWS resource configuration support and robust deployment processes\.
 

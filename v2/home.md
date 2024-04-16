@@ -25,7 +25,7 @@ Use the AWS CDK to develop reliable, scalable, cost\-effective applications in t
 Practice *infrastructure as code* to create, deploy, and maintain infrastructure in a programmatic, descriptive, and declarative way\. With IaC, you treat infrastructure the same way developers treat code\. This results in a scalable and structured approach to managing infrastructure\. To learn more about IaC, see [ Infrastructure as code](https://docs.aws.amazon.com/whitepapers/latest/introduction-devops-aws/infrastructure-as-code.html) in the *Introduction to DevOps on AWS Whitepaper*\.  
 With the AWS CDK, you can put your infrastructure, application code, and configuration all in one place, ensuring that you have a complete, cloud\-deployable system at every milestone\. Employ software engineering best practices such as code reviews, unit tests, and source control to make your infrastructure more robust\.
 
-**Define your cloud infrastructure using general programming languages**  <a name="home-benefits-languages"></a>
+**Define your cloud infrastructure using general\-purpose programming languages**  <a name="home-benefits-languages"></a>
 With the AWS CDK, you can use any of the following programming languages to define your cloud infrastructure: TypeScript, JavaScript, Python, Java, C\#/\.Net, and Go\. Choose your preferred language and use programming elements like parameters, conditionals, loops, composition, and inheritance to define the desired outcome of your infrastructure\.  
 Use the same programming language to define your infrastructure and your application logic\.  
 Receive the benefits of developing infrastructure in your preferred IDE \(Integrated Development Environment\), such as syntax highlighting and intelligent code completion\.  
