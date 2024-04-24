@@ -94,7 +94,7 @@ Before using the `cdk migrate` command, do the following:
 
 To begin, run the AWS CDK CLI `cdk migrate` command from a directory of your choice\. Provide required and optional options, depending on the type of migration you are performing\.
 
-For a full list and description of options that you can use with `cdk migrate`, see [cdk migrate command reference](ref-cli-cdk-migrate.md)\.
+For a full list and description of options that you can use with `cdk migrate`, see [cdk migrate](ref-cli-cdk-migrate.md)\.
 
 The following are some important options that you may want to provide\.
 

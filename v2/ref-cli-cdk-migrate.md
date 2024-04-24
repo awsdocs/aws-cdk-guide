@@ -1,12 +1,13 @@
-# cdk migrate command reference<a name="ref-cli-cdk-migrate"></a>
+# cdk migrate<a name="ref-cli-cdk-migrate"></a>
 
-Reference for the AWS Cloud Development Kit \(AWS CDK\) Command Line Interface \(CLI\) `cdk migrate` command\. For more information on using `cdk migrate`, see [Migrate existing resources and AWS CloudFormation templates to the AWS CDK](migrate.md)\.
+Migrate deployed AWS resources, AWS CloudFormation stacks, and CloudFormation templates into a new AWS CDK project\.
 
-The `cdk migrate` command migrates deployed AWS resources, AWS CloudFormation stacks, and local AWS CloudFormation templates to AWS CDK\.
+This command creates a new CDK app that includes a single stack that is named with the value you provide using `--stack-name`\. You can configure the migration source using `--from-scan`, `--from-stack`, or `--from-path`\.
 
-**Topics**
-+ [Usage](#ref-cli-cdk-migrate-usage)
-+ [Options](#ref-cli-cdk-migrate-options)
+For more information on using `cdk migrate`, see [Migrate existing resources and AWS CloudFormation templates to the AWS CDK](migrate.md)\.
+
+**Note**  
+The `cdk migrate` command is experimental and may have breaking changes in the future\.
 
 ## Usage<a name="ref-cli-cdk-migrate-usage"></a>
 
@@ -15,6 +16,8 @@ $ cdk migrate <options>
 ```
 
 ## Options<a name="ref-cli-cdk-migrate-options"></a>
+
+For a list of global options that work with all CDK CLI commands, see [Global options](ref-cli-cmd.md#ref-cli-cmd-options)\.
 
 ### Required options<a name="ref-cli-cdk-migrate-options-required"></a>
 
@@ -33,7 +36,7 @@ When migrating deployed resources from an AWS environment, use this option to sp
 *Required*: Conditional\. Required when migrating from deployed AWS resources\.  
 *Accepted values*: `most-recent`, `new`
 
-`--from-stack`  <a name="ref-cli-cdk-migrate-options-from-stack"></a>
+`--from-stack BOOLEAN`  <a name="ref-cli-cdk-migrate-options-from-stack"></a>
 Provide this option to migrate from a deployed AWS CloudFormation stack\. Use `--stack-name` to specify the name of the deployed AWS CloudFormation stack\.  
 *Required*: Conditional\. Required if migrating from a deployed AWS CloudFormation stack\.
 
@@ -44,7 +47,7 @@ The account to retrieve the AWS CloudFormation stack template from\.
 *Required*: No  
 *Default*: The AWS CDK CLI obtains account information from default sources\.
 
-`--compress`  <a name="ref-cli-cdk-migrate-options-compress"></a>
+`--compress BOOLEAN`  <a name="ref-cli-cdk-migrate-options-compress"></a>
 Provide this option to compress the generated CDK project into a ZIP file\.  
 *Required*: No
 
@@ -60,10 +63,13 @@ Provide multiple key\-value pairs for `AND` conditional logic\. The following ex
 Provide the `--filter` option multiple times in a single command for `OR` conditional logic\. The following example filters for any resource that is a DynamoDB resource or is tagged with `myTagKey` as the tag key: `--filter resource-type-prefix="AWS::DynamoDB::" --filter tag-key="myTagKey"`\.  
 *Required*: No
 
+`--help, -h BOOLEAN`  <a name="ref-cli-cdk-migrate-options-help"></a>
+Show command reference information for the `cdk migrate` command\.
+
 `--language STRING`  <a name="ref-cli-cdk-migrate-options-language"></a>
 The programming language to use for the CDK project created during migration\.  
 *Required*: No  
-*Accepted values*: `typescript`, `python`, `java`, `csharp`, `go`\.  
+*Valid values*: `typescript`, `python`, `java`, `csharp`, `go`\.  
 *Default*: `typescript`
 
 `--output-path PATH`  <a name="ref-cli-cdk-migrate-options-output-path"></a>
@@ -75,3 +81,29 @@ The output path for the migrated CDK project\.
 The AWS Region to retrieve the AWS CloudFormation stack template from\.  
 *Required*: No  
 *Default*: The AWS CDK CLI obtains AWS Region information from default sources\.
+
+## Examples<a name="ref-cli-cdk-migrate-examples"></a>
+
+### Simple example of migrating from a CloudFormation stack<a name="ref-cli-cdk-migrate-examples-1"></a>
+
+Migrate from a deployed CloudFormation stack in a specific AWS environment using `--from-stack`\. Provide `--stack-name` to name your new CDK stack\. The following is an example that migrates `myCloudFormationStack` to a new CDK app that is using TypeScript:
+
+```
+$ cdk migrate --language typescript --from-stack --stack-name 'myCloudFormationStack'
+```
+
+### Simple example of migrating from a local CloudFormation template<a name="ref-cli-cdk-migrate-examples-1"></a>
+
+Migrate from a local JSON or YAML CloudFormation template using `--from-path`\. Provide `--stack-name` to name your new CDK stack\. The following is an example that creates a new CDK app in TypeScript that includes a `myCloudFormationStack` stack from a local `template.json` file:
+
+```
+$ cdk migrate --stack-name "myCloudFormationStack" --language typescript --from-path "./template.json"
+```
+
+### Simple example of migrating from deployed AWS resources<a name="ref-cli-cdk-migrate-examples-1"></a>
+
+Migrate deployed AWS resources from a specific AWS environment that are not associated with a CloudFormation stack using `--from-scan`\. The CDK CLI utilizes the IaC generator service to scan for resources and generate a template\. Then, the CDK CLI references the template to create the new CDK app\. The following is an example that creates a new CDK app in TypeScript with a new `myCloudFormationStack` stack containing migrated AWS resources:
+
+```
+$ cdk migrate --language typescript --from-scan --stack-name "myCloudFormationStack"
+```
