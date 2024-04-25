@@ -14,25 +14,9 @@ If you regularly work with multiple versions of the AWS CDK, consider installing
 
 ## Toolkit commands<a name="cli-commands"></a>
 
-All CDK Toolkit commands start with `cdk`, which is followed by a subcommand \(`list`, `synthesize`, `deploy`, etc\.\)\. Some subcommands have a shorter version \(`ls`, `synth`, etc\.\) that is equivalent\. Options and arguments follow the subcommand in any order\. The available commands are summarized here\.
+All CDK Toolkit commands start with `cdk`, which is followed by a subcommand \(`list`, `synthesize`, `deploy`, etc\.\)\. Some subcommands have a shorter version \(`ls`, `synth`, etc\.\) that is equivalent\. Options and arguments follow the subcommand in any order\.
 
-
-| Command | Function | 
-| --- | --- | 
-| `cdk list` \(`ls`\) | Lists the stacks in the app | 
-| `cdk synthesize` \(`synth`\) | Synthesizes and prints the CloudFormation template for one or more specified stacks | 
-| `cdk bootstrap` | Deploys the CDK Toolkit staging stack; see [Bootstrapping](bootstrapping.md) | 
-| `cdk deploy` | Deploys one or more specified stacks | 
-| `cdk destroy` | Destroys one or more specified stacks | 
-| `cdk diff` | Compares the specified stack and its dependencies with the deployed stacks or a local CloudFormation template | 
-| `cdk import` | Uses CloudFormation resource imports to bring existing resources into a stack managed by CDK | 
-| `cdk metadata` | Displays metadata about the specified stack | 
-| `cdk init` | Creates a new CDK project in the current directory from a specified template | 
-| `cdk context` | Manages cached context values | 
-| `cdk docs` \(`doc`\) | Opens the CDK API Reference in your browser | 
-| `cdk doctor` | Checks your CDK project for potential problems | 
-
-For the options available for each command, see [Built\-in help](#cli-help)\.
+For a description of all subcommands, options, and arguments, see [AWS CDK CLI command reference](ref-cli-cmd.md)\.
 
 ## Specifying options and their values<a name="cli-options"></a>
 
