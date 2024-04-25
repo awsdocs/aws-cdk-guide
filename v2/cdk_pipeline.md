@@ -34,11 +34,11 @@ The CDK Toolkit will upgrade your existing bootstrap stack or creates a new one 
 
 To bootstrap an environment that can provision an AWS CDK pipeline, invoke `cdk bootstrap` as shown in the following example\. Invoking the AWS CDK Toolkit via the `npx` command temporarily installs it if necessary\. It will also use the version of the Toolkit installed in the current project, if one exists\.
 
-\-\-cloudformation\-execution\-policies specifies the ARN of a policy under which future CDK Pipelines deployments will execute\. The default `AdministratorAccess` policy makes sure that your pipeline can deploy every type of AWS resource\. If you use this policy, make sure you trust all the code and dependencies that make up your AWS CDK app\.
+`--cloudformation-execution-policies` specifies the ARN of a policy under which future CDK Pipelines deployments will execute\. The default `AdministratorAccess` policy makes sure that your pipeline can deploy every type of AWS resource\. If you use this policy, make sure you trust all the code and dependencies that make up your AWS CDK app\.
 
 Most organizations mandate stricter controls on what kinds of resources can be deployed by automation\. Check with the appropriate department within your organization to determine the policy your pipeline should use\.
 
-You can omit the \-\-profile option if your default AWS profile contains the necessary authentication configuration and AWS Region\.
+You can omit the `--profile` option if your default AWS profile contains the necessary authentication configuration and AWS Region\.
 
 ------
 #### [ macOS/Linux ]
@@ -58,9 +58,9 @@ npx cdk bootstrap aws://ACCOUNT-NUMBER/REGION --profile ADMIN-PROFILE ^
 
 ------
 
-To bootstrap additional environments into which AWS CDK applications will be deployed by the pipeline, use the following commands instead\. The \-\-trust option indicates which other account should have permissions to deploy AWS CDK applications into this environment\. For this option, specify the pipeline's AWS account ID\.
+To bootstrap additional environments into which AWS CDK applications will be deployed by the pipeline, use the following commands instead\. The `--trust` option indicates which other account should have permissions to deploy AWS CDK applications into this environment\. For this option, specify the pipeline's AWS account ID\.
 
-Again, you can omit the \-\-profile option if your default AWS profile contains the necessary authentication configuration and AWS Region\.
+Again, you can omit the `--profile` option if your default AWS profile contains the necessary authentication configuration and AWS Region\.
 
 ------
 #### [ macOS/Linux ]
@@ -86,6 +86,31 @@ npx cdk bootstrap aws://ACCOUNT-NUMBER/REGION --profile ADMIN-PROFILE ^
 Use administrative credentials only to bootstrap and to provision the initial pipeline\. Afterward, use the pipeline itself, not your local machine, to deploy changes\.
 
 If you are upgrading a legacy bootstrapped environment, the previous Amazon S3 bucket is orphaned when the new bucket is created\. Delete it manually by using the Amazon S3 console\.
+
+### Protecting your bootstrap stack from deletion<a name="cdk-pipeline-protect"></a>
+
+If a bootstrap stack is deleted, the AWS resources that were originally provisioned in the environment to support CDK deployments will also be deleted\. This will cause the pipeline to stop working\. If this happens, there is no general solution for recovery\.
+
+After your environment is bootstrapped, do not delete and recreate the environment’s bootstrap stack\. Instead, try to update the bootstrap stack to a new version by running the `cdk bootstrap` command again\.
+
+To protect against accidental deletion of your bootstrap stack, we recommend that you provide the `--termination-protection` option with the `cdk bootstrap` command to enable termination protection\. You can enable termination protection on new or existing bootstrap stacks\. To learn more about this option, see `\-\-termination\-protection`\.
+
+After enabling termination protection, you can use the AWS CLI or CloudFormation console to verify\.
+
+**To enable termination protection**
+
+1. Run the following command to enable termination protection on a new or existing bootstrap stack:
+
+   ```
+   $ cdk bootstrap --termination-protection
+   ```
+
+1. Use the AWS CLI or CloudFormation console to verify\. The following is an example, using the AWS CLI\. If you modified your bootstrap stack name, replace `CDKToolkit` with your stack name:
+
+   ```
+   $ aws cloudformation describe-stacks --stack-name CDKToolkit --query "Stacks[0].EnableTerminationProtection"
+   true
+   ```
 
 ## Initialize a project<a name="cdk_pipeline_init"></a>
 

@@ -93,6 +93,7 @@ Use the template from the given file instead of the built\-in one\.
 `--termination-protection BOOLEAN`  <a name="ref-cli-cmd-bootstrap-options-termination-protection"></a>
 Toggle AWS CloudFormation termination protection on the bootstrap stack\.  
 When `true`, termination protection is enabled\. This prevents the bootstrap stack from being accidentally deleted\.  
+To learn more about termination protection, see [Protecting a stack from being deleted](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-protect-stacks.html) in the *AWS CloudFormation User Guide*\.  
 *Default value*: Undefined
 
 `--toolkit-stack-name STRING`  <a name="ref-cli-cmd-bootstrap-options-toolkit-stack-name"></a>

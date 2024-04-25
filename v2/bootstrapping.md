@@ -36,8 +36,30 @@ Policy contains a statement with one or more invalid principals
 
 This error message means that the appropriate IAM roles do not exist in the other environment\. The most likely cause is that the environment has not been bootstrapped\. Bootstrap the environment and try again\.
 
-**Note**  
-If the environment is bootstrapped, do not delete and recreate the environment's bootstrap stack\. Deleting the bootstrap stack will delete the AWS resources that were originally provisioned in the environment to support CDK deployments\. This will cause the pipeline to stop working\. Instead, try to update the bootstrap stack to a new version by running the CDK CLI `cdk bootstrap` command again\.
+#### Protecting your bootstrap stack from deletion<a name="bootstrapping-env-pipelines-protect"></a>
+
+If a bootstrap stack is deleted, the AWS resources that were originally provisioned in the environment to support CDK deployments will also be deleted\. This will cause the pipeline to stop working\. If this happens, there is no general solution for recovery\.
+
+After your environment is bootstrapped, do not delete and recreate the environment’s bootstrap stack\. Instead, try to update the bootstrap stack to a new version by running the `cdk bootstrap` command again\.
+
+To protect against accidental deletion of your bootstrap stack, we recommend that you provide the `--termination-protection` option with the `cdk bootstrap` command to enable termination protection\. You can enable termination protection on new or existing bootstrap stacks\. To learn more about this option, see `\-\-termination\-protection`\.
+
+After enabling termination protection, you can use the AWS CLI or CloudFormation console to verify\.
+
+**To enable termination protection**
+
+1. Run the following command to enable termination protection on a new or existing bootstrap stack:
+
+   ```
+   $ cdk bootstrap --termination-protection
+   ```
+
+1. Use the AWS CLI or CloudFormation console to verify\. The following is an example, using the AWS CLI\. If you modified your bootstrap stack name, replace `CDKToolkit` with your stack name:
+
+   ```
+   $ aws cloudformation describe-stacks --stack-name CDKToolkit --query "Stacks[0].EnableTerminationProtection"
+   true
+   ```
 
 ## How to bootstrap<a name="bootstrapping-howto"></a>
 
