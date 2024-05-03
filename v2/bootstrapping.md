@@ -652,14 +652,99 @@ This section contains a list of the changes made in each version\.
 
 ## Security Hub Findings<a name="bootstrapping-securityhub"></a>
 
- If you are using AWS Security Hub, you may see findings reported on some of the resources created by the AWS CDK Bootstrapping process\. Security Hub findings help you find resource configurations you should double\-check for accuracy and safety\. We have reviewed these specific resource configurations with AWS Security and are confident they do not constitute a security problem\. 
+ If you are using AWS Security Hub, you may see findings reported on some of the resources created by the AWS CDK bootstrapping process\. Security Hub findings help you find resource configurations you should double\-check for accuracy and safety\. We have reviewed these specific resource configurations with AWS Security and are confident they do not constitute a security problem\. 
 
 ### \[KMS\.2\] IAM principals should not have IAM inline policies that allow decryption actions on all KMS keys<a name="bootstrapping-securityhub-kms2"></a>
 
- The Deploy Role \(default name `cdk-hnb659fds-deploy-role-ACCOUNT-REGION`\) has permissions to read encrypted data stored in Amazon S3\. The policy does not give permission to any data by itself: only data read from Amazon S3 can be decrypted, and only from buckets that explicitly allow the Deploy Role to read from them via their Bucket Policy, and keys that explicitly allow the Deploy Role to decrypt using them using their Key Policy\. This statement is used to allow AWS CDK Pipelines to perform cross\-account deployments\. 
+The *deploy role* \(`DeploymentActionRole`\) grants permission to read encrypted data, which is necessary for cross\-account deployments with CDK Pipelines\. Policies in this role do not grant permission to all data\. It only grants permission to read encrypted data from Amazon S3 and AWS KMS, and only when those resources allow it through their bucket or key policy\.
 
- ** Why does Security Hub flag this? ** The policy contains a `Resource: *` combined with a `Condition` clause; Security Hub is flagging the `*`\. The `*` is necessary because at the time the account is bootstrapped, the AWS KMS key created by AWS CDK Pipelines for the CodePipeline Artifact Bucket does not exist yet so we can't reference its ARN\. In addition, Security Hub does not include the `Condition` clause in the policy statement in its reasoning\. 
+The following is a snippet of these two statements in the *deploy role* from the bootstrap template:
 
-**What if I want to fix this finding?** As long as the resource policies on your AWS KMS keys are not unnecessarily permissive, the current Role policy does not allow the Deploy Role to access any more data than it should\. If you still want to get rid of the finding, you can do so by customizing the bootstrap stack \(using the process outlined above\) in one of these 2 ways:
-+ If you are not using AWS CDK Pipelines for cross\-account deployments: remove the statement with `Sid: PipelineCrossAccountArtifactsBucket` from the deploy role; or
-+ If you are using AWS CDK Pipelines for cross\-account deployments: after deploying your AWS CDK Pipeline, look up the AWS KMS Key ARN of the Artifact Bucket and replace the `Resource: *` of the `Sid: PipelineCrossAccountArtifactsBucket` statement with the actual Key ARN\.
+```
+DeploymentActionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      ...
+      Policies:
+        - PolicyDocument:
+            Statement:
+              ...
+              - Sid: PipelineCrossAccountArtifactsBucket
+                Effect: Allow
+                Action:
+                  - s3:GetObject*
+                  - s3:GetBucket*
+                  - s3:List*
+                  - s3:Abort*
+                  - s3:DeleteObject*
+                  - s3:PutObject*
+                Resource: "*"
+                Condition:
+                  StringNotEquals:
+                    s3:ResourceAccount:
+                      Ref: AWS::AccountId
+              - Sid: PipelineCrossAccountArtifactsKey
+                Effect: Allow
+                Action:
+                  - kms:Decrypt
+                  - kms:DescribeKey
+                  - kms:Encrypt
+                  - kms:ReEncrypt*
+                  - kms:GenerateDataKey*
+                Resource: "*"
+                Condition:
+                  StringEquals:
+                    kms:ViaService:
+                      Fn::Sub: s3.${AWS::Region}.amazonaws.com
+              ...
+```
+
+#### Why does Security Hub flag this?<a name="bootstrapping-securityhub-kms2-why"></a>
+
+The policies contain a `Resource: *` combined with a `Condition` clause\. Security Hub flags the `*` wildcard\. This wildcard is used because at the time the account is bootstrapped, the AWS KMS key created by CDK Pipelines for the CodePipeline artifact bucket does not exist yet, and therefore, can’t be referenced on the bootstrap template by ARN\. In addition, Security Hub does not consider the `Condition` clause when raising this flag\. This `Condition` restricts `Resource: *` to requests made from the same AWS account of the AWS KMS key\. These requests must come from Amazon S3 in the same AWS Region as the AWS KMS key\. 
+
+#### Do I need to fix this finding?<a name="bootstrapping-securityhub-kms2-decide"></a>
+
+As long as you have not modified the AWS KMS key on your bootstrap template to be overly permissive, the *deploy role* does not allow more access than it needs\. Therefore, it is not necessary to fix this finding\.
+
+#### What if I want to fix this finding?<a name="bootstrapping-securityhub-kms2-fix"></a>
+
+How you fix this finding depends on whether or not you will be using CDK Pipelines for cross\-account deployments\.
+
+**To fix the Security Hub finding and use CDK Pipelines for cross\-account deployments**
+
+1. If you have not done so, deploy the CDK bootstrap stack using the `cdk bootstrap` command\.
+
+1. If you have not done so, create and deploy your CDK Pipeline\. For instructions, see [Continuous integration and delivery \(CI/CD\) using CDK Pipelines](cdk_pipeline.md)\.
+
+1. Obtain the AWS KMS key ARN of the CodePipeline artifact bucket\. This resource is created during pipeline creation\.
+
+1. Obtain a copy of the CDK bootstrap template to modify it\. The following is an example, using the AWS CDK CLI:
+
+   ```
+   $ cdk bootstrap --show-template > bootstrap-template.yaml
+   ```
+
+1. Modify the template by replacing `Resource: *` of the `PipelineCrossAccountArtifactsKey` statement with your ARN value\.
+
+1. Deploy the template to update your bootstrap stack\. The following is an example, using the CDK CLI:
+
+   ```
+   $ cdk bootstrap aws://account-id/region --template bootstrap-template.yaml
+   ```
+
+**To fix the Security Hub finding if you’re not using CDK Pipelines for cross\-account deployments**
+
+1. Obtain a copy of the CDK bootstrap template to modify it\. The following is an example, using the CDK CLI:
+
+   ```
+   $ cdk bootstrap --show-template > bootstrap-template.yaml
+   ```
+
+1. Delete the `PipelineCrossAccountArtifactsBucket` and `PipelineCrossAccountArtifactsKey` statements from the template\.
+
+1. Deploy the template to update your bootstrap stack\. The following is an example, using the CDK CLI:
+
+   ```
+   $ cdk bootstrap aws://account-id/region --template bootstrap-template.yaml
+   ```
