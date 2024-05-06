@@ -18,7 +18,7 @@ Get started with the AWS Cloud Development Kit \(AWS CDK\) by installing the AWS
 **Recommended resources**  
 Before getting started with the AWS CDK, we recommend a basic understanding of the following:  
 + An introduction to the AWS CDK\. To learn more, see [What is the AWS CDK?](home.md)
-+ Core concepts behind the AWS CDK\. To learn more, see [AWS CDK concepts](core_concepts.md)\.
++ Core concepts behind the AWS CDK\. To learn more, see [Learn AWS CDK core concepts](core_concepts.md)\.
 + The AWS services that you want to manage with the AWS CDK\.
 + AWS Identity and Access Management\. For more information, see [What is IAM?](https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html) and [What is IAM Identity Center?](https://docs.aws.amazon.com/singlesignon/latest/userguide/what-is.html)
 + AWS CloudFormation since the AWS CDK utilizes the AWS CloudFormation service to provision resources created in the CDK\. To learn more, see [What is AWS CloudFormation?](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/Welcome.html)

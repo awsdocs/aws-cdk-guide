@@ -4,7 +4,7 @@ Get started with using the AWS Cloud Development Kit \(AWS CDK\) by building you
 
 Before starting this tutorial, we recommend that you complete the following:
 + See [What is the AWS CDK?](home.md) for an introduction to the AWS CDK\.
-+ See [AWS CDK concepts](core_concepts.md) to learn core concepts of the AWS CDK\.
++ See [Learn AWS CDK core concepts](core_concepts.md) to learn core concepts of the AWS CDK\.
 + Go through prerequisites and AWS CDK setup steps at [Getting started with the AWS CDK](getting_started.md)\.
 
 **Topics**
@@ -30,11 +30,11 @@ In this tutorial, you will create and deploy a simple AWS CDK app\. This app con
 
 The standard AWS CDK development workflow consists of the following steps:
 
-1. **Create your AWS CDK app** – Here, you will use a template provided by the AWS CDK CLI\.
+1. **Create your AWS CDK app** – Here, you will use a template provided by the CDK CLI\.
 
 1. **Define your stacks and resources** – Use constructs to define your stacks and AWS resources within your app\.
 
-1. **Build your app** – This step is optional\. The AWS CDK CLI automatically performs this step if necessary\. Performing this step is recommended to identify syntax and type errors\.
+1. **Build your app** – This step is optional\. The CDK CLI automatically performs this step if necessary\. Performing this step is recommended to identify syntax and type errors\.
 
 1. **Synthesize your stacks** – This step creates an AWS CloudFormation template for each stack in your app\. This step is useful to identify logical errors in your defined AWS resources\.
 
@@ -62,35 +62,35 @@ Next, from your new directory, initialize the app by using the cdk init command\
 #### [ TypeScript ]
 
 ```
-cdk init app --language typescript
+$ cdk init app --language typescript
 ```
 
 ------
 #### [ JavaScript ]
 
 ```
-cdk init app --language javascript
+$ cdk init app --language javascript
 ```
 
 ------
 #### [ Python ]
 
 ```
-cdk init app --language python
+$ cdk init app --language python
 ```
 
 After the app has been created, also enter the following two commands\. These activate the app's Python virtual environment and install the AWS CDK core dependencies\.
 
 ```
-source .venv/bin/activate
-python -m pip install -r requirements.txt
+$ source .venv/bin/activate
+$ python -m pip install -r requirements.txt
 ```
 
 ------
 #### [ Java ]
 
 ```
-cdk init app --language java
+$ cdk init app --language java
 ```
 
 If you are using an IDE, you can now open or import the project\. In Eclipse, for example, choose **File** > **Import** > **Maven** > **Existing Maven Projects**\. Make sure that the project settings are set to use Java 8 \(1\.8\)\.
@@ -99,7 +99,7 @@ If you are using an IDE, you can now open or import the project\. In Eclipse, fo
 #### [ C\# ]
 
 ```
-cdk init app --language csharp
+$ cdk init app --language csharp
 ```
 
 If you are using Visual Studio, open the solution file in the `src` directory\.
@@ -108,20 +108,20 @@ If you are using Visual Studio, open the solution file in the `src` directory\.
 #### [ Go ]
 
 ```
-cdk init app --language go
+$ cdk init app --language go
 ```
 
 After the app has been created, also enter the following command to install the AWS Construct Library modules that the app requires\.
 
 ```
-go get
+$ go get
 ```
 
 ------
 
-The cdk init command creates a number of files and folders inside the `hello-cdk` directory to help you organize the source code for your AWS CDK app\. Collectively, this is called your AWS CDK *project*\. Take a moment to explore the CDK project\.
+The `cdk init` command creates a number of files and folders inside the `hello-cdk` directory to help you organize the source code for your AWS CDK app\. Collectively, this is called your AWS CDK *project*\. Take a moment to explore the CDK project\.
 
-If you have Git installed, each project you create using cdk init is also initialized as a Git repository\.
+If you have Git installed, each project you create using `cdk init` is also initialized as a Git repository\.
 
 ## Step 2: Build the app<a name="hello_world_tutorial_build"></a>
 
@@ -131,7 +131,7 @@ In most programming environments, you build or compile code after making changes
 #### [ TypeScript ]
 
 ```
-npm run build
+$ npm run build
 ```
 
 ------
@@ -148,16 +148,16 @@ No build step is necessary\.
 #### [ Java ]
 
 ```
-mvn compile -q
+$ mvn compile -q
 ```
 
-Or press Control\-B in Eclipse \(other Java IDEs may vary\)
+Or press `Control-B` in Eclipse \(other Java IDEs may vary\)
 
 ------
 #### [ C\# ]
 
 ```
-dotnet build src
+$ dotnet build src
 ```
 
 Or press F6 in Visual Studio
@@ -166,7 +166,7 @@ Or press F6 in Visual Studio
 #### [ Go ]
 
 ```
-go build
+$ go build
 ```
 
 ------
@@ -176,7 +176,7 @@ go build
 Verify your app has been correctly created by listing the stacks in your app\. Run the following:
 
 ```
-cdk ls
+$ cdk ls
 ```
 
 The output should display `HelloCdkStack`\. If you don't see this output, verify that you are in the correct working directory of your project and try again\. If you still don't see your stack, repeat [Step 1: Create the app](#hello_world_tutorial_create_app) and try again\.
@@ -235,12 +235,15 @@ module.exports = { HelloCdkStack }
 In `hello_cdk/hello_cdk_stack.py`:
 
 ```
-import aws_cdk as cdk
-import aws_cdk.aws_s3 as s3
-            
-class HelloCdkStack(cdk.Stack):
+from aws_cdk import (
+    Stack,
+    aws_s3 as s3,
+)
+from constructs import Construct
 
-    def __init__(self, scope: cdk.App, construct_id: str, **kwargs) -> None:
+class HelloCdkStack(Stack):
+
+    def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
         bucket = s3.Bucket(self, "MyFirstBucket", versioned=True)
@@ -369,7 +372,7 @@ All constructs take these same three arguments, so it's easy to stay oriented as
 Synthesize an AWS CloudFormation template for the app, as follows:
 
 ```
-cdk synth
+$ cdk synth
 ```
 
 If your app contains more than one stack, you must specify which stacks to synthesize\. Since your app contains a single stack, the CDK CLI automatically detects the stack to synthesize\.
@@ -390,7 +393,7 @@ Resources:
         Status: Enabled
     UpdateReplacePolicy: Retain
     DeletionPolicy: Retain
-    Metadata:...
+    Metadata: #...
 ```
 
 **Note**  
@@ -403,7 +406,7 @@ The generated template can be deployed through the AWS CloudFormation console or
 To deploy your CDK stack to AWS CloudFormation using the CDK CLI, run the following:
 
 ```
-cdk deploy
+$ cdk deploy
 ```
 
 **Important**  
@@ -508,7 +511,7 @@ Currently, your code changes have not made any direct updates to your deployed A
 To see these changes, use the `cdk diff` command\. Run the following:
 
 ```
-cdk diff
+$ cdk diff
 ```
 
 The CDK CLI queries your AWS account account for the latest AWS CloudFormation template for the `HelloCdkStack` stack\. Then, it compares the latest template with the template it just synthesized from your app\. The output should look like the following\.
@@ -568,7 +571,7 @@ To see your new AWS CloudFormation template, you can run cdk synth\. By making a
 Next, deploy your app by running the following:
 
 ```
-cdk deploy
+$ cdk deploy
 ```
 
 The AWS CDK will inform you about the security policy changes we've already seen in the diff\. Enter y to approve the changes and deploy the updated stack\. The CDK CLI will deploy your stack to make your desired changes\. The following is an example output:
@@ -606,7 +609,7 @@ arn:aws:cloudformation:REGION:ACCOUNT:stack/HelloCdkStack/UNIQUE-ID
 Now that you've completed this tutorial, you can delete the deployed AWS CloudFormation stack and all resources associated with it\. This is a good practice to minimize unnecessary costs and keep your environment clean\. Run the following:
 
 ```
-cdk destroy
+$ cdk destroy
 ```
 
 Enter y to approve the changes and delete your stack\.

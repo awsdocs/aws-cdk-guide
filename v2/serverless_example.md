@@ -32,7 +32,7 @@ For more information, see [Getting started with the AWS CDK](getting_started.md)
 
 We also recommend a basic understanding of the following:
 + [What is the AWS CDK?](home.md) for a basic introduction to the AWS CDK\.
-+ [AWS CDK concepts](core_concepts.md) for an overview of core concepts of the AWS CDK\.
++ [Learn AWS CDK core concepts](core_concepts.md) for an overview of core concepts of the AWS CDK\.
 
 ## Step 1: Create a CDK project<a name="serverless-example-project"></a>
 

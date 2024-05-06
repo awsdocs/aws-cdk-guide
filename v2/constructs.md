@@ -781,7 +781,7 @@ awss3.NewBucket(stack, jsii.String("MyFirstBucket"), &awss3.BucketProps{
 
 ### Writing your own constructs<a name="constructs_author"></a>
 
-In addition to using existing constructs, you can also write your own constructs and let anyone use them in their apps\. All constructs are equal in the AWS CDK\. Constructs from the AWS Construct Library are treated the same as a contstruct from a third\-party library published via NPM, Maven, or PyPI\. Constructs published to your company's internal package repository are also treated in the same way\.
+In addition to using existing constructs, you can also write your own constructs and let anyone use them in their apps\. All constructs are equal in the AWS CDK\. Constructs from the AWS Construct Library are treated the same as a construct from a third\-party library published via NPM, Maven, or PyPI\. Constructs published to your company's internal package repository are also treated in the same way\.
 
 To declare a new construct, create a class that extends the [Construct](https://docs.aws.amazon.com/cdk/api/v2/docs/constructs.Construct.html) base class, in the `constructs` package, then follow the pattern for initializer arguments\.
 

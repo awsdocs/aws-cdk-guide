@@ -286,7 +286,7 @@ To get started with using the AWS CDK, see [Getting started with the AWS CDK](ge
 ## Learn more<a name="home-learn"></a>
 
 To continue learning about the AWS CDK, see the following:
-+ **[AWS CDK concepts](core_concepts.md)** – Important concepts and terms for the AWS CDK\.
++ **[Learn AWS CDK core concepts](core_concepts.md)** – Important concepts and terms for the AWS CDK\.
 + **[AWS CDK Workshop](https://cdkworkshop.com/)** – Hands\-on workshop to learn and use the AWS CDK\.
 + **[AWS CDK Patterns](https://cdkpatterns.com/)** – Open\-source collection of AWS serverless architecture patterns, built for the AWS CDK by AWS experts\.
 + **[AWS CDK code examples](https://github.com/aws-samples/aws-cdk-examples) ** – GitHub repository of example AWS CDK projects\.

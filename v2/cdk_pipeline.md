@@ -130,35 +130,35 @@ After cloning, initialize the project as usual\.
 #### [ TypeScript ]
 
 ```
-cdk init app --language typescript
+$ cdk init app --language typescript
 ```
 
 ------
 #### [ JavaScript ]
 
 ```
-cdk init app --language javascript
+$ cdk init app --language javascript
 ```
 
 ------
 #### [ Python ]
 
 ```
-cdk init app --language python
+$ cdk init app --language python
 ```
 
 After the app has been created, also enter the following two commands\. These activate the app's Python virtual environment and install the AWS CDK core dependencies\.
 
 ```
-source .venv/bin/activate
-python -m pip install -r requirements.txt
+$ source .venv/bin/activate
+$ python -m pip install -r requirements.txt
 ```
 
 ------
 #### [ Java ]
 
 ```
-cdk init app --language java
+$ cdk init app --language java
 ```
 
 If you are using an IDE, you can now open or import the project\. In Eclipse, for example, choose **File** > **Import** > **Maven** > **Existing Maven Projects**\. Make sure that the project settings are set to use Java 8 \(1\.8\)\.
@@ -167,7 +167,7 @@ If you are using an IDE, you can now open or import the project\. In Eclipse, fo
 #### [ C\# ]
 
 ```
-cdk init app --language csharp
+$ cdk init app --language csharp
 ```
 
 If you are using Visual Studio, open the solution file in the `src` directory\.
@@ -176,13 +176,13 @@ If you are using Visual Studio, open the solution file in the `src` directory\.
 #### [ Go ]
 
 ```
-cdk init app --language go
+$ cdk init app --language go
 ```
 
 After the app has been created, also enter the following command to install the AWS Construct Library modules that the app requires\.
 
 ```
-go get
+$ go get
 ```
 
 ------

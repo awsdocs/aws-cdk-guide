@@ -1,4 +1,4 @@
-# AWS CDK concepts<a name="core_concepts"></a>
+# Learn AWS CDK core concepts<a name="core_concepts"></a>
 
 Learn core concepts behind the AWS Cloud Development Kit \(AWS CDK\)\.
 
