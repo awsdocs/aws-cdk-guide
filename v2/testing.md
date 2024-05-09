@@ -100,7 +100,7 @@ These changes are shown in the following outline\. Place the new text where indi
 ```
 mkdir state-machine && cd state-machine
 cdk init --language=python
-source .venv/bin/activate
+source .venv/bin/activate # On Windows, run '.\venv\Scripts\activate' instead
 python -m pip install -r requirements.txt
 python -m pip install -r requirements-dev.txt
 ```

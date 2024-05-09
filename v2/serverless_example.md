@@ -84,7 +84,7 @@ In this step, you create a new CDK project using the AWS CDK CLI `cdk init` comm
    Activate the virtual environment:
 
    ```
-   $ source .venv/bin/activate
+   $ source .venv/bin/activate # On Windows, run '.\venv\Scripts\activate' instead
    ```
 
    Install AWS CDK libraries and project dependencies:
@@ -1471,7 +1471,7 @@ CdkHelloWorldStack: destroying... [1/1]
 
 ## Troubleshooting<a name="serverless-example-troubleshooting"></a>
 
-### Error: \{“message”: “Internal server error”\}%<a name="w94aac53c13c51b5"></a>
+### Error: \{“message”: “Internal server error”\}%<a name="w95aac53c13c51b5"></a>
 
 When invoking the deployed Lambda function, you receive this error\. This error could occur for multiple reasons\.
 

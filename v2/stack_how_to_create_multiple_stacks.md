@@ -48,7 +48,7 @@ cdk init --language=javascript
 mkdir multistack
 cd multistack
 cdk init --language=python
-source .venv/bin/activate
+source .venv/bin/activate # On Windows, run '.\venv\Scripts\activate' instead
 pip install -r requirements.txt
 ```
 

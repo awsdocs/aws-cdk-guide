@@ -59,7 +59,7 @@ cdk init --language javascript
 mkdir MyEcsConstruct
 cd MyEcsConstruct
 cdk init --language python
-source .venv/bin/activate
+source .venv/bin/activate # On Windows, run '.\venv\Scripts\activate' instead
 pip install -r requirements.txt
 ```
 

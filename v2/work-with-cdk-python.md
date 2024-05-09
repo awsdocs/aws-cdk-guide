@@ -57,7 +57,7 @@ source .venv/bin/activate
 ```
 
 **Note**  
-You may recognize this as the Mac/Linux command to activate a virtual environment\. The Python templates include a batch file, `source.bat`, that allows the same command to be used on Windows\. The traditional Windows command, `.venv\Scripts\activate.bat`, works, too\.  
+You may recognize this as the Mac/Linux command to activate a virtual environment\. The Python templates include a batch file, `source.bat`, that allows the same command to be used on Windows\. The traditional Windows command, `.\venv\Scripts\activate`, works, too\.  
 If you initialized your AWS CDK project using CDK Toolkit v1\.70\.0 or earlier, your virtual environment is in the `.env` directory instead of `.venv`\.
 
 **Important**  
@@ -135,7 +135,7 @@ python -m pip command options
 
 The python \-m pip invocation works on most systems; pip requires that PIP's executable be on the system path\. If pip doesn't work, try replacing it with python \-m pip\.
 
-The cdk init \-\-language python command creates a virtual environment for your new project\. This lets each project have its own versions of dependencies, and also a basic `requirements.txt` file\. You must activate this virtual environment by running source \.venv/bin/activate each time you begin working with the project\.
+The cdk init \-\-language python command creates a virtual environment for your new project\. This lets each project have its own versions of dependencies, and also a basic `requirements.txt` file\. You must activate this virtual environment by running source \.venv/bin/activate each time you begin working with the project\. On Windows, run \.\\venv\\Scripts\\activate instead
 
 ### CDK applications<a name="work-with-cdk-python-dependencies-apps"></a>
 

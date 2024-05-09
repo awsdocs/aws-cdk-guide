@@ -185,6 +185,14 @@ To avoid deployment failures, be sure the policies that you specify are sufficie
 **Important**  
 The modern bootstrap template effectively grants the permissions implied by the `--cloudformation-execution-policies` to any AWS account in the `--trust` list\. By default, this extends permissions to read and write to any resource in the bootstrapped account\. Make sure to [configure the bootstrapping stack](#bootstrapping-customizing) with policies and trusted accounts that you are comfortable with\.
 
+### Specifying server\-side encryption keys for the Amazon S3 bucket<a name="bootstrapping-customizing-keys"></a>
+
+By default, the Amazon S3 bucket in the bootstrap stack is configured to use AWS managed keys for server\-side encryption\. If you want more control over the encryption key, provide `--bootstrap-customer-key` with the `cdk bootstrap` command to use a customer managed key\. To use an existing customer managed key, use the `--bootstrap-kms-key-id` option and provide a value for the AWS KMS key to use\.
+
+To learn more about encryption keys, see [Customer keys and AWS Keys](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#key-mgmt) in the *AWS Key Management Service Developer Guide*\.
+
+For more information on cdk bootstrap command options, see [cdk bootstrap](ref-cli-cmd-bootstrap.md)\.
+
 ### Customizing the template<a name="bootstrapping-customizing-extended"></a>
 
 When you need more customization than the CDK CLI can provide, you can modify the bootstrap template to suit your needs\. First, you obtain the template using the \-\-show\-template option\. The following is an example:
