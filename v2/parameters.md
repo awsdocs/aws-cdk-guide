@@ -193,24 +193,112 @@ var bucket = new Bucket(this, "myBucket")
 
 ## Deploying with parameters<a name="parameters_deploy"></a>
 
-A generated template containing parameters can be deployed in the usual way through the AWS CloudFormation console\. You are prompted for the values of each parameter\.
+When you deploy a generated AWS CloudFormation template through the AWS CloudFormation console, you will be prompted to provide the values for each parameter\.
 
-The AWS CDK Toolkit \(`cdk` command line tool\) also supports specifying parameters at deployment\. You provide these on the command line following the `--parameters` flag\. You might deploy a stack that uses the `uploadBucketName` parameter, like the following example\.
+You can also provide parameter values using the CDK CLI `cdk deploy` command, or by specifying parameter values in your CDK project’s stack file\.
 
-```
-cdk deploy MyStack --parameters uploadBucketName=uploadbucket
-```
+### Providing parameter values with cdk deploy<a name="parameters_deploy_cli"></a>
 
-To define multiple parameters, use multiple `--parameters` flags\.
+When you deploy using the CDK CLI `cdk deploy` command, you can provide parameter values at deployment with the `--parameters` option\.
 
-```
-cdk deploy MyStack --parameters uploadBucketName=upbucket --parameters downloadBucketName=downbucket
-```
-
-If you are deploying multiple stacks, you can specify a different value of each parameter for each stack\. To do so, prefix the name of the parameter with the stack name and a colon\.
+The following is an example of the `cdk deploy` command structure:
 
 ```
-cdk deploy MyStack YourStack --parameters MyStack:uploadBucketName=uploadbucket --parameters YourStack:uploadBucketName=upbucket
+$ cdk deploy stack-logical-id --parameters stack-name:parameter-name=parameter-value
 ```
 
-By default, the AWS CDK retains values of parameters from previous deployments and uses them in subsequent deployments if they are not specified explicitly\. Use the `--no-previous-parameters` flag to require all parameters to be specified\.
+If your CDK app contains a single stack, you don’t have to provide the stack logical ID argument or the `stack-name` value in the `--parameters` option\. The CDK CLI will automatically find and provide these values\. The following is an example that specifies an `uploadbucket` value for the `uploadBucketName` parameter of the single stack in our CDK app:
+
+```
+$ cdk deploy --parameters uploadBucketName=uploadbucket
+```
+
+### Providing parameter values with cdk deploy for multi\-stack applications<a name="parameters_deploy_cli_multi-stack"></a>
+
+The following is an example CDK application in TypeScript that contains two CDK stacks\. Each stack contains an Amazon S3 bucket instance and a parameter to set the Amazon S3 bucket name:
+
+```
+import * as cdk from 'aws-cdk-lib';
+import { Construct } from 'constructs';
+import * as s3 from 'aws-cdk-lib/aws-s3';
+
+// Define the CDK app
+const app = new cdk.App();
+
+// First stack
+export class MyFirstStack extends cdk.Stack {
+  constructor(scope: Construct, id: string, props?: cdk.StackProps) {
+    super(scope, id, props);
+
+    // Set a default parameter name
+    const bucketNameParam = new cdk.CfnParameter(this, 'bucketNameParam', {
+      type: 'String',
+      default: 'myfirststackdefaultbucketname'
+    });
+
+    // Define an S3 bucket
+    new s3.Bucket(this, 'MyFirstBucket', {
+      bucketName: bucketNameParam.valueAsString
+    });
+  }
+}
+
+// Second stack 
+export class MySecondStack extends cdk.Stack {
+  constructor(scope: Construct, id: string, props?: cdk.StackProps) {
+    super(scope, id, props);
+
+    // Set a default parameter name
+    const bucketNameParam = new cdk.CfnParameter(this, 'bucketNameParam', {
+      type: 'String',
+      default: 'mysecondstackdefaultbucketname'
+    });
+
+    // Define an S3 bucket
+    new s3.Bucket(this, 'MySecondBucket', {
+      bucketName: bucketNameParam.valueAsString
+    });
+  }
+}
+
+// Instantiate the stacks
+new MyFirstStack(app, 'MyFirstStack', {
+  stackName: 'MyFirstDeployedStack',
+});
+
+new MySecondStack(app, 'MySecondStack', {
+  stackName: 'MySecondDeployedStack',
+});
+```
+
+For CDK apps that contain multiple stacks, you can do the following:
++ **Deploy one stack with parameters** – To deploy a single stack from a multi\-stack application, provide the stack logical ID as an argument\.
+
+  The following is an example that deploys `MySecondStack` with `mynewbucketname` as the parameter value for `bucketNameParam`:
+
+  ```
+  $ cdk deploy MySecondStack --parameters bucketNameParam='mynewbucketname'
+  ```
++ **Deploy all stacks and specify parameter values for each stack** – Provide the `'*'` wildcard or the `--all` option to deploy all stacks\. Provide the `--parameters` option multiple times in a single command to specify parameter values for each stack\. The following is an example:
+
+  ```
+  $ cdk deploy '*' --parameters MyFirstDeployedStack:bucketNameParam='mynewfirststackbucketname' --parameters MySecondDeployedStack:bucketNameParam='mynewsecondstackbucketname'
+  ```
++ **Deploy all stacks and specify parameter values for a single stack** – Provide the `'*'` wildcard or the `--all` option to deploy all stacks\. Then, specify the stack to define the parameter for in the `--parameters` option\. The following are examples that deploys all stacks in a CDK app and specifies a parameter value for the `MySecondDeployedStack` AWS CloudFormation stack\. All other stacks will deploy and use the default parameter value:
+
+  ```
+  $ cdk deploy '*' --parameters MySecondDeployedStack:bucketNameParam='mynewbucketname'
+  $ cdk deploy --all --parameters MySecondDeployedStack:bucketNameParam='mynewbucketname'
+  ```
+
+### Providing parameter values with cdk deploy for applications with nested stacks<a name="parameters_deploy_cli_nested-stack"></a>
+
+The CDK CLI behavior when working with applications containing nested stacks is similar to multi\-stack applications\. The main difference is, if you want to deploy all nested stacks, use the `'**'` wildcard\. The `'*'` wildcard deploys all stacks but will not deploy nested stacks\. The `'**'` wildcard deploys all stacks, including nested stacks\.
+
+The following is an example that deploys nested stacks while specifying the parameter value for one nested stack:
+
+```
+$ cdk deploy '**' --parameters MultiStackCdkApp/SecondStack:bucketNameParam='mysecondstackbucketname'
+```
+
+For more information on `cdk deploy` command options, see [cdk deploy](ref-cli-cmd-deploy.md)\.

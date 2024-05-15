@@ -150,7 +150,7 @@ $ cdk init app --language python
 After the app has been created, also enter the following two commands\. These activate the app's Python virtual environment and install the AWS CDK core dependencies\.
 
 ```
-$ source .venv/bin/activate
+$ source .venv/bin/activate # On Windows, run `.\venv\Scripts\activate` instead
 $ python -m pip install -r requirements.txt
 ```
 

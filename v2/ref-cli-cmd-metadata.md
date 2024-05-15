@@ -10,8 +10,8 @@ $ cdk metadata <arguments> <options>
 
 ## Arguments<a name="ref-cli-cmd-metadata-args"></a>
 
-**CDK stack name**  <a name="ref-cli-cmd-metadata-args-stack-name"></a>
-The name of the CDK stack from your app to display metadata for\.  
+**CDK stack logical ID**  <a name="ref-cli-cmd-metadata-args-stack-name"></a>
+The logical ID of the CDK stack from your app to display metadata for\.  
 *Type*: String  
 *Required*: No
 

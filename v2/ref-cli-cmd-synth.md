@@ -16,8 +16,8 @@ $ cdk synthesize <arguments> <options>
 
 ## Arguments<a name="ref-cli-cmd-synth-args"></a>
 
-**CDK stack name**  <a name="ref-cli-cmd-synth-args-stack-name"></a>
-The name of the CDK stack from your app to synthesize\.  
+**CDK stack logical ID**  <a name="ref-cli-cmd-synth-args-stack-name"></a>
+The logical ID of the CDK stack from your app to synthesize\.  
 *Type*: String  
 *Required*: No
 
@@ -49,7 +49,7 @@ You can also configure this option through the `validateOnSynth` attribute or `C
 
 ## Examples<a name="ref-cli-cmd-synth-examples"></a>
 
-### Synthesize the cloud assembly for a CDK stack named MyStackName and output the CloudFormation template to stdout<a name="ref-cli-cmd-synth-examples-1"></a>
+### Synthesize the cloud assembly for a CDK stack with logial ID MyStackName and output the CloudFormation template to stdout<a name="ref-cli-cmd-synth-examples-1"></a>
 
 ```
 $ cdk synth MyStackName

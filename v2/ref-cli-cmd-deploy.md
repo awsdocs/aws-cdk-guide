@@ -14,8 +14,8 @@ $ cdk deploy <arguments> <options>
 
 ## Arguments<a name="ref-cli-cmd-deploy-args"></a>
 
-**CDK stack name**  <a name="ref-cli-cmd-deploy-args-stack-name"></a>
-The name of the CDK stack from your app to deploy\.  
+**CDK stack logical ID**  <a name="ref-cli-cmd-deploy-args-stack-name"></a>
+The logical ID of the CDK stack from your app to deploy\.  
 *Type*: String  
 *Required*: No
 

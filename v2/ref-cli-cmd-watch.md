@@ -31,8 +31,8 @@ $ cdk watch <arguments> <options>
 
 ## Arguments<a name="ref-cli-cmd-watch-args"></a>
 
-**CDK stack name**  <a name="ref-cli-cmd-watch-args-stack-name"></a>
-The name of the CDK stack from your app to watch\.  
+**CDK stack logical ID**  <a name="ref-cli-cmd-watch-args-stack-name"></a>
+The logical ID of the CDK stack from your app to watch\.  
 *Type*: String  
 *Required*: No
 
@@ -100,7 +100,7 @@ This option is only used for CDK apps using legacy synthesis\.
 
 ## Examples<a name="ref-cli-cmd-watch-examples"></a>
 
-### Watch a CDK stack named DevelopmentStack for changes<a name="ref-cli-cmd-watch-examples-1"></a>
+### Watch a CDK stack with logical ID DevelopmentStack for changes<a name="ref-cli-cmd-watch-examples-1"></a>
 
 ```
 $ cdk watch DevelopmentStack

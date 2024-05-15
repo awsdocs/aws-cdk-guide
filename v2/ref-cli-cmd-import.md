@@ -38,8 +38,8 @@ $ cdk import <arguments> <options>
 
 ## Arguments<a name="ref-cli-cmd-import-args"></a>
 
-**CDK stack name**  <a name="ref-cli-cmd-import-args-stack-name"></a>
-The name of the CDK stack from your app to import resources to\. This argument can be provided multiple times in a single command\.  
+**CDK stack logical ID**  <a name="ref-cli-cmd-import-args-stack-name"></a>
+The logical ID of the CDK stack from your app to import resources to\. This argument can be provided multiple times in a single command\.  
 *Type*: String  
 *Required*: No
 
