@@ -1,14 +1,14 @@
-# Configure programmatic access for the AWS CDK CLI<a name="configure-access"></a>
+# Configure security credentials for the AWS CDK CLI<a name="configure-access"></a>
 
-When you use the AWS Cloud Development Kit \(AWS CDK\) to develop applications in your local environment, you will primarily use the AWS CDK Command Line Interface \(AWS CDK CLI\) to interact with AWS to deploy and manage your CDK stacks\. To use the CDK CLI to interact with AWS, you must configure programmatic access\. Programmatic access is a way of providing security credentials with the CDK CLI to let AWS know who you are and what permissions you have\.
+When you use the AWS Cloud Development Kit \(AWS CDK\) to develop applications in your local environment, you will primarily use the AWS CDK Command Line Interface \(AWS CDK CLI\) to interact with AWS to deploy and manage your CDK stacks\. To use the CDK CLI to interact with AWS, you must configure security credentials on your local machine\. This lets AWS know who you are and what permissions you have\.
 
-To learn more about security credentials and programmatic access, see [AWS security credentials](https://docs.aws.amazon.com/IAM/latest/UserGuide/security-creds.html) in the *IAM User Guide*\.
+To learn more about security credentials, see [AWS security credentials](https://docs.aws.amazon.com/IAM/latest/UserGuide/security-creds.html) in the *IAM User Guide*\.
 
 **Topics**
 + [Prerequisites](#configure-access-prerequisites)
-+ [How to configure programmatic access](#configure-access-how)
++ [How to configure security credentials](#configure-access-how)
 + [Additional information](#configure-access-info)
-+ [Configure and manage CDK CLI programmatic access for IAM Identity Center users](configure-access-sso.md)
++ [Configure and manage CDK CLI security credentials for IAM Identity Center users](configure-access-sso.md)
 
 ## Prerequisites<a name="configure-access-prerequisites"></a>
 
@@ -16,9 +16,9 @@ If you are new to AWS or the AWS CDK, complete prerequisites in this section\.
 
 ### Create an AWS account and administrative user<a name="configure-access-prerequisites-account"></a>
 
-Before you determine your method of establishing programmatic access, you or your organization must have an AWS account and administrative user\. To learn more, see [Getting set up with IAM](https://docs.aws.amazon.com/IAM/latest/UserGuide/getting-set-up.html) in the *IAM User Guide*\.
+Before you determine your method of authenticating with security credentials, you or your organization must have an AWS account and administrative user\. To learn more, see [Getting set up with IAM](https://docs.aws.amazon.com/IAM/latest/UserGuide/getting-set-up.html) in the *IAM User Guide*\.
 
-You can manage IAM using different methods, such as through the AWS console, the AWS Command Line Interface \(AWS CLI\), or through application interfaces \(APIs\) in the associated SDKs\. When using IAM with the CDK CLI, you will primarily use the AWS CLI to configure and manage programmatic access\. To learn more, see [AWS Command Line Interface \(CLI\) and Software Development Kits \(SDKs\)](https://docs.aws.amazon.com/IAM/latest/UserGuide/management_methods.html#management-method-cli-sdk) in the *IAM User Guide*\.
+You can manage IAM using different methods, such as through the AWS console, the AWS Command Line Interface \(AWS CLI\), or through application interfaces \(APIs\) in the associated SDKs\. When using IAM with the CDK CLI, you will primarily use the AWS CLI to configure and manage security credentials\. To learn more, see [AWS Command Line Interface \(CLI\) and Software Development Kits \(SDKs\)](https://docs.aws.amazon.com/IAM/latest/UserGuide/management_methods.html#management-method-cli-sdk) in the *IAM User Guide*\.
 
 ### Determine your method of creating and managing users<a name="configure-access-prerequisites-method"></a>
 
@@ -26,11 +26,11 @@ Once you’ve created your AWS account and administrative user, you’ll want to
 
 If your organization has a method of managing users, follow their guidance\. Otherwise, we recommend using AWS IAM Identity Center to create and manage users\. With IAM Identity Center, you can manage AWS accounts, users, and permissions from a centrally managed service\. You can also provide your users with short\-term credentials for authentication with AWS\. For an introduction, see [What is IAM Identity Center?](https://docs.aws.amazon.com/singlesignon/latest/userguide/what-is.html) in the *AWS IAM Identity Center User Guide*\.
 
-Once you begin creating users, they will need to configure programmatic access on their local machine\. Users can use the AWS CLI to accomplish this\.
+Once you begin creating users, they will need to configure security credentials on their local machine\. Users can use the AWS CLI to accomplish this\.
 
 ### Install the AWS CLI<a name="configure-access-prerequisites-cli"></a>
 
-As a user, you use the AWS CLI to create and manage configuration and credential files on your local machine\. These files store, manage, and generate security credentials that you can use with the CDK CLI\.
+As a user, you use the AWS CLI to create and manage configuration and credential files on your local machine\. These files are used to store, manage, and generate security credentials that you can use with the CDK CLI\.
 
 To install the AWS CLI, see [Install or update to the latest version of the AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) in the *AWS Command Line Interface User Guide*\.
 
@@ -44,14 +44,14 @@ Use the Node Package Manager to install the CDK CLI\. In most cases, we recommen
 $ npm install -g aws-cdk
 ```
 
-## How to configure programmatic access<a name="configure-access-how"></a>
+## How to configure security credentials<a name="configure-access-how"></a>
 
-How you configure programmatic access depends on how you or your organization manages users\. You will primarily use the AWS CLI to configure and manage programmatic access for the CDK CLI\. However, you can use alternative methods such as manually updating your `config` and `credentials` files, or setting environment variables\.
+How you configure security credentials depends on how you or your organization manages users\. You will primarily use the AWS CLI to configure and manage security credentials for the CDK CLI\. However, you can use alternative methods such as manually updating your `config` and `credentials` files, or setting environment variables\.
 
-For guidance on configuring programmatic access using the AWS CLI, along with information on configuration and credential precedence when using different methods, see [Authentication and access credentials](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-authentication.html) in the *AWS Command Line Interface User Guide*\. If you prefer to quickly configure basic settings, including security credentials, see [Set up the AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-quickstart.html) in the *AWS Command Line Interface User Guide*\.
+For guidance on configuring security credentials using the AWS CLI, along with information on configuration and credential precedence when using different methods, see [Authentication and access credentials](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-authentication.html) in the *AWS Command Line Interface User Guide*\. If you prefer to quickly configure basic settings, including security credentials, see [Set up the AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-quickstart.html) in the *AWS Command Line Interface User Guide*\.
 
-Once you’ve configured programmatic access on your local machine, you can use the CDK CLI to interact with AWS\. For more information on using the CDK CLI with your method of managing users, see the following:
-+ [Configure and manage CDK CLI programmatic access for IAM Identity Center users](configure-access-sso.md)\.
+Once you’ve configured security credentials on your local machine, you can use the CDK CLI to interact with AWS\. For more information on using the CDK CLI with your method of managing users, see the following:
++ [Configure and manage CDK CLI security credentials for IAM Identity Center users](configure-access-sso.md)\.
 
 ## Additional information<a name="configure-access-info"></a>
 
