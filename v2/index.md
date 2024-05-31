@@ -46,6 +46,7 @@ sponsored by Amazon.
 + [Migrate existing resources and AWS CloudFormation templates to the AWS CDK](migrate.md)
 + [Configure security credentials for the AWS CDK CLI](configure-access.md)
    + [Configure and manage CDK CLI security credentials for IAM Identity Center users](configure-access-sso.md)
+      + [Example: Use the AWS CLI to configure short-term security credentials as an IAM Identity Center user](configure-access-sso-example-cli.md)
 + [Configure environments to use with the AWS CDK](configure-env.md)
 + [Developing AWS CDK applications](develop.md)
    + [Customizing constructs from the AWS Construct Library](cfn_layer.md)

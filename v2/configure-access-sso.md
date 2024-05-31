@@ -9,6 +9,7 @@ For an introduction to security credentials with the CDK CLI, including prerequi
 + [Use the AWS CLI to obtain short\-term credentials](#configure-access-sso-obtain)
 + [Manually configure short\-term credentials](#configure-access-sso-manual)
 + [Use short\-term credentials with the CDK CLI](#configure-access-sso-cdk)
++ [Example: Use the AWS CLI to configure short\-term security credentials as an IAM Identity Center user](configure-access-sso-example-cli.md)
 
 ## Configure the AWS CLI to use IAM Identity Center<a name="configure-access-sso-cli"></a>
 
@@ -28,4 +29,4 @@ As an alternative to using the AWS CLI, you can obtain your short\-term credenti
 
 The CDK CLI uses the short\-term credentials that you generate with the AWS CLI or configure manually in the `credentials` and `config` files\. Once you’ve configured short\-term credentials, you can use the CDK CLI to interact with AWS\.
 
-When you use the CDK CLI to interact with your CDK stacks on AWS, use the `\-\-profile` option with any CDK CLI command to specify the named profile that you used to generate short\-term credentials\. If you are using the default profile, you don’t have to specify a profile\.
+When you use the CDK CLI to interact with your CDK stacks on AWS, use the `\-\-profile` option with any CDK CLI command to specify the named profile that you used to generate short\-term credentials\. If you've configured the `default` profile as your IAM Identity Center profile, you don’t have to specify a profile\.
