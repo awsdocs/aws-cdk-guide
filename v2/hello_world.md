@@ -458,10 +458,21 @@ new s3.Bucket(this, 'MyFirstBucket', {
 Update `hello_cdk/hello_cdk_stack.py`\.
 
 ```
-bucket = s3.Bucket(self, "MyFirstBucket",
-    versioned=True,
-    removal_policy=cdk.RemovalPolicy.DESTROY,
-    auto_delete_objects=True)
+from aws_cdk import (
+    # ...
+    RemovalPolicy,
+)
+# ...
+
+class HelloCdkStack(Stack):
+
+    def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
+        super().__init__(scope, construct_id, **kwargs)
+
+        bucket = s3.Bucket(self, "MyFirstBucket", 
+                           versioned=True,
+                           removal_policy=RemovalPolicy.DESTROY,
+                           auto_delete_objects=True)
 ```
 
 ------
