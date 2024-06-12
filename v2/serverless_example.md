@@ -1,6 +1,6 @@
 # Create a serverless Hello World application<a name="serverless_example"></a>
 
-In this tutorial, you use the AWS Cloud Development Kit \(AWS CDK\) to create a simple serverless Hello World application that implements a basic API backend by creating the following:
+In this tutorial, you use the AWS Cloud Development Kit \(AWS CDK\) to create a simple serverless Hello World application that implements a basic API backend consisting of the following:
 + **Amazon API Gateway REST API** – Provides an HTTP endpoint that is used to invoke your function through an HTTP GET request\.
 + **AWS Lambda function** – Function that returns a `Hello World!` message when invoked with the HTTP endpoint\.
 + **Integrations and permissions** – Configuration details and permissions for your resources to interact with one another and perform actions, such as writing logs to Amazon CloudWatch\.
@@ -9,7 +9,7 @@ The following diagram shows the components of this application:
 
 ![\[Diagram of a Lambda function that is invoked when you send a GET request to the API Gateway endpoint.\]](http://docs.aws.amazon.com/cdk/v2/guide/images/serverless-example-01.png)
 
-For this tutorial, you will complete the following:
+For this tutorial, you will create and interact with your application in the following steps:
 
 1. Create an AWS CDK project\.
 
@@ -20,6 +20,17 @@ For this tutorial, you will complete the following:
 1. Interact with your application in the AWS Cloud\.
 
 1. Delete the sample application from the AWS Cloud\.
+
+**Topics**
++ [Prerequisites](#serverless-example-pre)
++ [Step 1: Create a CDK project](#serverless-example-project)
++ [Step 2: Create your Lambda function](#serverless-example-function)
++ [Step 3: Define your constructs](#serverless-example-constructs)
++ [Step 4: Prepare your application for deployment](#serverless-example-deploy)
++ [Step 5: Deploy your application](#serverless-example-deploy)
++ [Step 6: Interact with your application](#serverless-example-interact)
++ [Step 7: Delete your application](#serverless-example-delete)
++ [Troubleshooting](#serverless-example-troubleshooting)
 
 ## Prerequisites<a name="serverless-example-pre"></a>
 
@@ -129,6 +140,9 @@ In this step, you create a new CDK project using the AWS CDK CLI `cdk init` comm
    Install project dependencies:
 
    ```
+   $ go get github.com/aws/aws-cdk-go/awscdk/v2
+   $ go get github.com/aws/aws-cdk-go/awscdk/v2/awslambda
+   $ go get github.com/aws/aws-cdk-go/awscdk/v2/awsapigateway
    $ go mod tidy
    ```
 
@@ -250,7 +264,8 @@ In this step, you create a new CDK project using the AWS CDK CLI `cdk init` comm
    ├── cdk-hello-world.go
    ├── cdk-hello-world_test.go
    ├── cdk.json
-   └── go.mod
+   ├── go.mod
+   └── go.sum
    ```
 
 ------
@@ -640,29 +655,39 @@ Located at `cdk-hello-world.go`:
 
 ```
 package main
+            
 import (
     "github.com/aws/aws-cdk-go/awscdk/v2"
     "github.com/aws/constructs-go/constructs/v10"
     "github.com/aws/jsii-runtime-go"
 )
+
 type CdkHelloWorldStackProps struct {
     awscdk.StackProps
 }
+
 func NewCdkHelloWorldStack(scope constructs.Construct, id string, props *CdkHelloWorldStackProps) awscdk.Stack {
     var sprops awscdk.StackProps
     if props != nil {
         sprops = props.StackProps
     }
     stack := awscdk.NewStack(scope, &id, &sprops)
+    
     // Your constructs will go here
+    
     return stack
 }
+
 func main() {
+
     // ...
+    
 }
 
 func env() *awscdk.Environment {
+
     return nil
+    
 }
 ```
 
@@ -819,6 +844,8 @@ import (
     // ...
     // Import Lambda L2 construct
     "github.com/aws/aws-cdk-go/awscdk/v2/awslambda"
+    // Import S3 assets construct
+    "github.com/aws/aws-cdk-go/awscdk/v2/awss3assets"
     // ...
 )
 
@@ -834,8 +861,8 @@ func NewCdkHelloWorldStack(scope constructs.Construct, id string, props *CdkHell
     // Define the Lambda function resource
     helloWorldFunction := awslambda.NewFunction(stack, jsii.String("HelloWorldFunction"), &awslambda.FunctionProps{
         Runtime: awslambda.Runtime_NODEJS_20_X(), // Choose any supported Node.js runtime
-        Code:    awslambda.Code_FromAsset(jsii.String("lambda")), // Points to the lambda directory
-        Handler: jsii.String("hello"), // Points to the 'hello' file in the lambda directory
+        Code:    awslambda.Code_FromAsset(jsii.String("lambda"), &awss3assets.AssetOptions{}), // Points to the lambda directory
+        Handler: jsii.String("hello.handler"), // Points to the 'hello' file in the lambda directory
     })
 
     return stack
@@ -1036,15 +1063,15 @@ func NewCdkHelloWorldStack(scope constructs.Construct, id string, props *CdkHell
     // Define the Lambda function resource
     // ...
     
-    // Define the API Gatweay resource
+    // Define the API Gateway resource
     api := awsapigateway.NewLambdaRestApi(stack, jsii.String("HelloWorldApi"), &awsapigateway.LambdaRestApiProps{
         Handler: helloWorldFunction,
         Proxy: jsii.Bool(false),
     })
 
     // Add a '/hello' resource with a GET method
-    helloResource := api.Root().AddResource(jsii.String("hello"))
-    helloResource.AddMethod(jsii.String("GET"))
+    helloResource := api.Root().AddResource(jsii.String("hello"), &awsapigateway.ResourceOptions{})
+    helloResource.AddMethod(jsii.String("GET"), awsapigateway.NewLambdaIntegration(helloWorldFunction, &awsapigateway.LambdaIntegrationOptions{}), &awsapigateway.MethodOptions{})
 
     return stack
 }
@@ -1105,11 +1132,7 @@ $ dotnet build src
 ------
 #### [ Go ]
 
-From the root of your project, run the following:
-
-```
-$ go build
-```
+Building is not required\.
 
 ------
 
@@ -1471,7 +1494,7 @@ CdkHelloWorldStack: destroying... [1/1]
 
 ## Troubleshooting<a name="serverless-example-troubleshooting"></a>
 
-### Error: \{“message”: “Internal server error”\}%<a name="w95aac61c13c51b5"></a>
+### Error: \{“message”: “Internal server error”\}%<a name="w95aac61c13c55b5"></a>
 
 When invoking the deployed Lambda function, you receive this error\. This error could occur for multiple reasons\.
 
