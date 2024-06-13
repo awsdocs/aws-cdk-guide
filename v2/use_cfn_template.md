@@ -10,13 +10,13 @@ The `cloudformation-include.CfnInclude` construct essentially adds an AWS CDK AP
 AWS CDK v1 also included [https://docs.aws.amazon.com/cdk/api/latest/docs/aws-cdk-lib.CfnInclude.html](https://docs.aws.amazon.com/cdk/api/latest/docs/aws-cdk-lib.CfnInclude.html), which was previously used for the same general purpose\. However, it lacks much of the functionality of `cloudformation-include.CfnInclude`\.
 
 **Topics**
-+ [Importing an AWS CloudFormation template](#w95aac41c25c19)
++ [Importing an AWS CloudFormation template](#w90aac49c25c19)
 + [Accessing imported resources](#use_cfn_template_cfninclude_access)
 + [Replacing parameters](#use_cfn_template_cfninclude_params)
 + [Other template elements](#use_cfn_template_cfninclude_other)
 + [Nested stacks](#use_cfn_template_cfninclude_nested)
 
-## Importing an AWS CloudFormation template<a name="w95aac41c25c19"></a>
+## Importing an AWS CloudFormation template<a name="w90aac49c25c19"></a>
 
 The following is a sample AWS CloudFormation template that we will use to provide examples in this topic\. Copy and save the template as `my-template.json` to follow along\. After working through these examples, you can explore further by using any of your existing deployed AWS CloudFormation templates\. You can obtain them from the AWS CloudFormation console\.
 

@@ -262,7 +262,7 @@ Earlier versions of the bootstrap template created a KMS key by default\. To avo
 CDK Toolkit v2 does not support the original bootstrap template, dubbed the legacy template, used by default with CDK v1\.
 
 **Important**  
-The modern bootstrap template effectively grants the permissions implied by the `--cloudformation-execution-policies` to any AWS account in the `--trust` list\. By default, this extends permissions to read and write to any resource in the bootstrapped account\. Make sure to [configure the bootstrapping stack](bootstrapping.md#bootstrapping-customizing) with policies and trusted accounts that you are comfortable with\.
+The modern bootstrap template effectively grants the permissions implied by the `--cloudformation-execution-policies` to any AWS account in the `--trust` list\. By default, this extends permissions to read and write to any resource in the bootstrapped account\. Make sure to [configure the bootstrapping stack](bootstrapping-customizing.md) with policies and trusted accounts that you are comfortable with\.
 
 ## Creating a new app<a name="cli-init"></a>
 
@@ -326,7 +326,7 @@ The CDK Toolkit actually runs your app and synthesizes fresh templates before mo
 
 See `cdk synth --help` for all available options\. A few of the most frequently used options are covered in the following section\.
 
-### Specifying context values<a name="w95aac65b7c33c11"></a>
+### Specifying context values<a name="w90aac73b7c33c11"></a>
 
 Use the `--context` or `-c` option to pass [runtime context](context.md) values to your CDK app\.
 
@@ -345,7 +345,7 @@ When deploying multiple stacks, the specified context values are normally passed
 cdk synth --context Stack1:key=value Stack2:key=value Stack1 Stack2
 ```
 
-### Specifying display format<a name="w95aac65b7c33c13"></a>
+### Specifying display format<a name="w90aac73b7c33c13"></a>
 
 By default, the synthesized template is displayed in YAML format\. Add the `--json` flag to display it in JSON format instead\.
 
@@ -353,7 +353,7 @@ By default, the synthesized template is displayed in YAML format\. Add the `--js
 cdk synth --json MyStack
 ```
 
-### Specifying output directory<a name="w95aac65b7c33c15"></a>
+### Specifying output directory<a name="w90aac73b7c33c15"></a>
 
 Add the `--output` \(`-o`\) option to write the synthesized templates to a directory other than `cdk.out`\.
 
@@ -429,7 +429,7 @@ Git\-style wildcards, both `*` and `**`, can be used in the `"watch"` and `"buil
 **Important**  
 Watch mode is not recommended for production deployments\.
 
-### Specifying AWS CloudFormation parameters<a name="w95aac65b7c35c19"></a>
+### Specifying AWS CloudFormation parameters<a name="w90aac73b7c35c19"></a>
 
 The AWS CDK Toolkit supports specifying AWS CloudFormation [parameters](parameters.md) at deployment\. You may provide these on the command line following the `--parameters` flag\.
 
@@ -451,7 +451,7 @@ cdk deploy MyStack YourStack --parameters MyStack:uploadBucketName=UploadBucket 
 
 By default, the AWS CDK retains values of parameters from previous deployments and uses them in later deployments if they are not specified explicitly\. Use the `--no-previous-parameters` flag to require all parameters to be specified\.
 
-### Specifying outputs file<a name="w95aac65b7c35c21"></a>
+### Specifying outputs file<a name="w90aac73b7c35c21"></a>
 
 If your stack declares AWS CloudFormation outputs, these are normally displayed on the screen at the conclusion of deployment\. To write them to a file in JSON format, use the `--outputs-file` flag\.
 

@@ -27,7 +27,7 @@ The main changes from AWS CDK v1 to CDK v2 are as follows\.
 + With CDK v2, the environments you deploy into must be bootstrapped using the modern bootstrap stack\. The legacy bootstrap stack \(the default under v1\) is no longer supported\. CDK v2 furthermore requires a new version of the modern stack\. To upgrade your existing environments, re\-bootstrap them\. It is no longer necessary to set any feature flags or environment variables to use the modern bootstrap stack\.
 
 **Important**  
-The modern bootstrap template effectively grants the permissions implied by the `--cloudformation-execution-policies` to any AWS account in the `--trust` list\. By default, this extends permissions to read and write to any resource in the bootstrapped account\. Make sure to [configure the bootstrapping stack](bootstrapping.md#bootstrapping-customizing) with policies and trusted accounts that you are comfortable with\.
+The modern bootstrap template effectively grants the permissions implied by the `--cloudformation-execution-policies` to any AWS account in the `--trust` list\. By default, this extends permissions to read and write to any resource in the bootstrapped account\. Make sure to [configure the bootstrapping stack](bootstrapping-customizing.md) with policies and trusted accounts that you are comfortable with\.
 
 ## New prerequisites<a name="migrating-v2-prerequisites"></a>
 
