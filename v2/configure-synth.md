@@ -53,11 +53,11 @@ MyStack(self, "MyStack",
 
 ```
 new MyStack(app, "MyStack", StackProps.builder()
-    // stack properties
-		.synthesizer(DefaultStackSynthesizer.Builder.create()
-				// synthesizer properties
-				.build())
-		.build();
+  // stack properties
+  .synthesizer(DefaultStackSynthesizer.Builder.create()
+    // synthesizer properties
+    .build())
+  .build();
 ```
 
 ------
@@ -158,10 +158,10 @@ MyStack(self, "MyStack",
 
 ```
 new MyStack(app, "MyStack", StackProps.builder()
-		.synthesizer(DefaultStackSynthesizer.Builder.create()
-				.qualifier("MYQUALIFIER")
-				.build())
-		.build();
+  .synthesizer(DefaultStackSynthesizer.Builder.create()
+    .qualifier("MYQUALIFIER")
+    .build())
+  .build();
 ```
 
 ------
@@ -321,36 +321,36 @@ DefaultStackSynthesizer(
 
 ```
 DefaultStackSynthesizer.Builder.create()
-    // Name of the S3 bucket for file assets
-    .fileAssetsBucketName("cdk-${Qualifier}-assets-${AWS::AccountId}-${AWS::Region}")
-    .bucketPrefix('')
+  // Name of the S3 bucket for file assets
+  .fileAssetsBucketName("cdk-${Qualifier}-assets-${AWS::AccountId}-${AWS::Region}")
+  .bucketPrefix('')
 
-    // Name of the ECR repository for Docker image assets
-    .imageAssetsRepositoryName("cdk-${Qualifier}-container-assets-${AWS::AccountId}-${AWS::Region}")
+  // Name of the ECR repository for Docker image assets
+  .imageAssetsRepositoryName("cdk-${Qualifier}-container-assets-${AWS::AccountId}-${AWS::Region}")
 
-    // ARN of the role assumed by the CLI and Pipeline to deploy here
-    .deployRoleArn("arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-${Qualifier}-deploy-role-${AWS::AccountId}-${AWS::Region}")
-    .deployRoleExternalId("")
+  // ARN of the role assumed by the CLI and Pipeline to deploy here
+  .deployRoleArn("arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-${Qualifier}-deploy-role-${AWS::AccountId}-${AWS::Region}")
+  .deployRoleExternalId("")
 
-    // ARN of the role used for file asset publishing (assumed from the CLI role)
-    .fileAssetPublishingRoleArn("arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-${Qualifier}-file-publishing-role-${AWS::AccountId}-${AWS::Region}")
-    .fileAssetPublishingExternalId("")
+  // ARN of the role used for file asset publishing (assumed from the CLI role)
+  .fileAssetPublishingRoleArn("arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-${Qualifier}-file-publishing-role-${AWS::AccountId}-${AWS::Region}")
+  .fileAssetPublishingExternalId("")
 
-    // ARN of the role used for Docker asset publishing (assumed from the CLI role)
-    .imageAssetPublishingRoleArn("arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-${Qualifier}-image-publishing-role-${AWS::AccountId}-${AWS::Region}")
-    .imageAssetPublishingExternalId("")
+  // ARN of the role used for Docker asset publishing (assumed from the CLI role)
+  .imageAssetPublishingRoleArn("arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-${Qualifier}-image-publishing-role-${AWS::AccountId}-${AWS::Region}")
+  .imageAssetPublishingExternalId("")
 
-    // ARN of the role passed to CloudFormation to execute the deployments
-    .cloudFormationExecutionRole("arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-${Qualifier}-cfn-exec-role-${AWS::AccountId}-${AWS::Region}")
+  // ARN of the role passed to CloudFormation to execute the deployments
+  .cloudFormationExecutionRole("arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-${Qualifier}-cfn-exec-role-${AWS::AccountId}-${AWS::Region}")
 
-    .lookupRoleArn("arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-${Qualifier}-lookup-role-${AWS::AccountId}-${AWS::Region}")
-    .lookupRoleExternalId("")
+  .lookupRoleArn("arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-${Qualifier}-lookup-role-${AWS::AccountId}-${AWS::Region}")
+  .lookupRoleExternalId("")
 
-    // Name of the SSM parameter which describes the bootstrap stack version number
-    .bootstrapStackVersionSsmParameter("/cdk-bootstrap/${Qualifier}/version")
+  // Name of the SSM parameter which describes the bootstrap stack version number
+  .bootstrapStackVersionSsmParameter("/cdk-bootstrap/${Qualifier}/version")
 
-    // Add a rule to every template which verifies the required bootstrap stack version
-    .generateBootstrapVersionRule(true)
+  // Add a rule to every template which verifies the required bootstrap stack version
+  .generateBootstrapVersionRule(true)
 .build()
 ```
 

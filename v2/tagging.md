@@ -170,7 +170,7 @@ Tags.Of(myConstruct).Add("key", "value", new TagProps { Priority = 300 });
 
 ```
 awscdk.Tags_Of(myConstruct).Add(jsii.String("key"), jsii.String("value"), &awscdk.TagProps{
-    Priority: jsii.Number(300),
+  Priority: jsii.Number(300),
 })
 ```
 
@@ -255,10 +255,10 @@ Tags.Of(myConstruct).Add("tagname", "value", new TagProps
 
 ```
 awscdk.Tags_Of(myConstruct).Add(jsii.String("tagname"), jsii.String("value"), &awscdk.TagProps{
-    ApplyToLaunchedInstances: jsii.Bool(false),
-    IncludeResourceTypes:     &[]*string{jsii.String("AWS::Xxx:Yyy")},
-    ExcludeResourceTypes:     &[]*string{jsii.String("AWS::Xxx:Zzz")},
-    Priority:                 jsii.Number(100),
+  ApplyToLaunchedInstances: jsii.Bool(false),
+  IncludeResourceTypes:     &[]*string{jsii.String("AWS::Xxx:Yyy")},
+  ExcludeResourceTypes:     &[]*string{jsii.String("AWS::Xxx:Zzz")},
+  Priority:                 jsii.Number(100),
 })
 ```
 
@@ -325,9 +325,9 @@ Tags.Of(myConstruct).Remove("tagname", new TagProps
 
 ```
 awscdk.Tags_Of(myConstruct).Remove(jsii.String("tagname"), &awscdk.TagProps{
-    IncludeResourceTypes: &[]*string{jsii.String("AWS::Xxx:Yyy")},
-    ExcludeResourceTypes: &[]*string{jsii.String("AWS::Xxx:Zzz")},
-    Priority:             jsii.Number(200),
+  IncludeResourceTypes: &[]*string{jsii.String("AWS::Xxx:Yyy")},
+  ExcludeResourceTypes: &[]*string{jsii.String("AWS::Xxx:Zzz")},
+  Priority:             jsii.Number(200),
 })
 ```
 
@@ -430,7 +430,6 @@ Tags.Of(theBestStack).Remove("StackType", new TagProps
 
 ```
 import "github.com/aws/aws-cdk-go/awscdk/v2"
-
 app := awscdk.NewApp(nil)
 theBestStack := awscdk.NewStack(app, jsii.String("MarketingSystem"), &awscdk.StackProps{})
 
@@ -439,7 +438,7 @@ awscdk.Tags_Of(theBestStack).Add(jsii.String("StackType"), jsii.String("TheBest"
 
 // Remove the tag from all resources except subnet resources
 awscdk.Tags_Of(theBestStack).Add(jsii.String("StackType"), jsii.String("TheBest"), &awscdk.TagProps{
-    ExcludeResourceTypes: &[]*string{jsii.String("AWS::EC2::Subnet")},
+  ExcludeResourceTypes: &[]*string{jsii.String("AWS::EC2::Subnet")},
 })
 ```
 
@@ -494,7 +493,7 @@ Tags.Of(theBestStack).Add("StackType", "TheBest", new TagProps {
 
 ```
 awscdk.Tags_Of(theBestStack).Add(jsii.String("StackType"), jsii.String("TheBest"), &awscdk.TagProps{
-    IncludeResourceTypes: &[]*string{jsii.String("AWS::EC2::Subnet")},
+  IncludeResourceTypes: &[]*string{jsii.String("AWS::EC2::Subnet")},
 })
 ```
 

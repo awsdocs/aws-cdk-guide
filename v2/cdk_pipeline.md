@@ -448,15 +448,12 @@ namespace MyPipeline
 ------
 #### [ Go ]
 
-This is working example for a CDK pipeline in go. "NewCdkStack" creates a stack with an example resource (SSM Parameter). The application has this one stack and gets deployed via the CDK Pipeline.
-
 ```
 package main
 
 import (
 	"github.com/aws/aws-cdk-go/awscdk/v2"
 	codebuild "github.com/aws/aws-cdk-go/awscdk/v2/awscodebuild"
-	codecommit "github.com/aws/aws-cdk-go/awscdk/v2/awscodecommit"
 	ssm "github.com/aws/aws-cdk-go/awscdk/v2/awsssm"
 	pipeline "github.com/aws/aws-cdk-go/awscdk/v2/pipelines"
 	"github.com/aws/constructs-go/constructs/v10"
@@ -465,38 +462,39 @@ import (
 )
 
 // my CDK Stack with resources
-func NewCdkStack(scope constructs.Construct, id *string, props awscdk.StackProps) *awscdk.Stack {
-	this := awscdk.NewStack(scope, id, &props)
+func NewCdkStack(scope constructs.Construct, id *string, props *awscdk.StackProps) awscdk.Stack {
+	stack := awscdk.NewStack(scope, id, props)
 
 	// create an example ssm parameter
-	_ = ssm.NewStringParameter(this, jsii.String("ssm-test-param"), &ssm.StringParameterProps{
+	_ = ssm.NewStringParameter(stack, jsii.String("ssm-test-param"), &ssm.StringParameterProps{
 		ParameterName: jsii.String("/testparam"),
 		Description:   jsii.String("ssm parameter for demo"),
 		StringValue:   jsii.String("my test param"),
 	})
 
-	return &this
-
+	return stack
 }
 
 // my CDK Application
-func NewCdkApplication(scope constructs.Construct, id *string, props awscdk.StageProps) *awscdk.Stage {
-	this := awscdk.NewStage(scope, id, &props)
+func NewCdkApplication(scope constructs.Construct, id *string, props *awscdk.StageProps) awscdk.Stage {
+	stage := awscdk.NewStage(scope, id, props)
 
-	_ = NewCdkStack(this, jsii.String("cdk-stack"), awscdk.StackProps{Env: props.Env})
+	_ = NewCdkStack(stage, jsii.String("cdk-stack"), &awscdk.StackProps{Env: props.Env})
 
-	return &this
+	return stage
 }
 
 // my CDK Pipeline
-func NewCdkPipeline(scope constructs.Construct, id *string, props awscdk.StackProps) *awscdk.Stack {
-	this := awscdk.NewStack(scope, id, &props)
+func NewCdkPipeline(scope constructs.Construct, id *string, props *awscdk.StackProps) awscdk.Stack {
+	stack := awscdk.NewStack(scope, id, props)
 
-	// codecommit repo with name "cdk-application"
-	codecommitRepo := codecommit.Repository_FromRepositoryName(this, jsii.String("cdkRepoResource"), jsii.String("cdk-application"))
+	// GitHub repo with owner and repository name
+	githubRepo := pipeline.CodePipelineSource_GitHub(jsii.String("owner/repo"), jsii.String("main"), &pipeline.GitHubSourceOptions{
+		Authentication: awscdk.SecretValue_SecretsManager(jsii.String("my-github-token"), nil),
+	})
 
 	// self mutating pipeline
-	myPipeline := pipeline.NewCodePipeline(this, jsii.String("cdkPipeline"), &pipeline.CodePipelineProps{
+	myPipeline := pipeline.NewCodePipeline(stack, jsii.String("cdkPipeline"), &pipeline.CodePipelineProps{
 		PipelineName: jsii.String("CdkPipeline"),
 		// self mutation true - pipeline changes itself before application deployment
 		SelfMutation: jsii.Bool(true),
@@ -507,7 +505,7 @@ func NewCdkPipeline(scope constructs.Construct, id *string, props awscdk.StackPr
 			},
 		},
 		Synth: pipeline.NewCodeBuildStep(jsii.String("Synth"), &pipeline.CodeBuildStepProps{
-			Input: pipeline.CodePipelineSource_CodeCommit(codecommitRepo, jsii.String("main"), &pipeline.CodeCommitSourceOptions{}),
+			Input: githubRepo,
 			Commands: &[]*string{
 				jsii.String("npm install -g aws-cdk"),
 				jsii.String("cdk synth"),
@@ -516,7 +514,7 @@ func NewCdkPipeline(scope constructs.Construct, id *string, props awscdk.StackPr
 	})
 
 	// deployment of actual CDK application
-	myPipeline.AddStage(*NewCdkApplication(this, jsii.String("MyApplication"), awscdk.StageProps{
+	myPipeline.AddStage(NewCdkApplication(stack, jsii.String("MyApplication"), &awscdk.StageProps{
 		Env: targetAccountEnv(),
 	}), &pipeline.AddStageOpts{
 		Post: &[]pipeline.Step{
@@ -528,7 +526,7 @@ func NewCdkPipeline(scope constructs.Construct, id *string, props awscdk.StackPr
 		},
 	})
 
-	return &this
+	return stack
 }
 
 // main app
@@ -538,10 +536,9 @@ func main() {
 	app := awscdk.NewApp(nil)
 
 	// call CDK Pipeline
-	NewCdkPipeline(app, jsii.String("CdkPipelineStack"), awscdk.StackProps{
+	NewCdkPipeline(app, jsii.String("CdkPipelineStack"), &awscdk.StackProps{
 		Env: pipelineEnv(),
-	},
-	)
+	})
 
 	app.Synth(nil)
 }
@@ -562,6 +559,7 @@ func targetAccountEnv() *awscdk.Environment {
 	}
 }
 ```
+
 ------
 
 You must deploy a pipeline manually once\. After that, the pipeline keeps itself up to date from the source code repository\. So be sure that the code in the repo is the code you want deployed\. Check in your changes and push to GitHub, then deploy:

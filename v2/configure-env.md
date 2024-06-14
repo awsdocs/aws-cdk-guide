@@ -165,27 +165,23 @@ new MyFirstStack(app, "first-stack-eu", new StackProps { Env=envEU });
 #### [ Go ]
 
 ```
-	envEU := &awscdk.Environment{
-		Account: "2383838383",
-		Region:  "eu-west-1",
-	}
+env_EU := awscdk.Environment{
+	Account: jsii.String("8373873873"),
+	Region:  jsii.String("eu-west-1"),
+}
 
-	envUSA := &awscdk.Environment{
-		Account: "8373873873",
-		Region:  "us-west-2",
-	}
+env_USA := awscdk.Environment{
+	Account: jsii.String("2383838383"),
+	Region:  jsii.String("us-west-2"),
+}
 
-	NewMyFirstStack(app, "first-stack-us", &MyFirstStackProps{
-		StackProps: awscdk.StackProps{
-			Env: envUSA,
-		},
-	})
+MyFirstStack(app, "first-stack-us", &awscdk.StackProps{
+	Env: &env_USA,
+})
 
-	NewMyFirstStack(app, "first-stack-eu", &MyFirstStackProps{
-		StackProps: awscdk.StackProps{
-			Env: envEU,
-		},
-	})
+MyFirstStack(app, "first-stack-eu", &awscdk.StackProps{
+	Env: &env_EU,
+})
 ```
 
 ------
@@ -300,16 +296,14 @@ new MyDevStack(app, "dev", new StackProps { Env = makeEnv() });
 #### [ Go ]
 
 ```
-	devEnv := &awscdk.Environment{
-		Account: os.Getenv("CDK_DEFAULT_ACCOUNT"),
-		Region:  os.Getenv("CDK_DEFAULT_REGION"),
-	}
+import "os"
 
-	NewMyDevStack(app, "dev", &MyDevStackProps{
-		StackProps: awscdk.StackProps{
-			Env: devEnv,
-		},
-	})
+MyDevStack(app, "dev", &awscdk.StackProps{
+	Env: &awscdk.Environment{
+		Account: jsii.String(os.Getenv("CDK_DEFAULT_ACCOUNT")),
+		Region:  jsii.String(os.Getenv("CDK_DEFAULT_REGION")),
+    },
+})
 ```
 
 ------
@@ -586,26 +580,22 @@ new MyDevStack(app, "dev", new StackProps { Env = makeEnv() });
 #### [ Go ]
 
 ```
-app := awscdk.NewApp(nil)
+var account, region string
+var b bool
 
-	devEnv := &awscdk.Environment{
-		Account: os.Getenv("CDK_DEPLOY_ACCOUNT"),
-		Region:  os.Getenv("CDK_DEPLOY_REGION"),
-	}
+if account, b = os.LookupEnv("CDK_DEPLOY_ACCOUNT"); !b || len(account) == 0 {
+	account = os.Getenv("CDK_DEFAULT_ACCOUNT")
+}
+if region, b = os.LookupEnv("CDK_DEPLOY_REGION"); !b || len(region) == 0 {
+	region = os.Getenv("CDK_DEFAULT_REGION")
+}
 
-	if devEnv.Account == "" {
-		devEnv.Account = os.Getenv("CDK_DEFAULT_ACCOUNT")
-	}
-
-	if devEnv.Region == "" {
-		devEnv.Region = os.Getenv("CDK_DEFAULT_REGION")
-	}
-
-	NewMyDevStack(app, "dev", &MyDevStackProps{
-		StackProps: awscdk.StackProps{
-			Env: devEnv,
-		},
-	})
+MyDevStack(app, "dev", &awscdk.StackProps{
+	Env: &awscdk.Environment{
+		Account: &account,
+		Region:  &region,
+	},
+})
 ```
 
 ------

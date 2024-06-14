@@ -77,13 +77,13 @@ new Queue(this, "MyQueue", new QueueProps
 
 ```
 import (
-	"github.com/aws/aws-cdk-go/awscdk/v2"
-	"github.com/aws/jsii-runtime-go"	
-    import sqs "github.com/aws/aws-cdk-go/awscdk/v2/awssqs"
+  "github.com/aws/aws-cdk-go/awscdk/v2"
+  "github.com/aws/jsii-runtime-go"	
+  sqs "github.com/aws/aws-cdk-go/awscdk/v2/awssqs"
 )
 
 sqs.NewQueue(stack, jsii.String("MyQueue"), &sqs.QueueProps{
-    Encryption: sqs.QueueEncryption_KMS_MANAGED,
+  Encryption: sqs.QueueEncryption_KMS_MANAGED,
 })
 ```
 
@@ -146,9 +146,9 @@ var url = queue.QueueUrl; // => A string representing a deploy-time value
 
 ```
 import (
-	"github.com/aws/aws-cdk-go/awscdk/v2"
-	"github.com/aws/jsii-runtime-go"	
-    import sqs "github.com/aws/aws-cdk-go/awscdk/v2/awssqs"
+  "github.com/aws/aws-cdk-go/awscdk/v2"
+  "github.com/aws/jsii-runtime-go"	
+  sqs "github.com/aws/aws-cdk-go/awscdk/v2/awssqs"
 )
 
 queue := sqs.NewQueue(stack, jsii.String("MyQueue"), &sqs.QueueProps{})
@@ -222,14 +222,14 @@ var service = new Ec2Service(this, "Service", new Ec2ServiceProps { Cluster = cl
 
 ```
 import (
-	"github.com/aws/aws-cdk-go/awscdk/v2"
-	"github.com/aws/jsii-runtime-go"	    
-    import ecs "github.com/aws/aws-cdk-go/awscdk/v2/awsecs"
+  "github.com/aws/aws-cdk-go/awscdk/v2"
+  "github.com/aws/jsii-runtime-go"	    
+  ecs "github.com/aws/aws-cdk-go/awscdk/v2/awsecs"
 )
 
 cluster := ecs.NewCluster(stack, jsii.String("MyCluster"), &ecs.ClusterProps{})
 service := ecs.NewEc2Service(stack, jsii.String("MyService"), &ecs.Ec2ServiceProps{
-    Cluster: cluster,
+  Cluster: cluster,
 })
 ```
 
@@ -426,15 +426,15 @@ Vpc.FromVpcAttributes(this, "MyVpc", new VpcAttributes
 #### [ Go ]
 
 ```
-// Construct a proxy for a bucket by its name (must be same account)
+// Define a proxy for a bucket by its name (must be same account)
 s3.Bucket_FromBucketName(stack, jsii.String("MyBucket"), jsii.String("MyBucketName"))
 
-// Construct a proxy for a bucket by its full ARN (can be another account)
+// Define a proxy for a bucket by its full ARN (can be another account)
 s3.Bucket_FromBucketArn(stack, jsii.String("MyBucket"), jsii.String("arn:aws:s3:::my-bucket-name"))
 
-// Construct a proxy for an existing VPC from its attribute(s)
+// Define a proxy for an existing VPC from its attributes
 ec2.Vpc_FromVpcAttributes(stack, jsii.String("MyVpc"), &ec2.VpcAttributes{
-    VpcId: jsii.String("vpc-1234567890abcde"),
+  VpcId: jsii.String("vpc-1234567890abcde"),
 })
 ```
 
@@ -493,7 +493,7 @@ Vpc.FromLookup(this, id = "DefaultVpc", new VpcLookupOptions { IsDefault = true 
 
 ```
 ec2.Vpc_FromLookup(this, jsii.String("DefaultVpc"), &ec2.VpcLookupOptions{
-    IsDefault: jsii.Bool(true),
+  IsDefault: jsii.Bool(true),
 })
 ```
 
@@ -550,7 +550,7 @@ Vpc.FromLookup(this, id = "PublicVpc", new VpcLookupOptions
 
 ```
 ec2.Vpc_FromLookup(this, jsii.String("DefaultVpc"), &ec2.VpcLookupOptions{
-    Tags: &map[string]*string{"aws-cdk:subnet-type": jsii.String("Public")},
+  Tags: &map[string]*string{"aws-cdk:subnet-type": jsii.String("Public")},
 })
 ```
 
@@ -613,7 +613,7 @@ var bucket = new Bucket(this, "MyBucket", new BucketProps { BucketName = "my-buc
 
 ```
 bucket := s3.NewBucket(this, jsii.String("MyBucket"), &s3.BucketProps{
-    BucketName: jsii.String("my-bucket-name"),
+  BucketName: jsii.String("my-bucket-name"),
 })
 ```
 
@@ -670,7 +670,7 @@ var bucket = new Bucket(this, "MyBucket", new BucketProps
 
 ```
 bucket := s3.NewBucket(this, jsii.String("MyBucket"), &s3.BucketProps{
-    BucketName: awscdk.PhysicalName_GENERATE_IF_NEEDED(),
+  BucketName: awscdk.PhysicalName_GENERATE_IF_NEEDED(),
 })
 ```
 
@@ -812,9 +812,8 @@ new Function(this, "MyLambda", new FunctionProps
 
 ```
 bucket := s3.NewBucket(this, jsii.String("Bucket"), &s3.BucketProps{})
-
 lambda.NewFunction(this, jsii.String("MyLambda"), &lambda.FunctionProps{
-    Environment: &map[string]*string{"BUCKET_NAME": bucket.BucketName()},
+  Environment: &map[string]*string{"BUCKET_NAME": bucket.BucketName()},
 })
 ```
 
@@ -876,7 +875,7 @@ if (bucket.GrantReadWrite(func).Success)
 
 ```
 if *bucket.GrantReadWrite(function, nil).Success() {
-    // ...
+  // ...
 }
 ```
 
@@ -884,7 +883,7 @@ if *bucket.GrantReadWrite(function, nil).Success() {
 
 The grant methods return an `iam.Grant` object\. Use the `success` attribute of the `Grant` object to determine whether the grant was effectively applied \(for example, it may not have been applied on [external resources](#resources_referencing)\)\. You can also use the `assertSuccess` \(Python: `assert_success`\) method of the `Grant` object to enforce that the grant was successfully applied\.
 
-If a specific grant method isn't available for the particular use case, you can use a generic grant method to define a new grant with a specified list of actions\. 
+If a specific grant method isn't available for the particular use case, you can use a generic grant method to define a new grant with a specified list of actions\.
 
 The following example shows how to grant a Lambda function access to the Amazon DynamoDB `CreateBackup` action\.
 
@@ -1061,22 +1060,22 @@ metric.CreateAlarm(this, "TooManyMessagesAlarm", new cw.CreateAlarmOptions
 
 ```
 import (
-	"github.com/aws/aws-cdk-go/awscdk/v2"
-	"github.com/aws/jsii-runtime-go"
-    cw "github.com/aws/aws-cdk-go/awscdk/v2/awscloudwatch"
-    sqs "github.com/aws/aws-cdk-go/awscdk/v2/awssqs"
+  "github.com/aws/aws-cdk-go/awscdk/v2"
+  "github.com/aws/jsii-runtime-go"
+  cw "github.com/aws/aws-cdk-go/awscdk/v2/awscloudwatch"
+  sqs "github.com/aws/aws-cdk-go/awscdk/v2/awssqs"
 )
 
 queue := sqs.NewQueue(this, jsii.String("MyQueue"), &sqs.QueueProps{})
 metric := queue.MetricApproximateNumberOfMessagesNotVisible(&cw.MetricOptions{
-    Label: jsii.String("Messages Visible (Approx)"),
-    Period: awscdk.Duration_Minutes(jsii.Number(5)),
-}) 
-metric.CreateAlarm(this, jsii.String("TooManyMessagesAlarm"), &cw.CreateAlarmOptions{
-    ComparisonOperator: cw.ComparisonOperator_GREATER_THAN_THRESHOLD,
-    Threshold: jsii.Number(100),
+  Label: jsii.String("Messages Visible (Approx)"),
+  Period: awscdk.Duration_Minutes(jsii.Number(5)),
 })
 
+metric.CreateAlarm(this, jsii.String("TooManyMessagesAlarm"), &cw.CreateAlarmOptions{
+  ComparisonOperator: cw.ComparisonOperator_GREATER_THAN_THRESHOLD,
+  Threshold: jsii.Number(100),
+})
 ```
 
 ------
@@ -1184,10 +1183,10 @@ fleet1.Connections.AllowFrom(fleet2, ec2.Port.AllTraffic());
 
 ```
 import (
-	"github.com/aws/aws-cdk-go/awscdk/v2"
-	"github.com/aws/jsii-runtime-go"
-	autoscaling "github.com/aws/aws-cdk-go/awscdk/v2/awsautoscaling"
-	ec2 "github.com/aws/aws-cdk-go/awscdk/v2/awsec2"
+  "github.com/aws/aws-cdk-go/awscdk/v2"
+  "github.com/aws/jsii-runtime-go"
+  autoscaling "github.com/aws/aws-cdk-go/awscdk/v2/awsautoscaling"
+  ec2 "github.com/aws/aws-cdk-go/awscdk/v2/awsec2"
 )
 
 fleet1 := autoscaling.NewAutoScalingGroup(this, jsii.String("MyFleet1"), &autoscaling.AutoScalingGroupProps{})
@@ -1195,12 +1194,11 @@ fleet1.Connections().AllowTo(ec2.Peer_AnyIpv4(),ec2.NewPort(&ec2.PortProps{ From
 
 fleet2 := autoscaling.NewAutoScalingGroup(this, jsii.String("MyFleet2"), &autoscaling.AutoScalingGroupProps{}) 
 fleet1.Connections().AllowFrom(fleet2, ec2.Port_AllTraffic(),jsii.String("all traffic"))
-
 ```
 
 ------
 
-Certain resources have default ports associated with them\. Examples include the listener of a load balancer on the public port, and the ports on which the database engine accepts connections for instances of an Amazon RDS database\. In such cases, you can enforce tight network control without having to manually specify the port\. To do so, use the `allowDefaultPortFrom` and `allowToDefaultPort` methods \(Python: `allow_default_port_from`, `allow_to_default_port`\)\. 
+Certain resources have default ports associated with them\. Examples include the listener of a load balancer on the public port, and the ports on which the database engine accepts connections for instances of an Amazon RDS database\. In such cases, you can enforce tight network control without having to manually specify the port\. To do so, use the `allowDefaultPortFrom` and `allowToDefaultPort` methods \(Python: `allow_default_port_from`, `allow_to_default_port`\)\.
 
 The following example shows how to enable connections from any IPV4 address, and a connection from an Auto Scaling group to access a database\.
 
@@ -1329,10 +1327,10 @@ bucket.AddObjectCreatedNotification(new s3Nots.LambdaDestination(handler));
 
 ```
 import (
-	"github.com/aws/aws-cdk-go/awscdk/v2"
-	"github.com/aws/jsii-runtime-go"
-	s3 "github.com/aws/aws-cdk-go/awscdk/v2/awss3"
-	s3nots "github.com/aws/aws-cdk-go/awscdk/v2/awss3notifications"	
+  "github.com/aws/aws-cdk-go/awscdk/v2"
+  "github.com/aws/jsii-runtime-go"
+  s3 "github.com/aws/aws-cdk-go/awscdk/v2/awss3"
+  s3nots "github.com/aws/aws-cdk-go/awscdk/v2/awss3notifications"	
 )
 
 handler := lambda.NewFunction(this, jsii.String("MyFunction"), &lambda.FunctionProps{})
@@ -1458,16 +1456,15 @@ public CdkTestStack(Construct scope, string id, IStackProps props) : base(scope,
 
 ```
 import (
-	"github.com/aws/aws-cdk-go/awscdk/v2"
-	"github.com/aws/jsii-runtime-go"
-	s3 "github.com/aws/aws-cdk-go/awscdk/v2/awss3"
+  "github.com/aws/aws-cdk-go/awscdk/v2"
+  "github.com/aws/jsii-runtime-go"
+  s3 "github.com/aws/aws-cdk-go/awscdk/v2/awss3"
 )
 
 s3.NewBucket(this, jsii.String("Bucket"), &s3.BucketProps{
-    RemovalPolicy: awscdk.RemovalPolicy_DESTROY,
-    AutoDeleteObjects: jsii.Bool(true),
+  RemovalPolicy: awscdk.RemovalPolicy_DESTROY,
+  AutoDeleteObjects: jsii.Bool(true),
 })
-
 ```
 
 ------
