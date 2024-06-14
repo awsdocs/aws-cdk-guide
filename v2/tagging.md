@@ -63,6 +63,13 @@ Tags.Of(myConstruct).Add("key", "value");
 ```
 
 ------
+#### [ Go ]
+
+```
+awscdk.Tags_Of(myConstruct).Add(jsii.String("key"), jsii.String("value"), &awscdk.TagProps{})
+```
+
+------
 
 The following example deletes the tag **key** from a construct\.
 
@@ -99,6 +106,13 @@ Tags.of(myConstruct).remove("key");
 
 ```
 Tags.Of(myConstruct).Remove("key");
+```
+
+------
+#### [ Go ]
+
+```
+awscdk.Tags_Of(myConstruct).Remove(jsii.String("key"), &awscdk.TagProps{})
 ```
 
 ------
@@ -149,6 +163,15 @@ Tags.of(myConstruct).add("key", "value", TagProps.builder()
 
 ```
 Tags.Of(myConstruct).Add("key", "value", new TagProps { Priority = 300 });
+```
+
+------
+#### [ Go ]
+
+```
+awscdk.Tags_Of(myConstruct).Add(jsii.String("key"), jsii.String("value"), &awscdk.TagProps{
+    Priority: jsii.Number(300),
+})
 ```
 
 ------
@@ -207,7 +230,7 @@ Tags.of(my_construct).add("tagname", "value",
 #### [ Java ]
 
 ```
-Tags.of(myConstruct).add("key", "value", TagProps.builder()
+Tags.of(myConstruct).add("tagname", "value", TagProps.builder()
                 .applyToLaunchedInstances(false)
                 .includeResourceTypes(Arrays.asList("AWS::Xxx::Yyy"))
                 .excludeResourceTypes(Arrays.asList("AWS::Xxx::Zzz"))
@@ -225,6 +248,18 @@ Tags.Of(myConstruct).Add("tagname", "value", new TagProps
     ExcludeResourceTypes = ["AWS::Xxx::Zzz"],
     Priority = 100
 });
+```
+
+------
+#### [ Go ]
+
+```
+awscdk.Tags_Of(myConstruct).Add(jsii.String("tagname"), jsii.String("value"), &awscdk.TagProps{
+    ApplyToLaunchedInstances: jsii.Bool(false),
+    IncludeResourceTypes:     &[]*string{jsii.String("AWS::Xxx:Yyy")},
+    ExcludeResourceTypes:     &[]*string{jsii.String("AWS::Xxx:Zzz")},
+    Priority:                 jsii.Number(100),
+})
 ```
 
 ------
@@ -283,6 +318,17 @@ Tags.Of(myConstruct).Remove("tagname", new TagProps
     ExcludeResourceTypes = ["AWS::Xxx::Zzz"],
     Priority = 100
 });
+```
+
+------
+#### [ Go ]
+
+```
+awscdk.Tags_Of(myConstruct).Remove(jsii.String("tagname"), &awscdk.TagProps{
+    IncludeResourceTypes: &[]*string{jsii.String("AWS::Xxx:Yyy")},
+    ExcludeResourceTypes: &[]*string{jsii.String("AWS::Xxx:Zzz")},
+    Priority:             jsii.Number(200),
+})
 ```
 
 ------
@@ -380,6 +426,24 @@ Tags.Of(theBestStack).Remove("StackType", new TagProps
 ```
 
 ------
+#### [ Go ]
+
+```
+import "github.com/aws/aws-cdk-go/awscdk/v2"
+
+app := awscdk.NewApp(nil)
+theBestStack := awscdk.NewStack(app, jsii.String("MarketingSystem"), &awscdk.StackProps{})
+
+// Add a tag to all constructs in the stack
+awscdk.Tags_Of(theBestStack).Add(jsii.String("StackType"), jsii.String("TheBest"), &awscdk.TagProps{})
+
+// Remove the tag from all resources except subnet resources
+awscdk.Tags_Of(theBestStack).Add(jsii.String("StackType"), jsii.String("TheBest"), &awscdk.TagProps{
+    ExcludeResourceTypes: &[]*string{jsii.String("AWS::EC2::Subnet")},
+})
+```
+
+------
 
 The following code achieves the same result\. Consider which approach \(inclusion or exclusion\) makes your intent clearer\.
 
@@ -426,6 +490,15 @@ Tags.Of(theBestStack).Add("StackType", "TheBest", new TagProps {
 ```
 
 ------
+#### [ Go ]
+
+```
+awscdk.Tags_Of(theBestStack).Add(jsii.String("StackType"), jsii.String("TheBest"), &awscdk.TagProps{
+    IncludeResourceTypes: &[]*string{jsii.String("AWS::EC2::Subnet")},
+})
+```
+
+------
 
 ## Tagging single constructs<a name="tagging_single"></a>
 
@@ -468,6 +541,13 @@ Tag.Builder.create(key, value).build().visit(scope);
 
 ```
 new Tag(key, value).Visit(scope);
+```
+
+------
+#### [ Go ]
+
+```
+awscdk.NewTag(key, value, &awscdk.TagProps{}).Visit(scope)
 ```
 
 ------
