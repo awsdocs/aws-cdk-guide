@@ -1,137 +1,397 @@
-# Your first AWS CDK app<a name="hello_world"></a>
+# Tutorial: Create your first AWS CDK app<a name="hello_world"></a>
 
-Get started with using the AWS Cloud Development Kit \(AWS CDK\) by building your first CDK app\.
+Get started with using the AWS Cloud Development Kit \(AWS CDK\) by creating your first CDK app\.
 
-Before starting this tutorial, we recommend that you complete the following:
-+ See [What is the AWS CDK?](home.md) for an introduction to the AWS CDK\.
-+ See [Learn AWS CDK core concepts](core_concepts.md) to learn core concepts of the AWS CDK\.
-+ Go through prerequisites and AWS CDK setup steps at [Getting started with the AWS CDK](getting_started.md)\.
+## Prerequisites<a name="hello_world_prerequisites"></a>
 
-**Topics**
-+ [About this tutorial](#hello_world_about)
-+ [Step 1: Create the app](#hello_world_tutorial_create_app)
-+ [Step 2: Build the app](#hello_world_tutorial_build)
-+ [Step 3: List the stacks in the app](#hello_world_tutorial_list_stacks)
-+ [Step 4: Add an Amazon S3 bucket](#hello_world_tutorial_add_bucket)
-+ [Step 5: Synthesize an AWS CloudFormation template](#hello_world_tutorial_synth)
-+ [Step 6: Deploy your stack](#hello_world_tutorial_deploy)
-+ [Step 7: Modify your app](#hello_world_tutorial_modify)
-+ [Step 8: Destroying the app's resources](#hello_world_tutorial_destroy)
-+ [Next steps](#hello_world_next_steps)
+Before starting this tutorial, complete all set up steps in [Getting started with the AWS CDK](getting_started.md)\.
 
 ## About this tutorial<a name="hello_world_about"></a>
 
-In this tutorial, you will create and deploy a simple AWS CDK app\. This app contains one stack with a single Amazon Simple Storage Service \(Amazon S3\) bucket resource\. Through this tutorial, you will learn the following:
-+ The structure of an AWS CDK project\.
-+ How to create an AWS CDK app\.
-+ How to use the AWS Construct Library to define apps, stacks, and AWS resources\.
-+ How to use the CDK CLI to synthesize, diff, deploy, and delete your CDK app\.
-+ How to modify and re\-deploy your CDK app to update your deployed resources\.
+In this tutorial, you will create and deploy a simple application on AWS using the AWS CDK\. The application consists of an [AWS Lambda function](https://docs.aws.amazon.com/lambda/latest/dg/welcome.html) that returns a `Hello World!` message when invoked\. The function will be invoked through a [Lambda function URL](https://docs.aws.amazon.com/lambda/latest/dg/lambda-urls.html) that serves as a dedicated HTTP\(S\) endpoint for your Lambda function\.
 
-The standard AWS CDK development workflow consists of the following steps:
+Through this tutorial, you will perform the following:
++ Create a CDK project using the AWS CDK Command Line Interface \(AWS CDK CLI\) `cdk init` command\.
++ Use constructs from the AWS Construct Library to define your Lambda function and Lambda function URL resources\.
++ Use the CDK CLI to build your app, synthesize an AWS CloudFormation template, and deploy your CDK stack\.
++ Interact with your deployed application on AWS\.
++ Modify your application and view changes with the CDK CLI `cdk diff` command\.
++ Deploy your CDK stack to implement your changes\.
++ Delete your CDK stack using the CDK CLI `cdk destroy` command\.
 
-1. **Create your AWS CDK app** – Here, you will use a template provided by the CDK CLI\.
+## Step 1: Create your CDK project<a name="hello_world_create"></a>
 
-1. **Define your stacks and resources** – Use constructs to define your stacks and AWS resources within your app\.
+In this step, you create a new CDK project\. A CDK project should be in its own directory, with its own local module dependencies\.
 
-1. **Build your app** – This step is optional\. The CDK CLI automatically performs this step if necessary\. Performing this step is recommended to identify syntax and type errors\.
+**To create a CDK project**
 
-1. **Synthesize your stacks** – This step creates an AWS CloudFormation template for each stack in your app\. This step is useful to identify logical errors in your defined AWS resources\.
+1. From a starting directory of your choice, create and navigate to a directory named `hello-cdk`:
 
-1. **Deploy your app** – Deploy to your AWS environment using AWS CloudFormation to provision your resources\. During deployment, you will identify any permission issues with your app\.
-
-Through a typical workflow, you'll go back and repeat previous steps to modify or debug your app\.
-
-We recommend that you use version control for your AWS CDK projects\.
-
-## Step 1: Create the app<a name="hello_world_tutorial_create_app"></a>
-
-A CDK app should be in its own directory, with its own local module dependencies\. On your development machine, create a new directory\. The following is an example that creates a new `hello-cdk` directory:
-
-```
-$ mkdir hello-cdk
-$ cd hello-cdk
-```
-
+   ```
+   $ mkdir hello-cdk && cd hello-cdk
+   ```
 **Important**  
-Be sure to name your project directory `hello-cdk`, *exactly as shown here\.* The AWS CDK project template uses the directory name to name things in the generated code\. If you use a different name, the code in this tutorial won't work\.
+Be sure to name your project directory `hello-cdk`, *exactly as shown here*\. The CDK CLI uses this directory name to name things within your CDK code\. If you use a different directory name, you will run into issues during this tutorial\.
 
-Next, from your new directory, initialize the app by using the cdk init command\. Specify the `app` template and your preferred programming language with the `--language` option\. The following is an example:
+1. From the `hello-cdk` directory, initialize a new CDK project using the AWS CDK CLI `cdk init` command\. Specify the `app` template and your preferred programming language with the `--language` option:
 
 ------
 #### [ TypeScript ]
 
+   ```
+   $ cdk init app --language typescript
+   ```
+
+------
+#### [ JavaScript ]
+
+   ```
+   $ cdk init app --language javascript
+   ```
+
+------
+#### [ Python ]
+
+   ```
+   $ cdk init app --language python
+   ```
+
+   After the app has been created, also enter the following two commands\. These activate the app's Python virtual environment and installs the AWS CDK core dependencies\.
+
+   ```
+   $ source .venv/bin/activate # On Windows, run `.\venv\Scripts\activate` instead
+   $ python -m pip install -r requirements.txt
+   ```
+
+------
+#### [ Java ]
+
+   ```
+   $ cdk init app --language java
+   ```
+
+   If you are using an IDE, you can now open or import the project\. In Eclipse, for example, choose **File** > **Import** > **Maven** > **Existing Maven Projects**\. Make sure that the project settings are set to use Java 8 \(1\.8\)\.
+
+------
+#### [ C\# ]
+
+   ```
+   $ cdk init app --language csharp
+   ```
+
+   If you are using Visual Studio, open the solution file in the `src` directory\.
+
+------
+#### [ Go ]
+
+   ```
+   $ cdk init app --language go
+   ```
+
+   After the app has been created, also enter the following command to install the AWS Construct Library modules that the app requires\.
+
+   ```
+   $ go get
+   ```
+
+------
+
+The `cdk init` command creates a structure of files and folders within the `hello-cdk` directory to help organize the source code for your CDK app\. This structure of files and folders is called your CDK *project*\. Take a moment to explore your CDK project\.
+
+If you have Git installed, each project you create using `cdk init` is also initialized as a Git repository\.
+
+During project initialization, the CDK CLI creates a CDK app containing a single CDK stack\. The CDK app instance is created using the `[App](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.App.html)` construct\. The following is a portion of this code from your CDK application file:
+
+------
+#### [ TypeScript ]
+
+Located in `bin/hello-cdk.ts`:
+
 ```
-$ cdk init app --language typescript
+#!/usr/bin/env node
+import 'source-map-support/register';
+import * as cdk from 'aws-cdk-lib';
+import { HelloCdkStack } from '../lib/hello-cdk-stack';
+
+const app = new cdk.App();
+new HelloCdkStack(app, 'HelloCdkStack', {
+});
 ```
 
 ------
 #### [ JavaScript ]
 
+Located in `bin/hello-cdk.js`:
+
 ```
-$ cdk init app --language javascript
+#!/usr/bin/env node
+
+const cdk = require('aws-cdk-lib');
+const { HelloCdkStack } = require('../lib/hello-cdk-stack');
+
+const app = new cdk.App();
+new HelloCdkStack(app, 'HelloCdkStack', {
+});
 ```
 
 ------
 #### [ Python ]
 
-```
-$ cdk init app --language python
-```
-
-After the app has been created, also enter the following two commands\. These activate the app's Python virtual environment and install the AWS CDK core dependencies\.
+Located in `app.py`:
 
 ```
-$ source .venv/bin/activate # On Windows, run `.\venv\Scripts\activate` instead
-$ python -m pip install -r requirements.txt
+#!/usr/bin/env python3
+import os
+
+import aws_cdk as cdk
+
+from hello_cdk.hello_cdk_stack import HelloCdkStack
+
+
+app = cdk.App()
+HelloCdkStack(app, "HelloCdkStack",)
+
+app.synth()
 ```
 
 ------
 #### [ Java ]
 
-```
-$ cdk init app --language java
-```
+Located in `src/main/java/.../HelloCdkApp.java`:
 
-If you are using an IDE, you can now open or import the project\. In Eclipse, for example, choose **File** > **Import** > **Maven** > **Existing Maven Projects**\. Make sure that the project settings are set to use Java 8 \(1\.8\)\.
+```
+package com.myorg;
+
+import software.amazon.awscdk.App;
+import software.amazon.awscdk.Environment;
+import software.amazon.awscdk.StackProps;
+
+import java.util.Arrays;
+
+public class HelloCdkApp {
+  public static void main(final String[] args) {
+    App app = new App();
+
+    new HelloCdkStack(app, "HelloCdkStack", StackProps.builder()
+      .build());
+
+    app.synth();
+  }
+}
+```
 
 ------
 #### [ C\# ]
 
-```
-$ cdk init app --language csharp
-```
+Located in `src/HelloCdk/Program.cs`:
 
-If you are using Visual Studio, open the solution file in the `src` directory\.
+```
+using Amazon.CDK;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace HelloCdk
+{
+  sealed class Program
+  {
+    public static void Main(string[] args)
+    {
+      var app = new App();
+      new HelloCdkStack(app, "HelloCdkStack", new StackProps
+      {});
+      app.Synth();
+    }
+  }
+}
+```
 
 ------
 #### [ Go ]
 
-```
-$ cdk init app --language go
-```
-
-After the app has been created, also enter the following command to install the AWS Construct Library modules that the app requires\.
+Located in `hello-cdk.go`:
 
 ```
-$ go get
+package main
+
+import (
+  "github.com/aws/aws-cdk-go/awscdk/v2"
+  "github.com/aws/constructs-go/constructs/v10"
+  "github.com/aws/jsii-runtime-go"
+)
+
+// ...
+
+func main() {
+  defer jsii.Close()
+
+  app := awscdk.NewApp(nil)
+
+  NewHelloCdkStack(app, "HelloCdkStack", &HelloCdkStackProps{
+    awscdk.StackProps{
+      Env: env(),
+    },
+  })
+
+  app.Synth(nil)
+}
+
+// ...
 ```
 
 ------
 
-The `cdk init` command creates a number of files and folders inside the `hello-cdk` directory to help you organize the source code for your AWS CDK app\. Collectively, this is called your AWS CDK *project*\. Take a moment to explore the CDK project\.
+The CDK stack is created using the `[Stack](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.Stack.html)` construct\. The following is a portion of this code from your CDK stack file:
 
-If you have Git installed, each project you create using `cdk init` is also initialized as a Git repository\.
+------
+#### [ TypeScript ]
 
-## Step 2: Build the app<a name="hello_world_tutorial_build"></a>
+Located in `lib/hello-cdk-stack.ts`:
 
-In most programming environments, you build or compile code after making changes\. This isn't necessary with the AWS CDK since the CDK CLI will automatically perform this step\. However, you can still build manually when you want to catch syntax and type errors\. The following is an example: 
+```
+import * as cdk from 'aws-cdk-lib';
+import { Construct } from 'constructs';
+
+export class HelloCdkStack extends cdk.Stack {
+  constructor(scope: Construct, id: string, props?: cdk.StackProps) {
+    super(scope, id, props);
+    
+    // Define your constructs here
+
+  }
+}
+```
+
+------
+#### [ JavaScript ]
+
+Located in `lib/hello-cdk-stack.js`:
+
+```
+const { Stack } = require('aws-cdk-lib');
+
+class HelloCdkStack extends Stack {
+  constructor(scope, id, props) {
+    super(scope, id, props);
+
+    // Define your constructs here
+
+  }
+}
+
+module.exports = { HelloCdkStack }
+```
+
+------
+#### [ Python ]
+
+Located in `hello_cdk/hello_cdk_stack.py`:
+
+```
+from aws_cdk import (
+  Stack,
+)
+from constructs import Construct
+
+class HelloCdkStack(Stack):
+
+  def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
+    super().__init__(scope, construct_id, **kwargs)
+
+    # Define your constructs here
+```
+
+------
+#### [ Java ]
+
+Located in `src/main/java/.../HelloCdkStack.java`:
+
+```
+package com.myorg;
+
+import software.constructs.Construct;
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
+
+public class HelloCdkStack extends Stack {
+  public HelloCdkStack(final Construct scope, final String id) {
+    this(scope, id, null);
+  }
+
+  public HelloCdkStack(final Construct scope, final String id, final StackProps props) {
+    super(scope, id, props);
+
+    // Define your constructs here
+  }
+}
+```
+
+------
+#### [ C\# ]
+
+Located in `src/HelloCdk/HelloCdkStack.cs`:
+
+```
+using Amazon.CDK;
+using Constructs;
+
+namespace HelloCdk
+{
+  public class HelloCdkStack : Stack
+  {
+    internal HelloCdkStack(Construct scope, string id, IStackProps props = null) : base(scope, id, props)
+    {
+      // Define your constructs here
+    }
+  }
+}
+```
+
+------
+#### [ Go ]
+
+Located in `hello-cdk.go`:
+
+```
+package main
+
+import (
+  "github.com/aws/aws-cdk-go/awscdk/v2"
+  "github.com/aws/constructs-go/constructs/v10"
+  "github.com/aws/jsii-runtime-go"
+)
+
+type HelloCdkStackProps struct {
+  awscdk.StackProps
+}
+
+func NewHelloCdkStack(scope constructs.Construct, id string, props *HelloCdkStackProps) awscdk.Stack {
+  var sprops awscdk.StackProps
+  if props != nil {
+    sprops = props.StackProps
+  }
+  stack := awscdk.NewStack(scope, &id, &sprops)
+
+  return stack
+}
+
+// ...
+```
+
+------
+
+## Step 2: Build your CDK app<a name="hello_world_build"></a>
+
+In most programming environments, you build or compile code after making changes\. This isn't necessary with the AWS CDK since the CDK CLI will automatically perform this step\. However, you can still build manually when you want to catch syntax and type errors\. The following is an example:
 
 ------
 #### [ TypeScript ]
 
 ```
 $ npm run build
+            
+> hello-cdk@0.1.0 build
+> tsc
 ```
 
 ------
@@ -171,37 +431,50 @@ $ go build
 
 ------
 
-## Step 3: List the stacks in the app<a name="hello_world_tutorial_list_stacks"></a>
+## Step 3: List the CDK stacks in your app<a name="hello_world_list"></a>
 
-Verify your app has been correctly created by listing the stacks in your app\. Run the following:
+At this point, you should have a CDK app containing a single CDK stack\. To verify, use the CDK CLI `cdk list` command to display your stacks\. The output should display a single stack named `HelloCdkStack`:
 
 ```
-$ cdk ls
+$ cdk list
+HelloCdkStack
 ```
 
-The output should display `HelloCdkStack`\. If you don't see this output, verify that you are in the correct working directory of your project and try again\. If you still don't see your stack, repeat [Step 1: Create the app](#hello_world_tutorial_create_app) and try again\.
+If you don't see this output, verify that you are in the correct working directory of your project and try again\. If you still don't see your stack, repeat [Step 1: Create your CDK project](#hello_world_create) and try again\.
 
-## Step 4: Add an Amazon S3 bucket<a name="hello_world_tutorial_add_bucket"></a>
+## Step 4: Define your Lambda function<a name="hello_world_function"></a>
 
-At this point, your CDK app contains a single stack\. Next, you will define an Amazon Simple Storage Service \(Amazon S3\) bucket resource within your stack\. To do this, you will import and use the `[Bucket](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.Bucket.html)` L2 construct from the AWS Construct Library\.
+In this step, you import the `[aws\_lambda](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda-readme.html)` module from the AWS Construct Library and use the `[Function](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda.Function.html)` L2 construct\.
 
-Modify your CDK app by importing the `Bucket` construct and defining your Amazon S3 bucket resource\. The following is an example:
+Modify your CDK stack file as follows:
 
 ------
 #### [ TypeScript ]
 
-In `lib/hello-cdk-stack.ts`:
+Located in `lib/hello-cdk-stack.ts`:
 
 ```
 import * as cdk from 'aws-cdk-lib';
-import { aws_s3 as s3 } from 'aws-cdk-lib';
+import { Construct } from 'constructs';
+// Import the Lambda module
+import * as lambda from 'aws-cdk-lib/aws-lambda';
 
 export class HelloCdkStack extends cdk.Stack {
-  constructor(scope: cdk.App, id: string, props?: cdk.StackProps) {
+  constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    new s3.Bucket(this, 'MyFirstBucket', {
-      versioned: true
+    // Define the Lambda function resource
+    const myFunction = new lambda.Function(this, "HelloWorldFunction", {
+      runtime: lambda.Runtime.NODEJS_20_X, // Provide any supported Node.js runtime
+      handler: "index.handler",
+      code: lambda.Code.fromInline(`
+        exports.handler = async function(event) {
+          return {
+            statusCode: 200,
+            body: JSON.stringify('Hello World!'),
+          };
+        };
+      `),
     });
   }
 }
@@ -210,19 +483,31 @@ export class HelloCdkStack extends cdk.Stack {
 ------
 #### [ JavaScript ]
 
-In `lib/hello-cdk-stack.js`:
+Located in `lib/hello-cdk-stack.js`:
 
 ```
-const cdk = require('aws-cdk-lib');
-const s3 = require('aws-cdk-lib/aws-s3');
+const { Stack } = require('aws-cdk-lib');
+// Import the Lambda module
+const lambda = require('aws-cdk-lib/aws-lambda');
 
-class HelloCdkStack extends cdk.Stack {
+class HelloCdkStack extends Stack {
   constructor(scope, id, props) {
     super(scope, id, props);
 
-    new s3.Bucket(this, 'MyFirstBucket', {
-      versioned: true
+    // Define the Lambda function resource
+    const myFunction = new lambda.Function(this, "HelloWorldFunction", {
+      runtime: lambda.Runtime.NODEJS_20_X, // Provide any supported Node.js runtime
+      handler: "index.handler",
+      code: lambda.Code.fromInline(`
+        exports.handler = async function(event) {
+          return {
+            statusCode: 200,
+            body: JSON.stringify('Hello World!'),
+          };
+        };
+      `),
     });
+
   }
 }
 
@@ -232,401 +517,967 @@ module.exports = { HelloCdkStack }
 ------
 #### [ Python ]
 
-In `hello_cdk/hello_cdk_stack.py`:
+Located in `hello_cdk/hello_cdk_stack.py`:
 
 ```
 from aws_cdk import (
-    Stack,
-    aws_s3 as s3,
+  Stack,
+  aws_lambda as _lambda, # Import the Lambda module
 )
 from constructs import Construct
 
 class HelloCdkStack(Stack):
 
-    def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
-        super().__init__(scope, construct_id, **kwargs)
+  def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
+    super().__init__(scope, construct_id, **kwargs)
 
-        bucket = s3.Bucket(self, "MyFirstBucket", versioned=True)
+    # Define the Lambda function resource
+    my_function = _lambda.Function(
+      self, "HelloWorldFunction", 
+      runtime = _lambda.Runtime.NODEJS_20_X, # Provide any supported Node.js runtime
+      handler = "index.handler",
+      code = _lambda.Code.from_inline(
+        """
+        exports.handler = async function(event) {
+          return {
+            statusCode: 200,
+            body: JSON.stringify('Hello World!'),
+          };
+        };
+        """
+      ),
+    )
 ```
 
 ------
 #### [ Java ]
 
-In `src/main/java/com/myorg/HelloCdkStack.java`:
+Located in `src/main/java/.../HelloCdkStack.java`:
 
 ```
 package com.myorg;
 
-import software.amazon.awscdk.*;
-import software.amazon.awscdk.services.s3.Bucket;
+import software.constructs.Construct;
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
+// Import Lambda function
+import software.amazon.awscdk.services.lambda.Code;
+import software.amazon.awscdk.services.lambda.Function;
+import software.amazon.awscdk.services.lambda.Runtime;
 
 public class HelloCdkStack extends Stack {
-    public HelloCdkStack(final App scope, final String id) {
-        this(scope, id, null);
-    }
+  public HelloCdkStack(final Construct scope, final String id) {
+    this(scope, id, null);
+  }
 
-    public HelloCdkStack(final App scope, final String id, final StackProps props) {
-        super(scope, id, props);
+  public HelloCdkStack(final Construct scope, final String id, final StackProps props) {
+    super(scope, id, props);
 
-        Bucket.Builder.create(this, "MyFirstBucket")
-            .versioned(true).build();
-    }
+    // Define the Lambda function resource
+    Function myFunction = Function.Builder.create(this, "HelloWorldFunction")
+      .runtime(Runtime.NODEJS_20_X) // Provide any supported Node.js runtime
+      .handler("index.handler")
+      .code(Code.fromInline(
+        "exports.handler = async function(event) {" +
+        " return {" +
+        " statusCode: 200," +
+        " body: JSON.stringify('Hello World!')" +
+        " };" +
+        "};"))
+      .build();
+
+  }
 }
 ```
 
 ------
 #### [ C\# ]
 
-In `src/HelloCdk/HelloCdkStack.cs`:
+Located in `src/main/java/.../HelloCdkStack.java`:
 
 ```
 using Amazon.CDK;
-using Amazon.CDK.AWS.S3;
+using Constructs;
+// Import the Lambda module
+using Amazon.CDK.AWS.Lambda;
 
 namespace HelloCdk
 {
-    public class HelloCdkStack : Stack
+  public class HelloCdkStack : Stack
+  {
+    internal HelloCdkStack(Construct scope, string id, IStackProps props = null) : base(scope, id, props)
     {
-        public HelloCdkStack(App scope, string id, IStackProps props=null) : base(scope, id, props)
-        {
-            new Bucket(this, "MyFirstBucket", new BucketProps
-            {
-                Versioned = true
-            });
-        }
+      // Define the Lambda function resource
+      var myFunction = new Function(this, "HelloWorldFunction", new FunctionProps
+      {
+        Runtime = Runtime.NODEJS_20_X, // Provide any supported Node.js runtime
+        Handler = "index.handler",
+        Code = Code.FromInline(@"
+          exports.handler = async function(event) {
+            return {
+              statusCode: 200,
+              body: JSON.stringify('Hello World!'),
+            };
+          };
+        "),
+      });
     }
+  }
 }
 ```
 
 ------
 #### [ Go ]
 
-In `hello-cdk.go`:
+Located in `hello-cdk.go`:
 
 ```
 package main
 
 import (
-	"github.com/aws/aws-cdk-go/awscdk/v2"
-	"github.com/aws/aws-cdk-go/awscdk/v2/awss3"
-	"github.com/aws/constructs-go/constructs/v10"
-	"github.com/aws/jsii-runtime-go"
+  "github.com/aws/aws-cdk-go/awscdk/v2"
+  "github.com/aws/constructs-go/constructs/v10"
+  "github.com/aws/jsii-runtime-go"
+  // Import the Lambda module
+  "github.com/aws/aws-cdk-go/awscdk/v2/awslambda"
 )
 
 type HelloCdkStackProps struct {
-	awscdk.StackProps
+  awscdk.StackProps
 }
 
 func NewHelloCdkStack(scope constructs.Construct, id string, props *HelloCdkStackProps) awscdk.Stack {
-	var sprops awscdk.StackProps
-	if props != nil {
-		sprops = props.StackProps
-	}
-	stack := awscdk.NewStack(scope, &id, &sprops)
+  var sprops awscdk.StackProps
+  if props != nil {
+    sprops = props.StackProps
+  }
+  stack := awscdk.NewStack(scope, &id, &sprops)
 
-	awss3.NewBucket(stack, jsii.String("MyFirstBucket"), &awss3.BucketProps{
-		Versioned: jsii.Bool(true),
-	})
+  // Define the Lambda function resource
+  myFunction := awslambda.NewFunction(stack, jsii.String("HelloWorldFunction"), &awslambda.FunctionProps{
+    Runtime: awslambda.Runtime_NODEJS_20_X(), // Provide any supported Node.js runtime
+    Handler: jsii.String("index.handler"),
+    Code: awslambda.Code_FromInline(jsii.String(`
+      exports.handler = async function(event) {
+        return {
+          statusCode: 200,
+          body: JSON.stringify('Hello World!'),
+        };
+      };
+    `)),
+  })
 
-	return stack
+  return stack
 }
 
-func main() {
-	defer jsii.Close()
-
-	app := awscdk.NewApp(nil)
-
-	NewHelloCdkStack(app, "HelloCdkStack", &HelloCdkStackProps{
-		awscdk.StackProps{
-			Env: env(),
-		},
-	})
-
-	app.Synth(nil)
-}
-
-func env() *awscdk.Environment {
-	return nil
-}
+// ...
 ```
 
 ------
 
-Let's take a closer look at the `Bucket` construct\. Like all constructs, the `Bucket` class takes three parameters:
-+ **scope** – Defines the `Stack` class as the parent of the `Bucket` construct\. All constructs that define AWS resources are created within the scope of a stack\. You can define constructs inside of constructs, creating a hierarchy \(tree\)\. Here, and in most cases, the scope is `this` \(`self` in Python\)\.
-+ **Id** – The logical ID of the `Bucket` within your AWS CDK app\. This ID, plus a hash based on the bucket's location within the stack, uniquely identifies the bucket during deployment\. The AWS CDK also references this ID when you update the construct in your app and re\-deploy to update the deployed resource\. Here, your logical ID is `MyFirstBucket`\. Buckets can also have a name, specified with the `bucketName` property\. This is different from the logical ID\.
-+ **props** – A bundle of values that define properties of the bucket\. Here you defined the `versioned` property as `true`, which enables versioning for the files in the bucket\.
+Let's take a closer look at the `Function` construct\. Like all constructs, the `Function` class takes three parameters:
++ **scope** – Defines your `Stack` instance as the parent of the `Function` construct\. All constructs that define AWS resources are created within the scope of a stack\. You can define constructs inside of constructs, creating a hierarchy \(tree\)\. Here, and in most cases, the scope is `this` \(`self` in Python\)\.
++ **Id** – The logical ID of the `Function` within your AWS CDK app\. This ID, plus a hash based on the function's location within the stack, uniquely identifies the function during deployment\. The AWS CDK also references this ID when you update the construct in your app and re\-deploy to update the deployed resource\. Here, your logical ID is `HelloWorldFunction`\. Functions can also have a name, specified with the `functionName` property\. This is different from the logical ID\.
++ **props** – A bundle of values that define properties of the function\. Here you define the `runtime`, `handler`, and `code` properties\.
 
   Props are represented differently in the languages supported by the AWS CDK\.
   + In TypeScript and JavaScript, `props` is a single argument and you pass in an object containing the desired properties\.
   + In Python, props are passed as keyword arguments\.
-  + In Java, a Builder is provided to pass the props\. There are two: one for `BucketProps`, and a second for `Bucket` to let you build the construct and its props object in one step\. This code uses the latter\.
-  + In C\#, you instantiate a `BucketProps` object using an object initializer and pass it as the third parameter\.
+  + In Java, a Builder is provided to pass the props\. There are two: one for `FunctionProps`, and a second for `Function` to let you build the construct and its props object in one step\. This code uses the latter\.
+  + In C\#, you instantiate a `FunctionProps` object using an object initializer and pass it as the third parameter\.
 
   If a construct's props are optional, you can omit the `props` parameter entirely\.
 
 All constructs take these same three arguments, so it's easy to stay oriented as you learn about new ones\. And as you might expect, you can subclass any construct to extend it to suit your needs, or if you want to change its defaults\.
 
-## Step 5: Synthesize an AWS CloudFormation template<a name="hello_world_tutorial_synth"></a>
+## Step 5: Define your Lambda function URL<a name="hello_world_url"></a>
 
-Synthesize an AWS CloudFormation template for the app, as follows:
+In this step, you use the `addFunctionUrl` helper method of the `Function` construct to define a Lambda function URL\. To output the value of this URL at deployment, you will create an AWS CloudFormation output using the `[CfnOutput](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.CfnOutput.html)` construct\.
 
-```
-$ cdk synth
-```
-
-If your app contains more than one stack, you must specify which stacks to synthesize\. Since your app contains a single stack, the CDK CLI automatically detects the stack to synthesize\.
-
-If you don't run `cdk synth`, the CDK CLI will automatically perform this step when you deploy\. However, we recommend that you run this step before each deployment\.
-
-**Tip**  
-If you receive an error such as `--app is required ...`, check the directory that you are running CDK CLI commands from\. You should be in your main app directory\.
-
-The `cdk synth` command runs your app\. This creates an AWS CloudFormation template for each stack in your app\. The CDK CLI will display a YAML formatted version of your template at the command line and save a JSON formatted version of your template in the `cdk.out` directory\. The following is a snippet of the command line output that shows the bucket being defined in the AWS CloudFormation template:
-
-```
-Resources:
-  MyFirstBucketB8884501:
-    Type: AWS::S3::Bucket
-    Properties:
-      VersioningConfiguration:
-        Status: Enabled
-    UpdateReplacePolicy: Retain
-    DeletionPolicy: Retain
-    Metadata: #...
-```
-
-**Note**  
-Every generated template contains an `AWS::CDK::Metadata` resource by default\. The AWS CDK team uses this metadata to gain insight into AWS CDK usage and find ways to improve it\. For details, including how to opt out of version reporting, see [Version reporting](cli.md#version_reporting)\.
-
-The generated template can be deployed through the AWS CloudFormation console or any AWS CloudFormation deployment tool\. You can also use the CDK CLI to deploy\. In the next step, you use the CDK CLI to deploy\.
-
-## Step 6: Deploy your stack<a name="hello_world_tutorial_deploy"></a>
-
-To deploy your CDK stack to AWS CloudFormation using the CDK CLI, run the following:
-
-```
-$ cdk deploy
-```
-
-**Important**  
-You must perform a one\-time bootstrapping of your AWS environment before deployment\. For instructions, see [Bootstrap your environment](getting_started.md#getting_started_bootstrap)\.
-
-Similar to `cdk synth`, you don't have to specify the AWS CDK stack since the app contains a single stack\.
-
-If your code has security implications, the CDK CLI will output a summary\. You will need to confirm them to continue with deployment\. The app in this tutorial doesn't have these implications\.
-
-After running `cdk deploy`, the CDK CLI displays progress information as your stack is deployed\. When complete, you can go to the [AWS CloudFormation console](https://console.aws.amazon.com/cloudformation/home) to view your `HelloCdkStack` stack\. You can also go to the Amazon S3 console to view your `MyFirstBucket` resource\.
-
-Congratulations\! You've deployed your first stack using the AWS CDK\. Next, you will modify your app and re\-deploy to update your resource\.
-
-## Step 7: Modify your app<a name="hello_world_tutorial_modify"></a>
-
-In this step, you will modify your Amazon S3 bucket by configuring it to be automatically deleted when your stack is deleted\. This modification involves changing the bucket's `RemovalPolicy` property\. You will also configure the `autoDeleteObjects` property to configure the CDK CLI to delete objects from the bucket before destroying it\. By default, AWS CloudFormation doesn't delete Amazon S3 buckets that contain objects\.
-
-Use the following example to modify your resource:
+Add the following to your CDK stack file:
 
 ------
 #### [ TypeScript ]
 
-Update `lib/hello-cdk-stack.ts`\.
+Located in `lib/hello-cdk-stack.ts`:
 
 ```
-new s3.Bucket(this, 'MyFirstBucket', {
-  versioned: true,
-  removalPolicy: cdk.RemovalPolicy.DESTROY,
-  autoDeleteObjects: true
-});
+// ...
+
+export class HelloCdkStack extends cdk.Stack {
+  constructor(scope: Construct, id: string, props?: cdk.StackProps) {
+    super(scope, id, props);
+
+    // Define the Lambda function resource
+    // ...
+
+    // Define the Lambda function URL resource
+    const myFunctionUrl = myFunction.addFunctionUrl({
+      authType: lambda.FunctionUrlAuthType.NONE,
+    });
+
+    // Define a CloudFormation output for your URL
+    new cdk.CfnOutput(this, "myFunctionUrlOutput", {
+      value: myFunctionUrl.url,
+    })
+
+  }
+}
 ```
 
 ------
 #### [ JavaScript ]
 
-Update `lib/hello-cdk-stack.js`\.
+Located in `lib/hello-cdk-stack.js`:
 
 ```
-new s3.Bucket(this, 'MyFirstBucket', {
-  versioned: true,
-  removalPolicy: cdk.RemovalPolicy.DESTROY,
-  autoDeleteObjects: true
-});
+const { Stack, CfnOutput } = require('aws-cdk-lib');  // Import CfnOutput
+
+class HelloCdkStack extends Stack {
+  constructor(scope, id, props) {
+    super(scope, id, props);
+
+    // Define the Lambda function resource
+    // ...
+
+    // Define the Lambda function URL resource
+    const myFunctionUrl = myFunction.addFunctionUrl({
+      authType: lambda.FunctionUrlAuthType.NONE,
+    });
+
+    // Define a CloudFormation output for your URL
+    new CfnOutput(this, "myFunctionUrlOutput", {
+      value: myFunctionUrl.url,
+    })
+
+  }
+}
+
+module.exports = { HelloCdkStack }
 ```
 
 ------
 #### [ Python ]
 
-Update `hello_cdk/hello_cdk_stack.py`\.
+Located in `hello_cdk/hello_cdk_stack.py`:
 
 ```
 from aws_cdk import (
-    # ...
-    RemovalPolicy,
+  # ...
+  CfnOutput # Import CfnOutput
 )
-# ...
+from constructs import Construct
 
 class HelloCdkStack(Stack):
 
-    def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
-        super().__init__(scope, construct_id, **kwargs)
+  def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
+    super().__init__(scope, construct_id, **kwargs)
 
-        bucket = s3.Bucket(self, "MyFirstBucket", 
-                           versioned=True,
-                           removal_policy=RemovalPolicy.DESTROY,
-                           auto_delete_objects=True)
+    # Define the Lambda function resource
+    # ...
+
+    # Define the Lambda function URL resource
+    my_function_url = my_function.add_function_url(
+      auth_type = _lambda.FunctionUrlAuthType.NONE,
+    )
+
+    # Define a CloudFormation output for your URL
+    CfnOutput(self, "myFunctionUrlOutput", value=my_function_url.url)
 ```
 
 ------
 #### [ Java ]
 
-Update `src/main/java/com/myorg/HelloCdkStack.java`\.
+Located in `src/main/java/.../HelloCdkStack.java`:
 
 ```
-Bucket.Builder.create(this, "MyFirstBucket")
-        .versioned(true)
-        .removalPolicy(RemovalPolicy.DESTROY)
-        .autoDeleteObjects(true)
-        .build();
+package com.myorg;
+
+// ...
+// Import Lambda function URL
+import software.amazon.awscdk.services.lambda.FunctionUrl;
+import software.amazon.awscdk.services.lambda.FunctionUrlAuthType;
+import software.amazon.awscdk.services.lambda.FunctionUrlOptions;
+// Import CfnOutput
+import software.amazon.awscdk.CfnOutput;
+
+public class HelloCdkStack extends Stack {
+  public HelloCdkStack(final Construct scope, final String id) {
+    this(scope, id, null);
+  }
+
+  public HelloCdkStack(final Construct scope, final String id, final StackProps props) {
+    super(scope, id, props);
+
+    // Define the Lambda function resource
+    // ...
+
+    // Define the Lambda function URL resource
+    FunctionUrl myFunctionUrl = myFunction.addFunctionUrl(FunctionUrlOptions.builder()
+      .authType(FunctionUrlAuthType.NONE)
+      .build());
+
+    // Define a CloudFormation output for your URL
+    CfnOutput.Builder.create(this, "myFunctionUrlOutput")
+      .value(myFunctionUrl.getUrl())
+      .build();
+  }
+}
 ```
 
 ------
 #### [ C\# ]
 
-Update `src/HelloCdk/HelloCdkStack.cs`\.
+Located in `src/main/java/.../HelloCdkStack.java`:
 
 ```
-new Bucket(this, "MyFirstBucket", new BucketProps
+// ...
+
+namespace HelloCdk
 {
-    Versioned = true,
-    RemovalPolicy = RemovalPolicy.DESTROY,
-    AutoDeleteObjects = true
-});
+  public class HelloCdkStack : Stack
+  {
+    internal HelloCdkStack(Construct scope, string id, IStackProps props = null) : base(scope, id, props)
+    {
+      // Define the Lambda function resource
+      // ...
+
+      // Define the Lambda function URL resource
+      var myFunctionUrl = myFunction.AddFunctionUrl(new FunctionUrlOptions
+      {
+        AuthType = FunctionUrlAuthType.NONE
+      });
+
+      // Define a CloudFormation output for your URL
+      new CfnOutput(this, "myFunctionUrlOutput", new CfnOutputProps
+      {
+        Value = myFunctionUrl.Url
+      });
+    }
+  }
+}
 ```
 
 ------
 #### [ Go ]
 
-Update `hello-cdk.go`\.
+Located in `hello-cdk.go`:
 
 ```
-	  awss3.NewBucket(stack, jsii.String("MyFirstBucket"), &awss3.BucketProps{
-		Versioned:         jsii.Bool(true),
-		RemovalPolicy:     awscdk.RemovalPolicy_DESTROY,
-		AutoDeleteObjects: jsii.Bool(true),
-	})
+// ...
+
+func NewHelloCdkStack(scope constructs.Construct, id string, props *HelloCdkStackProps) awscdk.Stack {
+  var sprops awscdk.StackProps
+  if props != nil {
+    sprops = props.StackProps
+  }
+  stack := awscdk.NewStack(scope, &id, &sprops)
+
+  // Define the Lambda function resource
+  // ...
+
+  // Define the Lambda function URL resource
+  myFunctionUrl := myFunction.AddFunctionUrl(&awslambda.FunctionUrlOptions{
+    AuthType: awslambda.FunctionUrlAuthType_NONE,
+  })
+
+  // Define a CloudFormation output for your URL
+  awscdk.NewCfnOutput(stack, jsii.String("myFunctionUrlOutput"), &awscdk.CfnOutputProps{
+    Value: myFunctionUrl.Url(),
+  })
+
+  return stack
+}
+
+// ...
 ```
 
 ------
 
-Currently, your code changes have not made any direct updates to your deployed Amazon S3 bucket resource\. Your code defines the desired state of your resource\. To modify your deployed resource, you will use the CDK CLI to synthesize the desired state into a new AWS CloudFormation template\. Then, you will deploy your new AWS CloudFormation template as a change set\. Change sets make only the necessary changes to reach your new desired state\.
+## Step 6: Synthesize a CloudFormation template<a name="hello_world_synth"></a>
 
-To see these changes, use the `cdk diff` command\. Run the following:
+In this step, you prepare for deployment by synthesizing a CloudFormation template with the CDK CLI `cdk synth` command\. This command performs basic validation of your CDK code, runs your CDK app, and generates a CloudFormation template from your CDK stack\.
+
+If your app contains more than one stack, you must specify which stacks to synthesize\. Since your app contains a single stack, the CDK CLI automatically detects the stack to synthesize\.
+
+If you don't synthesize a template, the CDK CLI will automatically perform this step when you deploy\. However, we recommend that you run this step before each deployment to check for synthesis errors\.
+
+Before synthesizing a template, you can optionally build your application to catch syntax and type errors\. For instructions, see [Step 2: Build your CDK app](#hello_world_build)\.
+
+To synthesize a CloudFormation template, run the following from the root of your project:
 
 ```
-$ cdk diff
+$ cdk synth
 ```
 
-The CDK CLI queries your AWS account account for the latest AWS CloudFormation template for the `HelloCdkStack` stack\. Then, it compares the latest template with the template it just synthesized from your app\. The output should look like the following\.
+**Note**  
+If you receive an error like the following, verify that you are in the `hello-cdk` directory and try again:  
 
 ```
-Stack HelloCdkStack
-IAM Statement Changes
-┌───┬──────────────────────────────┬────────┬──────────────────────────────┬──────────────────────────────┬───────────┐
-│   │ Resource                     │ Effect │ Action                       │ Principal                    │ Condition │
-├───┼──────────────────────────────┼────────┼──────────────────────────────┼──────────────────────────────┼───────────┤
-│ + │ ${Custom::S3AutoDeleteObject │ Allow  │ sts:AssumeRole               │ Service:lambda.amazonaws.com │           │
-│   │ sCustomResourceProvider/Role │        │                              │                              │           │
-│   │ .Arn}                        │        │                              │                              │           │
-├───┼──────────────────────────────┼────────┼──────────────────────────────┼──────────────────────────────┼───────────┤
-│ + │ ${MyFirstBucket.Arn}         │ Allow  │ s3:DeleteObject*             │ AWS:${Custom::S3AutoDeleteOb │           │
-│   │ ${MyFirstBucket.Arn}/*       │        │ s3:GetBucket*                │ jectsCustomResourceProvider/ │           │
-│   │                              │        │ s3:GetObject*                │ Role.Arn}                    │           │
-│   │                              │        │ s3:List*                     │                              │           │
-└───┴──────────────────────────────┴────────┴──────────────────────────────┴──────────────────────────────┴───────────┘
-IAM Policy Changes
-┌───┬────────────────────────────────────────────────────────┬────────────────────────────────────────────────────────┐
-│   │ Resource                                               │ Managed Policy ARN                                     │
-├───┼────────────────────────────────────────────────────────┼────────────────────────────────────────────────────────┤
-│ + │ ${Custom::S3AutoDeleteObjectsCustomResourceProvider/Ro │ {"Fn::Sub":"arn:${AWS::Partition}:iam::aws:policy/serv │
-│   │ le}                                                    │ ice-role/AWSLambdaBasicExecutionRole"}                 │
-└───┴────────────────────────────────────────────────────────┴────────────────────────────────────────────────────────┘
-(NOTE: There may be security-related changes not in this list. See https://github.com/aws/aws-cdk/issues/1299)
-
-Parameters
-[+] Parameter AssetParameters/4cd61014b71160e8c66fe167e43710d5ba068b80b134e9bd84508cf9238b2392/S3Bucket AssetParameters4cd61014b71160e8c66fe167e43710d5ba068b80b134e9bd84508cf9238b2392S3BucketBF7A7F3F: {"Type":"String","Description":"S3 bucket for asset \"4cd61014b71160e8c66fe167e43710d5ba068b80b134e9bd84508cf9238b2392\""}
-[+] Parameter AssetParameters/4cd61014b71160e8c66fe167e43710d5ba068b80b134e9bd84508cf9238b2392/S3VersionKey AssetParameters4cd61014b71160e8c66fe167e43710d5ba068b80b134e9bd84508cf9238b2392S3VersionKeyFAF93626: {"Type":"String","Description":"S3 key for asset version \"4cd61014b71160e8c66fe167e43710d5ba068b80b134e9bd84508cf9238b2392\""}
-[+] Parameter AssetParameters/4cd61014b71160e8c66fe167e43710d5ba068b80b134e9bd84508cf9238b2392/ArtifactHash AssetParameters4cd61014b71160e8c66fe167e43710d5ba068b80b134e9bd84508cf9238b2392ArtifactHashE56CD69A: {"Type":"String","Description":"Artifact hash for asset \"4cd61014b71160e8c66fe167e43710d5ba068b80b134e9bd84508cf9238b2392\""}
-
-Resources
-[+] AWS::S3::BucketPolicy MyFirstBucket/Policy MyFirstBucketPolicy3243DEFD
-[+] Custom::S3AutoDeleteObjects MyFirstBucket/AutoDeleteObjectsCustomResource MyFirstBucketAutoDeleteObjectsCustomResourceC52FCF6E
-[+] AWS::IAM::Role Custom::S3AutoDeleteObjectsCustomResourceProvider/Role CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092
-[+] AWS::Lambda::Function Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F
-[~] AWS::S3::Bucket MyFirstBucket MyFirstBucketB8884501
- ├─ [~] DeletionPolicy
- │   ├─ [-] Retain
- │   └─ [+] Delete
- └─ [~] UpdateReplacePolicy
-     ├─ [-] Retain
-     └─ [+] Delete
+--app is required either in command-line, in cdk.json or in ~/.cdk.json
 ```
 
-This diff has four sections:
-+ **IAM Statement Changes** and **IAM Policy Changes** – These permission changes are there because you set the `AutoDeleteObjects` property on your Amazon S3 bucket\. The auto\-delete feature uses a custom resource to delete the objects in the bucket before the bucket itself is deleted\. The IAM objects grant the custom resource's code access to the bucket\.
-+ **Parameters** – The AWS CDK uses these entries to locate the AWS Lambda function asset for the custom resource\.
-+ **Resources** – The new and changed resources in this stack\. We can see the previously mentioned IAM objects, the custom resource, and its associated Lambda function being added\. We can also see that the bucket's `DeletionPolicy` and `UpdateReplacePolicy` attributes are being updated\. These allow the bucket to be deleted along with the stack, and to be replaced with a new one\.
+If successful, the CDK CLI will output a YAML–formatted CloudFormation template to `stdout` and save a JSON–formatted template in the `cdk.out` directory of your project\.
 
-You may notice that we specified `RemovalPolicy` in our AWS CDK app but got a `DeletionPolicy` property in the resulting AWS CloudFormation template\. This is because the AWS CDK uses a different name for the property\. The AWS CDK default is to retain the bucket when the stack is deleted, while the AWS CloudFormation default is to delete it\. For more information, see [Removal policies](resources.md#resources_removal)\.
+The following is an example output of the CloudFormation template:
 
-To see your new AWS CloudFormation template, you can run cdk synth\. By making a few changes to your CDK app, your new AWS CloudFormation template now includes many additional lines of code compared to the original AWS CloudFormation template\.
+### AWS CloudFormation template<a name="hello_world_synth_template"></a>
 
-Next, deploy your app by running the following:
+```
+Resources:
+  HelloWorldFunctionServiceRoleunique-identifier:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+        Version: "2012-10-17"
+      ManagedPolicyArns:
+        - Fn::Join:
+            - ""
+            - - "arn:"
+              - Ref: AWS::Partition
+              - :iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+    Metadata:
+      aws:cdk:path: HelloCdkStack/HelloWorldFunction/ServiceRole/Resource
+  HelloWorldFunctionunique-identifier:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        ZipFile: "
+
+          \        exports.handler = async function(event) {
+
+          \          return {
+
+          \            statusCode: 200,
+
+          \            body: JSON.stringify('Hello World!'),
+
+          \          };
+
+          \        };
+
+          \      "
+      Handler: index.handler
+      Role:
+        Fn::GetAtt:
+          - HelloWorldFunctionServiceRoleunique-identifier
+          - Arn
+      Runtime: nodejs20.x
+    DependsOn:
+      - HelloWorldFunctionServiceRoleunique-identifier
+    Metadata:
+      aws:cdk:path: HelloCdkStack/HelloWorldFunction/Resource
+  HelloWorldFunctionFunctionUrlunique-identifier:
+    Type: AWS::Lambda::Url
+    Properties:
+      AuthType: NONE
+      TargetFunctionArn:
+        Fn::GetAtt:
+          - HelloWorldFunctionunique-identifier
+          - Arn
+    Metadata:
+      aws:cdk:path: HelloCdkStack/HelloWorldFunction/FunctionUrl/Resource
+  HelloWorldFunctioninvokefunctionurlunique-identifier:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunctionUrl
+      FunctionName:
+        Fn::GetAtt:
+          - HelloWorldFunctionunique-identifier
+          - Arn
+      FunctionUrlAuthType: NONE
+      Principal: "*"
+    Metadata:
+      aws:cdk:path: HelloCdkStack/HelloWorldFunction/invoke-function-url
+  CDKMetadata:
+    Type: AWS::CDK::Metadata
+    Properties:
+      Analytics: v2:deflate64:unique-identifier
+    Metadata:
+      aws:cdk:path: HelloCdkStack/CDKMetadata/Default
+    Condition: CDKMetadataAvailable
+Outputs:
+  myFunctionUrlOutput:
+    Value:
+      Fn::GetAtt:
+        - HelloWorldFunctionFunctionUrlunique-identifier
+        - FunctionUrl
+Conditions:
+  CDKMetadataAvailable:
+    Fn::Or:
+      - Fn::Or:
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - af-south-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ap-east-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ap-northeast-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ap-northeast-2
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ap-south-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ap-southeast-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ap-southeast-2
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ca-central-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - cn-north-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - cn-northwest-1
+      - Fn::Or:
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - eu-central-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - eu-north-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - eu-south-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - eu-west-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - eu-west-2
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - eu-west-3
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - il-central-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - me-central-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - me-south-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - sa-east-1
+      - Fn::Or:
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - us-east-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - us-east-2
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - us-west-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - us-west-2
+Parameters:
+  BootstrapVersion:
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: /cdk-bootstrap/unique-identifier/version
+    Description: Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]
+Rules:
+  CheckBootstrapVersion:
+    Assertions:
+      - Assert:
+          Fn::Not:
+            - Fn::Contains:
+                - - "1"
+                  - "2"
+                  - "3"
+                  - "4"
+                  - "5"
+                - Ref: BootstrapVersion
+        AssertDescription: CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI.
+```
+
+**Note**  
+Every generated template contains an `AWS::CDK::Metadata` resource by default\. The AWS CDK team uses this metadata to gain insight into AWS CDK usage and find ways to improve it\. For details, including how to opt out of version reporting, see [Version reporting](cli.md#version_reporting)\.
+
+By defining a single L2 construct, the AWS CDK creates an extensive CloudFormation template containing your Lambda resources, along with the permissions and glue logic required for your resources to interact within your application\.
+
+## Step 7: \(Optional\) Bootstrap your environment<a name="hello_world_bootstrap"></a>
+
+For this tutorial, you will be deploying into your `default` environment\. This environment is configured and bootstrapped during the [getting started](getting_started.md) process\.
+
+If you want to deploy this application into another environment, you must specify the environment in your CDK code and bootstrap the environment\. For instructions, see the following:
++ [How to specify environments with the AWS CDK](configure-env.md#configure-env-how)\.
++ [How to bootstrap your environment](bootstrapping-env.md#bootstrapping-howto)\.
+
+## Step 8: Deploy your CDK stack<a name="hello_world_deploy"></a>
+
+In this step, you use the CDK CLI `cdk deploy` command to deploy your CDK stack\. This command retrieves your generated CloudFormation template and deploys it through AWS CloudFormation, which provisions your resources as part of a CloudFormation stack\.
+
+From the root of your project, run the following\. Confirm changes if prompted:
 
 ```
 $ cdk deploy
+
+✨  Synthesis time: 2.69s
+
+HelloCdkStack:  start: Building unique-identifier:current_account-current_region
+HelloCdkStack:  success: Built unique-identifier:current_account-current_region
+HelloCdkStack:  start: Publishing unique-identifier:current_account-current_region
+HelloCdkStack:  success: Published unique-identifier:current_account-current_region
+This deployment will make potentially sensitive changes according to your current security approval level (--require-approval broadening).
+Please confirm you intend to make the following modifications:
+
+IAM Statement Changes
+┌───┬───────────────────────────────────────┬────────┬──────────────────────────┬──────────────────────────────┬───────────┐
+│   │ Resource                              │ Effect │ Action                   │ Principal                    │ Condition │
+├───┼───────────────────────────────────────┼────────┼──────────────────────────┼──────────────────────────────┼───────────┤
+│ + │ ${HelloWorldFunction.Arn}             │ Allow  │ lambda:InvokeFunctionUrl │ *                            │           │
+├───┼───────────────────────────────────────┼────────┼──────────────────────────┼──────────────────────────────┼───────────┤
+│ + │ ${HelloWorldFunction/ServiceRole.Arn} │ Allow  │ sts:AssumeRole           │ Service:lambda.amazonaws.com │           │
+└───┴───────────────────────────────────────┴────────┴──────────────────────────┴──────────────────────────────┴───────────┘
+IAM Policy Changes
+┌───┬───────────────────────────────────┬────────────────────────────────────────────────────────────────────────────────┐
+│   │ Resource                          │ Managed Policy ARN                                                             │
+├───┼───────────────────────────────────┼────────────────────────────────────────────────────────────────────────────────┤
+│ + │ ${HelloWorldFunction/ServiceRole} │ arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole │
+└───┴───────────────────────────────────┴────────────────────────────────────────────────────────────────────────────────┘
+(NOTE: There may be security-related changes not in this list. See https://github.com/aws/aws-cdk/issues/1299)
+
+Do you wish to deploy these changes (y/n)? y
 ```
 
-The AWS CDK will inform you about the security policy changes we've already seen in the diff\. Enter y to approve the changes and deploy the updated stack\. The CDK CLI will deploy your stack to make your desired changes\. The following is an example output:
+Similar to `cdk synth`, you don't have to specify the AWS CDK stack since the app contains a single stack\.
+
+During deployment, the CDK CLI displays progress information as your stack is deployed\. When complete, you can go to the [AWS CloudFormation console](https://console.aws.amazon.com/cloudformation/home) to view your `HelloCdkStack` stack\. You can also go to the Lambda console to view your `HelloWorldFunction` resource\.
+
+When deployment completes, the CDK CLI will output your endpoint URL\. Copy this URL for the next step\. The following is an example:
 
 ```
-HelloCdkStack: deploying...
-[0%] start: Publishing 4cd61014b71160e8c66fe167e43710d5ba068b80b134e9bd84508cf9238b2392:current
-[100%] success: Published 4cd61014b71160e8c66fe167e43710d5ba068b80b134e9bd84508cf9238b2392:current
+...
+HelloCdkStack: deploying... [1/1]
 HelloCdkStack: creating CloudFormation changeset...
- 0/5 | 4:32:31 PM | UPDATE_IN_PROGRESS   | AWS::CloudFormation::Stack  | HelloCdkStack User Initiated
- 0/5 | 4:32:36 PM | CREATE_IN_PROGRESS   | AWS::IAM::Role              | Custom::S3AutoDeleteObjectsCustomResourceProvider/Role (CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092)
- 1/5 | 4:32:36 PM | UPDATE_COMPLETE      | AWS::S3::Bucket             | MyFirstBucket (MyFirstBucketB8884501)
- 1/5 | 4:32:36 PM | CREATE_IN_PROGRESS   | AWS::IAM::Role              | Custom::S3AutoDeleteObjectsCustomResourceProvider/Role (CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092) Resource creation Initiated
- 3/5 | 4:32:54 PM | CREATE_COMPLETE      | AWS::IAM::Role              | Custom::S3AutoDeleteObjectsCustomResourceProvider/Role (CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092)
- 3/5 | 4:32:56 PM | CREATE_IN_PROGRESS   | AWS::Lambda::Function       | Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler (CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F)
- 3/5 | 4:32:56 PM | CREATE_IN_PROGRESS   | AWS::S3::BucketPolicy       | MyFirstBucket/Policy (MyFirstBucketPolicy3243DEFD)
- 3/5 | 4:32:56 PM | CREATE_IN_PROGRESS   | AWS::Lambda::Function       | Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler (CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F) Resource creation Initiated
- 3/5 | 4:32:57 PM | CREATE_COMPLETE      | AWS::Lambda::Function       | Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler (CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F)
- 3/5 | 4:32:57 PM | CREATE_IN_PROGRESS   | AWS::S3::BucketPolicy       | MyFirstBucket/Policy (MyFirstBucketPolicy3243DEFD) Resource creation Initiated
- 4/5 | 4:32:57 PM | CREATE_COMPLETE      | AWS::S3::BucketPolicy       | MyFirstBucket/Policy (MyFirstBucketPolicy3243DEFD)
- 4/5 | 4:32:59 PM | CREATE_IN_PROGRESS   | Custom::S3AutoDeleteObjects | MyFirstBucket/AutoDeleteObjectsCustomResource/Default (MyFirstBucketAutoDeleteObjectsCustomResourceC52FCF6E)
- 5/5 | 4:33:06 PM | CREATE_IN_PROGRESS   | Custom::S3AutoDeleteObjects | MyFirstBucket/AutoDeleteObjectsCustomResource/Default (MyFirstBucketAutoDeleteObjectsCustomResourceC52FCF6E) Resource creation Initiated
- 5/5 | 4:33:06 PM | CREATE_COMPLETE      | Custom::S3AutoDeleteObjects | MyFirstBucket/AutoDeleteObjectsCustomResource/Default (MyFirstBucketAutoDeleteObjectsCustomResourceC52FCF6E)
- 5/5 | 4:33:08 PM | UPDATE_COMPLETE_CLEA | AWS::CloudFormation::Stack  | HelloCdkStack
- 6/5 | 4:33:09 PM | UPDATE_COMPLETE      | AWS::CloudFormation::Stack  | HelloCdkStack
 
  ✅  HelloCdkStack
 
+✨  Deployment time: 41.65s
+
+Outputs:
+HelloCdkStack.myFunctionUrlOutput = https://<api-id>.lambda-url.<Region>.on.aws/
 Stack ARN:
-arn:aws:cloudformation:REGION:ACCOUNT:stack/HelloCdkStack/UNIQUE-ID
+arn:aws:cloudformation:Region:account-id:stack/HelloCdkStack/unique-identifier
+
+✨  Total time: 44.34s
 ```
 
-## Step 8: Destroying the app's resources<a name="hello_world_tutorial_destroy"></a>
+## Step 9: Interact with your application on AWS<a name="hello_world_interact"></a>
 
-Now that you've completed this tutorial, you can delete the deployed AWS CloudFormation stack and all resources associated with it\. This is a good practice to minimize unnecessary costs and keep your environment clean\. Run the following:
+In this step, you interact with your application on AWS by invoking your Lambda function through the function URL\. When you access the URL, your Lambda function returns the `Hello World!` message\.
+
+To invoke your function, access the function URL through your browser or from the command line\. The following is an example:
+
+```
+$ curl https://<api-id>.lambda-url.<Region>.on.aws/
+"Hello World!"%
+```
+
+## Step 10: Modify your application<a name="hello_world_modify"></a>
+
+In this step, you modify the message that the Lambda function returns when invoked\. You perform a diff using the CDK CLI `cdk diff` command to preview your changes and deploy to update your application\. You then interact with your application on AWS to see your new message\.
+
+Modify the `myFunction` instance in your CDK stack file as follows:
+
+------
+#### [ TypeScript ]
+
+Located in `lib/hello-cdk-stack.ts`:
+
+```
+// ...
+
+export class HelloCdkStack extends cdk.Stack {
+  constructor(scope: Construct, id: string, props?: cdk.StackProps) {
+    super(scope, id, props);
+
+    // Modify the Lambda function resource
+    const myFunction = new lambda.Function(this, "HelloWorldFunction", {
+      runtime: lambda.Runtime.NODEJS_20_X, // Provide any supported Node.js runtime
+      handler: "index.handler",
+      code: lambda.Code.fromInline(`
+        exports.handler = async function(event) {
+          return {
+            statusCode: 200,
+            body: JSON.stringify('Hello CDK!'),
+          };
+        };
+      `),
+    });
+
+    // ...
+```
+
+------
+#### [ JavaScript ]
+
+Located in `lib/hello-cdk-stack.js`:
+
+```
+// ...
+
+class HelloCdkStack extends Stack {
+  constructor(scope, id, props) {
+    super(scope, id, props);
+
+    // Modify the Lambda function resource
+    const myFunction = new lambda.Function(this, "HelloWorldFunction", {
+      runtime: lambda.Runtime.NODEJS_20_X, // Provide any supported Node.js runtime
+      handler: "index.handler",
+      code: lambda.Code.fromInline(`
+        exports.handler = async function(event) {
+          return {
+            statusCode: 200,
+            body: JSON.stringify('Hello CDK!'),
+          };
+        };
+      `),
+    });
+
+    // ...
+
+  }
+}
+
+module.exports = { HelloCdkStack }
+```
+
+------
+#### [ Python ]
+
+Located in `hello_cdk/hello_cdk_stack.py`:
+
+```
+# ...
+
+class HelloCdkStack(Stack):
+
+  def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
+    super().__init__(scope, construct_id, **kwargs)
+
+    # Modify the Lambda function resource
+    my_function = _lambda.Function(
+      self, "HelloWorldFunction", 
+      runtime = _lambda.Runtime.NODEJS_20_X, # Provide any supported Node.js runtime
+      handler = "index.handler",
+      code = _lambda.Code.from_inline(
+        """
+        exports.handler = async function(event) {
+          return {
+            statusCode: 200,
+            body: JSON.stringify('Hello CDK!'),
+          };
+        };
+        """
+      ),
+    )
+
+    # ...
+```
+
+------
+#### [ Java ]
+
+Located in `src/main/java/.../HelloCdkStack.java`:
+
+```
+// ...
+
+public class HelloCdkStack extends Stack {
+  public HelloCdkStack(final Construct scope, final String id) {
+    this(scope, id, null);
+  }
+
+  public HelloCdkStack(final Construct scope, final String id, final StackProps props) {
+    super(scope, id, props);
+
+    // Modify the Lambda function resource
+    Function myFunction = Function.Builder.create(this, "HelloWorldFunction")
+      .runtime(Runtime.NODEJS_20_X) // Provide any supported Node.js runtime
+      .handler("index.handler")
+      .code(Code.fromInline(
+        "exports.handler = async function(event) {" +
+        " return {" +
+        " statusCode: 200," +
+        " body: JSON.stringify('Hello CDK!')" +
+        " };" +
+        "};"))
+      .build();
+
+    // ...
+  }
+}
+```
+
+------
+#### [ C\# ]
+
+
+
+```
+// ...
+
+namespace HelloCdk
+{
+  public class HelloCdkStack : Stack
+  {
+    internal HelloCdkStack(Construct scope, string id, IStackProps props = null) : base(scope, id, props)
+    {
+      // Modify the Lambda function resource
+      var myFunction = new Function(this, "HelloWorldFunction", new FunctionProps
+      {
+        Runtime = Runtime.NODEJS_20_X, // Provide any supported Node.js runtime
+        Handler = "index.handler",
+        Code = Code.FromInline(@"
+          exports.handler = async function(event) {
+            return {
+              statusCode: 200,
+              body: JSON.stringify('Hello CDK!'),
+            };
+          };
+        "),
+      });
+
+      // ...
+    }
+  }
+}
+```
+
+------
+#### [ Go ]
+
+
+
+```
+// ...
+
+type HelloCdkStackProps struct {
+  awscdk.StackProps
+}
+
+func NewHelloCdkStack(scope constructs.Construct, id string, props *HelloCdkStackProps) awscdk.Stack {
+  var sprops awscdk.StackProps
+  if props != nil {
+    sprops = props.StackProps
+  }
+  stack := awscdk.NewStack(scope, &id, &sprops)
+
+  // Modify the Lambda function resource
+  myFunction := awslambda.NewFunction(stack, jsii.String("HelloWorldFunction"), &awslambda.FunctionProps{
+    Runtime: awslambda.Runtime_NODEJS_20_X(), // Provide any supported Node.js runtime
+    Handler: jsii.String("index.handler"),
+    Code: awslambda.Code_FromInline(jsii.String(`
+      exports.handler = async function(event) {
+        return {
+          statusCode: 200,
+          body: JSON.stringify('Hello CDK!'),
+        };
+      };
+    `)),
+  })
+
+// ...
+```
+
+------
+
+Currently, your code changes have not made any direct updates to your deployed Lambda resource\. Your code defines the desired state of your resource\. To modify your deployed resource, you will use the CDK CLI to synthesize the desired state into a new AWS CloudFormation template\. Then, you will deploy your new CloudFormation template as a change set\. Change sets make only the necessary changes to reach your new desired state\.
+
+To preview your changes, run the `cdk diff` command\. The following is an example:
+
+```
+$ cdk diff
+Stack HelloCdkStack
+Hold on while we create a read-only change set to get a diff with accurate replacement information (use --no-change-set to use a less accurate but faster template-only diff)
+Resources
+[~] AWS::Lambda::Function HelloWorldFunction HelloWorldFunctionunique-identifier
+ └─ [~] Code
+     └─ [~] .ZipFile:
+         ├─ [-] 
+                exports.handler = async function(event) {
+                    return {
+                      statusCode: 200,
+                      body: JSON.stringify('Hello World!'),
+                    };
+                };
+                
+         └─ [+] 
+                exports.handler = async function(event) {
+                    return {
+                      statusCode: 200,
+                      body: JSON.stringify('Hello CDK!'),
+                    };
+                };
+                
+
+✨  Number of stacks with differences: 1
+```
+
+To create this diff, the CDK CLI queries your AWS account account for the latest AWS CloudFormation template for the `HelloCdkStack` stack\. Then, it compares the latest template with the template it just synthesized from your app\.
+
+To implement your changes, run the `cdk deploy` command\. The following is an example:
+
+```
+$ cdk deploy
+
+✨  Synthesis time: 2.12s
+
+HelloCdkStack:  start: Building unique-identifier:current_account-current_region
+HelloCdkStack:  success: Built unique-identifier:current_account-current_region
+HelloCdkStack:  start: Publishing unique-identifier:current_account-current_region
+HelloCdkStack:  success: Published unique-identifier:current_account-current_region
+HelloCdkStack: deploying... [1/1]
+HelloCdkStack: creating CloudFormation changeset...
+
+ ✅  HelloCdkStack
+
+✨  Deployment time: 26.96s
+
+Outputs:
+HelloCdkStack.myFunctionUrlOutput = https://unique-identifier.lambda-url.<Region>.on.aws/
+Stack ARN:
+arn:aws:cloudformation:Region:account-id:stack/HelloCdkStack/unique-identifier
+
+✨  Total time: 29.07s
+```
+
+To interact with your application, repeat [Step 9: Interact with your application on AWS](#hello_world_interact)\. The following is an example:
+
+```
+$ curl https://<api-id>.lambda-url.<Region>.on.aws/
+"Hello CDK!"%
+```
+
+## Step 11: Delete your application<a name="hello_world_delete"></a>
+
+In this step, you use the CDK CLI `cdk destroy` command to delete your application\. This command deletes the CloudFormation stack associated with your CDK stack, which includes the resources you created\.
+
+To delete your application, run the `cdk destroy` command and confirm your request to delete the application\. The following is an example:
 
 ```
 $ cdk destroy
+Are you sure you want to delete: HelloCdkStack (y/n)? y
+HelloCdkStack: destroying... [1/1]
+
+ ✅  HelloCdkStack: destroyed
 ```
-
-Enter y to approve the changes and delete your stack\.
-
-**Note**  
-If you didn't change the bucket's `RemovalPolicy`, the stack deletion would complete successfully, but the bucket would become orphaned \(no longer associated with the stack\)\.
 
 ## Next steps<a name="hello_world_next_steps"></a>
 
@@ -636,7 +1487,6 @@ To learn more about using the AWS CDK in your preferred programming language, se
 
 For additional resources, see the following:
 + Try the [CDK Workshop](https://cdkworkshop.com/) for a more in\-depth tour involving a more complex project\.
-+ Dive deeper into concepts like [Environments](environments.md), [Assets](assets.md), [Permissions](permissions.md), [Runtime context](context.md), [Parameters](parameters.md), and [Customizing constructs from the AWS Construct Library](cfn_layer.md)\.
 + See the [API reference](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-construct-library.html) to begin exploring the CDK constructs available for your favorite AWS services\.
 + Visit [Construct Hub](https://constructs.dev/search?q=&cdk=aws-cdk&cdkver=2&sort=downloadsDesc&offset=0) to discover constructs created by AWS and others\.
 + Explore [Examples](https://github.com/aws-samples/aws-cdk-examples) of using the AWS CDK\.

@@ -29,6 +29,22 @@ To bootstrap from any working directory, provide the environment to bootstrap as
 ```
 $ cdk bootstrap aws://123456789012/us-east-1
 ```
+If you don't have your AWS account number, you can get it from the AWS Management Console\. You can also use the following AWS CLI command to display your default account information, including your account number:  
+
+```
+$ aws sts get-caller-identity
+```
+If you have named profiles in your AWS `config` and `credentials` files, use the `--profile` option to retrieve account information for a specific profile\. The following is an example:  
+
+```
+$ aws sts get-caller-identity --profile prod
+```
+To display the default Region, use the `aws configure get` command:  
+
+```
+$ aws configure get region
+$ aws configure get region --profile prod
+```
 When providing an argument, the `aws://` prefix is optional\. The following is valid:  
 
 ```

@@ -84,11 +84,7 @@ When scanning your environment for resources, IaC generator has specific limitat
 
 ## Prerequisites<a name="migrate-prerequisites"></a>
 
-Before using the `cdk migrate` command, do the following:
-
-1. Establish authentication with AWS\. For instructions, see [Step 2: Configure programmatic access](getting_started.md#getting_started_auth)\.
-
-1. Install or upgrade the AWS CDK CLI\. For installation instructions, see [Step 3: Install the AWS CDK CLI](getting_started.md#getting_started_install)\.
+Before using the `cdk migrate` command, complete all set up steps in [Getting started with the AWS CDK](getting_started.md)\.
 
 ## Get started with CDK Migrate<a name="migrate-gs"></a>
 
@@ -105,7 +101,7 @@ The only required option is `--stack-name`\. Use this option to specify a name f
 Use `--language` to specify the programming language of the new CDK app\.
 
 **AWS account and AWS Region**  
-The AWS CDK CLI retrieves AWS account and AWS Region information from default sources\. For more information, see [Step 2: Configure programmatic access](getting_started.md#getting_started_auth)\. You can use `--account` and `--region` options with `cdk migrate` to provide other values\.
+The AWS CDK CLI retrieves AWS account and AWS Region information from default sources\. For more information, see [Environments](environments.md)\. You can use `--account` and `--region` options with `cdk migrate` to provide other values\.
 
 **Output directory of your new CDK project**  
 By default, the AWS CDK CLI will create a new CDK project in your working directory and use the value you provide with `--stack-name` to name the project folder\. If a folder with the same name currently exists, the AWS CDK CLI will overwrite that folder\.  
