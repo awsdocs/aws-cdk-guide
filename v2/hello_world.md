@@ -894,6 +894,9 @@ func NewHelloCdkStack(scope constructs.Construct, id string, props *HelloCdkStac
 
 ------
 
+**Warning**  
+To keep this tutorial simple, your Lambda function URL is defined without authentication\. When deployed, this creates a publicly accessible endpoint that can be used to invoke your function\. When you are done with this tutorial, follow [Step 11: Delete your application](#hello_world_delete) to delete these resources\.
+
 ## Step 6: Synthesize a CloudFormation template<a name="hello_world_synth"></a>
 
 In this step, you prepare for deployment by synthesizing a CloudFormation template with the CDK CLI `cdk synth` command\. This command performs basic validation of your CDK code, runs your CDK app, and generates a CloudFormation template from your CDK stack\.
