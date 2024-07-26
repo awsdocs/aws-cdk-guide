@@ -17,6 +17,7 @@ sponsored by Amazon.
 + [What is the AWS CDK?](home.md)
 + [Learn AWS CDK core concepts](core_concepts.md)
    + [Supported programming languages](languages.md)
+   + [The AWS CDK libraries](libraries.md)
    + [AWS CDK projects](projects.md)
    + [AWS CDK apps](apps.md)
    + [Stacks](stacks.md)

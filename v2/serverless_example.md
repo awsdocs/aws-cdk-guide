@@ -1494,7 +1494,7 @@ CdkHelloWorldStack: destroying... [1/1]
 
 ## Troubleshooting<a name="serverless-example-troubleshooting"></a>
 
-### Error: \{“message”: “Internal server error”\}%<a name="w90aac69c13c55b5"></a>
+### Error: \{“message”: “Internal server error”\}%<a name="w95aac69c13c55b5"></a>
 
 When invoking the deployed Lambda function, you receive this error\. This error could occur for multiple reasons\.
 

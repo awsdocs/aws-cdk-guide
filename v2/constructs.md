@@ -2,89 +2,15 @@
 
 Constructs are the basic building blocks of AWS Cloud Development Kit \(AWS CDK\) applications\. A construct is a component within your application that represents one or more AWS CloudFormation resources and their configuration\. You build your application, piece by piece, by importing and configuring constructs\.
 
-Constructs are classes that you import into your CDK apps\. Constructs are available from the AWS Construct Library\. You can also create and distribute your own constructs, or use constructs created by third\-party developers\.
+## Import and use constructs<a name="constructs-import"></a>
+
+Constructs are classes that you import into your CDK applications from the [AWS Construct Library](libraries.md#libraries-construct)\. You can also create and distribute your own constructs, or use constructs created by third\-party developers\.
 
 Constructs are part of the Construct Programming Model \(CPM\)\. They are available to use with other tools such as CDK for Terraform \(CDKtf\), CDK for Kubernetes \(CDK8s\), and Projen\.
 
-**Topics**
-+ [AWS Construct Library](#constructs_lib)
-+ [Defining constructs](#constructs_define)
-+ [Working with constructs](#constructs-work)
-+ [Working with third\-party constructs](#constructs-work-third)
-+ [Learn more](#constructs-learn)
-
-## AWS Construct Library<a name="constructs_lib"></a>
-
-The AWS Construct Library contains a collection of constructs that are developed and maintained by AWS\. It is organized into various modules that contain constructs representing all of the resources available on AWS\. For reference information, see the [AWS CDK API Reference](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-construct-library.html)\.
-
-The main CDK package is called `aws-cdk-lib`, and it contains the majority of the AWS Construct Library\. It also contains base classes such as `Stack` and `App`\.
-
-The actual package name of the main CDK package varies by language\.
-
-------
-#### [ TypeScript ]
-
-| Install | `npm install aws-cdk-lib` | 
-| --- |--- |
-| Import | `import * as cdk from 'aws-cdk-lib';` | 
-| --- |--- |
-
-------
-#### [ JavaScript ]
-
-| Install | `npm install aws-cdk-lib` | 
-| --- |--- |
-| Import | `const cdk = require('aws-cdk-lib');` | 
-| --- |--- |
-
-------
-#### [ Python ]
-
-| Install | python \-m pip install aws\-cdk\-lib | 
-| --- |--- |
-| Import | `import aws_cdk as cdk` | 
-| --- |--- |
-
-------
-#### [ Java ]
-
-| In `pom.xml`, add | Group `software.amazon.awscdk`; artifact `aws-cdk-lib` | 
-| --- |--- |
-| Import | `import software.amazon.awscdk.App;` | 
-| --- |--- |
-
-------
-#### [ C\# ]
-
-| Install | dotnet add package Amazon\.CDK\.Lib | 
-| --- |--- |
-| Import | `using Amazon.CDK;` | 
-| --- |--- |
-
-------
-#### [ Go ]
-
-| Install | go get github\.com/aws/aws\-cdk\-go/awscdk/v2 | 
-| --- |--- |
-| Import | 
-
-```
-import (
-  "github.com/aws/aws-cdk-go/awscdk/v2"
-)
-``` | 
-| --- |--- |
-
-------
-
-**Note**  
-If you created a CDK project using cdk init, you don't need to manually install `aws-cdk-lib`\.
-
-The AWS Construct Library also contains the `[constructs](https://docs.aws.amazon.com/cdk/api/v2/docs/constructs-readme.html)` package with the `Construct` base class\. It's in its own package because it's used by other construct\-based tools in addition to the AWS CDK, including CDK for Terraform and CDK for Kubernetes\.
-
 Numerous third parties have also published constructs compatible with the AWS CDK\. Visit [Construct Hub](https://constructs.dev/search?q=&cdk=aws-cdk&cdkver=2&offset=0) to explore the AWS CDK construct partner ecosystem\.
 
-### Construct levels<a name="constructs_lib_levels"></a>
+## Construct levels<a name="constructs_lib_levels"></a>
 
 Constructs from the AWS Construct Library are categorized into three levels\. Each level offers an increasing level of abstraction\. The higher the abstraction, the easier to configure, requiring less expertise\. The lower the abstraction, the more customization available, requiring more expertise\.
 
