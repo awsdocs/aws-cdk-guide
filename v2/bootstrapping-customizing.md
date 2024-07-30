@@ -7,7 +7,8 @@ For an introduction to bootstrapping, see [Bootstrapping](bootstrapping.md)\.
 **Topics**
 + [Use the CDK CLI to customize bootstrapping](#bootstrapping-customizing-cli)
 + [Modify the default bootstrap template](#bootstrapping-customizing-template)
-+ [Follow the bootstrap template contract](#bootstrapping-contract)
++ [Follow the bootstrap contract](#bootstrapping-contract)
++ [Create and apply permissions boundaries for the AWS CDK](customize-permissions-boundaries.md)
 
 ## Use the CDK CLI to customize bootstrapping<a name="bootstrapping-customizing-cli"></a>
 
@@ -89,7 +90,7 @@ When you need more customization than the CDK CLI can provide, you can modify th
    $ cdk bootstrap --show-template > my-bootstrap-template.yaml
    ```
 
-1. Modify the bootstrap template as needed\. Any changes that you make should adhere to the bootstrapping template contract\. For more information on the bootstrapping template contract, see [Follow the bootstrap template contract](#bootstrapping-contract)\.
+1. Modify the bootstrap template as needed\. Any changes that you make should adhere to the bootstrapping template contract\. For more information on the bootstrapping template contract, see [Follow the bootstrap contract](#bootstrapping-contract)\.
 
    To ensure that your customizations are not accidentally overwritten later by someone running `cdk bootstrap` using the default template, change the default value of the `BootstrapVariant` template parameter\. The CDK CLI will only allow overwriting the bootstrap stack with templates that have the same `BootstrapVariant` and an equal or higher version than the template that is currently deployed\.
 
@@ -99,9 +100,11 @@ When you need more customization than the CDK CLI can provide, you can modify th
    $ cdk bootstrap --template my-bootstrap-template.yaml
    ```
 
-## Follow the bootstrap template contract<a name="bootstrapping-contract"></a>
+## Follow the bootstrap contract<a name="bootstrapping-contract"></a>
 
-When you customize bootstrapping, you may need to customize stack synthesis behavior\. This ensures that your synthesized CloudFormation template remains compatible with your bootstrap stack\. For more information, see [Customize CDK stack synthesis](configure-synth.md#bootstrapping-custom-synth)\.
+For your CDK apps to properly deploy, bootstrapping and synthesis must work together\. Bootstrapping creates resources in your AWS environment that are used by the AWS CDK to perform deployments and manage application assets\. These resources are commonly referred to as *bootstrap resources*\. Synthesis produces CloudFormation templates from each CDK stack in your application\. These templates must properly specify your bootstrap resources\.
+
+Therefore, when you customize bootstrapping, you may need to customize stack synthesis\. For instructions on customizing synthesis, see [Customize CDK stack synthesis](configure-synth.md#bootstrapping-custom-synth)\. The purpose is to ensure that your synthesized CloudFormation template remains compatible with your bootstrap stack\. This compatibility is referred to as the *bootstrap contract*\.
 
 The simplest method to customize stack synthesis is by modifying the `DefaultStackSynthesizer` class in your `Stack` instance\. If you require customization beyond what this class can offer, you can write your own synthesizer as a class that implements `[IStackSynthesizer](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.IStackSynthesizer.html)` \(perhaps deriving from `DefaultStackSynthesizer`\)\.
 

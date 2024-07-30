@@ -8,11 +8,11 @@ You add assets through APIs that are exposed by specific AWS constructs\. For ex
 
 ## Assets in detail<a name="assets_details"></a>
 
-When you refer to an asset in your app, the [cloud assembly](apps.md#apps_cloud_assembly) that's synthesized from your application includes metadata information with instructions for the AWS CDK CLI\. The instructions include where to find the asset on the local disk and what type of bundling to perform based on the asset type, such as a directory to compress \(zip\) or a Docker image to build\.
+When you refer to an asset in your app, the [cloud assembly](deploy.md#deploy-how-synth-assemblies) that's synthesized from your application includes metadata information with instructions for the AWS CDK CLI\. The instructions include where to find the asset on the local disk and what type of bundling to perform based on the asset type, such as a directory to compress \(zip\) or a Docker image to build\.
 
 The AWS CDK generates a source hash for assets\. This can be used at construction time to determine whether the contents of an asset have changed\.
 
-By default, the AWS CDK creates a copy of the asset in the cloud assembly directory, which defaults to `cdk.out`, under the source hash\. This way, the cloud assembly is self\-contained, so if it moved over to a different host for deployment, it can still be deployed\. See [Cloud assemblies](apps.md#apps_cloud_assembly) for details\.
+By default, the AWS CDK creates a copy of the asset in the cloud assembly directory, which defaults to `cdk.out`, under the source hash\. This way, the cloud assembly is self\-contained, so if it moved over to a different host for deployment, it can still be deployed\. See [Cloud assemblies](deploy.md#deploy-how-synth-assemblies) for details\.
 
 When the AWS CDK deploys an app that references assets \(either directly by the app code or through a library\), the AWS CDK CLI first prepares and publishes the assets to an Amazon S3 bucket or Amazon ECR repository\. \(The S3 bucket or repository is created during bootstrapping\.\) Only then are the resources defined in the stack deployed\.
 

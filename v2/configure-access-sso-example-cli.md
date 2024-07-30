@@ -1,4 +1,4 @@
-# Example: Use the AWS CLI to configure short\-term security credentials as an IAM Identity Center user<a name="configure-access-sso-example-cli"></a>
+# Example: Authenticate with IAM Identity Center automatic token refresh for use with the AWS CDK CLI<a name="configure-access-sso-example-cli"></a>
 
 In this example, we configure the AWS Command Line Interface \(AWS CLI\) to authenticate our user with the AWS IAM Identity Center token provider configuration\. The SSO token provider configuration lets the AWS CLI automatically retrieve refreshed authentication tokens to generate short\-term credentials that we can use with the AWS Cloud Development Kit \(AWS CDK\) Command Line Interface \(AWS CDK CLI\)\.
 

@@ -1,4 +1,4 @@
-# Developing AWS CDK applications<a name="develop"></a>
+# Develop AWS CDK applications<a name="develop"></a>
 
 Develop AWS Cloud Development Kit \(AWS CDK\) applications\.
 
@@ -12,3 +12,4 @@ Develop AWS Cloud Development Kit \(AWS CDK\) applications\.
 + [Set a CloudWatch alarm](how_to_set_cw_alarm.md)
 + [Save and retrieve context variable values](get_context_var.md)
 + [Using resources from the AWS CloudFormation Public Registry](use_cfn_public_registry.md)
++ [Define permissions for L2 constructs with the AWS CDK](define-iam-l2.md)

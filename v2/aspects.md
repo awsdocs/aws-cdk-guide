@@ -104,7 +104,7 @@ type IAspect interface {
 
 When you call `Aspects.of(SCOPE).add(...)`, the construct adds the aspect to an internal list of aspects\. You can obtain the list with `Aspects.of(SCOPE)`\.
 
-During the [prepare phase](apps.md#lifecycle), the AWS CDK calls the `visit` method of the object for the construct and each of its children in top\-down order\.
+During the [prepare phase](deploy.md#deploy-how-synth-app), the AWS CDK calls the `visit` method of the object for the construct and each of its children in top\-down order\.
 
 The `visit` method is free to change anything in the construct\. In strongly typed languages, cast the received construct to a more specific type before accessing construct\-specific properties or methods\.
 

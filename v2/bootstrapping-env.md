@@ -7,6 +7,7 @@ Bootstrap your AWS environment to prepare it for AWS Cloud Development Kit \(AWS
 **Topics**
 + [How to bootstrap your environment](#bootstrapping-howto)
 + [When to bootstrap your environment](#bootstrapping-env-when)
++ [IAM roles created during bootstrapping](#bootstrapping-env-roles)
 + [Customize bootstrapping](#bootstrapping-env-customize)
 + [Bootstrapping with CDK Pipelines](#bootstrapping-env-pipelines)
 + [Bootstrap template version history](#bootstrap-template-history)
@@ -144,6 +145,32 @@ It’s okay to bootstrap an environment more than once\. If an environment has a
 ### Update your bootstrap stack<a name="bootstrapping-env-when-update"></a>
 
 Periodically, the CDK team will update the bootstrap template to a new version\. When this happens, we recommend that you update your bootstrap stack\. If you haven’t customized the bootstrapping process, you can update your bootstrap stack by following the same steps that you took to originally bootstrap your environment\. For more information, see [Bootstrap template version history](#bootstrap-template-history)\.
+
+## IAM roles created during bootstrapping<a name="bootstrapping-env-roles"></a>
+
+By default, bootstrapping provisions the following AWS Identity and Access Management \(IAM\) roles in your environment:
++ `CloudFormationExecutionRole`
++ `DeploymentActionRole`
++ `FilePublishingRole`
++ `ImagePublishingRole`
++ `LookupRole`
+
+`CloudFormationExecutionRole`  <a name="bootstrapping-env-roles-cfn"></a>
+This IAM role is a CloudFormation service role that grants CloudFormation permission to perform stack deployments on your behalf\. This role gives CloudFormation permission to perform AWS API calls in your account, including deploying stacks\.  
+ By using a service role, the permissions provisioned for the service role determine what actions can be performed on your CloudFormation resources\. Without this service role, the security credentials you provide with the CDK CLI would determine what CloudFormation is allowed to do\.
+
+`DeploymentActionRole`  <a name="bootstrapping-env-roles-deploy"></a>
+This IAM role grants permission to perform deployments into your environment\. It is assumed by the CDK CLI during deployments\.  
+By using a role for deployments, you can perform cross\-account deployments since the role can be assumed by AWS identities in a different account\.
+
+`FilePublishingRole`  <a name="bootstrapping-env-roles-s3"></a>
+This IAM role grants permission to perform actions against the bootstrapped Amazon Simple Storage Service \(Amazon S3\) bucket, including uploading and deleting assets\. It is assumed by the CDK CLI during deployments\.
+
+`ImagePublishingRole`  <a name="bootstrapping-env-roles-ecr"></a>
+This IAM role grants permission to perform actions against the bootstrapped Amazon Elastic Container Registry \(Amazon ECR\) repository\. It is assumed by the CDK CLI during deployments\.
+
+`LookupRole`  <a name="bootstrapping-env-roles-lookup"></a>
+This IAM role grants `readOnly` permission to look up [context values](context.md) from the AWS environment\. It is assumed by the CDK CLI when performing tasks such as template synthesis and deployments\.
 
 ## Customize bootstrapping<a name="bootstrapping-env-customize"></a>
 
