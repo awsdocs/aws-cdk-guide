@@ -1,4 +1,4 @@
-# Create a serverless Hello World application<a name="serverless_example"></a>
+# Tutorial: Create a serverless Hello World application<a name="serverless_example"></a>
 
 In this tutorial, you use the AWS Cloud Development Kit \(AWS CDK\) to create a simple serverless Hello World application that implements a basic API backend consisting of the following:
 + **Amazon API Gateway REST API** – Provides an HTTP endpoint that is used to invoke your function through an HTTP GET request\.
@@ -1494,7 +1494,7 @@ CdkHelloWorldStack: destroying... [1/1]
 
 ## Troubleshooting<a name="serverless-example-troubleshooting"></a>
 
-### Error: \{“message”: “Internal server error”\}%<a name="w92aac69c13c55b5"></a>
+### Error: \{“message”: “Internal server error”\}%<a name="w92aac69c11c55b5"></a>
 
 When invoking the deployed Lambda function, you receive this error\. This error could occur for multiple reasons\.
 

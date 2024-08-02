@@ -109,7 +109,7 @@ The AWS Construct Library's higher\-level, intent\-based constructs automaticall
 
 In our experience, real\-world use of intent\-based constructs results in 1–5 AWS CloudFormation resources per construct, though this can vary\. For serverless applications, 5–8 AWS resources per API endpoint is typical\.
 
-Patterns, which represent a higher level of abstraction, let you define even more AWS resources with even less code\. The AWS CDK code in [Creating an AWS Fargate service using the AWS CDK](ecs_example.md), for example, generates more than 50 AWS CloudFormation resources while defining only three constructs\!
+Patterns, which represent a higher level of abstraction, let you define even more AWS resources with even less code\. The AWS CDK code in [Example: Create an AWS Fargate service using the AWS CDK](ecs_example.md), for example, generates more than 50 AWS CloudFormation resources while defining only three constructs\!
 
 Exceeding the AWS CloudFormation resource limit is an error during AWS CloudFormation synthesis\. The AWS CDK issues a warning if your stack exceeds 80% of the limit\. You can use a different limit by setting the `maxResources` property on your stack, or disable validation by setting `maxResources` to 0\.
 

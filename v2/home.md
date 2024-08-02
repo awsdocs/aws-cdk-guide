@@ -41,7 +41,7 @@ Create your own constructs that are customized for your unique use cases and sha
 
 ## Example of the AWS CDK<a name="home-example"></a>
 
-The following is an example of using the AWS CDK Constructs Library to create an Amazon Elastic Container Service \(Amazon ECS\) service with AWS Fargate \(Fargate\) launch type\. For more details of this example, see [Creating an AWS Fargate service using the AWS CDK](ecs_example.md)\.
+The following is an example of using the AWS CDK Constructs Library to create an Amazon Elastic Container Service \(Amazon ECS\) service with AWS Fargate \(Fargate\) launch type\. For more details of this example, see [Example: Create an AWS Fargate service using the AWS CDK](ecs_example.md)\.
 
 ------
 #### [ TypeScript ]

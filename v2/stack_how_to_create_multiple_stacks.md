@@ -1,27 +1,21 @@
-# Create an app with multiple stacks<a name="stack_how_to_create_multiple_stacks"></a>
+# Example: Create a CDK app with multiple stacks<a name="stack_how_to_create_multiple_stacks"></a>
 
 You can create an AWS Cloud Development Kit \(AWS CDK\) application containing multiple [stacks](stacks.md)\. When you deploy the AWS CDK app, each stack becomes its own AWS CloudFormation template\. You can also synthesize and deploy each stack individually using the AWS CDK CLI `cdk deploy` command\.
 
-This tutorial covers the following:
+In this example, we cover the following:
 + How to extend the `Stack` class to accept new properties or arguments\.
 + How to use properties to determine which resources the stack contains and their configuration\.
 + How to instantiate multiple stacks from this class\.
 
 The example in this topic uses a Boolean property, named `encryptBucket` \(Python: `encrypt_bucket`\)\. It indicates whether an Amazon S3 bucket should be encrypted\. If so, the stack enables encryption using a key managed by AWS Key Management Service \(AWS KMS\)\. The app creates two instances of this stack, one with encryption and one without\.
 
-**Topics**
-+ [Before you begin](#cdk-how-to-create-multiple-stacks-prereqs)
-+ [Add optional parameter](#cdk-how-to-create-multiple-stacks-extend-stackprops)
-+ [Define the stack class](#cdk-how-to-create-multiple-stacks-define-stack)
-+ [Create two stack instances](#stack_how_to_create_multiple_stacks-create-stacks)
-+ [Synthesize and deploy the stack](#cdk-how-to-create-multiple-stacks-synth-deploy)
-+ [Clean up](#cdk-how-to-create-multiple-stacks-destroy-stack)
+## Prerequisites<a name="cdk-how-to-create-multiple-stacks-prereqs"></a>
 
-## Before you begin<a name="cdk-how-to-create-multiple-stacks-prereqs"></a>
+This example assumes that all [getting started](getting_started.md) steps have been completed\.
 
-First, install Node\.js and the AWS CDK command line tools, if you haven't already\. See [Getting started with the AWS CDK](getting_started.md) for details\.
+## Create a CDK project<a name="cdk-how-to-create-multiple-stacks-create"></a>
 
-Next, create an AWS CDK project by entering the following commands at the command line\.
+First, we create a CDK project using the CDK CLI:
 
 ------
 #### [ TypeScript ]
@@ -76,11 +70,11 @@ You can open the file `src/Pipeline.sln` in Visual Studio\.
 
 ------
 
-## Add optional parameter<a name="cdk-how-to-create-multiple-stacks-extend-stackprops"></a>
+## Add an optional parameter<a name="cdk-how-to-create-multiple-stacks-extend-stackprops"></a>
 
-The `props` argument of the `Stack` constructor fulfills the interface `StackProps`\. In this example, we want the stack to accept an additional property to tell us whether to encrypt the Amazon S3 bucket\. We should create an interface or class that includes the property\. This allows the compiler to make sure that the property has a Boolean value and enables autocompletion for it in your IDE\.
+The `props` argument of the `Stack` constructor fulfills the interface `StackProps`\. In this example, we want the stack to accept an additional property to tell us whether to encrypt the Amazon S3 bucket\. To do this, we create an interface or class that includes the property\. This allows the compiler to make sure that the property has a Boolean value and enables auto\-completion for it in your IDE\.
 
-So open the indicated source file in your IDE or editor and add the new interface, class, or argument\. The code should look like this after the changes\. The lines we added are shown in bold\.
+We open our *stack file* in our IDE or editor and add the new interface, class, or argument\. New lines are highlighted in bold:
 
 ------
 #### [ TypeScript ]
@@ -99,7 +93,7 @@ export class MultistackStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: MultiStackProps) {
     super(scope, id, props);
 
-    // The code that defines your stack goes here
+    // The code that defines our stack goes here
   }
 }
 ```
@@ -118,7 +112,7 @@ class MultistackStack extends cdk.Stack {
   constructor(scope, id, props) {
     super(scope, id, props);
 
-    // The code that defines your stack goes here
+    // The code that defines our stack goes here
   }
 }
 
@@ -144,7 +138,7 @@ class MultistackStack(cdk.Stack):
                  **kwargs) -> None:
         super().__init__(scope, id, **kwargs)
 
-        # The code that defines your stack goes here
+        # The code that defines our stack goes here
 ```
 
 ------
@@ -177,7 +171,7 @@ public class MultistackStack extends Stack {
             final boolean encryptBucket) {
         super(scope, id, props);
 
-        // The code that defines your stack goes here
+        // The code that defines our stack goes here
     }
 }
 ```
@@ -205,7 +199,7 @@ namespace Multistack
     {
         public MultistackStack(Construct scope, string id, MultiStackProps props) : base(scope, id, props)
         {
-            // The code that defines your stack goes here
+            // The code that defines our stack goes here
         }
     }
 }
@@ -217,7 +211,7 @@ The new property is optional\. If `encryptBucket` \(Python: `encrypt_bucket`\) i
 
 ## Define the stack class<a name="cdk-how-to-create-multiple-stacks-define-stack"></a>
 
- Now let's define our stack class, using our new property\. Make the code look like the following\. The code you need to add or change is shown in bold\. 
+ Next, we define our stack class, using our new property\. New code is highlighted in bold:
 
 ------
 #### [ TypeScript ]
@@ -409,7 +403,7 @@ namespace Multistack
 
 ## Create two stack instances<a name="stack_how_to_create_multiple_stacks-create-stacks"></a>
 
-Now we'll add the code to instantiate two separate stacks\. As before, the lines of code shown in bold are the ones you need to add\. Delete the existing `MultistackStack` definition\.
+In our *application file*, we add the code to instantiate two separate stacks\. We delete the existing `MultistackStack` definition and define our two stacks\. New code is highlight in bold:
 
 ------
 #### [ TypeScript ]
@@ -561,28 +555,28 @@ namespace Multistack
 
 ## Synthesize and deploy the stack<a name="cdk-how-to-create-multiple-stacks-synth-deploy"></a>
 
-Now you can deploy stacks from the app\. First, synthesize an AWS CloudFormation template for `MyEastCdkStack`—the stack in `us-east-1`\. This is the stack with the encrypted S3 bucket\.
+Next, we can deploy stacks from the app\. First, we synthesize an AWS CloudFormation template for `MyEastCdkStack`\. This is the stack in `us-east-1` with the encrypted Amazon S3 bucket\.
 
 ```
 $ cdk synth MyEastCdkStack
 ```
 
-To deploy this stack to your AWS account, issue one of the following commands\. The first command uses your default AWS profile to obtain the credentials to deploy the stack\. The second uses a profile that you specify\. For *PROFILE\_NAME*, substitute the name of an AWS CLI profile that contains appropriate credentials for deploying to the `us-east-1` AWS Region\.
+To deploy this stack to our AWS environment, we can issue one of the following commands\. The first command uses our default AWS profile to obtain the credentials to deploy the stack\. The second uses a profile that we specify\. For *PROFILE\_NAME*, we can substitute the name of an AWS CLI profile that contains appropriate credentials for deploying to the `us-east-1` AWS Region\.
 
 ```
-cdk deploy MyEastCdkStack
+$ cdk deploy MyEastCdkStack
 ```
 
 ```
-cdk deploy MyEastCdkStack --profile=PROFILE_NAME
+$ cdk deploy MyEastCdkStack --profile=PROFILE_NAME
 ```
 
 ## Clean up<a name="cdk-how-to-create-multiple-stacks-destroy-stack"></a>
 
-To avoid charges for resources that you deployed, destroy the stack using the following command\.
+To avoid charges for resources that we deployed, we destroy the stack using the following command:
 
 ```
 cdk destroy MyEastCdkStack
 ```
 
-The destroy operation fails if there is anything stored in the stack's bucket\. There shouldn't be if you've only followed the instructions in this topic\. But if you did put something in the bucket, you must delete the bucket contents before destroying the stack\. \(Do not delete the bucket itself\.\) Use the AWS Management Console or the AWS CLI to delete the bucket contents\.
+The destroy operation fails if there is anything stored in the stack's bucket\. There shouldn't be, since we only created the bucket\. If we did put something in the bucket, we must delete the bucket contents before destroying the stack\. We can use the AWS Management Console or the AWS CLI to delete the bucket contents\.

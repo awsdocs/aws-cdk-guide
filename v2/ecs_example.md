@@ -1,38 +1,36 @@
-# Creating an AWS Fargate service using the AWS CDK<a name="ecs_example"></a>
+# Example: Create an AWS Fargate service using the AWS CDK<a name="ecs_example"></a>
 
-This example walks you through how to create an AWS Fargate service running on an Amazon Elastic Container Service \(Amazon ECS\) cluster that's fronted by an internet\-facing Application Load Balancer from an image on Amazon ECR\.
+In this example, we show you how to create an AWS Fargate \(Fargate\) service running on an Amazon Elastic Container Service \(Amazon ECS\) cluster that's fronted by an internet\-facing Application Load Balancer from an image on Amazon ECR\.
 
-Amazon ECS is a highly scalable, fast, container management service that makes it easy to run, stop, and manage Docker containers on a cluster\. You can host your cluster on a serverless infrastructure that's managed by Amazon ECS by launching your services or tasks using the Fargate launch type\. For more control, you can host your tasks on a cluster of Amazon Elastic Compute Cloud \(Amazon EC2\) instances that you manage by using the Amazon EC2 launch type\.
+Amazon ECS is a highly scalable, fast, container management service that makes it easy to run, stop, and manage Docker containers on a cluster\. You can host your cluster on serverless infrastructure that's managed by Amazon ECS by launching your services or tasks using the Fargate launch type\. For more control, you can host your tasks on a cluster of Amazon Elastic Compute Cloud \(Amazon EC2\) instances that you manage by using the Amazon EC2 launch type\.
 
-This tutorial shows you how to launch some services using the Fargate launch type\. If you've used the AWS Management Console to create a Fargate service, you know that there are many steps to follow to accomplish that task\. AWS has several tutorials and documentation topics that walk you through creating a Fargate service, including:
+In this example, we launch some services using the Fargate launch type\. If you've used the AWS Management Console to create a Fargate service, you know that there are many steps to follow to accomplish that task\. AWS has several tutorials and documentation topics that walk you through creating a Fargate service, including:
 + [How to Deploy Docker Containers \- AWS](https://aws.amazon.com/getting-started/tutorials/deploy-docker-containers)
 + [Setting Up with Amazon ECS](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/get-set-up-for-amazon-ecs.html)
 + [Getting Started with Amazon ECS Using Fargate](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_GetStarted.html)
 
-This example creates a similar Fargate service in AWS CDK code\.
+This example creates a similar Fargate service using the AWS CDK\.
 
-The Amazon ECS construct used in this tutorial helps you use AWS services by providing the following benefits:
+The Amazon ECS construct used in this example helps you use AWS services by providing the following benefits:
 + Automatically configures a load balancer\.
-+ Automatically opens a security group for load balancers\. This enables load balancers to communicate with instances without you explicitly creating a security group\.
++ Automatically opens a security group for load balancers\. This enables load balancers to communicate with instances without having to explicitly create a security group\.
 + Automatically orders dependency between the service and the load balancer attaching to a target group, where the AWS CDK enforces the correct order of creating the listener before an instance is created\.
 + Automatically configures user data on automatically scaling groups\. This creates the correct configuration to associate a cluster to AMIs\.
-+ Validates parameter combinations early\. This exposes AWS CloudFormation issues earlier, thus saving you deployment time\. For example, depending on the task, it's easy to misconfigure the memory settings\. Previously, you would not encounter an error until you deployed your app\. But now the AWS CDK can detect a misconfiguration and emit an error when you synthesize your app\.
-+ Automatically adds permissions for Amazon Elastic Container Registry \(Amazon ECR\) if you use an image from Amazon ECR\.
-+ Automatically scales\. The AWS CDK supplies a method so you can autoscalinginstances when you use an Amazon EC2 cluster\. This happens automatically when you use an instance in a Fargate cluster\.
++ Validates parameter combinations early\. This exposes AWS CloudFormation issues earlier, thus saving deployment time\. For example, depending on the task, it's easy to improperly configure the memory settings\. Previously, we would not encounter an error until we deployed our app\. But now the AWS CDK can detect a misconfiguration and emit an error when we synthesize our app\.
++ Automatically adds permissions for Amazon Elastic Container Registry \(Amazon ECR\) if we use an image from Amazon ECR\.
++ Automatically scales\. The AWS CDK supplies a method so we can auto scale instances when we use an Amazon EC2 cluster\. This happens automatically when we use an instance in a Fargate cluster\.
 
-  In addition, the AWS CDK prevents an instance from being deleted when automatic scaling tries to kill an instance, but either a task is running or is scheduled on that instance\.
+  In addition, the AWS CDK prevents an instance from being deleted when automatic scaling tries to stop an instance, but either a task is running or is scheduled on that instance\.
 
-  Previously, you had to create a Lambda function to have this functionality\.
-+ Provides asset support, so that you can deploy a source from your machine to Amazon ECS in one step\. Previously, to use an application source you had to perform several manual steps, such as uploading to Amazon ECR and creating a Docker image\.
-
-See [ECS](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ecs-readme.html) for details\.
+  Previously, we had to create a Lambda function to have this functionality\.
++ Provides asset support, so that we can deploy a source from our machine to Amazon ECS in one step\. Previously, to use an application source, we had to perform several manual steps, such as uploading to Amazon ECR and creating a Docker image\.
 
 **Important**  
-The `ApplicationLoadBalancedFargateService` constructs we'll be using includes numerous AWS components, some of which have non\-trivial costs if left provisioned in your AWS account, even if you don't use them\. Be sure to clean up \(cdk destroy\) after completing this example\.
+The `ApplicationLoadBalancedFargateService` constructs we'll be using includes numerous AWS components, some of which have non\-trivial costs if left provisioned in our AWS account, even if we don't use them\. Be sure to clean up \(cdk destroy\) if you follow along with this example\.
 
-## Creating the directory and initializing the AWS CDK<a name="ecs_example_initialize"></a>
+## Create a CDK project<a name="ecs_example_initialize"></a>
 
-Let's start by creating a directory to hold the AWS CDK code, and then creating a AWS CDK app in that directory\.
+We start by creating a CDK project\. This is a directory that stores our AWS CDK code, including our CDK app\.
 
 ------
 #### [ TypeScript ]
@@ -72,7 +70,7 @@ cd MyEcsConstruct
 cdk init --language java
 ```
 
-You may now import the Maven project into your IDE\.
+We may now import the Maven project into our IDE\.
 
 ------
 #### [ C\# ]
@@ -83,11 +81,11 @@ cd MyEcsConstruct
 cdk init --language csharp
 ```
 
-You may now open `src/MyEcsConstruct.sln` in Visual Studio\.
+We may now open `src/MyEcsConstruct.sln` in Visual Studio\.
 
 ------
 
-Run the app and confirm that it creates an empty stack\.
+Next, we run the app and confirm that it creates an empty stack\.
 
 ```
 cdk synth
@@ -95,13 +93,13 @@ cdk synth
 
 ## Create a Fargate service<a name="ecs_example_create_fargate_service"></a>
 
-There are two different ways to run your container tasks with Amazon ECS:
-+ Use the `Fargate` launch type, where Amazon ECS manages the physical machines that your containers are running on for you\.
-+ Use the `EC2` launch type, where you do the managing, such as specifying automatic scaling\.
+There are two different ways that we can run our container tasks with Amazon ECS:
++ Use the `Fargate` launch type, where Amazon ECS manages the physical machines that oour containers are running on for us\.
++ Use the `EC2` launch type, where we do the managing, such as specifying automatic scaling\.
 
-For this example, we'll create a Fargate service running on an ECS cluster fronted by an internet\-facing Application Load Balancer\.
+For this example, we'll create a Fargate service running on an Amazon ECS cluster, fronted by an internet\-facing Application Load Balancer\.
 
-Add the following AWS Construct Library module imports to the indicated file\.
+We add the following AWS Construct Library module imports to our *stack file*:
 
 ------
 #### [ TypeScript ]
@@ -159,7 +157,7 @@ using Amazon.CDK.AWS.ECS.Patterns;
 
 ------
 
-Replace the comment at the end of the constructor with the following code\.
+Within our stack, we add the following code:
 
 ------
 #### [ TypeScript ]
@@ -282,7 +280,7 @@ Replace the comment at the end of the constructor with the following code\.
 
 ------
 
-Save it and make sure it runs and creates a stack\.
+Next, we validate our code by running the following to synthesize our stack:
 
 ```
 cdk synth
@@ -290,19 +288,19 @@ cdk synth
 
 The stack is hundreds of lines, so we won't show it here\. The stack should contain one default instance, a private subnet and a public subnet for the three Availability Zones, and a security group\.
 
-Deploy the stack\.
+To deploy the stack, we run the following:
 
 ```
 cdk deploy
 ```
 
-AWS CloudFormation displays information about the dozens of steps that it takes as it deploys your app\.
+AWS CloudFormation displays information about the dozens of steps that it takes as it deploys our app\.
 
-That's how easy it is to create a Fargate\-powered Amazon ECS service to run a Docker image\.
+Once deployment completes, we have successfully created a Fargate powered Amazon ECS service to run a Docker image\.
 
 ## Clean up<a name="ecs_example_destroy"></a>
 
-To avoid unexpected AWS charges, destroy your AWS CDK stack after you're done with this exercise\.
+As a general maintenance best practice, and to minimize unnecessary costs, we delete our stack when complete:
 
 ```
 cdk destroy
