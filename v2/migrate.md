@@ -101,7 +101,7 @@ The only required option is `--stack-name`\. Use this option to specify a name f
 Use `--language` to specify the programming language of the new CDK app\.
 
 **AWS account and AWS Region**  
-The AWS CDK CLI retrieves AWS account and AWS Region information from default sources\. For more information, see [Environments](environments.md)\. You can use `--account` and `--region` options with `cdk migrate` to provide other values\.
+The AWS CDK CLI retrieves AWS account and AWS Region information from default sources\. For more information, see [Environments for the AWS CDK](environments.md)\. You can use `--account` and `--region` options with `cdk migrate` to provide other values\.
 
 **Output directory of your new CDK project**  
 By default, the AWS CDK CLI will create a new CDK project in your working directory and use the value you provide with `--stack-name` to name the project folder\. If a folder with the same name currently exists, the AWS CDK CLI will overwrite that folder\.  
@@ -280,7 +280,7 @@ If you migrated from a deployed AWS CloudFormation stack, you can use the cdk di
 To learn more about cdk diff, see [Comparing stacks](cli.md#cli-diff)\.
 
 **Bootstrap your environment**  
-If you are deploying from an AWS environment for the first time, use `cdk bootstrap` to prepare your environment\. To learn more, see [Bootstrapping](bootstrapping.md)\.
+If you are deploying from an AWS environment for the first time, use `cdk bootstrap` to prepare your environment\. To learn more, see [AWS CDK bootstrapping](bootstrapping.md)\.
 
 ### Deploy your CDK app<a name="migrate-manage-deploy"></a>
 

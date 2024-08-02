@@ -1,4 +1,4 @@
-# Runtime context<a name="context"></a>
+# Context values and the AWS CDK<a name="context"></a>
 
 Context values are key\-value pairs that can be associated with an app, stack, or construct\. They may be supplied to your app from a file \(usually either `cdk.json` or `cdk.context.json` in your project directory\) or on the command line\.
 
@@ -8,7 +8,7 @@ Imagine the following scenario without context caching\. Let's say you specified
 
 Instead, the CDK records your account's available AMIs in your project's `cdk.context.json` file, and uses the stored value for future synthesis operations\. This way, the list of AMIs is no longer a potential source of change\. You can also be sure that your stacks will always synthesize to the same AWS CloudFormation templates\.
 
-Not all context values are cached values from your AWS environment\. [Feature flags](featureflags.md) are also context values\. You can also create your own context values for use by your apps or constructs\.
+Not all context values are cached values from your AWS environment\. [AWS CDK feature flags](featureflags.md) are also context values\. You can also create your own context values for use by your apps or constructs\.
 
 Context keys are strings\. Values may be any type supported by JSON: numbers, strings, arrays, or objects\.
 

@@ -2,7 +2,7 @@
 
 You can customize AWS Cloud Development Kit \(AWS CDK\) bootstrapping by using the AWS CDK Command Line Interface \(AWS CDK CLI\) or by modifying and deploying the AWS CloudFormation bootstrap template\.
 
-For an introduction to bootstrapping, see [Bootstrapping](bootstrapping.md)\.
+For an introduction to bootstrapping, see [AWS CDK bootstrapping](bootstrapping.md)\.
 
 **Topics**
 + [Use the CDK CLI to customize bootstrapping](#bootstrapping-customizing-cli)

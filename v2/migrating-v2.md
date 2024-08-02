@@ -372,7 +372,7 @@ If you see an error like the following:
 MyStack: SSM parameter /cdk-bootstrap/hnb659fds/version not found. Has the environment been bootstrapped? Please run 'cdk bootstrap' (see https://docs.aws.amazon.com/cdk/latest/guide/bootstrapping.html)
 ```
 
-AWS CDK v2 requires an updated bootstrap stack, and furthermore, all v2 deployments require bootstrap resources\. \(With v1, you could deploy simple stacks without bootstrapping\.\) For complete details, see [Bootstrapping](bootstrapping.md)\.
+AWS CDK v2 requires an updated bootstrap stack, and furthermore, all v2 deployments require bootstrap resources\. \(With v1, you could deploy simple stacks without bootstrapping\.\) For complete details, see [AWS CDK bootstrapping](bootstrapping.md)\.
 
 ## Finding v1 stacks<a name="finding-v1-stacks.title"></a>
 

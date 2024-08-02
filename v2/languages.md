@@ -1,4 +1,4 @@
-# Supported programming languages<a name="languages"></a>
+# Supported programming languages for the AWS CDK<a name="languages"></a>
 
 The AWS Cloud Development Kit \(AWS CDK\) has first\-class support for the following general\-purpose programming languages:
 + TypeScript
@@ -9,9 +9,6 @@ The AWS Cloud Development Kit \(AWS CDK\) has first\-class support for the follo
 + Go
 
 Other JVM and \.NET CLR languages may also be used in theory, but we do not offer official support at this time\.
-
-**Note**  
-This Guide does not currently include instructions or code examples for Go aside from [Working with the AWS CDK in Go](work-with-cdk-go.md)\.
 
 The AWS CDK is developed in one language, TypeScript\. To support the other languages, the AWS CDK utilizes a tool called [https://github.com/aws/jsii](https://github.com/aws/jsii) to generate language bindings\.
 

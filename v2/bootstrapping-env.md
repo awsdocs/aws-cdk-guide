@@ -1,8 +1,8 @@
 # Bootstrap your environment for use with the AWS CDK<a name="bootstrapping-env"></a>
 
 Bootstrap your AWS environment to prepare it for AWS Cloud Development Kit \(AWS CDK\) stack deployments\.
-+ For an introduction to environments, see [Environments](environments.md)\.
-+ For an introduction to bootstrapping, see [Bootstrapping](bootstrapping.md)\.
++ For an introduction to environments, see [Environments for the AWS CDK](environments.md)\.
++ For an introduction to bootstrapping, see [AWS CDK bootstrapping](bootstrapping.md)\.
 
 **Topics**
 + [How to bootstrap your environment](#bootstrapping-howto)

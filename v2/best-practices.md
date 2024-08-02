@@ -98,7 +98,7 @@ By using constructs for building and stacks for deploying, you improve reuse pot
 
 Environment variable lookups inside constructs and stacks are a common anti\-pattern\. Both constructs and stacks should accept a properties object to allow for full configurability completely in code\. Doing otherwise introduces a dependency on the machine that the code will run on, which creates yet more configuration information that you have to track and manage\.
 
-In general, environment variable lookups should be limited to the top level of an AWS CDK app\. They should also be used to pass in information that's needed for running in a development environment\. For more information, see [Environments](environments.md)\.
+In general, environment variable lookups should be limited to the top level of an AWS CDK app\. They should also be used to pass in information that's needed for running in a development environment\. For more information, see [Environments for the AWS CDK](environments.md)\.
 
 ### Unit test your infrastructure<a name="best-practices-constructs-test"></a>
 
@@ -112,7 +112,7 @@ Changing the logical ID of a resource results in the resource being replaced wit
 
 Many enterprise customers write their own wrappers for L2 constructs \(the "curated" constructs that represent individual AWS resources with built\-in sane defaults and best practices\)\. These wrappers enforce security best practices such as static encryption and specific IAM policies\. For example, you might create a `MyCompanyBucket` that you then use in your applications in place of the usual Amazon S3 `Bucket` construct\. This pattern is useful for surfacing security guidance early in the software development lifecycle, but don't rely on it as the sole means of enforcement\.
 
-Instead, use AWS features such as [service control policies](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_scps.html) and [permission boundaries](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_boundaries.html) to enforce your security guardrails at the organization level\. Use [Aspects](aspects.md) or tools like [CloudFormation Guard](https://github.com/aws-cloudformation/cloudformation-guard) to make assertions about the security properties of infrastructure elements before deployment\. Use AWS CDK for what it does best\.
+Instead, use AWS features such as [service control policies](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_scps.html) and [permission boundaries](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_boundaries.html) to enforce your security guardrails at the organization level\. Use [Aspects and the AWS CDK](aspects.md) or tools like [CloudFormation Guard](https://github.com/aws-cloudformation/cloudformation-guard) to make assertions about the security properties of infrastructure elements before deployment\. Use AWS CDK for what it does best\.
 
 Finally, keep in mind that writing your own "L2\+" constructs might prevent your developers from taking advantage of AWS CDK packages such as [AWS Solutions Constructs](https://docs.aws.amazon.com/solutions/latest/constructs/welcome.html) or third\-party constructs from Construct Hub\. These packages are typically built on standard AWS CDK constructs and won't be able to use your wrapper constructs\.
 
@@ -144,7 +144,7 @@ If the place you need it is another AWS CDK stack, that's even more straightforw
 
 The AWS CDK attempts to keep you from losing data by defaulting to policies that retain everything you create\. For example, the default removal policy on resources that contain data \(such as Amazon S3 buckets and database tables\) is not to delete the resource when it is removed from the stack\. Instead, the resource is orphaned from the stack\. Similarly, the CDK's default is to retain all logs forever\. In production environments, these defaults can quickly result in the storage of large amounts of data that you don't actually need, and a corresponding AWS bill\.
 
-Consider carefully what you want these policies to be for each production resource and specify them accordingly\. Use [Aspects](aspects.md) to validate the removal and logging policies in your stack\.
+Consider carefully what you want these policies to be for each production resource and specify them accordingly\. Use [Aspects and the AWS CDK](aspects.md) to validate the removal and logging policies in your stack\.
 
 ### Separate your application into multiple stacks as dictated by deployment requirements<a name="best-practices-apps-separate"></a>
 
@@ -167,7 +167,7 @@ Even strictly read\-only calls are not necessarily safe\. Consider what happens 
 
 These situations can be pernicious because the AWS\-side change might occur after months or years of successful deployments\. Suddenly your deployments are failing "for no reason" and you long ago forgot what you did and why\.
 
-Fortunately, the AWS CDK includes a mechanism called *context providers* to record a snapshot of non\-deterministic values\. This allows future synthesis operations to produce exactly the same template as they did when first deployed\. The only changes in the new template are the changes that *you* made in your code\. When you use a construct's `.fromLookup()` method, the result of the call is cached in `cdk.context.json`\. You should commit this to version control along with the rest of your code to make sure that future executions of your CDK app use the same value\. The CDK Toolkit includes commands to manage the context cache, so you can refresh specific entries when you need to\. For more information, see [Runtime context](context.md)\.
+Fortunately, the AWS CDK includes a mechanism called *context providers* to record a snapshot of non\-deterministic values\. This allows future synthesis operations to produce exactly the same template as they did when first deployed\. The only changes in the new template are the changes that *you* made in your code\. When you use a construct's `.fromLookup()` method, the result of the call is cached in `cdk.context.json`\. You should commit this to version control along with the rest of your code to make sure that future executions of your CDK app use the same value\. The CDK Toolkit includes commands to manage the context cache, so you can refresh specific entries when you need to\. For more information, see [Context values and the AWS CDK](context.md)\.
 
 If you need some value \(from AWS or elsewhere\) for which there is no native CDK context provider, we recommend writing a separate script\. The script should retrieve the value and write it to a file, then read that file in your CDK app\. Run the script only when you want to refresh the stored value, not as part of your regular build process\.
 

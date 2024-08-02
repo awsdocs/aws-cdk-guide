@@ -10,7 +10,6 @@ You can use any editor or IDE\. Many AWS CDK developers use [Visual Studio Code]
 + [Managing AWS Construct Library modules](#python-managemodules)
 + [Managing dependencies in Python](#work-with-cdk-python-dependencies)
 + [AWS CDK idioms in Python](#python-cdk-idioms)
-+ [Synthesizing and deploying](#python-running)
 
 ## Get started with Python<a name="python-prerequisites"></a>
 
@@ -258,28 +257,3 @@ In our experience, the type errors Python programmers make tend to fall into the
 + Passing a value of a type associated with a layer 1 \(`CfnXxxxxx`\) construct to a L2 or L3 construct, or vice versa\.
 
 The AWS CDK Python modules do include type annotations, so you can use tools that support them to help with types\. If you are not using an IDE that supports these, such as [PyCharm](https://www.jetbrains.com/pycharm/), you might want to call the [MyPy](http://mypy-lang.org/) type validator as a step in your build process\. There are also runtime type checkers that can improve error messages for type\-related errors\.
-
-## Synthesizing and deploying<a name="python-running"></a>
-
-The [stacks](stacks.md) defined in your AWS CDK app can be synthesized and deployed individually or together using the commands below\. Generally, you should be in your project's main directory when you issue them\.
-+ `cdk synth`: Synthesizes a AWS CloudFormation template from one or more of the stacks in your AWS CDK app\.
-+ `cdk deploy`: Deploys the resources defined by one or more of the stacks in your AWS CDK app to AWS\.
-
-You can specify the names of multiple stacks to be synthesized or deployed in a single command\. If your app defines only one stack, you do not need to specify it\. 
-
-```
-cdk synth                 # app defines single stack
-cdk deploy Happy Grumpy   # app defines two or more stacks; two are deployed
-```
-
-You may also use the wildcards \* \(any number of characters\) and ? \(any single character\) to identify stacks by pattern\. When using wildcards, enclose the pattern in quotes\. Otherwise, the shell may try to expand it to the names of files in the current directory before they are passed to the AWS CDK Toolkit\.
-
-```
-cdk synth "Stack?"    # Stack1, StackA, etc.
-cdk deploy "*Stack"   # PipeStack, LambdaStack, etc.
-```
-
-**Tip**  
-You don't need to explicitly synthesize stacks before deploying them; `cdk deploy` performs this step for you to make sure your latest code gets deployed\.
-
-For full documentation of the `cdk` command, see [AWS CDK Toolkit \(`cdk` command\)](cli.md)\.

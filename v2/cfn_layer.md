@@ -1,14 +1,14 @@
-# Customizing constructs from the AWS Construct Library<a name="cfn_layer"></a>
+# Customize constructs from the AWS Construct Library<a name="cfn_layer"></a>
 
 Customize constructs from the AWS Construct Library through escape hatches, raw overrides, and custom resources\.
 
 **Topics**
-+ [Using escape hatches](#develop-customize-escape)
-+ [Un\-escape hatches](#develop-customize-unescape)
-+ [Raw overrides](#develop-customize-override)
-+ [Custom resources](#develop-customize-custom)
++ [Use escape hatches](#develop-customize-escape)
++ [Use un\-escape hatches](#develop-customize-unescape)
++ [Use raw overrides](#develop-customize-override)
++ [Use custom resources](#develop-customize-custom)
 
-## Using escape hatches<a name="develop-customize-escape"></a>
+## Use escape hatches<a name="develop-customize-escape"></a>
 
 The AWS Construct Library provides [constructs](constructs.md) of varying levels of abstraction\.
 
@@ -326,7 +326,7 @@ cfnBucket.CfnOptions.Metadata = new Dictionary<string, object>
 
 ------
 
-## Un\-escape hatches<a name="develop-customize-unescape"></a>
+## Use un\-escape hatches<a name="develop-customize-unescape"></a>
 
 The AWS CDK also provides the capability to go *up* an abstraction level, which we might refer to as an "un\-escape" hatch\. If you have an L1 construct, such as `CfnBucket`, you can create a new L2 construct \(`Bucket` in this case\) to wrap the L1 construct\.
 
@@ -382,7 +382,7 @@ L2 constructs created from L1 constructs are proxy objects that refer to the L1 
 
 To avoid confusion, do not create multiple L2 constructs that refer to the same L1 construct\. For example, if you extract the `CfnBucket` from a `Bucket` using the technique in the [previous section](#develop-customize-escape-l2), you shouldn't create a second `Bucket` instance by calling `Bucket.fromCfnBucket()` with that `CfnBucket`\. It actually works as you'd expect \(only one `AWS::S3::Bucket` is synthesized\) but it makes your code more difficult to maintain\.
 
-## Raw overrides<a name="develop-customize-override"></a>
+## Use raw overrides<a name="develop-customize-override"></a>
 
 If there are properties that are missing from the L1 construct, you can bypass all typing using raw overrides\. This also makes it possible to delete synthesized properties\.
 
@@ -500,7 +500,7 @@ cfnBucket.AddPropertyDeletionOverride("Tags.0");
 
 ------
 
-## Custom resources<a name="develop-customize-custom"></a>
+## Use custom resources<a name="develop-customize-custom"></a>
 
 If the feature isn't available through AWS CloudFormation, but only through a direct API call, you must write an AWS CloudFormation Custom Resource to make the API call you need\. You can use the AWS CDK to write custom resources and wrap them into a regular construct interface\. From the perspective of a consumer of your construct, the experience will feel native\.
 

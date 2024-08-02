@@ -1486,7 +1486,7 @@ HelloCdkStack: destroying... [1/1]
 
 Congratulations\! You've completed this tutorial and have used the AWS CDK to successfully create, modify, and delete resources in the AWS Cloud\. You're now ready to begin using the AWS CDK\.
 
-To learn more about using the AWS CDK in your preferred programming language, see [Working with the AWS CDK in supported programming languages](work-with.md)\.
+To learn more about using the AWS CDK in your preferred programming language, see [Work with the AWS CDK library](work-with.md)\.
 
 For additional resources, see the following:
 + Try the [CDK Workshop](https://cdkworkshop.com/) for a more in\-depth tour involving a more complex project\.

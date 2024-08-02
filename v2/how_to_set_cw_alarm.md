@@ -3,11 +3,11 @@
 Use the [aws\-cloudwatch](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_cloudwatch-readme.html) package to set up Amazon CloudWatch alarms on CloudWatch metrics\. You can use predefined metrics or create your own\.
 
 **Topics**
-+ [Using an existing metric](#how_to_set_cw_alarm_use_metric)
-+ [Creating your own metric](#how_to_set_cw_alarm_new_metric)
-+ [Creating the alarm](#how_to_set_cw_alarm_create)
++ [Use an existing metric](#how_to_set_cw_alarm_use_metric)
++ [Create your own metric](#how_to_set_cw_alarm_new_metric)
++ [Create the alarm](#how_to_set_cw_alarm_create)
 
-## Using an existing metric<a name="how_to_set_cw_alarm_use_metric"></a>
+## Use an existing metric<a name="how_to_set_cw_alarm_use_metric"></a>
 
 Many AWS Construct Library modules let you set an alarm on an existing metric by passing the metric's name to a convenience method on an instance of an object that has metrics\. For example, given an Amazon SQS queue, you can get the metric **ApproximateNumberOfMessagesVisible** from the queue's [metric\(\)](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_sqs.Queue.html#metricmetricname-props) method:
 
@@ -48,7 +48,7 @@ var metric = queue.Metric("ApproximateNumberOfMessagesVisible");
 
 ------
 
-## Creating your own metric<a name="how_to_set_cw_alarm_new_metric"></a>
+## Create your own metric<a name="how_to_set_cw_alarm_new_metric"></a>
 
 Create your own [metric](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_cloudwatch.Metric.html) as follows, where the *namespace* value should be something like **AWS/SQS** for an Amazon SQS queue\. You also need to specify your metric's name and dimension:
 
@@ -114,7 +114,7 @@ var metric = new Metric(this, "Metric", new MetricProps
 
 ------
 
-## Creating the alarm<a name="how_to_set_cw_alarm_create"></a>
+## Create the alarm<a name="how_to_set_cw_alarm_create"></a>
 
 Once you have a metric, either an existing one or one you defined, you can create an alarm\. In this example, the alarm is raised when there are more than 100 of your metric in two of the last three evaluation periods\. You can use comparisons such as less\-than in your alarms via the `comparisonOperator` property\. Greater\-than\-or\-equal\-to is the AWS CDK default, so we don't need to specify it\.
 

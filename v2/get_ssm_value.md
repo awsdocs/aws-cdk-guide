@@ -109,7 +109,7 @@ A [limited number of AWS services](https://docs.aws.amazon.com/AWSCloudFormation
 
 At times, it's useful to provide a parameter at synthesis time\. By doing this, the AWS CloudFormation template will always use the same value instead of resolving the value during deployment\.
 
-To read a value from the Systems Manager Parameter Store at synthesis time, use the [valueFromLookup](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ssm.StringParameter.html#static-valuewbrfromwbrlookupscope-parametername) method \(Python: `value_from_lookup`\)\. This method returns the actual value of the parameter as a [Runtime context](context.md) value\. If the value is not already cached in `cdk.json` or passed on the command line, it is retrieved from the current AWS account\. For this reason, the stack *must* be synthesized with explicit AWS environment information\.
+To read a value from the Systems Manager Parameter Store at synthesis time, use the [valueFromLookup](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ssm.StringParameter.html#static-valuewbrfromwbrlookupscope-parametername) method \(Python: `value_from_lookup`\)\. This method returns the actual value of the parameter as a [Context values and the AWS CDK](context.md) value\. If the value is not already cached in `cdk.json` or passed on the command line, it is retrieved from the current AWS account\. For this reason, the stack *must* be synthesized with explicit AWS environment information\.
 
 The following is an example:
 

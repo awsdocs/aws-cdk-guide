@@ -7,10 +7,6 @@ You can create your AWS CDK project manually or with the AWS CDK Command Line In
 **Note**  
 Project structure created by the AWS CDK CLI may vary across versions over time\.
 
-**Topics**
-+ [Universal files and folders](#projects-universal)
-+ [Language\-specific files and folders](#projects-specific)
-
 ## Universal files and folders<a name="projects-universal"></a>
 
 **\.git**  <a name="projects-universal-git"></a>

@@ -10,13 +10,13 @@ The `cloudformation-include.CfnInclude` construct essentially adds an AWS CDK AP
 AWS CDK v1 also included [https://docs.aws.amazon.com/cdk/api/latest/docs/aws-cdk-lib.CfnInclude.html](https://docs.aws.amazon.com/cdk/api/latest/docs/aws-cdk-lib.CfnInclude.html), which was previously used for the same general purpose\. However, it lacks much of the functionality of `cloudformation-include.CfnInclude`\.
 
 **Topics**
-+ [Importing an AWS CloudFormation template](#w94aac53c25c19)
-+ [Accessing imported resources](#use_cfn_template_cfninclude_access)
-+ [Replacing parameters](#use_cfn_template_cfninclude_params)
-+ [Other template elements](#use_cfn_template_cfninclude_other)
-+ [Nested stacks](#use_cfn_template_cfninclude_nested)
++ [Import an AWS CloudFormation template](#w92aac49c41c19)
++ [Access imported resources](#use_cfn_template_cfninclude_access)
++ [Replace parameters](#use_cfn_template_cfninclude_params)
++ [Import other template elements](#use_cfn_template_cfninclude_other)
++ [Import nested stacks](#use_cfn_template_cfninclude_nested)
 
-## Importing an AWS CloudFormation template<a name="w94aac53c25c19"></a>
+## Import an AWS CloudFormation template<a name="w92aac49c41c19"></a>
 
 The following is a sample AWS CloudFormation template that we will use to provide examples in this topic\. Copy and save the template as `my-template.json` to follow along\. After working through these examples, you can explore further by using any of your existing deployed AWS CloudFormation templates\. You can obtain them from the AWS CloudFormation console\.
 
@@ -277,7 +277,7 @@ cdk diff --no-version-reporting --no-path-metadata --no-asset-metadata
 
 After you import an AWS CloudFormation template, the AWS CDK app should become the source of truth for your imported resources\. To make changes to your resources, modify them in your AWS CDK app and deploy with the AWS CDK CLI cdk deploy command\.
 
-## Accessing imported resources<a name="use_cfn_template_cfninclude_access"></a>
+## Access imported resources<a name="use_cfn_template_cfninclude_access"></a>
 
 The name `template` in the example code represents the imported AWS CloudFormation template\. To access a resource from it, use the object's [https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.cloudformation_include.CfnInclude.html#getwbrresourcelogicalid](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.cloudformation_include.CfnInclude.html#getwbrresourcelogicalid) method\. To access the returned resource as a specific kind of resource, cast the result to the desired type\. This isn't necessary in Python or JavaScript\. The following is an example:
 
@@ -402,7 +402,7 @@ bucket.GrantWrite(lambdaFunc);
 
 ------
 
-## Replacing parameters<a name="use_cfn_template_cfninclude_params"></a>
+## Replace parameters<a name="use_cfn_template_cfninclude_params"></a>
 
 If your AWS CloudFormation template contains parameters, you can replace them with build time values at import by using the `parameters` property\. In the following example, we replace the `UploadBucket` parameter with the ARN of a bucket defined elsewhere in our AWS CDK code\.
 
@@ -467,7 +467,7 @@ var template = new cfnInc.CfnInclude(this, "Template", new cfnInc.CfnIncludeProp
 
 ------
 
-## Other template elements<a name="use_cfn_template_cfninclude_other"></a>
+## Import other template elements<a name="use_cfn_template_cfninclude_other"></a>
 
 You can import any AWS CloudFormation template element, not just resources\. The imported elements become a part of the AWS CDK stack\. To import these elements, use the following methods of the `CfnInclude` object:
 + [https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.cloudformation_include.CfnInclude.html#getwbrconditionconditionname](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.cloudformation_include.CfnInclude.html#getwbrconditionconditionname) – AWS CloudFormation [conditions](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/conditions-section-structure.html)\.
@@ -522,7 +522,7 @@ param.Default = "AWS CDK";
 
 ------
 
-## Nested stacks<a name="use_cfn_template_cfninclude_nested"></a>
+## Import nested stacks<a name="use_cfn_template_cfninclude_nested"></a>
 
 You can import [nested stacks](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-nested-stacks.html) by specifying them either when you import their main template, or at some later point\. The nested template must be stored in a local file, but referenced as a `NestedStack` resource in the main template\. Also, the resource name used in the AWS CDK code must match the name used for the nested stack in the main template\.
 

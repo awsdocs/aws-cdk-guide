@@ -1,4 +1,4 @@
-# Tokens<a name="tokens"></a>
+# Tokens and the AWS CDK<a name="tokens"></a>
 
 *Tokens* represent values that can only be resolved at a later time in the [app lifecycle](deploy.md#deploy-how-synth-app)\. For example, the name of an Amazon Simple Storage Service \(Amazon S3\) bucket that you define in your CDK app is only allocated when the AWS CloudFormation template is synthesized\. If you print the `bucket.bucketName` attribute, which is a string, you will see that it contains something like the following:
 

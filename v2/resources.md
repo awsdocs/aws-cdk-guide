@@ -1,21 +1,10 @@
-# Resources<a name="resources"></a>
+# Resources and the AWS CDK<a name="resources"></a>
 
 *Resources* are what you configure to use AWS services in your applications\. Resources are a feature of AWS CloudFormation\. By configuring resources and their properties in a AWS CloudFormation template, you can deploy to AWS CloudFormation to provision your resources\. With the AWS Cloud Development Kit \(AWS CDK\), you can configure resources through constructs\. You then deploy your CDK app, which involves synthesizing a AWS CloudFormation template and deploying to AWS CloudFormation to provision your resources\.
 
-**Topics**
-+ [Configuring resources using constructs](#resources-configure)
-+ [Referencing resources](#resources_referencing)
-+ [Resource physical names](#resources_physical_names)
-+ [Passing unique resource identifiers](#resources_identifiers)
-+ [Granting permissions between resources](#resources_grants)
-+ [Resource metrics and alarms](#resources_metrics)
-+ [Network traffic](#resources_traffic)
-+ [Event handling](#resources_events)
-+ [Removal policies](#resources_removal)
-
 ## Configuring resources using constructs<a name="resources-configure"></a>
 
-As described in [Constructs](constructs.md), the AWS CDK provides a rich class library of constructs, called *AWS constructs*, that represent all AWS resources\.
+As described in [AWS CDK Constructs](constructs.md), the AWS CDK provides a rich class library of constructs, called *AWS constructs*, that represent all AWS resources\.
 
 To create an instance of a resource using its corresponding construct, pass in the scope as the first argument, the logical ID of the construct, and a set of configuration properties \(props\)\. For example, here's how to create an Amazon SQS queue with AWS KMS encryption using the [sqs\.Queue](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_sqs.Queue.html) construct from the AWS Construct Library\.
 
@@ -157,7 +146,7 @@ url := queue.QueueUrl() // => A string representing a deploy-time value
 
 ------
 
-See [Tokens](tokens.md) for information about how the AWS CDK encodes deploy\-time attributes as strings\.
+See [Tokens and the AWS CDK](tokens.md) for information about how the AWS CDK encodes deploy\-time attributes as strings\.
 
 ## Referencing resources<a name="resources_referencing"></a>
 
@@ -444,7 +433,7 @@ Let's take a closer look at the [https://docs.aws.amazon.com/cdk/api/v1/docs/@aw
 
 To use `Vpc.fromLookup()`, the system that synthesizes the stack must have access to the account that owns the Amazon VPC\. This is because the CDK Toolkit queries the account to find the right Amazon VPC at synthesis time\. 
 
-Furthermore, `Vpc.fromLookup()` works only in stacks that are defined with an explicit **account** and **region** \(see [Environments](environments.md)\)\. If the AWS CDK tries to look up an Amazon VPC from an [environment\-agnostic stack](stacks.md#stack_api), the CDK Toolkit doesn't know which environment to query to find the VPC\.
+Furthermore, `Vpc.fromLookup()` works only in stacks that are defined with an explicit **account** and **region** \(see [Environments for the AWS CDK](environments.md)\)\. If the AWS CDK tries to look up an Amazon VPC from an [environment\-agnostic stack](stacks.md#stack_api), the CDK Toolkit doesn't know which environment to query to find the VPC\.
 
 You must provide `Vpc.fromLookup()` attributes sufficient to uniquely identify a VPC in your AWS account\. For example, there can only ever be one default VPC, so it's sufficient to specify the VPC as the default\.
 
@@ -556,7 +545,7 @@ ec2.Vpc_FromLookup(this, jsii.String("DefaultVpc"), &ec2.VpcLookupOptions{
 
 ------
 
-Results of `Vpc.fromLookup()` are cached in the project's `cdk.context.json` file\. \(See [Runtime context](context.md)\.\) Commit this file to version control so that your app will continue to refer to the same Amazon VPC\. This works even if you later change the attributes of your VPCs in a way that would result in a different VPC being selected\. This is particularly important if you're deploying the stack in an environment that doesn't have access to the AWS account that defines the VPC, such as [CDK Pipelines](cdk_pipeline.md)\.
+Results of `Vpc.fromLookup()` are cached in the project's `cdk.context.json` file\. \(See [Context values and the AWS CDK](context.md)\.\) Commit this file to version control so that your app will continue to refer to the same Amazon VPC\. This works even if you later change the attributes of your VPCs in a way that would result in a different VPC being selected\. This is particularly important if you're deploying the stack in an environment that doesn't have access to the AWS account that defines the VPC, such as [CDK Pipelines](cdk_pipeline.md)\.
 
 Although you can use an external resource anywhere you'd use a similar resource defined in your AWS CDK app, you cannot modify it\. For example, calling `addToResourcePolicy` \(Python: `add_to_resource_policy`\) on an external `s3.Bucket` does nothing\.
 

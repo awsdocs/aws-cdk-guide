@@ -1,6 +1,6 @@
-# Feature flags<a name="featureflags"></a>
+# AWS CDK feature flags<a name="featureflags"></a>
 
-The AWS CDK uses *feature flags* to enable potentially breaking behaviors in a release\. Flags are stored as [Runtime context](context.md) values in `cdk.json` \(or `~/.cdk.json`\)\. They are not removed by the cdk context \-\-reset or cdk context \-\-clear commands\.
+The AWS CDK uses *feature flags* to enable potentially breaking behaviors in a release\. Flags are stored as [Context values and the AWS CDK](context.md) values in `cdk.json` \(or `~/.cdk.json`\)\. They are not removed by the cdk context \-\-reset or cdk context \-\-clear commands\.
 
 Feature flags are disabled by default\. Existing projects that do not specify the flag will continue to work as before with later AWS CDK releases\. New projects created using cdk init include flags enabling all features available in the release that created the project\. Edit `cdk.json` to disable any flags for which you prefer the earlier behavior\. You can also add flags to enable new behaviors after upgrading the AWS CDK\.
 

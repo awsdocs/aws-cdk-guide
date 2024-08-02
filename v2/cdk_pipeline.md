@@ -23,7 +23,7 @@ Before you can use CDK Pipelines, you must bootstrap the AWS [environment](envir
 A CDK Pipeline involves at least two environments\. The first environment is where the pipeline is provisioned\. The second environment is where you want to deploy the application's stacks or stages to \(stages are groups of related stacks\)\. These environments can be the same, but a best practice recommendation is to isolate stages from each other in different environments\.
 
 **Note**  
-See [Bootstrapping](bootstrapping.md) for more information on the kinds of resources created by bootstrapping and how to customize the bootstrap stack\.
+See [AWS CDK bootstrapping](bootstrapping.md) for more information on the kinds of resources created by bootstrapping and how to customize the bootstrap stack\.
 
 Continuous deployment with CDK Pipelines requires the following to be included in the CDK Toolkit stack:
 + An Amazon Simple Storage Service \(Amazon S3\) bucket\.
@@ -188,7 +188,7 @@ $ go get
 ------
 
 **Important**  
-Be sure to commit your `cdk.json` and `cdk.context.json` files to source control\. The context information \(such as feature flags and cached values retrieved from your AWS account\) are part of your project's state\. The values may be different in another environment, which can cause unexpected changes in your results\. For more information, see [Runtime context](context.md)\.
+Be sure to commit your `cdk.json` and `cdk.context.json` files to source control\. The context information \(such as feature flags and cached values retrieved from your AWS account\) are part of your project's state\. The values may be different in another environment, which can cause unexpected changes in your results\. For more information, see [Context values and the AWS CDK](context.md)\.
 
 ## Define a pipeline<a name="cdk_pipeline_define"></a>
 

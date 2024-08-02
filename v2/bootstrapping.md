@@ -1,11 +1,6 @@
-# Bootstrapping<a name="bootstrapping"></a>
+# AWS CDK bootstrapping<a name="bootstrapping"></a>
 
 *Bootstrapping* is the process of preparing your AWS environment for usage with the AWS Cloud Development Kit \(AWS CDK\)\. Before you deploy a CDK stack into an AWS environment, the environment must first be bootstrapped\.
-
-**Topics**
-+ [What is bootstrapping?](#bootstrapping-what)
-+ [How does bootstrapping work?](#bootstrapping-how)
-+ [Learn more](#bootstrapping-learn)
 
 ## What is bootstrapping?<a name="bootstrapping-what"></a>
 

@@ -1,4 +1,4 @@
-# Permissions<a name="permissions"></a>
+# Permissions and the AWS CDK<a name="permissions"></a>
 
 The AWS Construct Library uses a few common, widely implemented idioms to manage access and permissions\. The IAM module provides you with the tools you need to use these idioms\.
 

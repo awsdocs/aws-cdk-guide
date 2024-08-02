@@ -4,7 +4,7 @@ You can configure AWS environments in multiple ways to use with the AWS Cloud De
 
 Each CDK stack in your application must eventually be associated with an environment to determine where the stack gets deployed to\.
 
-For an introduction to AWS environments, see [Environments](environments.md)\.
+For an introduction to AWS environments, see [Environments for the AWS CDK](environments.md)\.
 
 **Topics**
 + [Where you can specify environments from](#configure-env-where)

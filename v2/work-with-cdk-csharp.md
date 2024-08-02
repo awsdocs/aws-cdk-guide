@@ -12,7 +12,7 @@ We suggest using [Visual Studio 2019](https://visualstudio.microsoft.com/downloa
 + [Managing AWS Construct Library modules](#csharp-managemodules)
 + [Managing dependencies in C\#](#work-with-cdk-csharp-dependencies)
 + [AWS CDK idioms in C\#](#csharp-cdk-idioms)
-+ [Building, synthesizing, and deploying](#csharp-running)
++ [Build and run CDK appliations](#csharp-running)
 
 ## Get started with C\#<a name="csharp-prerequisites"></a>
 
@@ -178,29 +178,6 @@ string mimeType = props?.MimeType;
 string MimeType = props?.MimeType ?? "text/plain";
 ```
 
-## Building, synthesizing, and deploying<a name="csharp-running"></a>
+## Build and run CDK appliations<a name="csharp-running"></a>
 
 The AWS CDK automatically compiles your app before running it\. However, it can be useful to build your app manually to check for errors and run tests\. You can do this by pressing F6 in Visual Studio or by issuing `dotnet build src` from the command line, where `src` is the directory in your project directory that contains the Visual Studio Solution \(`.sln`\) file\.
-
-The [stacks](stacks.md) defined in your AWS CDK app can be synthesized and deployed individually or together using the commands below\. Generally, you should be in your project's main directory when you issue them\.
-+ `cdk synth`: Synthesizes a AWS CloudFormation template from one or more of the stacks in your AWS CDK app\.
-+ `cdk deploy`: Deploys the resources defined by one or more of the stacks in your AWS CDK app to AWS\.
-
-You can specify the names of multiple stacks to be synthesized or deployed in a single command\. If your app defines only one stack, you do not need to specify it\. 
-
-```
-cdk synth                 # app defines single stack
-cdk deploy Happy Grumpy   # app defines two or more stacks; two are deployed
-```
-
-You may also use the wildcards \* \(any number of characters\) and ? \(any single character\) to identify stacks by pattern\. When using wildcards, enclose the pattern in quotes\. Otherwise, the shell may try to expand it to the names of files in the current directory before they are passed to the AWS CDK Toolkit\.
-
-```
-cdk synth "Stack?"    # Stack1, StackA, etc.
-cdk deploy "*Stack"   # PipeStack, LambdaStack, etc.
-```
-
-**Tip**  
-You don't need to explicitly synthesize stacks before deploying them; `cdk deploy` performs this step for you to make sure your latest code gets deployed\.
-
-For full documentation of the `cdk` command, see [AWS CDK Toolkit \(`cdk` command\)](cli.md)\.

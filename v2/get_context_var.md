@@ -115,4 +115,4 @@ var bucketName = app.Node.TryGetContext("bucket_name");
 
 ------
 
-For more details on working with context variables, see [Runtime context](context.md)\.
+For more details on working with context variables, see [Context values and the AWS CDK](context.md)\.

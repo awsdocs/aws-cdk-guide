@@ -17,7 +17,7 @@ It is possible to write AWS CDK applications in JVM\-hosted languages other than
 + [Managing AWS Construct Library modules](#java-managemodules)
 + [Managing dependencies in Java](#work-with-cdk-java-dependencies)
 + [AWS CDK idioms in Java](#java-cdk-idioms)
-+ [Building, synthesizing, and deploying](#java-running)
++ [Build and run CDK applications](#java-running)
 
 ## Get started with Java<a name="java-prerequisites"></a>
 
@@ -153,31 +153,8 @@ List<String> cmds = Arrays.asList("cd lambda", "npm install", "npm install types
 
 In Java, missing values in AWS CDK objects such as props are represented by `null`\. You must explicitly test any value that could be `null` to make sure it contains a value before doing anything with it\. Java does not have "syntactic sugar" to help handle null values as some other languages do\. You may find Apache ObjectUtil's [defaultIfNull](https://commons.apache.org/proper/commons-lang/apidocs/org/apache/commons/lang3/ObjectUtils.html#defaultIfNull-T-T-) and [firstNonNull](https://commons.apache.org/proper/commons-lang/apidocs/org/apache/commons/lang3/ObjectUtils.html#firstNonNull-T...-) useful in some situations\. Alternatively, write your own static helper methods to make it easier to handle potentially null values and make your code more readable\.
 
-## Building, synthesizing, and deploying<a name="java-running"></a>
+## Build and run CDK applications<a name="java-running"></a>
 
 The AWS CDK automatically compiles your app before running it\. However, it can be useful to build your app manually to check for errors and to run tests\. You can do this in your IDE \(for example, press Control\-B in Eclipse\) or by issuing `mvn compile` at a command prompt while in your project's root directory\.
 
 Run any tests you've written by running `mvn test` at a command prompt\.
-
-The [stacks](stacks.md) defined in your AWS CDK app can be synthesized and deployed individually or together using the commands below\. Generally, you should be in your project's main directory when you issue them\.
-+ `cdk synth`: Synthesizes a AWS CloudFormation template from one or more of the stacks in your AWS CDK app\.
-+ `cdk deploy`: Deploys the resources defined by one or more of the stacks in your AWS CDK app to AWS\.
-
-You can specify the names of multiple stacks to be synthesized or deployed in a single command\. If your app defines only one stack, you do not need to specify it\. 
-
-```
-cdk synth                 # app defines single stack
-cdk deploy Happy Grumpy   # app defines two or more stacks; two are deployed
-```
-
-You may also use the wildcards \* \(any number of characters\) and ? \(any single character\) to identify stacks by pattern\. When using wildcards, enclose the pattern in quotes\. Otherwise, the shell may try to expand it to the names of files in the current directory before they are passed to the AWS CDK Toolkit\.
-
-```
-cdk synth "Stack?"    # Stack1, StackA, etc.
-cdk deploy "*Stack"   # PipeStack, LambdaStack, etc.
-```
-
-**Tip**  
-You don't need to explicitly synthesize stacks before deploying them; `cdk deploy` performs this step for you to make sure your latest code gets deployed\.
-
-For full documentation of the `cdk` command, see [AWS CDK Toolkit \(`cdk` command\)](cli.md)\.

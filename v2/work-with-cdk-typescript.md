@@ -11,7 +11,7 @@ You can use any editor or IDE\. Many AWS CDK developers use [Visual Studio Code]
 + [Managing AWS Construct Library modules](#typescript-managemodules)
 + [Managing dependencies in TypeScript](#work-with-cdk-typescript-dependencies)
 + [AWS CDK idioms in TypeScript](#typescript-cdk-idioms)
-+ [Building, synthesizing, and deploying](#typescript-running)
++ [Build and run CDK apps](#typescript-running)
 
 ## Get started with TypeScript<a name="typescript-prerequisites"></a>
 
@@ -255,33 +255,10 @@ Alternatively, name your properties so that it is clear that they belong to your
 
 Missing values in an object \(such as props\) have the value `undefined` in TypeScript\. Version 3\.7 of the language introduced operators that simplify working with these values, making it easier to specify defaults and "short\-circuit" chaining when an undefined value is reached\. For more information about these features, see the [TypeScript 3\.7 Release Notes](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-7.html), specifically the first two features, Optional Chaining and Nullish Coalescing\.
 
-## Building, synthesizing, and deploying<a name="typescript-running"></a>
+## Build and run CDK apps<a name="typescript-running"></a>
 
 Generally, you should be in the project's root directory when building and running your application\.
 
 Node\.js cannot run TypeScript directly; instead, your application is converted to JavaScript using the TypeScript compiler, `tsc`\. The resulting JavaScript code is then executed\.
 
 The AWS CDK automatically does this whenever it needs to run your app\. However, it can be useful to compile manually to check for errors and to run tests\. To compile your TypeScript app manually, issue `npm run build`\. You may also issue `npm run watch` to enter watch mode, in which the TypeScript compiler automatically rebuilds your app whenever you save changes to a source file\.
-
-The [stacks](stacks.md) defined in your AWS CDK app can be synthesized and deployed individually or together using the commands below\. Generally, you should be in your project's main directory when you issue them\.
-+ `cdk synth`: Synthesizes a AWS CloudFormation template from one or more of the stacks in your AWS CDK app\.
-+ `cdk deploy`: Deploys the resources defined by one or more of the stacks in your AWS CDK app to AWS\.
-
-You can specify the names of multiple stacks to be synthesized or deployed in a single command\. If your app defines only one stack, you do not need to specify it\. 
-
-```
-cdk synth                 # app defines single stack
-cdk deploy Happy Grumpy   # app defines two or more stacks; two are deployed
-```
-
-You may also use the wildcards \* \(any number of characters\) and ? \(any single character\) to identify stacks by pattern\. When using wildcards, enclose the pattern in quotes\. Otherwise, the shell may try to expand it to the names of files in the current directory before they are passed to the AWS CDK Toolkit\.
-
-```
-cdk synth "Stack?"    # Stack1, StackA, etc.
-cdk deploy "*Stack"   # PipeStack, LambdaStack, etc.
-```
-
-**Tip**  
-You don't need to explicitly synthesize stacks before deploying them; `cdk deploy` performs this step for you to make sure your latest code gets deployed\.
-
-For full documentation of the `cdk` command, see [AWS CDK Toolkit \(`cdk` command\)](cli.md)\.

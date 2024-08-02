@@ -2,11 +2,7 @@
 
 The AWS Cloud Development Kit \(AWS CDK\) application or *app* is a collection of one or more CDK [stacks](stacks.md)\. Stacks are a collection of one or more [constructs](constructs.md), which define AWS resources and properties\. Therefore, the overall grouping of your stacks and constructs are known as your CDK app\.
 
-**Topics**
-+ [Defining apps](#apps-define)
-+ [The construct tree](#apps-tree)
-
-## Defining apps<a name="apps-define"></a>
+## How to create a CDK app<a name="apps-define"></a>
 
 You create an app by defining an app instance in the application file of your [project](projects.md)\. To do this, you import and use the [https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.App.html](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.App.html) construct from the AWS Construct Library\. The `App` construct doesn't require any initialization arguments\. It is the only construct that can be used as the root\.
 
@@ -89,7 +85,7 @@ Constructs are *always* explicitly defined within the scope of another construct
 Passing the scope explicitly allows each construct to add itself to the tree, with this behavior entirely contained within the [`Construct` base class](https://docs.aws.amazon.com/cdk/api/v2/docs/constructs.Construct.html)\. It works the same way in every language supported by the AWS CDK and does not require additional customization\.
 
 **Important**  
-Technically, it's possible to pass some scope other than `this` when instantiating a construct\. You can add constructs anywhere in the tree, or even in another stack in the same app\. For example, you could write a mixin\-style function that adds constructs to a scope passed in as an argument\. The practical difficulty here is that you can't easily ensure that the IDs you choose for your constructs are unique within someone else's scope\. The practice also makes your code more difficult to understand, maintain, and reuse\. It is almost always better to find a way to express your intent without resorting to abusing the `scope` argument\.
+Technically, it's possible to pass some scope other than `this` when instantiating a construct\. You can add constructs anywhere in the tree, or even in another stack in the same app\. For example, you could write a mixin\-style function that adds constructs to a scope passed in as an argument\. The practical difficulty here is that you can't easily ensure that the IDs you choose for your constructs are unique within someone else's scope\. The practice also makes your code more difficult to understand, maintain, and reuse\. Therefore, we recommend that you use the general structure of the construct tree\.
 
 The AWS CDK uses the IDs of all constructs in the path from the tree's root to each child construct to generate the unique IDs required by AWS CloudFormation\. This approach means that construct IDs only need to be unique within their scope, rather than within the entire stack as in native AWS CloudFormation\. However, if you move a construct to a different scope, its generated stack\-unique ID changes, and AWS CloudFormation won't consider it the same resource\.
 
@@ -113,4 +109,4 @@ The construct tree defines an implicit order in which constructs are synthesized
 
 You can also add an explicit dependency between two nodes by using `node.addDependency()`\. For more information, see [Dependencies](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib-readme.html#dependencies) in the *AWS CDK API Reference*\.
 
-The AWS CDK provides a simple way to visit every node in the construct tree and perform an operation on each one\. For more information, see [Aspects](aspects.md)\.
+The AWS CDK provides a simple way to visit every node in the construct tree and perform an operation on each one\. For more information, see [Aspects and the AWS CDK](aspects.md)\.

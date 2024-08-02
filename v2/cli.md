@@ -169,7 +169,7 @@ Besides specifying AWS authentication and a Region in the `[default]` section, y
 
 The standard AWS `config` file is located at `~/.aws/config` \(macOS/Linux\) or `%USERPROFILE%\.aws\config` \(Windows\)\. For details and alternate locations, see [Location of the shared config and credentials files](https://docs.aws.amazon.com/sdkref/latest/guide/file-location.html) in the *AWS SDKs and Tools Reference Guide*
 
-The environment that you specify in your AWS CDK app by using the stack's `env` property is used during synthesis\. It's used to generate an environment\-specific AWS CloudFormation template, and during deployment, it overrides the account or Region specified by one of the preceding methods\. For more information, see [Environments](environments.md)\.
+The environment that you specify in your AWS CDK app by using the stack's `env` property is used during synthesis\. It's used to generate an environment\-specific AWS CloudFormation template, and during deployment, it overrides the account or Region specified by one of the preceding methods\. For more information, see [Environments for the AWS CDK](environments.md)\.
 
 **Note**  
 The AWS CDK uses credentials from the same source files as other AWS tools and SDKs, including the [AWS Command Line Interface](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html)\. However, the AWS CDK might behave somewhat differently from these tools\. It uses the AWS SDK for JavaScript under the hood\. For complete details on setting up credentials for the AWS SDK for JavaScript, see [Setting credentials](https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/setting-credentials.html)\.
@@ -234,7 +234,7 @@ The order in which you specify the stacks is not necessarily the order in which 
 
 ## Bootstrapping your AWS environment<a name="cli-bootstrap"></a>
 
-Deploying stacks with the CDK requires special dedicated AWS CDK resources to be provisioned\. The `cdk bootstrap` command creates the necessary resources for you\. You only need to bootstrap if you are deploying a stack that requires these dedicated resources\. See [Bootstrapping](bootstrapping.md) for details\.
+Deploying stacks with the CDK requires special dedicated AWS CDK resources to be provisioned\. The `cdk bootstrap` command creates the necessary resources for you\. You only need to bootstrap if you are deploying a stack that requires these dedicated resources\. See [AWS CDK bootstrapping](bootstrapping.md) for details\.
 
 ```
 cdk bootstrap
@@ -326,7 +326,7 @@ The CDK Toolkit actually runs your app and synthesizes fresh templates before mo
 
 See `cdk synth --help` for all available options\. A few of the most frequently used options are covered in the following section\.
 
-### Specifying context values<a name="w94aac73b7c33c11"></a>
+### Specifying context values<a name="w92aac73b7c33c11"></a>
 
 Use the `--context` or `-c` option to pass [runtime context](context.md) values to your CDK app\.
 
@@ -345,7 +345,7 @@ When deploying multiple stacks, the specified context values are normally passed
 cdk synth --context Stack1:key=value Stack2:key=value Stack1 Stack2
 ```
 
-### Specifying display format<a name="w94aac73b7c33c13"></a>
+### Specifying display format<a name="w92aac73b7c33c13"></a>
 
 By default, the synthesized template is displayed in YAML format\. Add the `--json` flag to display it in JSON format instead\.
 
@@ -353,7 +353,7 @@ By default, the synthesized template is displayed in YAML format\. Add the `--js
 cdk synth --json MyStack
 ```
 
-### Specifying output directory<a name="w94aac73b7c33c15"></a>
+### Specifying output directory<a name="w92aac73b7c33c15"></a>
 
 Add the `--output` \(`-o`\) option to write the synthesized templates to a directory other than `cdk.out`\.
 
@@ -429,7 +429,7 @@ Git\-style wildcards, both `*` and `**`, can be used in the `"watch"` and `"buil
 **Important**  
 Watch mode is not recommended for production deployments\.
 
-### Specifying AWS CloudFormation parameters<a name="w94aac73b7c35c19"></a>
+### Specifying AWS CloudFormation parameters<a name="w92aac73b7c35c19"></a>
 
 The AWS CDK Toolkit supports specifying AWS CloudFormation [parameters](parameters.md) at deployment\. You may provide these on the command line following the `--parameters` flag\.
 
@@ -451,7 +451,7 @@ cdk deploy MyStack YourStack --parameters MyStack:uploadBucketName=UploadBucket 
 
 By default, the AWS CDK retains values of parameters from previous deployments and uses them in later deployments if they are not specified explicitly\. Use the `--no-previous-parameters` flag to require all parameters to be specified\.
 
-### Specifying outputs file<a name="w94aac73b7c35c21"></a>
+### Specifying outputs file<a name="w92aac73b7c35c21"></a>
 
 If your stack declares AWS CloudFormation outputs, these are normally displayed on the screen at the conclusion of deployment\. To write them to a file in JSON format, use the `--outputs-file` flag\.
 
@@ -575,7 +575,7 @@ Default values for many CDK Toolkit command line flags can be stored in a projec
 | bootstrapKmsKeyId | Overrides the ID of the AWS KMS key used to encrypt the Amazon S3 deployment bucket\. | \-\-bootstrap\-kms\-key\-id | 
 | build | The command that compiles or builds the CDK application before synthesis\. Not permitted in \~/\.cdk\.json\. | \-\-build | 
 | browser | The command for launching a Web browser for the cdk docs subcommand\. | \-\-browser | 
-| context | See [Runtime context](context.md)\. Context values in a configuration file will not be erased by cdk context \-\-clear\. \(The CDK Toolkit places cached context values in cdk\.context\.json\.\) | \-\-context | 
+| context | See [Context values and the AWS CDK](context.md)\. Context values in a configuration file will not be erased by cdk context \-\-clear\. \(The CDK Toolkit places cached context values in cdk\.context\.json\.\) | \-\-context | 
 | debug | If true, CDK Toolkit emits more detailed information useful for debugging\. | \-\-debug | 
 | language | The language to be used for initializing new projects\. | \-\-language | 
 | lookups | If false, no context lookups are permitted\. Synthesis will fail if any context lookups need to be performed\. | \-\-no\-lookups | 

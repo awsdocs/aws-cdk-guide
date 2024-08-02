@@ -103,7 +103,7 @@ const app = new App({
 });
 ```
 
-Alternatively, you can set this context key\-value pair using the `cdk.json` or `cdk.context.json` files in your project directory \(see [Runtime context](context.md)\)\.
+Alternatively, you can set this context key\-value pair using the `cdk.json` or `cdk.context.json` files in your project directory \(see [Context values and the AWS CDK](context.md)\)\.
 
 If you choose the JSON format, the AWS CDK will print the policy validation report to a file called `policy-validation-report.json` in the cloud assembly directory\. For the default, human\-readable format, the report will be printed to the standard output\.
 

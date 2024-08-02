@@ -1,28 +1,17 @@
-# Working with the AWS CDK in supported programming languages<a name="work-with"></a>
+# Work with the AWS CDK library<a name="work-with"></a>
 
-Use the AWS Cloud Development Kit \(AWS CDK\) to define your AWS Cloud infrastructure with a [supported programming language](languages.md)\.
+Import and use the AWS Cloud Development Kit \(AWS CDK\) library to define your AWS Cloud infrastructure with a [supported programming language](languages.md)\.
 
-**Topics**
-+ [Importing the AWS Construct Library](#work-with-library)
-+ [Managing dependencies](#work-with-cdk-dependencies)
-+ [Comparing AWS CDK in TypeScript with other languages](#work-with-cdk-compare)
-+ [Working with the AWS CDK in TypeScript](work-with-cdk-typescript.md)
-+ [Working with the AWS CDK in JavaScript](work-with-cdk-javascript.md)
-+ [Working with the AWS CDK in Python](work-with-cdk-python.md)
-+ [Working with the AWS CDK in Java](work-with-cdk-java.md)
-+ [Working with the AWS CDK in C\#](work-with-cdk-csharp.md)
-+ [Working with the AWS CDK in Go](work-with-cdk-go.md)
+## Import the AWS CDK Library<a name="work-with-library"></a>
 
-## Importing the AWS Construct Library<a name="work-with-library"></a>
-
-The AWS CDK includes the AWS Construct Library, a collection of constructs organized by AWS service\. The library's stable constructs are offered in a single module, called by its TypeScript package name: `aws-cdk-lib`\. The actual package name varies by language\.
+The [AWS CDK Library](libraries.md) is often referred to by its TypeScript package name of `aws-cdk-lib`\. The actual package name varies by language\. The following is an example of how to install and import the CDK Library:
 
 ------
 #### [ TypeScript ]
 
 | Install | `npm install aws-cdk-lib` | 
 | --- |--- |
-| Import | `const cdk = require('aws-cdk-lib');` | 
+| Import | `import * as cdk from 'aws-cdk-lib';` | 
 | --- |--- |
 
 ------
@@ -44,9 +33,9 @@ The AWS CDK includes the AWS Construct Library, a collection of constructs organ
 ------
 #### [ Java ]
 
-| Add to `pom.xml` | Group `software.amazon.awscdk`; artifact `aws-cdk-lib` | 
+| In `pom.xml`, add | Group `software.amazon.awscdk`; artifact `aws-cdk-lib` | 
 | --- |--- |
-| Import | `import software.amazon.awscdk.App;` \(for example\) | 
+| Import | `import software.amazon.awscdk.App;` | 
 | --- |--- |
 
 ------
@@ -58,12 +47,26 @@ The AWS CDK includes the AWS Construct Library, a collection of constructs organ
 | --- |--- |
 
 ------
+#### [ Go ]
 
-The `construct` base class and supporting code is in the `constructs` module\. Experimental constructs, where the API is still undergoing refinement, are distributed as separate modules\.
+| Install | `go get github.com/aws/aws-cdk-go/awscdk/v2` | 
+| --- |--- |
+| Import | 
 
-### The AWS CDK API Reference<a name="work-with-library-reference"></a>
+```
+import (
+  "github.com/aws/aws-cdk-go/awscdk/v2"
+)
+``` | 
+| --- |--- |
 
-The [AWS CDK API Reference](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-construct-library.html) provides detailed documentation of the constructs \(and other components\) in the library\. A version of the API Reference is provided for each supported programming language\.
+------
+
+The `construct` base class and supporting code is in the `constructs` library\. Experimental constructs, where the API is still undergoing refinement, are distributed as separate modules\.
+
+## Using the AWS CDK API Reference<a name="work-with-library-reference"></a>
+
+Use the [AWS CDK API reference](libraries.md#libraries-reference) as you develop with the AWS CDK\.
 
 Each module's reference material is broken into the following sections\.
 + *Overview*: Introductory material you'll need to know to work with the service in the AWS CDK, including concepts and examples\.

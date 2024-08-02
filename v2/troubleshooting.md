@@ -67,7 +67,7 @@ By default, the bootstrap resources are created in the Region or Regions that ar
 cdk bootstrap aws://ACCOUNT-NUMBER/REGION
 ```
 
-For more information, see [Bootstrapping](bootstrapping.md)\.
+For more information, see [AWS CDK bootstrapping](bootstrapping.md)\.
 
 \([back to list](#troubleshooting_top)\)<a name="troubleshooting_forbidden_null"></a>
 
@@ -145,7 +145,7 @@ In the past, Regions have occasionally launched with only one Availability Zone\
 
 You can change this behavior by overriding your stack's [https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.Stack.html#availabilityzones](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.Stack.html#availabilityzones) \(Python: `availability_zones`\) property to explicitly specify the zones that you want to use\.
 
-For more information about specifying a stack's account and region at synthesis time, while retaining the flexibility to deploy to any region, see [Environments](environments.md)\.
+For more information about specifying a stack's account and region at synthesis time, while retaining the flexibility to deploy to any region, see [Environments for the AWS CDK](environments.md)\.
 
 \([back to list](#troubleshooting_top)\)<a name="troubleshooting_resource_not_deleted"></a>
 

@@ -1,4 +1,4 @@
-# Using resources from the AWS CloudFormation Public Registry<a name="use_cfn_public_registry"></a>
+# Use resources from the AWS CloudFormation Public Registry<a name="use_cfn_public_registry"></a>
 
 The AWS CloudFormation Public Registry lets you manage extensions, both public and private, such as resources, modules, and hooks that are available for use in your AWS account\. You can use public resource extensions in your AWS Cloud Development Kit \(AWS CDK\) applications with the [https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.CfnResource.html](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.CfnResource.html) construct\. 
 
@@ -12,10 +12,10 @@ When you use AWS CloudFormation with third\-party resource types, you will incur
 To learn more about public extensions, see [Using public extensions in CloudFormation](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/registry-public.html) in the *AWS CloudFormation User Guide*
 
 **Topics**
-+ [Activating a third\-party resource in your account and Region](#use_cfn_public_registry_activate)
-+ [Adding a resource from the AWS CloudFormation Public Registry to your CDK app](#use_cfn_public_registry_add)
++ [Activate a third\-party resource in your account and Region](#use_cfn_public_registry_activate)
++ [Add a resource from the AWS CloudFormation Public Registry to your CDK app](#use_cfn_public_registry_add)
 
-## Activating a third\-party resource in your account and Region<a name="use_cfn_public_registry_activate"></a>
+## Activate a third\-party resource in your account and Region<a name="use_cfn_public_registry_activate"></a>
 
 Extensions published by AWS do not require activation\. They are always available in every account and Region\. You can activate a third\-party extension through the AWS Management Console, via the AWS Command Line Interface, or by deploying a special AWS CloudFormation resource\.
 
@@ -58,7 +58,7 @@ Extensions published by AWS do not require activation\. They are always availabl
 
   The `TypeActivation` resource can be deployed by the CDK using the [https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.CfnResource.html](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.CfnResource.html) construct\. This is shown for the actual extensions in the following section\.
 
-## Adding a resource from the AWS CloudFormation Public Registry to your CDK app<a name="use_cfn_public_registry_add"></a>
+## Add a resource from the AWS CloudFormation Public Registry to your CDK app<a name="use_cfn_public_registry_add"></a>
 
  Use the [https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.CfnResource.html](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.CfnResource.html) construct to include a resource from the AWS CloudFormation Public Registry in your application\. This construct is in the CDK's `aws-cdk-lib` module\. 
 

@@ -1,4 +1,4 @@
-# Constructs<a name="constructs"></a>
+# AWS CDK Constructs<a name="constructs"></a>
 
 Constructs are the basic building blocks of AWS Cloud Development Kit \(AWS CDK\) applications\. A construct is a component within your application that represents one or more AWS CloudFormation resources and their configuration\. You build your application, piece by piece, by importing and configuring constructs\.
 
@@ -274,13 +274,13 @@ var createJobLambda = new Function(this, "create-job", new FunctionProps
 
 ------
 
-For information about the most common API patterns in the AWS Construct Library, see [Resources](resources.md)\.
+For information about the most common API patterns in the AWS Construct Library, see [Resources and the AWS CDK](resources.md)\.
 
 ### The app and stack construct<a name="constructs_apps_stacks"></a>
 
 The `[App](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.App.html)` and `[Stack](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.Stack.html)` classes from the AWS Construct Library are unique constructs\. Compared to other constructs, they don't configure AWS resources on their own\. Instead, they are used to provide context for your other constructs\. All constructs that represent AWS resources must be defined, directly or indirectly, within the scope of a `Stack` construct\. `Stack` constructs are defined within the scope of an `App` construct\.
 
-To learn more about CDK apps, see [AWS CDK apps](apps.md)\. To learn more about CDK stacks, see [Stacks](stacks.md)\.
+To learn more about CDK apps, see [AWS CDK apps](apps.md)\. To learn more about CDK stacks, see [AWS CDK stacks](stacks.md)\.
 
 The following example defines an app with a single stack\. Within the stack, an L2 construct is used to configure an Amazon S3 bucket resource\.
 
