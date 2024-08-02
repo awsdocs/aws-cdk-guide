@@ -102,7 +102,7 @@ In general, environment variable lookups should be limited to the top level of a
 
 ### Unit test your infrastructure<a name="best-practices-constructs-test"></a>
 
-To consistently run a full suite of unit tests at build time in all environments, avoid network lookups during synthesis and model all your production stages in code\. \(These best practices are covered later\.\) If any single commit always results in the same generated template, you can trust the unit tests that you write to confirm that the generated templates look the way you expect\. For more information, see [Testing constructs](testing.md)\.
+To consistently run a full suite of unit tests at build time in all environments, avoid network lookups during synthesis and model all your production stages in code\. \(These best practices are covered later\.\) If any single commit always results in the same generated template, you can trust the unit tests that you write to confirm that the generated templates look the way you expect\. For more information, see [Test AWS CDK applications](testing.md)\.
 
 ### Don't change the logical ID of stateful resources<a name="best-practices-constructs-logicalid"></a>
 
