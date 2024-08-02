@@ -3,6 +3,5 @@
 This section contains information about the AWS CDK tools listed below\.
 
 **Topics**
-+ [AWS CDK Toolkit \(`cdk` command\)](cli.md)
 + [AWS Toolkit for Visual Studio Code](vscode.md)
 + [AWS SAM integration](sam.md)

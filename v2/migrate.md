@@ -47,7 +47,7 @@ Migrating resources into AWS CDK has historically been a manual process that req
 ### General considerations<a name="migrate-considerations-general"></a>
 
 **CDK Migrate vs\. CDK Import**  
-The `cdk import` command can import deployed resources into a new or existing CDK app\. When importing, each resource will have to manually be defined as an L1 construct in your app\. We recommend using `cdk import` to import one or more resources at a time into a new or existing CDK app\. To learn more, see [Importing existing resources into a stack](cli.md#cli-import)\.  
+The `cdk import` command can import deployed resources into a new or existing CDK app\. When importing, each resource will have to manually be defined as an L1 construct in your app\. We recommend using `cdk import` to import one or more resources at a time into a new or existing CDK app\. To learn more, see [Import existing resources into a stack](cli.md#cli-import)\.  
 The `cdk migrate` command migrates from deployed resources, deployed AWS CloudFormation stacks, or local AWS CloudFormation templates into a new CDK app\. During migration, the AWS CDK CLI uses `cdk import` to import your resources into the new CDK app\. The AWS CDK CLI also generates L1 constructs for each resource for you\. We recommend using `cdk migrate` when importing from a supported migration source into a new AWS CDK app\.
 
 **CDK Migrate creates L1 constructs only**  
@@ -273,11 +273,11 @@ Before deploying, you must prepare your CDK app\.
 **Synthesize your app**  
 Use the `cdk synth` command to synthesize the stack in your CDK app into an AWS CloudFormation template\.  
 If you migrated from a deployed AWS CloudFormation stack or template, you can compare the synthesized template to the migrated template to verify resource and property values\.  
-To learn more about `cdk synth`, see [Synthesizing stacks](cli.md#cli-synth)\.
+To learn more about `cdk synth`, see [Synthesize stacks](cli.md#cli-synth)\.
 
 **Perform a diff**  
 If you migrated from a deployed AWS CloudFormation stack, you can use the cdk diff command to compare with the stack in your new CDK app\.  
-To learn more about cdk diff, see [Comparing stacks](cli.md#cli-diff)\.
+To learn more about cdk diff, see [Compare stacks](cli.md#cli-diff)\.
 
 **Bootstrap your environment**  
 If you are deploying from an AWS environment for the first time, use `cdk bootstrap` to prepare your environment\. To learn more, see [AWS CDK bootstrapping](bootstrapping.md)\.
