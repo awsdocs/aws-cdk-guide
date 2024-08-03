@@ -1,4 +1,4 @@
-# Videos<a name="videos"></a>
+# AWS CDK video resources<a name="videos"></a>
 
 Enjoy these videos presented by members of the AWS CDK team\.
 

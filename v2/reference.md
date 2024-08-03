@@ -5,6 +5,7 @@ This section contains reference information for the AWS Cloud Development Kit \(
 **Topics**
 + [API reference](#reference-api)
 + [AWS CDK versioning](versioning.md)
++ [AWS CDK video resources](videos.md)
 
 ## API reference<a name="reference-api"></a>
 
