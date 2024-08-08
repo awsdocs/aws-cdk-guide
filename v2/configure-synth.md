@@ -350,6 +350,27 @@ new MyStack(app, "MyStack", new StackProps
 ```
 
 ------
+#### [ Go ]
+
+```
+func NewMyStack(scope constructs.Construct, id string, props *MyStackProps) awscdk.Stack {
+	var sprops awscdk.StackProps
+	if props != nil {
+		sprops = props.StackProps
+	}
+	stack := awscdk.NewStack(scope, &id, &sprops)
+
+	synth := awscdk.NewDefaultStackSynthesizer(&awscdk.DefaultStackSynthesizerProps{
+		Qualifier: jsii.String("MYQUALIFIER"),
+	})
+
+	stack.SetSynthesizer(synth)
+
+	return stack
+}
+```
+
+------
 
 The following is an example of configuring the qualifier as a context key in `cdk.json`:
 

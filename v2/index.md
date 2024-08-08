@@ -52,6 +52,7 @@ sponsored by Amazon.
 + [Bootstrap your environment for use with the AWS CDK](bootstrapping-env.md)
    + [Customize AWS CDK bootstrapping](bootstrapping-customizing.md)
       + [Create and apply permissions boundaries for the AWS CDK](customize-permissions-boundaries.md)
+   + [Troubleshoot AWS CDK bootstrapping issues](bootstrapping-troubleshoot.md)
 + [Develop AWS CDK applications](develop.md)
    + [Customize constructs from the AWS Construct Library](cfn_layer.md)
    + [Get a value from an environment variable](get_env_var.md)

@@ -4,18 +4,6 @@ Bootstrap your AWS environment to prepare it for AWS Cloud Development Kit \(AWS
 + For an introduction to environments, see [Environments for the AWS CDK](environments.md)\.
 + For an introduction to bootstrapping, see [AWS CDK bootstrapping](bootstrapping.md)\.
 
-**Topics**
-+ [How to bootstrap your environment](#bootstrapping-howto)
-+ [When to bootstrap your environment](#bootstrapping-env-when)
-+ [IAM roles created during bootstrapping](#bootstrapping-env-roles)
-+ [Customize bootstrapping](#bootstrapping-env-customize)
-+ [Bootstrapping with CDK Pipelines](#bootstrapping-env-pipelines)
-+ [Bootstrap template version history](#bootstrap-template-history)
-+ [Upgrade from legacy to modern bootstrap template](#bootstrapping-template)
-+ [Address Security Hub Findings](#bootstrapping-securityhub)
-+ [Considerations](#bootstrapping-env-considerations)
-+ [Customize AWS CDK bootstrapping](bootstrapping-customizing.md)
-
 ## How to bootstrap your environment<a name="bootstrapping-howto"></a>
 
 You can use the AWS CDK Command Line Interface \(AWS CDK CLI\) or your preferred AWS CloudFormation deployment tool to bootstrap your environment\.
@@ -146,7 +134,9 @@ It’s okay to bootstrap an environment more than once\. If an environment has a
 
 Periodically, the CDK team will update the bootstrap template to a new version\. When this happens, we recommend that you update your bootstrap stack\. If you haven’t customized the bootstrapping process, you can update your bootstrap stack by following the same steps that you took to originally bootstrap your environment\. For more information, see [Bootstrap template version history](#bootstrap-template-history)\.
 
-## IAM roles created during bootstrapping<a name="bootstrapping-env-roles"></a>
+## Default resources created during bootstrapping<a name="bootstrapping-env-default"></a>
+
+### IAM roles created during bootstrapping<a name="bootstrapping-env-roles"></a>
 
 By default, bootstrapping provisions the following AWS Identity and Access Management \(IAM\) roles in your environment:
 + `CloudFormationExecutionRole`
@@ -171,6 +161,16 @@ This IAM role grants permission to perform actions against the bootstrapped Amaz
 
 `LookupRole`  <a name="bootstrapping-env-roles-lookup"></a>
 This IAM role grants `readOnly` permission to look up [context values](context.md) from the AWS environment\. It is assumed by the CDK CLI when performing tasks such as template synthesis and deployments\.
+
+### Resource IDs created during bootstrapping<a name="bootstrapping-env-default-id"></a>
+
+When you deploy the default bootstrap template, physical IDs for bootstrap resources are created using the following structure: `cdk-qualifier-description-account-ID-Region`\.
++ **Qualifier** – A nine character unique string value of `hnb659fds`\. The actual value has no significance\.
++ **Description** – A short description of the resource\. For example, `container-assets`\.
++ **Account ID** – The AWS account ID of the environment\.
++ **Region** – The AWS Region of the environment\.
+
+The following is an example physical ID of the Amazon S3 staging bucket created during bootstrapping: `cdk-hnb659fds-assets-012345678910-us-west-1`\.
 
 ## Customize bootstrapping<a name="bootstrapping-env-customize"></a>
 

@@ -85,7 +85,7 @@ Block public access configuration on the Amazon S3 bucket that is created and us
 *Default value*: `true`
 
 `--qualifier STRING`  <a name="ref-cli-cmd-bootstrap-options-qualifier"></a>
-String value that is unique for each bootstrap stack\. This value is added to the physical ID of resources in the bootstrap stack\.  
+Nine\-digit string value that is unique for each bootstrap stack\. This value is added to the physical ID of resources in the bootstrap stack\.  
 By providing a qualifier, you avoid resource name clashes when provisioning multiple bootstrap stacks in the same environment\.  
 When you change the qualifier, your CDK app must pass the changed value to the stack synthesizer\. For more information, see [Customize CDK stack synthesis](configure-synth.md#bootstrapping-custom-synth)\.  
 *Default value*: `hnb659fds`\. This value has no significance\.

@@ -4,7 +4,7 @@
 
 ## What is bootstrapping?<a name="bootstrapping-what"></a>
 
-Bootstrapping prepares your AWS environment by provisioning specific AWS resources in your environment that are used by the AWS CDK\. This includes the following:
+Bootstrapping prepares your AWS environment by provisioning specific AWS resources in your environment that are used by the AWS CDK\. These resources are commonly referred to as your *bootstrap resources*\. They include the following:
 + **Amazon Simple Storage Service \(Amazon S3\) bucket** – Used to store your CDK project files, such as AWS Lambda function code and assets\.
 + **Amazon Elastic Container Registry \(Amazon ECR\) repository** – Used primarily to store Docker images\.
 + **AWS Identity and Access Management \(IAM\) roles** – Configured to grant permissions needed by the AWS CDK to perform deployments\. For more information about the IAM roles created during bootstrapping, see [IAM roles created during bootstrapping](bootstrapping-env.md#bootstrapping-env-roles)\.
