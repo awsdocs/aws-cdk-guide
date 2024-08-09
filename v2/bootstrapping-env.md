@@ -118,7 +118,11 @@ For information on using CloudFormation StackSets to bootstrap multiple environm
 
 ## When to bootstrap your environment<a name="bootstrapping-env-when"></a>
 
-You must bootstrap each environment before you deploy into the environment\. If you attempt to deploy a CDK stack into an environment that hasn’t been bootstrapped, you will see an error like the following:
+You must bootstrap each AWS environment before you deploy into the environment\. We recommend that you proactively bootstrap each environment that you plan to use\. You can do this before you plan on actually deploying CDK apps into the environment\. By proactively bootstrapping your environments, you prevent potential future issues such as Amazon S3 bucket name conflicts or deploying CDK apps into environments that haven't been bootstrapped\.
+
+It’s okay to bootstrap an environment more than once\. If an environment has already been bootstrapped, the bootstrap stack will be upgraded if necessary\. Otherwise, nothing will happen\.
+
+ If you attempt to deploy a CDK stack into an environment that hasn’t been bootstrapped, you will see an error like the following:
 
 ```
 $ cdk deploy
@@ -127,8 +131,6 @@ $ cdk deploy
 
  ❌ Deployment failed: Error: BootstrapExampleStack: SSM parameter /cdk-bootstrap/hnb659fds/version not found. Has the environment been bootstrapped? Please run 'cdk bootstrap' (see https://docs.aws.amazon.com/cdk/latest/guide/bootstrapping.html)
 ```
-
-It’s okay to bootstrap an environment more than once\. If an environment has already been bootstrapped, the bootstrap stack will be upgraded if necessary\. Otherwise, nothing will happen\.
 
 ### Update your bootstrap stack<a name="bootstrapping-env-when-update"></a>
 

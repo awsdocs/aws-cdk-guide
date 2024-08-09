@@ -243,8 +243,4 @@ func NewMyStack(scope constructs.Construct, id string, props *MyStackProps) awsc
 
 ### Prevention<a name="bootstrapping-troubleshoot-s3-bucket-name-prevention"></a>
 
-**Proactively bootstrap your environments**  <a name="bootstrapping-troubleshoot-s3-bucket-name-prevention-proactive"></a>
-If you don’t have reasons to customize bootstrapping or synthesis, we recommend that you use the default bootstrapping process and synthesizer, which work together automatically\. To do this, the default Amazon S3 bucket name that will be created during bootstrapping must not yet exist\. To prevent against this from happening, we recommend that you proactively bootstrap each Region for each AWS account that you plan to use\. You can do this before you ever plan on actually deploying CDK applications into the environment\. Specifically for the Amazon S3 bucket naming issue, this will create Amazon S3 buckets in each AWS environment and prevent others from using your Amazon S3 bucket name\.
-
-**Protect your account ID**  <a name="bootstrapping-troubleshoot-s3-bucket-name-prevention-protect"></a>
-Limit the sharing of your account ID\. This will help to prevent bad actors from using your account ID to generate their own Amazon S3 bucket names\.
+We recommend that you proactively bootstrap each AWS environment that you plan to use\. For more information, see [When to bootstrap your environment](bootstrapping-env.md#bootstrapping-env-when)\. Specifically for the Amazon S3 bucket naming issue, this will create Amazon S3 buckets in each AWS environment and prevent others from using your Amazon S3 bucket name\. 
