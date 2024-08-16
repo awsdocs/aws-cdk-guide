@@ -174,6 +174,31 @@ When you deploy the default bootstrap template, physical IDs for bootstrap resou
 
 The following is an example physical ID of the Amazon S3 staging bucket created during bootstrapping: `cdk-hnb659fds-assets-012345678910-us-west-1`\.
 
+## Permissions to use when bootstrapping your environment<a name="bootstrapping-env-permissions"></a>
+
+When bootstrapping an AWS environment, the IAM identity performing the bootstrapping must have at least the following permissions:
+
+```
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "cloudformation:*",
+                "ecr:*",
+                "ssm:*",
+                "s3:*",
+                "iam:*"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
+```
+
+Over time, the bootstrap stack, including the resources that are created and permissions they require, may change\. With future changes, you may need to modify the permissions required to bootstrap an environment\.
+
 ## Customize bootstrapping<a name="bootstrapping-env-customize"></a>
 
 If the default bootstrap template doesn’t suit your needs, you can customize the bootstrapping of resources into your environment in the following ways:

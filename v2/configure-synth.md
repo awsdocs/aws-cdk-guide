@@ -1,10 +1,10 @@
 # Configure and customize CDK stack synthesis<a name="configure-synth"></a>
 
-Before you can deploy an AWS Cloud Development Kit \(AWS CDK\) stack, it must first be synthesized\. *Stack synthesis* is the process of producing an AWS CloudFormation template and deployment artifacts from a CDK stack\. These templates and artifacts are what gets deployed to provision your resources on AWS\. For more information on how deployments work, see [How AWS CDK deployments work](deploy.md#deploy-how)\.
+Before you can deploy an AWS Cloud Development Kit \(AWS CDK\) stack, it must first be synthesized\. *Stack synthesis* is the process of producing an AWS CloudFormation template and deployment artifacts from a CDK stack\. The template and artifacts are known as the *cloud assembly*\. The cloud assembly is what gets deployed to provision your resources on AWS\. For more information on how deployments work, see [How AWS CDK deployments work](deploy.md#deploy-how)\.
 
-In the AWS CDK, bootstrapping and synthesis must work together for a deployment to be successful:
+For your CDK apps to properly deploy, the CloudFormation templates produced during synthesis must correctly specify the resources created during bootstrapping\. Therefore, bootstrapping and synthesis must complement one another for a deployment to be successful:
 + Bootstrapping is a one\-time process of setting up an AWS environment for AWS CDK deployments\. It configures specific AWS resources in your environment that are used by the CDK for deployments\. These are commonly referred to as *bootstrap resources*\. For instructions on bootstrapping, see [Bootstrap your environment for use with the AWS CDK](bootstrapping-env.md)\.
-+ CloudFormation templates produced during synthesis include information on which bootstrap resources to use\. Synthesis behavior is determined by the synthesizer that you configure for each CDK stack\. For a deployment to be successful, the synthesizer must produce CloudFormation templates that reference the correct bootstrap resources to use\.
++ CloudFormation templates produced during synthesis include information on which bootstrap resources to use\. During synthesis, the CDK CLI doesn't know specifically how your AWS environment has been bootstrapped\. Instead, the CDK CLI produces CloudFormation templates based on the synthesizer you configure for each CDK stack\. For a deployment to be successful, the synthesizer must produce CloudFormation templates that reference the correct bootstrap resources to use\.
 
 The CDK comes with a default synthesizer and bootstrapping configuration that are designed to work together\. If you customize one, you must apply relevant customizations to the other\.
 
@@ -800,7 +800,7 @@ Docker image assets will be published to an Amazon ECR repository named `aws-cdk
 
 A CloudFormation stack must exist with the default name `CDKToolkit`\. This stack must have a CloudFormation export named `BucketName` that refers to the staging bucket\.
 
-The default bootstrap template satisfies the `LegacyStackSynthesizer` bootstrap contract\. However, only the Amazon S3 bucket will be used\. You can customize the bootstrap template to remove the Amazon ECR, IAM, and SSM bootstrap resources\.
+The default bootstrap template satisfies the `LegacyStackSynthesizer` bootstrap contract\. However, only the Amazon S3 bucket from the bootstrap resources of the bootstrap template will be used\. You can customize the bootstrap template to remove the Amazon ECR, IAM, and SSM bootstrap resources\.
 
 #### `LegacyStackSynthesizer` deployment process<a name="bootstrapping-custom-synth-legacy-deploy"></a>
 

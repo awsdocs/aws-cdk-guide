@@ -44,6 +44,7 @@ sponsored by Amazon.
    + [Working with the AWS CDK in C#](work-with-cdk-csharp.md)
    + [Working with the AWS CDK in Go](work-with-cdk-go.md)
 + [Best practices for developing and deploying cloud infrastructure with the AWS CDK](best-practices.md)
+   + [AWS CDK security best practices](best-practices-security.md)
 + [Migrating from AWS CDK v1 to AWS CDK v2](migrating-v2.md)
 + [Migrate existing resources and AWS CloudFormation templates to the AWS CDK](migrate.md)
 + [Configure security credentials for the AWS CDK CLI](configure-access.md)
