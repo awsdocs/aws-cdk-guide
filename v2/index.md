@@ -63,6 +63,7 @@ sponsored by Amazon.
    + [Set a CloudWatch alarm](how_to_set_cw_alarm.md)
    + [Save and retrieve context variable values](get_context_var.md)
    + [Use resources from the AWS CloudFormation Public Registry](use_cfn_public_registry.md)
+   + [Define permissions for L2 constructs with the AWS CDK](define-iam-l2.md)
 + [Configure and customize CDK stack synthesis](configure-synth.md)
 + [Deploy AWS CDK applications](deploy.md)
    + [AWS CDK policy validation at synthesis time](policy-validation-synthesis.md)
