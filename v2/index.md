@@ -69,6 +69,7 @@ sponsored by Amazon.
 + [Deploy AWS CDK applications](deploy.md)
    + [AWS CDK policy validation at synthesis time](policy-validation-synthesis.md)
    + [Continuous integration and delivery (CI/CD) using CDK Pipelines](cdk_pipeline.md)
+   + [Troubleshoot AWS CDK deployments](deploy-troubleshoot.md)
 + [Test AWS CDK applications](testing.md)
 + [AWS CDK CLI reference](cli.md)
 + [AWS CDK CLI command reference](ref-cli-cmd.md)
