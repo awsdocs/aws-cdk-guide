@@ -8,7 +8,6 @@ For an introduction to bootstrapping, see [AWS CDK bootstrapping](bootstrapping.
 + [Use the CDK CLI to customize bootstrapping](#bootstrapping-customizing-cli)
 + [Modify the default bootstrap template](#bootstrapping-customizing-template)
 + [Follow the bootstrap contract](#bootstrapping-contract)
-+ [Create and apply permissions boundaries for the AWS CDK](customize-permissions-boundaries.md)
 
 ## Use the CDK CLI to customize bootstrapping<a name="bootstrapping-customizing-cli"></a>
 
