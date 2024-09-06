@@ -34,6 +34,7 @@ sponsored by Amazon.
    + [Context values and the AWS CDK](context.md)
    + [AWS CDK feature flags](featureflags.md)
    + [Aspects and the AWS CDK](aspects.md)
++ [AWS CDK prerequisites](prerequisites.md)
 + [Getting started with the AWS CDK](getting_started.md)
    + [Tutorial: Create your first AWS CDK app](hello_world.md)
 + [Work with the AWS CDK library](work-with.md)

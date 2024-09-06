@@ -1436,7 +1436,7 @@ By using L2 constructs, you define a few properties to configure your resources 
 In this step, you use the AWS CDK CLI `cdk deploy` command to deploy your application\. The AWS CDK works with the AWS CloudFormation service to provision your resources\.
 
 **Important**  
-You must perform a one\-time bootstrapping of your AWS environment before deployment\. For instructions, see [Bootstrap your environment](getting_started.md#getting_started_bootstrap)\.
+You must perform a one\-time bootstrapping of your AWS environment before deployment\. For instructions, see [Bootstrap your environment for use with the AWS CDK](bootstrapping-env.md)\.
 
 From the root of your project, run the following\. Confirm changes if prompted:
 
@@ -1494,7 +1494,7 @@ CdkHelloWorldStack: destroying... [1/1]
 
 ## Troubleshooting<a name="serverless-example-troubleshooting"></a>
 
-### Error: \{“message”: “Internal server error”\}%<a name="w92aac77c11c55b5"></a>
+### Error: \{“message”: “Internal server error”\}%<a name="w92aac81c11c55b5"></a>
 
 When invoking the deployed Lambda function, you receive this error\. This error could occur for multiple reasons\.
 

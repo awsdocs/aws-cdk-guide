@@ -1337,10 +1337,10 @@ Resources that maintain persistent data, such as databases, Amazon S3 buckets, a
 Resources besides those that store data persistently might also have a `removalPolicy` that is used for a different purpose\. For example, a Lambda function version uses a `removalPolicy` attribute to determine whether a given version is retained when a new version is deployed\. These have different meanings and defaults compared to the removal policy on an Amazon S3 bucket or DynamoDB table\.
 
 
-| Value | meaning | 
-| --- |--- |
-| RemovalPolicy\.RETAIN | Keep the contents of the resource when destroying the stack \(default\)\. The resource is orphaned from the stack and must be deleted manually\. If you attempt to re\-deploy the stack while the resource still exists, you will receive an error message due to a name conflict\. | 
-| RemovalPolicy\.DESTROY | The resource will be destroyed along with the stack\. | 
+| Value | Meaning | 
+| --- | --- | 
+|  `RemovalPolicy.RETAIN`  |  Keep the contents of the resource when destroying the stack \(default\)\. The resource is orphaned from the stack and must be deleted manually\. If you attempt to re\-deploy the stack while the resource still exists, you will receive an error message due to a name conflict\.  | 
+|  `RemovalPolicy.DESTROY`  |  The resource will be destroyed along with the stack\.  | 
 
 AWS CloudFormation does not remove Amazon S3 buckets that contain files even if their removal policy is set to `DESTROY`\. Attempting to do so is an AWS CloudFormation error\. To have the AWS CDK delete all files from the bucket before destroying it, set the bucket's `autoDeleteObjects` property to `true`\.
 

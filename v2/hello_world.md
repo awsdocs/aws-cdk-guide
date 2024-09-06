@@ -1,6 +1,6 @@
 # Tutorial: Create your first AWS CDK app<a name="hello_world"></a>
 
-Get started with using the AWS Cloud Development Kit \(AWS CDK\) by creating your first CDK app\.
+Get started with using the AWS Cloud Development Kit \(AWS CDK\) by using the AWS CDK Command Line Interface \(AWS CDK CLI\) to develop your first CDK app, bootstrap your AWS environment, and deploy your application on AWS\.
 
 ## Prerequisites<a name="hello_world_prerequisites"></a>
 
@@ -11,13 +11,15 @@ Before starting this tutorial, complete all set up steps in [Getting started wit
 In this tutorial, you will create and deploy a simple application on AWS using the AWS CDK\. The application consists of an [AWS Lambda function](https://docs.aws.amazon.com/lambda/latest/dg/welcome.html) that returns a `Hello World!` message when invoked\. The function will be invoked through a [Lambda function URL](https://docs.aws.amazon.com/lambda/latest/dg/lambda-urls.html) that serves as a dedicated HTTP\(S\) endpoint for your Lambda function\.
 
 Through this tutorial, you will perform the following:
-+ Create a CDK project using the AWS CDK Command Line Interface \(AWS CDK CLI\) `cdk init` command\.
-+ Use constructs from the AWS Construct Library to define your Lambda function and Lambda function URL resources\.
-+ Use the CDK CLI to build your app, synthesize an AWS CloudFormation template, and deploy your CDK stack\.
-+ Interact with your deployed application on AWS\.
-+ Modify your application and view changes with the CDK CLI `cdk diff` command\.
-+ Deploy your CDK stack to implement your changes\.
-+ Delete your CDK stack using the CDK CLI `cdk destroy` command\.
++ **Create your project** – Create a CDK project using the CDK CLI `cdk init` command\.
++ **Configure your AWS environment** – Configure the AWS environment that you will deploy your application into\.
++ **Bootstrap your AWS environment** – Prepare your AWS environment for deployment by bootstrapping it using the CDK CLI `cdk bootstrap` command\.
++ **Develop your app** – Use constructs from the AWS Construct Library to define your Lambda function and Lambda function URL resources\.
++ **Prepare your app for deployment** – Use the CDK CLI to build your app and synthesize an AWS CloudFormation template\.
++ **Deploy your app** – Use the CDK CLI `cdk deploy` command to deploy your application and provision your AWS resources\.
++ **Interact with your application** – Interact with your deployed Lambda function on AWS by invoking it and receiving a response\.
++ **Modify your app** – Modify your Lambda function and deploy to implement your changes\.
++ **Delete your app** – Delete all resources that you created by using the CDK CLI `cdk destroy` command\.
 
 ## Step 1: Create your CDK project<a name="hello_world_create"></a>
 
@@ -33,7 +35,7 @@ In this step, you create a new CDK project\. A CDK project should be in its own 
 **Important**  
 Be sure to name your project directory `hello-cdk`, *exactly as shown here*\. The CDK CLI uses this directory name to name things within your CDK code\. If you use a different directory name, you will run into issues during this tutorial\.
 
-1. From the `hello-cdk` directory, initialize a new CDK project using the AWS CDK CLI `cdk init` command\. Specify the `app` template and your preferred programming language with the `--language` option:
+1. From the `hello-cdk` directory, initialize a new CDK project using the CDK CLI `cdk init` command\. Specify the `app` template and your preferred programming language with the `--language` option:
 
 ------
 #### [ TypeScript ]
@@ -380,7 +382,219 @@ func NewHelloCdkStack(scope constructs.Construct, id string, props *HelloCdkStac
 
 ------
 
-## Step 2: Build your CDK app<a name="hello_world_build"></a>
+## Step 2: Configure your AWS environment<a name="hello_world_configure"></a>
+
+In this step, you configure the AWS environment for your CDK stack\. By doing this, you specify which environment your CDK stack will be deployed to\.
+
+First, determine the AWS environment that you want to use\. An AWS environment consists of an AWS account and AWS Region\.
+
+When you use the AWS CLI to configure security credentials on your local machine, you can then use the AWS CLI to obtain AWS environment information for a specific profile\.
+
+**To use the AWS CLI to obtain your AWS account ID**
+
+1. Run the following AWS CLI command to get the AWS account ID for your `default` profile:
+
+   ```
+   $ aws sts get-caller-identity --query "Account" --output text
+   ```
+
+1. If you prefer to use a named profile, provide the name of your profile using the `--profile` option:
+
+   ```
+   $ aws sts get-caller-identity --profile your-profile-name --query "Account" --output text
+   ```
+
+**To use the AWS CLI to obtain your AWS Region**
+
+1. Run the following AWS CLI command to get the Region that you configured for your `default` profile:
+
+   ```
+   $ aws configure get region
+   ```
+
+1. If you prefer to use a named profile, provide the name of your profile using the `--profile` option:
+
+   ```
+   $ aws configure get region --profile your-profile-name
+   ```
+
+Next, you will configure the AWS environment for your CDK stack by modifying the `HelloCdkStack` instance in your *application file*\. For this tutorial, you will hard code your AWS environment information\. This is recommended for production environments\. For information on other ways to configure environments, see [Configure environments to use with the AWS CDK](configure-env.md)\.
+
+**To configure the environment for your CDK stack**
++ In your *application file*, use the `env` property of the `Stack` construct to configure your environment\. The following is an example:
+
+------
+#### [ TypeScript ]
+
+  Located in `bin/hello-cdk.ts`:
+
+  ```
+  #!/usr/bin/env node
+  import 'source-map-support/register';
+  import * as cdk from 'aws-cdk-lib';
+  import { HelloCdkStack } from '../lib/hello-cdk-stack';
+  
+  const app = new cdk.App();
+  new HelloCdkStack(app, 'HelloCdkStack', {
+    env: { account: '123456789012', region: 'us-east-1' },
+  });
+  ```
+
+------
+#### [ JavaScript ]
+
+  Located in `bin/hello-cdk.js`:
+
+  ```
+  #!/usr/bin/env node
+  
+  const cdk = require('aws-cdk-lib');
+  const { HelloCdkStack } = require('../lib/hello-cdk-stack');
+  
+  const app = new cdk.App();
+  new HelloCdkStack(app, 'HelloCdkStack', {
+    env: { account: '123456789012', region: 'us-east-1' },
+  });
+  ```
+
+------
+#### [ Python ]
+
+  Located in `app.py`:
+
+  ```
+  #!/usr/bin/env python3
+  import os
+  
+  import aws_cdk as cdk
+  
+  from hello_cdk.hello_cdk_stack import HelloCdkStack
+  
+  
+  app = cdk.App()
+  HelloCdkStack(app, "HelloCdkStack",
+    env=cdk.Environment(account='123456789012', region='us-east-1'),
+    )
+    
+  app.synth()
+  ```
+
+------
+#### [ Java ]
+
+  Located in `src/main/java/.../HelloCdkApp.java`:
+
+  ```
+  package com.myorg;
+  
+  import software.amazon.awscdk.App;
+  import software.amazon.awscdk.Environment;
+  import software.amazon.awscdk.StackProps;
+  
+  import java.util.Arrays;
+  
+  public class HelloCdkApp {
+      public static void main(final String[] args) {
+          App app = new App();
+  
+          new HelloCdkStack(app, "HelloCdkStack", StackProps.builder()
+                  .env(Environment.builder()
+                          .account("123456789012")
+                          .region("us-east-1")
+                          .build())
+  
+                  .build());
+  
+          app.synth();
+      }
+  }
+  ```
+
+------
+#### [ C\# ]
+
+  Located in `src/HelloCdk/Program.cs`:
+
+  ```
+  using Amazon.CDK;
+  using System;
+  using System.Collections.Generic;
+  using System.Linq;
+  
+  namespace HelloCdk
+  {
+      sealed class Program
+      {
+          public static void Main(string[] args)
+          {
+              var app = new App();
+              new HelloCdkStack(app, "HelloCdkStack", new StackProps
+              {
+                  Env = new Amazon.CDK.Environment
+                  {
+                      Account = "123456789012",
+                      Region = "us-east-1",
+                  }
+              });
+              app.Synth();
+          }
+      }
+  }
+  ```
+
+------
+#### [ Go ]
+
+  Located in `hello-cdk.go`:
+
+  ```
+  package main
+  
+  import (
+    "github.com/aws/aws-cdk-go/awscdk/v2"
+    "github.com/aws/constructs-go/constructs/v10"
+    "github.com/aws/jsii-runtime-go"
+  )
+  
+  // ...
+  
+  func main() {
+    defer jsii.Close()
+  
+    app := awscdk.NewApp(nil)
+  
+    NewHelloCdkStack(app, "HelloCdkStack", &HelloCdkStackProps{
+      awscdk.StackProps{
+        Env: env(),
+      },
+    })
+  
+    app.Synth(nil)
+  }
+  
+  func env() *awscdk.Environment {
+  	return &awscdk.Environment{
+  		Account: jsii.String("123456789012"),
+  		Region:  jsii.String("us-east-1"),
+  	}
+  }
+  ```
+
+------
+
+## Step 3: Bootstrap your AWS environment<a name="hello_world_bootstrap"></a>
+
+In this step, you bootstrap the AWS environment that you configured in the previous step\. This prepares your environment for CDK deployments\.
+
+To bootstrap your environment, run the following from the root of your CDK project:
+
+```
+$ cdk bootstrap
+```
+
+By bootstrapping from the root of your CDK project, you don't have to provide any additional information\. The CDK CLI obtains environment information from your project\. When you bootstrap outside of a CDK project, you must provide environment information with the `cdk bootstrap` command\. For more information, see [Bootstrap your environment for use with the AWS CDK](bootstrapping-env.md)\.
+
+## Step 4: Build your CDK app<a name="hello_world_build"></a>
 
 In most programming environments, you build or compile code after making changes\. This isn't necessary with the AWS CDK since the CDK CLI will automatically perform this step\. However, you can still build manually when you want to catch syntax and type errors\. The following is an example:
 
@@ -431,7 +645,7 @@ $ go build
 
 ------
 
-## Step 3: List the CDK stacks in your app<a name="hello_world_list"></a>
+## Step 5: List the CDK stacks in your app<a name="hello_world_list"></a>
 
 At this point, you should have a CDK app containing a single CDK stack\. To verify, use the CDK CLI `cdk list` command to display your stacks\. The output should display a single stack named `HelloCdkStack`:
 
@@ -442,7 +656,7 @@ HelloCdkStack
 
 If you don't see this output, verify that you are in the correct working directory of your project and try again\. If you still don't see your stack, repeat [Step 1: Create your CDK project](#hello_world_create) and try again\.
 
-## Step 4: Define your Lambda function<a name="hello_world_function"></a>
+## Step 6: Define your Lambda function<a name="hello_world_function"></a>
 
 In this step, you import the `[aws\_lambda](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda-readme.html)` module from the AWS Construct Library and use the `[Function](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda.Function.html)` L2 construct\.
 
@@ -690,7 +904,7 @@ Let's take a closer look at the `Function` construct\. Like all constructs, the 
 
 All constructs take these same three arguments, so it's easy to stay oriented as you learn about new ones\. And as you might expect, you can subclass any construct to extend it to suit your needs, or if you want to change its defaults\.
 
-## Step 5: Define your Lambda function URL<a name="hello_world_url"></a>
+## Step 7: Define your Lambda function URL<a name="hello_world_url"></a>
 
 In this step, you use the `addFunctionUrl` helper method of the `Function` construct to define a Lambda function URL\. To output the value of this URL at deployment, you will create an AWS CloudFormation output using the `[CfnOutput](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.CfnOutput.html)` construct\.
 
@@ -895,9 +1109,9 @@ func NewHelloCdkStack(scope constructs.Construct, id string, props *HelloCdkStac
 ------
 
 **Warning**  
-To keep this tutorial simple, your Lambda function URL is defined without authentication\. When deployed, this creates a publicly accessible endpoint that can be used to invoke your function\. When you are done with this tutorial, follow [Step 11: Delete your application](#hello_world_delete) to delete these resources\.
+To keep this tutorial simple, your Lambda function URL is defined without authentication\. When deployed, this creates a publicly accessible endpoint that can be used to invoke your function\. When you are done with this tutorial, follow [Step 12: Delete your application](#hello_world_delete) to delete these resources\.
 
-## Step 6: Synthesize a CloudFormation template<a name="hello_world_synth"></a>
+## Step 8: Synthesize a CloudFormation template<a name="hello_world_synth"></a>
 
 In this step, you prepare for deployment by synthesizing a CloudFormation template with the CDK CLI `cdk synth` command\. This command performs basic validation of your CDK code, runs your CDK app, and generates a CloudFormation template from your CDK stack\.
 
@@ -905,7 +1119,7 @@ If your app contains more than one stack, you must specify which stacks to synth
 
 If you don't synthesize a template, the CDK CLI will automatically perform this step when you deploy\. However, we recommend that you run this step before each deployment to check for synthesis errors\.
 
-Before synthesizing a template, you can optionally build your application to catch syntax and type errors\. For instructions, see [Step 2: Build your CDK app](#hello_world_build)\.
+Before synthesizing a template, you can optionally build your application to catch syntax and type errors\. For instructions, see [Step 4: Build your CDK app](#hello_world_build)\.
 
 To synthesize a CloudFormation template, run the following from the root of your project:
 
@@ -1010,84 +1224,6 @@ Outputs:
       Fn::GetAtt:
         - HelloWorldFunctionFunctionUrlunique-identifier
         - FunctionUrl
-Conditions:
-  CDKMetadataAvailable:
-    Fn::Or:
-      - Fn::Or:
-          - Fn::Equals:
-              - Ref: AWS::Region
-              - af-south-1
-          - Fn::Equals:
-              - Ref: AWS::Region
-              - ap-east-1
-          - Fn::Equals:
-              - Ref: AWS::Region
-              - ap-northeast-1
-          - Fn::Equals:
-              - Ref: AWS::Region
-              - ap-northeast-2
-          - Fn::Equals:
-              - Ref: AWS::Region
-              - ap-south-1
-          - Fn::Equals:
-              - Ref: AWS::Region
-              - ap-southeast-1
-          - Fn::Equals:
-              - Ref: AWS::Region
-              - ap-southeast-2
-          - Fn::Equals:
-              - Ref: AWS::Region
-              - ca-central-1
-          - Fn::Equals:
-              - Ref: AWS::Region
-              - cn-north-1
-          - Fn::Equals:
-              - Ref: AWS::Region
-              - cn-northwest-1
-      - Fn::Or:
-          - Fn::Equals:
-              - Ref: AWS::Region
-              - eu-central-1
-          - Fn::Equals:
-              - Ref: AWS::Region
-              - eu-north-1
-          - Fn::Equals:
-              - Ref: AWS::Region
-              - eu-south-1
-          - Fn::Equals:
-              - Ref: AWS::Region
-              - eu-west-1
-          - Fn::Equals:
-              - Ref: AWS::Region
-              - eu-west-2
-          - Fn::Equals:
-              - Ref: AWS::Region
-              - eu-west-3
-          - Fn::Equals:
-              - Ref: AWS::Region
-              - il-central-1
-          - Fn::Equals:
-              - Ref: AWS::Region
-              - me-central-1
-          - Fn::Equals:
-              - Ref: AWS::Region
-              - me-south-1
-          - Fn::Equals:
-              - Ref: AWS::Region
-              - sa-east-1
-      - Fn::Or:
-          - Fn::Equals:
-              - Ref: AWS::Region
-              - us-east-1
-          - Fn::Equals:
-              - Ref: AWS::Region
-              - us-east-2
-          - Fn::Equals:
-              - Ref: AWS::Region
-              - us-west-1
-          - Fn::Equals:
-              - Ref: AWS::Region
-              - us-west-2
 Parameters:
   BootstrapVersion:
     Type: AWS::SSM::Parameter::Value<String>
@@ -1113,15 +1249,7 @@ Every generated template contains an `AWS::CDK::Metadata` resource by default\. 
 
 By defining a single L2 construct, the AWS CDK creates an extensive CloudFormation template containing your Lambda resources, along with the permissions and glue logic required for your resources to interact within your application\.
 
-## Step 7: \(Optional\) Bootstrap your environment<a name="hello_world_bootstrap"></a>
-
-For this tutorial, you will be deploying into your `default` environment\. This environment is configured and bootstrapped during the [getting started](getting_started.md) process\.
-
-If you want to deploy this application into another environment, you must specify the environment in your CDK code and bootstrap the environment\. For instructions, see the following:
-+ [How to specify environments with the AWS CDK](configure-env.md#configure-env-how)\.
-+ [How to bootstrap your environment](bootstrapping-env.md#bootstrapping-howto)\.
-
-## Step 8: Deploy your CDK stack<a name="hello_world_deploy"></a>
+## Step 9: Deploy your CDK stack<a name="hello_world_deploy"></a>
 
 In this step, you use the CDK CLI `cdk deploy` command to deploy your CDK stack\. This command retrieves your generated CloudFormation template and deploys it through AWS CloudFormation, which provisions your resources as part of a CloudFormation stack\.
 
@@ -1181,7 +1309,7 @@ arn:aws:cloudformation:Region:account-id:stack/HelloCdkStack/unique-identifier
 ✨  Total time: 44.34s
 ```
 
-## Step 9: Interact with your application on AWS<a name="hello_world_interact"></a>
+## Step 10: Interact with your application on AWS<a name="hello_world_interact"></a>
 
 In this step, you interact with your application on AWS by invoking your Lambda function through the function URL\. When you access the URL, your Lambda function returns the `Hello World!` message\.
 
@@ -1192,7 +1320,7 @@ $ curl https://<api-id>.lambda-url.<Region>.on.aws/
 "Hello World!"%
 ```
 
-## Step 10: Modify your application<a name="hello_world_modify"></a>
+## Step 11: Modify your application<a name="hello_world_modify"></a>
 
 In this step, you modify the message that the Lambda function returns when invoked\. You perform a diff using the CDK CLI `cdk diff` command to preview your changes and deploy to update your application\. You then interact with your application on AWS to see your new message\.
 
@@ -1461,14 +1589,14 @@ arn:aws:cloudformation:Region:account-id:stack/HelloCdkStack/unique-identifier
 ✨  Total time: 29.07s
 ```
 
-To interact with your application, repeat [Step 9: Interact with your application on AWS](#hello_world_interact)\. The following is an example:
+To interact with your application, repeat [Step 10: Interact with your application on AWS](#hello_world_interact)\. The following is an example:
 
 ```
 $ curl https://<api-id>.lambda-url.<Region>.on.aws/
 "Hello CDK!"%
 ```
 
-## Step 11: Delete your application<a name="hello_world_delete"></a>
+## Step 12: Delete your application<a name="hello_world_delete"></a>
 
 In this step, you use the CDK CLI `cdk destroy` command to delete your application\. This command deletes the CloudFormation stack associated with your CDK stack, which includes the resources you created\.
 
