@@ -29,5 +29,5 @@ to see what we're working on at the moment. Note that items on the Wishlist may 
 
 ## Contributor Grant of License
 
-By submitting a Pull Request against this repo, you grant Amazon the right to use use, modify, copy, and redistribute your contribution 
+By submitting a Pull Request against this repo, you grant Amazon the right to use, modify, copy, and redistribute your contribution 
 under any license we choose.
