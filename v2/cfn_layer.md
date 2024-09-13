@@ -37,7 +37,7 @@ For example, to instantiate a low\-level Amazon S3 bucket L1 with analytics enab
 #### [ TypeScript ]
 
 ```
-new s3.CfnBucket(this, 'MyBucket', {
+new s3.CfnBucket(this, 'amzn-s3-demo-bucket', {
   analyticsConfigurations: [
     { 
       id: 'Config',
@@ -51,7 +51,7 @@ new s3.CfnBucket(this, 'MyBucket', {
 #### [ JavaScript ]
 
 ```
-new s3.CfnBucket(this, 'MyBucket', {
+new s3.CfnBucket(this, 'amzn-s3-demo-bucket', {
   analyticsConfigurations: [
     { 
       id: 'Config'
@@ -65,7 +65,7 @@ new s3.CfnBucket(this, 'MyBucket', {
 #### [ Python ]
 
 ```
-s3.CfnBucket(self, "MyBucket",
+s3.CfnBucket(self, "amzn-s3-demo-bucket",
     analytics_configurations: [
         dict(id="Config",
              # ...
@@ -78,7 +78,7 @@ s3.CfnBucket(self, "MyBucket",
 #### [ Java ]
 
 ```
-CfnBucket.Builder.create(this, "MyBucket")
+CfnBucket.Builder.create(this, "amzn-s3-demo-bucket")
     .analyticsConfigurations(Arrays.asList(java.util.Map.of(    // Java 9 or later
         "id", "Config", // ...
     ))).build();
@@ -88,7 +88,7 @@ CfnBucket.Builder.create(this, "MyBucket")
 #### [ C\# ]
 
 ```
-new CfnBucket(this, 'MyBucket', new CfnBucketProps {
+new CfnBucket(this, 'amzn-s3-demo-bucket', new CfnBucketProps {
     AnalyticsConfigurations = new Dictionary<string, string>
     {
         ["id"] = "Config",
@@ -105,7 +105,7 @@ There might be rare cases where you want to define a resource that doesn't have 
 #### [ TypeScript ]
 
 ```
-new cdk.CfnResource(this, 'MyBucket', {
+new cdk.CfnResource(this, 'amzn-s3-demo-bucket', {
   type: 'AWS::S3::Bucket',
   properties: {
     // Note the PascalCase here! These are CloudFormation identifiers.
@@ -123,7 +123,7 @@ new cdk.CfnResource(this, 'MyBucket', {
 #### [ JavaScript ]
 
 ```
-new cdk.CfnResource(this, 'MyBucket', {
+new cdk.CfnResource(this, 'amzn-s3-demo-bucket', {
   type: 'AWS::S3::Bucket',
   properties: {
     // Note the PascalCase here! These are CloudFormation identifiers.
@@ -141,7 +141,7 @@ new cdk.CfnResource(this, 'MyBucket', {
 #### [ Python ]
 
 ```
-cdk.CfnResource(self, 'MyBucket',
+cdk.CfnResource(self, 'amzn-s3-demo-bucket',
   type="AWS::S3::Bucket",
   properties=dict(
     # Note the PascalCase here! These are CloudFormation identifiers.
@@ -159,7 +159,7 @@ cdk.CfnResource(self, 'MyBucket',
 #### [ Java ]
 
 ```
-CfnResource.Builder.create(this, "MyBucket")
+CfnResource.Builder.create(this, "amzn-s3-demo-bucket")
         .type("AWS::S3::Bucket")
         .properties(java.util.Map.of(    // Map.of requires Java 9 or later
             // Note the PascalCase here! These are CloudFormation identifiers
@@ -173,7 +173,7 @@ CfnResource.Builder.create(this, "MyBucket")
 #### [ C\# ]
 
 ```
-new CfnResource(this, "MyBucket", new CfnResourceProps
+new CfnResource(this, "amzn-s3-demo-bucket", new CfnResourceProps
 {
     Type = "AWS::S3::Bucket",
     Properties = new Dictionary<string, object>

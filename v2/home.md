@@ -8,7 +8,7 @@ The AWS CDK consists of two primary parts:
 
 The AWS CDK supports TypeScript, JavaScript, Python, Java, C\#/\.Net, and Go\. You can use any of these supported programming languages to define reusable cloud components known as [constructs](constructs.md)\. You compose these together into [stacks](stacks.md) and [apps](apps.md)\. Then, you deploy your CDK applications to AWS CloudFormation to provision or update your resources\.
 
-![\[Image NOT FOUND\]](http://docs.aws.amazon.com/cdk/v2/guide/images/AppStacks.png)
+![\[\]](http://docs.aws.amazon.com/cdk/v2/guide/images/AppStacks.png)
 
 **Topics**
 + [Benefits of the AWS CDK](#home-benefits)
@@ -30,7 +30,7 @@ With the AWS CDK, you can use any of the following programming languages to defi
 Use the same programming language to define your infrastructure and your application logic\.  
 Receive the benefits of developing infrastructure in your preferred IDE \(Integrated Development Environment\), such as syntax highlighting and intelligent code completion\.  
 
-![\[Image NOT FOUND\]](http://docs.aws.amazon.com/cdk/v2/guide/images/CodeCompletion.png)
+![\[\]](http://docs.aws.amazon.com/cdk/v2/guide/images/CodeCompletion.png)
 
 **Deploy infrastructure through AWS CloudFormation**  <a name="home-benefits-cfn"></a>
 AWS CDK integrates with AWS CloudFormation to deploy and provision your infrastructure on AWS\. AWS CloudFormation is a managed AWS service that offers extensive support of resource and property configurations for provisioning services on AWS\. With AWS CloudFormation, you can perform infrastructure deployments predictably and repeatedly, with rollback on error\. If you are already familiar with AWS CloudFormation, you don’t have to learn a new IaC management service when getting started with the AWS CDK\.

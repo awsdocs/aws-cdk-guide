@@ -14,7 +14,7 @@ You can pass this string around as if it was the name of the bucket\. In the fol
 #### [ TypeScript ]
 
 ```
-const bucket = new s3.Bucket(this, 'MyBucket');
+const bucket = new s3.Bucket(this, 'amzn-s3-demo-bucket');
 
 const fn = new lambda.Function(stack, 'MyLambda', {
   // ...
@@ -28,7 +28,7 @@ const fn = new lambda.Function(stack, 'MyLambda', {
 #### [ JavaScript ]
 
 ```
-const bucket = new s3.Bucket(this, 'MyBucket');
+const bucket = new s3.Bucket(this, 'amzn-s3-demo-bucket');
 
 const fn = new lambda.Function(stack, 'MyLambda', {
   // ...
@@ -42,7 +42,7 @@ const fn = new lambda.Function(stack, 'MyLambda', {
 #### [ Python ]
 
 ```
-bucket = s3.Bucket(self, "MyBucket")
+bucket = s3.Bucket(self, "amzn-s3-demo-bucket")
 
 fn = lambda_.Function(stack, "MyLambda",
         environment=dict(BUCKET_NAME=bucket.bucket_name))
@@ -52,7 +52,7 @@ fn = lambda_.Function(stack, "MyLambda",
 #### [ Java ]
 
 ```
-final Bucket bucket = new Bucket(this, "MyBucket");
+final Bucket bucket = new Bucket(this, "amzn-s3-demo-bucket");
 
 Function fn = Function.Builder.create(this, "MyLambda")
         .environment(java.util.Map.of(    // Map.of requires Java 9+
@@ -64,7 +64,7 @@ Function fn = Function.Builder.create(this, "MyLambda")
 #### [ C\# ]
 
 ```
-var bucket = new s3.Bucket(this, "MyBucket");
+var bucket = new s3.Bucket(this, "amzn-s3-demo-bucket");
         
 var fn = new Function(this, "MyLambda", new FunctionProps {
     Environment = new Dictionary<string, string>
@@ -76,7 +76,7 @@ var fn = new Function(this, "MyLambda", new FunctionProps {
 
 ------
 
-When the AWS CloudFormation template is finally synthesized, the token is rendered as the AWS CloudFormation intrinsic `{ "Ref": "MyBucket" }`\. At deployment time, AWS CloudFormation replaces this intrinsic with the actual name of the bucket that was created\.
+When the AWS CloudFormation template is finally synthesized, the token is rendered as the AWS CloudFormation intrinsic `{ "Ref": "amzn-s3-demo-bucket" }`\. At deployment time, AWS CloudFormation replaces this intrinsic with the actual name of the bucket that was created\.
 
 **Topics**
 + [Tokens and token encodings](#tokens_encoding)

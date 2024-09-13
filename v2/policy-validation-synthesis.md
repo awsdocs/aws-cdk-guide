@@ -84,7 +84,7 @@ Severity: medium
                        │ Library: aws-cdk-lib/aws-s3.Bucket
                        │ Library Version: 2.50.0
                        │ Location: new MyCustomL3Construct (/home/johndoe/tmp/cdk-tmp-app/src/main.ts:9:20)
-    - Resource Name: my-bucket
+    - Resource Name: amzn-s3-demo-bucket
     - Locations:
       > BucketEncryption/ServerSideEncryptionConfiguration/0/ServerSideEncryptionByDefault/SSEAlgorithm
   Recommendation: Missing value for key `SSEAlgorithm` - must specify `aws:kms`

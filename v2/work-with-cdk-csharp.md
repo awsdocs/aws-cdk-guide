@@ -75,7 +75,7 @@ Visual Studio's NuGet tools are accessible from **Tools** > **NuGet Package Mana
 **Note**  
 All AWS Construct Library modules deemed "experimental" \(see [AWS CDK versioning](versioning.md)\) are flagged as prerelease in NuGet and have an `alpha` name suffix\.
 
-![\[Image NOT FOUND\]](http://docs.aws.amazon.com/cdk/v2/guide/images/visual-studio-nuget.png)
+![\[\]](http://docs.aws.amazon.com/cdk/v2/guide/images/visual-studio-nuget.png)
 
 Look on the **Updates** page to install new versions of your packages\.
 
@@ -120,7 +120,7 @@ All AWS Construct Library classes are instantiated using three arguments: the *s
 In C\#, props are expressed using a props type\. In idiomatic C\# fashion, we can use an object initializer to set the various properties\. Here we're creating an Amazon S3 bucket using the `Bucket` construct; its corresponding props type is `BucketProps`\.
 
 ```
-var bucket = new Bucket(this, "MyBucket", new BucketProps {
+var bucket = new Bucket(this, "amzn-s3-demo-bucket", new BucketProps {
     Versioned = true
 });
 ```
@@ -144,7 +144,7 @@ class MimeBucket : Bucket {
 }
 
 // instantiate our MimeBucket class 
-var bucket = new MimeBucket(this, "MyBucket", new MimeBucketProps {
+var bucket = new MimeBucket(this, "amzn-s3-demo-bucket", new MimeBucketProps {
     Versioned = true,
     MimeType = "image/jpeg"
 });

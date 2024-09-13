@@ -13,7 +13,7 @@ The most common identifier, `id`, is the identifier passed as the second argumen
 **Note**  
 The `id` of a stack is also the identifier that you use to refer to it in the [AWS CDK CLI reference](cli.md)\.
 
-Let's look at an example where we have two constructs with the identifier `MyBucket` in our app\. The first is defined in the scope of the stack with the identifier `Stack1`\. The second is defined in the scope of a stack with the identifier `Stack2`\. Because they're defined in different scopes, this doesn't cause any conflict, and they can coexist in the same app without issues\.
+Let's look at an example where we have two constructs with the identifier `amzn-s3-demo-bucket` in our app\. The first is defined in the scope of the stack with the identifier `Stack1`\. The second is defined in the scope of a stack with the identifier `Stack2`\. Because they're defined in different scopes, this doesn't cause any conflict, and they can coexist in the same app without issues\.
 
 ------
 #### [ TypeScript ]
@@ -27,7 +27,7 @@ class MyStack extends Stack {
   constructor(scope: Construct, id: string, props: StackProps = {}) {
     super(scope, id, props);
 
-    new s3.Bucket(this, 'MyBucket');
+    new s3.Bucket(this, 'amzn-s3-demo-bucket');
   }
 }
 
@@ -47,7 +47,7 @@ class MyStack extends Stack {
   constructor(scope, id, props = {}) {
     super(scope, id, props);
 
-    new s3.Bucket(this, 'MyBucket');
+    new s3.Bucket(this, 'amzn-s3-demo-bucket');
   }
 }
 
@@ -69,7 +69,7 @@ class MyStack(Stack):
     def __init__(self, scope: Construct, id: str, **kwargs):
 
         super().__init__(scope, id, **kwargs)
-        s3.Bucket(self, "MyBucket")
+        s3.Bucket(self, "amzn-s3-demo-bucket")
 
 app = App()
 MyStack(app, 'Stack1')
@@ -96,7 +96,7 @@ public class MyStack extends Stack {
     
     public MyStack(final Construct scope, final String id, final StackProps props) {
         super(scope, id, props);
-        new Bucket(this, "MyBucket");
+        new Bucket(this, "amzn-s3-demo-bucket");
     }
 }
 
@@ -126,7 +126,7 @@ public class MyStack : Stack
 {
     public MyStack(Construct scope, string id, IStackProps props) : base(scope, id, props)
     {
-        new Bucket(this, "MyBucket");
+        new Bucket(this, "amzn-s3-demo-bucket");
     }
 }
 
@@ -147,7 +147,7 @@ class Program
 
 The constructs in an AWS CDK application form a hierarchy rooted in the `App` class\. We refer to the collection of IDs from a given construct, its parent construct, its grandparent, and so on to the root of the construct tree, as a *path*\.
 
-The AWS CDK typically displays paths in your templates as a string\. The IDs from the levels are separated by slashes, starting at the node immediately under the root `App` instance, which is usually a stack\. For example, the paths of the two Amazon S3 bucket resources in the previous code example are `Stack1/MyBucket` and `Stack2/MyBucket`\.
+The AWS CDK typically displays paths in your templates as a string\. The IDs from the levels are separated by slashes, starting at the node immediately under the root `App` instance, which is usually a stack\. For example, the paths of the two Amazon S3 bucket resources in the previous code example are `Stack1/amzn-s3-demo-bucket` and `Stack2/amzn-s3-demo-bucket`\.
 
 You can access the path of any construct programmatically, as shown in the following example\. This gets the path of `myConstruct` \(or `my_construct`, as Python developers would write it\)\. Since IDs must be unique within the scope they are created, their paths are always unique within an AWS CDK application\.
 
@@ -274,7 +274,7 @@ string addr = myConstruct.Node.Addr;
 
 Unique IDs serve as the *logical identifiers* \(or *logical names*\) of resources in the generated AWS CloudFormation templates for constructs that represent AWS resources\.
 
-For example, the Amazon S3 bucket in the previous example that is created within `Stack2` results in an `AWS::S3::Bucket` resource\. The resource's logical ID is `Stack2MyBucket4DD88B4F` in the resulting AWS CloudFormation template\. \(For details on how this identifier is generated, see [Unique IDs](#identifiers_unique_ids)\.\)
+For example, the Amazon S3 bucket in the previous example that is created within `Stack2` results in an `AWS::S3::Bucket` resource\. The resource's logical ID is `Stack2amzn-s3-demo-bucket4DD88B4F` in the resulting AWS CloudFormation template\. \(For details on how this identifier is generated, see [Unique IDs](#identifiers_unique_ids)\.\)
 
 ### Logical ID stability<a name="identifiers_logical_id_stability"></a>
 

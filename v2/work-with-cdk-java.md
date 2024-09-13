@@ -109,7 +109,7 @@ In Java, props are expressed using the [Builder pattern](https://en.wikipedia.or
 The `BucketProps` class \(like every AWS Construct Library props class\) has an inner class called `Builder`\. The `BucketProps.Builder` type offers methods to set the various properties of a `BucketProps` instance\. Each method returns the `Builder` instance, so the method calls can be chained to set multiple properties\. At the end of the chain, you call `build()` to actually produce the `BucketProps` object\.
 
 ```
-Bucket bucket = new Bucket(this, "MyBucket", new BucketProps.Builder()
+Bucket bucket = new Bucket(this, "amzn-s3-demo-bucket", new BucketProps.Builder()
                            .versioned(true)
                            .encryption(BucketEncryption.KMS_MANAGED)
                            .build());
@@ -118,7 +118,7 @@ Bucket bucket = new Bucket(this, "MyBucket", new BucketProps.Builder()
 Constructs, and other classes that take a props\-like object as their final argument, offer a shortcut\. The class has a `Builder` of its own that instantiates it and its props object in one step\. This way, you don't need to explicitly instantiate \(for example\) both `BucketProps` and a `Bucket`—and you don't need an import for the props type\.
 
 ```
-Bucket bucket = Bucket.Builder.create(this, "MyBucket")
+Bucket bucket = Bucket.Builder.create(this, "amzn-s3-demo-bucket")
                            .versioned(true)
                            .encryption(BucketEncryption.KMS_MANAGED)
                            .build();

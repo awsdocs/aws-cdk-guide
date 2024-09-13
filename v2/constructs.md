@@ -450,8 +450,8 @@ In this example, we create a `bucket` object using the `CfnBucket` L1 construct:
 #### [ TypeScript ]
 
 ```
-const bucket = new s3.CfnBucket(this, "MyBucket", {
-  bucketName: "MyBucket"
+const bucket = new s3.CfnBucket(this, "amzn-s3-demo-bucket", {
+  bucketName: "amzn-s3-demo-bucket"
 });
 ```
 
@@ -459,8 +459,8 @@ const bucket = new s3.CfnBucket(this, "MyBucket", {
 #### [ JavaScript ]
 
 ```
-const bucket = new s3.CfnBucket(this, "MyBucket", {
-  bucketName: "MyBucket"
+const bucket = new s3.CfnBucket(this, "amzn-s3-demo-bucket", {
+  bucketName: "amzn-s3-demo-bucket"
 });
 ```
 
@@ -468,23 +468,23 @@ const bucket = new s3.CfnBucket(this, "MyBucket", {
 #### [ Python ]
 
 ```
-bucket = s3.CfnBucket(self, "MyBucket", bucket_name="MyBucket")
+bucket = s3.CfnBucket(self, "amzn-s3-demo-bucket", bucket_name="amzn-s3-demo-bucket")
 ```
 
 ------
 #### [ Java ]
 
 ```
-CfnBucket bucket = new CfnBucket.Builder().bucketName("MyBucket").build();
+CfnBucket bucket = new CfnBucket.Builder().bucketName("amzn-s3-demo-bucket").build();
 ```
 
 ------
 #### [ C\# ]
 
 ```
-var bucket = new CfnBucket(this, "MyBucket", new CfnBucketProps
+var bucket = new CfnBucket(this, "amzn-s3-demo-bucket", new CfnBucketProps
 {
-    BucketName= "MyBucket"
+    BucketName= "amzn-s3-demo-bucket"
 });
 ```
 
@@ -492,8 +492,8 @@ var bucket = new CfnBucket(this, "MyBucket", new CfnBucketProps
 #### [ Go ]
 
 ```
-	awss3.NewCfnBucket(stack, jsii.String("MyBucket"), &awss3.CfnBucketProps{
-		BucketName: jsii.String("MyBucket"),
+	awss3.NewCfnBucket(stack, jsii.String("amzn-s3-demo-bucket"), &awss3.CfnBucketProps{
+		BucketName: jsii.String("amzn-s3-demo-bucket"),
 	})
 ```
 
@@ -505,8 +505,8 @@ Construct properties that aren't simple Booleans, strings, numbers, or container
 #### [ TypeScript ]
 
 ```
-const bucket = new s3.CfnBucket(this, "MyBucket", {
-  bucketName: "MyBucket",
+const bucket = new s3.CfnBucket(this, "amzn-s3-demo-bucket", {
+  bucketName: "amzn-s3-demo-bucket",
   corsConfiguration: {
     corsRules: [{
           allowedOrigins: ["*"],
@@ -520,8 +520,8 @@ const bucket = new s3.CfnBucket(this, "MyBucket", {
 #### [ JavaScript ]
 
 ```
-const bucket = new s3.CfnBucket(this, "MyBucket", {
-  bucketName: "MyBucket",
+const bucket = new s3.CfnBucket(this, "amzn-s3-demo-bucket", {
+  bucketName: "amzn-s3-demo-bucket",
   corsConfiguration: {
     corsRules: [{
           allowedOrigins: ["*"],
@@ -537,7 +537,7 @@ const bucket = new s3.CfnBucket(this, "MyBucket", {
 In Python, these properties are represented by types defined as inner classes of the L1 construct\. For example, the optional property `cors_configuration` of a `CfnBucket` requires a wrapper of type `CfnBucket.CorsConfigurationProperty`\. Here we are defining `cors_configuration` on a `CfnBucket` instance\.
 
 ```
-bucket = CfnBucket(self, "MyBucket", bucket_name="MyBucket",
+bucket = CfnBucket(self, "amzn-s3-demo-bucket", bucket_name="amzn-s3-demo-bucket",
     cors_configuration=CfnBucket.CorsConfigurationProperty(
         cors_rules=[CfnBucket.CorsRuleProperty(
             allowed_origins=["*"],
@@ -553,8 +553,8 @@ bucket = CfnBucket(self, "MyBucket", bucket_name="MyBucket",
 In Java, these properties are represented by types defined as inner classes of the L1 construct\. For example, the optional property `corsConfiguration` of a `CfnBucket` requires a wrapper of type `CfnBucket.CorsConfigurationProperty`\. Here we are defining `corsConfiguration` on a `CfnBucket` instance\.
 
 ```
-CfnBucket bucket = CfnBucket.Builder.create(this, "MyBucket")
-                        .bucketName("MyBucket")
+CfnBucket bucket = CfnBucket.Builder.create(this, "amzn-s3-demo-bucket")
+                        .bucketName("amzn-s3-demo-bucket")
                         .corsConfiguration(new CfnBucket.CorsConfigurationProperty.Builder()
                             .corsRules(Arrays.asList(new CfnBucket.CorsRuleProperty.Builder()
                                 .allowedOrigins(Arrays.asList("*"))
@@ -570,9 +570,9 @@ CfnBucket bucket = CfnBucket.Builder.create(this, "MyBucket")
 In C\#, these properties are represented by types defined as inner classes of the L1 construct\. For example, the optional property `CorsConfiguration` of a `CfnBucket` requires a wrapper of type `CfnBucket.CorsConfigurationProperty`\. Here we are defining `CorsConfiguration` on a `CfnBucket` instance\.
 
 ```
-var bucket = new CfnBucket(this, "MyBucket", new CfnBucketProps
+var bucket = new CfnBucket(this, "amzn-s3-demo-bucket", new CfnBucketProps
 {
-    BucketName = "MyBucket",
+    BucketName = "amzn-s3-demo-bucket",
     CorsConfiguration = new CfnBucket.CorsConfigurationProperty
     {
         CorsRules = new object[] {
@@ -592,8 +592,8 @@ var bucket = new CfnBucket(this, "MyBucket", new CfnBucketProps
 In Go, these types are named using the name of the L1 construct, an underscore, and the property name\. For example, the optional property `CorsConfiguration` of a `CfnBucket` requires a wrapper of type `CfnBucket_CorsConfigurationProperty`\. Here we are defining `CorsConfiguration` on a `CfnBucket` instance\.
 
 ```
-	awss3.NewCfnBucket(stack, jsii.String("MyBucket"), &awss3.CfnBucketProps{
-		BucketName: jsii.String("MyBucket"),
+	awss3.NewCfnBucket(stack, jsii.String("amzn-s3-demo-bucket"), &awss3.CfnBucketProps{
+		BucketName: jsii.String("amzn-s3-demo-bucket"),
 		CorsConfiguration: &awss3.CfnBucket_CorsConfigurationProperty{
 			CorsRules: []awss3.CorsRule{
 				awss3.CorsRule{

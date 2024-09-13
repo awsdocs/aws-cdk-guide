@@ -7,7 +7,7 @@ In this tutorial, you use the AWS Cloud Development Kit \(AWS CDK\) to create a 
 
 The following diagram shows the components of this application:
 
-![\[Diagram of a Lambda function that is invoked when you send a GET request to the API Gateway endpoint.\]](http://docs.aws.amazon.com/cdk/v2/guide/images/serverless-example-01.png)
+![\[\]](http://docs.aws.amazon.com/cdk/v2/guide/images/serverless-example-01.png)
 
 For this tutorial, you will create and interact with your application in the following steps:
 

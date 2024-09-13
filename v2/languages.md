@@ -20,8 +20,8 @@ The following are a few code examples:
 #### [ TypeScript ]
 
 ```
-const bucket = new s3.Bucket(this, 'MyBucket', {
-  bucketName: 'my-bucket',
+const bucket = new s3.Bucket(this, 'amzn-s3-demo-bucket', {
+  bucketName: 'amzn-s3-demo-bucket',
   versioned: true,
   websiteRedirect: {hostName: 'aws.amazon.com'}});
 ```
@@ -30,8 +30,8 @@ const bucket = new s3.Bucket(this, 'MyBucket', {
 #### [ JavaScript ]
 
 ```
-const bucket = new s3.Bucket(this, 'MyBucket', {
-  bucketName: 'my-bucket',
+const bucket = new s3.Bucket(this, 'amzn-s3-demo-bucket', {
+  bucketName: 'amzn-s3-demo-bucket',
   versioned: true,
   websiteRedirect: {hostName: 'aws.amazon.com'}});
 ```
@@ -40,7 +40,7 @@ const bucket = new s3.Bucket(this, 'MyBucket', {
 #### [ Python ]
 
 ```
-bucket = s3.Bucket("MyBucket", bucket_name="my-bucket", versioned=True,
+bucket = s3.Bucket("amzn-s3-demo-bucket", bucket_name="amzn-s3-demo-bucket", versioned=True,
             website_redirect=s3.RedirectTarget(host_name="aws.amazon.com"))
 ```
 
@@ -48,8 +48,8 @@ bucket = s3.Bucket("MyBucket", bucket_name="my-bucket", versioned=True,
 #### [ Java ]
 
 ```
-Bucket bucket = Bucket.Builder.create(self, "MyBucket")
-                      .bucketName("my-bucket")
+Bucket bucket = Bucket.Builder.create(self, "amzn-s3-demo-bucket")
+                      .bucketName("amzn-s3-demo-bucket")
                       .versioned(true)
                       .websiteRedirect(new RedirectTarget.Builder()
                           .hostName("aws.amazon.com").build())
@@ -60,8 +60,8 @@ Bucket bucket = Bucket.Builder.create(self, "MyBucket")
 #### [ C\# ]
 
 ```
-var bucket = new Bucket(this, "MyBucket", new BucketProps {
-                      BucketName = "my-bucket",
+var bucket = new Bucket(this, "amzn-s3-demo-bucket", new BucketProps {
+                      BucketName = "amzn-s3-demo-bucket",
                       Versioned  = true,
                       WebsiteRedirect = new RedirectTarget {
                               HostName = "aws.amazon.com"
@@ -72,8 +72,8 @@ var bucket = new Bucket(this, "MyBucket", new BucketProps {
 #### [ Go ]
 
 ```
-bucket := awss3.NewBucket(scope, jsii.String("MyBucket"), &awss3.BucketProps {
-	BucketName: jsii.String("my-bucket"),
+bucket := awss3.NewBucket(scope, jsii.String("amzn-s3-demo-bucket"), &awss3.BucketProps {
+	BucketName: jsii.String("amzn-s3-demo-bucket"),
 	Versioned: jsii.Bool(true),
 	WebsiteRedirect: &awss3.RedirectTarget {
 		HostName: jsii.String("aws.amazon.com"),

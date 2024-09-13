@@ -345,7 +345,7 @@ export class CdkAppStack extends cdk.Stack {
     super(scope, id, props);
 
     // Create the S3 bucket
-    const bucket = new s3.Bucket(this, 'myBucket', {
+    const bucket = new s3.Bucket(this, 'amzn-s3-demo-bucket', {
       removalPolicy: cdk.RemovalPolicy.DESTROY,
     });
     
@@ -366,7 +366,7 @@ class CdkAppStack extends cdk.Stack {
     super(scope, id, props);
 
     // Create the S3 bucket
-    const bucket = new s3.Bucket(this, 'myBucket', {
+    const bucket = new s3.Bucket(this, 'amzn-s3-demo-bucket', {
       removalPolicy: cdk.RemovalPolicy.DESTROY,
     });
     
@@ -388,7 +388,7 @@ class CdkAppStack(cdk.Stack):
         super().__init__(scope, id, **kwargs)
 
         # Create the S3 bucket
-        bucket = s3.Bucket(self, 'myBucket',
+        bucket = s3.Bucket(self, 'amzn-s3-demo-bucket',
             removal_policy=cdk.RemovalPolicy.DESTROY
         )
         
@@ -408,7 +408,7 @@ public class CdkAppStack extends Stack {
         super(scope, id, props);
 
         // Create the S3 bucket
-        Bucket bucket = Bucket.Builder.create(this, "myBucket")
+        Bucket bucket = Bucket.Builder.create(this, "amzn-s3-demo-bucket")
             .removalPolicy(RemovalPolicy.DESTROY)
             .build();
         
@@ -431,7 +431,7 @@ namespace MyCdkApp
         public CdkAppStack(Construct scope, string id, IStackProps props = null) : base(scope, id, props)
         {
             // Create the S3 bucket
-            var bucket = new Bucket(this, "myBucket", new BucketProps
+            var bucket = new Bucket(this, "amzn-s3-demo-bucket", new BucketProps
             {
                 RemovalPolicy = RemovalPolicy.DESTROY
             });
@@ -454,7 +454,7 @@ func NewCdkAppStack(scope constructs.Construct, id string, props *CdkAppStackPro
 	stack := awscdk.NewStack(scope, &id, &props.StackProps)
 
 	// Create the S3 bucket
-	bucket := awss3.NewBucket(stack, jsii.String("myBucket"), &awss3.BucketProps{
+	bucket := awss3.NewBucket(stack, jsii.String("amzn-s3-demo-bucket"), &awss3.BucketProps{
 		RemovalPolicy: awscdk.RemovalPolicy_DESTROY,
 	})
 	

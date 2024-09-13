@@ -107,7 +107,7 @@ All factory functions take three arguments: the `scope` in which the construct i
 In Go, props are represented by a specific struct type for each construct\. For example, an `awss3.Bucket` takes a props argument of type `awss3.BucketProps`\. Use a struct literal to write props arguments\.
 
 ```
-var bucket = awss3.NewBucket(stack, jsii.String("MyBucket"), &awss3.BucketProps{
+var bucket = awss3.NewBucket(stack, jsii.String("amzn-s3-demo-bucket"), &awss3.BucketProps{
     Versioned: jsii.Bool(true),
 })
 ```

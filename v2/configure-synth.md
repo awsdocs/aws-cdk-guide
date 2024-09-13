@@ -597,7 +597,7 @@ new DefaultStackSynthesizer(new DefaultStackSynthesizerProps
 
 To modify the security credentials used to provide permissions during CDK deployments, you can customize synthesis by using `[CliCredentialsStackSynthesizer](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.CliCredentialsStackSynthesizer.html)`\. This synthesizer works with the default AWS resources that are created during bootstrapping to store assets, such as the Amazon S3 bucket and Amazon ECR repository\. Instead of using the default IAM roles created by the CDK during bootstrapping, it uses the security credentials of the actor initiating deployment\. Therefore, the security credentials of the actor must have valid permissions to perform all deployment actions\. The following diagram illustrates the deployment process when using this synthesizer:
 
-![\[Flowchart of the default AWS CDK deployment process.\]](http://docs.aws.amazon.com/cdk/v2/guide/images/CliCredentialsStackSynthesizer-deploy-process_cdk_flowchart.svg)
+![\[\]](http://docs.aws.amazon.com/cdk/v2/guide/images/CliCredentialsStackSynthesizer-deploy-process_cdk_flowchart.svg)
 
 When using `CliCredentialsStackSynthesizer`:
 + By default, CloudFormation performs API calls in your account using the permissions of the actor\. Therefore, the current identity must have permission to make necessary changes to the AWS resources in the CloudFormation stack, along with the permissions to perform necessary CloudFormation operations, such as `CreateStack` or `UpdateStack`\. Deployment capabilities will be limited to the permissions of the actor\.

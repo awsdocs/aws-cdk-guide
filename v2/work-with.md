@@ -282,16 +282,16 @@ The third argument to an AWS CDK construct is `props`, an object containing attr
 
 ```
 // Instantiate default Bucket
-const bucket = new s3.Bucket(this, 'MyBucket');
+const bucket = new s3.Bucket(this, 'amzn-s3-demo-bucket');
 
 // Instantiate Bucket with bucketName and versioned properties
-const bucket = new s3.Bucket(this, 'MyBucket', {
-  bucketName: 'my-bucket',
+const bucket = new s3.Bucket(this, 'amzn-s3-demo-bucket', {
+  bucketName: 'amzn-s3-demo-bucket',
    versioned: true,
 });
 
 // Instantiate Bucket with websiteRedirect, which has its own sub-properties
-const bucket = new s3.Bucket(this, 'MyBucket', {
+const bucket = new s3.Bucket(this, 'amzn-s3-demo-bucket', {
   websiteRedirect: {host: 'aws.amazon.com'}});
 ```
 
@@ -308,13 +308,13 @@ In Python, the current instance is passed to methods as the first argument, whic
 
 ```
 # Instantiate default Bucket
-bucket = s3.Bucket(self, "MyBucket")
+bucket = s3.Bucket(self, "amzn-s3-demo-bucket")
 
 # Instantiate Bucket with bucket_name and versioned properties
-bucket = s3.Bucket(self, "MyBucket", bucket_name="my-bucket", versioned=true)
+bucket = s3.Bucket(self, "amzn-s3-demo-bucket", bucket_name="amzn-s3-demo-bucket", versioned=true)
 
 # Instantiate Bucket with website_redirect, which has its own sub-properties
-bucket = s3.Bucket(self, "MyBucket", website_redirect=s3.WebsiteRedirect(
+bucket = s3.Bucket(self, "amzn-s3-demo-bucket", website_redirect=s3.WebsiteRedirect(
             host_name="aws.amazon.com"))
 ```
 
@@ -329,15 +329,15 @@ Props are named the same as in TypeScript, using `camelCase`\.
 
 ```
 // Instantiate default Bucket
-Bucket bucket = Bucket(self, "MyBucket");
+Bucket bucket = Bucket(self, "amzn-s3-demo-bucket");
 
 // Instantiate Bucket with bucketName and versioned properties
-Bucket bucket = Bucket.Builder.create(self, "MyBucket")
-                      .bucketName("my-bucket").versioned(true)
+Bucket bucket = Bucket.Builder.create(self, "amzn-s3-demo-bucket")
+                      .bucketName("amzn-s3-demo-bucket").versioned(true)
                       .build();
 
 # Instantiate Bucket with websiteRedirect, which has its own sub-properties
-Bucket bucket = Bucket.Builder.create(self, "MyBucket")
+Bucket bucket = Bucket.Builder.create(self, "amzn-s3-demo-bucket")
                       .websiteRedirect(new websiteRedirect.Builder()
                           .hostName("aws.amazon.com").build())
                       .build();
@@ -354,15 +354,15 @@ It is convenient to use the `var` keyword when instantiating a construct, so you
 
 ```
 // Instantiate default Bucket
-var bucket = Bucket(self, "MyBucket");
+var bucket = Bucket(self, "amzn-s3-demo-bucket");
 
 // Instantiate Bucket with BucketName and Versioned properties
-var bucket =  Bucket(self, "MyBucket", new BucketProps {
-                      BucketName = "my-bucket",
+var bucket =  Bucket(self, "amzn-s3-demo-bucket", new BucketProps {
+                      BucketName = "amzn-s3-demo-bucket",
                       Versioned  = true});
 
 // Instantiate Bucket with WebsiteRedirect, which has its own sub-properties
-var bucket = Bucket(self, "MyBucket", new BucketProps {
+var bucket = Bucket(self, "amzn-s3-demo-bucket", new BucketProps {
                       WebsiteRedirect = new WebsiteRedirect {
                               HostName = "aws.amazon.com"
                       }});
@@ -377,16 +377,16 @@ In Go, all construct parameters are pointers, including values like numbers, Boo
 
 ```
 	// Instantiate default Bucket
-	bucket := awss3.NewBucket(stack, jsii.String("MyBucket"), nil)
+	bucket := awss3.NewBucket(stack, jsii.String("amzn-s3-demo-bucket"), nil)
 
 	// Instantiate Bucket with BucketName and Versioned properties
-	bucket1 := awss3.NewBucket(stack, jsii.String("MyBucket"), &awss3.BucketProps{
-		BucketName: jsii.String("my-bucket"),
+	bucket1 := awss3.NewBucket(stack, jsii.String("amzn-s3-demo-bucket"), &awss3.BucketProps{
+		BucketName: jsii.String("amzn-s3-demo-bucket"),
 		Versioned:  jsii.Bool(true),
 	})
 
 	// Instantiate Bucket with WebsiteRedirect, which has its own sub-properties
-	bucket2 := awss3.NewBucket(stack, jsii.String("MyBucket"), &awss3.BucketProps{
+	bucket2 := awss3.NewBucket(stack, jsii.String("amzn-s3-demo-bucket"), &awss3.BucketProps{
 		WebsiteRedirect: &awss3.RedirectTarget{
 			HostName: jsii.String("aws.amazon.com"),
 		}})

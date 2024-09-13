@@ -23,10 +23,10 @@ The following is a sample AWS CloudFormation template that we will use to provid
 ```
 {
   "Resources": {
-    "MyBucket": {
+    "amzn-s3-demo-bucket": {
       "Type": "AWS::S3::Bucket",
       "Properties": {
-        "BucketName": "MyBucket",
+        "BucketName": "amzn-s3-demo-bucket",
       }
     }
   }
@@ -285,35 +285,35 @@ The name `template` in the example code represents the imported AWS CloudFormati
 #### [ TypeScript ]
 
 ```
-const cfnBucket = template.getResource('MyBucket') as s3.CfnBucket;
+const cfnBucket = template.getResource('amzn-s3-demo-bucket') as s3.CfnBucket;
 ```
 
 ------
 #### [ JavaScript ]
 
 ```
-const cfnBucket = template.getResource('MyBucket');
+const cfnBucket = template.getResource('amzn-s3-demo-bucket');
 ```
 
 ------
 #### [ Python ]
 
 ```
-cfn_bucket = template.get_resource("MyBucket")
+cfn_bucket = template.get_resource("amzn-s3-demo-bucket")
 ```
 
 ------
 #### [ Java ]
 
 ```
-CfnBucket cfnBucket = (CfnBucket)template.getResource("MyBucket");
+CfnBucket cfnBucket = (CfnBucket)template.getResource("amzn-s3-demo-bucket");
 ```
 
 ------
 #### [ C\# ]
 
 ```
-var cfnBucket = (CfnBucket)template.GetResource("MyBucket");
+var cfnBucket = (CfnBucket)template.GetResource("amzn-s3-demo-bucket");
 ```
 
 ------
@@ -515,7 +515,7 @@ param.setDefaultValue("AWS CDK")
 #### [ C\# ]
 
 ```
-var cfnBucket = (CfnBucket)template.GetResource("MyBucket");
+var cfnBucket = (CfnBucket)template.GetResource("amzn-s3-demo-bucket");
 var param = template.GetParameter("MyParameter");
 param.Default = "AWS CDK";
 ```

@@ -20,7 +20,7 @@ To learn more about public extensions, see [Using public extensions in CloudForm
 Extensions published by AWS do not require activation\. They are always available in every account and Region\. You can activate a third\-party extension through the AWS Management Console, via the AWS Command Line Interface, or by deploying a special AWS CloudFormation resource\.
 
 **To activate a third\-party extension through the AWS Management Console or see what resources are available**  
-![\[Image NOT FOUND\]](http://docs.aws.amazon.com/cdk/v2/guide/images/activate-cfn-extension.png)
+![\[\]](http://docs.aws.amazon.com/cdk/v2/guide/images/activate-cfn-extension.png)
 
 1. Sign in to the AWS account in which you want to use the extension, then switch to the Region where you want to use it\.
 

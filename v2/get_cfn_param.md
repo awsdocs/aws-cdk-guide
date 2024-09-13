@@ -129,7 +129,7 @@ For example, to use a parameter in a `Bucket` definition:
 #### [ TypeScript ]
 
 ```
-const bucket = new Bucket(this, "myBucket", 
+const bucket = new Bucket(this, "amzn-s3-demo-bucket", 
   { bucketName: uploadBucketName.valueAsString});
 ```
 
@@ -137,7 +137,7 @@ const bucket = new Bucket(this, "myBucket",
 #### [ JavaScript ]
 
 ```
-const bucket = new Bucket(this, "myBucket", 
+const bucket = new Bucket(this, "amzn-s3-demo-bucket", 
   { bucketName: uploadBucketName.valueAsString});
 ```
 
@@ -145,7 +145,7 @@ const bucket = new Bucket(this, "myBucket",
 #### [ Python ]
 
 ```
-bucket = Bucket(self, "myBucket", 
+bucket = Bucket(self, "amzn-s3-demo-bucket", 
     bucket_name=upload_bucket_name.value_as_string)
 ```
 
@@ -153,7 +153,7 @@ bucket = Bucket(self, "myBucket",
 #### [ Java ]
 
 ```
-Bucket bucket = Bucket.Builder.create(this, "myBucket")
+Bucket bucket = Bucket.Builder.create(this, "amzn-s3-demo-bucket")
         .bucketName(uploadBucketName.getValueAsString())
         .build();
 ```
@@ -162,7 +162,7 @@ Bucket bucket = Bucket.Builder.create(this, "myBucket")
 #### [ C\# ]
 
 ```
-var bucket = new Bucket(this, "myBucket")
+var bucket = new Bucket(this, "amzn-s3-demo-bucket")
 {
     BucketName = uploadBucketName.ValueAsString
 };

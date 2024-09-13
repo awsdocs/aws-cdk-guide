@@ -113,7 +113,7 @@ $ cdk diff --profile my-dev-profile
 Stack CdkAppStack
 Hold on while we create a read-only change set to get a diff with accurate replacement information (use --no-change-set to use a less accurate but faster template-only diff)
 Resources
-[-] AWS::S3::Bucket myBucket myBucket5AF9C99B destroy
+[-] AWS::S3::Bucket amzn-s3-demo-bucket amzn-s3-demo-bucket5AF9C99B destroy
 
 Outputs
 [-] Output BucketRegion: {"Value":{"Ref":"AWS::Region"}}

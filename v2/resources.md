@@ -330,17 +330,17 @@ Suppose you want to use a resource already available in your AWS account in your
 
 When you create such a proxy, the external resource **does not** become a part of your AWS CDK app\. Therefore, changes you make to the proxy in your AWS CDK app do not affect the deployed resource\. The proxy can, however, be passed to any AWS CDK method that requires a resource of that type\. 
 
-The following example shows how to reference a bucket based on an existing bucket with the ARN **arn:aws:s3:::my\-bucket\-name**, and an Amazon Virtual Private Cloud based on an existing VPC having a specific ID\.
+The following example shows how to reference a bucket based on an existing bucket with the ARN **arn:aws:s3:::amzn\-s3\-demo\-bucket1**, and an Amazon Virtual Private Cloud based on an existing VPC having a specific ID\.
 
 ------
 #### [ TypeScript ]
 
 ```
 // Construct a proxy for a bucket by its name (must be same account)
-s3.Bucket.fromBucketName(this, 'MyBucket', 'my-bucket-name');
+s3.Bucket.fromBucketName(this, 'amzn-s3-demo-bucket', 'amzn-s3-demo-bucket1');
 
 // Construct a proxy for a bucket by its full ARN (can be another account)
-s3.Bucket.fromBucketArn(this, 'MyBucket', 'arn:aws:s3:::my-bucket-name');
+s3.Bucket.fromBucketArn(this, 'amzn-s3-demo-bucket', 'arn:aws:s3:::amzn-s3-demo-bucket1');
 
 // Construct a proxy for an existing VPC from its attribute(s)
 ec2.Vpc.fromVpcAttributes(this, 'MyVpc', {
@@ -353,10 +353,10 @@ ec2.Vpc.fromVpcAttributes(this, 'MyVpc', {
 
 ```
 // Construct a proxy for a bucket by its name (must be same account)
-s3.Bucket.fromBucketName(this, 'MyBucket', 'my-bucket-name');
+s3.Bucket.fromBucketName(this, 'amzn-s3-demo-bucket', 'amzn-s3-demo-bucket1');
 
 // Construct a proxy for a bucket by its full ARN (can be another account)
-s3.Bucket.fromBucketArn(this, 'MyBucket', 'arn:aws:s3:::my-bucket-name');
+s3.Bucket.fromBucketArn(this, 'amzn-s3-demo-bucket', 'arn:aws:s3:::amzn-s3-demo-bucket1');
 
 // Construct a proxy for an existing VPC from its attribute(s)
 ec2.Vpc.fromVpcAttributes(this, 'MyVpc', {
@@ -369,10 +369,10 @@ ec2.Vpc.fromVpcAttributes(this, 'MyVpc', {
 
 ```
 # Construct a proxy for a bucket by its name (must be same account)
-s3.Bucket.from_bucket_name(self, "MyBucket", "my-bucket-name")
+s3.Bucket.from_bucket_name(self, "amzn-s3-demo-bucket", "amzn-s3-demo-bucket1")
 
 # Construct a proxy for a bucket by its full ARN (can be another account)
-s3.Bucket.from_bucket_arn(self, "MyBucket", "arn:aws:s3:::my-bucket-name")
+s3.Bucket.from_bucket_arn(self, "amzn-s3-demo-bucket", "arn:aws:s3:::amzn-s3-demo-bucket1")
 
 # Construct a proxy for an existing VPC from its attribute(s)
 ec2.Vpc.from_vpc_attributes(self, "MyVpc", vpc_id="vpc-1234567890abcdef")
@@ -383,11 +383,11 @@ ec2.Vpc.from_vpc_attributes(self, "MyVpc", vpc_id="vpc-1234567890abcdef")
 
 ```
 // Construct a proxy for a bucket by its name (must be same account)
-Bucket.fromBucketName(this, "MyBucket", "my-bucket-name");
+Bucket.fromBucketName(this, "amzn-s3-demo-bucket", "amzn-s3-demo-bucket1");
 
 // Construct a proxy for a bucket by its full ARN (can be another account)
-Bucket.fromBucketArn(this, "MyBucket",
-        "arn:aws:s3:::my-bucket-name");
+Bucket.fromBucketArn(this, "amzn-s3-demo-bucket",
+        "arn:aws:s3:::amzn-s3-demo-bucket1");
 
 // Construct a proxy for an existing VPC from its attribute(s)
 Vpc.fromVpcAttributes(this, "MyVpc", VpcAttributes.builder()
@@ -399,10 +399,10 @@ Vpc.fromVpcAttributes(this, "MyVpc", VpcAttributes.builder()
 
 ```
 // Construct a proxy for a bucket by its name (must be same account)
-Bucket.FromBucketName(this, "MyBucket", "my-bucket-name");
+Bucket.FromBucketName(this, "amzn-s3-demo-bucket", "amzn-s3-demo-bucket1");
 
 // Construct a proxy for a bucket by its full ARN (can be another account)
-Bucket.FromBucketArn(this, "MyBucket", "arn:aws:s3:::my-bucket-name");
+Bucket.FromBucketArn(this, "amzn-s3-demo-bucket", "arn:aws:s3:::amzn-s3-demo-bucket1");
 
 // Construct a proxy for an existing VPC from its attribute(s)
 Vpc.FromVpcAttributes(this, "MyVpc", new VpcAttributes
@@ -416,10 +416,10 @@ Vpc.FromVpcAttributes(this, "MyVpc", new VpcAttributes
 
 ```
 // Define a proxy for a bucket by its name (must be same account)
-s3.Bucket_FromBucketName(stack, jsii.String("MyBucket"), jsii.String("MyBucketName"))
+s3.Bucket_FromBucketName(stack, jsii.String("amzn-s3-demo-bucket"), jsii.String("amzn-s3-demo-bucket1"))
 
 // Define a proxy for a bucket by its full ARN (can be another account)
-s3.Bucket_FromBucketArn(stack, jsii.String("MyBucket"), jsii.String("arn:aws:s3:::my-bucket-name"))
+s3.Bucket_FromBucketArn(stack, jsii.String("amzn-s3-demo-bucket"), jsii.String("arn:aws:s3:::amzn-s3-demo-bucket1"))
 
 // Define a proxy for an existing VPC from its attributes
 ec2.Vpc_FromVpcAttributes(stack, jsii.String("MyVpc"), &ec2.VpcAttributes{
@@ -553,16 +553,16 @@ Although you can use an external resource anywhere you'd use a similar resource 
 
 The logical names of resources in AWS CloudFormation are different from the names of resources that are shown in the AWS Management Console after they're deployed by AWS CloudFormation\. The AWS CDK calls these final names *physical names*\.
 
-For example, AWS CloudFormation might create the Amazon S3 bucket with the logical ID `Stack2MyBucket4DD88B4F` from the previous example with the physical name `stack2mybucket4dd88b4f-iuv1rbv9z3to`\.
+For example, AWS CloudFormation might create the Amazon S3 bucket with the logical ID `Stack2amzn-s3-demo-bucket4DD88B4F` from the previous example with the physical name `stack2amzn-s3-demo-bucket4dd88b4f-iuv1rbv9z3to`\.
 
-You can specify a physical name when creating constructs that represent resources by using the property *<resourceType>*Name\. The following example creates an Amazon S3 bucket with the physical name `my-bucket-name`\.
+You can specify a physical name when creating constructs that represent resources by using the property *<resourceType>*Name\. The following example creates an Amazon S3 bucket with the physical name `amzn-s3-demo-bucket`\.
 
 ------
 #### [ TypeScript ]
 
 ```
-const bucket = new s3.Bucket(this, 'MyBucket', {
-  bucketName: 'my-bucket-name',
+const bucket = new s3.Bucket(this, 'amzn-s3-demo-bucket', {
+  bucketName: 'amzn-s3-demo-bucket',
 });
 ```
 
@@ -570,8 +570,8 @@ const bucket = new s3.Bucket(this, 'MyBucket', {
 #### [ JavaScript ]
 
 ```
-const bucket = new s3.Bucket(this, 'MyBucket', {
-  bucketName: 'my-bucket-name'
+const bucket = new s3.Bucket(this, 'amzn-s3-demo-bucket', {
+  bucketName: 'amzn-s3-demo-bucket'
 });
 ```
 
@@ -579,30 +579,30 @@ const bucket = new s3.Bucket(this, 'MyBucket', {
 #### [ Python ]
 
 ```
-bucket = s3.Bucket(self, "MyBucket", bucket_name="my-bucket-name")
+bucket = s3.Bucket(self, "amzn-s3-demo-bucket", bucket_name="amzn-s3-demo-bucket")
 ```
 
 ------
 #### [ Java ]
 
 ```
-Bucket bucket = Bucket.Builder.create(this, "MyBucket")
-        .bucketName("my-bucket-name").build();
+Bucket bucket = Bucket.Builder.create(this, "amzn-s3-demo-bucket")
+        .bucketName("amzn-s3-demo-bucket").build();
 ```
 
 ------
 #### [ C\# ]
 
 ```
-var bucket = new Bucket(this, "MyBucket", new BucketProps { BucketName = "my-bucket-name" });
+var bucket = new Bucket(this, "amzn-s3-demo-bucket", new BucketProps { BucketName = "amzn-s3-demo-bucket" });
 ```
 
 ------
 #### [ Go ]
 
 ```
-bucket := s3.NewBucket(this, jsii.String("MyBucket"), &s3.BucketProps{
-  BucketName: jsii.String("my-bucket-name"),
+bucket := s3.NewBucket(this, jsii.String("amzn-s3-demo-bucket"), &s3.BucketProps{
+  BucketName: jsii.String("amzn-s3-demo-bucket"),
 })
 ```
 
@@ -616,7 +616,7 @@ In some cases, such as when creating an AWS CDK app with cross\-environment refe
 #### [ TypeScript ]
 
 ```
-const bucket = new s3.Bucket(this, 'MyBucket', {
+const bucket = new s3.Bucket(this, 'amzn-s3-demo-bucket', {
   bucketName: core.PhysicalName.GENERATE_IF_NEEDED,
 });
 ```
@@ -625,7 +625,7 @@ const bucket = new s3.Bucket(this, 'MyBucket', {
 #### [ JavaScript ]
 
 ```
-const bucket = new s3.Bucket(this, 'MyBucket', {
+const bucket = new s3.Bucket(this, 'amzn-s3-demo-bucket', {
   bucketName: core.PhysicalName.GENERATE_IF_NEEDED
 });
 ```
@@ -634,7 +634,7 @@ const bucket = new s3.Bucket(this, 'MyBucket', {
 #### [ Python ]
 
 ```
-bucket = s3.Bucket(self, "MyBucket",
+bucket = s3.Bucket(self, "amzn-s3-demo-bucket",
                          bucket_name=core.PhysicalName.GENERATE_IF_NEEDED)
 ```
 
@@ -642,7 +642,7 @@ bucket = s3.Bucket(self, "MyBucket",
 #### [ Java ]
 
 ```
-Bucket bucket = Bucket.Builder.create(this, "MyBucket")
+Bucket bucket = Bucket.Builder.create(this, "amzn-s3-demo-bucket")
         .bucketName(PhysicalName.GENERATE_IF_NEEDED).build();
 ```
 
@@ -650,7 +650,7 @@ Bucket bucket = Bucket.Builder.create(this, "MyBucket")
 #### [ C\# ]
 
 ```
-var bucket = new Bucket(this, "MyBucket", new BucketProps 
+var bucket = new Bucket(this, "amzn-s3-demo-bucket", new BucketProps 
     { BucketName = PhysicalName.GENERATE_IF_NEEDED });
 ```
 
@@ -658,7 +658,7 @@ var bucket = new Bucket(this, "MyBucket", new BucketProps
 #### [ Go ]
 
 ```
-bucket := s3.NewBucket(this, jsii.String("MyBucket"), &s3.BucketProps{
+bucket := s3.NewBucket(this, jsii.String("amzn-s3-demo-bucket"), &s3.BucketProps{
   BucketName: awscdk.PhysicalName_GENERATE_IF_NEEDED(),
 })
 ```
