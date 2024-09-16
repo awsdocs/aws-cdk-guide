@@ -89,15 +89,21 @@ CDKMetadata:
 
 The `Analytics` property is a gzipped, base64\-encoded, prefix\-encoded list of the constructs in the stack\.
 
-To opt out of version reporting, use one of the following methods:
-+ Use the cdk command with the \-\-no\-version\-reporting argument to opt out for a single command\.
+### Opt out of version reporting<a name="version_reporting_out"></a>
+
+You can opt out of version reporting by using the CDK CLI or by configuring your project's `cdk.json` file\.
+
+**To opt out of version reporting using the CDK CLI**
++ Use the `--no-version-reporting` option with any CDK CLI command to opt out for a single command\. The following is an example of opting out during template synthesis:
 
   ```
-  cdk --no-version-reporting synth
+  $ cdk synth --no-version-reporting
   ```
 
-  Remember, the CDK CLI synthesizes fresh templates before deploying, so you should also add `--no-version-reporting` to `cdk deploy` commands\.
-+ Set versionReporting to **false** in `./cdk.json` or `~/.cdk.json`\. This opts out unless you opt in by specifying `--version-reporting` on an individual command\.
+  Since the AWS CDK synthesizes templates automatically when you run `cdk deploy`, you should also use `--no-version-reporting` with the `cdk deploy` command\.
+
+**To opt out of version reporting by configuring the `cdk.json` file**
++ Set `versionReporting` to `false` in `./cdk.json` or `~/.cdk.json`\. This opts you out by default\. The following is an example:
 
   ```
   {
@@ -105,6 +111,11 @@ To opt out of version reporting, use one of the following methods:
     "versionReporting": false
   }
   ```
+
+  After configuring, you can override this behavior and opt in by specifying `--version-reporting` on an individual command\.
+
+**Note**  
+When you opt out of version reporting, the AWS CDK will not collect or report data on which constructs you are using\. Because of this, the AWS CDK will not be able to identify if you've been impacted by security issues and will not send you notifications for them\.
 
 ## Authentication with AWS<a name="cli_auth"></a>
 
