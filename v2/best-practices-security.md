@@ -57,7 +57,7 @@ By modifying permissions for the roles assumed during deployment, you can manage
 
 #### Modify the security credentials and roles used during deployment<a name="best-practices-security-permissions-deployments-creds"></a>
 
-The roles and bootstrap resources that are used during deployments are determined by the CDK stack synthesizer that you use\. To modify this behavior, you can customize synthesis\. For more information, see [Configure and customize CDK stack synthesis](configure-synth.md)\.
+The roles and bootstrap resources that are used during deployments are determined by the CDK stack synthesizer that you use\. To modify this behavior, you can customize synthesis\. For more information, see [Configure and perform CDK stack synthesis](configure-synth.md)\.
 
 #### Considerations for granting least privilege access<a name="best-practices-security-permissions-deployments-least"></a>
 
