@@ -59,7 +59,8 @@ Aspects employ the [visitor pattern](https://en.wikipedia.org/wiki/Visitor_patte
 
 ```
 interface IAspect {
-   visit(node: IConstruct): void;}
+   visit(node: IConstruct): void;
+}
 ```
 
 ------
