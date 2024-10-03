@@ -260,6 +260,7 @@ This section contains a list of the changes made in each version\.
 | 20 | 2\.119\.0 | Add ssm:GetParameters action to the AWS CloudFormation deploy IAM role\. For more information, see [\#28336](https://github.com/aws/aws-cdk/pull/28336/files#diff-4fdac38426c4747aa17d515b01af4994d3d2f12c34f7b6655f24328259beb7bf)\. | 
 | 21 | 2\.149\.0 | Add condition to the file publishing role\. | 
 | 22 | 2\.160\.0 | Add sts:TagSession permissions to the trust policy of bootstrap IAM roles\. | 
+| 23 | 2\.161\.0 | Add cloudformation:RollbackStack and cloudformation:ContinueUpdateRollback permissions to the trust policy of the deploy IAM role\. | 
 
 ## Upgrade from legacy to modern bootstrap template<a name="bootstrapping-template"></a>
 
