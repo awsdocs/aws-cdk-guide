@@ -891,7 +891,7 @@ func NewHelloCdkStack(scope constructs.Construct, id string, props *HelloCdkStac
 
 Let's take a closer look at the `Function` construct\. Like all constructs, the `Function` class takes three parameters:
 + **scope** – Defines your `Stack` instance as the parent of the `Function` construct\. All constructs that define AWS resources are created within the scope of a stack\. You can define constructs inside of constructs, creating a hierarchy \(tree\)\. Here, and in most cases, the scope is `this` \(`self` in Python\)\.
-+ **Id** – The logical ID of the `Function` within your AWS CDK app\. This ID, plus a hash based on the function's location within the stack, uniquely identifies the function during deployment\. The AWS CDK also references this ID when you update the construct in your app and re\-deploy to update the deployed resource\. Here, your logical ID is `HelloWorldFunction`\. Functions can also have a name, specified with the `functionName` property\. This is different from the logical ID\.
++ **Id** – The construct ID of the `Function` within your AWS CDK app\. This ID, plus a hash based on the function's location within the stack, uniquely identifies the function during deployment\. The AWS CDK also references this ID when you update the construct in your app and re\-deploy to update the deployed resource\. Here, your construct ID is `HelloWorldFunction`\. Functions can also have a name, specified with the `functionName` property\. This is different from the construct ID\.
 + **props** – A bundle of values that define properties of the function\. Here you define the `runtime`, `handler`, and `code` properties\.
 
   Props are represented differently in the languages supported by the AWS CDK\.

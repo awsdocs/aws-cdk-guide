@@ -89,6 +89,7 @@ sponsored by Amazon.
    + [cdk metadata](ref-cli-cmd-metadata.md)
    + [cdk migrate](ref-cli-cdk-migrate.md)
    + [cdk notices](ref-cli-cmd-notices.md)
+   + [cdk rollback](ref-cli-cmd-rollback.md)
    + [cdk synthesize](ref-cli-cmd-synth.md)
    + [cdk watch](ref-cli-cmd-watch.md)
 + [AWS CDK reference](reference.md)

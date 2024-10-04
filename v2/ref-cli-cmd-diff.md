@@ -12,8 +12,8 @@ $ cdk diff <arguments> <options>
 
 ## Arguments<a name="ref-cli-cmd-diff-args"></a>
 
-**CDK stack logical ID**  <a name="ref-cli-cmd-diff-args-stack-name"></a>
-The logical ID of the CDK stack from your app to perform a diff\.  
+**CDK stack ID**  <a name="ref-cli-cmd-diff-args-stack-name"></a>
+The construct ID of the CDK stack from your app to perform a diff\.  
 *Type*: String  
 *Required*: No
 

@@ -38,8 +38,8 @@ $ cdk import <arguments> <options>
 
 ## Arguments<a name="ref-cli-cmd-import-args"></a>
 
-**CDK stack logical ID**  <a name="ref-cli-cmd-import-args-stack-name"></a>
-The logical ID of the CDK stack from your app to import resources to\. This argument can be provided multiple times in a single command\.  
+**CDK stack ID**  <a name="ref-cli-cmd-import-args-stack-name"></a>
+The construct ID of the CDK stack from your app to import resources to\. This argument can be provided multiple times in a single command\.  
 *Type*: String  
 *Required*: No
 
@@ -74,4 +74,6 @@ Specify `false` to iterate more rapidly\. Deployments containing resource replac
 *Default value*: `true`
 
 `--toolkit-stack-name STRING`  <a name="ref-cli-cmd-import-options-toolkit-stack-name"></a>
-The name of the CDK Toolkit stack to create
+The name of the CDK Toolkit stack to create\.  
+By default, `cdk bootstrap` deploys a stack named `CDKToolkit` into the specified AWS environment\. Use this option to provide a different name for your bootstrap stack\.  
+The CDK CLI uses this value to verify your bootstrap stack version\.

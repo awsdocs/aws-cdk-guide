@@ -14,8 +14,8 @@ $ cdk deploy <arguments> <options>
 
 ## Arguments<a name="ref-cli-cmd-deploy-args"></a>
 
-**CDK stack logical ID**  <a name="ref-cli-cmd-deploy-args-stack-name"></a>
-The logical ID of the CDK stack from your app to deploy\.  
+**CDK stack ID**  <a name="ref-cli-cmd-deploy-args-stack-name"></a>
+The construct ID of the CDK stack from your app to deploy\.  
 *Type*: String  
 *Required*: No
 
@@ -163,16 +163,17 @@ Specify what security\-sensitive changes require manual approval\.
 *Valid values*: `any-change`, `broadening`, `never`  
 *Default value*: `broadening`
 
-`--rollback BOOLEAN`  <a name="ref-cli-cmd-deploy-options-rollback"></a>
+`--rollback` \| `--no-rollback`, `-R`  <a name="ref-cli-cmd-deploy-options-rollback"></a>
 During deployment, if a resource fails to be created or updated, the deployment will roll back to the latest stable state before the CDK CLI returns\. All changes made up to that point will be undone\. Resources that were created will be deleted and updates that were made will be rolled back\.  
-Specify `false` to deactivate this behavior\. If a resource fails to be created or updated, the CDK CLI will leave changes made up to that point in place and return\. This may be helpful in development environments where you are iterating quickly\.  
-For `--rollback=false`, you can use `--no-rollback` or `-R`\.  
-When `false`, deployments that cause resource replacements will always fail\. You can only use this option value for deployments that update or create new resources\.
-*Default value*: `true`
+Specify `--no-rollback` to turn off this behavior\. If a resource fails to be created or updated, the CDK CLI will leave changes made up to that point in place and return\. This will leave your deployment in a failed, paused state\. From here, you can update your code and try the deployment again\. This may be helpful in development environments where you are iterating quickly\.  
+If a deployment performed with `--no-rollback` fails, and you decide that you want to rollback the deployment, you can use the `cdk rollback` command\. For more information, see [cdk rollback](ref-cli-cmd-rollback.md)\.  
+With `--no-rollback`, deployments that cause resource replacements will always fail\. You can only use this option value for deployments that update or create new resources\.
+*Default value*: `--rollback`
 
 `--toolkit-stack-name STRING`  <a name="ref-cli-cmd-deploy-options-toolkit-stack-name"></a>
 The name of the existing CDK Toolkit stack\.  
-This option is only used for CDK apps using legacy synthesis\.
+By default, `cdk bootstrap` deploys a stack named `CDKToolkit` into the specified AWS environment\. Use this option to provide a different name for your bootstrap stack\.  
+The CDK CLI uses this value to verify your bootstrap stack version\.
 
 `--watch BOOLEAN`  <a name="ref-cli-cmd-deploy-options-watch"></a>
 Continuously observe CDK project files, and deploy the specified stacks automatically when changes are detected\.  

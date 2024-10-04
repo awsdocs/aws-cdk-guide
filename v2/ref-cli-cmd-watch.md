@@ -31,8 +31,8 @@ $ cdk watch <arguments> <options>
 
 ## Arguments<a name="ref-cli-cmd-watch-args"></a>
 
-**CDK stack logical ID**  <a name="ref-cli-cmd-watch-args-stack-name"></a>
-The logical ID of the CDK stack from your app to watch\.  
+**CDK stack ID**  <a name="ref-cli-cmd-watch-args-stack-name"></a>
+The construct ID of the CDK stack from your app to watch\.  
 *Type*: String  
 *Required*: No
 
@@ -96,7 +96,8 @@ When `false`, deployments that cause resource replacements will always fail\. Yo
 
 `--toolkit-stack-name STRING`  <a name="ref-cli-cmd-watch-options-toolkit-stack-name"></a>
 The name of the existing CDK Toolkit stack\.  
-This option is only used for CDK apps using legacy synthesis\.
+By default, `cdk bootstrap` deploys a stack named `CDKToolkit` into the specified AWS environment\. Use this option to provide a different name for your bootstrap stack\.  
+The CDK CLI uses this value to verify your bootstrap stack version\.
 
 ## Examples<a name="ref-cli-cmd-watch-examples"></a>
 

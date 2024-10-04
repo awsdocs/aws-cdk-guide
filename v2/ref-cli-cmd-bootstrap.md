@@ -110,6 +110,7 @@ To learn more about termination protection, see [Protecting a stack from being d
 `--toolkit-stack-name STRING`  <a name="ref-cli-cmd-bootstrap-options-toolkit-stack-name"></a>
 The name of the bootstrap stack to create\.  
 By default, `cdk bootstrap` deploys a stack named `CDKToolkit` into the specified AWS environment\. Use this option to provide a different name for your bootstrap stack\.  
+The CDK CLI uses this value to verify your bootstrap stack version\.  
 *Default value*: `CDKToolkit`  
 *Required*: Yes
 
