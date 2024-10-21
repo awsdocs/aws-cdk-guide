@@ -280,7 +280,7 @@ For information about the most common API patterns in the AWS Construct Library,
 
 The `[App](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.App.html)` and `[Stack](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.Stack.html)` classes from the AWS Construct Library are unique constructs\. Compared to other constructs, they don't configure AWS resources on their own\. Instead, they are used to provide context for your other constructs\. All constructs that represent AWS resources must be defined, directly or indirectly, within the scope of a `Stack` construct\. `Stack` constructs are defined within the scope of an `App` construct\.
 
-To learn more about CDK apps, see [AWS CDK apps](apps.md)\. To learn more about CDK stacks, see [AWS CDK stacks](stacks.md)\.
+To learn more about CDK apps, see [AWS CDK apps](apps.md)\. To learn more about CDK stacks, see [Introduction to AWS CDK stacks](stacks.md)\.
 
 The following example defines an app with a single stack\. Within the stack, an L2 construct is used to configure an Amazon S3 bucket resource\.
 

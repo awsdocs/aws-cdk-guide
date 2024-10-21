@@ -1,16 +1,284 @@
-# AWS CDK stacks<a name="stacks"></a>
+# Introduction to AWS CDK stacks<a name="stacks"></a>
 
-An AWS Cloud Development Kit \(AWS CDK\) *stack* is a collection of one or more constructs, which define AWS resources\. Each CDK stack represents an AWS CloudFormation stack in your CDK app\. At deployment, constructs within a stack are provisioned as a single unit, called an AWS CloudFormation stack\. To learn more about AWS CloudFormation stacks, see [Working with stacks](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/stacks.html) in the *AWS CloudFormation User Guide*\.
+An AWS CDK stack is the smallest single unit of deployment\. It represents a collection of AWS resources that you define using CDK constructs\. When you deploy CDK apps, the resources within a CDK stack are deployed together as an AWS CloudFormation stack\. To learn more about AWS CloudFormation stacks, see [Managing AWS resources as a single unit with AWS CloudFormation stacks](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/stacks.html) in the *AWS CloudFormation User Guide*\.
 
-Since CDK stacks are implemented through AWS CloudFormation stacks, AWS CloudFormation quotas and limitations apply\. To learn more, see [AWS CloudFormation quotas](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cloudformation-limits.html)\.
+You define a stack by extending or inheriting from the `[Stack](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.Stack.html)` construct\. The following example is a common pattern for defining a CDK stack on a separate file, known as a *stack file*\. Here, we extend or inherit the `Stack` class and define a constructor that accepts `scope`, `id`, and `props`\. Then, we invoke the base `Stack` class constructor using `super` with the received `scope`, `id`, and `props`:
 
-## How to define a stack<a name="stacks-define"></a>
+------
+#### [ TypeScript ]
 
-Stacks are defined within the context of an app\. You define a stack using the `[Stack](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.Stack.html)` construct from the AWS Construct Library\. Stacks can be defined in any of the following ways:
-+ Directly within the scope of the app\.
-+ Indirectly by any construct within the tree\.
+```
+import * as cdk from 'aws-cdk-lib';
+import { Construct } from 'constructs';
 
-The following example defines a CDK app that contains two stacks:
+export class MyCdkStack extends cdk.Stack { 
+  constructor(scope: Construct, id: string, props?: cdk.StackProps) { 
+    super(scope, id, props); 
+    
+    // Define your constructs here
+
+  }
+}
+```
+
+------
+#### [ JavaScript ]
+
+```
+const { Stack } = require('aws-cdk-lib');
+
+class MyCdkStack extends Stack {
+  constructor(scope, id, props) {
+    super(scope, id, props);
+
+    // Define your constructs here
+
+  }
+}
+
+module.exports = { MyCdkStack }
+```
+
+------
+#### [ Python ]
+
+```
+from aws_cdk import (
+  Stack,
+)
+from constructs import Construct
+
+class MyCdkStack(Stack):
+
+  def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
+    super().__init__(scope, construct_id, **kwargs)
+
+    # Define your constructs here
+```
+
+------
+#### [ Java ]
+
+```
+package com.myorg;
+
+import software.constructs.Construct;
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
+
+public class MyCdkStack extends Stack {
+  public MyCdkStack(final Construct scope, final String id) {  
+    this(scope, id, null);
+  }
+  
+  public MyCdkStack(final Construct scope, final String id, final StackProps props) {
+    super(scope, id, props);
+
+    // Define your constructs here
+  }
+}
+```
+
+------
+#### [ C\# ]
+
+```
+using Amazon.CDK; 
+using Constructs;
+
+namespace MyCdk
+{
+  public class MyCdkStack : Stack
+  {
+    internal MyCdkStack(Construct scope, string id, IStackProps props = null) : base(scope, id, props)
+    {
+      // Define your constructs here
+    }
+  }
+}
+```
+
+------
+#### [ Go ]
+
+```
+package main
+
+import (
+	"github.com/aws/aws-cdk-go/awscdk/v2"
+	"github.com/aws/constructs-go/constructs/v10"
+	"github.com/aws/jsii-runtime-go"
+)
+
+type CdkDemoAppStackProps struct {
+	awscdk.StackProps
+}
+
+func NewCdkDemoAppStack(scope constructs.Construct, id string, props *CdkDemoAppStackProps) awscdk.Stack {
+	var sprops awscdk.StackProps
+	if props != nil {
+		sprops = props.StackProps
+	}
+	stack := awscdk.NewStack(scope, &id, &sprops)
+
+	// The code that defines your stack goes here
+
+	return stack
+}
+
+func main() {
+	defer jsii.Close()
+
+	app := awscdk.NewApp(nil)
+
+	NewCdkDemoAppStack(app, "CdkDemoAppStack", &CdkDemoAppStackProps{
+		awscdk.StackProps{
+			Env: env(),
+		},
+	})
+
+	app.Synth(nil)
+} 
+
+//...
+```
+
+------
+
+The previous example has only defined a stack\. To create the stack, it must be instantiated within the context of your CDK app\. A common pattern is to define your CDK app and initialize your stack on a separate file, known as an *application file*\.
+
+The following is an example that creates a CDK stack named `MyCdkStack`\. Here, the CDK app is created and `MyCdkStack` is instantiated in the context of the app:
+
+------
+#### [ TypeScript ]
+
+```
+#!/usr/bin/env node
+import 'source-map-support/register';
+import * as cdk from 'aws-cdk-lib';
+import { MyCdkStack } from '../lib/my-cdk-stack';
+
+const app = new cdk.App();
+new MyCdkStack(app, 'MyCdkStack', {
+});
+```
+
+------
+#### [ JavaScript ]
+
+```
+#!/usr/bin/env node
+
+const cdk = require('aws-cdk-lib');
+const { MyCdkStack } = require('../lib/my-cdk-stack');
+
+const app = new cdk.App();
+new MyCdkStack(app, 'MyCdkStack', {
+});
+```
+
+------
+#### [ Python ]
+
+Located in `app.py`:
+
+```
+#!/usr/bin/env python3
+import os
+
+import aws_cdk as cdk
+
+from my_cdk.my_cdk_stack import MyCdkStack
+
+
+app = cdk.App()
+MyCdkStack(app, "MyCdkStack",)
+
+app.synth()
+```
+
+------
+#### [ Java ]
+
+```
+package com.myorg;
+
+import software.amazon.awscdk.App;
+import software.amazon.awscdk.Environment;
+import software.amazon.awscdk.StackProps;
+
+import java.util.Arrays;
+
+public class MyCdkApp {
+  public static void main(final String[] args) {
+    App app = new App();
+
+    new MyCdkStack(app, "MyCdkStack", StackProps.builder()
+      .build());
+
+    app.synth();
+  }
+}
+```
+
+------
+#### [ C\# ]
+
+```
+using Amazon.CDK;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace MyCdk
+{
+  sealed class Program
+  {
+    public static void Main(string[] args)
+    {
+      var app = new App();
+      new MyCdkStack(app, "MyCdkStack", new StackProps
+      {});
+      app.Synth();
+    }
+  }
+}
+```
+
+------
+#### [ Go ]
+
+```
+package main
+
+import (
+  "github.com/aws/aws-cdk-go/awscdk/v2"
+  "github.com/aws/constructs-go/constructs/v10"
+  "github.com/aws/jsii-runtime-go"
+)
+
+// ...
+
+func main() {
+  defer jsii.Close()
+
+  app := awscdk.NewApp(nil)
+
+  NewMyCdkStack(app, "MyCdkStack", &MyCdkStackProps{
+    awscdk.StackProps{
+      Env: env(),
+    },
+  })
+
+  app.Synth(nil)
+}
+
+// ...
+```
+
+------
+
+The following example creates a CDK app that contains two stacks:
 
 ------
 #### [ TypeScript ]
@@ -73,216 +341,77 @@ app.Synth();
 ```
 
 ------
-
-The following example is a common pattern for defining a stack on a separate file\. Here, we extend or inherit the `Stack` class and define a constructor that accepts `scope`, `id`, and `props`\. Then, we invoke the base `Stack` class constructor using `super` with the received `scope`, `id`, and `props`\.
-
-------
-#### [ TypeScript ]
-
-```
-class HelloCdkStack extends Stack {
-  constructor(scope: App, id: string, props?: StackProps) {
-    super(scope, id, props);
-
-    //...
-  }
-}
-```
-
-------
-#### [ JavaScript ]
-
-```
-class HelloCdkStack extends Stack {
-  constructor(scope, id, props) {
-    super(scope, id, props);
-
-    //...
-  }
-}
-```
-
-------
-#### [ Python ]
-
-```
-class HelloCdkStack(Stack):
-
-    def __init__(self, scope: Construct, id: str, **kwargs) -> None:
-        super().__init__(scope, id, **kwargs)
-
-        # ...
-```
-
-------
-#### [ Java ]
-
-```
-public class HelloCdkStack extends Stack {
-    public HelloCdkStack(final Construct scope, final String id) {
-        this(scope, id, null);
-    }
-
-    public HelloCdkStack(final Construct scope, final String id, final StackProps props) {
-        super(scope, id, props);
-
-        // ...
-    }
-}
-```
-
-------
-#### [ C\# ]
-
-```
-public class HelloCdkStack : Stack
-{
-    public HelloCdkStack(Construct scope, string id, IStackProps props=null) : base(scope, id, props)
-    {
-        //...
-    }
-}
-```
-
-------
 #### [ Go ]
 
 ```
-func HelloCdkStack(scope constructs.Construct, id string, props *HelloCdkStackProps) awscdk.Stack {
- var sprops awscdk.StackProps
- if props != nil {
-  sprops = props.StackProps
- }
- stack := awscdk.NewStack(scope, &id, &sprops)
+package main
 
-  return stack
+import (
+	"github.com/aws/aws-cdk-go/awscdk/v2"
+	"github.com/aws/constructs-go/constructs/v10"
+	"github.com/aws/jsii-runtime-go"
+)
+
+type MyFirstStackProps struct {
+	awscdk.StackProps
 }
-```
 
-------
+func NewMyFirstStack(scope constructs.Construct, id string, props *MyFirstStackProps) awscdk.Stack {
+	var sprops awscdk.StackProps
+	if props != nil {
+		sprops = props.StackProps
+	}
+	myFirstStack := awscdk.NewStack(scope, &id, &sprops)
 
-The following example declares a stack class named `MyFirstStack` that includes a single Amazon S3 bucket\.
+	// The code that defines your stack goes here
 
-------
-#### [ TypeScript ]
-
-```
-class MyFirstStack extends Stack {
-  constructor(scope: Construct, id: string, props?: StackProps) {
-    super(scope, id, props);
-
-    new s3.Bucket(this, 'MyFirstBucket');
-  }
+	return myFirstStack
 }
-```
 
-------
-#### [ JavaScript ]
-
-```
-class MyFirstStack extends Stack {
-  constructor(scope, id, props) {
-    super(scope, id, props);
-
-    new s3.Bucket(this, 'MyFirstBucket');
-  }
+type MySecondStackProps struct {
+	awscdk.StackProps
 }
-```
 
-------
-#### [ Python ]
+func NewMySecondStack(scope constructs.Construct, id string, props *MySecondStackProps) awscdk.Stack {
+	var sprops awscdk.StackProps
+	if props != nil {
+		sprops = props.StackProps
+	}
+	mySecondStack := awscdk.NewStack(scope, &id, &sprops)
 
-```
-class MyFirstStack(Stack):
+	// The code that defines your stack goes here
 
-    def __init__(self, scope: Construct, id: str, **kwargs):
-        super().__init__(scope, id, **kwargs)
-
-        s3.Bucket(self, "MyFirstBucket")
-```
-
-------
-#### [ Java ]
-
-```
-public class MyFirstStack extends Stack {
-    public MyFirstStack(final Construct scope, final String id) {
-        this(scope, id, null);
-    }
-
-    public MyFirstStack(final Construct scope, final String id, final StackProps props) {
-        super(scope, id, props);
-        
-        new Bucket(this, "MyFirstBucket");
-    }
+	return mySecondStack
 }
-```
 
-------
-#### [ C\# ]
+func main() {
+	defer jsii.Close()
 
-```
-public class MyFirstStack : Stack
-{
-    public MyFirstStack(Stack scope, string id, StackProps props = null) : base(scope, id, props)
-    {
-        new Bucket(this, "MyFirstBucket");
-    }
+	app := awscdk.NewApp(nil)
+
+	NewMyFirstStack(app, "MyFirstStack", &MyFirstStackProps{
+		awscdk.StackProps{
+			Env: env(),
+		},
+	})
+
+	NewMySecondStack(app, "MySecondStack", &MySecondStackProps{
+		awscdk.StackProps{
+			Env: env(),
+		},
+	})
+
+	app.Synth(nil)
 }
-```
 
-------
-#### [ Go ]
-
-```
-func MyFirstStack(scope constructs.Construct, id string, props *MyFirstStackProps) awscdk.Stack {
-  var sprops awscdk.StackProps
-  if props != nil {
-    sprops = props.StackProps
-  }
-  stack := awscdk.NewStack(scope, &id, &sprops)
-	
-  s3.NewBucket(stack, jsii.String("MyFirstBucket"), &s3.BucketProps{})
-  return stack
-}
+// ...
 ```
 
 ------
 
-However, this code has only *declared* a stack\. For the stack to actually be synthesized into an AWS CloudFormation template and deployed, it must be instantiated\. And, like all CDK constructs, it must be instantiated in some context\. The `App` is that context\.
+## About the stack API<a name="stack_api"></a>
 
-If you're using the standard AWS CDK development template, your stacks are instantiated in the same file where you instantiate the `App` object\.
-
-------
-#### [ TypeScript ]
-
-The file named after your project \(for example, `hello-cdk.ts`\) in your project's `bin` folder\.
-
-------
-#### [ JavaScript ]
-
-The file named after your project \(for example, `hello-cdk.js`\) in your project's `bin` folder\.
-
-------
-#### [ Python ]
-
-The file `app.py` in your project's main directory\.
-
-------
-#### [ Java ]
-
-The file named `ProjectNameApp.java`, for example `HelloCdkApp.java`, nested deep under the `src/main` directory\.
-
-------
-#### [ C\# ]
-
-The file named `Program.cs` under `src\ProjectName`, for example `src\HelloCdk\Program.cs`\.
-
-------
-
-### The stack API<a name="stack_api"></a>
-
-The [Stack](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.Stack.html) object provides a rich API, including the following:
+The `[Stack](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.Stack.html)` object provides a rich API, including the following:
 + `Stack.of(construct)` – A static method that returns the **Stack** in which a construct is defined\. This is useful if you need to interact with a stack from within a reusable construct\. The call fails if a stack cannot be found in scope\.
 + `stack.stackName` \(Python: `stack_name`\) – Returns the physical name of the stack\. As mentioned previously, all AWS CDK stacks have a physical name that the AWS CDK can resolve during synthesis\.
 + `stack.region` and `stack.account` – Return the AWS Region and account, respectively, into which this stack will be deployed\. These properties return one of the following:
@@ -300,11 +429,11 @@ The [Stack](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.Stack.html) 
 
 ## Working with stacks<a name="stacks-work"></a>
 
-Stacks are deployed as part of an AWS CloudFormation stack into an AWS *[environment](environments.md)*\. The environment covers a specific AWS account and AWS Region\.
+Stacks are deployed as an AWS CloudFormation stack into an AWS *[environment](environments.md)*\. The environment covers a specific AWS account and AWS Region\.
 
-When you run the cdk synth command for an app with multiple stacks, the cloud assembly includes a separate template for each stack instance\. Even if the two stacks are instances of the same class, the AWS CDK emits them as two individual templates\.
+When you run the `cdk synth` command for an app with multiple stacks, the cloud assembly includes a separate template for each stack instance\. Even if the two stacks are instances of the same class, the AWS CDK emits them as two individual templates\.
 
-You can synthesize each template by specifying the stack name in the cdk synth command\. The following example synthesizes the template for **stack1**\.
+You can synthesize each template by specifying the stack name in the `cdk synth` command\. The following example synthesizes the template for `stack1`:
 
 ```
 $ cdk synth stack1
@@ -312,7 +441,7 @@ $ cdk synth stack1
 
 This approach is conceptually different from how AWS CloudFormation templates are normally used, where a template can be deployed multiple times and parameterized through [AWS CloudFormation parameters](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/parameters-section-structure.html)\. Although AWS CloudFormation parameters can be defined in the AWS CDK, they are generally discouraged because AWS CloudFormation parameters are resolved only during deployment\. This means that you cannot determine their value in your code\.
 
-For example, to conditionally include a resource in your app based on a parameter value, you must set up an [AWS CloudFormation condition](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/conditions-section-structure.html) and tag the resource with it\. The AWS CDK takes an approach where concrete templates are resolved at synthesis time\. Therefore, you can use an **if** statement to check the value to determine whether a resource should be defined or some behavior should be applied\.
+For example, to conditionally include a resource in your app based on a parameter value, you must set up an [AWS CloudFormation condition](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/conditions-section-structure.html) and tag the resource with it\. The AWS CDK takes an approach where concrete templates are resolved at synthesis time\. Therefore, you can use an `if` statement to check the value to determine whether a resource should be defined or some behavior should be applied\.
 
 **Note**  
 The AWS CDK provides as much resolution as possible during synthesis time to enable idiomatic and natural usage of your programming language\.
@@ -519,6 +648,120 @@ class Program
 ```
 
 ------
+#### [ Go ]
+
+```
+package main
+
+import (
+	"github.com/aws/aws-cdk-go/awscdk/v2"
+	"github.com/aws/constructs-go/constructs/v10"
+	"github.com/aws/jsii-runtime-go"
+)
+
+type ControlPlaneStackProps struct {
+	awscdk.StackProps
+}
+
+func NewControlPlaneStack(scope constructs.Construct, id string, props *ControlPlaneStackProps) awscdk.Stack {
+	var sprops awscdk.StackProps
+	if props != nil {
+		sprops = props.StackProps
+	}
+	ControlPlaneStack := awscdk.NewStack(scope, jsii.String(id), &sprops)
+
+	// The code that defines your stack goes here
+
+	return ControlPlaneStack
+}
+
+type DataPlaneStackProps struct {
+	awscdk.StackProps
+}
+
+func NewDataPlaneStack(scope constructs.Construct, id string, props *DataPlaneStackProps) awscdk.Stack {
+	var sprops awscdk.StackProps
+	if props != nil {
+		sprops = props.StackProps
+	}
+	DataPlaneStack := awscdk.NewStack(scope, jsii.String(id), &sprops)
+
+	// The code that defines your stack goes here
+
+	return DataPlaneStack
+}
+
+type MonitoringStackProps struct {
+	awscdk.StackProps
+}
+
+func NewMonitoringStack(scope constructs.Construct, id string, props *MonitoringStackProps) awscdk.Stack {
+	var sprops awscdk.StackProps
+	if props != nil {
+		sprops = props.StackProps
+	}
+	MonitoringStack := awscdk.NewStack(scope, jsii.String(id), &sprops)
+
+	// The code that defines your stack goes here
+
+	return MonitoringStack
+}
+
+type MyServiceStackProps struct {
+	awscdk.StackProps
+	Prod bool
+}
+
+func NewMyServiceStack(scope constructs.Construct, id string, props *MyServiceStackProps) awscdk.Stack {
+	var sprops awscdk.StackProps
+	if props != nil {
+		sprops = props.StackProps
+	}
+	MyServiceStack := awscdk.NewStack(scope, jsii.String(id), &sprops)
+
+	NewControlPlaneStack(MyServiceStack, "cp", &ControlPlaneStackProps{
+		StackProps: sprops,
+	})
+	NewDataPlaneStack(MyServiceStack, "data", &DataPlaneStackProps{
+		StackProps: sprops,
+	})
+	NewMonitoringStack(MyServiceStack, "mon", &MonitoringStackProps{
+		StackProps: sprops,
+	})
+
+	return MyServiceStack
+}
+
+func main() {
+	defer jsii.Close()
+
+	app := awscdk.NewApp(nil)
+
+	betaProps := MyServiceStackProps{
+		StackProps: awscdk.StackProps{
+			Env: env(),
+		},
+		Prod: false,
+	}
+
+	NewMyServiceStack(app, "beta", &betaProps)
+
+	prodProps := MyServiceStackProps{
+		StackProps: awscdk.StackProps{
+			Env: env(),
+		},
+		Prod: true,
+	}
+
+	NewMyServiceStack(app, "prod", &prodProps)
+
+	app.Synth(nil)
+}
+
+// ...
+```
+
+------
 
 This AWS CDK app eventually consists of six stacks, three for each environment:
 
@@ -576,9 +819,11 @@ new MyStack(this, "not:a:stack:name", new StackProps
 
 ------
 
-### Nested stacks<a name="stack_nesting"></a>
+### Working with nested stacks<a name="stack_nesting"></a>
 
-The [NestedStack](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.NestedStack.html) construct offers a way around the AWS CloudFormation 500\-resource limit for stacks\. A nested stack counts as only one resource in the stack that contains it\. However, it can contain up to 500 resources, including additional nested stacks\.
+A *nested stack* is a CDK stack that you create inside another stack, known as the parent stack\. You create nested stacks using the `[NestedStack](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.NestedStack.html)` construct\.
+
+By using nested stacks, you can organize resources across multiple stacks\. Nested stacks also offer a way around the AWS CloudFormation 500\-resource limit for stacks\. A nested stack counts as only one resource in the stack that contains it\. However, it can contain up to 500 resources, including additional nested stacks\.
 
 The scope of a nested stack must be a `Stack` or `NestedStack` construct\. The nested stack doesn't need to be declared lexically inside its parent stack\. It is necessary only to pass the parent stack as the first parameter \(`scope`\) when instantiating the nested stack\. Aside from this restriction, defining constructs in a nested stack works exactly the same as in an ordinary stack\.
 
