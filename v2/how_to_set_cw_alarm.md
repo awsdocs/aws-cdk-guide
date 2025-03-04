@@ -105,7 +105,7 @@ var metric = new Metric(this, "Metric", new MetricProps
 {
     Namespace = "MyNamespace",
     MetricName = "MyMetric",
-    Dimensions = new Dictionary<string, object>
+    dimensionsMap = new Dictionary<string, object>
     {
         { "MyDimension", "MyDimensionValue" }
     }
