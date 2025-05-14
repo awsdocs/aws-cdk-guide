@@ -24,7 +24,7 @@ The {aws} CDK consists of two primary parts:
 
 The {aws} CDK supports  TypeScript,  JavaScript,  Python,  Java,  C#/.Net, and  [.noloc]`Go`. You can use any of these supported programming languages to define reusable cloud components known as  xref:constructs[constructs]. You compose these together into xref:stacks[stacks] and xref:apps[apps]. Then, you deploy your CDK applications to {aws} CloudFormation to provision or update your resources.
 
-image::./images/AppStacks.png[CDK app and process overview]
+image::images/AppStacks.png[CDK app and process overview]
 
 [#home-benefits]
 == Benefits of the {aws} CDK
@@ -45,7 +45,7 @@ Use the same programming language to define your infrastructure and your applica
 +
 Receive the benefits of developing infrastructure in your preferred IDE (Integrated Development Environment), such as syntax highlighting and intelligent code completion.
 +
-image::./images/CodeCompletion.png[Code snippet showing CDK setup for ECS cluster with VPC and Fargate service configuration.,scaledwidth=100%]
+image::images/CodeCompletion.png[Code snippet showing CDK setup for ECS cluster with VPC and Fargate service configuration.,scaledwidth=100%]
 
 [#home-benefits-cfn]
 *Deploy infrastructure through {aws} CloudFormation*::
