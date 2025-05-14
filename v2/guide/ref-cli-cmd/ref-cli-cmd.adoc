@@ -1,0 +1,385 @@
+include::../attributes.txt[]
+
+// Attributes
+
+[.topic]
+[#ref-cli-cmd]
+= {aws} CDK CLI command reference
+:keywords: {aws} CDK, {aws} CDK CLI, CDK Toolkit, IaC, Infrastructure as code, {aws} Cloud, {aws} CloudFormation
+
+[abstract]
+--
+This section contains command reference information for the {aws} Cloud Development Kit ({aws} CDK) Command Line Interface (CLI). The CDK  CLI is also referred to as the CDK Toolkit.
+--
+
+// Content start
+
+This section contains command reference information for the {aws} Cloud Development Kit ({aws} CDK) Command Line Interface (CLI). The CDK CLI is also referred to as the CDK Toolkit.
+
+[#ref-cli-cmd-usage]
+== Usage
+
+[source,none,subs="verbatim,attributes"]
+----
+$ cdk <command> <arguments> <options>
+----
+
+[#ref-cli-cmd-commands]
+== Commands
+
+[#ref-cli-cmd-commands-acknowledge]
+`xref:ref-cli-cmd-ack[acknowledge ack]`::
+Acknowledge a notice by issue number and hide it from displaying again.
+
+[#ref-cli-cmd-commands-bootstrap]
+`xref:ref-cli-cmd-bootstrap[bootstrap]`::
+Prepare an {aws} environment for CDK deployments by deploying the CDK bootstrap stack, named `CDKToolkit`, into the {aws} environment.
+
+[#ref-cli-cmd-commands-context]
+`xref:ref-cli-cmd-context[context]`::
+Manage cached context values for your CDK application.
+
+[#ref-cli-cmd-commands-deploy]
+`xref:ref-cli-cmd-deploy[deploy]`::
+Deploy one or more CDK stacks into your {aws} environment.
+
+[#ref-cli-cmd-commands-destroy]
+`xref:ref-cli-cmd-destroy[destroy]`::
+Delete one or more CDK stacks from your {aws} environment.
+
+[#ref-cli-cmd-commands-diff]
+`xref:ref-cli-cmd-diff[diff]`::
+Perform a diff to see infrastructure changes between CDK stacks.
+
+[#ref-cli-cmd-commands-docs]
+`xref:ref-cli-cmd-docs[docs doc]`::
+Open CDK documentation in your browser.
+
+[#ref-cli-cmd-commands-doctor]
+`xref:ref-cli-cmd-doctor[doctor]`::
+Inspect and display useful information about your local CDK project and development environment.
+
+[#ref-cli-cmd-commands-import]
+`xref:ref-cli-cmd-import[import]`::
+Use {aws} CloudFormation resource imports to import existing {aws} resources into a CDK stack.
+
+[#ref-cli-cmd-commands-init]
+`xref:ref-cli-cmd-init[init]`::
+Create a new CDK project from a template.
+
+[#ref-cli-cmd-commands-list]
+`xref:ref-cli-cmd-list[list, ls]`::
+List all CDK stacks and their dependencies from a CDK app.
+
+[#ref-cli-cmd-commands-metadata]
+`xref:ref-cli-cmd-metadata[metadata]`::
+Display metadata associated with a CDK stack.
+
+[#ref-cli-cmd-commands-migrate]
+`xref:ref-cli-cdk-migrate[migrate]`::
+Migrate {aws} resources, {aws} CloudFormation stacks, and {aws} CloudFormation templates into a new CDK project.
+
+[#ref-cli-cmd-commands-notices]
+`xref:ref-cli-cmd-notices[notices]`::
+Display notices for your CDK application.
+
+[#ref-cli-cmd-commands-synthesize]
+`xref:ref-cli-cmd-synth[synthesize, synth]`::
+Synthesize a CDK app to produce a cloud assembly, including an {aws} CloudFormation template for each stack.
+
+[#ref-cli-cmd-commands-watch]
+`xref:ref-cli-cmd-watch[watch]`::
+Continuously watch a local CDK project for changes to perform deployments and hotswaps.
+
+[#ref-cli-cmd-options]
+== Global options
+
+The following options are compatible with all CDK  CLI commands.
+
+[#ref-cli-cmd-options-app]
+`--app, -a <STRING>`::
+Provide the command for running your app or cloud assembly directory.
++
+_Required_: Yes
+
+[#ref-cli-cmd-options-asset-metadata]
+`--asset-metadata <BOOLEAN>`::
+Include `aws:asset:*` {aws} CloudFormation metadata for resources that use assets.
++
+_Required_: No
++
+_Default value_: `true`
+
+[#ref-cli-cmd-options-build]
+`--build <STRING>`::
+Command for running a pre-synthesis build.
++
+_Required_: No
+
+[#ref-cli-cmd-options-ca-bundle-path]
+`--ca-bundle-path <STRING>`::
+Path to a CA certificate to use when validating HTTPS requests.
++
+If this option is not provided, the CDK CLI will read from the `AWS_CA_BUNDLE` environment variable.
++
+_Required_: Yes
+
+[#ref-cli-cmd-options-ci]
+`--ci <BOOLEAN>`::
+Indicate that CDK CLI commands are being run in a continuous integration (CI) environment.
++
+This option modifies the behavior of the CDK CLI to better suit automated operations that are typical in CI pipelines.
++
+When you provide this option, logs are sent to `stdout` instead of `stderr`.
++
+_Required_: No
++
+_Default value_: `false`
+
+[#ref-cli-cmd-options-context]
+`--context, -c <ARRAY>`::
+Add contextual string parameters as key-value pairs.
+
+[#ref-cli-cmd-options-debug]
+`--debug <BOOLEAN>`::
+Enable detailed debugging information. This option produces a verbose output that includes a lot more detail about what the CDK CLI is doing behind the scenes.
++
+_Required_: No
++
+_Default value_: `false`
+
+[#ref-cli-cmd-options-ec2creds]
+`--ec2creds, -i <BOOLEAN>`::
+Force the CDK CLI to try and fetch Amazon EC2 instance credentials.
++
+By default, the CDK CLI guesses the Amazon EC2 instance status.
++
+_Required_: No
++
+_Default value_: `false`
+
+[#ref-cli-cmd-options-help]
+`--help, -h <BOOLEAN>`::
+Show command reference information for the CDK CLI.
++
+_Required_: No
++
+_Default value_: `false`
+
+[#ref-cli-cmd-options-ignore-errors]
+`--ignore-errors <BOOLEAN>`::
+Ignore synthesis errors, which will likely produce an output that is not valid.
++
+_Required_: No
++
+_Default value_: `false`
+
+[#ref-cli-cmd-options-json]
+`--json, -j <BOOLEAN>`::
+Use JSON instead of YAML for {aws} CloudFormation templates that are printed to standard output (``stdout``).
++
+_Required_: No
++
+_Default value_: `false`
+
+[#ref-cli-cmd-options-lookups]
+`--lookups <BOOLEAN>`::
+Perform context lookups.
++
+Synthesis will fail if this value is `false` and context lookups need to be performed.
++
+_Required_: No
++
+_Default value_: `true`
+
+[#ref-cli-cmd-options-no-color]
+`--no-color <BOOLEAN>`::
+Remove color and other styling from the console output.
++
+_Required_: No
++
+_Default value_: `false`
+
+[#ref-cli-cmd-options-notices]
+`--notices <BOOLEAN>`::
+Show relevant notices.
++
+_Required_: No
++
+_Default value_: `false`
+
+[#ref-cli-cmd-options-output]
+`--output, -o <STRING>`::
+Specify the directory to output the synthesized cloud assembly to.
++
+_Required_: Yes
++
+_Default value_: `cdk.out`
+
+[#ref-cli-cmd-options-path-metadata]
+`--path-metadata <BOOLEAN>`::
+Include `aws::cdk::path` {aws} CloudFormation metadata for each resource.
++
+_Required_: No
++
+_Default value_: `true`
+
+[#ref-cli-cmd-options-plugin]
+`--plugin, -p <ARRAY>`::
+Name or path of a node package that extends CDK features. This option can be provided multiple times in a single command.
++
+You can configure this option in the project's `cdk.json` file or at  `~/.cdk.json` on your local development machine:
++
+[source,json,subs="verbatim,attributes"]
+----
+{
+   // ...
+   "plugin": [
+      "module_1",
+      "module_2"
+   ],
+   // ...
+}
+----
++
+_Required_: No
+
+[#ref-cli-cmd-options-profile]
+`--profile <STRING>`::
+Specify the name of the {aws} profile, containing your {aws} environment information, to use with the CDK CLI.
++
+_Required_: Yes
+
+[#ref-cli-cmd-options-proxy]
+`--proxy <STRING>`::
+Use the indicated proxy.
++
+If this option is not provided, the CDK CLI will read from the  `HTTPS_PROXY` environment variable.
++
+_Required_: Yes
++
+_Default value_: Read from `HTTPS_PROXY` environment variable.
+
+[#ref-cli-cmd-options-role-arn]
+`--role-arn, -r <STRING>`::
+The ARN of the IAM role that the CDK CLI will assume when interacting with {aws} CloudFormation.
++
+_Required_: No
+
+[#ref-cli-cmd-options-staging]
+`--staging <BOOLEAN>`::
+Copy assets to the output directory.
++
+Specify `false` to prevent the copying of assets to the output directory. This allows the {aws} SAM CLI to reference the original source files when performing local debugging.
++
+_Required_: No
++
+_Default value_: `true`
+
+[#ref-cli-cmd-options-strict]
+`--strict <BOOLEAN>`::
+Do not construct stacks that contain warnings.
++
+_Required_: No
++
+_Default value_: `false`
+
+[#ref-cli-cmd-options-trace]
+`--trace <BOOLEAN>`::
+Print trace for stack warnings.
++
+_Required_: No
++
+_Default value_: `false`
+
+[#ref-cli-cmd-options-verbose]
+`--verbose, -v <COUNT>`::
+Show debug logs. You can specify this option multiple times to increase verbosity.
++
+_Required_: No
+
+[#ref-cli-cmd-options-version]
+`--version <BOOLEAN>`::
+Show the CDK CLI version number.
++
+_Required_: No
++
+_Default value_: `false`
+
+[#ref-cli-cmd-options-version-reporting]
+`--version-reporting <BOOLEAN>`::
+Include the `{aws}::CDK::Metadata` resource in synthesized {aws} CloudFormation templates.
++
+_Required_: No
++
+_Default value_: `true`
+
+[#ref-cli-cmd-configure]
+== Providing and configuring options
+
+You can pass options through command-line arguments. For most options, you can configure them in a `cdk.json` configuration file. When you use multiple configuration sources, the CDK  CLI adheres to the following precedence:
+
+. *Command-line values* – Any option provided at the command-line overrides options configured in `cdk.json` files.
+. *Project configuration file* – The `cdk.json` file in your CDK project's directory.
+. *User configuration file* – The `cdk.json` file located at  `~/.cdk.json` on your local machine.
+
+[#ref-cli-cmd-pass]
+== Passing options at the command line
+
+[#ref-cli-cmd-pass-bool]
+*Passing boolean values*::
++
+For options that accept a boolean value, you can specify them in the following ways:
++
+* Use `true` and `false` values – Provide the boolean value with the command. The following is an example:
++
+[source,none,subs="verbatim,attributes"]
+----
+$ cdk deploy --watch=true
+$ cdk deploy --watch=false
+----
+* Provide the option's counterpart – Modify the option name by adding `no` to specify a `false` value. The following is an example:
++
+[source,none,subs="verbatim,attributes"]
+----
+$ cdk deploy --watch
+$ cdk deploy --no-watch
+----
+* For options that default to `true` or `false`, you don't have to provide the option unless you want to change from the default.
+
+
+include::ref-cli-cmd-ack.adoc[leveloffset=+1]
+
+include::ref-cli-cmd-bootstrap.adoc[leveloffset=+1]
+
+include::ref-cli-cmd-context.adoc[leveloffset=+1]
+
+include::ref-cli-cmd-deploy.adoc[leveloffset=+1]
+
+include::ref-cli-cmd-destroy.adoc[leveloffset=+1]
+
+include::ref-cli-cmd-diff.adoc[leveloffset=+1]
+
+include::ref-cli-cmd-docs.adoc[leveloffset=+1]
+
+include::ref-cli-cmd-doctor.adoc[leveloffset=+1]
+
+include::ref-cli-cmd-gc.adoc[leveloffset=+1]
+
+include::ref-cli-cmd-import.adoc[leveloffset=+1]
+
+include::ref-cli-cmd-init.adoc[leveloffset=+1]
+
+include::ref-cli-cmd-list.adoc[leveloffset=+1]
+
+include::ref-cli-cmd-metadata.adoc[leveloffset=+1]
+
+include::ref-cli-cmd-migrate.adoc[leveloffset=+1]
+
+include::ref-cli-cmd-notices.adoc[leveloffset=+1]
+
+include::ref-cli-cmd-rollback.adoc[leveloffset=+1]
+
+include::ref-cli-cmd-synth.adoc[leveloffset=+1]
+
+include::ref-cli-cmd-watch.adoc[leveloffset=+1]

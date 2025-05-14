@@ -1,0 +1,42 @@
+include::../attributes.txt[]
+
+// Attributes
+
+[.topic]
+[#videos]
+= {aws} CDK video resources
+:info_titleabbrev: Video resources
+
+Enjoy these videos presented by members of the {aws} CDK team.
+
+[NOTE]
+====
+
+Since the {aws} CDK is always evolving, some of the code presented in these videos may not work quite the same way it did when the video was recorded. This is especially true for modules that were under active development at the time. It's also possible that we've since added a better way to achieve the same result. Consult this Developer Guide and the https://docs.aws.amazon.com/cdk/api/v2/docs/aws-construct-library.html[{aws} CDK API Reference] for up-to-date information. 
+
+====
+
+[#videos-infrastructure-is-code]
+== Infrastructure _is_ Code with the {aws} CDK
+
+video::ZWCvNFUN-sU[youtube,height = 450,fileref = https://www.youtube.com/embed/ZWCvNFUN-sU,width = 800]
+
+[#videos-deep-dive]
+== Deep dive into {aws} Cloud Development Kit ({aws} CDK)
+
+video::9As_ZIjUGmY[youtube,height = 450,fileref = https://www.youtube.com/embed/9As_ZIjUGmY,width = 800]
+
+[#videos-contributing]
+== Contributing to the {aws} Construct Library
+
+video::LsYlf7ggyrY[youtube,height = 450,fileref = https://www.youtube.com/embed/LsYlf7ggyrY,width = 800]
+
+[#videos-pipelines]
+== Faster deployments with CDK Pipelines
+
+video::1ps0Wh19MHQ[youtube,height = 450,fileref = https://www.youtube.com/embed/1ps0Wh19MHQ,width = 800]
+
+[#videos-gitpod]
+== How to contribute to the {aws} CDK using GitPod
+
+video::u6XcIgs-Nok[youtube,height = 450,fileref = https://www.youtube.com/embed/u6XcIgs-Nok,width = 800]

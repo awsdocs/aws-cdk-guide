@@ -1,0 +1,24 @@
+include::../attributes.txt[]
+
+// Attributes
+
+[#reference]
+= {aws} CDK reference
+
+// Content start
+
+This section contains reference information for the {aws} Cloud Development Kit ({aws} CDK).
+
+[#reference-api]
+== API reference
+
+The https://docs.aws.amazon.com/cdk/api/v2[API Reference] contains information about the {aws} Construct Library and other APIs provided by the {aws} Cloud Development Kit ({aws} CDK). Most of the {aws} Construct Library is contained in a single package called by its TypeScript name: `aws-cdk-lib`. The actual package name varies by language. Separate versions of the API reference are provided for each supported programming language.
+
+The CDK API reference is organized into sub-modules. There are one or more sub-modules for each {aws} service.
+
+Each sub-module has an overview that includes information about how to use its APIs. For example, the link:https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3-readme.html[S3] overview demonstrates how to set default encryption on an Amazon Simple Storage Service (Amazon S3) bucket.
+
+include::versioning.adoc[leveloffset=+1]
+
+
+include::videos.adoc[leveloffset=+1]

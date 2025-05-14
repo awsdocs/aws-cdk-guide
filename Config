@@ -1,0 +1,30 @@
+# -*-perl-*-
+
+package.AWSCDKDocs = {
+    flavors = {
+        map = single;
+        generation = 1;
+    };
+
+    interfaces = (3.0);
+    deploy = {
+        generic = true;
+    };
+    scope = webservices;
+
+    build-system = zonbooktrails;
+    build-environment = {
+        chroot = basic;
+        network-access = blocked;
+    };
+
+    build-tools = {
+        3.0 = {
+            ZonBookTrails = 1.0;
+            
+            ZonBook = 5.0;
+            AWSDocsSdkExamplesPublic = 1.0;
+            AWSDocsChecklistCDK = 2.0;
+        };
+    };
+};

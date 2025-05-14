@@ -1,0 +1,204 @@
+include::../attributes.txt[]
+
+// Attributes
+
+[.topic]
+[#ref-cli-cmd-watch]
+= `cdk watch`
+:keywords: {aws} CDK, {aws} CDK CLI, CDK Toolkit, IaC, Infrastructure as code, {aws} Cloud, {aws} CloudFormation, cdk watch
+
+[abstract]
+--
+Continuously watch a local {aws} CDK project for changes to perform deployments and hotswaps.
+--
+
+// Content start
+
+Continuously watch a local {aws} CDK project for changes to perform deployments and hotswaps.
+
+This command is similar to `cdk deploy`, except that it can perform continuous deployments and hotswaps through a single command.
+
+This command is a shortcut for `cdk deploy --watch`.
+
+To end a `cdk watch` session, interrupt the process by pressing `Ctrl+C`.
+
+The files that are observed is determined by the `"watch"` setting in your `cdk.json` file. It has two sub-keys, `"include"` and ``"exclude"``, that accepts a single string or an array of strings. Each entry is interpreted as a path relative to the location of the `cdk.json` file. Both `\*` and `**` are accepted.
+
+If you create a project using the `cdk init` command, the following default behavior is configured for `cdk watch` in your project's `cdk.json` file:
+
+* `"include"` is set to ``"\**/*"``, which includes all files and directories in the root of the project.
+* `"exclude"` is optional, except for files and folders already ignored by default. This consists of files and directories starting with `.`, the CDK output directory, and the `node_modules` directory.
+
+The minimal setting to configure  `watch` is `"watch": {}`.
+
+If either your CDK code or application code requires a build step before deployment, `cdk watch` works with the `"build"` key in the `cdk.json` file.
+
+[NOTE]
+====
+
+This command is considered experimental and may have breaking changes in the future. 
+
+====
+
+The same limitations of  `cdk deploy --hotswap` applies to `cdk watch`. For more information, see `xref:ref-cli-cmd-deploy-options-hotswap[cdk deploy --hotswap]`.
+
+[#ref-cli-cmd-watch-usage]
+== Usage
+
+[source,none,subs="verbatim,attributes"]
+----
+$ cdk watch <arguments> <options>
+----
+
+[#ref-cli-cmd-watch-args]
+== Arguments
+
+[#ref-cli-cmd-watch-args-stack-name]
+*CDK stack ID*::
+The construct ID of the CDK stack from your app to watch.
++
+_Type_: String
++
+_Required_: No
+
+[#ref-cli-cmd-watch-options]
+== Options
+For a list of global options that work with all CDK  CLI commands, see  xref:ref-cli-cmd-options[Global options].
+
+
+[#ref-cli-cmd-watch-options-build-exclude]
+`--build-exclude, -E <ARRAY>`::
+Do not rebuild asset with the given ID.
++
+This option can be specified multiple times in a single command.
++
+_Default value_: `[]`
+
+[#ref-cli-cmd-watch-options-change-set-name]
+`--change-set-name <STRING>`::
+The name of the CloudFormation change set to create.
+
+[#ref-cli-cmd-watch-options-concurrency]
+`--concurrency <NUMBER>`::
+Deploy and hotswap multiple stacks in parallel while accounting for inter-stack dependencies. Use this option to speed up deployments. You must still factor in CloudFormation and other {aws} account rate limiting.
++
+Provide a number to specify the maximum number of simultaneous deployments (dependency permitting) to perform.
++
+_Default value_: `1`
+
+[#ref-cli-cmd-watch-options-exclusively]
+`--exclusively, -e <BOOLEAN>`::
+Only deploy requested stacks and don't include dependencies.
+
+[#ref-cli-cmd-watch-options-force]
+`--force, -f <BOOLEAN>`::
+Always deploy stacks, even if templates are identical.
++
+_Default value_: `false`
+
+[#ref-cli-cmd-watch-options-help]
+`--help, -h <BOOLEAN>`::
+Show command reference information for the `cdk watch` command.
+
+[#ref-cli-cmd-watch-options-hotswap]
+`--hotswap <BOOLEAN>`::
+By default, `cdk watch` uses hotswap deployments when possible to update your resources. The CDK CLI will attempt to perform a hotswap deployment and will not fall back to a full CloudFormation deployment if unsuccessful. Any changes detected that cannot be updated through a hotswap are ignored.
++
+_Default value_: `true`
+
+[#ref-cli-cmd-watch-options-hotswap-fallback]
+`--hotswap-fallback <BOOLEAN>`::
+By default, `cdk watch` attempts to perform hotswap deployments and ignores changes that require CloudFormation deployments. Provide `--hotswap-fallback` to fall back and perform a full CloudFormation deployment if the hotswap deployment is unsuccessful.
+
+[#ref-cli-cmd-watch-options-logs]
+`--logs <BOOLEAN>`::
+By default, `cdk watch` monitors all CloudWatch log groups in your application and streams the log events locally to `stdout`.
++
+_Default value_: `true`
+
+[#ref-cli-cmd-watch-options-progress]
+`--progress <STRING>`::
+Configure how the CDK CLI displays deployment progress.
++
+--
+* `bar` – Display stack deployment events as a progress bar, with the events for the resource currently being deployed.
+* `events` – Provide a complete history, including all CloudFormation events.
+--
++
+You can also configure this option in the project's `cdk.json` file or at `~/.cdk.json` on your local development machine:
++
+[source,json,subs="verbatim,attributes"]
+----
+{
+   "progress": "events"
+}
+----
++
+_Valid values_: `bar`, `events`
++
+_Default value_: `bar`
+
+[#ref-cli-cmd-watch-options-rollback]
+`--rollback <BOOLEAN>`::
+During deployment, if a resource fails to be created or updated, the deployment will roll back to the latest stable state before the CDK CLI returns. All changes made up to that point will be undone. Resources that were created will be deleted and updates that were made will be rolled back.
++
+Use `--no-rollback` or `-R` to deactivate this behavior. If a resource fails to be created or updated, the CDK CLI will leave changes made up to that point in place and return. This may be helpful in development environments where you are iterating quickly.
++
+[NOTE]
+====
+When `false`, deployments that cause resource replacements will always fail. You can only use this value for deployments that update or create new resources.
+====
++
+_Default value_: `true`
+
+[#ref-cli-cmd-watch-options-toolkit-stack-name]
+`--toolkit-stack-name <STRING>`::
+The name of the existing CDK Toolkit stack.
++
+By default, `cdk bootstrap` deploys a stack named `CDKToolkit` into the specified {aws} environment. Use this option to provide a different name for your bootstrap stack.
++
+The CDK CLI uses this value to verify your bootstrap stack version.
+
+[#ref-cli-cmd-watch-examples]
+== Examples
+
+[#ref-cli-cmd-watch-examples-1]
+=== Watch a CDK stack with logical ID DevelopmentStack for changes
+
+[source,none,subs="verbatim,attributes"]
+----
+$ cdk watch DevelopmentStack
+Detected change to 'lambda-code/index.js' (type: change). Triggering 'cdk deploy'
+DevelopmentStack: deploying...
+
+ ✅  DevelopmentStack
+----
+
+[#ref-cli-cmd-watch-examples-2]
+=== Configure a cdk.json file for what to include and exclude from being watched for changes
+
+[source,json,subs="verbatim,attributes"]
+----
+{
+   "app": "mvn -e -q compile exec:java",
+   "watch": {
+    "include": "src/main/**",
+    "exclude": "target/*"
+   }
+}
+----
+
+[#ref-cli-cmd-watch-examples-3]
+=== Build a CDK project using  Java before deployment by configuring the cdk.json file
+
+[source,json,subs="verbatim,attributes"]
+----
+{
+  "app": "mvn -e -q exec:java",
+  "build": "mvn package",
+  "watch": {
+    "include": "src/main/**",
+    "exclude": "target/*"
+  }
+}
+----

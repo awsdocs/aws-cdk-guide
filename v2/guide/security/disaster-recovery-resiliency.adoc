@@ -1,0 +1,25 @@
+include::../attributes.txt[]
+
+// Attributes
+
+[.topic]
+[#disaster-recovery-resiliency]
+= Resilience for the {aws} Cloud Development Kit ({aws} CDK)
+:info_titleabbrev: Resilience
+
+[abstract]
+--
+Provides information about resilience for the {aws} CDK.
+--
+
+// Content start
+
+The Amazon Web Services ({aws}) global infrastructure is built around {aws} Regions and Availability Zones.
+
+{aws} Regions provide multiple physically separated and isolated Availability Zones, which are connected with low-latency, high-throughput, and highly redundant networking.
+
+With Availability Zones, you can design and operate applications and databases that automatically fail over between Availability Zones without interruption. Availability Zones are more highly available, fault tolerant, and scalable than traditional single or multiple data center infrastructures.
+
+For more information about {aws} Regions and Availability Zones, see link:https://aws.amazon.com/about-aws/global-infrastructure/[{aws} Global Infrastructure].
+
+The {aws} CDK follows the link:https://aws.amazon.com/compliance/shared-responsibility-model/[shared responsibility model] through the specific Amazon Web Services ({aws}) services it supports. For {aws} service security information, see the link:https://docs.aws.amazon.com/security/?id=docs_gateway#aws-security[{aws} service security documentation page] and https://aws.amazon.com/compliance/services-in-scope/[{aws} services that are in scope of {aws} compliance efforts by compliance program].

@@ -1,0 +1,28 @@
+include::attributes.txt[]
+
+// Attributes
+
+[.topic]
+[#tools]
+= Use other tools with the {aws} CDK
+:doctype: book
+:info_titleabbrev: Use tools with the CDK
+
+[abstract]
+--
+Tools for the {aws} CDK
+--
+
+// Content start
+
+You can use other tools with the {aws} CDK to improve your development workflows.
+
+[#vscode]
+== {aws} Toolkit for Visual Studio Code
+
+The  https://aws.amazon.com/visualstudiocode/[{aws} Toolkit for Visual Studio Code] is an open source plugin for Visual Studio Code that makes it easier to create, debug, and deploy applications on {aws}. The toolkit provides an integrated experience for developing {aws} CDK applications. It includes the {aws} CDK Explorer feature to list your {aws} CDK projects and browse the various components of the CDK application. https://docs.aws.amazon.com/toolkit-for-vscode/latest/userguide/setup-toolkit.html[Install the {aws} Toolkit] and learn more about https://docs.aws.amazon.com/toolkit-for-vscode/latest/userguide/cdk-explorer.html[using the {aws} CDK Explorer].
+
+[#sam]
+== {aws} SAM integration
+
+Use the {aws} CDK and the {aws} Serverless Application Model ({aws} SAM) together to locally build and test serverless applications defined in the CDK. For complete information, see  https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-cdk.html[{aws} Cloud Development Kit ({aws} CDK)] in the _{aws} Serverless Application Model Developer Guide_. To install the {aws} SAM CLI, see  https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html[Install the {aws} SAM CLI].

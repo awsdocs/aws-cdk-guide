@@ -1,0 +1,99 @@
+include::../attributes.txt[]
+
+// Attributes
+[.topic]
+[#getting-started]
+= Getting started with the {aws} CDK
+:info_titleabbrev: Getting started
+:info_abstract: Get started with the {aws} Cloud Development Kit ({aws} CDK) by installing and configuring the {aws} CDK Command Line Interface ({aws} CDK CLI). Then, use the CDK CLI to create your first CDK app, bootstrap your {aws} environment, and deploy your application.
+:keywords: {aws} CDK, {aws} Cloud Development Kit ({aws} CDK), {aws} services, infrastructure as code, IaC
+
+[abstract]
+--
+Get started with the {aws} Cloud Development Kit ({aws} CDK) by installing and configuring the {aws} CDK Command Line Interface ({aws} CDK CLI). Then, use the CDK CLI to create your first CDK app, bootstrap your {aws} environment, and deploy your application.
+--
+
+// Content start
+
+Get started with the {aws} Cloud Development Kit ({aws} CDK) by installing and configuring the {aws} CDK Command Line Interface ({aws} CDK CLI). Then, use the CDK CLI to create your first CDK app, bootstrap your {aws} environment, and deploy your application.
+
+[#getting-started-prerequisites]
+== Prerequisites
+
+Before getting started with the {aws} CDK, complete all prerequisites. These prerequisites are required for those that are new to {aws} or new to programming. For instructions, see  xref:prerequisites[{aws} CDK prerequisites].
+
+We recommend that you have a basic understanding of what the {aws} CDK is. For more information, see xref:home[What is the {aws} CDK?] and xref:core-concepts[Learn {aws} CDK core concepts].
+
+[#getting-started-install]
+== Install the {aws} CDK CLI
+
+Use the [.noloc]`Node` Package Manager to install the CDK CLI. We recommend that you install it globally using the following command:
+
+[source,bash,subs="verbatim,attributes"]
+----
+$ npm install -g aws-cdk
+----
+
+To install a specific version of the CDK CLI, use the following command structure:
+
+[source,bash,subs="verbatim,attributes"]
+----
+$ npm install -g aws-cdk@X.YY.Z
+----
+
+If you want to use multiple versions of the {aws} CDK, consider installing a matching version of the CDK CLI in individual CDK projects. To do this, remove the  `-g` option from the `npm install` command. Then, use `npx aws-cdk` to invoke the CDK CLI. This will run a local version if it exists. Otherwise, the globally installed version will be used.
+
+[#getting-started-install-troubleshoot]
+*Troubleshoot a CDK CLI installation*::
++
+If you get a permission error, and have administrator access on your system, run the following:
++
+[source,bash,subs="verbatim,attributes"]
+----
+$ sudo npm install -g aws-cdk
+----
++
+If you receive an error message, try uninstalling the CDK CLI by running the following:
++
+[source,bash,subs="verbatim,attributes"]
+----
+$ npm uninstall -g aws-cdk
+----
++
+Then, repeat steps to reinstall the CDK CLI.
+
+[#getting-started-install-verify]
+== Verify a successful CDK CLI installation
+
+Run the following command to verify a successful installation. The {aws} CDK CLI should output the version number:
+
+[source,bash,subs="verbatim,attributes"]
+----
+$ cdk --version
+----
+
+[#getting-started-configure]
+== Configure the {aws} CDK CLI
+
+After installing the CDK CLI, you can start using it to develop applications on your local machine. To interact with {aws}, such as deploying applications, you must have security credentials configured on your local machine with permissions to perform any actions that you initiate.
+
+To configure security credentials on your local machine, you use the {aws} CLI. How you configure security credentials depends on how you manage users. For instructions, see https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-authentication.html[Authentication and access credentials] in the _{aws} Command Line Interface User Guide_.
+
+The CDK CLI will automatically use the security credentials that you configure with the {aws} CLI. For example, if you are an IAM Identity Center user, you can use the  `aws configure sso` command to configure security credentials. If you are an IAM user, you can use the `aws configure` command. The {aws} CLI will guide you through configuring security credentials on your local machine and save the necessary information in your `config` and `credentials` files. Then, when you use the CDK CLI, such as deploying an application with `cdk deploy`, the CDK CLI will use your configured security credentials.
+
+Just like the {aws} CLI, the CDK CLI will use your `default` profile by default. You can specify a profile using the CDK CLI xref:ref-cli-cmd-options-profile[`--profile`] option. For more information on using security credentials with the CDK CLI, see xref:configure-access[Configure security credentials for the {aws} CDK CLI].
+
+[#getting-started-tools]
+== (Optional) Install additional {aws} CDK tools
+
+The https://aws.amazon.com/visualstudiocode/[{aws} Toolkit for Visual Studio Code] is an open source plug-in for [.noloc]`Visual Studio Code` that helps you create, debug, and deploy applications on {aws}. The toolkit provides an integrated experience for developing {aws} CDK applications. It includes the {aws} CDK Explorer feature to list your {aws} CDK projects and browse the various components of the CDK application. For instructions, see the following:
+
+* https://docs.aws.amazon.com/toolkit-for-vscode/latest/userguide/setup-toolkit.html[Installing the {aws} Toolkit for Visual Studio Code].
+* https://docs.aws.amazon.com/toolkit-for-vscode/latest/userguide/cdk-explorer.html[{aws} CDK for VS Code].
+
+[#getting-started-app]
+== Create your first CDK app
+
+You're now ready to get started with using the {aws} CDK by creating your first CDK app. For instructions, see xref:hello-world[Tutorial: Create your first {aws} CDK app].
+
+include::hello-world.adoc[leveloffset=+1]

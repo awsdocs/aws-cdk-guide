@@ -1,0 +1,56 @@
+import cdk = require("@aws-cdk/core");
+import apigateway = require("@aws-cdk/aws-apigateway");
+import lambda = require("@aws-cdk/aws-lambda");
+import s3 = require("@aws-cdk/aws-s3");
+
+export class WidgetService extends cdk.Construct {
+  constructor(scope: cdk.Construct, id: string) {
+    super(scope, id);
+
+    const bucket = new s3.Bucket(this, "WidgetStore", {
+      // The default removal policy is RETAIN, which means that cdk destroy will not attempt to delete
+      // the new bucket, and it will remain in your account until manually deleted. By setting the policy to 
+      // DESTROY, cdk destroy will attempt to delete the bucket, but will error if the bucket is not empty.
+      removalPolicy: cdk.RemovalPolicy.DESTROY, // NOT recommended for production code
+    });
+
+    const handler = new lambda.Function(this, "WidgetHandler", {
+      runtime: lambda.Runtime.NODEJS_10_X, // So we can use async in widget.js
+      code: lambda.AssetCode.asset("resources"),
+      handler: "widgets.main",
+      environment: {
+        BUCKET: bucket.bucketName
+      }
+    });
+
+    bucket.grantReadWrite(handler); // was: handler.role);
+
+    const api = new apigateway.RestApi(this, "widgets-api", {
+      restApiName: "Widget Service",
+      description: "This service serves widgets."
+    });
+
+    const getWidgetsIntegration = new apigateway.LambdaIntegration(handler, {
+      requestTemplates: { "application/json": '{ "statusCode": "200" }' }
+    });
+
+    api.root.addMethod("GET", getWidgetsIntegration); // GET /
+
+    // snippet-start:[cdk.typescript.widget_service.wire_up_functions]
+    const widget = api.root.addResource("{id}");
+
+    // Add new widget to bucket with: POST /{id}
+    const postWidgetIntegration = new apigateway.LambdaIntegration(handler);
+
+    // Get a specific widget from bucket with: GET /{id}
+    const getWidgetIntegration = new apigateway.LambdaIntegration(handler);
+
+    // Remove a specific widget from the bucket with: DELETE /{id}
+    const deleteWidgetIntegration = new apigateway.LambdaIntegration(handler);
+
+    widget.addMethod("POST", postWidgetIntegration); // POST /{id}
+    widget.addMethod("GET", getWidgetIntegration); // GET /{id}
+    widget.addMethod("DELETE", deleteWidgetIntegration); // DELETE /{id}
+    // snippet-end:[cdk.typescript.widget_service.wire_up_functions]
+  }
+}

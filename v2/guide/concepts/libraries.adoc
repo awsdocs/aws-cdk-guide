@@ -1,0 +1,50 @@
+include::../attributes.txt[]
+
+[.topic]
+[#libraries]
+= The {aws} CDK libraries
+:info_titleabbrev: Libraries
+:keywords: {aws} CDK, {aws} CDK libraries, constructs, {aws} Construct Library
+
+[abstract]
+--
+Learn about the core libraries that you will use with the {aws} Cloud Development Kit ({aws} CDK).
+--
+
+// Content start
+
+Learn about the core libraries that you will use with the {aws} Cloud Development Kit ({aws} CDK).
+
+[#libraries-cdk]
+== The {aws} CDK Library
+
+The {aws} CDK Library, also referred to as `aws-cdk-lib`, is the main library that you will use to develop applications with the {aws} CDK. It is developed and maintained by {aws}. This library contains base classes, such as https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.App.html[`App`] and https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.Stack.html[`Stack`]. It also contains the libraries you will use to define your infrastructure through constructs.
+
+[#libraries-construct]
+== The {aws} Construct Library
+
+The {aws} Construct Library is a part of the {aws} CDK Library. It contains a collection of xref:constructs[constructs] that are developed and maintained by {aws}. It is organized into various modules for each {aws} service. Each module includes constructs that you can use to define your {aws} resources and properties.
+
+[#libraries-constructs]
+== The Constructs library
+
+The Constructs library, commonly referred to as `constructs`, is a library for defining and composing cloud infrastructure components. It contains the core https://docs.aws.amazon.com/cdk/api/v2/docs/constructs.Construct.html[`Construct`] class, which represents the construct building block. This class is the foundational base class of all constructs from the {aws} Construct Library. The Constructs library is a separate general-purpose library that is used by other construct-based tools such as _CDK for Terraform_ and _CDK for Kubernetes_.
+
+[#libraries-reference]
+== The {aws} CDK API reference
+
+The https://docs.aws.amazon.com/cdk/api/v2/docs/aws-construct-library.html[{aws} CDK API reference] contains official reference documentation for the {aws} CDK Library, including the {aws} Construct Library and Constructs library. A version of the API reference is provided for each supported programming language.
+
+* For {aws} CDK Library (`aws-cdk-lib`) documentation, see https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib-readme.html[aws-cdk-lib module].
+* Documentation for constructs in the {aws} Construct Library are organized by {aws} service in the following format: `aws-cdk-lib.<service>`. For example, construct documentation for Amazon Simple Storage Service (Amazon S3), can be found at https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3-readme.html[aws-cdk-lib.aws_s3 module].
+* For Constructs library (constructs) documentation, see https://docs.aws.amazon.com/cdk/api/v2/docs/constructs-readme.html[constructs module].
+
+[#libraries-reference-contribute]
+=== Contribute to the {aws} CDK API reference
+
+The {aws} CDK is open-source and we welcome you to contribute. Community contributions positively impact and improve the {aws} CDK. For instructions on contributing specifically to {aws} CDK API reference documentation, see  https://github.com/aws/aws-cdk/blob/main/CONTRIBUTING.md#documentation[Documentation] in the __aws-cdk [.noloc]`GitHub` repository__.
+
+[#libraries-learn,libraries-learn.title]
+== Learn more
+
+For instructions on importing and using the CDK Library, see  xref:work-with[Work with the CDK library].

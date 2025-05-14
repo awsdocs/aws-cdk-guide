@@ -1,0 +1,129 @@
+include::../attributes.txt[]
+
+// Attributes
+
+[.topic]
+[[get-context-var,get-context-var.title]]
+= Save and retrieve context variable values
+:info_titleabbrev: Get context value
+
+// Content start
+
+You can specify context variables with the {aws} Cloud Development Kit ({aws} CDK) CLI or in the `cdk.json` file. Then, use the `TryGetContext` method to retrieve values.
+
+[#develop-context-specify]
+== Specify context variables
+
+You can specify a context variable either as part of an {aws} CDK  CLI command, or in `cdk.json`.
+
+To create a command line context variable, use the `--context` (`-c`) option, as shown in the following example.
+
+[source,none,subs="verbatim,attributes"]
+----
+cdk synth -c bucket_name=mygroovybucket
+----
+
+To specify the same context variable and value in the  `cdk.json` file, use the following code.
+
+[source,json,subs="verbatim,attributes"]
+----
+{
+  "context": {
+    "bucket_name": "myotherbucket"
+  }
+}
+----
+
+If you specify a context variable using both the {aws} CDK  CLI and `cdk.json` file, the {aws} CDK CLI value takes precedence.
+
+[#develop-context-retrieve]
+== Retrieve context variable values
+
+To get the value of a context variable in your app, use the `TryGetContext` method in the context of a construct. (That is, when `this`, or `self` in Python, is an instance of some construct.)
+
+In this example, we retrieve the value of the `bucket_name` context variable. If the requested value is not defined, `TryGetContext` returns `undefined` (`None` in Python; `null` in Java and C#; `nil` in Go) rather than raising an exception.
+
+====
+[role="tablist"]
+TypeScript::
++
+[source,javascript,subs="verbatim,attributes"]
+----
+const bucket_name = this.node.tryGetContext('bucket_name');
+----
+
+JavaScript::
++
+[source,javascript,subs="verbatim,attributes"]
+----
+const bucket_name = this.node.tryGetContext('bucket_name');
+----
+
+Python::
++
+[source,python,subs="verbatim,attributes"]
+----
+bucket_name = self.node.try_get_context("bucket_name")
+----
+
+Java::
++
+[source,java,subs="verbatim,attributes"]
+----
+String bucketName = (String)this.getNode().tryGetContext("bucket_name");
+----
+
+C#::
++
+[source,csharp,subs="verbatim,attributes"]
+----
+var bucketName = this.Node.TryGetContext("bucket_name");
+----
+====
+
+Outside the context of a construct, you can access the context variable from the app object, like this.
+
+====
+[role="tablist"]
+TypeScript::
++
+[source,javascript,subs="verbatim,attributes"]
+----
+const app = new cdk.App();
+const bucket_name = app.node.tryGetContext('bucket_name')
+----
+
+JavaScript::
++
+[source,javascript,subs="verbatim,attributes"]
+----
+const app = new cdk.App();
+const bucket_name = app.node.tryGetContext('bucket_name');
+----
+
+Python::
++
+[source,python,subs="verbatim,attributes"]
+----
+app = cdk.App()
+bucket_name = app.node.try_get_context("bucket_name")
+----
+
+Java::
++
+[source,java,subs="verbatim,attributes"]
+----
+App app = App();
+String bucketName = (String)app.getNode().tryGetContext("bucket_name");
+----
+
+C#::
++
+[source,csharp,subs="verbatim,attributes"]
+----
+app = App();
+var bucketName = app.Node.TryGetContext("bucket_name");
+----
+====
+
+For more details on working with context variables, see xref:context[Context values and the {aws} CDK].

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<buildinfo>
+  <docsets>
+    <docset id="CDK">
+      <pathslug>cdk</pathslug>
+      <title>AWS Cloud Development Kit</title>
+      <forumID>0</forumID>
+      <feedbackCTI>CDK</feedbackCTI>
+      <options>
+        <hide-github-link>0</hide-github-link>
+      </options>
+
+      <guides>
+
+        <guide id="awscdkv2">
+          <pathslug>guide</pathslug>
+          <basename>awscdk</basename>
+          <title>Developer Guide</title>
+          <abbr>CDK</abbr>
+          <api>v2</api>
+          <version>v2</version>
+          <asciidoc-source>v2/guide</asciidoc-source>
+          <locale>en_us</locale>
+
+          <builds>
+            <html>
+              <rss>
+                <title>Developer Guide Updates</title>
+                <filename>awscdkv2</filename>
+              </rss>
+            </html>
+            <asciidoc>
+              <include-html-profiling>1</include-html-profiling>
+            </asciidoc>
+            <markdown/>
+            <pdf/>
+          </builds>
+
+          <github>
+            <user>awsdocs</user>
+            <repo>aws-cdk-guide</repo>
+            <branch>main</branch>
+            <source-folder>v2/guide</source-folder>
+          </github>
+
+        </guide>
+
+      </guides>
+    </docset>
+  </docsets>
+</buildinfo>

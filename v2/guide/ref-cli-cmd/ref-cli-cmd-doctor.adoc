@@ -1,0 +1,51 @@
+include::../attributes.txt[]
+
+// Attributes
+
+[.topic]
+[#ref-cli-cmd-doctor]
+= `cdk doctor`
+:keywords: {aws} CDK, {aws} CDK CLI, CDK Toolkit, IaC, Infrastructure as code, {aws} Cloud, {aws} CloudFormation
+
+[abstract]
+--
+Inspect and display useful information about your local {aws} CDK project and development environment.
+--
+
+// Content start
+
+Inspect and display useful information about your local {aws} CDK project and development environment.
+
+This information can help with troubleshooting CDK issues and should be provided when submitting bug reports.
+
+[#ref-cli-cmd-doctor-usage]
+== Usage
+
+[source,none,subs="verbatim,attributes"]
+----
+$ cdk doctor <options>
+----
+
+[#ref-cli-cmd-doctor-options]
+== Options
+
+For a list of global options that work with all CDK  CLI commands, see xref:ref-cli-cmd-options[Global options].
+
+[#ref-cli-cmd-doctor-options-help]
+`--help, -h <BOOLEAN>`::
+Show command reference information for the `cdk doctor` command.
+
+[#ref-cli-cmd-doctor-examples]
+== Examples
+
+[#ref-cli-cmd-doctor-examples-1]
+=== Simple example of the `cdk doctor` command
+
+[source,none,subs="verbatim,attributes"]
+----
+$ cdk doctor
+ℹ️ CDK Version: 1.0.0 (build e64993a)
+ℹ️ {aws} environment variables:
+  - AWS_EC2_METADATA_DISABLED = 1
+  - AWS_SDK_LOAD_CONFIG = 1
+----

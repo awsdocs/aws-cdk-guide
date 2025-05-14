@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="20.1">
+    <meta>
+        <filters directoryPatterns="" filePatterns="" positiveFilePatterns=""
+            showHiddenFiles="false"/>
+        <options>
+            <serialized version="20.1" xml:space="preserve">
+                <serializableOrderedMap>
+                    <entry>
+                        <String>editor.detect.indent.on.open</String>
+                        <Boolean>false</Boolean>
+                    </entry>
+                    <entry>
+                        <String>editor.hard.line.wrap</String>
+                        <Boolean>true</Boolean>
+                    </entry>
+                    <entry>
+                        <String>editor.indent.size.v9.2</String>
+                        <Integer>2</Integer>
+                    </entry>
+                    <entry>
+                        <String>editor.line.width</String>
+                        <Integer>160</Integer>
+                    </entry>
+                    <entry>
+                        <String>key.editor.format.option.pane.group</String>
+                        <Boolean>true</Boolean>
+                    </entry>
+                    <entry>
+                        <String>validation.scenarios</String>
+                        <validationScenario-array/>
+                    </entry>
+                </serializableOrderedMap>
+            </serialized>
+        </options>
+    </meta>
+    <projectTree name="CDK_Project.xpr">
+        <folder name="All Files" path="./"/>
+    </projectTree>
+</project>

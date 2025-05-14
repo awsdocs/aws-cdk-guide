@@ -1,0 +1,45 @@
+include::../attributes.txt[]
+
+// Attributes
+
+[.topic]
+[#ref-cli-cmd-metadata]
+= `cdk metadata`
+:keywords: {aws} CDK, {aws} CDK CLI, CDK Toolkit, IaC, Infrastructure as code, {aws} Cloud, {aws} CloudFormation, cdk metadata
+
+[abstract]
+--
+Display metadata associated with a CDK stack.
+--
+
+// Content start
+
+Display metadata associated with a CDK stack.
+
+[#ref-cli-cmd-metadata-usage]
+== Usage
+
+[source,none,subs="verbatim,attributes"]
+----
+$ cdk metadata <arguments> <options>
+----
+
+[#ref-cli-cmd-metadata-args]
+== Arguments
+
+[#ref-cli-cmd-metadata-args-stack-name]
+*CDK stack ID*::
+The construct ID of the CDK stack from your app to display metadata for.
++
+_Type_: String
++
+_Required_: No
+
+[#ref-cli-cmd-metadata-options]
+== Options
+
+For a list of global options that work with all CDK  CLI commands, see xref:ref-cli-cmd-options[Global options].
+
+[#ref-cli-cmd-metadata-options-help]
+`--help, -h <BOOLEAN>`::
+Show command reference information for the `cdk metadata` command.

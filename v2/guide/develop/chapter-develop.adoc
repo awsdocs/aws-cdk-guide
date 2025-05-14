@@ -1,0 +1,68 @@
+include::../attributes.txt[]
+
+// Attributes
+[.topic]
+[#develop]
+= Develop {aws} CDK applications
+:keywords: {aws} CDK, IaC, Infrastructure as code, {aws}, {aws} Cloud, serverless, modern applications
+
+[abstract]
+--
+Manage your infrastructure on {aws} by developing applications using the {aws} Cloud Development Kit ({aws} CDK).
+--
+
+// Content start
+
+Manage your infrastructure on {aws} by developing applications using the {aws} Cloud Development Kit ({aws} CDK).
+
+[#develop-prerequisites]
+== Prerequisites
+
+Before you can start developing applications, complete all set up steps in xref:getting-started[Getting started with the {aws} CDK].
+
+[#develop-overview]
+== Developing {aws} CDK applications overview
+
+At a high-level, developing CDK applications involves the following steps:
+
+. *Create a CDK project* – A CDK xref:projects[project] consists of the files and folders that store and organize your CDK code.
+. *Create a CDK app* – Within a CDK project, you use the `App` construct to define a CDK xref:apps[application].
+. *Create a CDK stack* – Within the scope of your CDK app, you define one or more CDK xref:stacks[stacks].
+. *Define your infrastructure* – Within the scope of a CDK stack, you use xref:constructs[constructs] from the {aws} Construct Library to define the {aws} resources and properties that will become your infrastructure. Using a general-purpose programming xref:languages[language] of your choice, you can use logic, such as conditional statements and loops, to define your infrastructure based on certain conditions.
+
+[#develop-gs]
+== Get started with developing CDK applications
+
+To get started, you can use the {aws} CDK Command Line Interface ({aws} CDK  CLI) `cdk init` command. Provide the `--language` option to specify the programming language to use. This command creates a starting CDK project and imports the main {aws} Construct Library and core modules.
+
+[#develop-library]
+== Import and use the {aws} CDK Library
+
+After you create a CDK project, import and use constructs from the {aws} CDK Library to begin defining your infrastructure. For instructions, see xref:work-with[Work with the {aws} CDK library].
+
+[#develop-next]
+== Next steps
+
+When ready to deploy your application, use the CDK  CLI `cdk deploy` command. For instructions, see xref:deploy[Deploy {aws} CDK applications].
+
+include::usage-data.adoc[leveloffset=+1]
+
+include::cfn-layer.adoc[leveloffset=+1]
+
+include::get-env-var.adoc[leveloffset=+1]
+
+include::get-cfn-val.adoc[leveloffset=+1]
+
+include::use-cfn-template.adoc[leveloffset=+1]
+
+include::get-ssm-val.adoc[leveloffset=+1]
+
+include::get-sm-val.adoc[leveloffset=+1]
+
+include::set-cw-alarm.adoc[leveloffset=+1]
+
+include::get-context-var.adoc[leveloffset=+1]
+
+include::use-cfn-public-registry.adoc[leveloffset=+1]
+
+include::define-iam-l2.adoc[leveloffset=+1]

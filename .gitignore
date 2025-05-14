@@ -1,0 +1,32 @@
+# Editor backup files
+*~
+*.bak
+*.lock
+
+# System files
+.attach*
+.DS_Store
+
+# Build directories
+build/
+
+# IDE files
+.idea/
+.vscode/
+.amazonq/
+
+# Generated documentation
+*.html
+*.pdf
+*.docx
+*.xlsx
+*.rtf
+*.mobi
+
+# Archives
+*.7z
+*.rar
+*.tar
+
+# Other
+*.running.properties.txt

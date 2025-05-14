@@ -1,0 +1,25 @@
+HelloCdkStack: deploying...
+[0%] start: Publishing 4cd61014b71160e8c66fe167e43710d5ba068b80b134e9bd84508cf9238b2392:current
+[100%] success: Published 4cd61014b71160e8c66fe167e43710d5ba068b80b134e9bd84508cf9238b2392:current
+HelloCdkStack: creating CloudFormation changeset...
+ 0/5 | 4:32:31 PM | UPDATE_IN_PROGRESS   | AWS::CloudFormation::Stack  | HelloCdkStack User Initiated
+ 0/5 | 4:32:36 PM | CREATE_IN_PROGRESS   | AWS::IAM::Role              | Custom::S3AutoDeleteObjectsCustomResourceProvider/Role (CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092)
+ 1/5 | 4:32:36 PM | UPDATE_COMPLETE      | AWS::S3::Bucket             | MyFirstBucket (MyFirstBucketB8884501)
+ 1/5 | 4:32:36 PM | CREATE_IN_PROGRESS   | AWS::IAM::Role              | Custom::S3AutoDeleteObjectsCustomResourceProvider/Role (CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092) Resource creation Initiated
+ 3/5 | 4:32:54 PM | CREATE_COMPLETE      | AWS::IAM::Role              | Custom::S3AutoDeleteObjectsCustomResourceProvider/Role (CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092)
+ 3/5 | 4:32:56 PM | CREATE_IN_PROGRESS   | AWS::Lambda::Function       | Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler (CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F)
+ 3/5 | 4:32:56 PM | CREATE_IN_PROGRESS   | AWS::S3::BucketPolicy       | MyFirstBucket/Policy (MyFirstBucketPolicy3243DEFD)
+ 3/5 | 4:32:56 PM | CREATE_IN_PROGRESS   | AWS::Lambda::Function       | Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler (CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F) Resource creation Initiated
+ 3/5 | 4:32:57 PM | CREATE_COMPLETE      | AWS::Lambda::Function       | Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler (CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F)
+ 3/5 | 4:32:57 PM | CREATE_IN_PROGRESS   | AWS::S3::BucketPolicy       | MyFirstBucket/Policy (MyFirstBucketPolicy3243DEFD) Resource creation Initiated
+ 4/5 | 4:32:57 PM | CREATE_COMPLETE      | AWS::S3::BucketPolicy       | MyFirstBucket/Policy (MyFirstBucketPolicy3243DEFD)
+ 4/5 | 4:32:59 PM | CREATE_IN_PROGRESS   | Custom::S3AutoDeleteObjects | MyFirstBucket/AutoDeleteObjectsCustomResource/Default (MyFirstBucketAutoDeleteObjectsCustomResourceC52FCF6E)
+ 5/5 | 4:33:06 PM | CREATE_IN_PROGRESS   | Custom::S3AutoDeleteObjects | MyFirstBucket/AutoDeleteObjectsCustomResource/Default (MyFirstBucketAutoDeleteObjectsCustomResourceC52FCF6E) Resource creation Initiated
+ 5/5 | 4:33:06 PM | CREATE_COMPLETE      | Custom::S3AutoDeleteObjects | MyFirstBucket/AutoDeleteObjectsCustomResource/Default (MyFirstBucketAutoDeleteObjectsCustomResourceC52FCF6E)
+ 5/5 | 4:33:08 PM | UPDATE_COMPLETE_CLEA | AWS::CloudFormation::Stack  | HelloCdkStack
+ 6/5 | 4:33:09 PM | UPDATE_COMPLETE      | AWS::CloudFormation::Stack  | HelloCdkStack
+
+ ✅  HelloCdkStack
+
+Stack ARN:
+arn:aws:cloudformation:REGION:ACCOUNT:stack/HelloCdkStack/UNIQUE-ID

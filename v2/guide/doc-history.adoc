@@ -1,0 +1,73 @@
+include::attributes.txt[]
+
+[.topic]
+[#doc-history]
+= {aws} CDK Developer Guide history
+:info_titleabbrev: Document history
+:info_abstract: {aws} CDK Developer Guide history
+
+[abstract]
+--
+{aws} CDK Developer Guide history
+--
+
+// Content start
+
+See link:https://github.com/awslabs/aws-cdk/releases[Releases] for information about {aws} CDK releases. The {aws} CDK is updated approximately once a week. Maintenance versions may be released between weekly releases to address critical issues. Each release includes a matched {aws} CDK Toolkit (CDK CLI), {aws} Construct Library, and API Reference. Updates to this Guide generally do not synchronize with {aws} CDK releases.
+
+[NOTE]
+====
+The table below represents significant documentation milestones. We fix errors and improve content on an ongoing basis.
+====
+
+[.updates]
+== Updates
+
+[.update,date="2025-03-27"]
+=== Document bootstrap template versions v26 and v27
+
+For more information, see link:https://docs.aws.amazon.com/cdk/v2/guide/bootstrapping-env.html#bootstrap-template-history[Bootstrap template version history].
+
+[.update,date="2025-03-21"]
+=== Add documentation for building and deploying container image assets
+
+When you build container image assets with the {aws} CDK, Docker is utilized by default to perform these actions. If you want to use a different container management tool, you can replace Docker. For more information, see https://docs.aws.amazon.com/cdk/v2/guide/build-containers.html[Build and deploy container image assets in CDK apps].
+
+[.update,date="2024-02-02"]
+=== Add documentation for CDK Migrate feature
+
+Use the {aws} CDK CLI `cdk migrate` command to migrate deployed {aws} resources, deployed {aws} CloudFormation stacks, and local {aws} CloudFormation templates to {aws} CDK. For more information, see https://docs.aws.amazon.com/cdk/v2/guide/migrate.html[Migrate to {aws} CDK].
+
+[.update,date="2023-03-23"]
+=== IAM best practices updates
+
+Updated guide to align with the IAM best practices. For more information, see https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html[Security best practices in IAM].
+
+[.update,date="2022-04-20"]
+=== Document `cdk.json`
+
+Add documentation of `cdk.json` configuration values.
+
+[.update,date="2022-04-07"]
+=== Dependency management
+
+Add topic on managing dependencies with the {aws} CDK.
+
+[.update,date="2022-03-09"]
+=== Remove double-braces from Java examples
+
+Replace this anti-pattern with Java 9 `Map.of` throughout.
+
+[.update,date="2021-12-04"]
+=== {aws} CDK v2 release
+
+Version 2 of the {aws} CDK Developer Guide is released.
+
+See  https://github.com/awslabs/aws-cdk/releases[Releases] for information about {aws} CDK releases. The {aws} CDK is updated approximately once a week. Maintenance versions may be released between weekly releases to address critical issues. Each release includes a matched {aws} CDK Toolkit (CDK CLI), {aws} Construct Library, and API Reference. Updates to this Guide generally do not synchronize with {aws} CDK releases.
+
+[.level]
+== {blank}
+
+[.update-history]
+|===
+|===
