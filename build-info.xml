@@ -32,7 +32,6 @@
             <asciidoc>
               <include-html-profiling>1</include-html-profiling>
             </asciidoc>
-            <markdown/>
             <pdf/>
           </builds>
 
