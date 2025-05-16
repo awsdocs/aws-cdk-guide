@@ -1,0 +1,121 @@
+include::attributes.txt[]
+
+// Attributes
+[.topic]
+:info_titleabbrev: Programming languages
+:keywords: {aws} CDK, TypeScript, JavaScript, Python, Java, C#, Go
+
+[#languages]
+= Supported programming languages for the {aws} CDK
+
+[abstract]
+--
+The {aws} Cloud Development Kit ({aws} CDK) has first-class support for the TypeScript, JavaScript, Python, Java, C#, and [.noloc]``Go`` general-purpose programming languages.
+--
+
+// Content start
+
+The {aws} Cloud Development Kit ({aws} CDK) has first-class support for the following general-purpose programming languages:
+
+* TypeScript
+* JavaScript
+* Python
+* Java
+* C#
+* [.noloc]`Go`
+
+Other [.noloc]`JVM` and  [.noloc]`.NET` [.noloc]`CLR` languages may also be used in theory, but we do not offer official support at this time.
+
+The {aws} CDK is developed in one language, TypeScript. To support the other languages, the {aws} CDK utilizes a tool called  https://github.com/aws/jsii[JSII] to generate language bindings.
+
+We attempt to offer each language's usual conventions to make development with the {aws} CDK as natural and intuitive as possible. For example, we distribute {aws} Construct Library modules using your preferred language's standard repository, and you install them using the language's standard package manager. Methods and properties are also named using your language's recommended naming patterns.
+
+The following are a few code examples:
+
+====
+[role="tablist"]
+TypeScript::
++
+[source,javascript,subs="verbatim,attributes"]
+----
+const bucket = new s3.Bucket(this, 'amzn-s3-demo-bucket', {
+  bucketName: 'amzn-s3-demo-bucket',
+  versioned: true,
+  websiteRedirect: {hostName: 'aws.amazon.com'}});
+----
+
+JavaScript::
++
+[source,javascript,subs="verbatim,attributes"]
+----
+const bucket = new s3.Bucket(this, 'amzn-s3-demo-bucket', {
+  bucketName: 'amzn-s3-demo-bucket',
+  versioned: true,
+  websiteRedirect: {hostName: 'aws.amazon.com'}});
+----
+
+Python::
++
+[source,python,subs="verbatim,attributes"]
+----
+bucket = s3.Bucket("amzn-s3-demo-bucket", bucket_name="amzn-s3-demo-bucket", versioned=True,
+            website_redirect=s3.RedirectTarget(host_name="aws.amazon.com"))
+----
+
+Java::
++
+[source,java,subs="verbatim,attributes"]
+----
+Bucket bucket = Bucket.Builder.create(self, "amzn-s3-demo-bucket")
+                      .bucketName("amzn-s3-demo-bucket")
+                      .versioned(true)
+                      .websiteRedirect(new RedirectTarget.Builder()
+                          .hostName("aws.amazon.com").build())
+                      .build();
+----
+
+C#::
++
+[source,csharp,subs="verbatim,attributes"]
+----
+var bucket = new Bucket(this, "amzn-s3-demo-bucket", new BucketProps {
+                      BucketName = "amzn-s3-demo-bucket",
+                      Versioned  = true,
+                      WebsiteRedirect = new RedirectTarget {
+                              HostName = "aws.amazon.com"
+                      }});
+----
+
+Go::
++
+[source,go,subs="verbatim,attributes"]
+----
+bucket := awss3.NewBucket(scope, jsii.String("amzn-s3-demo-bucket"), &awss3.BucketProps {
+	BucketName: jsii.String("amzn-s3-demo-bucket"),
+	Versioned: jsii.Bool(true),
+	WebsiteRedirect: &awss3.RedirectTarget {
+		HostName: jsii.String("aws.amazon.com"),
+	},
+})
+----
+====
+
+[NOTE]
+====
+
+These code snippets are intended for illustration only. They are incomplete and won't run as they are.
+
+====
+
+The {aws} Construct Library is distributed using each language's standard package management tools, including  [.noloc]`NPM`,  [.noloc]`PyPi`,  [.noloc]`Maven`, and  [.noloc]`NuGet`. We also provide a version of the  https://docs.aws.amazon.com/cdk/api/v2/docs/aws-construct-library.html[{aws} CDK API Reference] for each language.
+
+To help you use the {aws} CDK in your preferred language, this guide includes the following topics for supported languages:
+
+* xref:work-with-cdk-typescript[Working with the {aws} CDK in TypeScript]
+* xref:work-with-cdk-javascript[Working with the {aws} CDK in JavaScript]
+* xref:work-with-cdk-python[Working with the {aws} CDK in Python]
+* xref:work-with-cdk-java[Working with the {aws} CDK in Java]
+* xref:work-with-cdk-csharp[Working with the {aws} CDK in C#]
+* xref:work-with-cdk-go[Working with the {aws} CDK in Go]
+
+TypeScript was the first language supported by the {aws} CDK, and much of the {aws} CDK example code is written in  TypeScript. This guide includes a topic specifically to show how to adapt  TypeScript {aws} CDK code for use with the other supported languages. For more information, see  xref:work-with-cdk-compare[Comparing {aws} CDK in TypeScript with other languages].

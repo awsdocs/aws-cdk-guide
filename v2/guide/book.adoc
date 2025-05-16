@@ -25,49 +25,49 @@ Provides a conceptual overview and practical examples to help you understand the
 [.banner.info]
 This is the {aws} CDK v2 Developer Guide. The older CDK v1 entered maintenance on June 1, 2022 and ended support on June 1, 2023.
 
-include::what-is/home.adoc[leveloffset=+1]
+include::home.adoc[leveloffset=+1]
 
-include::concepts/core-concepts.adoc[leveloffset=+1]
+include::core-concepts.adoc[leveloffset=+1]
 
-include::getting-started/prerequisites.adoc[leveloffset=+1]
+include::prerequisites.adoc[leveloffset=+1]
 
-include::getting-started/getting-started.adoc[leveloffset=+1]
+include::getting-started.adoc[leveloffset=+1]
 
-include::work-with/work-with-cdk.adoc[leveloffset=+1]
+include::work-with-cdk.adoc[leveloffset=+1]
 
-include::best-practices/best-practices.adoc[leveloffset=+1]
+include::best-practices.adoc[leveloffset=+1]
 
-include::migrate/work-with-cdk-v2.adoc[leveloffset=+1]
+include::work-with-cdk-v2.adoc[leveloffset=+1]
 
-include::migrate/migrate.adoc[leveloffset=+1]
+include::migrate.adoc[leveloffset=+1]
 
-include::configure-access/configure-access.adoc[leveloffset=+1]
+include::configure-access.adoc[leveloffset=+1]
 
 include::configure-env.adoc[leveloffset=+1]
 
-include::bootstrapping/bootstrapping-env.adoc[leveloffset=+1]
+include::bootstrapping-env.adoc[leveloffset=+1]
 
-include::develop/chapter-develop.adoc[leveloffset=+1]
+include::chapter-develop.adoc[leveloffset=+1]
 
-include::configure-synth/configure-synth.adoc[leveloffset=+1]
+include::configure-synth.adoc[leveloffset=+1]
 
-include::deploy/chapter-deploy.adoc[leveloffset=+1]
+include::chapter-deploy.adoc[leveloffset=+1]
 
 include::toolkit-library.adoc[leveloffset=+1]
 
-include::testing/testing.adoc[leveloffset=+1]
+include::testing.adoc[leveloffset=+1]
 
 include::cli.adoc[leveloffset=+1]
 
-include::ref-cli-cmd/ref-cli-cmd.adoc[leveloffset=+1]
+include::ref-cli-cmd.adoc[leveloffset=+1]
 
-include::reference/reference.adoc[leveloffset=+1]
+include::reference.adoc[leveloffset=+1]
 
-include::how-tos/how-tos.adoc[leveloffset=+1]
+include::how-tos.adoc[leveloffset=+1]
 
 include::tools.adoc[leveloffset=+1]
 
-include::security/security.adoc[leveloffset=+1]
+include::security.adoc[leveloffset=+1]
 
 include::troubleshooting.adoc[leveloffset=+1]
 

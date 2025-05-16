@@ -1,0 +1,79 @@
+include::attributes.txt[]
+
+// Attributes
+[.topic]
+[#get-env-var]
+= Get a value from an environment variable
+:info_titleabbrev: Get environment value
+
+// Content start
+
+To get the value of an environment variable, use code like the following. This code gets the value of the environment variable `amzn-s3-demo-bucket`.
+
+====
+[role="tablist"]
+TypeScript::
++
+[source,javascript,subs="verbatim,attributes"]
+----
+
+// Sets bucket_name to undefined if environment variable not set
+var bucket_name = process.env.amzn-s3-demo-bucket;
+
+// Sets bucket_name to a default if env var doesn't exist
+var bucket_name = process.env.amzn-s3-demo-bucket || "DefaultName";
+----
+
+JavaScript::
++
+[source,javascript,subs="verbatim,attributes"]
+----
+
+// Sets bucket_name to undefined if environment variable not set
+var bucket_name = process.env.amzn-s3-demo-bucket;
+
+// Sets bucket_name to a default if env var doesn't exist
+var bucket_name = process.env.amzn-s3-demo-bucket || "DefaultName";
+----
+
+Python::
++
+[source,python,subs="verbatim,attributes"]
+----
+import os
+
+# Raises KeyError if environment variable doesn't exist
+bucket_name = os.environ["amzn-s3-demo-bucket"]
+        
+# Sets bucket_name to None if environment variable doesn't exist
+bucket_name = os.getenv("amzn-s3-demo-bucket")
+
+# Sets bucket_name to a default if env var doesn't exist
+bucket_name = os.getenv("amzn-s3-demo-bucket", "DefaultName")
+----
+
+Java::
++
+[source,java,subs="verbatim,attributes"]
+----
+// Sets bucketName to null if environment variable doesn't exist
+String bucketName = System.getenv("amzn-s3-demo-bucket");
+
+// Sets bucketName to a default if env var doesn't exist
+String bucketName = System.getenv("amzn-s3-demo-bucket");
+if (bucketName == null) bucketName = "DefaultName";
+----
+
+C#::
++
+[source,csharp,subs="verbatim,attributes"]
+----
+using System;
+
+// Sets bucket name to null if environment variable doesn't exist
+string bucketName = Environment.GetEnvironmentVariable("amzn-s3-demo-bucket");
+
+// Sets bucket_name to a default if env var doesn't exist
+string bucketName = Environment.GetEnvironmentVariable("amzn-s3-demo-bucket") ?? "DefaultName";
+----
+====

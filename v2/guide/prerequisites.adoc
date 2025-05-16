@@ -1,0 +1,97 @@
+include::attributes.txt[]
+
+// Attributes
+[.topic]
+[#prerequisites]
+= {aws} CDK prerequisites
+:info_titleabbrev: Prerequisites
+:keywords: {aws} CDK, Prerequisites, {aws} account, IAM, IAM Identity Center
+
+[abstract]
+--
+Complete prerequisites before getting started with the {aws} Cloud Development Kit ({aws} CDK).
+--
+
+// Content start
+
+Complete all prerequisites before getting started with the {aws} Cloud Development Kit ({aws} CDK).
+
+[#prerequisites-account]
+== Set up your {aws} account
+
+If you or your organization are new to {aws}, you must set up your {aws} account. This includes signing up for an {aws} account, securing your root user, determining your method of managing users, and creating an administrative user. To manage users, you can use {aws} Identity and Access Management (IAM) or {aws} IAM Identity Center. We recommend that you use IAM Identity Center. For more information, see the following:
+
+* https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html[What is IAM?] in the _IAM User Guide_.
+* https://docs.aws.amazon.com/singlesignon/latest/userguide/what-is.html[What is IAM Identity Center?] in the _{aws} IAM Identity Center User Guide_.
+
+After setting up an {aws} account, you should have an administrative user and the ability to create and manage additional users using IAM or IAM Identity Center.
+
+Before moving forward, we recommend that you take time to learn the recommended best practices in {aws} Identity and Access Management. For more information, see https://docs.aws.amazon.com/IAM/latest/UserGuide/IAMBestPracticesAndUseCases.html[Security best practices and use cases in {aws} Identity and Access Management] in the _IAM User Guide_.
+
+[#prerequisites-cli]
+== Install and configure the {aws} CLI
+
+When you develop {aws} CDK applications on your local machine, you will use the {aws} Cloud Development Kit ({aws} CDK) Command Line Interface (CLI) to interact with {aws}, such as deploying applications to provision your {aws} resources. To interact with {aws} outside of the {aws} Management Console, you must configure security credentials on your local machine. To do this, we recommend that you install and use the {aws} Command Line Interface ({aws} CLI).
+
+For instructions on installing the {aws} CLI, see https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html[Install or update to the latest version of the {aws} CLI] in the _{aws} Command Line Interface User Guide_.
+
+How you configure security credentials will depend on how you or your organization manages users. For instructions, see https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-authentication.html[Authentication and access credentials] in the _{aws} Command Line Interface User Guide_.
+
+After installing and configuring the {aws} CLI, you should have the following:
+
+* The {aws} CLI installed on your local machine.
+* Credentials configured in a `config` on your local machine using the {aws} CLI.
+
+[#prerequisites-node]
+== Install [.noloc]`Node.js` and programming language prerequisites
+
+All {aws} CDK developers, regardless of the supported programming language that you will use, require https://nodejs.org/en/download/[Node.js] 14.15.0 or later. All supported programming languages use the same backend, which runs on [.noloc]`Node.js`. We recommend a version in  https://nodejs.org/en/about/releases/[active long-term support]. If your organization has a different recommendation, follow their guidance.
+
+[IMPORTANT]
+====
+
+Node.js versions 13.0.0 through 13.6.0 are not compatible with the {aws} CDK due to compatibility issues with its dependencies.
+
+====
+
+Other programming language prerequisites depend on the language that you will use to develop {aws} CDK applications:
+
+====
+[role="tablist"]
+TypeScript::
+* TypeScript 3.8 or later (`npm -g install typescript`)
+
+JavaScript::
+* No additional requirements
+
+Python::
+* Python 3.7 or later including `pip` and `virtualenv`
+
+Java::
+* Java Development Kit (JDK) 8 (a.k.a. 1.8) or later
+* Apache Maven 3.5 or later
++
+Java IDE recommended (we use [.noloc]`Eclipse`` in some examples in this guide). IDE must be able to import Maven projects. Check to make sure that your project is set to use Java 1.8. Set the JAVA_HOME environment variable to the path where you have installed the JDK.
+
+C#::
+.NET Core 3.1 or later, or .NET 6.0 or later.
++
+Visual Studio 2019 (any edition) or Visual Studio Code recommended.
+
+Go::
+Go 1.1.8 or later.
+
+====
+
+[NOTE]
+.Third-party language deprecation
+====
+
+Each language version is only supported until it is [.noloc]`EOL` (End Of Life) and is subject to change with prior notice.
+
+====
+
+[#prerequisites-next]
+== Next steps
+
+To get started with the {aws} CDK, see xref:getting-started[Getting started with the {aws} CDK].

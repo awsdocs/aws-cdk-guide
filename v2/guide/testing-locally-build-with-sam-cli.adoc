@@ -1,0 +1,31 @@
+include::attributes.txt[]
+
+// Attributes
+[.topic]
+[#testing-locally-build-with-sam-cli]
+= Building {aws} CDK applications with {aws} SAM
+:info_titleabbrev: Building
+:keywords: {aws} SAM, build, {aws} CDK, Lambda
+
+[abstract]
+--
+Use the `sam build` command to build {aws} CDK applications.
+--
+
+// Content start
+
+The {aws} SAM CLI provides support for building Lambda functions and layers defined in your {aws} CDK application with `link:https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-build.html[sam build]`.
+
+For Lambda functions that use zip artifacts, run `cdk synth` before you run `sam local` commands. `sam build` isn't required.
+
+If your {aws} CDK application uses functions with the image type, run `cdk synth` and then run `sam build` before you run `sam local` commands. When you run `sam build`, {aws} SAM doesn't build Lambda functions or layers that use runtime-specific constructs, for example, `link:https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda_nodejs.NodejsFunction.html[NodejsFunction]`. `sam build` doesn't support https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.BundlingOptions.html[bundled assets].
+
+[#testing-locally-build-with-sam-cli-examples]
+== Example
+
+Running the following command from the {aws} CDK project root directory builds the application.
+
+[source,bash,subs="verbatim,attributes"]
+----
+$ sam build -t <./cdk.out/CdkSamExampleStack.template.json>
+----

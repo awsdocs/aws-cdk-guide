@@ -1,0 +1,74 @@
+include::attributes.txt[]
+
+// Attributes
+
+[.topic]
+[#ref-cli-cmd-destroy]
+= `cdk destroy`
+:keywords: {aws} CDK, {aws} CDK CLI, CDK Toolkit, IaC, Infrastructure as code, {aws} Cloud, {aws} CloudFormation, cdk destroy
+
+[abstract]
+--
+Delete one or more {aws} CDK stacks from your {aws} environment.
+--
+
+// Content start
+
+Delete one or more {aws} CDK stacks from your {aws} environment.
+
+When you delete a stack, resources in the stack will be destroyed, unless they were configured with a `DeletionPolicy` of `Retain`.
+
+During stack deletion, this command will output progress information similar to `cdk deploy` behavior.
+
+[#ref-cli-cmd-destroy-usage]
+== Usage
+
+[source,none,subs="verbatim,attributes"]
+----
+$ cdk destroy <arguments> <options>
+----
+
+[#ref-cli-cmd-destroy-args]
+== Arguments
+
+[#ref-cli-cmd-destroy-args-stack-name]
+*CDK stack ID*::
+The construct ID of the CDK stack from your app to delete.
++
+_Type_: String
++
+_Required_: No
+
+[#ref-cli-cmd-destroy-options]
+== Options
+
+For a list of global options that work with all CDK  CLI commands, see xref:ref-cli-cmd-options[Global options].
+
+[#ref-cli-cmd-destroy-options-all]
+`--all <BOOLEAN>`::
+Destroy all available stacks.
++
+_Default value_: `false`
+
+[#ref-cli-cmd-destroy-options-exclusively]
+`--exclusively, -e <BOOLEAN>`::
+Only destroy requested stacks and don't include dependencies.
+
+[#ref-cli-cmd-destroy-options-force]
+`--force, -f <BOOLEAN>`::
+Do not ask for confirmation before destroying the stacks.
+
+[#ref-cli-cmd-destroy-options-help]
+`--help, -h <BOOLEAN>`::
+Show command reference information for the `cdk destroy` command.
+
+[#ref-cli-cmd-destroy-examples]
+== Examples
+
+[#ref-cli-cmd-destroy-examples-1]
+=== Delete a stack named MyStackName
+
+[source,none,subs="verbatim,attributes"]
+----
+$ cdk destroy --app='node bin/main.js' <MyStackName>
+----

@@ -1,0 +1,51 @@
+include::attributes.txt[]
+
+// Attributes
+
+[.topic]
+[#ref-cli-cmd-docs]
+= `cdk docs`
+:keywords: {aws} CDK, {aws} CDK CLI, CDK Toolkit, IaC, Infrastructure as code, {aws} Cloud, {aws} CloudFormation
+
+[abstract]
+--
+Open {aws} CDK documentation in your browser.
+--
+
+// Content start
+
+Open {aws} CDK documentation in your browser.
+
+[#ref-cli-cmd-docs-usage]
+== Usage
+
+[source,none,subs="verbatim,attributes"]
+----
+$ cdk docs <options>
+----
+
+[#ref-cli-cmd-docs-options]
+== Options
+
+For a list of global options that work with all CDK  CLI commands, see xref:ref-cli-cmd-options[Global options].
+
+[#ref-cli-cmd-docs-options-browser]
+`--browser, -b <STRING>`::
+The command to use to open the browser, using `%u` as a placeholder for the path of the file to open.
++
+_Default value_: `open %u`
+
+[#ref-cli-cmd-docs-options-help]
+`--help, -h <BOOLEAN>`::
+Show command reference information for the `cdk docs` command.
+
+[#ref-cli-cmd-docs-examples]
+== Examples
+
+[#ref-cli-cmd-docs-examples-1]
+=== Open {aws} CDK documentation in Google Chrome
+
+[source,none,subs="verbatim,attributes"]
+----
+$ cdk docs --browser='chrome %u'
+----

@@ -1,0 +1,37 @@
+include::attributes.txt[]
+
+// Attributes
+
+[.topic]
+[#how-tos]
+= {aws} CDK tutorials and examples
+:info_titleabbrev: Tutorials and examples
+:keywords: {aws} CDK, {aws} Cloud Development Kit ({aws} CDK), IaC, Infrastructure as Code, serverless, serverless application, Lambda, API Gateway
+
+[abstract]
+--
+This section contains tutorials and examples for the {aws} Cloud Development Kit ({aws} CDK).
+--
+
+// Content start
+
+This section contains tutorials and examples for the {aws} Cloud Development Kit ({aws} CDK).
+
+[#tutorials]
+*Tutorials*::
+Tutorials provide you with step-by-step instructions that you can follow to implement a task using the {aws} CDK.
+
+[#examples]
+*Examples*::
+Examples show and explain how specific tasks can be implemented using the {aws} CDK. They do not provide direct step-by-step instructions for you to follow.
++
+For more examples of {aws} CDK stacks and apps in your favorite supported programming language, see the https://github.com/aws-samples/aws-cdk-examples[{aws} CDK Examples] repository on GitHub.
+
+
+include::serverless_example.adoc[leveloffset=+1]
+
+
+include::create-multiple-stacks.adoc[leveloffset=+1]
+
+
+include::ecs_example.adoc[leveloffset=+1]

@@ -1,0 +1,29 @@
+include::attributes.txt[]
+
+// Attributes
+
+[.topic]
+[#testing-locally]
+= Locally test and build {aws} CDK applications with the {aws} SAM CLI
+:info_titleabbrev: Local testing
+:keywords: build, test, {aws} CDK, {aws} SAM
+
+[abstract]
+--
+You can use {aws} SAM to build and locally test your {aws} CDK applications.
+--
+
+// Content start
+
+You can use the {aws} SAM CLI to locally test and build serverless applications defined using the {aws} Cloud Development Kit ({aws} CDK). Because the {aws} SAM CLI works within the {aws} CDK project structure, you can still use the xref:cli[{aws} CDK CLI reference] for creating, modifying, and deploying your {aws} CDK applications.
+
+For details on using {aws} SAM, see https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-getting-started.html[Getting started with {aws} SAM] in the _{aws} Serverless Application Model Developer Guide_.
+
+[.topiclist]
+[[Topic List]]
+
+include::testing-locally-getting-started.adoc[leveloffset=+1]
+
+include::testing-locally-with-sam-cli.adoc[leveloffset=+1]
+
+include::testing-locally-build-with-sam-cli.adoc[leveloffset=+1]

@@ -1,0 +1,30 @@
+include::attributes.txt[]
+
+// Attributes
+
+[.topic]
+[#compliance-validation]
+= Compliance validation for the {aws} Cloud Development Kit ({aws} CDK)
+:info_titleabbrev: Compliance validation
+
+[abstract]
+--
+Provides information about compliance validation for the {aws} CDK.
+--
+
+// Content start
+
+The {aws} CDK follows the link:https://aws.amazon.com/compliance/shared-responsibility-model/[shared responsibility model] through the specific Amazon Web Services ({aws}) services it supports. For {aws} service security information, see the link:https://docs.aws.amazon.com/security/?id=docs_gateway#aws-security[{aws} service security documentation page] and link:https://aws.amazon.com/compliance/services-in-scope/[{aws} services that are in scope of {aws} compliance efforts by compliance program].
+
+The security and compliance of {aws} services is assessed by third-party auditors as part of multiple {aws} compliance programs. These include SOC, PCI, FedRAMP, HIPAA, and others. {aws} provides a frequently updated list of {aws} services in scope of specific compliance programs at link:https://aws.amazon.com/compliance/services-in-scope/[{aws} Services in Scope by Compliance Program].
+
+Third-party audit reports are available for you to download using {aws} Artifact. For more information, see link:https://docs.aws.amazon.com/artifact/latest/ug/downloading-documents.html[Downloading Reports in {aws} Artifact].
+
+For more information about {aws} compliance programs, see https://aws.amazon.com/compliance/programs/[{aws} Compliance Programs].
+
+Your compliance responsibility when using the {aws} CDK to access an {aws} service is determined by the sensitivity of your data, your organization's compliance objectives, and applicable laws and regulations. If your use of an {aws} service is subject to compliance with standards such as HIPAA, PCI, or FedRAMP, {aws} provides resources to help:
+
+* link:https://aws.amazon.com/quickstart/?quickstart-all.sort-by=item.additionalFields.updateDate&quickstart-all.sort-order=desc&awsf.quickstart-homepage-filter=categories%23security-identity-compliance[Security and Compliance Quick Start Guides] – Deployment guides that discuss architectural considerations and provide steps for deploying security-focused and compliance-focused baseline environments on {aws}. 
+* link:https://aws.amazon.com/compliance/resources/[{aws} Compliance Resources] – A collection of workbooks and guides that might apply to your industry and location. 
+* link:https://aws.amazon.com/config/[{aws} Config] – A service that assesses how well your resource configurations comply with internal practices, industry guidelines, and regulations. 
+* link:https://aws.amazon.com/security-hub/[{aws} Security Hub] – A comprehensive view of your security state within {aws} that helps you check your compliance with security industry standards and best practices. 
