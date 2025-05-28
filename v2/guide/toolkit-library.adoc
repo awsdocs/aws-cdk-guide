@@ -1,6 +1,7 @@
 include::attributes.txt[]
 
 // Attributes
+
 [.topic]
 [#toolkit-library]
 = Perform programmatic actions using the CDK Toolkit Library
@@ -9,42 +10,113 @@ include::attributes.txt[]
 
 [abstract]
 --
-The {aws} Cloud Development Kit ({aws} CDK) Toolkit Library enables you to perform {aws} CDK actions requiring programmatic access on {aws}.
+The {aws} Cloud Development Kit ({aws} CDK) Toolkit Library enables you to perform CDK actions programmatically instead of using the CLI.
 --
 
 // Content start
 
-[NOTE]
-====
-
-CDK Toolkit Library is in developer preview and is subject to change.
-
-====
-
 [#toolkit-library-intro]
-== What is the CDK Toolkit Library Library?
+== Understanding the CDK Toolkit Library
 
-The {aws} Cloud Development Kit ({aws} CDK) Toolkit Library enables you to perform {aws} CDK actions requiring programmatic access on {aws}. You can use the CDK Toolkit Library to implement actions such as bootstrapping, synthesizing, and deploying through code rather than CDK  CLI commands. With this library, you can create custom tools, build specialized  CLI applications, and integrate CDK programmatic access capabilities into your development workflows.
+The CDK Toolkit Library enables you to perform CDK actions programmatically through code instead of using CLI commands. You can use this library to create custom tools, build specialized CLI applications, and integrate CDK capabilities into your development workflows.
 
-The following is an example, that installs the CDK Toolkit Library and uses it to deploy a cloud assembly of your CDK app:
+*Manage your infrastructure lifecycle with programmatic control*::
 
-[source,javascript,subs="verbatim,attributes"]
+The CDK Toolkit Library provides programmatic interfaces for the following CDK actions:
++
+--
+* *Synthesis* - Generate {aws} CloudFormation templates and deployment artifacts.
+* *Deployment* - Provision or update infrastructure using CloudFormation templates.
+* *List* - View information about stacks and their dependencies.
+* *Watch* - Monitor CDK apps for local changes.
+* *Rollback* - Return stacks to their last stable state.
+* *Destroy* - Remove CDK stacks and associated resources.
+--
+
+*Enhance and customize your infrastructure management*::
++
+--
+* *Control through code* - Integrate infrastructure management directly into your applications and build responsive deployment pipelines.
+* *Manage cloud assemblies* - Create, inspect, and transform your infrastructure definitions before deployment.
+* *Customize deployments* - Configure parameters, rollback behavior, and monitoring to match your requirements.
+* *Handle errors precisely* - Implement structured error handling with detailed diagnostic information.
+* *Tailor communications* - Configure custom progress indicators and logging through `IoHost` implementations.
+* *Connect with {aws}* - Configure profiles, Regions, and authentication flows programmatically.
+--
+
+[#toolkit-library-intro-when]
+== Choosing when to use the CDK Toolkit Library
+
+The CDK Toolkit Library is particularly valuable when you need to:
+
+* Automate infrastructure deployments as part of CI/CD pipelines.
+* Build custom deployment tools tailored to your organization's needs.
+* Integrate CDK actions into existing applications or platforms.
+* Create specialized deployment workflows with custom validation or approval steps.
+* Implement advanced infrastructure management patterns across multiple environments.
+
+[#toolkit-library-intro-example]
+== Using the CDK Toolkit Library
+
+The following example shows how to create and deploy a simple S3 bucket using the CDK Toolkit Library:
+
+[source, typescript, subs="verbatim,attributes"]
 ----
-import { Toolkit } from '@aws-cdk/toolkit-lib'; // Install the CDK Toolkit Library
+// Import required packages
+import { Toolkit } from '@aws-cdk/toolkit-lib';
+import { App, Stack } from 'aws-cdk-lib';
+import * as s3 from 'aws-cdk-lib/aws-s3';
 
-const cdk = new Toolkit(); // Create a CDK Toolkit instance
+// Create and configure the CDK Toolkit
+const toolkit = new Toolkit();
 
-// ...
+// Create a cloud assembly source with an inline app
+const cloudAssemblySource = await toolkit.fromAssemblyBuilder(async () => {
+   const app = new App();
+   const stack = new Stack(app, 'SimpleStorageStack');
+   
+   // Create an S3 bucket in the stack
+   new s3.Bucket(stack, 'MyFirstBucket', {
+      versioned: true
+   });
+   
+   return app.synth();
+});
 
-// Implement a deployment
-await cdk.deploy(cloudAssembly, { 
-   deploymentMethod: { method: "direct" }, // Configure deployment options
-   ...
-})
+// Deploy the stack
+await toolkit.deploy(cloudAssemblySource);
 ----
 
-[#toolkit-library-gs]
-== Get started with the CDK Toolkit Library
-To get started, see the `link:https://www.npmjs.com/package/@aws-cdk/toolkit-lib[ReadMe]` in the _@aws-cdk/toolkit-lib_ `npm` package.
+*What you can do next*::
++
+--
+* *Automate deployments* - Trigger deployments programmatically and add pre/post deployment steps.
+* *Integrate with systems* - Connect with CI/CD workflows, custom tools, and monitoring solutions.
+* *Control deployment details* - Configure fine-grained options for stack selection and multi-environment deployments.
+* *Enhance reliability* - Implement production-ready error handling and deployment progress tracking.
+--
 
-For API reference information, see the link:https://docs.aws.amazon.com/cdk/api/toolkit-lib/[CDK Toolkit Library API reference].
+[#toolkit-library-intro-next]
+== Next steps
+
+To begin using the CDK Toolkit Library, see xref:toolkit-library-gs[Get started with the CDK Toolkit Library].
+
+[#toolkit-library-intro-learn]
+== Learn more
+
+To learn more about the CDK Toolkit Library, see the following:
+
+* link:https://www.npmjs.com/package/@aws-cdk/toolkit-lib[ReadMe] in the _@aws-cdk/toolkit-lib_ `npm` package.
+* link:https://docs.aws.amazon.com/cdk/api/toolkit-lib/[{aws} CDK Toolkit Library API Reference].
+
+include::toolkit-library-gs.adoc[leveloffset=+1]
+
+include::toolkit-library-actions.adoc[leveloffset=+1]
+
+include::toolkit-library-configure.adoc[leveloffset=+1]
+
+include::toolkit-library-configure-ca.adoc[leveloffset=+1]
+
+include::toolkit-library-configure-messages.adoc[leveloffset=+1]
+
+include::toolkit-library-examples.adoc[leveloffset=+1]
