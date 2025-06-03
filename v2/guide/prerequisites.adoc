@@ -45,14 +45,9 @@ After installing and configuring the {aws} CLI, you should have the following:
 [#prerequisites-node]
 == Install [.noloc]`Node.js` and programming language prerequisites
 
-All {aws} CDK developers, regardless of the supported programming language that you will use, require https://nodejs.org/en/download/[Node.js] 14.15.0 or later. All supported programming languages use the same backend, which runs on [.noloc]`Node.js`. We recommend a version in  https://nodejs.org/en/about/releases/[active long-term support]. If your organization has a different recommendation, follow their guidance.
+All {aws} CDK developers, regardless of the supported programming language that you will use, require https://nodejs.org/en/download/[Node.js] 22.x or later. All supported programming languages use the same backend, which runs on [.noloc]`Node.js`. We recommend a version in link:https://nodejs.org/en/about/releases/[active long-term support]. 
 
-[IMPORTANT]
-====
-
-Node.js versions 13.0.0 through 13.6.0 are not compatible with the {aws} CDK due to compatibility issues with its dependencies.
-
-====
+For more information on supported Node.js versions, see xref:node-versions[Supported Node versions].
 
 Other programming language prerequisites depend on the language that you will use to develop {aws} CDK applications:
 

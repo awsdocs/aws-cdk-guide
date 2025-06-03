@@ -20,5 +20,6 @@ Each sub-module has an overview that includes information about how to use its A
 
 include::versioning.adoc[leveloffset=+1]
 
+include::node-versions.adoc[leveloffset=+1]
 
 include::videos.adoc[leveloffset=+1]

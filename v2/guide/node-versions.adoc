@@ -1,0 +1,53 @@
+include::attributes.txt[]
+
+// Attributes
+[.topic]
+[#node-versions]
+= Supported Node.js versions for the {aws} CDK
+:info_titleabbrev: Supported Node versions
+:keywords: {aws} CDK, {aws} Cloud Development Kit ({aws} CDK), node versions, supported versions, aws-cdk-cli, aws-cdk-lib
+
+[abstract]
+--
+The {aws} Cloud Development Kit ({aws} CDK) depends on Node.js for its functionality. This includes core CDK components such as the {aws} CDK CLI (`aws-cdk-cli`), {aws} Construct Library (`aws-cdk-lib`), as well as broader tools such as [.noloc]`JSII`, [.noloc]`Projen`, and [.noloc]`CDK8s`. This page documents the Node.js runtime versions compatible with each release of the {aws} CDK, helping you maintain a supported development environment.
+--
+
+// Content start
+
+The {aws} Cloud Development Kit ({aws} CDK) depends on Node.js for its functionality. This includes core CDK components such as the {aws} CDK CLI (`aws-cdk-cli`), {aws} Construct Library (`aws-cdk-lib`), as well as broader tools such as [.noloc]`JSII`, [.noloc]`Projen`, and [.noloc]`CDK8s`. This page documents the Node.js runtime versions compatible with the {aws} CDK, helping you maintain a supported development environment.
+
+The {aws} CDK aims to maintain compatibility with actively supported Node.js Long Term Support (LTS) versions. As Node.js versions reach their end-of-life, the {aws} CDK also phases out support for these versions to ensure security, performance, and access to the latest features.
+
+Keeping your CDK components and tools on supported Node.js versions ensures that you receive security updates, bug fixes, and access to the latest CDK features and improvements.
+
+[#node-version-timeline]
+== Node.js version support timeline
+
+The {aws} CDK supports Node.js versions beyond their official End-of-Life (EOL) dates to give you time to upgrade your environment. This support extends for 6 months (for example, when Node.js versions reach EOL in April, support continues until October). The version support timeline table below documents specific CDK support end dates as they are determined. This approach gives you a defined window to plan and implement version upgrades while maintaining access to CDK functionality and updates.
+
+[cols="1,1,1", options="header"]
+|===
+|Node.js version
+|Node EOL date
+|CDK support status
+
+|22.x
+|2027-04-30
+|Support expected until October 2027.
+
+|20.x
+|2026-04-30
+|Support expected until October 2026.
+
+|18.x
+|2025-05-30
+|Support ends 2025-11-30.
+
+|16.x
+|2023-09-11
+|Support ends 2025-05-30.
+
+|14.x
+|2023-04-30
+|Support ends 2025-05-30.
+|===
