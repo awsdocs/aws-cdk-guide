@@ -1,0 +1,131 @@
+include::attributes.txt[]
+
+// Attributes
+[.topic]
+[#ref-cli-cmd-drift]
+= `cdk drift`
+:keywords: {aws} CDK, {aws} CDK CLI, CDK Toolkit CLI, cdk drift
+
+[abstract]
+--
+Detect and report drift in deployed {aws} CloudFormation stacks that are defined in your CDK app.
+--
+
+// Content start
+
+Detect configuration drift for resources that you define, manage, and deploy using the {aws} Cloud Development Kit ({aws} CDK). Drift occurs when a stack's actual configuration differs from its expected configuration, which happens when resources are modified outside of {aws} CloudFormation.
+
+This command identifies resources that have been modified (for example, through the {aws} Console or {aws} CLI) by comparing their current state against their expected configuration. These modifications can cause unexpected behavior in your infrastructure.
+
+During drift detection, the CDK CLI will output progress indicators and results, showing:
+
+- Resources that have drifted from their expected configuration.
+- The total number of resources with drift.
+- A summary indicating whether drift was detected in the stack.
+
+[IMPORTANT]
+====
+The `cdk drift` and `cdk diff` commands work differently:
+
+* `cdk drift` calls CloudFormation's drift detection operation to compare the actual state of resources in {aws} ("reality") against their expected configuration in CloudFormation.  Not all {aws} resources support drift detection. For a list of supported resources, see link:https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/resource-import-supported-resources.html[Resource type support] in the _{aws} CloudFormation User Guide_.
+
+* `cdk diff` compares the CloudFormation template synthesized from your local CDK code against the template of the deployed CloudFormation stack.
+
+Use `cdk drift` when you need to verify if resources have been modified outside of CloudFormation (for example, through the {aws} Console or {aws} CLI). Use `cdk diff` when you want to preview how your local code changes would affect your infrastructure before deployment.
+====
+
+[#ref-cli-cmd-drift-usage]
+== Usage
+
+[source,none,subs="verbatim,attributes"]
+----
+$ cdk drift <arguments> <options>
+----
+
+[#ref-cli-cmd-drift-args]
+== Arguments
+
+[#ref-cli-cmd-drift-args-stack-name]
+*Stack name*::
+The name of the stack that you want to check for drift. The stack must be previously deployed to CloudFormation to perform drift detection.
++
+_Type_: String
++
+_Required_: No
++
+If no stack is specified, drift detection will be performed on all stacks defined in your CDK app.
+
+[#ref-cli-cmd-drift-options]
+== Options
+
+For a list of global options that work with all CDK CLI commands, see xref:ref-cli-cmd-options[Global options].
+
+[#ref-cli-cmd-drift-options-fail]
+`--fail <BOOLEAN>`::
+Return with exit code 1 if drift is detected.
++
+_Default value_: `false`
+
+[#ref-cli-cmd-drift-options-help]
+`--help, -h <BOOLEAN>`::
+Show command reference information for the `cdk drift` command.
+
+[#ref-cli-cmd-drift-examples]
+== Examples
+
+[#ref-cli-cmd-drift-examples-stack]
+=== Check drift for a specific stack
+
+[source,none,subs="verbatim,attributes"]
+----
+$ cdk drift MyStackName
+----
+
+The command will output results similar to:
+
+[source,none,subs="verbatim,attributes"]
+----
+Stack MyStackName
+Modified Resources
+[~] AWS::Lambda::Function MyFunction MyLambdaFunc1234ABCD
+ └─ [~] /Description
+     ├─ [-] My original hello world Lambda function
+     └─ [+] My drifted hello world Lambda function
+
+1 resource has drifted from their expected configuration
+
+✨  Number of resources with drift: 1
+----
+
+[#ref-cli-cmd-drift-examples-deleted]
+=== Check drift when resources have been deleted
+
+The following example shows what the output looks like when resources have been both modified and deleted:
+
+[source,none,subs="verbatim,attributes"]
+----
+Stack MyStackName
+Modified Resources
+[~] AWS::Lambda::Function MyFunction MyLambdaFunc1234ABCD
+ └─ [~] /Description
+     ├─ [-] My original hello world Lambda function
+     └─ [+] My drifted hello world Lambda function
+Deleted Resources
+[-] AWS::CloudWatch::Alarm MyAlarm MyCWAlarmABCD1234
+
+2 resources have drifted from their expected configuration
+
+✨  Number of resources with drift: 2
+----
+
+[#ref-cli-cmd-drift-examples-fail]
+=== Check drift with exit code
+
+To have the command return a non-zero exit code if drift is detected:
+
+[source,none,subs="verbatim,attributes"]
+----
+$ cdk drift MyStackName --fail
+----
+
+This is useful in CI/CD pipelines to automatically detect and respond to infrastructure drift.
