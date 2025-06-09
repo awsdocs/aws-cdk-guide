@@ -53,6 +53,8 @@ include::configure-synth.adoc[leveloffset=+1]
 
 include::chapter-deploy.adoc[leveloffset=+1]
 
+include::blueprints.adoc[leveloffset=+1]
+
 include::toolkit-library.adoc[leveloffset=+1]
 
 include::testing.adoc[leveloffset=+1]
