@@ -176,7 +176,7 @@ TypeScript::
 [source,typescript,subs="verbatim,attributes"]
 ----
 import type { IPluginHost } from '@aws-cdk/cli-plugin-contract';
-import { registerCredentialProviderSource, Mode, CredentialProviderSource } from '@aws-cdk/cli-plugin-contract';
+import { CredentialProviderSource, Mode } from '@aws-cdk/cli-plugin-contract';
 import { Credentials } from '@aws-sdk/client-sts';
 
 class CustomCredentialProviderSource implements CredentialProviderSource {
@@ -223,7 +223,7 @@ class CustomCredentialProviderSource implements CredentialProviderSource {
 }
 
 export = {
-  version = '1',
+  version: '1',
   init(host: IPluginHost): void {
     // Register the credential provider to the PluginHost.
     host.registerCredentialProviderSource(new CustomCredentialProviderSource());
@@ -235,7 +235,7 @@ JavaScript::
 +
 [source,javascript,subs="verbatim,attributes"]
 ----
-const { Mode, registerCredentialProviderSource, CredentialProviderSource } = require('@aws-cdk/cli-plugin-contract');
+const { CredentialProviderSource, Mode } = require('@aws-cdk/cli-plugin-contract');
 const { Credentials } = require('@aws-sdk/client-sts');
 
 // Implement the CredentialProviderSource interface
@@ -286,7 +286,7 @@ class CustomCredentialProviderSource extends CredentialProviderSource {
 }
 
 module.exports = {
-  version = '1',
+  version: '1',
   init(host) {
     // Register the credential provider to the PluginHost.
     host.registerCredentialProviderSource(new CustomCredentialProviderSource());
