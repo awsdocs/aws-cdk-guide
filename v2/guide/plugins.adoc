@@ -38,9 +38,9 @@ TypeScript::
 [source,typescript,subs="verbatim,attributes"]
 ----
 // Example plugin structure
-import type { IPluginHost } from '@aws-cdk/cli-plugin-contract';
+import type { IPluginHost, Plugin } from '@aws-cdk/cli-plugin-contract';
 
-export = {
+const plugin: Plugin = {
     // Version of the plugin infrastructure (currently always '1')
     version: '1',
     
@@ -50,13 +50,15 @@ export = {
         // For example, register a custom credential provider
     }
 };
+
+export = plugin;
 ----
 
 JavaScript::
 +
 [source,javascript,subs="verbatim,attributes"]
 ----
-module.exports = {
+const plugin = {
     // Version of the plugin infrastructure (currently always '1')
     version: '1',
     
@@ -66,6 +68,8 @@ module.exports = {
         // For example, register a custom credential provider
     }
 };
+
+module.exports = plugin;
 ----
 ====
 
@@ -175,9 +179,7 @@ TypeScript::
 +
 [source,typescript,subs="verbatim,attributes"]
 ----
-import type { IPluginHost } from '@aws-cdk/cli-plugin-contract';
-import { registerCredentialProviderSource, Mode, CredentialProviderSource } from '@aws-cdk/cli-plugin-contract';
-import { Credentials } from '@aws-sdk/client-sts';
+import type { CredentialProviderSource, ForReading, ForWriting, IPluginHost, Plugin, PluginProviderResult, SDKv3CompatibleCredentials } from '@aws-cdk/cli-plugin-contract';
 
 class CustomCredentialProviderSource implements CredentialProviderSource {
   // Friendly name for the provider, used in error messages
@@ -204,44 +206,41 @@ class CustomCredentialProviderSource implements CredentialProviderSource {
   // - SDKv2CompatibleCredentials (AWS SDK v2 entered maintenance on Sept 8, 2024 and will reach end-of-life on Sept 8, 2025)
   // - SDKv3CompatibleCredentialProvider 
   // - SDKv3CompatibleCredentials
-  public async getProvider(accountId: string, mode: Mode): Promise<PluginProviderResult> {
+  public async getProvider(accountId: string, mode: ForReading | ForWriting): Promise<PluginProviderResult> {
     // The access mode can be used to provide different credential sets
-    const readOnly = mode === Mode.ForReading;
+    const readOnly = mode === 0 satisfies ForReading;
     
     // Create appropriate credentials based on your authentication mechanism
-    // In this example we're using AWS SDK v3 credentials
-    const credentials = new Credentials({
+    const credentials: SDKv3CompatibleCredentials = {
       accessKeyId: 'AKIAIOSFODNN7EXAMPLE',
       secretAccessKey: 'wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY',
       // Add sessionToken if using temporary credentials
       // sessionToken: 'AQoEXAMPLEH4aoAH0gNCAPyJxz4BlCFFxWNE1OPTgk5TthT+FvwqnKwRcOIfrRh3c/LTo6UDdyJwOOvEVPvLXCrrrUtdnniCEXAMPLE/IvU1dYUg2RVAJBanLiHb4IgRmpRV3zrkuWJOgQs8IZZaIv2BXIa2R4Olgk',
       // expireTime: new Date(Date.now() + 3600 * 1000), // 1 hour from now
-    });
+    };
     
     return credentials;
   }
 }
 
-export = {
-  version = '1',
+const plugin: Plugin = {
+  version: '1',
   init(host: IPluginHost): void {
     // Register the credential provider to the PluginHost.
     host.registerCredentialProviderSource(new CustomCredentialProviderSource());
   }
 };
+
+export = plugin;
 ----
 
 JavaScript::
 +
 [source,javascript,subs="verbatim,attributes"]
 ----
-const { Mode, registerCredentialProviderSource, CredentialProviderSource } = require('@aws-cdk/cli-plugin-contract');
-const { Credentials } = require('@aws-sdk/client-sts');
-
 // Implement the CredentialProviderSource interface
-class CustomCredentialProviderSource extends CredentialProviderSource {
+class CustomCredentialProviderSource {
   constructor() {
-    super();
     // Friendly name for the provider, used in error messages
     this.name = 'custom-credential-provider';
   }
@@ -269,29 +268,30 @@ class CustomCredentialProviderSource extends CredentialProviderSource {
   // - SDKv3CompatibleCredentials
   async getProvider(accountId, mode) {
     // The access mode can be used to provide different credential sets
-    const readOnly = mode === Mode.ForReading;
+    const readOnly = mode === 0; // 0 indicates ForReading; 1 indicates ForWriting
     
     // Create appropriate credentials based on your authentication mechanism
-    // In this example we're using AWS SDK v3 credentials
-    const credentials = new Credentials({
+    const credentials = {
       accessKeyId: 'ASIAIOSFODNN7EXAMPLE',
       secretAccessKey: 'wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY',
       // Add sessionToken if using temporary credentials
       // sessionToken: 'AQoEXAMPLEH4aoAH0gNCAPyJxz4BlCFFxWNE1OPTgk5TthT+FvwqnKwRcOIfrRh3c/LTo6UDdyJwOOvEVPvLXCrrrUtdnniCEXAMPLE/IvU1dYUg2RVAJBanLiHb4IgRmpRV3zrkuWJOgQs8IZZaIv2BXIa2R4Olgk',
       // expireTime: new Date(Date.now() + 3600 * 1000), // 1 hour from now
-    });
+    };
     
     return credentials;
   }
 }
 
-module.exports = {
-  version = '1',
+const plugin = {
+  version: '1',
   init(host) {
     // Register the credential provider to the PluginHost.
     host.registerCredentialProviderSource(new CustomCredentialProviderSource());
   }
 };
+
+module.exports = plugin;
 ----
 ====
 
