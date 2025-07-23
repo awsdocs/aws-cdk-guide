@@ -25,7 +25,17 @@ This document outlines the process for contributing to the AWS CDK Developer Gui
 
 The contribution process follows these general steps:
 
-1. **Find or create an issue** (optional for small changes)
+### Step 1: Find something to work on
+
+1. **Find something from the CDK v2 Developer Guide website**
+   - On any page in the [AWS CDK v2 Developer Guide](https://docs.aws.amazon.com/cdk/v2/guide/home.html), you can select the **Edit this page on GitHub** link to open the source file in GitHub.
+
+2. **Find an Issue to work on**
+   - Find an open [Issue](https://github.com/awsdocs/aws-cdk-guide/issues) that you'd like to contribute to.
+
+### Step 2: Work on your contribution
+
+1. **Create an Issue (optional)**
    - For substantial changes, check if an issue already exists or create a new one.
    - For typos, minor clarifications, or small improvements, you can skip directly to creating a pull request.
 
@@ -33,6 +43,7 @@ The contribution process follows these general steps:
    - Work on your changes in your forked repository.
 
 3. **Make your changes**
+   - Author locally or on GitHub.
    - Follow the existing document style and formatting.
    - Test your changes using GitHub's preview.
 
