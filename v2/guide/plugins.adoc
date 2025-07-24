@@ -112,7 +112,7 @@ export { plugin as 'module.exports' };
 ----
 ====
 
-[IMPORTANT]
+[NOTE]
 ====
 CDK Toolkit plugins are loaded as CommonJS modules. You can build your plugin as an ECMAScript module (ESM), but have to [adhere to some constraints](https://nodejs.org/api/modules.html#loading-ecmascript-modules-using-require):
 
