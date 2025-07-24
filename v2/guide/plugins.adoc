@@ -112,6 +112,15 @@ export { plugin as 'module.exports' };
 ----
 ====
 
+[IMPORTANT]
+====
+CDK Toolkit plugins are loaded as CommonJS modules. You can build your plugin as an ECMAScript module (ESM), but have to [adhere to some constraints](https://nodejs.org/api/modules.html#loading-ecmascript-modules-using-require):
+
+* The module cannot contain top-level `await`, or import any modules that contain top-level `await`
+* The module must ensure compatibility by exporting the plugin object under the `module.exports` export name: `export { plugin as 'module.exports' }`
+
+====
+
 [#plugins-load-cli]
 == How to load plugins with the CDK CLI
 
@@ -214,7 +223,7 @@ To implement a custom credential provider, create a class that implements the re
 
 ====
 [role="tablist"]
-TypeScript::
+TypeScript CommonJS::
 +
 [source,typescript,subs="verbatim,attributes"]
 ----
@@ -273,7 +282,66 @@ const plugin: Plugin = {
 export = plugin;
 ----
 
-JavaScript::
+TypeScript ESM::
++
+[source,typescript,subs="verbatim,attributes"]
+----
+import type { CredentialProviderSource, ForReading, ForWriting, IPluginHost, Plugin, PluginProviderResult, SDKv3CompatibleCredentials } from '@aws-cdk/cli-plugin-contract';
+
+class CustomCredentialProviderSource implements CredentialProviderSource {
+  // Friendly name for the provider, used in error messages
+  public readonly name: string = 'custom-credential-provider';
+  
+  // Check if this provider is available on the current system
+  public async isAvailable(): Promise<boolean> {
+    // Return false if the plugin cannot be used
+    // For example, if it depends on files not present on the host
+    return true;
+  }
+  
+  // Check if this provider can provide credentials for a specific account
+  public async canProvideCredentials(accountId: string): Promise<boolean> {
+    // Return false if the plugin cannot provide credentials for this account
+    // For example, if the account is not managed by this credential system
+    return true;
+    // You can use patterns to filter specific accounts
+    // return accountId.startsWith('123456');
+  }
+  
+  // Get credentials for the specified account and access mode
+  // Returns PluginProviderResult which can be one of:
+  // - SDKv2CompatibleCredentials (AWS SDK v2 entered maintenance on Sept 8, 2024 and will reach end-of-life on Sept 8, 2025)
+  // - SDKv3CompatibleCredentialProvider 
+  // - SDKv3CompatibleCredentials
+  public async getProvider(accountId: string, mode: ForReading | ForWriting): Promise<PluginProviderResult> {
+    // The access mode can be used to provide different credential sets
+    const readOnly = mode === 0 satisfies ForReading;
+    
+    // Create appropriate credentials based on your authentication mechanism
+    const credentials: SDKv3CompatibleCredentials = {
+      accessKeyId: 'AKIAIOSFODNN7EXAMPLE',
+      secretAccessKey: 'wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY',
+      // Add sessionToken if using temporary credentials
+      // sessionToken: 'AQoEXAMPLEH4aoAH0gNCAPyJxz4BlCFFxWNE1OPTgk5TthT+FvwqnKwRcOIfrRh3c/LTo6UDdyJwOOvEVPvLXCrrrUtdnniCEXAMPLE/IvU1dYUg2RVAJBanLiHb4IgRmpRV3zrkuWJOgQs8IZZaIv2BXIa2R4Olgk',
+      // expireTime: new Date(Date.now() + 3600 * 1000), // 1 hour from now
+    };
+    
+    return credentials;
+  }
+}
+
+const plugin: Plugin = {
+  version: '1',
+  init(host: IPluginHost): void {
+    // Register the credential provider to the PluginHost.
+    host.registerCredentialProviderSource(new CustomCredentialProviderSource());
+  }
+};
+
+export { plugin as 'module.exports' };
+----
+
+JavaScript CommonJS::
 +
 [source,javascript,subs="verbatim,attributes"]
 ----
@@ -331,6 +399,66 @@ const plugin = {
 };
 
 module.exports = plugin;
+----
+
+JavaScript ESM::
++
+[source,javascript,subs="verbatim,attributes"]
+----
+// Implement the CredentialProviderSource interface
+class CustomCredentialProviderSource {
+  constructor() {
+    // Friendly name for the provider, used in error messages
+    this.name = 'custom-credential-provider';
+  }
+  
+  // Check if this provider is available on the current system
+  async isAvailable() {
+    // Return false if the plugin cannot be used
+    // For example, if it depends on files not present on the host
+    return true;
+  }
+  
+  // Check if this provider can provide credentials for a specific account
+  async canProvideCredentials(accountId) {
+    // Return false if the plugin cannot provide credentials for this account
+    // For example, if the account is not managed by this credential system
+    return true;
+    // You can use patterns to filter specific accounts
+    // return accountId.startsWith('123456');
+  }
+  
+  // Get credentials for the specified account and access mode
+  // Returns PluginProviderResult which can be one of:
+  // - SDKv2CompatibleCredentials (AWS SDK v2 entered maintenance on Sept 8, 2024 and will reach end-of-life on Sept 8, 2025)
+  // - SDKv3CompatibleCredentialProvider 
+  // - SDKv3CompatibleCredentials
+  async getProvider(accountId, mode) {
+    // The access mode can be used to provide different credential sets
+    const readOnly = mode === 0; // 0 indicates ForReading; 1 indicates ForWriting
+    
+    // Create appropriate credentials based on your authentication mechanism
+    const credentials = {
+      accessKeyId: 'ASIAIOSFODNN7EXAMPLE',
+      secretAccessKey: 'wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY',
+      // Add sessionToken if using temporary credentials
+      // sessionToken: 'AQoEXAMPLEH4aoAH0gNCAPyJxz4BlCFFxWNE1OPTgk5TthT+FvwqnKwRcOIfrRh3c/LTo6UDdyJwOOvEVPvLXCrrrUtdnniCEXAMPLE/IvU1dYUg2RVAJBanLiHb4IgRmpRV3zrkuWJOgQs8IZZaIv2BXIa2R4Olgk',
+      // expireTime: new Date(Date.now() + 3600 * 1000), // 1 hour from now
+    };
+    
+    return credentials;
+  }
+}
+
+const plugin = {
+  version: '1',
+  init(host) {
+    // Register the credential provider to the PluginHost.
+    host.registerCredentialProviderSource(new CustomCredentialProviderSource());
+  }
+};
+
+export { plugin as 'module.exports' };
 ----
 ====
 
