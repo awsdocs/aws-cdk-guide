@@ -33,7 +33,7 @@ To create a CDK Toolkit plugin, you first create a Node.js module, authored in T
 
 ====
 [role="tablist"]
-TypeScript::
+TypeScript CommonJS::
 +
 [source,typescript,subs="verbatim,attributes"]
 ----
@@ -54,7 +54,28 @@ const plugin: Plugin = {
 export = plugin;
 ----
 
-JavaScript::
+TypeScript ESM::
++
+[source,typescript,subs="verbatim,attributes"]
+----
+// Example plugin structure
+import type { IPluginHost, Plugin } from '@aws-cdk/cli-plugin-contract';
+
+const plugin: Plugin = {
+    // Version of the plugin infrastructure (currently always '1')
+    version: '1',
+    
+    // Initialization function called when the plugin is loaded
+    init(host: IPluginHost): void {
+        // Register your plugin functionality with the host
+        // For example, register a custom credential provider
+    }
+};
+
+export { plugin as 'module.exports' };
+----
+
+JavaScript CommonJS::
 +
 [source,javascript,subs="verbatim,attributes"]
 ----
@@ -70,6 +91,24 @@ const plugin = {
 };
 
 module.exports = plugin;
+----
+
+JavaScript ESM::
++
+[source,javascript,subs="verbatim,attributes"]
+----
+const plugin = {
+    // Version of the plugin infrastructure (currently always '1')
+    version: '1',
+    
+    // Initialization function called when the plugin is loaded
+    init(host) {
+        // Register your plugin functionality with the host
+        // For example, register a custom credential provider
+    }
+};
+
+export { plugin as 'module.exports' };
 ----
 ====
 
