@@ -33,7 +33,9 @@ To create a CDK Toolkit plugin, you first create a Node.js module, authored in T
 
 ====
 [role="tablist"]
-TypeScript CommonJS::
+TypeScript::
++
+*CommonJS*:::
 +
 [source,typescript,subs="verbatim,attributes"]
 ----
@@ -53,8 +55,8 @@ const plugin: Plugin = {
 
 export = plugin;
 ----
-
-TypeScript ESM::
++
+*ESM*:::
 +
 [source,typescript,subs="verbatim,attributes"]
 ----
@@ -75,7 +77,9 @@ const plugin: Plugin = {
 export { plugin as 'module.exports' };
 ----
 
-JavaScript CommonJS::
+JavaScript::
++
+*CommonJS*:::
 +
 [source,javascript,subs="verbatim,attributes"]
 ----
@@ -92,8 +96,8 @@ const plugin = {
 
 module.exports = plugin;
 ----
-
-JavaScript ESM::
++
+*ESM*:::
 +
 [source,javascript,subs="verbatim,attributes"]
 ----
@@ -114,11 +118,12 @@ export { plugin as 'module.exports' };
 
 [NOTE]
 ====
-CDK Toolkit plugins are loaded as CommonJS modules. You can build your plugin as an ECMAScript module (ESM), but have to [adhere to some constraints](https://nodejs.org/api/modules.html#loading-ecmascript-modules-using-require):
+CDK Toolkit plugins are loaded as CommonJS modules. You can build your plugin as an ECMAScript module (ESM), but have to link:https://nodejs.org/api/modules.html#loading-ecmascript-modules-using-require[adhere to some constraints]:
 
-* The module cannot contain top-level `await`, or import any modules that contain top-level `await`
-* The module must ensure compatibility by exporting the plugin object under the `module.exports` export name: `export { plugin as 'module.exports' }`
-
+--
+* The module cannot contain top-level `await`, or import any modules that contain top-level `await`.
+* The module must ensure compatibility by exporting the plugin object under the `module.exports` export name: `export { plugin as 'module.exports' }`.
+--
 ====
 
 [#plugins-load-cli]
@@ -223,7 +228,9 @@ To implement a custom credential provider, create a class that implements the re
 
 ====
 [role="tablist"]
-TypeScript CommonJS::
+TypeScript::
++
+*CommonJS*:::
 +
 [source,typescript,subs="verbatim,attributes"]
 ----
@@ -281,8 +288,8 @@ const plugin: Plugin = {
 
 export = plugin;
 ----
-
-TypeScript ESM::
++
+*ESM*:::
 +
 [source,typescript,subs="verbatim,attributes"]
 ----
@@ -341,7 +348,9 @@ const plugin: Plugin = {
 export { plugin as 'module.exports' };
 ----
 
-JavaScript CommonJS::
+JavaScript::
++
+*CommonJS*:::
 +
 [source,javascript,subs="verbatim,attributes"]
 ----
@@ -400,8 +409,8 @@ const plugin = {
 
 module.exports = plugin;
 ----
-
-JavaScript ESM::
++
+*ESM*:::
 +
 [source,javascript,subs="verbatim,attributes"]
 ----
