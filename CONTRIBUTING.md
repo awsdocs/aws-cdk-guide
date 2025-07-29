@@ -60,6 +60,11 @@ We recommend creating or finding an issue first for:
 - Significant reorganization of existing content.
 - Any change that might benefit from discussion before implementation.
 
+When creating a new issue, you'll find these templates to help structure your feedback:
+
+- **Documentation Bug Report**: Use this template to report incorrect, unclear, or missing information.
+- **Documentation Improvement Request**: Use this template to suggest new content or enhancements.
+
 For simple changes like typos, grammatical errors, or minor clarifications, you can directly submit a pull request without an issue.
 
 ## Getting started
@@ -135,6 +140,8 @@ When making changes to the documentation:
 - **Scope of changes**: Mention which files were modified and what kind of changes were made.
 
 ### Pull Request review process
+
+When you create a pull request, a template will automatically be loaded with sections to help you provide all the necessary information about your changes. Fill out all relevant sections to help reviewers understand your contribution.
 
 After submitting your PR:
 

@@ -1,10 +1,17 @@
 include::attributes.txt[]
 
 // Attributes
+
 [.topic]
 [#work-with-cdk-csharp]
 = Working with the {aws} CDK in C#
 :info_titleabbrev: In C#
+:keywords: {aws} CDK, {aws} Cloud Development Kit ({aws} CDK), csharp, c#, infrastructure as code, iac, .NET
+
+[abstract]
+--
++++.NET+++ is a fully-supported client language for the {aws} CDK and is considered stable. C# is the main .NET language for which we provide examples and support. You can choose to write {aws} CDK applications in other .NET languages, such as Visual Basic or F#, but {aws} offers limited support for using these languages with the CDK.
+--
 
 // Content start
 
@@ -216,6 +223,6 @@ string MimeType = props?.MimeType ?? "text/plain";
 ----
 
 [#csharp-running]
-== Build and run CDK appliations
+== Build and run CDK applications
 
 The {aws} CDK automatically compiles your app before running it. However, it can be useful to build your app manually to check for errors and run tests. You can do this by pressing F6 in Visual Studio or by issuing `dotnet build src` from the command line, where `src` is the directory in your project directory that contains the Visual Studio Solution (`.sln`) file.
