@@ -26,7 +26,14 @@ We suggest using https://visualstudio.microsoft.com/downloads/[Visual Studio 201
 
 To work with the {aws} CDK, you must have an {aws} account and credentials and have installed Node.js and the {aws} CDK Toolkit. See xref:getting-started[Getting started with the {aws} CDK].
 
-C# {aws} CDK applications require .NET Core v3.1 or later, available https://dotnet.microsoft.com/download/dotnet-core/3.1[here].
+C# {aws} CDK applications require .NET 8.0 or later, available https://dotnet.microsoft.com/en-us/download/dotnet[here].
+
+[NOTE]
+====
+
+Third-party language deprecation: language version is only supported until its EOL (End Of Life) shared by the vendor or community and is subject to change with prior notice.
+
+====
 
 The .NET toolchain includes `dotnet`, a command-line tool for building and running .NET applications and managing NuGet packages. Even if you work mainly in Visual Studio, this command can be useful for batch operations and for installing {aws} Construct Library packages.
 
