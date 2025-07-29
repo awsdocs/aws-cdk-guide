@@ -20,7 +20,7 @@ The {aws} CDK consists of two primary parts:
 
 * *xref:constructs[{aws} CDK Construct Library]* – A collection of pre-written modular and reusable pieces of code, called constructs, that you can use, modify, and integrate to develop your infrastructure quickly. The goal of the {aws} CDK Construct Library is to reduce the complexity required to define and integrate {aws} services together when building applications on {aws}.
 
-* *xref:cli[{aws} CDK Command Line Interface ({aws} CDK CLI)]* – A command line tool for interacting with CDK apps. Use the CDK CLI to create, manage, and deploy your {aws} CDK projects. The CDK CLI is also referred to as the CDK Toolkit.
+* {aws} CDK Toolkit - Tools that you can use to manage and interact with your CDK apps, such as performing synthesis or deployment. The CDK Toolkit consists of a command line tool (xref:ref-cli-cmd[CDK CLI]) and a programmatic library (xref:toolkit-library[CDK Toolkit Library]).
 
 The {aws} CDK supports  TypeScript,  JavaScript,  Python,  Java,  C#/.Net, and  [.noloc]`Go`. You can use any of these supported programming languages to define reusable cloud components known as  xref:constructs[constructs]. You compose these together into xref:stacks[stacks] and xref:apps[apps]. Then, you deploy your CDK applications to {aws} CloudFormation to provision or update your resources.
 
