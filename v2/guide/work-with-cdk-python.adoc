@@ -17,7 +17,7 @@ You can use any editor or IDE. Many {aws} CDK developers use https://code.visual
 
 To work with the {aws} CDK, you must have an {aws} account and credentials and have installed Node.js and the {aws} CDK Toolkit. See  xref:getting-started[Getting started with the {aws} CDK].
 
-Python {aws} CDK applications require Python 3.6 or later. If you don't already have it installed, https://www.python.org/downloads/[download a compatible version] for your operating system at https://www.python.org/[python.org]. If you run Linux, your system may have come with a compatible version, or you may install it using your distro's package manager (`yum`, `apt`, etc.). Mac users may be interested in https://brew.sh/[Homebrew], a Linux-style package manager for macOS.
+Python {aws} CDK applications require Python 3.9 or later. If you don't already have it installed, https://www.python.org/downloads/[download a compatible version] for your operating system at https://www.python.org/[python.org]. If you run Linux, your system may have come with a compatible version, or you may install it using your distro's package manager (`yum`, `apt`, etc.). Mac users may be interested in https://brew.sh/[Homebrew], a Linux-style package manager for macOS.
 
 [NOTE]
 ====
