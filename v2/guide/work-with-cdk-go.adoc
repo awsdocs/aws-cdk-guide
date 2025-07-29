@@ -20,7 +20,7 @@ This topic provides guidance when working with the {aws} CDK in [.noloc]`Go`. Se
 
 To work with the {aws} CDK, you must have an {aws} account and credentials and have installed Node.js and the {aws} CDK Toolkit. See xref:getting-started[Getting started with the {aws} CDK].
 
-The [.noloc]`Go` bindings for the {aws} CDK use the standard https://golang.org/dl/[Go toolchain], v1.18 or later. You can use the editor of your choice.
+The [.noloc]`Go` bindings for the {aws} CDK use the standard https://golang.org/dl/[Go toolchain], v1.23 or later. You can use the editor of your choice.
 
 [NOTE]
 ====
