@@ -13,13 +13,6 @@ CDK Blueprints allow organizations to standardize L2 construct configurations th
 
 // Content start
 
-[NOTE]
-====
-
-CDK Blueprints is in preview release and is subject to change.
-
-====
-
 Use {aws} CDK Blueprints to standardize and distribute L2 construct configurations across your organization. With Blueprints, you can ensure that {aws} resources are configured consistently according to your organizational standards and best practices. For example, you can automatically enable encryption for all Amazon S3 buckets, apply specific logging configurations to all {aws} Lambda functions, or enforce standard security rules for all security groups.
 
 Blueprints are powered by _property injection_, a mechanism introduced in {aws} CDK link:https://github.com/aws/aws-cdk/releases/tag/v2.196.0[v2.196.0] that allows you to modify construct properties at instantiation time. A Blueprint is a collection of property injectors, where each property injector specifies optimal configuration for a specific L2 construct. The Blueprint represents the overall best practices for your organization.
