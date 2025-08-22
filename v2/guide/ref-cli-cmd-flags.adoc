@@ -1,0 +1,239 @@
+include::attributes.txt[]
+
+// Attributes
+[.topic]
+[#ref-cli-cmd-flags]
+= `cdk flags`
+:keywords: {aws} CDK, {aws} CDK CLI, CDK Toolkit, IaC, Infrastructure as code, {aws} Cloud, {aws} CloudFormation, cdk flags, feature flags
+
+[abstract]
+--
+View and modify your feature flag configurations for the CDK CLI.
+--
+
+// Content start
+
+View and modify your feature flag configurations for the CDK CLI.
+
+Feature flags control the behavior of the CDK CLI and you can use them to enable or disable specific features. Use the `cdk flags` command to view your current feature flag configurations and modify them as needed.
+
+[WARNING]
+====
+
+The `cdk flags` command is in development for the {aws} CDK. The current features of this command are considered production-ready and safe to use. However, the scope of this command and its features are subject to change. Therefore, you must opt in by providing the `unstable=flags` option to use this command.
+
+====
+
+[#ref-cli-cmd-flags-usage]
+== Usage
+
+[source,none,subs="verbatim,attributes"]
+----
+$ cdk flags <arguments> <options>
+----
+
+[#ref-cli-cmd-flags-args]
+== Arguments
+
+[#ref-cli-cmd-flags-args-flagname]
+*FLAGNAME*::
+The name of the specific feature flag that you want to view or modify.
++
+_Type_: String
++
+_Required_: No
+
+[#ref-cli-cmd-flags-options]
+== Options
+
+For a list of global options that work with all CDK CLI commands, see xref:ref-cli-cmd-options[Global options].
+
+[#ref-cli-cmd-flags-options-set]
+`--set <BOOLEAN>`::
+Modify a feature flag configuration.
+
+[#ref-cli-cmd-flags-options-all]
+`--all <BOOLEAN>`::
+Modify or view all feature flags.
+
+[#ref-cli-cmd-flags-options-recommended]
+`--recommended <BOOLEAN>`::
+Change flags to recommended states.
+
+[#ref-cli-cmd-flags-options-default]
+`--default <BOOLEAN>`::
+Change flags to default states.
+
+[#ref-cli-cmd-flags-options-unconfigured]
+`--unconfigured <BOOLEAN>`::
+Modify unconfigured feature flags.
+
+[#ref-cli-cmd-flags-options-value]
+`--value <STRING>`::
+The value to set the feature flag configuration to.
++
+_requiresArg_: true
+
+[#ref-cli-cmd-flags-options-safe]
+`--safe <BOOLEAN>`::
+Enable all feature flags that do not impact your application.
+
+[#ref-cli-cmd-flags-options-interactive]
+`--interactive, -i <BOOLEAN>`::
+Interactive option for the flags command.
+
+[#ref-cli-cmd-flags-examples]
+== Examples
+
+[#ref-cli-cmd-flags-examples-1]
+=== View feature flag configurations
+
+Run `cdk flags` to view a report of your feature flag configurations that differ from our recommended states. Unconfigured flags are labeled with `<unset>` to indicate that the flag currently has no value. The flags are displayed in the following order:
+
+* Flags set to a value that doesn't match our recommended value
+* Flags that you haven't configured
+
+[source,bash,subs="verbatim,attributes"]
+----
+$ cdk flags --unstable=flags
+Feature Flag                           Recommended                       User
+* @aws-cdk/...                              true                         false
+* @aws-cdk/...                              true                         false
+* @aws-cdk/...                              true                         <unset>
+----
+
+You can also run `cdk flags --all` to see a report of all feature flags in the following order:
+
+* Flags set to a value that matches our recommended value
+* Flags set to a value that doesn't match our recommended value
+* Flags that you haven't configured
+
+[source,none,subs="verbatim,attributes"]
+----
+$ cdk flags --unstable=flags --all 
+Feature Flag                              Recommended                     User
+@aws-cdk/...                                true                         true
+* @aws-cdk/...                              true                         false
+* @aws-cdk/...                              true                         false
+* @aws-cdk/...                              true                         <unset>
+----
+
+[#ref-cli-cmd-flags-examples-2]
+=== Modify feature flag values
+
+To modify your feature flags interactively, run `cdk flags --interactive` (or `cdk flags -i`) to view a list of menu options.
+
+To change every feature flag to our recommended value, run `cdk flags --set --recommended --all`. This command keeps your feature flag configuration up-to-date with the latest CDK feature flag configurations. Be aware that running this command can potentially overwrite existing configured values. 
+
+[source,none,subs="verbatim,attributes"]
+----
+$ cdk flags --unstable=flags --set --recommended --all
+Feature Flag                              Recommended Value            User Value
+* @aws-cdk/...                              true                         false
+* @aws-cdk/...                              true                         false
+* @aws-cdk/...                              true                         <unset>
+  Synthesizing...
+    Resources
+    [~] AWS::S3::Bucket MyBucket
+    └─ [~] Properties
+        └─ [~] Encryption
+                ... 
+    Number of stacks with differences: 2
+  Do you want to accept these changes? (y/n) y
+  Resynthesizing...
+----
+
+If you want to preserve the state of your existing configured flags, run `cdk flags --set --recommended --unconfigured`. This option changes only the unconfigured feature flags to our recommended values.
+
+[source,none,subs="verbatim,attributes"]
+----
+$ cdk flags --unstable=flags --set --recommended --unconfigured
+Feature Flag                              Recommended Value            User Value
+* @aws-cdk/...                              true                         <unset>
+* @aws-cdk/...                              true                         <unset>
+  Synthesizing...
+    Resources
+    [~] AWS::S3::Bucket MyBucket
+    └─ [~] Properties
+        └─ [~] Encryption
+            ├─ [-] None
+            └─ [+] ServerSideEncryptionConfiguration:
+                    - ...
+            ...
+    Number of stacks with differences: 2
+  Do you want to accept these changes? (y/n) y
+  Resynthesizing...
+----
+
+If you want to ensure that any unconfigured feature flags don't interfere with your application, run the `cdk flags --set --default --unconfigured` command to change the unconfigured flags to their default values. For example, if `@aws-cdk/aws-cloudfront:defaultSecurityPolicyTLSv1.2_2021` is unconfigured, a notification displays after running `cdk synth`. However, if you set the flag to its default state (false), it will be configured, turned off, and not impact your application.
+
+[source,none,subs="verbatim,attributes"]
+----
+$ cdk flags --unstable=flags --set --default --unconfigured
+Feature Flag                              Recommended Value            User Value
+* @aws-cdk/...                              true                         <unset>
+* @aws-cdk/...                              true                         <unset>
+  Synthesizing...
+
+  Do you want to accept these changes? (y/n) y
+  Resynthesizing...
+----
+
+[#ref-cli-cmd-flags-examples-3]
+=== Inspect specific feature flags
+
+==== View more information about a flag
+
+In addition to running `cdk flags` and `cdk flags --all` to view your feature flag configuration, you can also utilize `cdk flags "FLAGNAME"` to inspect a specific feature flag and find out what the flag does. This can be helpful in cases where you want to understand a particular flag and its impact on your application.
+
+[source,none,subs="verbatim,attributes"]
+----
+$ cdk flags --unstable=flags "@aws-cdk/aws-cloudfront:defaultSecurityPolicyTLSv1.2_2021"
+    Description: Enable this feature flag to have cloudfront distributions use the security policy TLSv1.2_2021 by default.
+    Recommended Value: true
+    User Value: true
+----
+
+==== Filter flags by substring
+
+You can also run `cdk flags substring` to view all matching feature flags. If there is only one feature flag that matches that substring, specific details are displayed.
+
+[source,none,subs="verbatim,attributes"]
+----
+$ cdk flags --unstable=flags ebs
+@aws-cdk/aws-ec2:ebsDefaultGp3Volume
+    Description: When enabled, the default volume type of the EBS volume will be GP3
+    Recommended Value: true
+    User Value: true
+----
+
+If multiple flags match the substring, all matching flags are displayed in a table. If you enter multiple substrings, all matching flags that contain any of the substrings are returned.
+
+[source,none,subs="verbatim,attributes"]
+----
+$ cdk flags --unstable=flags s3 lambda
+Feature Flag                              Recommended                     User
+* @aws-cdk/s3...                            true                         false
+* @aws-cdk/lambda...                        true                         false
+* @aws-cdk/lambda...                        true                         <unset>
+----
+
+==== Modify a specific flag
+
+If you need to modify the value of a flag and want to make sure you're setting it to a correct and supported state, run `cdk flags --set "FLAGNAME" --value="state"`.
+
+[source,none,subs="verbatim,attributes"]
+----
+$ cdk flags --unstable=flags --set "@aws-cdk/aws-cloudfront:defaultSecurityPolicyTLSv1.2_2021" --value="true"
+  Synthesizing...
+    Resources
+    [~] AWS::CloudFront::Distribution MyDistribution
+    └─ [~] Properties
+        └─ [~] DefaultSecurityPolicy
+            ├─ [-] TLSv1.0
+            └─ [+] TLSv1.2_2021
+                    - ...
+    Number of stacks with differences: 2
+  Do you want to accept these changes? (y/n) y
+  Resynthesizing...   
+----

@@ -63,6 +63,10 @@ Inspect and display useful information about your local CDK project and developm
 `xref:ref-cli-cmd-drift[drift]`::
 Detect configuration drift for resources that you define, manage, and deploy using CDK.
 
+[#ref-cli-cmd-commands-flags]
+`xref:ref-cli-cmd-flags[flags]`::
+View and modify your feature flag configurations for the CDK CLI.
+
 [#ref-cli-cmd-commands-import]
 `xref:ref-cli-cmd-import[import]`::
 Use {aws} CloudFormation resource imports to import existing {aws} resources into a CDK stack.
@@ -369,6 +373,8 @@ include::ref-cli-cmd-docs.adoc[leveloffset=+1]
 include::ref-cli-cmd-doctor.adoc[leveloffset=+1]
 
 include::ref-cli-cmd-drift.adoc[leveloffset=+1]
+
+include::ref-cli-cmd-flags.adoc[leveloffset=+1]
 
 include::ref-cli-cmd-gc.adoc[leveloffset=+1]
 
