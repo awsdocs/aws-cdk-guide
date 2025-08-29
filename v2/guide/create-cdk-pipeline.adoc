@@ -9,7 +9,7 @@ include::attributes.txt[]
 [#cdk-pipeline]
 = Continuous integration and delivery (CI/CD) using CDK Pipelines
 :info_titleabbrev: Create CDK Pipelines
-
+:keywords: CDK pipelines, CI/CD, continuous deployment
 // Content start
 
 Use the  https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.pipelines-readme.html[CDK Pipelines] module from the {aws} Construct Library to configure continuous delivery of {aws} CDK applications. When you commit your CDK app's source code into {aws} CodeCommit, GitHub, or {aws} CodeStar, CDK Pipelines can automatically build, test, and deploy your new version.

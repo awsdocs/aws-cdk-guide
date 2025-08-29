@@ -1,0 +1,113 @@
+include::attributes.txt[]
+
+// Attributes
+[.topic]
+[#cli-telemetry]
+= Configure {aws} CDK CLI telemetry
+:info_titleabbrev: Configure CDK CLI telemetry 
+:keywords: {aws} CDK CLI, reporting, usage data, telemetry
+
+[abstract]
+--
+The {aws} Cloud Development Kit ({aws} CDK) will begin collecting anonymous telemetry data on CLI usage to gain insight into how the {aws} CDK CLI is being used.
+--
+
+// Content start
+
+[#telemetry-intro]
+== What is CDK CLI telemetry?
+
+[IMPORTANT]
+====
+{aws} CDK CLI telemetry has not been released. We are not collecting or reporting CDK CLI usage data. When the feature is released, this documentation will be updated with information about the data that is being collected.
+====
+
+When {aws} CDK CLI telemetry is released, customers are opted in to CLI usage data collection and reporting by default. You can opt out of CDK CLI telemetry in advance of its release using the CDK CLI, context values, or an environment variable.
+
+
+[#telemetry-opt-out]
+== How to opt out of CDK CLI telemetry
+
+To view your current telemetry status based on context values and environment variables, run the following command:
+
+[source,none,subs="verbatim,attributes"]
+----
+cdk cli-telemetry --status
+----
+[#telemetry-context]
+=== Opt out using context values
+If there are conflicts in the context values from various sources, the CDK uses the following order of precedence.
+
+. Context values specified using a CDK CLI command with the `--context` option
+. Context values in cdk.json
+. Context values in cdk.context.json
+. Context values in ~/.cdk.json
+
+*To opt out using a CDK CLI command*
+
+Run the following CDK CLI command to disable telemetry:
+
+[source,none,subs="verbatim,attributes"]
+----
+cdk cli-telemetry --disable
+----
+
+Running this command records the action to your local `cdk.context.json` file and applies to the current CDK application only.
+
+*To opt out using the application configuration file*
+
+Set `cli-telemetry: false` in an application's `cdk.json` file. This disables telemetry for the application.
+
+*To opt out using the global configuration file*
+
+Set `cli-telemetry: false` in the `~/.cdk.json` file to disable telemetry for all CDK applications on the same computer.
+
+[#telemetry-environment-variable]
+=== Opt out using an environment variable
+
+Set the `CDK_DISABLE_CLI_TELEMETRY` environment variable to `true` to disable CLI telemetry in the that environment. 
+
+[source,none,subs="verbatim,attributes"]
+----
+CDK_DISABLE_CLI_TELEMETRY=true
+----
+The value of this environment variable takes precendence over any context values that have been set. 
+
+[TIP]
+====
+Add this environment variable to your shell startup file, such as `.bashrc`, to disable telemetry every time you open a terminal window.
+====
+
+[#telemetry-optout-all]
+=== Opt out of all usage data reporting
+
+To opt out of all usage data reporting for a single command, use the `--no-version-reporting` global CLI option. This option turns off both application usage data collection and CDK CLI telemetry. 
+
+If you are currently opting out of application usage data collection using the `--no-version-reporting` option, you are automatically opted out of CDK CLI telemetry for that specific command execution, regardless of context values.
+
+[NOTE]
+====
+If you set `analyticsReporting` at the stack level, it takes precedence over the `--no-version-reporting` option for application usage data collection only.
+====
+
+[#telemetry-data-file]
+== Send telemetry data to a local file
+
+If you choose to stay opted in to CDK CLI telemetry, you can choose to send your telemetry data to a local file. You can then review the file to audit the telemetry data we are collecting.  
+
+Use the following option to send telemetry data to a local file:
+[source,none,subs="verbatim,attributes"]
+----
+ --telemetry-file='path/to/local/file'
+----
+
+[NOTE]
+====
+The `--telemetry-file` option is being released prior to the launch of the telemetry feature. It is considered production-ready and safe to use. However, you must opt in by providing the `--unstable` option. The `--unstable` flag will be ignored after launch.
+====
+
+The following command sends telemetry data to a local file:
+[source,none,subs="verbatim,attributes"]
+----
+cdk deploy --unstable=telemetry --telemetry-file='path/to/local/file'
+----

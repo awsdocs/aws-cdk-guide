@@ -1,0 +1,22 @@
+include::attributes.txt[]
+
+// Attributes
+[.topic]
+[#cdktelemetry]
+= {aws} CDK telemetry
+:keywords: {aws} CDK, IaC, Infrastructure as code, {aws}, telemetry, application usage data reporting, application usage data collection, CLI telemetry
+
+[abstract]
+--
+Learn about the library metadata and CDK CLI usage data that the {aws} CDK collects and how to opt out of data reporting.
+--
+
+// Content start
+{aws} Cloud Development Kit ({aws} CDK) applications are configured to collect and report on usage data to gain insight into how the {aws} CDK is being used. To understand the data that is collected, how it's used, and how to opt in or out of data reporting, see xref:usage-data[Configure {aws} CDK Library usage data reporting].
+
+We are not currently collecting or reporting {aws} CDK CLI usage data. However, when {aws} CDK CLI telemetry is released, customers will be opted in to CDK CLI usage data collection and reporting by default. To learn how to opt out of CDK CLI telemetry in advance of its release, see xref:cli-telemetry[Configure {aws} CDK CLI telemetry].
+
+
+include::usage-data.adoc[leveloffset=+1]
+
+include::cli-telemetry.adoc[leveloffset=+1]

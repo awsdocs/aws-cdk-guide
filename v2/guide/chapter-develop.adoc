@@ -45,7 +45,7 @@ After you create a CDK project, import and use constructs from the {aws} CDK Lib
 
 When ready to deploy your application, use the CDK  CLI `cdk deploy` command. For instructions, see xref:deploy[Deploy {aws} CDK applications].
 
-include::usage-data.adoc[leveloffset=+1]
+
 
 include::cfn-layer.adoc[leveloffset=+1]
 

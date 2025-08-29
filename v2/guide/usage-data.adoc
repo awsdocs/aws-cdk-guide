@@ -3,19 +3,19 @@ include::attributes.txt[]
 // Attributes
 [.topic]
 [[usage-data,usage-data.title]]
-= Configure {aws} CDK usage data reporting
+= Configure {aws} CDK Library usage data reporting
 :info_titleabbrev: Configure usage data reporting
-:keywords: {aws} CDK, Reporting, Usage data, Version reporting
+:keywords: {aws} CDK, Reporting, library usage data, Version reporting
 
 [abstract]
 --
-The {aws} Cloud Development Kit ({aws} CDK) collects usage data from your CDK applications to gain insight into how the {aws} CDK is being used. The CDK team uses this data to do the following:
+The {aws} Cloud Development Kit ({aws} CDK) collects library usage data from your CDK applications to gain insight into how the {aws} CDK is being used. 
 --
 
 // Content start
 
 [#usage-data-intro]
-== What is CDK usage data reporting?
+== What is CDK library usage data reporting?
 
 {aws} Cloud Development Kit ({aws} CDK) applications are configured to collect and report on usage data to gain insight into how the {aws} CDK is being used. The CDK team uses this data to do the following:
 
@@ -26,7 +26,7 @@ The {aws} Cloud Development Kit ({aws} CDK) collects usage data from your CDK ap
 [#usage-data-categories]
 == What usage data is collected?
 
-There are two categories of usage data collected by the CDK:
+There are two categories of application usage data collected by the CDK:
 
 * General usage data
 * Additional usage data
@@ -67,7 +67,7 @@ For property keys and values that you uniquely create, the entire object will be
 For more information on additional usage data collection, including its benefits and potential concerns, see the https://github.com/aws/aws-cdk/discussions/33198[CDK Collecting Additional Metadata (under feature flag) #33198] discussion in the _aws-cdk repository_.
 
 [#usage-data-how]
-== How the CDK collects usage data
+== How the CDK collects application usage data
 
 At synthesis, the CDK collects usage data from your application and stores it within the `{aws}::CDK::Metadata` resource. The following is an example of this on a synthesized {aws} CloudFormation template:
 

@@ -45,6 +45,8 @@ include::configure-access.adoc[leveloffset=+1]
 
 include::configure-env.adoc[leveloffset=+1]
 
+include::chapter-cdk-telemetry.adoc[leveloffset=+1]
+
 include::bootstrapping-env.adoc[leveloffset=+1]
 
 include::chapter-develop.adoc[leveloffset=+1]
