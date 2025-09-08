@@ -1,0 +1,113 @@
+include::attributes.txt[]
+
+// Attributes
+
+[.topic]
+[#ref-cli-cmd-refactor]
+= `cdk refactor`
+:info_titleabbrev: cdk refactor
+:keywords: {aws} CDK, {aws} CDK CLI, CDK Toolkit, IaC, Infrastructure as code, {aws} Cloud, {aws} CloudFormation, cdk acknowledge, cdk ack
+
+[abstract]
+--
+Preserve deployed resources when reorganizing and renaming resources in your CDK application.
+--
+
+// Content start
+
+[IMPORTANT]
+====
+The `cdk refactor` command is in preview release and is subject to change.
+
+You must provide the `--unstable=refactor` option when using this command. 
+====
+
+Preserve deployed resources when refactoring code in your {aws} Cloud Development Kit ({aws} CDK) application. 
+
+When you rename constructs or move them across stacks in your CDK code, CloudFormation would typically treat these as new resources, causing replacements that could lead to service interruptions or data loss. The `cdk refactor` command intelligently detects these changes and works with CloudFormation's refactoring API to preserve your resources while updating their logical IDs.
+
+With `cdk refactor`, you can:
+
+* Rename constructs for better clarity in your code base without causing resource replacement.
+* Move resources between stacks to improve organization and separation of concerns.
+* Reorganize your construct hierarchy (like grouping AWS resources under a new L3 construct) while preserving the underlying cloud resources.
+* Safely upgrade or switch between construct libraries, including third-party dependencies, without triggering resource replacement when logical IDs change between versions.
+
+This command analyzes your changes, shows you a list of resources that will change locations (stack and logical ID), and handles the complex process of updating CloudFormation resources while maintaining their identity and state.
+
+When run, the command automatically computes mappings by comparing your current code with the deployed state. It verifies that your CDK application contains exactly the same set of resources as the deployed state, differing only in their locations in the construct tree. If the command detects any resource additions, deletions, or modifications, the refactoring operation will be rejected with an error message.
+
+After mapping computation, the command shows you the proposed changes and, after user confirmation, applies the refactoring. If ambiguity is detected (where multiple valid mappings are possible), you can provide an override file with explicit mappings to resolve these cases.
+
+For an introduction, see xref:refactor[Preserve deployed resources when refactoring CDK code].
+
+[#ref-cli-cmd-refactor-usage]
+== Usage
+
+[source,none,subs="verbatim,attributes"]
+----
+$ cdk refactor <arguments> <options>
+----
+
+[#ref-cli-cmd-refactor-args]
+== Arguments
+
+[#ref-cli-cmd-refactor-args-stack-id]
+*CDK stack ID*::
+The construct ID of the CDK stack from your app to refactor.
++
+You can specify multiple stack IDs to focus the refactoring operation on those stacks. If resources are being moved between stacks, and one of those stacks isn't explicitly included, the refactor command will automatically include the additional stack in the operation.
++
+If you don't provide any stack IDs, all stacks in the app will be considered for refactoring.
++
+_Type_: String
++
+_Required_: No
+
+[#ref-cli-cmd-refactor-options]
+== Options
+
+For a list of global options that work with all CDK CLI commands, see xref:ref-cli-cmd-options[Global options].
+
+[#ref-cli-cmd-refactor-options-dry-run]
+`--dry-run`::
+Print the mapping to the console without applying it.
++
+This option is useful for validating your changes before actually performing the refactoring, especially when working with complex applications. It shows you exactly what changes would be made without modifying any resources.
+
+[#ref-cli-cmd-refactor-options-force]
+`--force`::
+Proceed with refactoring without prompting the user for confirmation.
++
+This is useful in interactive environments when you're confident about the changes. In non-interactive environments such as CI/CD pipelines, the CDK CLI automatically proceeds without prompting, so this option isn't necessary.
+
+[#ref-cli-cmd-refactor-options-help]
+`--help, -h <BOOLEAN>`::
+Show command reference information for the `cdk refactor` command.
+
+
+[#ref-cli-cmd-refactor-options-override-file]
+`--override-file <FILE>`::
+Provide overrides when the CDK CLI is unable to determine a refactoring resolution for resources. This file contains resource mappings in JSON format. The following is an example:
++
+[source,json,subs="verbatim,attributes"]
+----
+{
+    "environments": [
+        {
+            "account": "123456789012",
+            "region": "us-east-2",
+            "resources": {
+                "StackA.OldName": "StackB.NewName",
+                "StackC.Foo": "StackC.Bar"
+            }
+        }
+    ]
+}
+----
+
+[#ref-cli-cmd-refactor-options-revert]
+`--revert <FILE>`::
+Revert a previous refactor. You must provide an override file with resource mappings.
++
+This doesn't completely undo a previous refactor operation. To fully revert a refactor, you need to rollback your app to a previous state and run the refactor process again.

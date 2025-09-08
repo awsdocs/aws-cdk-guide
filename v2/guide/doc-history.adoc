@@ -23,6 +23,20 @@ The table below represents significant documentation milestones. We fix errors a
 [.updates]
 == Updates
 
+[.update,date="2025-09-08"]
+=== Add documentation for preserving deployed resources when refactoring CDK code
+
+With {aws} Cloud Development Kit ({aws} CDK) refactoring, you can refactor your CDK code, such as renaming constructs, moving resources between stacks, and reorganizing your application, while preserving your deployed resources instead of replacing them. For more information, see link:https://docs.aws.amazon.com/cdk/v2/guide/refactor.html[Preserve deployed resources when refactoring CDK code].
+
+[.update,date="2025-08-29"]
+=== Add documentation for opting out of CDK CLI telemetry
+Learn how to opt out of CDK CLI telemetry in advance of its release using the CDK CLI, context values, or an environment variable. For more information, see link:https://docs.aws.amazon.com/cdk/v2/guide/cli-telemetry.html[Configure {aws} CDK CLI telemetry].
+
+[.update,date="2025-08-20"]
+=== Add documentation for CDK feature flag configuration
+
+Use the {aws} CDK CLI `cdk flags` command to view your current feature flag configurations and modify them as needed. For more information, see link:https://docs.aws.amazon.com/cdk/v2/guide/ref-cli-cmd-flags.html[`cdk flags`].
+
 [.update,date="2025-03-27"]
 === Document bootstrap template versions v26 and v27
 

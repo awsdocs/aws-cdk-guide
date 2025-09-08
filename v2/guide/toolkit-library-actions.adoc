@@ -119,6 +119,51 @@ await toolkit.deploy(cloudAssemblySource, {
 });
 ----
 
+[#toolkit-library-actions-refactor]
+== Preserving deployed resources with refactor
+
+[IMPORTANT]
+====
+The refactor action is in preview release and is subject to change.
+====
+
+The `refactor` action preserves deployed resources when you refactor CDK code such as renaming constructs or moving them between stacks. Without this feature, these changes would cause CloudFormation to replace resources, potentially leading to service interruptions or data loss.
+
+The refactor action automatically computes mappings by comparing your current code with the deployed state. It verifies that your CDK application contains exactly the same set of resources as the deployed state, differing only in their locations in the construct tree. If it detects any resource additions, deletions, or modifications, the refactoring operation will be rejected with an error message.
+
+Once it computes the mappings, the refactor action uses CloudFormation's refactoring API to update the logical IDs of resources without replacing them. If it encounters ambiguous mappings (where multiple possible mappings exist), you can provide explicit overrides to resolve these ambiguities.
+
+[source,typescript,subs="verbatim,attributes"]
+----
+// Perform refactoring operation to preserve resources
+await toolkit.refactor(cloudAssemblySource);
+
+// With optional overrides to resolve ambiguities
+await toolkit.refactor(cloudAssemblySource, {
+  overrides: {
+    "environments": [
+      {
+        "account": "123456789012",
+        "region": "us-east-2",
+        "resources": {
+          "StackA.OldName": "StackA.NewName"
+        }
+      }
+    ]
+  }
+});
+----
+
+[IMPORTANT]
+====
+Refactoring operations must be performed separately from other actions, such as adding new resources, deleting resources, or modifying resource properties. If you need to make such changes, you should first deploy those changes separately, and then use refactoring to reorganize your resources.
+====
+
+[TIP]
+====
+For more information about CDK refactoring, including how it works and when to use it, see xref:refactor[Preserve deployed resources when refactoring CDK code].
+====
+
 [#toolkit-library-actions-rollback]
 == Reverting failed deployments with rollback
 

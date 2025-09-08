@@ -91,6 +91,10 @@ Migrate {aws} resources, {aws} CloudFormation stacks, and {aws} CloudFormation t
 `xref:ref-cli-cmd-notices[notices]`::
 Display notices for your CDK application.
 
+[#ref-cli-cmd-commands-refactor]
+`xref:ref-cli-cmd-refactor[refactor]`::
+Preserve deployed resources when refactoring code in your CDK application.
+
 [#ref-cli-cmd-commands-synthesize]
 `xref:ref-cli-cmd-synth[synthesize, synth]`::
 Synthesize a CDK app to produce a cloud assembly, including an {aws} CloudFormation template for each stack.
@@ -389,6 +393,8 @@ include::ref-cli-cmd-metadata.adoc[leveloffset=+1]
 include::ref-cli-cmd-migrate.adoc[leveloffset=+1]
 
 include::ref-cli-cmd-notices.adoc[leveloffset=+1]
+
+include::ref-cli-cmd-refactor.adoc[leveloffset=+1]
 
 include::ref-cli-cmd-rollback.adoc[leveloffset=+1]
 

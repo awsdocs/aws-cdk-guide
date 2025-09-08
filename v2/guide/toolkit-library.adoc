@@ -27,6 +27,7 @@ The CDK Toolkit Library provides programmatic interfaces for the following CDK a
 --
 * *Synthesis* - Generate {aws} CloudFormation templates and deployment artifacts.
 * *Deployment* - Provision or update infrastructure using CloudFormation templates.
+* *Refactor* - Preserve deployed resources when refactoring CDK code, such as renaming constructs or moving them between stacks.
 * *List* - View information about stacks and their dependencies.
 * *Watch* - Monitor CDK apps for local changes.
 * *Rollback* - Return stacks to their last stable state.
@@ -39,6 +40,7 @@ The CDK Toolkit Library provides programmatic interfaces for the following CDK a
 * *Control through code* - Integrate infrastructure management directly into your applications and build responsive deployment pipelines.
 * *Manage cloud assemblies* - Create, inspect, and transform your infrastructure definitions before deployment.
 * *Customize deployments* - Configure parameters, rollback behavior, and monitoring to match your requirements.
+* *Preserve resources during refactoring* - Automatically detect and preserve resources when you refactor CDK code.
 * *Handle errors precisely* - Implement structured error handling with detailed diagnostic information.
 * *Tailor communications* - Configure custom progress indicators and logging through `IoHost` implementations.
 * *Connect with {aws}* - Configure profiles, Regions, and authentication flows programmatically.
@@ -54,6 +56,7 @@ The CDK Toolkit Library is particularly valuable when you need to:
 * Integrate CDK actions into existing applications or platforms.
 * Create specialized deployment workflows with custom validation or approval steps.
 * Implement advanced infrastructure management patterns across multiple environments.
+* Automate refactoring operations to preserve resources when you refactor CDK code.
 
 [#toolkit-library-intro-example]
 == Using the CDK Toolkit Library
@@ -94,6 +97,7 @@ await toolkit.deploy(cloudAssemblySource);
 * *Integrate with systems* - Connect with CI/CD workflows, custom tools, and monitoring solutions.
 * *Control deployment details* - Configure fine-grained options for stack selection and multi-environment deployments.
 * *Enhance reliability* - Implement production-ready error handling and deployment progress tracking.
+* *Automate refactoring* - Detect and preserve resources when you refactor CDK code.
 --
 
 [#toolkit-library-intro-next]
