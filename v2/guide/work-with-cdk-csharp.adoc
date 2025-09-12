@@ -62,7 +62,7 @@ Some services' {aws} Construct Library support is in more than one module. For e
 
 The {aws} CDK's main module, which you'll need in most {aws} CDK apps, is imported in C# code as `Amazon.CDK`. Modules for the various services in the {aws} Construct Library live under `Amazon.CDK.{aws}`. For example, the Amazon S3 module's namespace is `Amazon.CDK.{aws}.S3`.
 
-We recommend writing C# `using` directives for the CDK core constructs and for each {aws} service you use in each of your C# source files. You may find it convenient to use an alias for a namespace or type to help resolve name conflicts. You can always use a type's fully-qualfiied name (including its namespace) without a `using` statement.
+We recommend writing C# `using` directives for the CDK core constructs and for each {aws} service you use in each of your C# source files. You may find it convenient to use an alias for a namespace or type to help resolve name conflicts. You can always use a type's fully-qualified name (including its namespace) without a `using` statement.
 
 [#work-with-cdk-csharp-dependencies]
 == Managing dependencies in C#

@@ -28,7 +28,7 @@ If your app contains multiple stacks, `cdk synth` will synthesize the cloud asse
 
 [source,none,subs="verbatim,attributes"]
 ----
-$ cdk synthesize <arguments> <options>
+cdk synthesize <arguments> <options>
 ----
 
 [#ref-cli-cmd-synth-args]
@@ -82,7 +82,7 @@ _Default value_: `true`
 == Examples
 
 [#ref-cli-cmd-synth-examples-1]
-=== Synthesize the cloud assembly for a CDK stack with logial ID MyStackName and output the CloudFormation template to stdout
+=== Synthesize the cloud assembly for a CDK stack with logical ID MyStackName and output the CloudFormation template to stdout
 
 [source,none,subs="verbatim,attributes"]
 ----

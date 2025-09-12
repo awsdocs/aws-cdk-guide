@@ -255,7 +255,7 @@ func NewMyEcsConstructStack(scope constructs.Construct, id string, props *MyEcsC
 ----
 ====
 
-This class produces an {aws} CloudFormation link:https://github.com/awsdocs/aws-cdk-guide/blob/main/doc_source/my_ecs_construct-stack.yaml[template of more than 500 lines]. Deploying the {aws} CDK app produces more than 50 resources of the following types:
+This class produces an {aws} CloudFormation template of more than 500 lines. Deploying the {aws} CDK app produces more than 50 resources of the following types:
 
 * link:https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-ec2-eip.html[`{aws}::EC2::EIP`]
 * link:https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-ec2-internetgateway.html[`{aws}::EC2::InternetGateway`]

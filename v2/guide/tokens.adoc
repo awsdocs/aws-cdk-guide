@@ -44,7 +44,7 @@ export class CdkDemoAppStack extends cdk.Stack {
     const myBucketName = myBucket.bucketName;
     
     // Print the current value for the S3 bucket name at synthesis
-    console.log("myBucketName: " + bucketName);
+    console.log("myBucketName: " + myBucketName);
   }
 }
 ----
