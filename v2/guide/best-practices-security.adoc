@@ -52,7 +52,7 @@ To configure the IAM identities in your {aws} account with permission to assume 
 [source,json,subs="verbatim,attributes"]
 ----
 {
-  "Version": "2012-10-17",
+  "Version": "2012-10-17",&TCX5-2025-waiver;
   "Statement": [{
     "Sid": "AssumeCDKRoles",
     "Effect": "Allow",

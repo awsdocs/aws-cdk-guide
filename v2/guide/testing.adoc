@@ -869,7 +869,7 @@ TypeScript::
       "{aws}::IAM::Role",
       Match.objectEquals({
         AssumeRolePolicyDocument: {
-          Version: "2012-10-17",
+          Version: "2012-10-17",&TCX5-2025-waiver;
           Statement: [
             {
               Action: "sts:AssumeRole",
@@ -898,7 +898,7 @@ JavaScript::
       "{aws}::IAM::Role",
       Match.objectEquals({
         AssumeRolePolicyDocument: {
-          Version: "2012-10-17",
+          Version: "2012-10-17",&TCX5-2025-waiver;
           Statement: [
             {
               Action: "sts:AssumeRole",
@@ -930,7 +930,7 @@ from aws_cdk.assertions import Match
         Match.object_equals(
             {
                 "AssumeRolePolicyDocument": {
-                    "Version": "2012-10-17",
+                    "Version": "2012-10-17",&TCX5-2025-waiver;
                     "Statement": [
                         {
                             "Action": "sts:AssumeRole",
@@ -962,7 +962,7 @@ Java::
         // Fully assert on the state machine's IAM role with matchers.
         template.hasResourceProperties("{aws}::IAM::Role", Match.objectEquals(
                 Collections.singletonMap("AssumeRolePolicyDocument", Map.of(
-                        "Version", "2012-10-17",
+                        "Version", "2012-10-17",&TCX5-2025-waiver;
                         "Statement", Collections.singletonList(Map.of(
                                 "Action", "sts:AssumeRole",
                                 "Effect", "Allow",
@@ -988,11 +988,11 @@ C#::
             {
                 { "AssumeRolePolicyDocument", new ObjectDict
                     {
-                        { "Version", "2012-10-17" },
+                        { "Version", "2012-10-17"&TCX5-2025-waiver; },
                         { "Action", "sts:AssumeRole" },
                         { "Principal", new ObjectDict
                             {
-                                { "Version", "2012-10-17" },
+                                { "Version", "2012-10-17"&TCX5-2025-waiver; },
                                 { "Statement", new object[]
                                     {
                                         new ObjectDict {
