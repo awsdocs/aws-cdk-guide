@@ -8,7 +8,6 @@ include::attributes.txt[]
 :info_abstract: Get started with the {aws} Cloud Development Kit ({aws} CDK) by using the {aws} CDK Command Line Interface ({aws} CDK CLI) to develop your first \
 				CDK app, bootstrap your {aws} environment, and deploy your application on {aws}.
 :keywords: {aws} CDK, {aws} Cloud Development Kit ({aws} CDK), CDK app, {aws}, {aws} CloudFormation, Infrastructure as code, IaC
-:tcx5-2025-waiver: &#x09;&#x09;&#x20;&#x09;&#x20;&#x09;&#x20;
 
 [abstract]
 --

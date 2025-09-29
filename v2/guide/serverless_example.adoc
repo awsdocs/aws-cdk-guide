@@ -10,7 +10,6 @@ include::attributes.txt[]
 = Tutorial: Create a serverless Hello World application
 :info_titleabbrev: Tutorial: Serverless Hello World application
 :info_abstract: In this tutorial, you use the {aws} CDK to create a simple serverless Hello World application that implements a basic API backend.
-:tcx5-2025-waiver: &#x09;&#x09;&#x20;&#x09;&#x20;&#x09;&#x20;
 
 [abstract]
 --

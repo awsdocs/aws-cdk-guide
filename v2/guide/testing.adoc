@@ -6,7 +6,6 @@ include::attributes.txt[]
 [.topic]
 [#testing]
 = Test {aws} CDK applications
-:tcx5-2025-waiver: &#x09;&#x09;&#x20;&#x09;&#x20;&#x09;&#x20;
 
 // Content start
 

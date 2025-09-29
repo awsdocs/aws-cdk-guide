@@ -6,7 +6,6 @@ include::attributes.txt[]
 [[best-practices-security,best-practices-security.title]]
 = {aws} CDK security best practices
 :info_titleabbrev: Security
-:tcx5-2025-waiver: &#x09;&#x09;&#x20;&#x09;&#x20;&#x09;&#x20;
 :keywords: {aws} CDK, IAM, security, permissions, infrastructure, {aws} CloudFormation, {aws} CDK deployments
 
 [abstract]

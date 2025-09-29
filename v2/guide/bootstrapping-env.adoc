@@ -5,7 +5,6 @@ include::attributes.txt[]
 [#bootstrapping-env]
 = Bootstrap your environment for use with the {aws} CDK
 :info_titleabbrev: Bootstrap your environment
-:tcx5-2025-waiver: &#x09;&#x09;&#x20;&#x09;&#x20;&#x09;&#x20;
 :keywords: {aws} CDK, {aws} Cloud Development Kit ({aws} CDK), {aws} account, {aws} Region, Bootstrapping, Bootstrap, Environment
 
 [abstract]
