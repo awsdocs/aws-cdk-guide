@@ -10,6 +10,7 @@ include::attributes.txt[]
 = Tutorial: Create a serverless Hello World application
 :info_titleabbrev: Tutorial: Serverless Hello World application
 :info_abstract: In this tutorial, you use the {aws} CDK to create a simple serverless Hello World application that implements a basic API backend.
+:tcx5-2025-waiver: &#x09;&#x09;&#x20;&#x09;&#x20;&#x09;&#x20;
 
 [abstract]
 --
@@ -1191,7 +1192,7 @@ Resources:
             Effect: Allow
             Principal:
               Service: lambda.amazonaws.com
-        Version: "2012-10-17"&TCX5-2025-waiver;
+        Version: "2012-10-17"{tcx5-2025-waiver}
       ManagedPolicyArns:
         - Fn::Join:
             - ""
