@@ -1176,7 +1176,7 @@ Resources:
             Effect: Allow
             Principal:
               Service: lambda.amazonaws.com
-        Version: "2012-10-17"
+        Version: "2012-10-17"{tcx5-2025-waiver}
       ManagedPolicyArns:
         - Fn::Join:
             - ""

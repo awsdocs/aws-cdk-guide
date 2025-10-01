@@ -257,7 +257,7 @@ When bootstrapping an {aws} environment, the IAM identity performing the bootstr
 [source,json,subs="verbatim,attributes"]
 ----
 {
-    "Version": "2012-10-17",
+    "Version": "2012-10-17",{tcx5-2025-waiver}
     "Statement": [
         {
             "Effect": "Allow",
