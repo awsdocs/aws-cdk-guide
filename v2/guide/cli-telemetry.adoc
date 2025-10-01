@@ -65,7 +65,7 @@ Set `cli-telemetry: false` in the `~/.cdk.json` file to disable telemetry for al
 [#telemetry-environment-variable]
 === Opt out using an environment variable
 
-Set the `CDK_DISABLE_CLI_TELEMETRY` environment variable to `true` to disable CLI telemetry in the that environment. 
+Set the `CDK_DISABLE_CLI_TELEMETRY` environment variable to `true` to disable CLI telemetry in that environment. 
 
 [source,none,subs="verbatim,attributes"]
 ----
