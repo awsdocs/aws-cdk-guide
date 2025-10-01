@@ -144,6 +144,41 @@ The CDK provides variadic helper functions such as `jsii.Strings` for building s
 jsii.Strings("One", "Two", "Three")
 ----
 
+[#go-any-slice]
+=== Working with any slice
+
+Certain constructs expect properties that are a list of multiple types (union types in TypeScript). In [.noloc]`Go`, these are as a slice of any (`*[]any`). The `any` ensures that the compiler will allow the assignment of different types there. Refer to the documentation for the `https://pkg.go.dev/github.com/aws/aws-cdk-go/awscdk/v2[{aws} CDK Go package]` to find out what the allowed types are.
+
+To work with such properties, use the helper functions provided by `jsii` to create slices of any from different types:
+
+* `jsii.AnySlice`
+* `jsii.AnyStrings`
+* `jsii.AnyNumbers`
+
+For example:
+
+[source,go,subs="verbatim,attributes"]
+----
+func Arns() *[]*string {
+a := "arn:aws:s3:::bucket1"
+b := "arn:aws:s3:::bucket2"
+return &[]*string{&a, &b}
+}
+
+awsiam.NewCfnUser(stack, jsii.String("User"), &awsiam.CfnUserProps{
+	ManagedPolicyArns: jsii.AnySlice(Arns())
+  // or
+	ManagedPolicyArns: jsii.AnyStrings("arn:aws:s3:::bucket1", "arn:aws:s3:::bucket2")
+  // or
+  ManagedPolicyArns: &[]interface{}{
+    jsii.String("arn:aws:s3:::bucket1"),
+    jsii.String("arn:aws:s3:::bucket2"),
+  }
+})
+----
+
+This approach ensures that your slices are correctly interpreted by the CDK, avoiding deserialization errors when deploying or synthesizing your stacks.
+
 [#go-writing-constructs]
 === Developing custom constructs
 
@@ -157,3 +192,14 @@ If you are simply changing some default values on an existing construct or addin
 The {aws} CDK automatically compiles your app before running it. However, it can be useful to build your app manually to check for errors and to run tests. You can do this by issuing  `go build` at a command prompt while in your project's root directory.
 
 Run any tests you've written by running `go test` at a command prompt.
+
+[#go-troubleshooting]
+== Troubleshooting
+
+If you encounter a compiler error like the following, it means that string slices were passed directly to a property expecting a slice of any.
+
+[source,none]
+----
+Cannot use 'jsii.Strings("arn:aws:s3:::bucket1", "arn:aws:s3:::bucket2")' (type *[]*string) as the type *[]interface{}
+----
+To resolve this error, replace `jsii.Strings()` with `jsii.AnyStrings()`. See this `https://github.com/aws/aws-cdk/issues/35630[CDK GitHub issue]` for more context and additional solutions.
