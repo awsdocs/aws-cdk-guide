@@ -147,7 +147,7 @@ jsii.Strings("One", "Two", "Three")
 [#go-any-slice]
 === Working with any slice
 
-Certain constructs expect properties that are a list of multiple types (union types in TypeScript). In [.noloc]`Go`, these are as a slice of any (`*[]any`). The `any` ensures that the compiler will allow the assignment of different types there. Refer to the documentation to find out what the allowed types are.
+Certain constructs expect properties that are a list of multiple types (union types in TypeScript). In [.noloc]`Go`, these are as a slice of any (`*[]any`). The `any` ensures that the compiler will allow the assignment of different types there. Refer to the documentation for the `https://pkg.go.dev/github.com/aws/aws-cdk-go/awscdk/v2[{aws} CDK Go package]` to find out what the allowed types are.
 
 To work with such properties, use the helper functions provided by `jsii` to create slices of any from different types:
 
@@ -196,10 +196,10 @@ Run any tests you've written by running `go test` at a command prompt.
 [#go-troubleshooting]
 == Troubleshooting
 
-If you encounter a compiler error like the following:
+If you encounter a compiler error like the following, it means that string slices were passed directly to a property expecting a slice of any.
 
 [source,none]
 ----
 Cannot use 'jsii.Strings("arn:aws:s3:::bucket1", "arn:aws:s3:::bucket2")' (type *[]*string) as the type *[]interface{}
 ----
-…it means string slices were passed directly to a property expecting a slice of any. To solve this, replace `jsii.Strings()` with `jsii.AnyStrings()`. Refer to `https://github.com/aws/aws-cdk/issues/35630[this GitHub issue]` for more context and additional solutions.
+To resolve this error, replace `jsii.Strings()` with `jsii.AnyStrings()`. See this `https://github.com/aws/aws-cdk/issues/35630[CDK GitHub issue]` for more context and additional solutions.
