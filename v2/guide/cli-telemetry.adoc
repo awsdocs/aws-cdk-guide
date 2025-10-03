@@ -60,7 +60,14 @@ Set `cli-telemetry: false` in an application's `cdk.json` file. This disables te
 
 *To opt out using the global configuration file*
 
-Set `cli-telemetry: false` in the `~/.cdk.json` file to disable telemetry for all CDK applications on the same computer.
+Set `cli-telemetry: false` in the `~/.cdk.json` file to disable telemetry for all CDK applications on the same computer. You must specify this setting inside a context element as follows:
+----
+{
+  "context": { 
+    "cli-telemetry": false
+  }
+}
+----
 
 [#telemetry-environment-variable]
 === Opt out using an environment variable
