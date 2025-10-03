@@ -17,18 +17,18 @@ This topic provides reference information on how the {aws} Cloud Development Kit
 
 This topic provides reference information on how the {aws} Cloud Development Kit ({aws} CDK) handles versioning.
 
-Version numbers consist of three numeric version parts: _major_._minor_._patch_, and strictly adhere to the https://semver.org[semantic versioning] model. This means that breaking changes to stable APIs are limited to major releases.
+Version numbers consist of three numeric version parts: _major_._minor_._patch_, and broadly follow https://semver.org[semantic versioning] principles with a few caveats as documented below. This means that breaking changes to APIs we consider stable are limited to major releases.
 
-Minor and patch releases are backward compatible. The code written in a previous version with the same major version can be upgraded to a newer version within the same major version. It will also continue to build and run, producing the same output.
+Minor and patch releases are backward compatible. The code written in a previous version with the same major version can be upgraded to a newer version within the same major version. It will continue to build and run, producing a functionally equivalent result. For some advanced use cases, small changes to your code will be required as noted below.
 
 [#cdk-toolkit-versioning]
-== {aws} CDK CLI compatibility
+== {aws} CDK Toolkit compatibility
 
-Each version of the main {aws} CDK library (`aws-cdk-lib`) is compatible with the {aws} CDK CLI (`aws-cdk-cli`) version that was current at the time of the CDK library's release. It is also compatible with any newer version of the CDK CLI. Each version of the CDK library maintains this compatibility until the library's _End of Life_ date. Therefore, as long as you're using a supported CDK library version, it is always safe to upgrade your CDK CLI version.
+Each version of the main {aws} Construct Library (`aws-cdk-lib`) is compatible with the {aws} CDK Toolkit CLI (`aws-cdk-cli`) and Toolkit Library (`@aws-cdk/toolkit-lib`) version that was current at the time of the {aws} Construct Library's release. It is also compatible with any newer version of the {aws} CDK Toolkit. Each version of the {aws} Construct Library maintains this compatibility until the library's _End of Life_ date. Therefore, as long as you're using a supported {aws} Construct Library version, it is always safe to upgrade your {aws} CDK Toolkit version.
 
-Each version of the CDK library may also work with CDK CLI versions older than the version that was current at the time of the CDK library's release. However, this is not guaranteed. Compatibility depends on the CDK library's cloud assembly schema version. The {aws} CDK generates a cloud assembly during synthesis and the CDK  CLI consumes it for deployment. The schema that defines the format of the cloud assembly is strictly specified and versioned. Therefore, an older version of the CDK  CLI would need to support the cloud assembly schema version of the CDK library for them to be compatible.
+Each version of the {aws} Construct Library may also work with {aws} CDK Toolkit versions older than the version that was current at the time of the {aws} Construct Library's release. However, this is not guaranteed. Compatibility depends on the {aws} Construct Library's cloud assembly schema version. The {aws} CDK generates a cloud assembly during synthesis and the {aws} CDK Toolkit consumes it for deployment. The schema that defines the format of the cloud assembly is strictly specified and versioned. Therefore, an older version of the {aws} CDK Toolkit would need to support the cloud assembly schema version of the {aws} Construct Library for them to be compatible.
 
-When the cloud assembly version required by the CDK library is not compatible with the version supported by the CDK CLI, you receive an error message like the following:
+When the cloud assembly version required by the {aws} Construct Library is not compatible with the version supported by the {aws} CDK Toolkit, you receive an error message like the following:
 
 [source,none,subs="verbatim,attributes"]
 ----
@@ -36,7 +36,7 @@ Cloud assembly schema version mismatch: Maximum schema version supported is 3.0.
     Please upgrade your CLI in order to interact with this app.
 ----
 
-To resolve this error, update the CDK  CLI to a version compatible with the required cloud assembly version, or to the latest available version. The alternative (downgrading the construct library modules your app uses) is generally not recommended.
+To resolve this error, update the {aws} CDK Toolkit to a version compatible with the required cloud assembly version, or to the latest available version. The alternative (downgrading the {aws} Construct Library modules your app uses) is generally not recommended.
 
 [NOTE]
 ====
@@ -50,11 +50,29 @@ For more information on the exact combinations of versions that work together, s
 
 The modules in the {aws} Construct Library move through various stages as they are developed from concept to mature API. Different stages offer varying degrees of API stability in subsequent versions of the {aws} CDK.
 
-APIs in the main {aws} CDK library, `aws-cdk-lib`, are stable, and the library is fully semantically versioned. This package includes {aws} CloudFormation (L1) constructs for all {aws} services and all stable higher-level (L2 and L3) modules. (It also includes the core CDK classes like `App` and `Stack`). APIs will not be removed from this package (though they may be deprecated) until the next major release of the CDK. No individual API will ever have breaking changes. When a breaking change is required, an entirely new API will be added.
+Most APIs in the main {aws} Construct Library, `aws-cdk-lib`, are stable, and the library broadly follows semantic versioning principles. This package includes {aws} CloudFormation (L1) constructs for all {aws} services, which are auto-generated from CloudFormation resource provider schemas and may sometimes include backwards incompatible updates. It also includes higher-level (L2 and L3) modules and the core CDK classes like `App` and `Stack`, which are stable except for a few documented caveats. APIs will not be removed from this package (though they may be deprecated) until the next major release of the CDK. When a breaking change is required, an entirely new API will be added.
 
 New APIs under development for a service already incorporated in `aws-cdk-lib` are identified using a `Beta<N>` suffix, where `N` starts at 1 and is incremented with each breaking change to the new API. `Beta<N>` APIs are never removed, only deprecated, so your existing app continues to work with newer versions of ``aws-cdk-lib``. When the API is deemed stable, a new API without the `Beta<N>` suffix is added.
 
 When higher-level (L2 or L3) APIs begin to be developed for an {aws} service that previously had only L1 APIs, those APIs are initially distributed in a separate package. The name of such a package has an "Alpha" suffix, and its version matches the first version of `aws-cdk-lib` it is compatible with, with an `alpha` sub-version. When the module supports the intended use cases, its APIs are added to `aws-cdk-lib`.
+
+[#aws-construct-lib-semver]
+== What does semantic versioning mean for the AWS Construct Library?
+
+While the {aws} Construct Library broadly follows semantic versioning principles, there are some important caveats specific to our implementation. In general the {aws} Construct Library maintains stability for API consumers, but sometimes adds additional burdens to construct authors to enable the necessary evolution of the platform.
+
+* **Security impacting changes
+    **To meet our security bar, it may be required to change APIs in a backwards incompatible way or remove them completely. This prevents affected APIs from being used and forces implementations to be updated.
+* **Features are described by intent**, not implementation
+    The {aws} Construct Library does not guarantee that construct will always synthesize to the exact same CloudFormation template or use the exact same set of resources. This especially applies to L3 constructs, where typically the same goal can be achieved in different ways. We aim to minimize unexpected changes, but will favor _intent over implementation stability_.
+* **Implementing Interfaces and Abstract Classes
+    **Interfaces and abstract classes in the {aws} Construct Library are stable for *consumers*, but not for *implementors*. This means that you can safely rely on interfaces like `s3.IBucket` to provide at least the same functionality as at the time ({aws} Construct Library version) you started consuming the interface or abstract class. However from time to time, new (abstract) members will be added to interfaces and abstract classes. For anyone *implementing* them, this means they have an additional implementation burden to consider when upgrading, since the implementation wouldn't be implementing the new members yet. Strictly treating additions to interfaces and abstract classed for implementors as breaking changes would unduly limit the evolvability of the {aws} Construct Library. For most situations, implementors should prefer to extend concrete classes like `s3.Bucket`.
+* **L1 constructs, generated code and other APIs marked as `@external` stability**
+    Parts of the {aws} Construct Library are generated from data sources maintained directly by AWS Services. To keep these APIs aligned with the reality, generated code may contain backwards incompatible changes. Most of the time, these data source updates are made to correctly reflect reality and rectify incorrect representation. **Your IDE's IntelliSense will display external APIs with the `@stability — external` annotation.**
+* **Specific language bindings** can contain backwards incompatible changes in a very limited number of situations
+    These are caused by upstream type changes that are backwards compatible in other supported languages. These types changes are allowed as doing otherwise would severely limit the evolvability of the library. This is the list of all such known instances:
+    * **Golang: Changing from typed slice to any slice**
+        A list of a single type is changing to a list of multiple types (union types in TypeScript). In `Go`, these are typed as a slice of any (`*[]any`). Due to Go’s nominal typing, changing from e.g. a slice of strings `*[]*string` a slice of any requires an update to your code. See [Working with any slice](https://docs.aws.amazon.com/cdk/v2/guide/work-with-cdk-go.html#go-cdk-idioms) for strategies.
 
 [#aws-construct-lib-versioning-binding]
 == Language binding stability
