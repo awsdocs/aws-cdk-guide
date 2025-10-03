@@ -50,14 +50,14 @@ For more information on the exact combinations of versions that work together, s
 
 The modules in the {aws} Construct Library move through various stages as they are developed from concept to mature API. Different stages offer varying degrees of API stability in subsequent versions of the {aws} CDK.
 
-Most APIs in the main {aws} Construct Library, `aws-cdk-lib`, are stable, and the library broadly follows semantic versioning principles. This package includes {aws} CloudFormation (L1) constructs for all {aws} services, which are auto-generated from CloudFormation resource provider schemas and may sometimes include backwards incompatible updates. It also includes higher-level (L2 and L3) modules and the core CDK classes like `App` and `Stack`, which are stable except for a few documented caveats. APIs will not be removed from this package (though they may be deprecated) until the next major release of the CDK. When a breaking change is required, an entirely new API will be added.
+Except for scenarios where the caveats documented below apply, APIs in the main {aws} Construct Library, `aws-cdk-lib`, are stable, and the library broadly follows semantic versioning principles. This package includes {aws} CloudFormation (L1) constructs for all {aws} services, which are auto-generated from CloudFormation resource provider schemas and may sometimes include backwards incompatible updates. It also includes higher-level (L2 and L3) modules and the core CDK classes like `App` and `Stack`, which are stable. APIs will not be removed from this package (though they may be deprecated) until the next major release of the CDK. When a breaking change is required, an entirely new API will be added.
 
 New APIs under development for a service already incorporated in `aws-cdk-lib` are identified using a `Beta<N>` suffix, where `N` starts at 1 and is incremented with each breaking change to the new API. `Beta<N>` APIs are never removed, only deprecated, so your existing app continues to work with newer versions of ``aws-cdk-lib``. When the API is deemed stable, a new API without the `Beta<N>` suffix is added.
 
 When higher-level (L2 or L3) APIs begin to be developed for an {aws} service that previously had only L1 APIs, those APIs are initially distributed in a separate package. The name of such a package has an "Alpha" suffix, and its version matches the first version of `aws-cdk-lib` it is compatible with, with an `alpha` sub-version. When the module supports the intended use cases, its APIs are added to `aws-cdk-lib`.
 
 [#aws-construct-lib-semver]
-== What does semantic versioning mean for the AWS Construct Library?
+== {aws} Construct Library semantic versioning clarifications
 
 While the {aws} Construct Library broadly follows semantic versioning principles, there are some important caveats specific to our implementation. In general the {aws} Construct Library maintains stability for API consumers, but sometimes adds additional burdens to construct authors to enable the necessary evolution of the platform.
 
