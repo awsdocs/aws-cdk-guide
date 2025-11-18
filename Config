@@ -22,7 +22,7 @@ package.AWSCDKDocs = {
         3.0 = {
             ZonBookTrails = 1.0;
             
-            ZonBook = 5.0;
+            ZonBook = 5.1;
             AWSDocsSdkExamplesPublic = 1.0;
             AWSDocsChecklistCDK = 2.0;
         };
