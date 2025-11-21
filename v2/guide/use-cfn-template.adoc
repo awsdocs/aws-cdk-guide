@@ -387,35 +387,35 @@ TypeScript::
 +
 [source,javascript,subs="verbatim,attributes"]
 ----
-bucket.grantWrite(lambdaFunc);
+bucket.grants.write(lambdaFunc);
 ----
 
 JavaScript::
 +
 [source,javascript,subs="verbatim,attributes"]
 ----
-bucket.grantWrite(lambdaFunc);
+bucket.grants.write(lambdaFunc);
 ----
 
 Python::
 +
 [source,python,subs="verbatim,attributes"]
 ----
-bucket.grant_write(lambda_func)
+bucket.grants.write(lambda_func)
 ----
 
 Java::
 +
 [source,java,subs="verbatim,attributes"]
 ----
-bucket.grantWrite(lambdaFunc);
+bucket.getGrants().write(lambdaFunc);
 ----
 
 C#::
 +
 [source,csharp,subs="verbatim,attributes"]
 ----
-bucket.GrantWrite(lambdaFunc);
+bucket.Grants.Write(lambdaFunc);
 ----
 ====
 

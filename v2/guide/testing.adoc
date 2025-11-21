@@ -201,7 +201,7 @@ export class StateMachineStack extends cdk.Stack {
         STATE_MACHINE_ARN: stateMachine.stateMachineArn,
       },
     });
-    stateMachine.grantStartExecution(func);
+    stateMachine.grants.startExecution(func);
 
     const subscription = new sns_subscriptions.LambdaSubscription(func);
     for (const topic of props.topics) {
@@ -241,7 +241,7 @@ class StateMachineStack extends cdk.Stack {
         STATE_MACHINE_ARN: stateMachine.stateMachineArn,
       },
     });
-    stateMachine.grantStartExecution(func);
+    stateMachine.grants.startExecution(func);
 
     const subscription = new sns_subscriptions.LambdaSubscription(func);
     for (const topic of props.topics) {
@@ -294,7 +294,7 @@ class StateMachineStack(cdk.Stack):
                 "STATE_MACHINE_ARN": state_machine.state_machine_arn,
             },
         )
-        state_machine.grant_start_execution(func)
+        state_machine.grants.start_execution(func)
 
         subscription = sns_subscriptions.LambdaSubscription(func)
         for topic in topics:
@@ -342,7 +342,7 @@ public class StateMachineStack extends Stack {
                 .code(Code.fromAsset("./start-state-machine"))
                 .environment(Collections.singletonMap("STATE_MACHINE_ARN", stateMachine.getStateMachineArn()))
                 .build();
-        stateMachine.grantStartExecution(func);
+        stateMachine.getGrants().startExecution(func);
 
         final ITopicSubscription subscription = new LambdaSubscription(func);
         for (final Topic topic : topics) {
@@ -394,7 +394,7 @@ namespace AwsCdkAssertionSamples
                     { "STATE_MACHINE_ARN", stateMachine.StateMachineArn }
                 }
             });
-            stateMachine.GrantStartExecution(func);
+            stateMachine.Grants.StartExecution(func);
            
             foreach (Topic topic in props?.Topics ?? new Topic[0])
             {

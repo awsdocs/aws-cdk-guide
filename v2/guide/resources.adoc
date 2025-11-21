@@ -861,7 +861,7 @@ TypeScript::
 +
 [source,javascript,subs="verbatim,attributes"]
 ----
-if (bucket.grantReadWrite(func).success) {
+if (bucket.grants.readWrite(func).success) {
   // ...
 }
 ----
@@ -870,7 +870,7 @@ JavaScript::
 +
 [source,javascript,subs="verbatim,attributes"]
 ----
-if ( bucket.grantReadWrite(func).success) {
+if ( bucket.grants.readWrite(func).success) {
   // ...
 }
 ----
@@ -879,7 +879,7 @@ Python::
 +
 [source,python,subs="verbatim,attributes"]
 ----
-if bucket.grant_read_write(func).success:
+if bucket.grants.read_write(func).success:
     # ...
 ----
 
@@ -887,7 +887,7 @@ Java::
 +
 [source,java,subs="verbatim,attributes"]
 ----
-if (bucket.grantReadWrite(func).getSuccess()) {
+if (bucket.getGrants().readWrite(func).getSuccess()) {
     // ...
 }
 ----
@@ -896,7 +896,7 @@ C#::
 +
 [source,csharp,subs="verbatim,attributes"]
 ----
-if (bucket.GrantReadWrite(func).Success)
+if (bucket.Grants.ReadWrite(func).Success)
 { 
     // ...
 }
@@ -906,7 +906,7 @@ Go::
 +
 [source,go,subs="verbatim,attributes"]
 ----
-if *bucket.GrantReadWrite(function, nil).Success() {
+if *bucket.Grants().ReadWrite(function, nil).Success() {
   // ...
 }
 ----
@@ -924,35 +924,35 @@ TypeScript::
 +
 [source,javascript,subs="verbatim,attributes"]
 ----
-table.grant(func, 'dynamodb:CreateBackup');
+table.grants.actions(func, 'dynamodb:CreateBackup');
 ----
 
 JavaScript::
 +
 [source,javascript,subs="verbatim,attributes"]
 ----
-table.grant(func, 'dynamodb:CreateBackup');
+table.grants.actions(func, 'dynamodb:CreateBackup');
 ----
 
 Python::
 +
 [source,python,subs="verbatim,attributes"]
 ----
-table.grant(func, "dynamodb:CreateBackup")
+table.grants.actions(func, "dynamodb:CreateBackup")
 ----
 
 Java::
 +
 [source,java,subs="verbatim,attributes"]
 ----
-table.grant(func, "dynamodb:CreateBackup");
+table.getGrants().actions(func, "dynamodb:CreateBackup");
 ----
 
 C#::
 +
 [source,csharp,subs="verbatim,attributes"]
 ----
-table.Grant(func, "dynamodb:CreateBackup");
+table.Grants.Actions(func, "dynamodb:CreateBackup");
 ----
 
 Go::
@@ -960,7 +960,7 @@ Go::
 [source,go,subs="verbatim,attributes"]
 ----
 table := dynamodb.NewTable(this, jsii.String("MyTable"), &dynamodb.TableProps{})
-table.Grant(function, jsii.String("dynamodb:CreateBackup"))
+table.Grants().Actions(function, jsii.String("dynamodb:CreateBackup"))
 ----
 ====
 
