@@ -19,7 +19,7 @@ The {aws} Cloud Development Kit ({aws} CDK) collects anonymous telemetry data on
 
 [IMPORTANT]
 ====
-{aws} CDK CLI telemetry is only collected in CDK versions 2.1100.0 and up.
+{aws} CDK CLI telemetry is only collected in {aws} CDK CLI versions 2.1100.0 and up.
 ====
 
 The {aws} Cloud Development Kit ({aws} CDK) collects anonymous telemetry data on CLI usage to gain insight into how the {aws} CDK CLI is being used.
