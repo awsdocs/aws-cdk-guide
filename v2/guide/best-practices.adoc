@@ -214,11 +214,11 @@ If you need some value (from {aws} or elsewhere) for which there is no native CD
 [#best-practices-apps-roles]
 *Let the {aws} CDK manage roles and security groups*::
 +
-With the {aws} CDK construct library's `grant()` convenience methods, you can create {aws} Identity and Access Management roles that grant access to one resource by another using minimally scoped permissions. For example, consider a line like the following:
+With the {aws} CDK construct library's `grants` property and its convenience methods, you can create {aws} Identity and Access Management roles that grant access to one resource by another using minimally scoped permissions. For example, consider a line like the following:
 +
 [source,javascript,subs="verbatim,attributes"]
 ----
-amzn-s3-demo-bucket.grantRead(myLambda)
+amzn-s3-demo-bucket.grants.read(myLambda)
 ----
 +
 This single line adds a policy to the Lambda function's role (which is also created for you). That role and its policies are more than a dozen lines of CloudFormation that you don't have to write. The {aws} CDK grants only the minimal permissions required for the function to read from the bucket.

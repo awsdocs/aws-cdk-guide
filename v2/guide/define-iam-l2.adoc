@@ -22,7 +22,7 @@ Define {aws} Identity and Access Management (IAM) roles and policies for L2 cons
 
 When you define your infrastructure using L2 constructs from the {aws} Construct Library, you can use the provided _grant methods_ to specify the permissions your resources will require. The {aws} CDK will automatically create the IAM roles needed for all {aws} resources that require them.
 
-The following is an example that defines permissions between an {aws} Lambda function and Amazon Simple Storage Service (Amazon S3) bucket. Here, the `grantRead` method of the Bucket L2 construct is used to define these permissions:
+The following is an example that defines permissions between an {aws} Lambda function and Amazon Simple Storage Service (Amazon S3) bucket. Here, the `grants.read` method of the Bucket L2 construct is used to define these permissions:
 
 ====
 [role="tablist"]
@@ -50,8 +50,8 @@ export class CdkDemoStack extends cdk.Stack {
       code: lambda.Code.fromAsset('lambda'),
     });
 
-    // Define permissions between function and S3 bucket using grantRead method
-    bucket.grantRead(handler);
+    // Define permissions between function and S3 bucket using the read method from BucketGrants
+    bucket.grants.read(handler);
     
   }
 }
@@ -81,8 +81,8 @@ class CdkDemoStack extends Stack {
       code: lambda.Code.fromAsset('lambda'),
     });
 
-    // Define permissions between function and S3 bucket using grantRead method
-    bucket.grantRead(handler);
+    // Define permissions between function and S3 bucket using read method from BucketGrants
+    bucket.grants.read(handler);
 
   }
 }
@@ -117,8 +117,8 @@ class CdkDemoStack(Stack):
             code = _lambda.Code.from_asset('lambda'),
         )
 
-        # Define permissions between function and S3 bucket using grantRead method
-        bucket.grantRead(handler)
+        # Define permissions between function and S3 bucket using the read method from BucketGrants
+        bucket.grants.read(handler)
 ----
 
 Java::
@@ -160,8 +160,8 @@ public class CdkDemoStack extends Stack {
             .code(Code.fromAsset("lambda"))
             .build());
 
-        // Define permissions between function and S3 bucket using grantRead method
-        bucket.grantRead(handler);
+        // Define permissions between function and S3 bucket using the read method from BucketGrants
+        bucket.getGrants().read(handler);
     }
 
     public static void main(final String[] args) {
@@ -203,8 +203,8 @@ namespace CdkDemo
                 Code = Code.FromAsset("lambda")
             });
 
-            // Define permissions between function and S3 bucket using grantRead method
-            bucket.GrantRead(handler);
+            // Define permissions between function and S3 bucket using the Read method from BucketGrants
+            bucket.Grants.Read(handler);
         }
     }
 }
@@ -235,14 +235,14 @@ func NewCdkDemoStack(scope constructs.Construct, id string, props *CdkDemoStackP
         Handler: jsii.String("index.handler"),
         Code:    awslambda.Code_FromAsset(jsii.String("lambda"), &awss3assets.AssetOptions{}),
     })
-    bucket.GrantRead(handler)
+    bucket.Grants().Read(handler)
     return stack
 }
 // ...
 ----
 ====
 
-When you use grant methods of L2 constructs to define permissions between resources, the {aws} CDK will create roles with least privilege policies based on the method you specify. As a security best practice, we recommend that you use the method that applies only the permissions that you require. For example, if you only need to grant permissions for a Lambda function to read from an Amazon S3 bucket, use the `grantRead` method instead of `grantReadWrite`.
+When you use grant methods of L2 constructs to define permissions between resources, the {aws} CDK will create roles with least privilege policies based on the method you specify. As a security best practice, we recommend that you use the method that applies only the permissions that you require. For example, if you only need to grant permissions for a Lambda function to read from an Amazon S3 bucket, use the `grants.read` method instead of `grants.readWrite`.
 
 For each method that you use, the CDK creates a unique IAM role for the specified resources. If necessary, you can also directly modify the policy that will be attached to the role. The following is an example:
 
@@ -351,7 +351,7 @@ func NewCdkDemoStack(scope constructs.Construct, id string, props *CdkDemoStackP
 ----
 ====
 
-However, we recommend that you use the `grant` methods when available.
+However, we recommend that you use the methods in the `grants` property when available.
 
 [#define-iam-l2-manual]
 == Manually create and use IAM roles
@@ -410,9 +410,9 @@ const handler = new lambda.Function(stack, 'Handler', {
   code: lambda.Code.fromAsset(path.join(__dirname, 'lambda-handler')),
 });
 
-// The grantRead() is still important. Even though it actually doesn't mutate
+// The grants.read() is still important. Even though it actually doesn't mutate
 // any policies, it indicates the need for them.
-bucket.grantRead(handler);
+bucket.grants.read(handler);
 ----
 +
 . When you synthesize your application, the CDK will throw an error, indicating that you need to provide the pre-created role name to `Role.customizeRoles()`. The following is an example of the generated report:

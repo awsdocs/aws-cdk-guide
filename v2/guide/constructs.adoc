@@ -168,7 +168,7 @@ TypeScript::
 ----
 const rawData = new s3.Bucket(this, 'raw-data');
 const dataScience = new iam.Group(this, 'data-science');
-rawData.grantRead(dataScience);
+rawData.grants.read(dataScience);
 ----
 
 JavaScript::
@@ -177,7 +177,7 @@ JavaScript::
 ----
 const rawData = new s3.Bucket(this, 'raw-data');
 const dataScience = new iam.Group(this, 'data-science');
-rawData.grantRead(dataScience);
+rawData.grants.read(dataScience);
 ----
 
 Python::
@@ -186,7 +186,7 @@ Python::
 ----
 raw_data = s3.Bucket(self, 'raw-data')
 data_science = iam.Group(self, 'data-science')
-raw_data.grant_read(data_science)
+raw_data.grants.read(data_science)
 ----
 
 Java::
@@ -195,7 +195,7 @@ Java::
 ----
 Bucket rawData = new Bucket(this, "raw-data");
 Group dataScience = new Group(this, "data-science");
-rawData.grantRead(dataScience);
+rawData.getGrants().read(dataScience);
 ----
 
 C#::
@@ -204,7 +204,7 @@ C#::
 ----
 var rawData = new Bucket(this, "raw-data");
 var dataScience = new Group(this, "data-science");
-rawData.GrantRead(dataScience);
+rawData.Grants.Read(dataScience);
 ----
 
 Go::
@@ -213,7 +213,7 @@ Go::
 ----
 	rawData := awss3.NewBucket(stack, jsii.String("raw-data"), nil)
 	dataScience := awsiam.NewGroup(stack, jsii.String("data-science"), nil)
-	rawData.GrantRead(dataScience, nil)
+	rawData.Grants().Read(dataScience, nil)
 ----
 ====
 

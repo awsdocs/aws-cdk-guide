@@ -17,9 +17,9 @@ The {aws} Construct Library uses a few common, widely implemented idioms to mana
 
 The {aws} Construct Library uses a few common, widely implemented idioms to manage access and permissions. The IAM module provides you with the tools you need to use these idioms.
 
-{aws} CDK uses {aws} CloudFormation to deploy changes. Every deployment involves an actor (either a developer, or an automated system) that starts a {aws} CloudFormation deployment. In the course of doing this, the actor will assume one or more IAM Identities (user or roles) and optionally pass a role to {aws} CloudFormation. 
+{aws} CDK uses {aws} CloudFormation to deploy changes. Every deployment involves an actor (either a developer, or an automated system) that starts a {aws} CloudFormation deployment. In the course of doing this, the actor will assume one or more IAM Identities (user or roles) and optionally pass a role to {aws} CloudFormation.
 
-If you use {aws} IAM Identity Center to authenticate as a user, then the single sign-on provider supplies short-lived session credentials that authorize you to act as a pre-defined IAM role. To learn how the {aws} CDK obtains {aws} credentials from IAM Identity Center authentication, see https://docs.aws.amazon.com/sdkref/latest/guide/understanding-sso.html[Understand IAM Identity Center authentication] in the _{aws} SDKs and Tools Reference Guide_. 
+If you use {aws} IAM Identity Center to authenticate as a user, then the single sign-on provider supplies short-lived session credentials that authorize you to act as a pre-defined IAM role. To learn how the {aws} CDK obtains {aws} credentials from IAM Identity Center authentication, see https://docs.aws.amazon.com/sdkref/latest/guide/understanding-sso.html[Understand IAM Identity Center authentication] in the _{aws} SDKs and Tools Reference Guide_.
 
 [#permissions-principals]
 == Principals
@@ -44,57 +44,97 @@ In the CDK's IAM library, classes that directly or indirectly identify principal
 [#permissions-grants]
 == Grants
 
-Every construct that represents a resource that can be accessed, such as an Amazon S3 bucket or Amazon DynamoDB table, has methods that grant access to another entity. All such methods have names starting with *grant*.
-
-For example, Amazon S3 buckets have the methods link:https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.Bucket.html#grantwbrreadidentity-objectskeypattern[`grantRead`] and link:https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.Bucket.html#grantwbrreadwbrwriteidentity-objectskeypattern[`grantReadWrite`] (Python: `grant_read`, `grant_read_write`) to enable read and read/write access, respectively, from an entity to the bucket. The entity doesn't have to know exactly which Amazon S3 IAM permissions are required to perform these operations.
-
-The first argument of a *grant* method is always of type link:https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.IGrantable.html[`IGrantable`]. This interface represents entities that can be granted permissions. That is, it represents resources with roles, such as the IAM objects link:https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.Role.html[`Role`], link:https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.User.html[`User`], and link:https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.Group.html[`Group`].
-
-Other entities can also be granted permissions. For example, later in this topic, we show how to grant a CodeBuild project access to an Amazon S3 bucket. Generally, the associated role is obtained via a `role` property on the entity being granted access.
-
-Resources that use execution roles, such as link:https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda.Function.html[`lambda.Function`], also implement `IGrantable`, so you can grant them access directly instead of granting access to their role. For example, if `bucket` is an Amazon S3 bucket, and `function` is a Lambda function, the following code grants the function read access to the bucket.
+Many constructs represent resources that can be accessed, such as an Amazon S3 bucket or an Amazon DynamoDB table. For those, you can grant access to another entity. There are two ways to do this, depending on the particular construct: using its corresponding Grants class (for instance, `BucketGrants` for Amazon S3 buckets) or using methods in the construct itself, which have names starting with *grant*. The former is preferred because they can be used to grant access to both L1 and L2 resources in the same way. To create an instance of a Grants class, use its factory method:
 
 ====
 [role="tablist"]
 TypeScript::
 +
-[source,none,subs="verbatim,attributes"]
+[source,typescript,subs="verbatim,attributes"]
 ----
-bucket.grantRead(function);
+BucketGrants.fromBucket(bucket); // bucket can be either a Bucket (L2) or a CfnBucket (L1)
 ----
 
 JavaScript::
 +
-[source,none,subs="verbatim,attributes"]
+[source,javascript,subs="verbatim,attributes"]
 ----
-bucket.grantRead(function);
+BucketGrants.fromBucket(bucket); // bucket can be either a Bucket (L2) or a CfnBucket (L1)
 ----
 
 Python::
 +
 [source,python,subs="verbatim,attributes"]
 ----
-bucket.grant_read(function)
+BucketGrants.from_bucket(bucket) # bucket can be either a Bucket (L2) or a CfnBucket (L1)
 ----
 
 Java::
 +
 [source,java,subs="verbatim,attributes"]
 ----
-bucket.grantRead(function);
+BucketGrants.fromBucket(bucket); // bucket can be either a Bucket (L2) or a CfnBucket (L1)
 ----
 
 C#::
 +
 [source,csharp,subs="verbatim,attributes"]
 ----
-bucket.GrantRead(function);
+BucketGrants.FromBucket(bucket); // bucket can be either a Bucket (L2) or a CfnBucket (L1)
+----
+====
+
+Grants classes provide methods to give specific permissions to access their resource. For example, `BucketGrants` has methods `read` and `readWrite` (Python: `read`, `read_write`) to enable read and read/write access, respectively, from an entity to the bucket. The entity doesn’t have to know exactly which Amazon S3 IAM permissions are required to perform these operations.
+
+The first argument of the methods in a Grants class (or the *grant* methods in the resources themselves) is always of type link:https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.IGrantable.html[`IGrantable`]. This interface represents entities that can be granted permissions. That is, it represents resources with roles, such as the IAM objects link:https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.Role.html[`Role`], link:https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.User.html[`User`], and link:https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.Group.html[`Group`].
+
+Other entities can also be granted permissions. For example, later in this topic, we show how to grant a CodeBuild project access to an Amazon S3 bucket. Generally, the associated role is obtained via a `role` property on the entity being granted access.
+
+Resources that use execution roles, such as link:https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda.Function.html[`lambda.Function`], also implement `IGrantable`, so you can grant them access directly instead of granting access to their role. For example, if `bucket` is an Amazon S3 bucket, and `function` is a Lambda function, the following code grants the function read access to the bucket.
+
+For convenience, L2 constructs also offer a `grants` property that returns an instance of the corresponding Grants class.
+
+====
+[role="tablist"]
+TypeScript::
++
+[source,typescript,subs="verbatim,attributes"]
+----
+bucket.grants.read(function);
+----
+
+JavaScript::
++
+[source,javascript,subs="verbatim,attributes"]
+----
+bucket.grants.read(function);
+----
+
+Python::
++
+[source,python,subs="verbatim,attributes"]
+----
+bucket.grants.read(function)
+----
+
+Java::
++
+[source,java,subs="verbatim,attributes"]
+----
+bucket.getGrants().read(function);
+----
+
+C#::
++
+[source,csharp,subs="verbatim,attributes"]
+----
+bucket.Grants.Read(function);
 ----
 ====
 
 Sometimes permissions must be applied while your stack is being deployed. One such case is when you grant an {aws} CloudFormation custom resource access to some other resource. The custom resource will be invoked during deployment, so it must have the specified permissions at deployment time.
 
-Another case is when a service verifies that the role you pass to it has the right policies applied. (A number of {aws} services do this to make sure that you didn't forget to set the policies.) In those cases, the deployment might fail if the permissions are applied too late. 
+Another case is when a service verifies that the role you pass to it has the right policies applied. (A number of {aws} services do this to make sure that you didn't forget to set the policies.) In those cases, the deployment might fail if the permissions are applied too late.
 
 To force the grant's permissions to be applied before another resource is created, you can add a dependency on the grant itself, as shown here. Though the return value of grant methods is commonly discarded, every grant method in fact returns an `iam.Grant` object.
 
@@ -104,7 +144,7 @@ TypeScript::
 +
 [source,javascript,subs="verbatim,attributes"]
 ----
-const grant = bucket.grantRead(lambda);
+const grant = bucket.grants.read(lambda);
 const custom = new CustomResource(...);
 custom.node.addDependency(grant);
 ----
@@ -113,7 +153,7 @@ JavaScript::
 +
 [source,javascript,subs="verbatim,attributes"]
 ----
-const grant = bucket.grantRead(lambda);
+const grant = bucket.grants.read(lambda);
 const custom = new CustomResource(...);
 custom.node.addDependency(grant);
 ----
@@ -122,7 +162,7 @@ Python::
 +
 [source,python,subs="verbatim,attributes"]
 ----
-grant = bucket.grant_read(function)
+grant = bucket.grants.read(function)
 custom = CustomResource(...)
 custom.node.add_dependency(grant)
 ----
@@ -131,7 +171,7 @@ Java::
 +
 [source,java,subs="verbatim,attributes"]
 ----
-Grant grant = bucket.grantRead(function);
+Grant grant = bucket.getGrants().read(function);
 CustomResource custom = new CustomResource(...);
 custom.node.addDependency(grant);
 ----
@@ -140,7 +180,7 @@ C#::
 +
 [source,csharp,subs="verbatim,attributes"]
 ----
-var grant = bucket.GrantRead(function);
+var grant = bucket.Grants.Read(function);
 var custom = new CustomResource(...);
 custom.node.AddDependency(grant);
 ----
@@ -209,7 +249,7 @@ var role = new Role(this, "Role", new RoleProps
 ----
 ====
 
-You can add permissions to a role by calling the role's link:https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.Role.html#addwbrtowbrpolicystatement[`addToPolicy`] method (Python: `add_to_policy`), passing in a link:https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.PolicyStatement.html[`PolicyStatement`] that defines the rule to be added. The statement is added to the role's default policy; if it has none, one is created. 
+You can add permissions to a role by calling the role's link:https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.Role.html#addwbrtowbrpolicystatement[`addToPolicy`] method (Python: `add_to_policy`), passing in a link:https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.PolicyStatement.html[`PolicyStatement`] that defines the rule to be added. The statement is added to the role's default policy; if it has none, one is created.
 
 The following example adds a `Deny` policy statement to the role for the actions `ec2:SomeAction` and `s3:AnotherAction` on the resources `bucket` and `otherRole` (Python: `other_role`), under the condition that the authorized service is {aws} CodeBuild.
 
@@ -288,7 +328,7 @@ role.AddToPolicy(new PolicyStatement(new PolicyStatementProps
 ----
 ====
 
-In the preceding example, we've created a new link:https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.PolicyStatement.html[`PolicyStatement`] inline with the link:https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.Role.html#addwbrtowbrpolicystatement[`addToPolicy`] (Python: `add_to_policy`) call. You can also pass in an existing policy statement or one you've modified. The link:https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.PolicyStatement.html[`PolicyStatement`] object has link:https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.PolicyStatement.html#methods[numerous methods] for adding principals, resources, conditions, and actions. 
+In the preceding example, we've created a new link:https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.PolicyStatement.html[`PolicyStatement`] inline with the link:https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.Role.html#addwbrtowbrpolicystatement[`addToPolicy`] (Python: `add_to_policy`) call. You can also pass in an existing policy statement or one you've modified. The link:https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.PolicyStatement.html[`PolicyStatement`] object has link:https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.PolicyStatement.html#methods[numerous methods] for adding principals, resources, conditions, and actions.
 
 If you're using a construct that requires a role to function correctly, you can do one of the following:
 
