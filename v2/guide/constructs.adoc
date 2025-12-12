@@ -740,7 +740,7 @@ role = iam.Role(self, "MyRole",
     ]
 )
 
-lambda_.CfnFunction(self, "HelloWorldFunction",
+_lambda.CfnFunction(self, "HelloWorldFunction",
     runtime="nodejs24.x",
     role=role,  # Pass construct directly
     handler="index.handler",
