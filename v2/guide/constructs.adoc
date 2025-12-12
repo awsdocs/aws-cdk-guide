@@ -661,7 +661,7 @@ Some of our language-specific API references currently have errors in the paths 
 ====
 
 [#constructs-l1-l2-references]
-=== Passing construct references to L1 properties
+==== Passing construct references to L1 properties
 
 L1 constructs support passing construct objects directly to properties that expect resource references, such as ARNs or names. The CDK automatically resolves the appropriate attribute (ARN, name, or other identifier) based on the property type.
 
@@ -673,7 +673,7 @@ TypeScript::
 +
 [source,javascript,subs="verbatim,attributes"]
 ----
-const l2Role = new iam.Role(this, 'L2Role', {
+const role = new iam.Role(this, 'MyRole', {
   assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
   managedPolicies: [
     iam.ManagedPolicy.fromAwsManagedPolicyName(
@@ -684,7 +684,7 @@ const l2Role = new iam.Role(this, 'L2Role', {
 
 new lambda.CfnFunction(this, "HelloWorldFunction", {
   runtime: 'nodejs24.x',
-  role: l2Role, // Pass L2 construct directly
+  role: role, // Pass construct directly
   handler: 'index.handler',
   code: {
     zipFile: `
@@ -702,7 +702,7 @@ JavaScript::
 +
 [source,javascript,subs="verbatim,attributes"]
 ----
-const l2Role = new iam.Role(this, 'L2Role', {
+const role = new iam.Role(this, 'MyRole', {
   assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
   managedPolicies: [
     iam.ManagedPolicy.fromAwsManagedPolicyName(
@@ -713,7 +713,7 @@ const l2Role = new iam.Role(this, 'L2Role', {
 
 new lambda.CfnFunction(this, "HelloWorldFunction", {
   runtime: 'nodejs24.x',
-  role: l2Role, // Pass L2 construct directly
+  role: role, // Pass construct directly
   handler: 'index.handler',
   code: {
     zipFile: `
@@ -731,7 +731,7 @@ Python::
 +
 [source,python,subs="verbatim,attributes"]
 ----
-l2_role = iam.Role(self, "L2Role",
+role = iam.Role(self, "MyRole",
     assumed_by=iam.ServicePrincipal("lambda.amazonaws.com"),
     managed_policies=[
         iam.ManagedPolicy.from_aws_managed_policy_name(
@@ -742,7 +742,7 @@ l2_role = iam.Role(self, "L2Role",
 
 lambda_.CfnFunction(self, "HelloWorldFunction",
     runtime="nodejs24.x",
-    role=l2_role,  # Pass L2 construct directly
+    role=role,  # Pass construct directly
     handler="index.handler",
     code=lambda_.CfnFunction.CodeProperty(
         zip_file=
@@ -762,7 +762,7 @@ Java::
 +
 [source,java,subs="verbatim,attributes"]
 ----
-Role l2Role = Role.Builder.create(this, "L2Role")
+Role role = Role.Builder.create(this, "MyRole")
     .assumedBy(new ServicePrincipal("lambda.amazonaws.com"))
     .managedPolicies(Arrays.asList(
         ManagedPolicy.fromAwsManagedPolicyName(
@@ -773,7 +773,7 @@ Role l2Role = Role.Builder.create(this, "L2Role")
 
 CfnFunction.Builder.create(this, "HelloWorldFunction")
     .runtime("nodejs24.x")
-    .role(l2Role)  // Pass L2 construct directly
+    .role(role)  // Pass construct directly
     .handler("index.handler")
     .code(CfnFunction.CodeProperty.builder()
         .zipFile(
@@ -791,7 +791,7 @@ C#::
 +
 [source,csharp,subs="verbatim,attributes"]
 ----
-var l2Role = new Role(this, "L2Role", new RoleProps
+var role = new Role(this, "MyRole", new RoleProps
 {
     AssumedBy = new ServicePrincipal("lambda.amazonaws.com"),
     ManagedPolicies = new[]
@@ -805,7 +805,7 @@ var l2Role = new Role(this, "L2Role", new RoleProps
 new CfnFunction(this, "HelloWorldFunction", new CfnFunctionProps
 {
     Runtime = "nodejs24.x",
-    Role = l2Role,  // Pass L2 construct directly
+    Role = role,  // Pass construct directly
     Handler = "index.handler",
     Code = new CfnFunction.CodeProperty
     {
