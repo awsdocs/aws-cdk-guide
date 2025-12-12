@@ -436,7 +436,7 @@ $ aws configure get region
 $ aws configure get region --profile your-profile-name
 ----
 
-Next, you will configure the {aws} environment for your CDK stack by modifying the  `HelloCdkStack` instance in your __application file__. For this tutorial, you will hard code your {aws} environment information. This is recommended for production environments. For information on other ways to configure environments, see xref:configure-env[Configure environments to use with the {aws} CDK].
+Next, you will configure the {aws} environment for your CDK stack by modifying the  `HelloCdkStack` instance in your __application file__. For this tutorial, you will hard code your {aws} environment information. This is not recommended for production environments. For information on other ways to configure environments, see xref:configure-env[Configure environments to use with the {aws} CDK].
 
 *To configure the environment for your CDK stack*::
 +
