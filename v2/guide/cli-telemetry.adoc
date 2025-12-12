@@ -9,7 +9,7 @@ include::attributes.txt[]
 
 [abstract]
 --
-The {aws} Cloud Development Kit ({aws} CDK) collects telemetry data on CLI usage to provide aggregate usage patterns and error frequencies.
+The {aws} Cloud Development Kit ({aws} CDK) collects telemetry data on CLI usage to provide aggregate usage patterns and error frequencies that will help us identify widespread issues affecting the CDK CLI user base.
 --
 
 // Content start
@@ -22,12 +22,16 @@ The {aws} Cloud Development Kit ({aws} CDK) collects telemetry data on CLI usage
 {aws} CDK CLI telemetry is only collected in {aws} CDK CLI versions 2.1100.0 and up.
 ====
 
-The {aws} Cloud Development Kit ({aws} CDK) collects telemetry data on CLI usage to provide aggregate usage patterns and error frequencies.
+The {aws} Cloud Development Kit ({aws} CDK) collects telemetry data on CLI usage to provide aggregate usage patterns and error frequencies that will help us identify widespread issues affecting the CDK CLI user base.
 
-The {aws} Cloud Development Kit ({aws} CDK) collects telemetry data with strict data minimization in mind, preventing identification or attribution to specific users, accounts, or organizations.
+Customers are opted in to CLI telemetry data collection by default. You can opt out of CDK CLI telemetry using the <<telemetry-opt-out,methods listed below>>.
+
+{aws} CDK collects telemetry data with strict data minimization in mind, preventing identification or attribution to specific users, accounts, or organizations.
 An exhaustive list of the metrics that are collected by default, with reasons why, is provided below. No further telemetry or metrics are collected.
-The telemetry collection helps the {aws} CDK team identify widespread issues affecting the {aws} CDK CLI user base and make data-driven decisions on what the
-{aws} CDK team needs to work on next.
+
+Please be aware that we are not currently collecting error messages, stack trace, and logs, and that this data collection will be available in a future CDK CLI version
+under explicit opt-in. More information on these metrics can be found in the table.
+
 The data being collected is as follows:
 
 [cols="1,2,4,2", options="header"]
@@ -92,7 +96,7 @@ a|
 
 |Event Type
 |An identifier for the type of event that produces the data
-|Since we aim to send metrics on a per-event basis, and there could be multiple events in a command execution, this is an enum that identifies what kind of event transpired.
+|This is an enum that identifies the kind of event that transpired since there can be multiple events in a command execution.
 a|
 ----
 "SYNTH"
@@ -100,7 +104,7 @@ a|
 
 |Command Path
 |The command and properties entered into the CLI, with any free text redacted
-|This information is critical to determine feature usage and will help us make data-driven decisions on what CLI features to prioritize.
+|Along with command parameters, this information helps determine the behavior of the event that transpired, which helps us identify blast radius for issues that arise.
 a|
 ----
 ["cdk", "deploy", "$STACK1"]
@@ -108,7 +112,7 @@ a|
 
 |Command Parameters
 |The optional parameters entered into the CLI, with any free text redacted
-|Some of our features include parameters, like cdk deploy --watch. This information is critical to determine feature usage and for us to make data-driven decisions.
+|Along with command path, this information helps determine the behavior of the event that transpired, which helps us identify blast radius of issues that aries.
 a|
 ----
 {
@@ -124,7 +128,7 @@ a|
 ----
 {
   context: {
-    "@aws-cdk/core:newStyleStackSynthesis": true
+    "@aws-cdk/core:explicitStackTags": true
   }
 }
 ----
@@ -142,7 +146,7 @@ a|
 
 |CI/CD
 |Whether or not the CLI command is being invoked from a CI/CD environment
-|Helps us prioritize CLI features that better facilitate CI/CD environments.
+|This will help us identify issues specific to CI/CD environments.
 a|
 ----
 false
@@ -186,13 +190,13 @@ a|
 
 |Error Names
 |The name of the error, if an error occurs.
-|We only record error names that we control.
+|We only record error names that we control, which helps identify reoccuring error types.
 a|
 ----
 "ToolkitError"
 ----
 
-4+^|*The following metrics are NOT currently collected and would require explicit opt-in if implemented in the future:*
+4+^|*The following metrics require explicit opt-in and are NOT currently collected:*
 
 |Error Messages
 |The error message returned, if an error occurs. Free form text redacted
@@ -209,8 +213,6 @@ a|
 |*[Requires opt-in]* Error logs will also help us debug and reproduce issues that we see in the CLI.
 |_Not currently collected_
 |===
-
-Customers are opted in to CLI usage data collection and reporting by default. You can opt out of CDK CLI telemetry using the CDK CLI, context values, an environment variable, or DNS filtering.
 
 [#telemetry-opt-out]
 == How to opt out of CDK CLI telemetry
@@ -295,20 +297,15 @@ If you set `analyticsReporting` at the stack level, it takes precedence over the
 
 If you choose to stay opted in to CDK CLI telemetry, you can choose to send your telemetry data to a local file. You can then review the file to audit the telemetry data we are collecting.  
 
-Use the following option to send telemetry data to a local file:
-[source,none,subs="verbatim,attributes"]
+Use the following option on any CDK CLI command to send telemetry data to a local file:
+
 ----
- --telemetry-file='path/to/local/file'
+--telemetry-file='path/to/local/file'
 ----
 
-[NOTE]
-====
-The `--telemetry-file` option is being released prior to the launch of the telemetry feature. It is considered production-ready and safe to use. However, you must opt in by providing the `--unstable` option. The `--unstable` flag will be ignored after launch.
-====
-
-The following command sends telemetry data to a local file:
+As an example, this `deploy` command sends telemetry data to a local file:
 [source,none,subs="verbatim,attributes"]
 ----
-cdk deploy --unstable=telemetry --telemetry-file='path/to/local/file'
+cdk deploy --telemetry-file='path/to/local/file'
 ----
 

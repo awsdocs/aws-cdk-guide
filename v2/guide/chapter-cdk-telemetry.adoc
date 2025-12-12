@@ -14,7 +14,7 @@ Learn about the library metadata and CDK CLI usage data that the {aws} CDK colle
 // Content start
 {aws} Cloud Development Kit ({aws} CDK) applications are configured to collect and report on usage data to gain insight into how the {aws} CDK is being used. To understand the data that is collected, how it's used, and how to opt in or out of data reporting, see xref:usage-data[Configure {aws} CDK Library usage data reporting].
 
-{aws} CDK collects telemetry data on CLI usage to provide aggregate usage patterns and error frequencies. In CDK CLI version 2.1100.0 and up, customers will be opted in to CDK CLI usage data collection and reporting by default. To learn what data is collected and how to opt out of CDK CLI telemetry, see xref:cli-telemetry[Configure {aws} CDK CLI telemetry].
+{aws} CDK collects telemetry data on CLI usage to provide aggregate usage patterns and error frequencies that will help us identify widespread issues affecting the CDK CLI user base. In CDK CLI version 2.1100.0 and up, customers will be opted in to CDK CLI usage data collection and reporting by default. To learn what data is collected and how to opt out of CDK CLI telemetry, see xref:cli-telemetry[Configure {aws} CDK CLI telemetry].
 
 
 include::usage-data.adoc[leveloffset=+1]
