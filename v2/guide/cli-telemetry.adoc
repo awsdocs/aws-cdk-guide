@@ -48,7 +48,7 @@ a|
 
 |Installation ID
 |Random UUID stored on local machines executing CLI commands
-|This helps us estimate the distinct number of users who are either 1) affected by an error, or 2) use a specific CLI feature. Each unique machine will have their own Installation ID that is generated randomly via UUID V4.
+|This helps us estimate the distinct number of users who are affected by an error. Each unique machine will have their own Installation ID that is generated randomly via UUID V4.
 a|
 ----
 "881d3281-2811-4c86-b7b6-4a8a621cf6f2"
@@ -104,7 +104,7 @@ a|
 
 |Command Path
 |The command and properties entered into the CLI, with any free text redacted
-|Along with command parameters, this information helps determine the behavior of the event that transpired, which helps us identify blast radius for issues that arise.
+|Along with command parameters, this information helps determine the behavior of the event that transpired, which helps us identify blast radius and cause of issues that arise.
 a|
 ----
 ["cdk", "deploy", "$STACK1"]
@@ -112,7 +112,7 @@ a|
 
 |Command Parameters
 |The optional parameters entered into the CLI, with any free text redacted
-|Along with command path, this information helps determine the behavior of the event that transpired, which helps us identify blast radius of issues that aries.
+|Along with command path, this information helps determine the behavior of the event that transpired, which helps us identify blast radius and cause of issues that aries.
 a|
 ----
 {
@@ -122,7 +122,7 @@ a|
 ----
 
 |Configuration
-|Additional parameters that may affect the CLI command (i.e. cdk.context.json or context values in cdk.json / ~/.cdk.json), with any free text redacted
+|Additional parameters that may affect the CLI command (i.e. cdk.context.json or context values in `cdk.json` / `~/.cdk.json`), with any free text redacted
 |This will help us facilitate debugging by providing a comprehensive view of all possible parameters that may affect the behavior of the CLI.
 a|
 ----
@@ -298,6 +298,11 @@ If you set `analyticsReporting` at the stack level, it takes precedence over the
 If you choose to stay opted in to CDK CLI telemetry, you can choose to send your telemetry data to a local file. You can then review the file to audit the telemetry data we are collecting.  
 
 Use the following option on any CDK CLI command to send telemetry data to a local file:
+
+[NOTE]
+====
+If you are using an {aws} CDK CLI version below 2.1100.0, you must specify `--unstable=telemetry` along with `--telemetry-file`.
+====
 
 ----
 --telemetry-file='path/to/local/file'
