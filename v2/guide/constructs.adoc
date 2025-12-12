@@ -820,6 +820,34 @@ new CfnFunction(this, "HelloWorldFunction", new CfnFunctionProps
     }
 });
 ----
+
+Go::
++
+[source,go,subs="verbatim,attributes"]
+----
+role := awsiam.NewRole(stack, jsii.String("MyRole"), &awsiam.RoleProps{
+	AssumedBy: awsiam.NewServicePrincipal(jsii.String("lambda.amazonaws.com"), nil),
+	ManagedPolicies: &[]awsiam.IManagedPolicy{
+		awsiam.ManagedPolicy_FromAwsManagedPolicyName(jsii.String("service-role/AWSLambdaBasicExecutionRole")),
+	},
+})
+
+awslambda.NewCfnFunction(stack, jsii.String("HelloWorldFunction"), &awslambda.CfnFunctionProps{
+	Runtime: jsii.String("nodejs24.x"),
+	Role:    role, // Pass construct directly
+	Handler: jsii.String("index.handler"),
+	Code: &awslambda.CfnFunction_CodeProperty{
+		ZipFile: jsii.String(`
+		exports.handler = async function(event) {
+		  return {
+		    statusCode: 200,
+		    body: JSON.stringify('Hello World!'),
+		  };
+		};
+		`),
+	},
+})
+----
 ====
 
 [#constructs-using]
