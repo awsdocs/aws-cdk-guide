@@ -660,6 +660,168 @@ Some of our language-specific API references currently have errors in the paths 
 
 ====
 
+[#constructs-l1-l2-references]
+=== Passing construct references to L1 properties
+
+L1 constructs support passing construct objects directly to properties that expect resource references, such as ARNs or names. The CDK automatically resolves the appropriate attribute (ARN, name, or other identifier) based on the property type.
+
+The following example creates a Lambda function using an L1 construct (`CfnFunction`) with a role defined using an L2 construct (`Role`). The role object is passed directly to the `role` property:
+
+====
+[role="tablist"]
+TypeScript::
++
+[source,javascript,subs="verbatim,attributes"]
+----
+const l2Role = new iam.Role(this, 'L2Role', {
+  assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
+  managedPolicies: [
+    iam.ManagedPolicy.fromAwsManagedPolicyName(
+      'service-role/AWSLambdaBasicExecutionRole'
+    ),
+  ],
+});
+
+new lambda.CfnFunction(this, "HelloWorldFunction", {
+  runtime: 'nodejs24.x',
+  role: l2Role, // Pass L2 construct directly
+  handler: 'index.handler',
+  code: {
+    zipFile: `
+    exports.handler = async function(event) {
+      return {
+        statusCode: 200,
+        body: JSON.stringify('Hello World!'),
+      };
+    };
+  `}
+});
+----
+
+JavaScript::
++
+[source,javascript,subs="verbatim,attributes"]
+----
+const l2Role = new iam.Role(this, 'L2Role', {
+  assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
+  managedPolicies: [
+    iam.ManagedPolicy.fromAwsManagedPolicyName(
+      'service-role/AWSLambdaBasicExecutionRole'
+    )
+  ]
+});
+
+new lambda.CfnFunction(this, "HelloWorldFunction", {
+  runtime: 'nodejs24.x',
+  role: l2Role, // Pass L2 construct directly
+  handler: 'index.handler',
+  code: {
+    zipFile: `
+    exports.handler = async function(event) {
+      return {
+        statusCode: 200,
+        body: JSON.stringify('Hello World!'),
+      };
+    };
+  `}
+});
+----
+
+Python::
++
+[source,python,subs="verbatim,attributes"]
+----
+l2_role = iam.Role(self, "L2Role",
+    assumed_by=iam.ServicePrincipal("lambda.amazonaws.com"),
+    managed_policies=[
+        iam.ManagedPolicy.from_aws_managed_policy_name(
+            "service-role/AWSLambdaBasicExecutionRole"
+        )
+    ]
+)
+
+lambda_.CfnFunction(self, "HelloWorldFunction",
+    runtime="nodejs24.x",
+    role=l2_role,  # Pass L2 construct directly
+    handler="index.handler",
+    code=lambda_.CfnFunction.CodeProperty(
+        zip_file=
+        """
+        exports.handler = async function(event) {
+          return {
+            statusCode: 200,
+            body: JSON.stringify('Hello World!'),
+          };
+        };
+        """
+    )
+)
+----
+
+Java::
++
+[source,java,subs="verbatim,attributes"]
+----
+Role l2Role = Role.Builder.create(this, "L2Role")
+    .assumedBy(new ServicePrincipal("lambda.amazonaws.com"))
+    .managedPolicies(Arrays.asList(
+        ManagedPolicy.fromAwsManagedPolicyName(
+            "service-role/AWSLambdaBasicExecutionRole"
+        )
+    ))
+    .build();
+
+CfnFunction.Builder.create(this, "HelloWorldFunction")
+    .runtime("nodejs24.x")
+    .role(l2Role)  // Pass L2 construct directly
+    .handler("index.handler")
+    .code(CfnFunction.CodeProperty.builder()
+        .zipFile(
+            "exports.handler = async function(event) {" +
+            "  return {" +
+            "    statusCode: 200," +
+            "    body: JSON.stringify('Hello World!')," +
+            "  };" +
+            "};")
+        .build())
+    .build();
+----
+
+C#::
++
+[source,csharp,subs="verbatim,attributes"]
+----
+var l2Role = new Role(this, "L2Role", new RoleProps
+{
+    AssumedBy = new ServicePrincipal("lambda.amazonaws.com"),
+    ManagedPolicies = new[]
+    {
+        ManagedPolicy.FromAwsManagedPolicyName(
+            "service-role/AWSLambdaBasicExecutionRole"
+        )
+    }
+});
+
+new CfnFunction(this, "HelloWorldFunction", new CfnFunctionProps
+{
+    Runtime = "nodejs24.x",
+    Role = l2Role,  // Pass L2 construct directly
+    Handler = "index.handler",
+    Code = new CfnFunction.CodeProperty
+    {
+        ZipFile = @"
+        exports.handler = async function(event) {
+          return {
+            statusCode: 200,
+            body: JSON.stringify('Hello World!'),
+          };
+        };
+        "
+    }
+});
+----
+====
+
 [#constructs-using]
 === Working with L2 constructs
 
