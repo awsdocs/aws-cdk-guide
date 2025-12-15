@@ -660,12 +660,25 @@ Some of our language-specific API references currently have errors in the paths 
 
 ====
 
-[#constructs-l1-l2-references]
-==== Passing construct references to L1 properties
+[#constructs-resource-references]
+==== Referencing resources from other constructs
 
-L1 constructs support passing construct objects directly to properties that expect resource references, such as ARNs or names. The CDK automatically resolves the appropriate attribute (ARN, name, or other identifier) based on the property type.
+When configuring construct properties that reference other AWS resources, you have two options:
 
-The following example creates a Lambda function using an L1 construct (`CfnFunction`) with a role defined using an L2 construct (`Role`). The role object is passed directly to the `role` property:
+* **String references**: Pass explicit string values such as ARNs, names, or other resource identifiers
+* **Object references**: Pass construct (L1 or L2) objects directly, and the CDK automatically resolves the appropriate attribute
+
+===== Object reference availability and limitations
+
+Object references are supported for selected properties based on a knowledge base that the CDK maintains. This knowledge base is updated periodically, so the availability of object references may change over time as new mappings are added or existing ones are refined.
+
+Currently, object references work only for top-level properties of constructs. Nested properties within complex objects still require explicit string values.
+
+When you pass a construct object as a reference, the CDK immediately converts it to the appropriate string value internally when the construct is created.
+
+===== Example: Lambda function with IAM role
+
+The following example demonstrates both approaches when creating a Lambda function that references an IAM role. You can either pass the role construct object directly or extract its ARN manually:
 
 ====
 [role="tablist"]
@@ -682,9 +695,10 @@ const role = new iam.Role(this, 'MyRole', {
   ],
 });
 
-new lambda.CfnFunction(this, "HelloWorldFunction", {
+const myFunction = new lambda.CfnFunction(this, "HelloWorldFunction", {
   runtime: 'nodejs24.x',
-  role: role, // Pass construct directly
+  role: role, // CDK resolves to role ARN automatically
+  // role: role.roleArn, // Equivalent explicit string approach
   handler: 'index.handler',
   code: {
     zipFile: `
@@ -696,6 +710,8 @@ new lambda.CfnFunction(this, "HelloWorldFunction", {
     };
   `}
 });
+
+// After creation, myFunction.role contains the resolved ARN string
 ----
 
 JavaScript::
@@ -711,9 +727,10 @@ const role = new iam.Role(this, 'MyRole', {
   ]
 });
 
-new lambda.CfnFunction(this, "HelloWorldFunction", {
+const myFunction = new lambda.CfnFunction(this, "HelloWorldFunction", {
   runtime: 'nodejs24.x',
-  role: role, // Pass construct directly
+  role: role, // CDK resolves to role ARN automatically
+  // role: role.roleArn, // Equivalent explicit string approach
   handler: 'index.handler',
   code: {
     zipFile: `
@@ -725,6 +742,8 @@ new lambda.CfnFunction(this, "HelloWorldFunction", {
     };
   `}
 });
+
+// After creation, myFunction.role contains the resolved ARN string
 ----
 
 Python::
@@ -740,11 +759,12 @@ role = iam.Role(self, "MyRole",
     ]
 )
 
-_lambda.CfnFunction(self, "HelloWorldFunction",
+my_function = _lambda.CfnFunction(self, "HelloWorldFunction",
     runtime="nodejs24.x",
-    role=role,  # Pass construct directly
+    role=role,  # CDK resolves to role ARN automatically
+    # role=role.role_arn,  # Equivalent explicit string approach
     handler="index.handler",
-    code=lambda_.CfnFunction.CodeProperty(
+    code=_lambda.CfnFunction.CodeProperty(
         zip_file=
         """
         exports.handler = async function(event) {
@@ -756,6 +776,8 @@ _lambda.CfnFunction(self, "HelloWorldFunction",
         """
     )
 )
+
+# After creation, my_function.role contains the resolved ARN string
 ----
 
 Java::
@@ -771,9 +793,10 @@ Role role = Role.Builder.create(this, "MyRole")
     ))
     .build();
 
-CfnFunction.Builder.create(this, "HelloWorldFunction")
+CfnFunction myFunction = CfnFunction.Builder.create(this, "HelloWorldFunction")
     .runtime("nodejs24.x")
-    .role(role)  // Pass construct directly
+    .role(role)  // CDK resolves to role ARN automatically
+    // .role(role.getRoleArn())  // Equivalent explicit string approach
     .handler("index.handler")
     .code(CfnFunction.CodeProperty.builder()
         .zipFile(
@@ -785,6 +808,8 @@ CfnFunction.Builder.create(this, "HelloWorldFunction")
             "};")
         .build())
     .build();
+
+// After creation, myFunction.getRole() contains the resolved ARN string
 ----
 
 C#::
@@ -802,10 +827,11 @@ var role = new Role(this, "MyRole", new RoleProps
     }
 });
 
-new CfnFunction(this, "HelloWorldFunction", new CfnFunctionProps
+var myFunction = new CfnFunction(this, "HelloWorldFunction", new CfnFunctionProps
 {
     Runtime = "nodejs24.x",
-    Role = role,  // Pass construct directly
+    Role = role,  // CDK resolves to role ARN automatically
+    // Role = role.RoleArn,  // Equivalent explicit string approach
     Handler = "index.handler",
     Code = new CfnFunction.CodeProperty
     {
@@ -819,6 +845,8 @@ new CfnFunction(this, "HelloWorldFunction", new CfnFunctionProps
         "
     }
 });
+
+// After creation, myFunction.Role contains the resolved ARN string
 ----
 
 Go::
@@ -832,9 +860,10 @@ role := awsiam.NewRole(stack, jsii.String("MyRole"), &awsiam.RoleProps{
 	},
 })
 
-awslambda.NewCfnFunction(stack, jsii.String("HelloWorldFunction"), &awslambda.CfnFunctionProps{
+myFunction := awslambda.NewCfnFunction(stack, jsii.String("HelloWorldFunction"), &awslambda.CfnFunctionProps{
 	Runtime: jsii.String("nodejs24.x"),
-	Role:    role, // Pass construct directly
+	Role:    role, // CDK resolves to role ARN automatically
+	// Role: role.RoleArn(), // Equivalent explicit string approach
 	Handler: jsii.String("index.handler"),
 	Code: &awslambda.CfnFunction_CodeProperty{
 		ZipFile: jsii.String(`
@@ -847,6 +876,8 @@ awslambda.NewCfnFunction(stack, jsii.String("HelloWorldFunction"), &awslambda.Cf
 		`),
 	},
 })
+
+// After creation, *myFunction.Role() contains the resolved ARN string
 ----
 ====
 
