@@ -695,7 +695,7 @@ const role = new iam.Role(this, 'MyRole', {
   ],
 });
 
-const myFunction = new lambda.CfnFunction(this, "HelloWorldFunction", {
+const myFunction = new lambda.CfnFunction(this, 'HelloWorldFunction', {
   runtime: 'nodejs24.x',
   role: role, // CDK resolves to role ARN automatically
   // role: role.roleArn, // Equivalent explicit string approach
