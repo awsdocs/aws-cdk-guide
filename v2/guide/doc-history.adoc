@@ -75,9 +75,7 @@ Replace this anti-pattern with Java 9 `Map.of` throughout.
 [.update,date="2021-12-04"]
 === {aws} CDK v2 release
 
-Version 2 of the {aws} CDK Developer Guide is released.
-
-See  https://github.com/awslabs/aws-cdk/releases[Releases] for information about {aws} CDK releases. The {aws} CDK is updated approximately once a week. Maintenance versions may be released between weekly releases to address critical issues. Each release includes a matched {aws} CDK Toolkit (CDK CLI), {aws} Construct Library, and API Reference. Updates to this Guide generally do not synchronize with {aws} CDK releases.
+Version 2 of the {aws} CDK Developer Guide is released, See  https://github.com/awslabs/aws-cdk/releases[Releases] for information about {aws} CDK releases. The {aws} CDK is updated approximately once a week. Maintenance versions may be released between weekly releases to address critical issues. Each release includes a matched {aws} CDK Toolkit (CDK CLI), {aws} Construct Library, and API Reference. Updates to this Guide generally do not synchronize with {aws} CDK releases.
 
 [.level]
 == {blank}

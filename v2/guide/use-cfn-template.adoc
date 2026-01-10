@@ -23,7 +23,7 @@ The `cloudformation-include.CfnInclude` construct essentially adds an {aws} CDK 
 
 
 
-[#use-cfn-template-import]]
+[#use-cfn-template-import]
 == Import an {aws} CloudFormation template
 
 The following is a sample {aws} CloudFormation template that we will use to provide examples in this topic. Copy and save the template as `my-template.json` to follow along. After working through these examples, you can explore further by using any of your existing deployed {aws} CloudFormation templates. You can obtain them from the {aws} CloudFormation console.
