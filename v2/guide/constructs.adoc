@@ -666,19 +666,19 @@ Some of our language-specific API references currently have errors in the paths 
 When configuring construct properties that reference other AWS resources, you have two options:
 
 * **String references**: Pass explicit string values such as ARNs, names, or other resource identifiers
-* **Object references**: Pass construct (L1 or L2) objects directly, and the CDK automatically resolves the appropriate attribute
+* **Object references**: Pass construct (L1 or L2) objects directly
 
-===== Object reference availability and limitations
+===== Using object references
 
-Object references are supported for selected properties based on a knowledge base that the CDK maintains. This knowledge base is updated periodically, so the availability of object references may change over time as new mappings are added or existing ones are refined.
+For selected properties, you can pass construct objects directly instead of extracting their attributes manually. Support for object references varies by property and may expand over time as new properties are added.
 
-Currently, object references work only for top-level properties of constructs. Nested properties within complex objects still require explicit string values.
+When you pass an object reference in the construct's `props`, the CDK resolves it to the appropriate string value (such as an ARN, name, or other identifier). If you later access the corresponding property on the construct instance, you'll see this resolved string value, not the original object reference.
 
-When you pass a construct object as a reference, the CDK immediately converts it to the appropriate string value internally when the construct is created.
+Object references work only for top-level properties of constructs. Nested properties within complex objects require explicit string values.
 
 ===== Example: Lambda function with IAM role
 
-The following example demonstrates both approaches when creating a Lambda function that references an IAM role. You can either pass the role construct object directly or extract its ARN manually:
+The following example demonstrates both approaches when creating a Lambda function that references an IAM role:
 
 ====
 [role="tablist"]
@@ -729,8 +729,8 @@ const role = new iam.Role(this, 'MyRole', {
 
 const myFunction = new lambda.CfnFunction(this, "HelloWorldFunction", {
   runtime: 'nodejs24.x',
-  role: role, // CDK resolves to role ARN automatically
-  // role: role.roleArn, // Equivalent explicit string approach
+  role: role, // Pass the role object directly
+  // role: role.roleArn, // Or pass the ARN explicitly
   handler: 'index.handler',
   code: {
     zipFile: `
@@ -743,7 +743,7 @@ const myFunction = new lambda.CfnFunction(this, "HelloWorldFunction", {
   `}
 });
 
-// After creation, myFunction.role contains the resolved ARN string
+// myFunction.role will contain the role ARN
 ----
 
 Python::
@@ -761,8 +761,8 @@ role = iam.Role(self, "MyRole",
 
 my_function = _lambda.CfnFunction(self, "HelloWorldFunction",
     runtime="nodejs24.x",
-    role=role,  # CDK resolves to role ARN automatically
-    # role=role.role_arn,  # Equivalent explicit string approach
+    role=role,  # Pass the role object directly
+    # role=role.role_arn,  # Or pass the ARN explicitly
     handler="index.handler",
     code=_lambda.CfnFunction.CodeProperty(
         zip_file=
@@ -777,7 +777,7 @@ my_function = _lambda.CfnFunction(self, "HelloWorldFunction",
     )
 )
 
-# After creation, my_function.role contains the resolved ARN string
+# my_function.role will contain the role ARN
 ----
 
 Java::
@@ -795,8 +795,8 @@ Role role = Role.Builder.create(this, "MyRole")
 
 CfnFunction myFunction = CfnFunction.Builder.create(this, "HelloWorldFunction")
     .runtime("nodejs24.x")
-    .role(role)  // CDK resolves to role ARN automatically
-    // .role(role.getRoleArn())  // Equivalent explicit string approach
+    .role(role)  // Pass the role object directly
+    // .role(role.getRoleArn())  // Or pass the ARN explicitly
     .handler("index.handler")
     .code(CfnFunction.CodeProperty.builder()
         .zipFile(
@@ -809,7 +809,7 @@ CfnFunction myFunction = CfnFunction.Builder.create(this, "HelloWorldFunction")
         .build())
     .build();
 
-// After creation, myFunction.getRole() contains the resolved ARN string
+// myFunction.getRole() will contain the role ARN
 ----
 
 C#::
@@ -830,8 +830,8 @@ var role = new Role(this, "MyRole", new RoleProps
 var myFunction = new CfnFunction(this, "HelloWorldFunction", new CfnFunctionProps
 {
     Runtime = "nodejs24.x",
-    Role = role,  // CDK resolves to role ARN automatically
-    // Role = role.RoleArn,  // Equivalent explicit string approach
+    Role = role,  // Pass the role object directly
+    // Role = role.RoleArn,  // Or pass the ARN explicitly
     Handler = "index.handler",
     Code = new CfnFunction.CodeProperty
     {
@@ -846,7 +846,7 @@ var myFunction = new CfnFunction(this, "HelloWorldFunction", new CfnFunctionProp
     }
 });
 
-// After creation, myFunction.Role contains the resolved ARN string
+// myFunction.Role will contain the role ARN
 ----
 
 Go::
@@ -862,8 +862,8 @@ role := awsiam.NewRole(stack, jsii.String("MyRole"), &awsiam.RoleProps{
 
 myFunction := awslambda.NewCfnFunction(stack, jsii.String("HelloWorldFunction"), &awslambda.CfnFunctionProps{
 	Runtime: jsii.String("nodejs24.x"),
-	Role:    role, // CDK resolves to role ARN automatically
-	// Role: role.RoleArn(), // Equivalent explicit string approach
+	Role:    role, // Pass the role object directly
+	// Role: role.RoleArn(), // Or pass the ARN explicitly
 	Handler: jsii.String("index.handler"),
 	Code: &awslambda.CfnFunction_CodeProperty{
 		ZipFile: jsii.String(`
@@ -877,7 +877,7 @@ myFunction := awslambda.NewCfnFunction(stack, jsii.String("HelloWorldFunction"),
 	},
 })
 
-// After creation, *myFunction.Role() contains the resolved ARN string
+// *myFunction.Role() will contain the role ARN
 ----
 ====
 
