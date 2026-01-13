@@ -73,9 +73,9 @@ Interfaces and abstract classes in the {aws} Construct Library are stable for *c
 * **L1 constructs, generated code, and other APIs marked as external**
 +
 Parts of the {aws} Construct Library are generated from data sources coming directly from {aws} services. To keep these APIs aligned with reality, generated code might contain backward incompatible changes. Most of the time, data sources are updated to correctly reflect reality and rectify incorrect representation. _Your IDE's IntelliSense will display external APIs with the `@stability — external` annotation._
-* **Bug-free programs**
+* **Semantically correct programs only**
 +
-We will make sure that correct programs continue to work with newer versions, but this guarantee does not extend to programs that are formally incorrect but happen to compile and run successfully due to quirks. For example, if your program relies on https://www.typescriptlang.org/docs/handbook/type-compatibility.html[TypeScripts structural typing rules] to pass objects of a certain type in a place where these aren't expected, or if your program synthesizes successfully but produces a CloudFormation template that doesn't deploy correctly or doesn't achieve the stated intent of the API, we will consider any changes that make your program fail to compile or run as "bug fixes" instead of "breaking changes".
+We ensure that correct programs continue to work with newer versions. Programs that are formally incorrect but happen to work due to implementation details are not covered. For example, if your program relies on https://www.typescriptlang.org/docs/handbook/type-compatibility.html[TypeScript's structural typing rules] to pass unexpected object types, or synthesizes successfully but produces a CloudFormation template that fails to deploy, we may introduce changes that cause these programs to fail without considering them breaking changes.
 * **Specific language bindings**
 +
 Language bindings can contain backward incompatible changes in a very limited number of situations. These are caused by upstream type changes that are backward compatible in other supported languages. These types changes are allowed, as doing otherwise would severely limit the evolvability of the library.
