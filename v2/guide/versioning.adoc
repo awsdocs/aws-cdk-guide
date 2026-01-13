@@ -52,7 +52,7 @@ The modules in the {aws} Construct Library move through various stages as they a
 
 Except for scenarios where the caveats documented in the next topic apply, APIs in the main {aws} Construct Library (`aws-cdk-lib`) are stable, and the library broadly follows semantic versioning principles. The library includes {aws} CloudFormation (L1) constructs for all {aws} services, which are auto-generated from https://docs.aws.amazon.com/AWSCloudFormation/latest/TemplateReference/resource-type-schemas.html[CloudFormation resource provider schemas] and might sometimes include backward incompatible updates. It also includes higher-level (L2 and L3) constructs and the core CDK classes like `App` and `Stack`, which are all stable. APIs will not be removed from this package (though they might be deprecated) until the next major release of the CDK. When a breaking change is required to a stable API, an entirely new API will be added.
 
-New APIs under development for a service already incorporated in `aws-cdk-lib` are identified using a `Beta<N>` suffix, where `N` starts at 1 and is incremented with each breaking change to the new API. `Beta<N>` APIs are never removed, only deprecated, so your existing app continues to work with newer versions of `aws-cdk-lib`. When the API is deemed stable, a new API without the `Beta<N>` suffix is added. 
+New APIs under development for a service already incorporated in `aws-cdk-lib` are identified using a `Beta<N>` suffix, where `N` starts at 1 and is incremented with each breaking change to the new API. `Beta<N>` APIs are never removed, only deprecated, so your existing app continues to work with newer versions of `aws-cdk-lib`. When the API is deemed stable, a new API without the `Beta<N>` suffix is added.
 
 When higher-level (L2 or L3) APIs begin to be developed for an {aws} service that previously had only L1 APIs, those APIs are initially distributed in a separate package. The name of such a package has an "Alpha" suffix, and its version matches the first version of `aws-cdk-lib` it is compatible with, with an `alpha` sub-version. When the module supports the intended use cases, its APIs are added to `aws-cdk-lib`.
 
@@ -66,16 +66,19 @@ While the {aws} Construct Library broadly follows semantic versioning principles
 To meet our security bar, we might be required to change APIs in backward incompatible ways or remove them entirely. This prevents affected APIs from being used and forces implementations to be updated.
 * **Features are described by intent**
 +
-We aim to minimize unexpected changes, but will favor _intent over implementation stability_. The {aws} Construct Library does not guarantee that constructs always synthesize to the exact same CloudFormation template or use the exact same set of resources. This especially applies to higher-level constructs, where the same goal can often be achieved in different ways. 
+We aim to minimize unexpected changes, but will favor _intent over implementation stability_. The {aws} Construct Library does not guarantee that constructs always synthesize to the exact same CloudFormation template or use the exact same set of resources. This especially applies to higher-level constructs, where the same goal can often be achieved in different ways.
 * **Implementing Interfaces and Abstract Classes**
 +
 Interfaces and abstract classes in the {aws} Construct Library are stable for *consumers*, but not for *implementors*. This means that you can safely rely on interfaces like `s3.IBucket` to provide at least the same functionality as at the time ({aws} Construct Library version) that you started consuming the interface or abstract class. However, periodically, new (abstract) members will be added to interfaces and abstract classes. For anyone *implementing* them, this creates an additional implementation burden to consider when upgrading, since the implementation wouldn't be implementing the new members yet. Strictly treating additions to interfaces and abstract classes for implementors as breaking changes would unduly limit the evolvability of the {aws} Construct Library. In most cases, implementors should prefer to extend concrete classes like `s3.Bucket`.
 * **L1 constructs, generated code, and other APIs marked as external**
 +
 Parts of the {aws} Construct Library are generated from data sources coming directly from {aws} services. To keep these APIs aligned with reality, generated code might contain backward incompatible changes. Most of the time, data sources are updated to correctly reflect reality and rectify incorrect representation. _Your IDE's IntelliSense will display external APIs with the `@stability — external` annotation._
+* **Bug-free programs**
++
+We will make sure that correct programs continue to work with newer versions, but this guarantee does not extend to programs that are formally incorrect but happen to compile and run successfully due to quirks. For example, if your program relies on https://www.typescriptlang.org/docs/handbook/type-compatibility.html[TypeScripts structural typing rules] to pass objects of a certain type in a place where these aren't expected, or if your program synthesizes successfully but produces a CloudFormation template that doesn't deploy correctly or doesn't achieve the stated intent of the API, we will consider any changes that make your program fail to compile or run as "bug fixes" instead of "breaking changes".
 * **Specific language bindings**
 +
-Language bindings can contain backward incompatible changes in a very limited number of situations. These are caused by upstream type changes that are backward compatible in other supported languages. These types changes are allowed, as doing otherwise would severely limit the evolvability of the library. 
+Language bindings can contain backward incompatible changes in a very limited number of situations. These are caused by upstream type changes that are backward compatible in other supported languages. These types changes are allowed, as doing otherwise would severely limit the evolvability of the library.
 +
 The following list describes all known instances:
 +
