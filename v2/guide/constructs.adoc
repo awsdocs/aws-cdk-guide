@@ -666,7 +666,7 @@ Some of our language-specific API references currently have errors in the paths 
 When configuring construct properties that reference other AWS resources, you have two options:
 
 * **String references**: Pass explicit string values such as ARNs, names, or other resource identifiers
-* **Object references**: Pass construct (L1 or L2) objects directly
+* **Object references**: Pass construct objects directly. This avoids having to determine which identifier type a property expects—the CDK handles that for you.
 
 ===== Using object references
 
