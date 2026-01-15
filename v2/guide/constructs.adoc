@@ -660,6 +660,408 @@ Some of our language-specific API references currently have errors in the paths 
 
 ====
 
+[#constructs-resource-references]
+==== Referencing resources from other constructs
+
+When configuring construct properties that reference other AWS resources, you have two equivalent options:
+
+* **Object references**: Pass construct objects directly. This avoids having to determine which identifier type a property expects—the CDK handles that for you.
+* **String references**: Pass explicit string values such as ARNs, names, or other resource identifiers
+
+===== Using object references
+
+For selected properties, you can pass construct objects directly instead of extracting their attributes manually. Support for object references varies by property and may expand over time as new properties are added.
+
+When you pass an object reference in the construct's `props`, the CDK resolves it to the appropriate string value (such as an ARN, name, or other identifier). If you later access the corresponding property on the construct instance, you'll see this resolved string value, not the original object reference.
+
+Object references work only for top-level properties of constructs. Nested properties within complex objects require explicit string values.
+
+The following example creates a Lambda function using an L1 construct (`CfnFunction`) with a role defined using an L2 construct (`Role`). The role object is passed directly to the `role` property:
+
+====
+[role="tablist"]
+TypeScript::
++
+[source,javascript,subs="verbatim,attributes"]
+----
+const role = new iam.Role(this, 'MyRole', {
+  assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
+  managedPolicies: [
+    iam.ManagedPolicy.fromAwsManagedPolicyName(
+      'service-role/AWSLambdaBasicExecutionRole'
+    ),
+  ],
+});
+
+const myFunction = new lambda.CfnFunction(this, 'HelloWorldFunction', {
+  runtime: 'nodejs24.x',
+  role: role, // CDK resolves to role ARN automatically
+  handler: 'index.handler',
+  code: {
+    zipFile: `
+    exports.handler = async function(event) {
+      return {
+        statusCode: 200,
+        body: JSON.stringify('Hello World!'),
+      };
+    };
+  `}
+});
+
+// After creation, myFunction.role contains the resolved ARN string
+----
+
+JavaScript::
++
+[source,javascript,subs="verbatim,attributes"]
+----
+const role = new iam.Role(this, 'MyRole', {
+  assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
+  managedPolicies: [
+    iam.ManagedPolicy.fromAwsManagedPolicyName(
+      'service-role/AWSLambdaBasicExecutionRole'
+    )
+  ]
+});
+
+const myFunction = new lambda.CfnFunction(this, "HelloWorldFunction", {
+  runtime: 'nodejs24.x',
+  role: role, // CDK resolves to role ARN automatically
+  handler: 'index.handler',
+  code: {
+    zipFile: `
+    exports.handler = async function(event) {
+      return {
+        statusCode: 200,
+        body: JSON.stringify('Hello World!'),
+      };
+    };
+  `}
+});
+
+// After creation, myFunction.role contains the resolved ARN string
+----
+
+Python::
++
+[source,python,subs="verbatim,attributes"]
+----
+role = iam.Role(self, "MyRole",
+    assumed_by=iam.ServicePrincipal("lambda.amazonaws.com"),
+    managed_policies=[
+        iam.ManagedPolicy.from_aws_managed_policy_name(
+            "service-role/AWSLambdaBasicExecutionRole"
+        )
+    ]
+)
+
+my_function = _lambda.CfnFunction(self, "HelloWorldFunction",
+    runtime="nodejs24.x",
+    role=role,  # CDK resolves to role ARN automatically
+    handler="index.handler",
+    code=_lambda.CfnFunction.CodeProperty(
+        zip_file=
+        """
+        exports.handler = async function(event) {
+          return {
+            statusCode: 200,
+            body: JSON.stringify('Hello World!'),
+          };
+        };
+        """
+    )
+)
+
+# After creation, my_function.role contains the resolved ARN string
+----
+
+Java::
++
+[source,java,subs="verbatim,attributes"]
+----
+Role role = Role.Builder.create(this, "MyRole")
+    .assumedBy(new ServicePrincipal("lambda.amazonaws.com"))
+    .managedPolicies(Arrays.asList(
+        ManagedPolicy.fromAwsManagedPolicyName(
+            "service-role/AWSLambdaBasicExecutionRole"
+        )
+    ))
+    .build();
+
+CfnFunction myFunction = CfnFunction.Builder.create(this, "HelloWorldFunction")
+    .runtime("nodejs24.x")
+    .role(role)  // CDK resolves to role ARN automatically
+    .handler("index.handler")
+    .code(CfnFunction.CodeProperty.builder()
+        .zipFile(
+            "exports.handler = async function(event) {" +
+            "  return {" +
+            "    statusCode: 200," +
+            "    body: JSON.stringify('Hello World!')," +
+            "  };" +
+            "};")
+        .build())
+    .build();
+
+// After creation, myFunction.getRole() contains the resolved ARN string
+----
+
+C#::
++
+[source,csharp,subs="verbatim,attributes"]
+----
+var role = new Role(this, "MyRole", new RoleProps
+{
+    AssumedBy = new ServicePrincipal("lambda.amazonaws.com"),
+    ManagedPolicies = new[]
+    {
+        ManagedPolicy.FromAwsManagedPolicyName(
+            "service-role/AWSLambdaBasicExecutionRole"
+        )
+    }
+});
+
+var myFunction = new CfnFunction(this, "HelloWorldFunction", new CfnFunctionProps
+{
+    Runtime = "nodejs24.x",
+    Role = role,  // CDK resolves to role ARN automatically
+    Handler = "index.handler",
+    Code = new CfnFunction.CodeProperty
+    {
+        ZipFile = @"
+        exports.handler = async function(event) {
+          return {
+            statusCode: 200,
+            body: JSON.stringify('Hello World!'),
+          };
+        };
+        "
+    }
+});
+
+// After creation, myFunction.Role contains the resolved ARN string
+----
+
+Go::
++
+[source,go,subs="verbatim,attributes"]
+----
+role := awsiam.NewRole(stack, jsii.String("MyRole"), &awsiam.RoleProps{
+	AssumedBy: awsiam.NewServicePrincipal(jsii.String("lambda.amazonaws.com"), nil),
+	ManagedPolicies: &[]awsiam.IManagedPolicy{
+		awsiam.ManagedPolicy_FromAwsManagedPolicyName(jsii.String("service-role/AWSLambdaBasicExecutionRole")),
+	},
+})
+
+myFunction := awslambda.NewCfnFunction(stack, jsii.String("HelloWorldFunction"), &awslambda.CfnFunctionProps{
+	Runtime: jsii.String("nodejs24.x"),
+	Role:    role, // CDK resolves to role ARN automatically
+	Handler: jsii.String("index.handler"),
+	Code: &awslambda.CfnFunction_CodeProperty{
+		ZipFile: jsii.String(`
+		exports.handler = async function(event) {
+		  return {
+		    statusCode: 200,
+		    body: JSON.stringify('Hello World!'),
+		  };
+		};
+		`),
+	},
+})
+
+// After creation, *myFunction.Role() contains the resolved ARN string
+----
+====
+
+===== Using string references
+
+You can always pass explicit string values such as ARNs, names, or other resource identifiers. This approach works for all properties and is required for nested properties within complex objects.
+
+The following example shows the same Lambda function, but using the role's ARN string instead of the role object:
+
+====
+[role="tablist"]
+TypeScript::
++
+[source,javascript,subs="verbatim,attributes"]
+----
+const role = new iam.Role(this, 'MyRole', {
+  assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
+  managedPolicies: [
+    iam.ManagedPolicy.fromAwsManagedPolicyName(
+      'service-role/AWSLambdaBasicExecutionRole'
+    ),
+  ],
+});
+
+const myFunction = new lambda.CfnFunction(this, 'HelloWorldFunction', {
+  runtime: 'nodejs24.x',
+  role: role.roleArn, // Pass the ARN string explicitly
+  handler: 'index.handler',
+  code: {
+    zipFile: `
+    exports.handler = async function(event) {
+      return {
+        statusCode: 200,
+        body: JSON.stringify('Hello World!'),
+      };
+    };
+  `}
+});
+----
+
+JavaScript::
++
+[source,javascript,subs="verbatim,attributes"]
+----
+const role = new iam.Role(this, 'MyRole', {
+  assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
+  managedPolicies: [
+    iam.ManagedPolicy.fromAwsManagedPolicyName(
+      'service-role/AWSLambdaBasicExecutionRole'
+    )
+  ]
+});
+
+const myFunction = new lambda.CfnFunction(this, "HelloWorldFunction", {
+  runtime: 'nodejs24.x',
+  role: role.roleArn, // Pass the ARN string explicitly
+  handler: 'index.handler',
+  code: {
+    zipFile: `
+    exports.handler = async function(event) {
+      return {
+        statusCode: 200,
+        body: JSON.stringify('Hello World!'),
+      };
+    };
+  `}
+});
+----
+
+Python::
++
+[source,python,subs="verbatim,attributes"]
+----
+role = iam.Role(self, "MyRole",
+    assumed_by=iam.ServicePrincipal("lambda.amazonaws.com"),
+    managed_policies=[
+        iam.ManagedPolicy.from_aws_managed_policy_name(
+            "service-role/AWSLambdaBasicExecutionRole"
+        )
+    ]
+)
+
+my_function = _lambda.CfnFunction(self, "HelloWorldFunction",
+    runtime="nodejs24.x",
+    role=role.role_arn,  # Pass the ARN string explicitly
+    handler="index.handler",
+    code=_lambda.CfnFunction.CodeProperty(
+        zip_file=
+        """
+        exports.handler = async function(event) {
+          return {
+            statusCode: 200,
+            body: JSON.stringify('Hello World!'),
+          };
+        };
+        """
+    )
+)
+----
+
+Java::
++
+[source,java,subs="verbatim,attributes"]
+----
+Role role = Role.Builder.create(this, "MyRole")
+    .assumedBy(new ServicePrincipal("lambda.amazonaws.com"))
+    .managedPolicies(Arrays.asList(
+        ManagedPolicy.fromAwsManagedPolicyName(
+            "service-role/AWSLambdaBasicExecutionRole"
+        )
+    ))
+    .build();
+
+CfnFunction myFunction = CfnFunction.Builder.create(this, "HelloWorldFunction")
+    .runtime("nodejs24.x")
+    .role(role.getRoleArn())  // Pass the ARN string explicitly
+    .handler("index.handler")
+    .code(CfnFunction.CodeProperty.builder()
+        .zipFile(
+            "exports.handler = async function(event) {" +
+            "  return {" +
+            "    statusCode: 200," +
+            "    body: JSON.stringify('Hello World!')," +
+            "  };" +
+            "};")
+        .build())
+    .build();
+----
+
+C#::
++
+[source,csharp,subs="verbatim,attributes"]
+----
+var role = new Role(this, "MyRole", new RoleProps
+{
+    AssumedBy = new ServicePrincipal("lambda.amazonaws.com"),
+    ManagedPolicies = new[]
+    {
+        ManagedPolicy.FromAwsManagedPolicyName(
+            "service-role/AWSLambdaBasicExecutionRole"
+        )
+    }
+});
+
+var myFunction = new CfnFunction(this, "HelloWorldFunction", new CfnFunctionProps
+{
+    Runtime = "nodejs24.x",
+    Role = role.RoleArn,  // Pass the ARN string explicitly
+    Handler = "index.handler",
+    Code = new CfnFunction.CodeProperty
+    {
+        ZipFile = @"
+        exports.handler = async function(event) {
+          return {
+            statusCode: 200,
+            body: JSON.stringify('Hello World!'),
+          };
+        };
+        "
+    }
+});
+----
+
+Go::
++
+[source,go,subs="verbatim,attributes"]
+----
+role := awsiam.NewRole(stack, jsii.String("MyRole"), &awsiam.RoleProps{
+	AssumedBy: awsiam.NewServicePrincipal(jsii.String("lambda.amazonaws.com"), nil),
+	ManagedPolicies: &[]awsiam.IManagedPolicy{
+		awsiam.ManagedPolicy_FromAwsManagedPolicyName(jsii.String("service-role/AWSLambdaBasicExecutionRole")),
+	},
+})
+
+myFunction := awslambda.NewCfnFunction(stack, jsii.String("HelloWorldFunction"), &awslambda.CfnFunctionProps{
+	Runtime: jsii.String("nodejs24.x"),
+	Role:    role.RoleArn(), // Pass the ARN string explicitly
+	Handler: jsii.String("index.handler"),
+	Code: &awslambda.CfnFunction_CodeProperty{
+		ZipFile: jsii.String(`
+		exports.handler = async function(event) {
+		  return {
+		    statusCode: 200,
+		    body: JSON.stringify('Hello World!'),
+		  };
+		};
+		`),
+	},
+})
+----
+====
+
 [#constructs-using]
 === Working with L2 constructs
 
