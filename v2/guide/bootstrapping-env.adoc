@@ -315,7 +315,7 @@ The bootstrap template is versioned and evolves over time with the {aws} CDK its
 [NOTE]
 ====
 
-Earlier versions of the bootstrap template created an {aws} KMS key in each bootstrapped environment by default. To avoid charges for the KMS key, re-bootstrap these environments using `--no-bootstrap-customer-key`. The current default is no KMS key, which helps avoid these charges. 
+Earlier versions of the bootstrap template created an {aws} KMS key in each bootstrapped environment by default. To avoid charges for the KMS key, re-bootstrap these environments using `--no-bootstrap-customer-key`. The current default is no KMS key, which helps avoid these charges.
 
 ====
 
@@ -353,7 +353,7 @@ This section contains a list of the changes made in each version.
 
 |**6**
 |1.109.0
-|Attach `aws-cdk:bootstrap-role` tag to deployment, file publishing, and image publishing roles. 
+|Attach `aws-cdk:bootstrap-role` tag to deployment, file publishing, and image publishing roles.
 
 |**7**
 |1.110.0
@@ -440,6 +440,21 @@ This section contains a list of the changes made in each version.
 |Add new Amazon ECR resource policy to grant Amazon EMR Serverless specific permissions for retrieving container images. For more information on this change, see `aws-cdk-cli` PR https://github.com/aws/aws-cdk-cli/pull/112[#112].
 |===
 
+|**28**
+|2.1015.0
+|Add permissions to perform Stack Refactoring actions to the deployment role, and TagSession permissions to all roles. For more information on this change, see `aws-cdk-cli` PR https://github.com/aws/aws-cdk-cli/pull/471[#471].
+|===
+
+|**29**
+|2.1026.0
+|All AssumeRole calls that provide an ExternalId will be rejected by default, unless disabled. For more information on this change, see `aws-cdk-cli` PR https://github.com/aws/aws-cdk-cli/pull/811[#811].
+|===
+
+|**30**
+|2.1034.0
+|Add permissions to describe stack events to the deployment role, to be able to show CloudFormation Early Validation errors accurately. For more information on this change, see `aws-cdk-cli` PR https://github.com/aws/aws-cdk-cli/pull/970[#970].
+|===
+
 [#bootstrapping-template]
 == Upgrade from legacy to modern bootstrap template
 
@@ -496,7 +511,7 @@ An environment that was bootstrapped using the legacy template must be upgraded 
 [#bootstrapping-securityhub]
 == Address Security Hub Findings
 
-If you are using {aws} Security Hub, you may see findings reported on some of the resources created by the {aws} CDK bootstrapping process. Security Hub findings help you find resource configurations you should double-check for accuracy and safety. We have reviewed these specific resource configurations with {aws} Security and are confident they do not constitute a security problem.  
+If you are using {aws} Security Hub, you may see findings reported on some of the resources created by the {aws} CDK bootstrapping process. Security Hub findings help you find resource configurations you should double-check for accuracy and safety. We have reviewed these specific resource configurations with {aws} Security and are confident they do not constitute a security problem.
 
 [#bootstrapping-securityhub-kms2]
 *[KMS.2] IAM principals should not have IAM inline policies that allow decryption actions on all KMS keys*::
@@ -548,7 +563,7 @@ DeploymentActionRole:
 [#bootstrapping-securityhub-kms2-why]
 *Why does Security Hub flag this?*:::
 +
-The policies contain a `Resource: \*` combined with a `Condition` clause. Security Hub flags the `*` wildcard. This wildcard is used because at the time the account is bootstrapped, the {aws} KMS key created by CDK Pipelines for the CodePipeline artifact bucket does not exist yet, and therefore, can`'t be referenced on the bootstrap template by ARN. In addition, Security Hub does not consider the `Condition` clause when raising this flag. This `Condition` restricts `Resource: *` to requests made from the same {aws} account of the {aws} KMS key. These requests must come from Amazon S3 in the same {aws} Region as the {aws} KMS key. 
+The policies contain a `Resource: \*` combined with a `Condition` clause. Security Hub flags the `*` wildcard. This wildcard is used because at the time the account is bootstrapped, the {aws} KMS key created by CDK Pipelines for the CodePipeline artifact bucket does not exist yet, and therefore, can`'t be referenced on the bootstrap template by ARN. In addition, Security Hub does not consider the `Condition` clause when raising this flag. This `Condition` restricts `Resource: *` to requests made from the same {aws} account of the {aws} KMS key. These requests must come from Amazon S3 in the same {aws} Region as the {aws} KMS key.
 +
 [#bootstrapping-securityhub-kms2-decide]
 *Do I need to fix this finding?*:::
