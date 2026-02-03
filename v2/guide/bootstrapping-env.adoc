@@ -438,22 +438,18 @@ This section contains a list of the changes made in each version.
 |**27**
 |2.1003.0
 |Add new Amazon ECR resource policy to grant Amazon EMR Serverless specific permissions for retrieving container images. For more information on this change, see `aws-cdk-cli` PR https://github.com/aws/aws-cdk-cli/pull/112[#112].
-|===
 
 |**28**
 |2.1015.0
 |Add permissions to perform Stack Refactoring actions to the deployment role, and TagSession permissions to all roles. For more information on this change, see `aws-cdk-cli` PR https://github.com/aws/aws-cdk-cli/pull/471[#471].
-|===
 
 |**29**
 |2.1026.0
 |All AssumeRole calls that provide an ExternalId will be rejected by default, unless disabled. For more information on this change, see `aws-cdk-cli` PR https://github.com/aws/aws-cdk-cli/pull/811[#811].
-|===
 
 |**30**
 |2.1034.0
 |Add permissions to describe stack events to the deployment role, to be able to show CloudFormation Early Validation errors accurately. For more information on this change, see `aws-cdk-cli` PR https://github.com/aws/aws-cdk-cli/pull/970[#970].
-|===
 
 [#bootstrapping-template]
 == Upgrade from legacy to modern bootstrap template
