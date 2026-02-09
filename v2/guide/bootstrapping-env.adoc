@@ -450,6 +450,7 @@ This section contains a list of the changes made in each version.
 |**30**
 |2.1034.0
 |Add permissions to describe stack events to the deployment role, to be able to show CloudFormation Early Validation errors accurately. For more information on this change, see `aws-cdk-cli` PR https://github.com/aws/aws-cdk-cli/pull/970[#970].
+|===
 
 [#bootstrapping-template]
 == Upgrade from legacy to modern bootstrap template

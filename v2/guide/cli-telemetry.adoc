@@ -4,7 +4,7 @@ include::attributes.txt[]
 [.topic]
 [#cli-telemetry]
 = Configure {aws} CDK CLI telemetry
-:info_titleabbrev: Configure CDK CLI telemetry 
+:info_titleabbrev: Configure CDK CLI telemetry
 :keywords: {aws} CDK CLI, reporting, usage data, telemetry
 
 [abstract]
@@ -27,10 +27,12 @@ The {aws} Cloud Development Kit ({aws} CDK) collects telemetry data on CLI usage
 Customers are opted in to CLI telemetry data collection by default. You can opt out of CDK CLI telemetry using the <<telemetry-opt-out,methods listed below>>.
 
 {aws} CDK collects telemetry data with strict data minimization in mind, preventing identification or attribution to specific users, accounts, or organizations.
-An exhaustive list of the metrics that are collected by default, with reasons why, is provided below. No further telemetry or metrics are collected.
+An exhaustive list of the metrics that are collected by default is provided below, along with motivations.
+This list may change over time; any changes will always be accompanied by a motivation and respect the principles of anonymity and data minimization.
 
-Please be aware that we are not currently collecting error messages, stack trace, and logs, and that this data collection will be available in a future CDK CLI version
-under explicit opt-in. More information on these metrics can be found in the table.
+We are not currently collecting full error messages, stack traces, and logs.
+If this data is ever collected in a future CDK CLI version, it will always be under explicit opt-in.
+More information on these metrics can be found in the table.
 
 The data being collected is as follows:
 
@@ -144,12 +146,28 @@ a|
 }
 ----
 
+|Language
+|Our guess at the CDK implementation language your application is using.
+|This will help us segment problems like slow synthesis times or higher error rate by language, to help visualize and address them.
+a|
+----
+"python"
+----
+
 |CI/CD
 |Whether or not the CLI command is being invoked from a CI/CD environment
 |This will help us identify issues specific to CI/CD environments.
 a|
 ----
 false
+----
+
+|Agent
+|Our best guess at whether an AI Agent is executing the command
+|This will help us debug issues that affect AI Agents.
+a|
+----
+true
 ----
 
 |Node Version
@@ -189,8 +207,8 @@ a|
 ----
 
 |Error Names
-|The name of the error, if an error occurs.
-|We only record error names that we control, which helps identify reoccuring error types.
+|The name or code of the error, if an error occurs.
+|We only record error names and error codes that we control. We use this to identify reoccuring error types.
 a|
 ----
 "ToolkitError"
@@ -199,17 +217,17 @@ a|
 4+^|*The following metrics require explicit opt-in and are NOT currently collected:*
 
 |Error Messages
-|The error message returned, if an error occurs. Free form text redacted
-|*[Requires opt-in]* Capturing the error message will help us aggregate data on which errors are encountered at a greater rate, as well as help us debug what went wrong in individual use cases.
+|The error message returned, if an error occurs. Free form text redacted.
+|*[Requires opt-in]* Capturing the error message will help us debug what went wrong in individual use cases.
 |_Not currently collected_
 
 |Error Stack Trace
-|The stack trace of the error message, if an error occurs. Free form text redacted
+|The stack trace of the error message, if an error occurs. Free form text redacted.
 |*[Requires opt-in]* The stack trace will be helpful for individual debugging purposes and is necessary for us to be able to reproduce issues that may arise.
 |_Not currently collected_
 
 |Error Logs
-|The logs of a failed CLI command, if an error occurs. Free form text redacted
+|The logs of a failed CLI command, if an error occurs. Free form text redacted.
 |*[Requires opt-in]* Error logs will also help us debug and reproduce issues that we see in the CLI.
 |_Not currently collected_
 |===
@@ -252,7 +270,7 @@ Set `cli-telemetry: false` in an application's `cdk.json` file. This disables te
 Set `cli-telemetry: false` in the `~/.cdk.json` file to disable telemetry for all CDK applications on the same computer. You must specify this setting inside a context element as follows:
 ----
 {
-  "context": { 
+  "context": {
     "cli-telemetry": false
   }
 }
@@ -261,13 +279,13 @@ Set `cli-telemetry: false` in the `~/.cdk.json` file to disable telemetry for al
 [#telemetry-environment-variable]
 === Opt out using an environment variable
 
-Set the `CDK_DISABLE_CLI_TELEMETRY` environment variable to `true` to disable CLI telemetry in that environment. 
+Set the `CDK_DISABLE_CLI_TELEMETRY` environment variable to `true` to disable CLI telemetry in that environment.
 
 [source,none,subs="verbatim,attributes"]
 ----
 CDK_DISABLE_CLI_TELEMETRY=true
 ----
-The value of this environment variable takes precendence over any context values that have been set. 
+The value of this environment variable takes precendence over any context values that have been set.
 
 [TIP]
 ====
@@ -283,7 +301,7 @@ Blocking this domain name in your firewall disables CLI telemetry and does not a
 [#telemetry-optout-all]
 === Opt out of all usage data reporting
 
-To opt out of all usage data reporting for a single command, use the `--no-version-reporting` global CLI option. This option turns off both application usage data collection and CDK CLI telemetry. 
+To opt out of all usage data reporting for a single command, use the `--no-version-reporting` global CLI option. This option turns off both application usage data collection and CDK CLI telemetry.
 
 If you are currently opting out of application usage data collection using the `--no-version-reporting` option, you are automatically opted out of CDK CLI telemetry for that specific command execution, regardless of context values.
 
@@ -295,7 +313,7 @@ If you set `analyticsReporting` at the stack level, it takes precedence over the
 [#telemetry-data-file]
 == Send telemetry data to a local file
 
-If you choose to stay opted in to CDK CLI telemetry, you can choose to send your telemetry data to a local file. You can then review the file to audit the telemetry data we are collecting.  
+If you choose to stay opted in to CDK CLI telemetry, you can choose to send your telemetry data to a local file. You can then review the file to audit the telemetry data we are collecting.
 
 Use the following option on any CDK CLI command to send telemetry data to a local file:
 
@@ -314,3 +332,20 @@ As an example, this `deploy` command sends telemetry data to a local file:
 cdk deploy --telemetry-file='path/to/local/file'
 ----
 
+[#history]
+== Page history
+
+[.updates]
+== Updates
+
+[.update,date="2026-03-02"]
+=== Language and Agent
+
+Add "Language" and "Agent" to the set of collected fields, for the purposes of better segmenting performance.
+
+[.level]
+== {blank}
+
+[.update-history]
+|===
+|===

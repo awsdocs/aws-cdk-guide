@@ -8,6 +8,7 @@
 .DS_Store
 
 # Build directories
+build
 build/
 
 # IDE files
