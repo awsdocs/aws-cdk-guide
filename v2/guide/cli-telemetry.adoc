@@ -335,17 +335,10 @@ cdk deploy --telemetry-file='path/to/local/file'
 [#history]
 == Page history
 
-[.updates]
-== Updates
-
-[.update,date="2026-03-02"]
-=== Language and Agent
-
-Add "Language" and "Agent" to the set of collected fields, for the purposes of better segmenting performance.
-
-[.level]
-== {blank}
-
-[.update-history]
+[cols="1,5", options="header"]
 |===
+|Date |Description
+
+|Mar 2, 2026
+|Add "Language" and "Agent" to the set of collected fields, for the purposes of segmenting performance numbers.
 |===
