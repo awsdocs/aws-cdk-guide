@@ -33,10 +33,10 @@ The minimal setting to configure  `watch` is `"watch": {}`.
 
 If either your CDK code or application code requires a build step before deployment, `cdk watch` works with the `"build"` key in the `cdk.json` file.
 
-[NOTE]
+[IMPORTANT]
 ====
 
-This command is considered experimental and may have breaking changes in the future. 
+This command is meant for rapid deployment during the development phase of CDK Apps and not recommended for production deployments.
 
 ====
 
