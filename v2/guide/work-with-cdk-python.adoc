@@ -322,4 +322,48 @@ In our experience, the type errors Python programmers make tend to fall into the
 * Passing a single value where a construct expects a container (Python list or dictionary) or vice versa.
 * Passing a value of a type associated with a layer 1 (`CfnXxxxxx`) construct to a L2 or L3 construct, or vice versa.
 
-The {aws} CDK Python modules do include type annotations, so you can use tools that support them to help with types. If you are not using an IDE that supports these, such as  https://www.jetbrains.com/pycharm/[PyCharm], you might want to call the http://mypy-lang.org/[MyPy] type validator as a step in your build process. There are also runtime type checkers that can improve error messages for type-related errors.
+== Preventing type errors
+
+The AWS CDK Python modules include type annotations, so you can use tools that support them to catch type errors before deployment.
+
+=== IDE integration (recommended)
+
+Visual Studio Code with Pylance provides real-time type checking as you write code:
+
+1. Install the https://marketplace.visualstudio.com/items?itemName=ms-python.vscode-pylance[Pylance extension]
+2. Configure strict type checking in `.vscode/settings.json`:
++
+[source,json]
+----
+{
+  "python.languageServer": "Pylance",
+  "python.analysis.typeCheckingMode": "strict"
+}
+----
+3. Type errors now appear immediately with red squiggles and detailed error messages
+
+https://www.jetbrains.com/pycharm/[PyCharm] also provides built-in type checking with similar capabilities.
+
+=== Command-line type checking
+
+For CI/CD pipelines or pre-commit validation, use one of these type checkers:
+
+*MyPy (Python-based):*
+[source,bash]
+----
+pip install mypy
+mypy app.py
+----
+
+*Pyright (faster, JavaScript-based, same engine as Pylance):*
+[source,bash]
+----
+npm install -g pyright
+pyright app.py
+----
+
+=== Recommended workflow
+
+1. During development: Use Pyright or Pylance for instant feedback
+2. Before commit: Run `mypy app.py` or `pyright app.py`
+3. In CI/CD: Make type checking a required step before deployment
