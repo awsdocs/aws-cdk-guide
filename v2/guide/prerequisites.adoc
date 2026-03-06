@@ -60,7 +60,7 @@ JavaScript::
 * No additional requirements
 
 Python::
-* Python 3.7 or later including `pip` and `virtualenv`
+* Python 3.9 or later including `pip` and `virtualenv`
 
 Java::
 * Java Development Kit (JDK) 8 (a.k.a. 1.8) or later
@@ -69,12 +69,12 @@ Java::
 Java IDE recommended (we use [.noloc]`Eclipse`` in some examples in this guide). IDE must be able to import Maven projects. Check to make sure that your project is set to use Java 1.8. Set the JAVA_HOME environment variable to the path where you have installed the JDK.
 
 C#::
-.NET Core 3.1 or later, or .NET 6.0 or later.
+.NET 8.0 or later.
 +
 Visual Studio 2019 (any edition) or Visual Studio Code recommended.
 
 Go::
-Go 1.1.8 or later.
+Go 1.23 or later.
 
 ====
 
