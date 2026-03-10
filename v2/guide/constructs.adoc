@@ -340,7 +340,7 @@ new s3.CfnBucket(this, 'MyBucket')
   .with(new s3.mixins.BucketBlockPublicAccess());
 
 // Apply mixins to an L2 construct
-new s3.Bucket(this, 'MyBucket', { removalPolicy: cdk.RemovalPolicy.DESTROY })
+new s3.Bucket(this, 'MyL2Bucket', { removalPolicy: cdk.RemovalPolicy.DESTROY })
   .with(new s3.mixins.BucketAutoDeleteObjects());
 ----
 
@@ -357,7 +357,7 @@ new s3.CfnBucket(this, 'MyBucket')
   .with(new s3.mixins.BucketBlockPublicAccess());
 
 // Apply mixins to an L2 construct
-new s3.Bucket(this, 'MyBucket', { removalPolicy: cdk.RemovalPolicy.DESTROY })
+new s3.Bucket(this, 'MyL2Bucket', { removalPolicy: cdk.RemovalPolicy.DESTROY })
   .with(new s3.mixins.BucketAutoDeleteObjects());
 ----
 
@@ -374,7 +374,7 @@ s3.CfnBucket(self, "MyBucket") \
     .with_(s3.mixins.BucketBlockPublicAccess())
 
 # Apply mixins to an L2 construct
-s3.Bucket(self, "MyBucket", removal_policy=cdk.RemovalPolicy.DESTROY) \
+s3.Bucket(self, "MyL2Bucket", removal_policy=cdk.RemovalPolicy.DESTROY) \
     .with_(s3.mixins.BucketAutoDeleteObjects())
 ----
 

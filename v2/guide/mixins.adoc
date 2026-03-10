@@ -384,4 +384,4 @@ Use Aspects to enforce rules or apply changes across your entire application.
 * xref:facades[Facades] – Connect resources with IAM principals and other services.
 * xref:aspects[Aspects] – Apply changes or validate constructs across your entire application.
 * xref:constructs[Constructs] – Learn about L1, L2, and L3 constructs.
-* xref:develop-customize[The CloudFormation layer] – Customize constructs with escape hatches and raw overrides.
+* xref:cfn-layer[Customize constructs] – Customize constructs with escape hatches and raw overrides.

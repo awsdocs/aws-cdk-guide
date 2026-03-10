@@ -72,7 +72,7 @@ Aspects and xref:mixins[Mixins] both modify constructs, but they differ in when 
 
 [cols="1,1,1", options="header"]
 |===
-| | Aspects | Mixins
+| Feature | Aspects | Mixins
 
 | *When applied*
 | During synthesis, after all other code has run.
