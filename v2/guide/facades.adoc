@@ -1,0 +1,256 @@
+include::attributes.txt[]
+
+// Attributes
+[.topic]
+[#facades]
+= Facades
+:info_titleabbrev: Facades
+:keywords: {aws} CDK, Facades, Grants, constructs, L1, L2, permissions
+
+[abstract]
+--
+Use Facades to connect {aws} resources with IAM principals and other services in the {aws} Cloud Development Kit ({aws} CDK).
+--
+
+// Content start
+
+Facades are classes that connect a resource with other parts of your application.
+Each Facade targets one resource type.
+For example, the class is named `BucketGrants` because it grants access to Amazon S3 buckets.
+Facades work with both L1 (CloudFormation-level) and L2 (intent-based) constructs.
+
+Some Facades are generated and ready to use for most resources, such as metrics and reflections classes.
+Others are authored manually for resources that need custom logic, such as Grants classes. 
+
+[#facades-grants]
+== Grants classes
+
+The most widely used Facades are Grants classes.
+They let you grant access to {aws} resources using simple methods.
+For example, you can use `BucketGrants` for Amazon S3 buckets and `TopicGrants` for Amazon SNS topics.
+
+L2 constructs have a `grants` property for easy access.
+You can also create a Grants class from an L1 construct using its factory method.
+The following example shows both approaches:
+
+====
+[role="tablist"]
+TypeScript::
++
+[source,javascript,subs="verbatim,attributes"]
+----
+import * as s3 from 'aws-cdk-lib/aws-s3';
+import * as iam from 'aws-cdk-lib/aws-iam';
+
+// Using grants on an L2 construct (via the grants property)
+const l2Bucket = new s3.Bucket(this, 'L2Bucket');
+l2Bucket.grants.read(myRole);
+
+// Using grants on an L1 construct (via the factory method)
+const l1Bucket = new s3.CfnBucket(this, 'L1Bucket');
+s3.BucketGrants.fromBucket(l1Bucket).read(myRole);
+----
+
+JavaScript::
++
+[source,javascript,subs="verbatim,attributes"]
+----
+const s3 = require('aws-cdk-lib/aws-s3');
+const iam = require('aws-cdk-lib/aws-iam');
+
+// Using grants on an L2 construct (via the grants property)
+const l2Bucket = new s3.Bucket(this, 'L2Bucket');
+l2Bucket.grants.read(myRole);
+
+// Using grants on an L1 construct (via the factory method)
+const l1Bucket = new s3.CfnBucket(this, 'L1Bucket');
+s3.BucketGrants.fromBucket(l1Bucket).read(myRole);
+----
+
+Python::
++
+[source,python,subs="verbatim,attributes"]
+----
+import aws_cdk.aws_s3 as s3
+import aws_cdk.aws_iam as iam
+
+# Using grants on an L2 construct (via the grants property)
+l2_bucket = s3.Bucket(self, "L2Bucket")
+l2_bucket.grants.read(my_role)
+
+# Using grants on an L1 construct (via the factory method)
+l1_bucket = s3.CfnBucket(self, "L1Bucket")
+s3.BucketGrants.from_bucket(l1_bucket).read(my_role)
+----
+
+Java::
++
+[source,java,subs="verbatim,attributes"]
+----
+import software.amazon.awscdk.services.s3.*;
+import software.amazon.awscdk.services.iam.*;
+
+// Using grants on an L2 construct (via the grants property)
+Bucket l2Bucket = new Bucket(this, "L2Bucket");
+l2Bucket.getGrants().read(myRole);
+
+// Using grants on an L1 construct (via the factory method)
+CfnBucket l1Bucket = new CfnBucket(this, "L1Bucket");
+BucketGrants.fromBucket(l1Bucket).read(myRole);
+----
+
+C#::
++
+[source,csharp,subs="verbatim,attributes"]
+----
+using Amazon.CDK.AWS.S3;
+using Amazon.CDK.AWS.IAM;
+
+// Using grants on an L2 construct (via the grants property)
+var l2Bucket = new Bucket(this, "L2Bucket");
+l2Bucket.Grants.Read(myRole);
+
+// Using grants on an L1 construct (via the factory method)
+var l1Bucket = new CfnBucket(this, "L1Bucket");
+BucketGrants.FromBucket(l1Bucket).Read(myRole);
+----
+
+Go::
++
+[source,go,subs="verbatim,attributes"]
+----
+l2Bucket := awss3.NewBucket(stack, jsii.String("L2Bucket"), nil)
+l2Bucket.Grants().Read(myRole, nil)
+
+l1Bucket := awss3.NewCfnBucket(stack, jsii.String("L1Bucket"), nil)
+awss3.BucketGrants_FromBucket(l1Bucket).Read(myRole, nil)
+----
+====
+
+For more information about grants and permissions, see xref:permissions-grants[Grants].
+
+[#facades-mixins-together]
+== Use Facades with Mixins
+
+You can combine Facades with xref:mixins[Mixins] to get a full L2-like experience on L1 constructs.
+Use Mixins to set up the resource, and Facades to grant access:
+
+====
+[role="tablist"]
+TypeScript::
++
+[source,javascript,subs="verbatim,attributes"]
+----
+import * as s3 from 'aws-cdk-lib/aws-s3';
+import * as iam from 'aws-cdk-lib/aws-iam';
+
+// Configure the resource with Mixins
+const bucket = new s3.CfnBucket(this, 'MyBucket')
+  .with(new s3.mixins.BucketVersioning())
+  .with(new s3.mixins.BucketBlockPublicAccess());
+
+// Grant permissions using a Facade
+const role = new iam.Role(this, 'MyRole', {
+  assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
+});
+s3.BucketGrants.fromBucket(bucket).read(role);
+----
+
+JavaScript::
++
+[source,javascript,subs="verbatim,attributes"]
+----
+const s3 = require('aws-cdk-lib/aws-s3');
+const iam = require('aws-cdk-lib/aws-iam');
+
+// Configure the resource with Mixins
+const bucket = new s3.CfnBucket(this, 'MyBucket')
+  .with(new s3.mixins.BucketVersioning())
+  .with(new s3.mixins.BucketBlockPublicAccess());
+
+// Grant permissions using a Facade
+const role = new iam.Role(this, 'MyRole', {
+  assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
+});
+s3.BucketGrants.fromBucket(bucket).read(role);
+----
+
+Python::
++
+[source,python,subs="verbatim,attributes"]
+----
+import aws_cdk.aws_s3 as s3
+import aws_cdk.aws_iam as iam
+
+# Configure the resource with Mixins
+bucket = s3.CfnBucket(self, "MyBucket") \
+    .with_(s3.mixins.BucketVersioning()) \
+    .with_(s3.mixins.BucketBlockPublicAccess())
+
+# Grant permissions using a Facade
+role = iam.Role(self, "MyRole",
+    assumed_by=iam.ServicePrincipal("lambda.amazonaws.com"),
+)
+s3.BucketGrants.from_bucket(bucket).read(role)
+----
+
+Java::
++
+[source,java,subs="verbatim,attributes"]
+----
+import software.amazon.awscdk.services.s3.*;
+import software.amazon.awscdk.services.iam.*;
+
+// Configure the resource with Mixins
+CfnBucket bucket = new CfnBucket(this, "MyBucket");
+bucket.with(new BucketVersioning());
+bucket.with(new BucketBlockPublicAccess());
+
+// Grant permissions using a Facade
+Role role = Role.Builder.create(this, "MyRole")
+        .assumedBy(new ServicePrincipal("lambda.amazonaws.com"))
+        .build();
+BucketGrants.fromBucket(bucket).read(role);
+----
+
+C#::
++
+[source,csharp,subs="verbatim,attributes"]
+----
+using Amazon.CDK.AWS.S3;
+using Amazon.CDK.AWS.IAM;
+
+// Configure the resource with Mixins
+var bucket = new CfnBucket(this, "MyBucket");
+bucket.With(new BucketVersioning());
+bucket.With(new BucketBlockPublicAccess());
+
+// Grant permissions using a Facade
+var role = new Role(this, "MyRole", new RoleProps
+{
+    AssumedBy = new ServicePrincipal("lambda.amazonaws.com")
+});
+BucketGrants.FromBucket(bucket).Read(role);
+----
+
+Go::
++
+[source,go,subs="verbatim,attributes"]
+----
+bucket := awss3.NewCfnBucket(stack, jsii.String("MyBucket"), nil)
+bucket.With(awss3.NewBucketVersioning())
+bucket.With(awss3.NewBucketBlockPublicAccess())
+
+role := awsiam.NewRole(stack, jsii.String("MyRole"), &awsiam.RoleProps{
+    AssumedBy: awsiam.NewServicePrincipal(jsii.String("lambda.amazonaws.com"), nil),
+})
+awss3.BucketGrants_FromBucket(bucket).Read(role, nil)
+----
+====
+
+[#facades-related]
+== Related resources
+
+* xref:mixins[Mixins] – Add reusable features to L1 and L2 constructs.
+* xref:permissions-grants[Grants] – Grant permissions between resources.
+* xref:constructs[Constructs] – Learn about L1, L2, and L3 constructs.

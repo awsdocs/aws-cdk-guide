@@ -22,6 +22,8 @@ Define {aws} Identity and Access Management (IAM) roles and policies for L2 cons
 
 When you define your infrastructure using L2 constructs from the {aws} Construct Library, you can use the provided _grant methods_ to specify the permissions your resources will require. The {aws} CDK will automatically create the IAM roles needed for all {aws} resources that require them.
 
+TIP: Grant methods also work with L1 constructs through Grants classes. For more information, see xref:facades[Facades].
+
 The following is an example that defines permissions between an {aws} Lambda function and Amazon Simple Storage Service (Amazon S3) bucket. Here, the `grants.read` method of the Bucket L2 construct is used to define these permissions:
 
 ====

@@ -8,12 +8,216 @@ include::attributes.txt[]
 
 [abstract]
 --
-Customize constructs from the {aws} Construct Library through escape hatches, raw overrides, and custom resources.
+Customize constructs from the {aws} Construct Library through Mixins, Facades, escape hatches, raw overrides, and custom resources.
 --
 
 // Content start
 
-Customize constructs from the {aws} Construct Library through escape hatches, raw overrides, and custom resources.
+Customize constructs from the {aws} Construct Library through Mixins, Facades, escape hatches, raw overrides, and custom resources.
+
+[#develop-customize-mixins]
+== Use Mixins to add features to L1 constructs
+
+Mixins let you add high-level features to L1 constructs without needing a full L2 construct.
+This is useful when an L2 construct is not available for a service,
+or when you want to use L1 constructs with specific features that are normally only available through L2 constructs.
+
+For example, you can add auto-delete behavior to an L1 `CfnBucket`, which normally requires the L2 `Bucket` construct:
+
+====
+[role="tablist"]
+TypeScript::
++
+[source,javascript,subs="verbatim,attributes"]
+----
+import * as cdk from 'aws-cdk-lib';
+import * as s3 from 'aws-cdk-lib/aws-s3';
+
+const bucket = new s3.CfnBucket(this, 'MyBucket');
+bucket.cfnOptions.deletionPolicy = cdk.CfnDeletionPolicy.DELETE;
+
+// Add auto-delete objects behavior using a Mixin
+bucket.with(new s3.mixins.BucketAutoDeleteObjects());
+----
+
+JavaScript::
++
+[source,javascript,subs="verbatim,attributes"]
+----
+const cdk = require('aws-cdk-lib');
+const s3 = require('aws-cdk-lib/aws-s3');
+
+const bucket = new s3.CfnBucket(this, 'MyBucket');
+bucket.cfnOptions.deletionPolicy = cdk.CfnDeletionPolicy.DELETE;
+
+// Add auto-delete objects behavior using a Mixin
+bucket.with(new s3.mixins.BucketAutoDeleteObjects());
+----
+
+Python::
++
+[source,python,subs="verbatim,attributes"]
+----
+import aws_cdk as cdk
+import aws_cdk.aws_s3 as s3
+
+bucket = s3.CfnBucket(self, "MyBucket")
+bucket.cfn_options.deletion_policy = cdk.CfnDeletionPolicy.DELETE
+
+# Add auto-delete objects behavior using a Mixin
+bucket.with_(s3.mixins.BucketAutoDeleteObjects())
+----
+
+Java::
++
+[source,java,subs="verbatim,attributes"]
+----
+import software.amazon.awscdk.*;
+import software.amazon.awscdk.services.s3.*;
+
+CfnBucket bucket = new CfnBucket(this, "MyBucket");
+bucket.getCfnOptions().setDeletionPolicy(CfnDeletionPolicy.DELETE);
+
+// Add auto-delete objects behavior using a Mixin
+bucket.with(new BucketAutoDeleteObjects());
+----
+
+C#::
++
+[source,csharp,subs="verbatim,attributes"]
+----
+using Amazon.CDK;
+using Amazon.CDK.AWS.S3;
+
+var bucket = new CfnBucket(this, "MyBucket");
+bucket.CfnOptions.DeletionPolicy = CfnDeletionPolicy.DELETE;
+
+// Add auto-delete objects behavior using a Mixin
+bucket.With(new BucketAutoDeleteObjects());
+----
+
+Go::
++
+[source,go,subs="verbatim,attributes"]
+----
+bucket := awss3.NewCfnBucket(stack, jsii.String("MyBucket"), nil)
+bucket.CfnOptions().SetDeletionPolicy(awscdk.CfnDeletionPolicy_DELETE)
+
+bucket.With(awss3.NewBucketAutoDeleteObjects())
+----
+====
+
+Mixins are available through the `mixins` namespace of each service module.
+You can combine Mixins with xref:develop-customize-facades[Facades] to also get permissions and other integrations on L1 constructs.
+For more information about Mixins, see xref:mixins[Mixins].
+
+[#develop-customize-facades]
+== Use Facades for integrations on L1 constructs
+
+Facades are resource-specific classes that provide integrations — such as permissions, metrics, and reflections — for both L1 and L2 constructs.
+The most common Facades are Grants classes, which provide intent-based permission methods.
+
+You can use Facades directly on L1 constructs without wrapping them in an L2:
+
+====
+[role="tablist"]
+TypeScript::
++
+[source,javascript,subs="verbatim,attributes"]
+----
+import * as s3 from 'aws-cdk-lib/aws-s3';
+import * as iam from 'aws-cdk-lib/aws-iam';
+
+const bucket = new s3.CfnBucket(this, 'MyBucket');
+const role = new iam.Role(this, 'MyRole', {
+  assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
+});
+
+// Use the Grants Facade directly on the L1 construct
+s3.BucketGrants.fromBucket(bucket).read(role);
+----
+
+JavaScript::
++
+[source,javascript,subs="verbatim,attributes"]
+----
+const s3 = require('aws-cdk-lib/aws-s3');
+const iam = require('aws-cdk-lib/aws-iam');
+
+const bucket = new s3.CfnBucket(this, 'MyBucket');
+const role = new iam.Role(this, 'MyRole', {
+  assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
+});
+
+// Use the Grants Facade directly on the L1 construct
+s3.BucketGrants.fromBucket(bucket).read(role);
+----
+
+Python::
++
+[source,python,subs="verbatim,attributes"]
+----
+import aws_cdk.aws_s3 as s3
+import aws_cdk.aws_iam as iam
+
+bucket = s3.CfnBucket(self, "MyBucket")
+role = iam.Role(self, "MyRole",
+    assumed_by=iam.ServicePrincipal("lambda.amazonaws.com"),
+)
+
+# Use the Grants Facade directly on the L1 construct
+s3.BucketGrants.from_bucket(bucket).read(role)
+----
+
+Java::
++
+[source,java,subs="verbatim,attributes"]
+----
+import software.amazon.awscdk.services.s3.*;
+import software.amazon.awscdk.services.iam.*;
+
+CfnBucket bucket = new CfnBucket(this, "MyBucket");
+Role role = Role.Builder.create(this, "MyRole")
+        .assumedBy(new ServicePrincipal("lambda.amazonaws.com"))
+        .build();
+
+// Use the Grants Facade directly on the L1 construct
+BucketGrants.fromBucket(bucket).read(role);
+----
+
+C#::
++
+[source,csharp,subs="verbatim,attributes"]
+----
+using Amazon.CDK.AWS.S3;
+using Amazon.CDK.AWS.IAM;
+
+var bucket = new CfnBucket(this, "MyBucket");
+var role = new Role(this, "MyRole", new RoleProps
+{
+    AssumedBy = new ServicePrincipal("lambda.amazonaws.com")
+});
+
+// Use the Grants Facade directly on the L1 construct
+BucketGrants.FromBucket(bucket).Read(role);
+----
+
+Go::
++
+[source,go,subs="verbatim,attributes"]
+----
+bucket := awss3.NewCfnBucket(stack, jsii.String("MyBucket"), nil)
+role := awsiam.NewRole(stack, jsii.String("MyRole"), &awsiam.RoleProps{
+    AssumedBy: awsiam.NewServicePrincipal(jsii.String("lambda.amazonaws.com"), nil),
+})
+
+awss3.BucketGrants_FromBucket(bucket).Read(role, nil)
+----
+====
+
+For more information about Facades, see xref:facades[Facades].
+
+When Mixins and Facades don't cover your use case, you can use escape hatches and raw overrides to customize constructs at a lower level.
 
 [#develop-customize-escape]
 == Use escape hatches
@@ -347,7 +551,9 @@ cfnBucket.CfnOptions.Metadata = new Dictionary<string, object>
 
 The {aws} CDK also provides the capability to go _up_ an abstraction level, which we might refer to as an "un-escape" hatch. If you have an L1 construct, such as `CfnBucket`, you can create a new L2 construct (`Bucket` in this case) to wrap the L1 construct.
 
-This is convenient when you create an L1 resource but want to use it with a construct that requires an L2 resource. It's also helpful when you want to use convenience methods like `.grants.xxxx()` that aren't available on the L1 construct.
+This is convenient when you create an L1 resource but want to use it with a construct that requires an L2 resource.
+
+TIP: If you only need permissions or other integrations on an L1 construct, you don't need to wrap it in an L2. Use xref:facades[Facades] like Grants classes directly on the L1 instead — for example, `BucketGrants.fromBucket(cfnBucket).read(role)`.
 
 You move to the higher abstraction level using a static method on the L2 class called `.fromCfnXxxxx()`--for example, `Bucket.fromCfnBucket()` for Amazon S3 buckets. The L1 resource is the only parameter.
 

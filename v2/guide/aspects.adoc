@@ -65,6 +65,39 @@ awscdk.Aspects_Of(stack).Add(awscdk.NewTag(...))
 
 The {aws} CDK uses aspects to xref:tagging[tag resources], but the framework can also be used for other purposes. For example, you can use it to validate or change the {aws} CloudFormation resources that are defined for you by higher-level constructs.
 
+[#aspects-vs-mixins]
+== Aspects vs. Mixins
+
+Aspects and xref:mixins[Mixins] both modify constructs, but they differ in when and how they are applied:
+
+[cols="1,1,1", options="header"]
+|===
+| | Aspects | Mixins
+
+| *When applied*
+| During synthesis, after all other code has run.
+| Immediately when `.with()` is called.
+
+| *Scope*
+| All constructs in a given scope, including constructs added later.
+| Only the constructs you explicitly apply them to.
+
+| *Style*
+| Declarative — you set a rule and the CDK applies it.
+| Imperative — you choose what to apply and where.
+
+| *Best for*
+| Validation, compliance, tagging, broad policies.
+| Adding specific features to individual resources.
+|===
+
+Use Aspects when you want to enforce rules across your entire application or validate that constructs meet certain criteria.
+Use Mixins when you want to add a specific feature to a specific construct.
+
+Aspects and Mixins can be used together.
+For example, you might use Mixins to configure individual resources
+and Aspects to validate that all resources in a stack meet your organization's security requirements.
+
 [#aspects-detail]
 == Aspects in detail
 
