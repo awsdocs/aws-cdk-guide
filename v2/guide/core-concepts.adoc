@@ -78,6 +78,10 @@ include::stages.adoc[leveloffset=+1]
 
 include::constructs.adoc[leveloffset=+1]
 
+include::mixins.adoc[leveloffset=+1]
+
+include::facades.adoc[leveloffset=+1]
+
 include::environments.adoc[leveloffset=+1]
 
 include::bootstrapping.adoc[leveloffset=+1]
