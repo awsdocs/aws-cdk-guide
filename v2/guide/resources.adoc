@@ -851,7 +851,15 @@ lambda.NewFunction(this, jsii.String("MyLambda"), &lambda.FunctionProps{
 [#resources-grants]
 == Granting permissions between resources
 
-Higher-level constructs make least-privilege permissions achievable by offering simple, intent-based APIs to express permission requirements. For example, many L2 constructs offer grant methods that you can use to grant an entity (such as an IAM role or user) permission to work with the resource, without having to manually create IAM permission statements.
+Higher-level constructs make least-privilege permissions achievable by offering simple, intent-based APIs to express permission requirements.
+For example, many constructs offer grant methods that you can use to grant an entity (such as an IAM role or user) permission to work with the resource,
+without having to manually create IAM permission statements.
+
+Grant methods are available through Grants classes (such as `BucketGrants` for Amazon S3 buckets).
+These classes work with both L1 and L2 constructs.
+L2 constructs expose a `grants` property for convenience, 
+but you can also create a Grants class directly from an L1 construct.
+You can combine Grants classes with xref:mixins[Mixins] to get L2-like convenience on L1 constructs.
 
 The following example creates the permissions to allow a Lambda function's execution role to read and write objects to a particular Amazon S3 bucket. If the Amazon S3 bucket is encrypted with an {aws} KMS key, this method also grants permissions to the Lambda function's execution role to decrypt with the key.
 

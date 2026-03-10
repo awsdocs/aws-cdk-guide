@@ -46,6 +46,8 @@ L1 constructs are generated from the https://docs.aws.amazon.com/AWSCloudFormati
 L2 constructs, also known as _curated_ constructs, are thoughtfully developed by the CDK team and are usually the most widely used construct type. L2 constructs map directly to single {aws} CloudFormation resources, similar to L1 constructs. Compared to L1 constructs, L2 constructs provide a higher-level abstraction through an intuitive intent-based API. L2 constructs include sensible default property configurations, best practice security policies, and generate a lot of the boilerplate code and glue logic for you.
 +
 L2 constructs also provide helper methods for most resources that make it simpler and quicker to define properties, permissions, event-based interactions between resources, and more.
+Many of these features are also available as independent building blocks called xref:mixins[Mixins],
+which can be applied to both L1 and L2 constructs using the `.with()` method.
 +
 The https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.Bucket.html[`s3.Bucket`] class is an example of an L2 construct for an Amazon Simple Storage Service (Amazon S3) bucket resource.
 +
@@ -314,6 +316,127 @@ Go::
 ====
 
 For information about the most common API patterns in the {aws} Construct Library, see  xref:resources[Resources and the {aws} CDK].
+
+[#constructs-mixins]
+=== Add features with Mixins
+
+Mixins are composable features that you can apply to any construct using the `.with()` method.
+Mixins let you add functionality to L1 and L2 constructs without having to use a different construct or write low-level code.
+
+For example, you can enable versioning and block public access on an Amazon S3 bucket — whether it's an L1 `CfnBucket` or an L2 `Bucket`:
+
+====
+[role="tablist"]
+TypeScript::
++
+[source,javascript,subs="verbatim,attributes"]
+----
+import * as cdk from 'aws-cdk-lib';
+import * as s3 from 'aws-cdk-lib/aws-s3';
+
+// Apply mixins to an L1 construct
+new s3.CfnBucket(this, 'MyBucket')
+  .with(new s3.mixins.BucketVersioning())
+  .with(new s3.mixins.BucketBlockPublicAccess());
+
+// Apply mixins to an L2 construct
+new s3.Bucket(this, 'MyL2Bucket', { removalPolicy: cdk.RemovalPolicy.DESTROY })
+  .with(new s3.mixins.BucketAutoDeleteObjects());
+----
+
+JavaScript::
++
+[source,javascript,subs="verbatim,attributes"]
+----
+const cdk = require('aws-cdk-lib');
+const s3 = require('aws-cdk-lib/aws-s3');
+
+// Apply mixins to an L1 construct
+new s3.CfnBucket(this, 'MyBucket')
+  .with(new s3.mixins.BucketVersioning())
+  .with(new s3.mixins.BucketBlockPublicAccess());
+
+// Apply mixins to an L2 construct
+new s3.Bucket(this, 'MyL2Bucket', { removalPolicy: cdk.RemovalPolicy.DESTROY })
+  .with(new s3.mixins.BucketAutoDeleteObjects());
+----
+
+Python::
++
+[source,python,subs="verbatim,attributes"]
+----
+import aws_cdk as cdk
+import aws_cdk.aws_s3 as s3
+
+# Apply mixins to an L1 construct
+s3.CfnBucket(self, "MyBucket") \
+    .with_(s3.mixins.BucketVersioning()) \
+    .with_(s3.mixins.BucketBlockPublicAccess())
+
+# Apply mixins to an L2 construct
+s3.Bucket(self, "MyL2Bucket", removal_policy=cdk.RemovalPolicy.DESTROY) \
+    .with_(s3.mixins.BucketAutoDeleteObjects())
+----
+
+Java::
++
+[source,java,subs="verbatim,attributes"]
+----
+import software.amazon.awscdk.*;
+import software.amazon.awscdk.services.s3.*;
+
+// Apply mixins to an L1 construct
+CfnBucket bucket = new CfnBucket(this, "MyBucket");
+bucket.with(new BucketVersioning());
+bucket.with(new BucketBlockPublicAccess());
+
+// Apply mixins to an L2 construct
+Bucket l2Bucket = Bucket.Builder.create(this, "MyL2Bucket")
+        .removalPolicy(RemovalPolicy.DESTROY)
+        .build();
+l2Bucket.with(new BucketAutoDeleteObjects());
+----
+
+C#::
++
+[source,csharp,subs="verbatim,attributes"]
+----
+using Amazon.CDK;
+using Amazon.CDK.AWS.S3;
+
+// Apply mixins to an L1 construct
+var bucket = new CfnBucket(this, "MyBucket");
+bucket.With(new BucketVersioning());
+bucket.With(new BucketBlockPublicAccess());
+
+// Apply mixins to an L2 construct
+var l2Bucket = new Bucket(this, "MyL2Bucket", new BucketProps
+{
+    RemovalPolicy = RemovalPolicy.DESTROY
+});
+l2Bucket.With(new BucketAutoDeleteObjects());
+----
+
+Go::
++
+[source,go,subs="verbatim,attributes"]
+----
+bucket := awss3.NewCfnBucket(stack, jsii.String("MyBucket"), nil)
+bucket.With(awss3.NewBucketVersioning())
+bucket.With(awss3.NewBucketBlockPublicAccess())
+
+l2Bucket := awss3.NewBucket(stack, jsii.String("MyL2Bucket"), &awss3.BucketProps{
+    RemovalPolicy: awscdk.RemovalPolicy_DESTROY,
+})
+l2Bucket.With(awss3.NewBucketAutoDeleteObjects())
+----
+====
+
+Mixins are available through the `mixins` namespace of each service module (for example, `s3.mixins`).
+Each mixin targets a specific resource type and is named after that resource.
+When you apply a mixin to an L2 construct, it automatically applies to the underlying L1 resource.
+
+For more information about Mixins, see xref:mixins[Mixins].
 
 [#constructs-apps-stacks]
 === The app and stack construct
