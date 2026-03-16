@@ -299,9 +299,395 @@ string addr = myConstruct.Node.Addr;
 [#identifiers-logical-ids]
 == Logical IDs
 
-Unique IDs serve as the _logical identifiers_ (or __logical names__) of resources in the generated {aws} CloudFormation templates for constructs that represent {aws} resources.
+When the {aws} CDK synthesizes your app into an {aws} CloudFormation template,
+it generates a _logical ID_ for each resource.
+{aws} CloudFormation uses logical IDs to identify resources within a template
+and to track them across deployments.
+Understanding how logical IDs are generated helps you avoid unintended resource replacements when you refactor your CDK code.
 
-For example, the Amazon S3 bucket in the previous example that is created within `Stack2` results in an `{aws}::S3::Bucket` resource. The resource's logical ID is `Stack2MyBucket4DD88B4F` in the resulting {aws} CloudFormation template. (For details on how this identifier is generated, see xref:identifiers-unique-ids[Unique IDs].)
+[#identifiers-logical-id-generation]
+=== How logical IDs are generated
+
+The {aws} CDK generates logical IDs from the construct path by using the following algorithm:
+
+. Concatenate the path components from the construct tree, excluding the stack itself.
+. Apply heuristics to improve readability (see xref:identifiers-logical-id-heuristics[Logical ID path component heuristics]).
+. Append an 8-character hash of the full path to ensure uniqueness.
+
+The resulting format is:
+
+----
+<human-readable-portion><8-character-hash>
+----
+
+For example, a VPC private subnet route table might produce the logical ID `VPCPrivateSubnet2RouteTable0A19E10E`.
+
+The following rules apply to logical ID generation:
+
+* The maximum length is 255 characters. The human-readable portion is capped at 240 characters.
+* The 8-character hash ensures that paths like `A/B/C` and `A/BC` — which concatenate to the same string — produce different logical IDs.
+* Resources that are direct children of the stack (single-component paths) use their name directly without a hash, as long as the name is 255 characters or fewer.
+
+[#identifiers-logical-id-heuristics]
+=== Logical ID path component heuristics
+
+The {aws} CDK applies the following heuristics to path components when it generates the human-readable portion of logical IDs.
+
+`Default` — removed entirely::
+If a path component is `Default`, the CDK removes it from both the human-readable portion and the hash input.
+This means that wrapping an existing construct inside a new construct — and naming the inner construct `Default` —
+produces the exact same logical ID as the original unwrapped construct.
+This is the key mechanism for safely refactoring flat code into higher-level constructs without changing deployed resource identities.
+
+`Resource` — hidden from human-readable portion only::
+If a path component is `Resource`, the CDK omits it from the human-readable portion but still includes it in the hash calculation.
+L1 (CloudFormation) constructs use `Resource` as their construct ID by convention.
+This keeps logical IDs shorter without losing uniqueness.
+
+Duplicate consecutive components — deduplicated::
+If the preceding path component name ends with the current component name, the CDK skips the current component.
+This prevents redundant repetition in logical IDs.
+
+[#identifiers-logical-id-refactoring]
+=== Use `Default` to preserve logical IDs when you refactor
+
+When you refactor a flat stack into higher-level constructs,
+you can use `Default` as the construct ID for the primary resource to preserve its logical ID.
+This prevents {aws} CloudFormation from replacing the resource during deployment.
+
+The following example shows a stack with resources that are defined directly:
+
+====
+[role="tablist"]
+TypeScript::
++
+[source,javascript,subs="verbatim,attributes"]
+----
+export class MyStack extends cdk.Stack {
+  constructor(scope: Construct, id: string) {
+    super(scope, id);
+    new s3.Bucket(this, 'DataBucket');
+    new lambda.Function(this, 'ProcessFunction', { /* ... */ });
+  }
+}
+----
+
+JavaScript::
++
+[source,javascript,subs="verbatim,attributes"]
+----
+class MyStack extends cdk.Stack {
+  constructor(scope, id) {
+    super(scope, id);
+    new s3.Bucket(this, 'DataBucket');
+    new lambda.Function(this, 'ProcessFunction', { /* ... */ });
+  }
+}
+----
+
+Python::
++
+[source,python,subs="verbatim,attributes"]
+----
+from aws_cdk import (
+    Stack,
+    aws_s3 as s3,
+    aws_lambda as _lambda,
+)
+from constructs import Construct
+
+class MyStack(Stack):
+    def __init__(self, scope: Construct, id: str, **kwargs) -> None:
+        super().__init__(scope, id, **kwargs)
+        s3.Bucket(self, "DataBucket")
+        _lambda.Function(self, "ProcessFunction", # ...
+        )
+----
+
+Java::
++
+[source,java,subs="verbatim,attributes"]
+----
+package com.myorg;
+
+import software.constructs.Construct;
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
+import software.amazon.awscdk.services.s3.Bucket;
+import software.amazon.awscdk.services.lambda.Function;
+
+public class MyStack extends Stack {
+    public MyStack(final Construct scope, final String id) {
+        this(scope, id, null);
+    }
+
+    public MyStack(final Construct scope, final String id, final StackProps props) {
+        super(scope, id, props);
+        new Bucket(this, "DataBucket");
+        Function.Builder.create(this, "ProcessFunction")
+            // ...
+            .build();
+    }
+}
+----
+
+C#::
++
+[source,csharp,subs="verbatim,attributes"]
+----
+using Amazon.CDK;
+using Constructs;
+using Amazon.CDK.{aws}.S3;
+using Amazon.CDK.{aws}.Lambda;
+
+namespace MyApp
+{
+    public class MyStack : Stack
+    {
+        public MyStack(Construct scope, string id, StackProps props = null) : base(scope, id, props)
+        {
+            new Bucket(this, "DataBucket");
+            new Function(this, "ProcessFunction", new FunctionProps
+            {
+                // ...
+            });
+        }
+    }
+}
+----
+
+Go::
++
+[source,go,subs="verbatim,attributes"]
+----
+package main
+
+import (
+	"github.com/aws/aws-cdk-go/awscdk/v2"
+	"github.com/aws/aws-cdk-go/awscdk/v2/awslambda"
+	"github.com/aws/aws-cdk-go/awscdk/v2/awss3"
+	"github.com/aws/constructs-go/constructs/v10"
+	"github.com/aws/jsii-runtime-go"
+)
+
+type MyStackProps struct {
+	awscdk.StackProps
+}
+
+func NewMyStack(scope constructs.Construct, id string, props *MyStackProps) awscdk.Stack {
+	stack := awscdk.NewStack(scope, &id, &props.StackProps)
+
+	awss3.NewBucket(stack, jsii.String("DataBucket"), &awss3.BucketProps{})
+	awslambda.NewFunction(stack, jsii.String("ProcessFunction"), &awslambda.FunctionProps{
+		// ...
+	})
+
+	return stack
+}
+----
+====
+
+The bucket's path is `MyStack/DataBucket/Resource`, which produces a logical ID of `DataBucket<hash>`.
+
+You can extract the bucket into a higher-level construct and preserve the same logical ID by naming the inner construct `Default`:
+
+====
+[role="tablist"]
+TypeScript::
++
+[source,javascript,subs="verbatim,attributes"]
+----
+class DataPipeline extends Construct {
+  constructor(scope: Construct, id: string) {
+    super(scope, id);
+    new s3.Bucket(this, 'Default');  // 'Default' is hidden from logical ID
+    new lambda.Function(this, 'ProcessFunction', { /* ... */ });
+  }
+}
+
+export class MyStack extends cdk.Stack {
+  constructor(scope: Construct, id: string) {
+    super(scope, id);
+    new DataPipeline(this, 'DataBucket');
+  }
+}
+----
+
+JavaScript::
++
+[source,javascript,subs="verbatim,attributes"]
+----
+class DataPipeline extends Construct {
+  constructor(scope, id) {
+    super(scope, id);
+    new s3.Bucket(this, 'Default');  // 'Default' is hidden from logical ID
+    new lambda.Function(this, 'ProcessFunction', { /* ... */ });
+  }
+}
+
+class MyStack extends cdk.Stack {
+  constructor(scope, id) {
+    super(scope, id);
+    new DataPipeline(this, 'DataBucket');
+  }
+}
+----
+
+Python::
++
+[source,python,subs="verbatim,attributes"]
+----
+from aws_cdk import (
+    Stack,
+    aws_s3 as s3,
+    aws_lambda as _lambda,
+)
+from constructs import Construct
+
+class DataPipeline(Construct):
+    def __init__(self, scope: Construct, id: str) -> None:
+        super().__init__(scope, id)
+        s3.Bucket(self, "Default")  # 'Default' is hidden from logical ID
+        _lambda.Function(self, "ProcessFunction", # ...
+        )
+
+class MyStack(Stack):
+    def __init__(self, scope: Construct, id: str, **kwargs) -> None:
+        super().__init__(scope, id, **kwargs)
+        DataPipeline(self, "DataBucket")
+----
+
+Java::
++
+[source,java,subs="verbatim,attributes"]
+----
+package com.myorg;
+
+import software.constructs.Construct;
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
+import software.amazon.awscdk.services.s3.Bucket;
+import software.amazon.awscdk.services.lambda.Function;
+
+public class DataPipeline extends Construct {
+    public DataPipeline(final Construct scope, final String id) {
+        super(scope, id);
+        new Bucket(this, "Default");  // 'Default' is hidden from logical ID
+        Function.Builder.create(this, "ProcessFunction")
+            // ...
+            .build();
+    }
+}
+
+public class MyStack extends Stack {
+    public MyStack(final Construct scope, final String id) {
+        this(scope, id, null);
+    }
+
+    public MyStack(final Construct scope, final String id, final StackProps props) {
+        super(scope, id, props);
+        new DataPipeline(this, "DataBucket");
+    }
+}
+----
+
+C#::
++
+[source,csharp,subs="verbatim,attributes"]
+----
+using Amazon.CDK;
+using Constructs;
+using Amazon.CDK.{aws}.S3;
+using Amazon.CDK.{aws}.Lambda;
+
+namespace MyApp
+{
+    public class DataPipeline : Construct
+    {
+        public DataPipeline(Construct scope, string id) : base(scope, id)
+        {
+            new Bucket(this, "Default");  // 'Default' is hidden from logical ID
+            new Function(this, "ProcessFunction", new FunctionProps
+            {
+                // ...
+            });
+        }
+    }
+
+    public class MyStack : Stack
+    {
+        public MyStack(Construct scope, string id, StackProps props = null) : base(scope, id, props)
+        {
+            new DataPipeline(this, "DataBucket");
+        }
+    }
+}
+----
+
+Go::
++
+[source,go,subs="verbatim,attributes"]
+----
+package main
+
+import (
+	"github.com/aws/aws-cdk-go/awscdk/v2"
+	"github.com/aws/aws-cdk-go/awscdk/v2/awslambda"
+	"github.com/aws/aws-cdk-go/awscdk/v2/awss3"
+	"github.com/aws/constructs-go/constructs/v10"
+	"github.com/aws/jsii-runtime-go"
+)
+
+type DataPipeline struct {
+	constructs.Construct
+}
+
+func NewDataPipeline(scope constructs.Construct, id string) constructs.Construct {
+	this := constructs.NewConstruct(scope, &id)
+
+	// 'Default' is hidden from logical ID
+	awss3.NewBucket(this, jsii.String("Default"), &awss3.BucketProps{})
+	awslambda.NewFunction(this, jsii.String("ProcessFunction"), &awslambda.FunctionProps{
+		// ...
+	})
+
+	return this
+}
+
+type MyStackProps struct {
+	awscdk.StackProps
+}
+
+func NewMyStack(scope constructs.Construct, id string, props *MyStackProps) awscdk.Stack {
+	stack := awscdk.NewStack(scope, &id, &props.StackProps)
+
+	NewDataPipeline(stack, "DataBucket")
+
+	return stack
+}
+----
+====
+
+The bucket's path is now `MyStack/DataBucket/Default/Resource`.
+Because `Default` is removed from both the human-readable portion and the hash input,
+the logical ID remains `DataBucket<hash>` — identical to the original.
+
+[IMPORTANT]
+====
+You can have only one child with the ID `Default` per construct scope.
+If you need multiple resources at the same level, give them descriptive IDs.
+The `Default` pattern works best with single-responsibility constructs that have one primary resource.
+====
+
+[#identifiers-logical-id-considerations]
+=== Limitations and considerations
+
+Keep the following in mind when you work with logical IDs:
+
+* You can assign only one child per scope the `Default` construct ID.
+* If you change a construct ID after deployment, the logical ID changes, which causes {aws} CloudFormation to replace the resource. Use `cdk diff` to verify changes before you deploy.
+* For cases where logical IDs have already changed, you can use the `cdk refactor` command to map old logical IDs to new ones. For more information, see xref:refactor[Preserve deployed resources when refactoring CDK code].
+* For more information about how logical IDs appear in synthesized templates, see xref:how-synth-default-logical-ids[Generated logical IDs in your {aws} CloudFormation template].
 
 [#identifiers-logical-id-stability]
 === Logical ID stability
