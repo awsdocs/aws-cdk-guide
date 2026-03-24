@@ -52,9 +52,9 @@ _Default value_: `false`
 
 [#ref-cli-cmd-destroy-options-concurrency]
 `--concurrency <NUMBER>`::
-Destroy multiple stacks in parallel while accounting for inter-stack dependencies. Use this option to speed up deletions. You must still factor in {aws} CloudFormation and other {aws} account rate limiting.
+Destroy multiple stacks in parallel while accounting for inter-stack dependencies. Use this option to speed up destroy operations. You must still factor in {aws} CloudFormation and other {aws} account rate limiting.
 +
-Provide a number to specify the maximum number of simultaneous destroys (dependency permitting) to perform.
+Provide a number to specify the maximum number of simultaneous destroy operations (dependency permitting) to perform.
 +
 _Default value_: `1`
 
@@ -82,7 +82,9 @@ $ cdk destroy --app='node bin/main.js' <MyStackName>
 ----
 
 [#ref-cli-cmd-destroy-examples-2]
-=== Delete multiple stacks concurrently
+=== Delete multiple stacks in parallel
+
+Use the `--concurrency` option with `--all` to delete all stacks in parallel:
 
 [source,none,subs="verbatim,attributes"]
 ----
