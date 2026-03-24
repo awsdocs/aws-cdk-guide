@@ -86,5 +86,5 @@ $ cdk destroy --app='node bin/main.js' <MyStackName>
 
 [source,none,subs="verbatim,attributes"]
 ----
-$ cdk destroy --all --concurrency 5 --force
+$ cdk destroy --all --concurrency 5
 ----
