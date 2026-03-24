@@ -27,6 +27,13 @@ With {aws} Cloud Development Kit ({aws} CDK) refactoring, you can refactor your 
 
 When you deploy a CDK application, {aws} CloudFormation identifies resources by their logical IDs. The {aws} CDK generates these logical IDs based on the construct ID and its path in the construct tree. If you change a construct's ID or move it to a different location in your code, {aws} CloudFormation typically interprets this as a request to create a new resource and delete the old one. For stateful resources such as databases, storage buckets, or queues, this replacement can cause service interruptions or data loss.
 
+[TIP]
+====
+You can proactively prevent logical ID changes when you extract resources into higher-level constructs.
+By using `Default` as the construct ID for the primary resource in a wrapper construct, the logical ID remains unchanged.
+For more information, see xref:identifiers-logical-id-heuristics[Logical ID path component heuristics].
+====
+
 CDK refactoring addresses this challenge by:
 
 * Detecting when resources have been moved or renamed in your code.
