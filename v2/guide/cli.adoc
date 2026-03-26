@@ -558,7 +558,9 @@ cdk deploy --outputs-file outputs.json MyStack
 [#cli-security]
 === Approve security-related changes
 
-To protect you against unintended changes that affect your security posture, the CDK  CLI prompts you to approve security-related changes before deploying them. You can specify the level of change that requires approval:
+To protect you against unintended changes that may affect your security posture,
+the CDK CLI by default prompts you to approve security-related changes before deploying them.
+You can specify the level of change that requires approval:
 
 [source,none,subs="verbatim,attributes"]
 ----
@@ -576,10 +578,10 @@ cdk deploy --require-approval <LEVEL>
 |Approval is never required
 
 |`any-change`
-|Requires approval on any IAM or security-group-related change
+|Requires approval for any change to the stack
 
 |`broadening` (default)
-|Requires approval when IAM statements or traffic rules are added; removals don't require approval
+|Requires approval if changes involve a broadening of permissions or security group rules
 |===
 
 The setting can also be configured in the `cdk.json` file.
@@ -752,7 +754,7 @@ Default values for many CDK  CLI command line flags can be stored in a project's
 |`--progress`
 
 |`requireApproval`
-|Default approval level for security changes. See xref:cli-security[Approve security-related changes]
+|Default approval level for changes that require manual approval. See xref:cli-security[Approve security-related changes].
 |`--require-approval`
 
 |`rollback`

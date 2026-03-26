@@ -268,7 +268,7 @@ _Default value_: `bar`
 
 [#ref-cli-cmd-deploy-options-require-approval]
 `--require-approval <STRING>`::
-Specify what security-sensitive changes require manual approval.
+Specify what changes require manual approval.
 +
 --
 * `any-change` – Manual approval required for any change to the stack.
