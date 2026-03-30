@@ -43,14 +43,6 @@ _Required_: No
 For a list of global options that work with all CDK  CLI commands, see  xref:ref-cli-cmd-options[Global options].
 
 
-[#ref-cli-cmd-diff-options-change-set]
-`--change-set <BOOLEAN>` _(deprecated)_::
-Specifies whether to create a change set to analyze resource replacements. Use `--method` instead.
-+
-`--change-set` maps to `--method=auto`. `--no-change-set` maps to `--method=template`.
-+
-_Default value_: `true`
-
 [#ref-cli-cmd-diff-options-method]
 `--method, -m <STRING>`::
 Specifies how to compute the diff.
@@ -60,6 +52,12 @@ Specifies how to compute the diff.
 * `template` – Compares CloudFormation templates directly. Faster, but less accurate. Any change detected to properties that require resource replacement is displayed as a resource replacement, even if the change is purely cosmetic. Uses the lookup role.
 +
 _Default value_: `auto`
+
+[#ref-cli-cmd-diff-options-change-set]
+`--change-set <BOOLEAN>` _(deprecated)_::
+Specifies whether to create a change set to analyze resource replacements. Use `--method` instead.
++
+`--change-set` maps to `--method=auto`. `--no-change-set` maps to `--method=template`.
 
 [#ref-cli-cmd-diff-options-context-lines]
 `--context-lines <NUMBER>`::
