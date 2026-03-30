@@ -1570,7 +1570,7 @@ To preview your changes, run the `cdk diff` command. The following is an example
 ----
 $ cdk diff
 Stack HelloCdkStack
-Hold on while we create a read-only change set to get a diff with accurate replacement information (use --no-change-set to use a less accurate but faster template-only diff)
+Hold on while we create a read-only change set to get a diff with accurate replacement information (use --method=template to use a less accurate but faster template-only diff)
 Resources
 [~] {aws}::Lambda::Function HelloWorldFunction HelloWorldFunction<unique-identifier>
  └─ [~] Code
