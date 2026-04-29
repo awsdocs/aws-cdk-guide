@@ -10,7 +10,7 @@ include::attributes.txt[]
 
 [abstract]
 --
-By using the appropriate policy validation plugin, you can make the {aws} CDK application check the generated {aws} CloudFormation template against your policies immediately after synthesis.
+By using the `Validations` class, you can add validation plugins, custom warnings and errors, and acknowledgments to your {aws} CDK application. Validation runs immediately after synthesis.
 --
 
 // Content start
@@ -26,28 +26,30 @@ The goal of {aws} CDK policy validation is to minimize the amount of set up need
 
 [NOTE]
 ====
-
-This feature is considered experimental, and both the plugin API and the format of the validation report are subject to change in the future.
-
+The previous `Beta1` interfaces (such as `IPolicyValidationPluginBeta1`, `PolicyValidationPluginReportBeta1`, and the `policyValidationBeta1` property on `Stage`) have been graduated to stable, no-suffix equivalents (for example, `IPolicyValidationPlugin`, `PolicyValidationPluginReport`). The `Beta1` interfaces are deprecated but continue to work. The recommended way to register validation plugins is now through the `Validations` class rather than the `policyValidationBeta1` property.
 ====
 
 [#for-application-developers]
 == For application developers
 
-To use one or more validation plugins in your application, use the `policyValidationBeta1` property of `Stage`:
+[#adding-validation-plugins]
+=== Adding validation plugins
+
+To use one or more validation plugins in your application, use the `Validations` class:
 
 [source,javascript,subs="verbatim,attributes"]
 ----
+import { Validations } from 'aws-cdk-lib';
 import { CfnGuardValidator } from '@cdklabs/cdk-validator-cfnguard';
-const app = new App({
-  policyValidationBeta1: [
-    new CfnGuardValidator()
-  ],
-});
-// only apply to a particular stage
-const prodStage = new Stage(app, 'ProdStage', {
-  policyValidationBeta1: [...],
-});
+
+const app = new App();
+
+// Add a validation plugin to the entire app
+Validations.of(app).addPlugins(new CfnGuardValidator());
+
+// Or add to a particular stage
+const prodStage = new Stage(app, 'ProdStage');
+Validations.of(prodStage).addPlugins(new CfnGuardValidator());
 ----
 
 Immediately after synthesis, all plugins registered this way will be invoked to validate all the templates generated in the scope you defined. In particular, if you register the templates in the `App` object, all templates will be subject to validation.
@@ -58,6 +60,38 @@ Immediately after synthesis, all plugins registered this way will be invoked to 
 Other than modifying the cloud assembly, plugins can do anything that your {aws} CDK application can. They can read data from the filesystem, access the network etc. It's your responsibility as the consumer of a plugin to verify that it's secure to use.
 
 ====
+
+[#adding-warnings-and-errors]
+=== Adding warnings and errors
+
+The `Validations` class also provides methods to add custom warnings and errors to your constructs:
+
+[source,javascript,subs="verbatim,attributes"]
+----
+import { Validations } from 'aws-cdk-lib';
+
+const bucket = new s3.Bucket(this, 'MyBucket');
+
+// Add a warning
+Validations.of(bucket).addWarning('MyWarningId', 'This bucket does not have versioning enabled');
+
+// Add an error (will cause synthesis to fail)
+Validations.of(bucket).addError('MyErrorId', 'This bucket must have encryption enabled');
+----
+
+[#acknowledging-warnings]
+=== Acknowledging warnings
+
+If you want to suppress a specific warning, use the `acknowledge` method:
+
+[source,javascript,subs="verbatim,attributes"]
+----
+import { Validations } from 'aws-cdk-lib';
+
+Validations.of(myConstruct).acknowledge({ id: 'MyWarningId', reason: 'This is acceptable for our use case' });
+----
+
+The `acknowledge` method accepts `Acknowledgment` objects with an `id` and a `reason`. The `id` uses a `::` delimiter to separate the validation source prefix from the rule name (for example, `annotation::MyWarning` or `cdknag::AwsSolutions-S1`). If you provide a bare ID without `::`, the `annotation::` prefix is added automatically.
 
 [#cfnguard-plugin]
 === {aws} CloudFormation Guard plugin
@@ -138,13 +172,13 @@ The {aws} CDK core framework is responsible for registering and invoking plugins
 [#creating-plugins]
 === Creating plugins
 
-The communication protocol between the {aws} CDK core module and your policy tool is defined by the `IPolicyValidationPluginBeta1` interface. To create a new plugin you must write a class that implements this interface. There are two things you need to implement: the plugin name (by overriding the `name` property), and the `validate()` method.
+The communication protocol between the {aws} CDK core module and your policy tool is defined by the `IPolicyValidationPlugin` interface. To create a new plugin you must write a class that implements this interface. There are two things you need to implement: the plugin name (by overriding the `name` property), and the `validate()` method.
 
-The framework will call `validate()`, passing an `IValidationContextBeta1` object. The location of the templates to be validated is given by `templatePaths`. The plugin should return an instance of `ValidationPluginReportBeta1`. This object represents the report that the user wil receive at the end of the synthesis.
+The framework will call `validate()`, passing an `IPolicyValidationContext` object. The location of the templates to be validated is given by `templatePaths`. The plugin should return an instance of `PolicyValidationPluginReport`. This object represents the report that the user wil receive at the end of the synthesis.
 
 [source,javascript,subs="verbatim,attributes"]
 ----
-validate(context: IPolicyValidationContextBeta1): PolicyValidationReportBeta1 {
+validate(context: IPolicyValidationContext): PolicyValidationPluginReport {
   // First read the templates using context.templatePaths...
   // ...then perform the validation, and then compose and return the report.
   // Using hard-coded values here for better clarity:
