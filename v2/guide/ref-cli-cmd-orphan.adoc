@@ -1,0 +1,128 @@
+include::attributes.txt[]
+
+// Attributes
+
+[.topic]
+[#ref-cli-cmd-orphan]
+= `cdk orphan`
+:info_titleabbrev: cdk orphan
+:keywords: {aws} CDK, {aws} CDK CLI, CDK Toolkit, IaC, Infrastructure as code, {aws} Cloud, {aws} CloudFormation, cdk orphan
+
+[abstract]
+--
+Safely detach resources from a CloudFormation stack without deleting them, enabling resource type migrations with zero downtime.
+--
+
+// Content start
+
+[IMPORTANT]
+====
+The `cdk orphan` command is in preview release and is subject to change.
+
+You must provide the `--unstable=orphan` option when using this command.
+====
+
+Safely detach one or more resources from an {aws} CloudFormation stack without deleting them. This is useful when you need to migrate a resource from one construct type to another (for example, migrating a DynamoDB `Table` to `TableV2`) without downtime or data loss.
+
+When you change a construct type in your CDK code, CloudFormation interprets this as a resource replacement, which deletes the existing resource and creates a new one. For stateful resources like databases and storage, this causes data loss. The `cdk orphan` command solves this by detaching the resource from the stack first, so you can re-import it under the new construct type using `cdk import`.
+
+With `cdk orphan`, you can:
+
+* Detach stateful resources from a stack before changing their construct type.
+* Migrate between construct versions (for example, DynamoDB `Table` to `TableV2`) without data loss.
+* Change the CloudFormation resource type backing a construct without replacing the physical resource.
+
+The orphan command performs three CloudFormation deployments:
+
+. *Resolve references*: Resolves cross-resource references (`Ref`, `Fn::GetAtt`, `Fn::Sub`) to the orphaned resources, so that other resources in the stack that depend on them continue to work after the orphaned resources are removed.
+. *Decouple*: Replaces all cross-resource references with their resolved literal values, sets `DeletionPolicy` to `Retain`, and removes `DependsOn` entries to isolate the resources from the rest of the stack.
+. *Remove*: Removes the resources from the CloudFormation template. The physical resources continue to exist in your {aws} account.
+
+After orphaning, update your CDK code to use the new construct type and use xref:ref-cli-cmd-import[cdk import] to bring the resource back under management.
+
+*To orphan a resource and re-import it under a new construct type*::
++
+. Deploy your stack and verify the resource exists.
++
+. Run `cdk orphan` with the construct path of the resource:
++
+[source,bash,subs="verbatim,attributes"]
+----
+$ cdk orphan MyStack/MyTable --unstable=orphan
+----
++
+. The command outputs a resource mapping. Save this for the import step.
++
+. Update your CDK code to use the new construct type (for example, change `Table` to `TableV2`).
++
+. Run `cdk import` with the resource mapping from the orphan output:
++
+[source,bash,subs="verbatim,attributes"]
+----
+$ cdk import MyStack --resource-mapping-inline '{"MyTable":{"TableName":"my-table"}}'
+----
++
+. After the import completes, `cdk import` detects drift and prompts you to deploy. Accept the prompt to reconcile the stack.
+
+This feature currently has the following limitations:
+
+* All construct paths must reference the same stack. Orphaning resources across multiple stacks in a single command is not supported.
+* Wildcard patterns are not supported. Paths are matched as exact prefixes.
+* This command requires version 32 of the bootstrap template, which includes the necessary IAM permissions for the deploy role.
+
+[#ref-cli-cmd-orphan-usage]
+== Usage
+
+[source,none,subs="verbatim,attributes"]
+----
+$ cdk orphan <PATHS> <options>
+----
+
+[#ref-cli-cmd-orphan-args]
+== Arguments
+
+[#ref-cli-cmd-orphan-args-paths]
+*PATHS*::
+One or more construct paths to orphan, in the format `StackName/ConstructPath`. For example, `MyStack/MyTable`. Multiple paths can be provided to orphan several resources in a single command.
++
+All paths must reference the same stack.
++
+_Type_: String
++
+_Required_: Yes
+
+[#ref-cli-cmd-orphan-options]
+== Options
+
+For a list of global options that work with all CDK CLI commands, see xref:ref-cli-cmd-options[Global options].
+
+[#ref-cli-cmd-orphan-options-help]
+`--help, -h <BOOLEAN>`::
+Show command reference information for the `cdk orphan` command.
+
+[#ref-cli-cmd-orphan-examples]
+== Examples
+
+[#ref-cli-cmd-orphan-examples-single]
+=== Orphan a single resource
+
+[source,bash,subs="verbatim,attributes"]
+----
+$ cdk orphan MyStack/MyTable --unstable=orphan
+----
+
+[#ref-cli-cmd-orphan-examples-multiple]
+=== Orphan multiple resources
+
+[source,bash,subs="verbatim,attributes"]
+----
+$ cdk orphan MyStack/MyTable MyStack/MyBucket --unstable=orphan
+----
+
+[#ref-cli-cmd-orphan-examples-yes]
+=== Skip confirmation prompt
+
+[source,bash,subs="verbatim,attributes"]
+----
+$ cdk orphan MyStack/MyTable --unstable=orphan --yes
+----

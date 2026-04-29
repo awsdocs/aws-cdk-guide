@@ -91,6 +91,10 @@ Migrate {aws} resources, {aws} CloudFormation stacks, and {aws} CloudFormation t
 `xref:ref-cli-cmd-notices[notices]`::
 Display notices for your CDK application.
 
+[#ref-cli-cmd-commands-orphan]
+`xref:ref-cli-cmd-orphan[orphan]`::
+Safely detach resources from a CloudFormation stack without deleting them.
+
 [#ref-cli-cmd-commands-publish-assets]
 `xref:ref-cli-cmd-publish-assets[publish-assets]`::
 Publish assets for the specified CDK stack to their respective destinations without performing a deployment.
@@ -397,6 +401,8 @@ include::ref-cli-cmd-metadata.adoc[leveloffset=+1]
 include::ref-cli-cmd-migrate.adoc[leveloffset=+1]
 
 include::ref-cli-cmd-notices.adoc[leveloffset=+1]
+
+include::ref-cli-cmd-orphan.adoc[leveloffset=+1]
 
 include::ref-cli-cmd-publish-assets.adoc[leveloffset=+1]
 
