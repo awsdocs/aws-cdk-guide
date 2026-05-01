@@ -116,13 +116,21 @@ Hotswapping is currently supported for the following changes:
 * Source and environment changes of {aws} CodeBuild projects.
 * VTL mapping template changes for {aws} AppSync resolvers and functions.
 * Schema changes for {aws} AppSync GraphQL APIs.
+* REST API, deployment, and method changes for Amazon API Gateway.
+* API and integration changes for Amazon API Gateway V2.
+* Configuration changes of Amazon Bedrock agents.
+* Configuration changes of Amazon Bedrock AgentCore Runtime
+* Rule changes for Amazon EventBridge.
+* Configuration changes of Amazon DynamoDB tables and global tables.
+* Configuration changes of Amazon SQS queues.
+* Alarm, composite alarm, and dashboard changes for Amazon CloudWatch.
 --
 +
 Usage of certain CloudFormation intrinsic functions are supported as part of a hotswapped deployment. These include:
 +
 --
 * `Ref`
-* `Fn::GetAtt` – Only partially supported. Refer to link:https://github.com/aws/aws-cdk/blob/main/packages/aws-cdk/lib/api/evaluate-cloudformation-template.ts#L477-L492[this implementation] for supported resources and attributes.
+* `Fn::GetAtt` – Only partially supported, uses a combination of Cloud Control APIs and custom implementations. Refer to the list of resources supported by link:https://docs.aws.amazon.com/cloudcontrolapi/latest/userguide/supported-resources.html[Cloud Control API] and link:https://github.com/aws/aws-cdk-cli/blob/main/packages/%40aws-cdk/toolkit-lib/lib/api/cloudformation/evaluate-cloudformation-template.ts#L648-L668[this implementation] for the full list of supported resources.
 * `Fn::ImportValue`
 * `Fn::Join`
 * `Fn::Select`
@@ -135,8 +143,8 @@ This option is also compatible with nested stacks.
 [NOTE]
 ====
 ** This option deliberately introduces drift in CloudFormation stacks in order to speed up deployments. For this reason, only use it for development purposes. Do not use this option for your production deployments.
-** This option is considered experimental and may have breaking changes in the future.
 ** Defaults for certain parameters may be different with the hotswap parameter. For example, an Amazon ECS service`'s minimum healthy percentage will currently be set at ``0``. Review the source accordingly if this occurs. 
+** When performing a CloudFormation deployment after hotswap deployments, use `xref:ref-cli-cmd-deploy-options-revert-drift[cdk deploy --revert-drift]` to deploy with a drift-aware change set and reconcile any drift introduced by hotswapping.
 ====
 +
 _Default value_: `false`
@@ -280,6 +288,14 @@ Specify what changes require manual approval.
 _Valid values_: `any-change`, `broadening`, `never`
 +
 _Default value_: `broadening`
+
+[#ref-cli-cmd-deploy-options-revert-drift]
+`--revert-drift`::
+Use a drift-aware change set for deployment. This creates a change set with CloudFormation's `REVERT_DRIFT` deployment mode, which detects resources that have drifted from their template definitions due to out-of-band changes and reverts them to the desired state defined in your template.
++
+See link:https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/drift-aware-change-sets.html[Cloudformation documentation on drift aware changesets] for more information about how they work. 
++
+_Default value_: `false`
 
 [#ref-cli-cmd-deploy-options-rollback]
 `--rollback` | `--no-rollback`, `-R`::
