@@ -188,10 +188,11 @@ Configure the method to perform a deployment.
 --
 * `change-set` – Default method. The CDK CLI creates a CloudFormation change set with the changes that will be deployed, then performs deployment.
 * `direct` – Do not create a change set. Instead, apply the change immediately. This is typically faster than creating a change set, but you lose deployment progress details in the CLI output.
-* `prepare-change-set` – Create change set but don't perform deployment. This is useful if you have external tools that will inspect the change set or if you have an approval process for change sets.
+* `prepare-change-set` – Create change set but don't perform deployment. This is useful if you have external tools that will inspect the change set or if you have an approval process for change sets. Use `execute-change-set` to execute the prepared change set.
+* `execute-change-set` – Execute a change set that was previously created with `prepare-change-set`. The change set name defaults to `cdk-deploy-change-set`, or you can specify a custom name with `--change-set-name`.
 --
 +
-_Valid values_: `change-set`, `direct`, `prepare-change-set`
+_Valid values_: `change-set`, `direct`, `execute-change-set`, `prepare-change-set`
 +
 _Default value_: `change-set`
 
