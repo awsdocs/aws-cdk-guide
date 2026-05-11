@@ -175,7 +175,7 @@ $ cdk --app <./my-cloud-assembly> ls
 +
 The call to `app.synth()` is what tells the {aws} CDK to synthesize a cloud assembly from an app. Typically you don't interact directly with cloud assemblies. They are files that include everything needed to deploy your app to a cloud environment. For example, it includes an {aws} CloudFormation template for each stack in your app. It also includes a copy of any file assets or Docker images that you reference in your app.
 +
-See the https://github.com/aws/aws-cdk/blob/master/design/cloud-assembly.md[cloud assembly specification] for details on how cloud assemblies are formatted.
+See the https://github.com/aws/aws-cdk-cli/blob/main/packages/%40aws-cdk/cloud-assembly-schema/README.md[cloud assembly specification] for details on how cloud assemblies are formatted.
 +
 To interact with the cloud assembly that your {aws} CDK app creates, you typically use the {aws} CDK CLI. However, any tool that can read the cloud assembly format can be used to deploy your app.
 
