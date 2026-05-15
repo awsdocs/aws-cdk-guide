@@ -89,6 +89,8 @@ The trust policy of this role controls who can look up information in the enviro
 
 One way to customize CDK stack synthesis, is by modifying the link:https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.DefaultStackSynthesizer.html[`DefaultStackSynthesizer`]. You can customize this synthesizer for a single CDK stack using the `synthesizer` property of your `Stack` instance. You can also modify `DefaultStackSynthesizer` for all stacks in your CDK app using the `defaultStackSynthesizer` property of your `App` instance.
 
+When you provide a synthesizer to a stack, the {aws} CDK binds that synthesizer during stack initialization. For reusable synthesizers, such as `DefaultStackSynthesizer`, the stack may bind and store a stack-specific synthesizer instance. Avoid reading internal synthesizer state, such as the bound stack, from your stack constructor. If you implement your own synthesizer, put stack-dependent initialization in the synthesizer's `bind` method, where the stack is passed to the synthesizer.
+
 [#bootstrapping-custom-synth-qualifiers]
 === Change the qualifier
 
