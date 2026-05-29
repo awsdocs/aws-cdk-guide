@@ -2,6 +2,20 @@
 <project xmlns:ht="happytrails" basedir="." default="build" name="AWSCDKDocs-3.0">
  <description>This is the entry point for happy trails builds (package builder and eclipse).</description>
  <import file="${happytrails.root}/zonbooktrails.xml"/>
+ <ht:import file="zfast/zonbook-4.5.xml"/>
+
+ <target name="server" depends="build">
+  <exec executable="hostname" outputproperty="hostname" />
+  <echo message="Starting docs preview server..." />
+  <echo
+    message="If you're running this locally on your laptop, view at http://localhost:8080/bedrock-agentcore/latest/devguide/what-is-bedrock-agentcore.html" />
+  <echo
+    message="If you're running this from your cloud desktop, view (using VPN) at http://${hostname}:8080/bedrock-agentcore/latest/devguide/what-is-bedrock-agentcore.html" />
+  <echo message="Press CTRL+C to exit..." />
+  <exec executable="python">
+    <arg line="-m http.server 8080 -d build/server-root/" />
+  </exec>
+ </target>
 <!--
 <target name="zbuild-custom-pre">
   <exec executable="bash">
@@ -9,5 +23,4 @@
   </exec>
 </target>
 -->
-<ht:import file="zfast/zonbook-4.5.xml"/>
 </project>

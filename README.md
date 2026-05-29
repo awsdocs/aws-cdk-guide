@@ -7,8 +7,26 @@ You're welcome to [report issues](https://github.com/awsdocs/aws-cdk-guide/issue
 
 Feel free to make a Pull Request against only one of these content sets (we'll make sure it gets into both).
 
-Issues reported through the Feedback link at the bottom of the individual pages of the AWS CDK Developer Guide go to an internal Amazon issue tracker and may not appear here. However, we try to track most substantive AWS CDK Developer Guide work on GitHub 
+Issues reported through the Feedback link at the bottom of the individual pages of the AWS CDK Developer Guide go to an internal Amazon issue tracker and may not appear here. However, we try to track most substantive AWS CDK Developer Guide work on GitHub
 so the community can see, comment, and contribute.
+
+## Building on a Mac
+
+**Building on a Mac is impossible.**
+
+ZonBook is written to use Ruby and a native gem (`nokogiri`). The Brazil binaries are built for Linux and won't work on
+a Mac.
+
+- The provided Brazil platform overlay contains bare Ruby interpreters missing the necessary gems.  Installing the gems
+  from source Brazil packages (`RubyGem-nokogiri`) does not work because the Brazil build system (`BrazilGem`) will
+  preload Brazil libraries onto the compiler search path, and the compiler will get confused and fail to build.
+  `BrazilGem` does not understand building for Mac.
+- We can build a platform-specific Ruby interpreter with the right gems installed locally and force Brazil to use the
+  local interpreter (`platform-support mode=legacy`) but ZonBook has been written to reach directly into `brazil-path`
+  to build some closure that contains the Ruby interpreter, and this particular `brazil-path` invocation doesn't
+  respect legacy platform-support.
+
+I've tested this a bunch; it won't work. Don't waste your time. Make a Linux dev desktop and build on there.
 
 ## Other Documentation Issues
 
