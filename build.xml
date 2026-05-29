@@ -7,10 +7,8 @@
  <target name="server" depends="build">
   <exec executable="hostname" outputproperty="hostname" />
   <echo message="Starting docs preview server..." />
-  <echo
-    message="If you're running this locally on your laptop, view at http://localhost:8080/bedrock-agentcore/latest/devguide/what-is-bedrock-agentcore.html" />
-  <echo
-    message="If you're running this from your cloud desktop, view (using VPN) at http://${hostname}:8080/bedrock-agentcore/latest/devguide/what-is-bedrock-agentcore.html" />
+  <echo message="If you're running this locally on your laptop, view at http://localhost:8080/cdk/v2/guide/home.html" />
+  <echo message="If you're running this from your cloud desktop, view (using VPN) at http://${hostname}:8080/cdk/v2/guide/home.html" />
   <echo message="Press CTRL+C to exit..." />
   <exec executable="python">
     <arg line="-m http.server 8080 -d build/server-root/" />

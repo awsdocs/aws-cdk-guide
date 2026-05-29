@@ -13,6 +13,8 @@ Provides security-related information for the {aws} CDK.
 
 // Content start
 
+== The {aws} Shared Responsibility Model
+
 Cloud security at Amazon Web Services ({aws}) is the highest priority. As an {aws} customer, you benefit from a data center and network architecture that is built to meet the requirements of the most security-sensitive organizations. Security is a shared responsibility between {aws} and you. The link:https://aws.amazon.com/compliance/shared-responsibility-model/[Shared Responsibility Model] describes this as Security of the Cloud and Security in the Cloud.
 
 *Security of the Cloud* – {aws} is responsible for protecting the infrastructure that runs all of the services offered in the {aws} Cloud and providing you with services that you can use securely. Our security responsibility is the highest priority at {aws}, and the effectiveness of our security is regularly tested and verified by third-party auditors as part of the https://aws.amazon.com/compliance/programs/[{aws} Compliance Programs].
@@ -21,6 +23,51 @@ Cloud security at Amazon Web Services ({aws}) is the highest priority. As an {aw
 
 The {aws} CDK follows the link:https://aws.amazon.com/compliance/shared-responsibility-model/[shared responsibility model] through the specific Amazon Web Services ({aws}) services it supports. For {aws} service security information, see the link:https://docs.aws.amazon.com/security/?id=docs_gateway#aws-security[{aws} service security documentation page] and https://aws.amazon.com/compliance/services-in-scope/[{aws} services that are in scope of {aws} compliance efforts by compliance program].
 
+== Security of the {aws} CDK
+
+Given a program written in a general purpose programming language that describes
+the shape of your desired infrastructure, the {aws} CDK generates a set of
+deployable artifacts that will create that infrastructure.
+
+=== Security of default generated infrastructure
+
+_({aws}' responsibility)_ Constructs in the {aws} Construct Library are designed to generate
+infrastructure that does not allow data disclosure, data manipulation, elevation
+of privilege or other tampering by unauthorized third parties (unless explicitly
+configured otherwise, which is in line with the
+link:https://aws.amazon.com/compliance/shared-responsibility-model/[shared
+responsibility model]).
+
+Any violation of this expectation can be reported link:https://aws.amazon.com/security/vulnerability-reporting/[through the company-wide vulnerability reporting mechanisms].
+
+=== Execution in a trusted environment
+
+_(Your responsibility)_ CDK is designed to run in a _trusted environment_ with _trusted inputs_.
+It is your responsibility to ensure user code, any libraries loaded into memory (including those
+downloaded from the Internet via a package manager like NPM or pip), or inputs
+into the CDK construct libraries are trustworthy. The CDK cannot protect you from malicious intent.
+
+You should not use CDK in an environment where untrusted authors write parts of
+the code that drives a CDK application, or where untrusted parties control
+inputs to CDK constructs without validation.
+
+=== Compliance verification is an external process
+
+_(Your responsibility)_ Because of the unlimited expressivity afforded by a
+general purpose programming language, custom CDK
+constructs cannot _guarantee_ an unbypassable compliance with
+security policies. CDK has mechanisms to xref:compliance-validation[shift left
+compliance checks], and mechanisms that can xref:blueprints[help developers meet
+compliance requirements with minimal effort]; but a determined
+enough developer will always be able to bypass the output of the specially
+designed constructs.
+
+If you need compliance guarantees, impose them via a process external
+to the CDK application like
+link:https://docs.aws.amazon.com/cloudformation-cli/latest/hooks-userguide/what-is-cloudformation-hooks.html[CloudFormation
+Hooks], or a separate CloudFormation template validation step in the CI
+Pipeline.
+
 include::security-iam.adoc[leveloffset=+1]
 
 
@@ -28,6 +75,3 @@ include::compliance-validation.adoc[leveloffset=+1]
 
 
 include::disaster-recovery-resiliency.adoc[leveloffset=+1]
-
-
-include::infrastructure-security.adoc[leveloffset=+1]
