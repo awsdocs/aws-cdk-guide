@@ -16,17 +16,10 @@ Complete prerequisites before getting started with the {aws} Cloud Development K
 
 Complete all prerequisites before getting started with the {aws} Cloud Development Kit ({aws} CDK).
 
-[#prerequisites-account]
-== Set up your {aws} account
+[[sign-up-for-aws,sign-up-for-aws.title]]
+== Sign up for an {aws} account
 
-If you or your organization are new to {aws}, you must set up your {aws} account. This includes signing up for an {aws} account, securing your root user, determining your method of managing users, and creating an administrative user. To manage users, you can use {aws} Identity and Access Management (IAM) or {aws} IAM Identity Center. We recommend that you use IAM Identity Center. For more information, see the following:
-
-* https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html[What is IAM?] in the _IAM User Guide_.
-* https://docs.aws.amazon.com/singlesignon/latest/userguide/what-is.html[What is IAM Identity Center?] in the _{aws} IAM Identity Center User Guide_.
-
-After setting up an {aws} account, you should have an administrative user and the ability to create and manage additional users using IAM or IAM Identity Center.
-
-Before moving forward, we recommend that you take time to learn the recommended best practices in {aws} Identity and Access Management. For more information, see https://docs.aws.amazon.com/IAM/latest/UserGuide/IAMBestPracticesAndUseCases.html[Security best practices and use cases in {aws} Identity and Access Management] in the _IAM User Guide_.
+To get started with {aws}, you need an {aws} account. For information about creating an {aws} account, see https://docs.aws.amazon.com/accounts/latest/reference/getting-started.html[Getting started with an {aws} account] in the __{aws} Account Management Reference Guide__.
 
 [#prerequisites-cli]
 == Install and configure the {aws} CLI
