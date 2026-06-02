@@ -450,6 +450,14 @@ This section contains a list of the changes made in each version.
 |**30**
 |2.1034.0
 |Add permissions to describe stack events to the deployment role, to be able to show CloudFormation Early Validation errors accurately. For more information on this change, see `aws-cdk-cli` PR https://github.com/aws/aws-cdk-cli/pull/970[#970].
+
+|**31**
+|2.1116.0
+|Adds `cloudformation:GetHookResult` to the Deploy Role, see `aws-cdk-cli` PR https://github.com/aws/aws-cdk-cli/pull/1198[#1198].
+
+|**32**
+|2.1120.0
+|Multiple individual permissions statements on the Deploy Role have been replaced with the `AWSCloudFormationReadOnlyAccess` managed policy. See `aws-cdk-cli` PR https://github.com/aws/aws-cdk-cli/pull/1403[#1403].
 |===
 
 [#bootstrapping-template]
