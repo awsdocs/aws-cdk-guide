@@ -66,6 +66,20 @@ Only destroy requested stacks and don't include dependencies.
 `--force, -f <BOOLEAN>`::
 Do not ask for confirmation before destroying the stacks.
 
+[#ref-cli-cmd-destroy-options-express]
+`--express <BOOLEAN>`::
+Destroy stacks using CloudFormation express mode. Express mode allows for faster deletions through CloudFormation by reporting stack operations as completed as soon as CloudFormation applies the resource configuration, however this means CloudFormation reports success without waiting for resources to stabilize. 
+Additionally, express mode does not perform rollback automatically and will leave stacks in a failed state if something goes wrong.
++
+For more information about Express Mode see: link:https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cloudformation-express-mode.html[CloudFormation's express mode docuemtation]
++
+[NOTE]
+====
+Since express mode does not wait for stabilization before reporting that deletion completed successfully and does not perform rollback automatically upon failure, it is not recommended for tearing down stacks in production environments. Express mode is targetted towards iterative deployments you would perform while developing your application. 
+====
++
+_Default value_: `false`
+
 [#ref-cli-cmd-destroy-options-help]
 `--help, -h <BOOLEAN>`::
 Show command reference information for the `cdk destroy` command.
