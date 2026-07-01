@@ -81,6 +81,20 @@ Provide a number to specify the maximum number of simultaneous deployments (depe
 +
 _Default value_: `1`
 
+[#ref-cli-cmd-deploy-options-express]
+`--express <BOOLEAN>`::
+Deploy using CloudFormation express mode. Express mode allows for faster deployments through CloudFormation by reporting stack operations as completed as soon as CloudFormation applies the resource configuration, however this means CloudFormation reports success without waiting for resources to stabilize. 
+Additionally, express mode does not perform rollback automatically and will leave stacks in a failed state if something goes wrong. If you wish to perform express mode deployments with automatic rollback enabled include the `xref:ref-cli-cmd-deploy-options-rollback[--rollback]` flag in your express mode deployment. 
++
+For more information about Express Mode see: link:https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cloudformation-express-mode.html[CloudFormation's express mode docuemtation]
++
+[NOTE]
+====
+Since express mode does not wait for stabilization before reporting that deployment completed successfully and does not perform rollback automatically upon failure, it is not recommended for production deployments. Express mode is targetted towards iterative deployments you would perform while developing your application. 
+====
++
+_Default value_: `false`
+
 [#ref-cli-cmd-deploy-options-exclusively]
 `--exclusively, -e <BOOLEAN>`::
 Only deploy requested stacks and don't include dependencies.
@@ -151,9 +165,11 @@ _Default value_: `false`
 
 [#ref-cli-cmd-deploy-options-hotswap-fallback]
 `--hotswap-fallback <BOOLEAN>`::
-This option is is similar to `--hotswap`. The difference being that `--hotswap-fallback` will fall back to perform a full CloudFormation deployment if a change is detected that requires it.
+This option is is similar to `--hotswap`. The difference being that `--hotswap-fallback` will fall back to perform an **express mode** CloudFormation deployment if a change is detected that requires it.
 +
 For more information about this option, see `--hotswap`.
++
+For more information about express mode deployments see `xref:ref-cli-cmd-deploy-options-express[--express]`
 +
 _Default value_: `false`
 
