@@ -28,6 +28,14 @@ a Mac.
 
 I've tested this a bunch; it won't work. Don't waste your time. Make a Linux dev desktop and build on there.
 
+```
+# On your machine
+ssh -L 8080:localhost:8080 dev-dsk-<...>
+
+# On the dev desktop
+brazil-build server
+```
+
 ## Other Documentation Issues
 
 * Issues with the [API Reference](https://docs.aws.amazon.com/cdk/api/latest/docs/aws-construct-library.html) should be [filed](https://github.com/aws/aws-cdk/issues/new/choose) against the [AWS CDK repo](https://github.com/aws/aws-cdk/).
