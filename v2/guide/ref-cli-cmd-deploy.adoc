@@ -81,6 +81,10 @@ Provide a number to specify the maximum number of simultaneous deployments (depe
 +
 _Default value_: `1`
 
+[#ref-cli-cmd-deploy-options-exclusively]
+`--exclusively, -e <BOOLEAN>`::
+Only deploy requested stacks and don't include dependencies.
+
 [#ref-cli-cmd-deploy-options-express]
 `--express <BOOLEAN>`::
 Deploy using CloudFormation express mode. Express mode allows for faster deployments through CloudFormation by reporting stack operations as completed as soon as CloudFormation applies the resource configuration. However, CloudFormation reports success without waiting for resources to stabilize.
@@ -94,10 +98,6 @@ Express mode does not wait for stabilization before reporting success and does n
 ====
 +
 _Default value_: `false`
-
-[#ref-cli-cmd-deploy-options-exclusively]
-`--exclusively, -e <BOOLEAN>`::
-Only deploy requested stacks and don't include dependencies.
 
 [#ref-cli-cmd-deploy-options-force]
 `--force, -f <BOOLEAN>`::
@@ -165,11 +165,9 @@ _Default value_: `false`
 
 [#ref-cli-cmd-deploy-options-hotswap-fallback]
 `--hotswap-fallback <BOOLEAN>`::
-This option is is similar to `--hotswap`. The difference being that `--hotswap-fallback` will fall back to perform an **express mode** CloudFormation deployment if a change is detected that requires it.
+This option is similar to `--hotswap`. The difference is that `--hotswap-fallback` will fall back to perform a CloudFormation deployment if a change is detected that requires it.
 +
 For more information about this option, see `--hotswap`.
-+
-For more information about express mode deployments see `xref:ref-cli-cmd-deploy-options-express[--express]`
 +
 _Default value_: `false`
 

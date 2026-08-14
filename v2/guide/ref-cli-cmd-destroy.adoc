@@ -62,10 +62,6 @@ _Default value_: `1`
 `--exclusively, -e <BOOLEAN>`::
 Only destroy requested stacks and don't include dependencies.
 
-[#ref-cli-cmd-destroy-options-force]
-`--force, -f <BOOLEAN>`::
-Do not ask for confirmation before destroying the stacks.
-
 [#ref-cli-cmd-destroy-options-express]
 `--express <BOOLEAN>`::
 Destroy stacks using CloudFormation express mode. Express mode allows for faster deletions through CloudFormation by reporting stack operations as completed as soon as CloudFormation applies the resource configuration. However, CloudFormation reports success without waiting for resources to stabilize.
@@ -79,6 +75,10 @@ Express mode does not wait for stabilization before reporting success and does n
 ====
 +
 _Default value_: `false`
+
+[#ref-cli-cmd-destroy-options-force]
+`--force, -f <BOOLEAN>`::
+Do not ask for confirmation before destroying the stacks.
 
 [#ref-cli-cmd-destroy-options-help]
 `--help, -h <BOOLEAN>`::

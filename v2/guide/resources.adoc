@@ -358,7 +358,7 @@ Every cross-stack reference has a *strength* that determines the CloudFormation 
 [#resources-deadlock]
 ==== The dependency deadlock (deadly embrace)
 
-Strong references can create a deadlock that prevents stack updates. This happens because CloudFormation cannot remove an export while another stack still imports it—and the consuming stack cannot be updated to stop importing until the export already exists. You may see an error like:
+Strong references can create a deadlock that prevents stack updates. This happens because CloudFormation cannot remove an export while another stack still imports it—and the consuming stack cannot be updated to stop importing until the export already exists. You might see an error like:
 
 ----
 Export Stack1:ExportsOutputFnGetAtt-****** cannot be deleted as it is in use by Stack2
@@ -581,10 +581,10 @@ If you already have deployed stacks with strong references, you cannot switch di
 
 Which API to use depends on your goal:
 
-* **Removing a single reference** (but keeping both stacks and the resource in place) — use `Stack.consumeReference()` to weaken only that specific usage.
-* **Removing or restructuring the producing resource** — use `CrossStackReferences.of(producer).produce()` to weaken all references pointing at that resource at once.
+* **Removing a single reference** (but keeping both stacks and the resource in place)—use `Stack.consumeReference()` to weaken only that specific usage.
+* **Removing or restructuring the producing resource**—use `CrossStackReferences.of(producer).produce()` to weaken all references pointing at that resource at once.
 
-Both approaches follow the same two-phase pattern described below. The examples show the per-resource approach; for per-usage, wrap the reference with `Stack.consumeReference(ref, ReferenceStrength.BOTH)` in Phase 1 and `Stack.consumeReference(ref, ReferenceStrength.WEAK)` in Phase 2.
+Both approaches follow the same two-phase pattern described below. The examples show the per-resource approach. For per-usage, wrap the reference with `Stack.consumeReference(ref, ReferenceStrength.BOTH)` in Phase 1 and `Stack.consumeReference(ref, ReferenceStrength.WEAK)` in Phase 2.
 
 ===== Phase 1: Deploy with `BOTH`
 
@@ -717,7 +717,7 @@ After this migration, you can freely remove, move, or restructure the resource w
 [#resources-deadlock-manual]
 ==== Manual workaround (legacy)
 
-If you are not yet using reference strength controls, you can work around the deadlock manually. Remove the use of the shared resource from the consuming stack, then manually add the same export to the producing stack using exactly the same logical ID as the automatically generated export. Deploy both stacks to remove the `Fn::ImportValue`. Then remove the manual export (and the shared resource if it's no longer needed) and deploy both stacks again. The stack's https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.Stack.html#exportwbrvalueexportedvalue-options[`exportValue()`] method is a convenient way to create the manual export for this purpose.
+If you are not yet using reference strength controls, you can work around the deadlock manually. Remove the use of the shared resource from the consuming stack. Then manually add the same export to the producing stack using exactly the same logical ID as the automatically generated export. Deploy both stacks to remove the `Fn::ImportValue`. Then remove the manual export (and the shared resource if it's no longer needed) and deploy both stacks again. The stack's https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.Stack.html#exportwbrvalueexportedvalue-options[`exportValue()`] method is a convenient way to create the manual export for this purpose.
 
 [#resources-external]
 === Referencing resources in your {aws} account
