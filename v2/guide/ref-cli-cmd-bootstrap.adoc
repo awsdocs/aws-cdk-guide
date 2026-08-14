@@ -72,6 +72,15 @@ This option is not compatible with `--bootstrap-customer-key`.
 +
 _Default value_: Undefined
 
+[#ref-cli-cmd-boostrap-options-express]
+`--express <BOOLEAN>`::
+Boostrap using CloudFormation express mode. Express mode allows for faster deployments through CloudFormation by reporting stack operations as completed as soon as CloudFormation applies the resource configuration, however this means CloudFormation reports success without waiting for resources to stabilize. 
+Additionally, express mode does not perform rollback automatically and will leave stacks in a failed state if something goes wrong.
++
+For more information about Express Mode see: link:https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cloudformation-express-mode.html[CloudFormation's express mode docuemtation]
++
+_Default value_: `false`
+
 [#ref-cli-cmd-bootstrap-options-cloudformation-execution-policies]
 `--cloudformation-execution-policies <ARRAY>`::
 The managed IAM policy ARNs that should be attached to the deployment role assumed by {aws} CloudFormation during deployment of your stacks.
