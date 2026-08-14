@@ -83,14 +83,14 @@ _Default value_: `1`
 
 [#ref-cli-cmd-deploy-options-express]
 `--express <BOOLEAN>`::
-Deploy using CloudFormation express mode. Express mode allows for faster deployments through CloudFormation by reporting stack operations as completed as soon as CloudFormation applies the resource configuration, however this means CloudFormation reports success without waiting for resources to stabilize. 
-Additionally, express mode does not perform rollback automatically and will leave stacks in a failed state if something goes wrong. If you wish to perform express mode deployments with automatic rollback enabled include the `xref:ref-cli-cmd-deploy-options-rollback[--rollback]` flag in your express mode deployment. 
+Deploy using CloudFormation express mode. Express mode allows for faster deployments through CloudFormation by reporting stack operations as completed as soon as CloudFormation applies the resource configuration. However, CloudFormation reports success without waiting for resources to stabilize.
+Additionally, express mode does not perform rollback automatically and will leave stacks in a failed state if something goes wrong. To enable automatic rollback with express mode, include the `xref:ref-cli-cmd-deploy-options-rollback[--rollback]` flag in your express mode deployment.
 +
-For more information about Express Mode see: link:https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cloudformation-express-mode.html[CloudFormation's express mode docuemtation]
+For more information, see https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cloudformation-express-mode.html[express mode] in the _{aws} CloudFormation User Guide_.
 +
 [NOTE]
 ====
-Since express mode does not wait for stabilization before reporting that deployment completed successfully and does not perform rollback automatically upon failure, it is not recommended for production deployments. Express mode is targetted towards iterative deployments you would perform while developing your application. 
+Express mode does not wait for stabilization before reporting success and does not perform automatic rollback upon failure. We do not recommend express mode for production deployments. Express mode is targeted towards iterative deployments you would perform while developing your application.
 ====
 +
 _Default value_: `false`

@@ -72,12 +72,12 @@ This option is not compatible with `--bootstrap-customer-key`.
 +
 _Default value_: Undefined
 
-[#ref-cli-cmd-boostrap-options-express]
+[#ref-cli-cmd-bootstrap-options-express]
 `--express <BOOLEAN>`::
-Boostrap using CloudFormation express mode. Express mode allows for faster deployments through CloudFormation by reporting stack operations as completed as soon as CloudFormation applies the resource configuration, however this means CloudFormation reports success without waiting for resources to stabilize. 
+Bootstrap using CloudFormation express mode. Express mode allows for faster deployments through CloudFormation by reporting stack operations as completed as soon as CloudFormation applies the resource configuration. However, CloudFormation reports success without waiting for resources to stabilize.
 Additionally, express mode does not perform rollback automatically and will leave stacks in a failed state if something goes wrong.
 +
-For more information about Express Mode see: link:https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cloudformation-express-mode.html[CloudFormation's express mode docuemtation]
+For more information, see https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cloudformation-express-mode.html[express mode] in the _{aws} CloudFormation User Guide_.
 +
 _Default value_: `false`
 
