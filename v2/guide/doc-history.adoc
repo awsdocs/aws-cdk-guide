@@ -23,6 +23,11 @@ The table below represents significant documentation milestones. We fix errors a
 [.updates]
 == Updates
 
+[.update,date="2026-10-10"]
+=== Configure CloudFormation rollback triggers for the cdk deploy command
+
+Use the `--rollback-trigger-alarm-arns` and `--monitoring-time-minutes` options to configure CloudFormation rollback triggers when you deploy your CDK stacks. For more information, see link:https://docs.aws.amazon.com/cdk/v2/guide/ref-cli-cmd-deploy.html[`cdk deploy`].
+
 [.update,date="2026-04-02"]
 === Add documentation for the cdk publish-assets command
 

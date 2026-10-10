@@ -218,6 +218,14 @@ _Valid values_: `change-set`, `direct`, `execute-change-set`, `prepare-change-se
 +
 _Default value_: `change-set`
 
+[#ref-cli-cmd-deploy-options-monitoring-time-minutes]
+`--monitoring-time-minutes <NUMBER>`::
+The number of minutes that CloudFormation continues to monitor the rollback trigger alarms after the deployment completes, before cleaning up old resources. The value must be a whole number between 0 and 180.
++
+You must use this option together with `xref:ref-cli-cmd-deploy-options-rollback-trigger-alarm-arns[--rollback-trigger-alarm-arns]`.
++
+_Default value_: `0` (CloudFormation monitors the alarms only while the deployment is in progress)
+
 [#ref-cli-cmd-deploy-options-notification-arns]
 `--notification-arns <ARRAY>`::
 The ARNs of Amazon SNS topics that CloudFormation will notify for stack related events.
@@ -325,6 +333,16 @@ With `--no-rollback`, deployments that cause resource replacements will always f
 ====
 +
 _Default value_: `--rollback`
+
+[#ref-cli-cmd-deploy-options-rollback-trigger-alarm-arns]
+`--rollback-trigger-alarm-arns <ARRAY>`::
+The ARNs of the CloudWatch alarms that CloudFormation monitors during the deployment. If any of these alarms goes to the `ALARM` state, CloudFormation rolls back the deployment. You can specify a maximum of 5 alarms. The alarms are treated as metric alarms (`AWS::CloudWatch::Alarm`).
++
+This option can be specified multiple times in a single command.
++
+To clear any rollback triggers that were previously configured on the stack, pass the single value `none`.
++
+To control how long CloudFormation continues to monitor these alarms after the deployment completes, use `xref:ref-cli-cmd-deploy-options-monitoring-time-minutes[--monitoring-time-minutes]`.
 
 [#ref-cli-cmd-deploy-options-toolkit-stack-name]
 `--toolkit-stack-name <STRING>`::
